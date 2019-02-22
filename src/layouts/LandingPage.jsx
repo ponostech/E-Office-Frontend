@@ -6,6 +6,7 @@ import ShoppingLicenseForm from "../views/landing-pages/ShoppingLicenseForm";
 import GridItem from "../components/Grid/GridItem";
 import GridContainer from "../components/Grid/GridContainer";
 import { AmcRoutes } from "../config/routes-constant/AmcRoutes";
+import HoardingApplicationForm from "../views/hoarding/HoardingApplicationForm";
 
 class LandingPage extends Component {
 
@@ -37,7 +38,7 @@ class LandingPage extends Component {
             <Route exact={true} path={AmcRoutes.SHOP_LICENSE_DETAIL} component={ShoppingLicenseForm}/>
             <Route exact={true} path={AmcRoutes.RENEW_SHOP_LICENSE} component={ShoppingLicenseForm}/>
 
-            <Route exact={true} path={AmcRoutes.PROPOSED_HOARDING} component={ShoppingLicenseForm}/>
+            <Route exact={true} path={AmcRoutes.PROPOSED_HOARDING} component={HoardingApplicationForm}/>
             <Route exact={true} path={AmcRoutes.RENEW_HOARDING} component={ShoppingLicenseForm}/>
             <Route exact={true} path={AmcRoutes.APPLY_HOARDING} component={ShoppingLicenseForm}/>
 
