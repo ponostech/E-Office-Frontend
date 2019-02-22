@@ -106,7 +106,7 @@ const pagesHeaderStyle = theme => ({
     }
   },
   navLink: {
-    color: "#FFFFFF",
+    color: "#000000",
     margin: "0 5px",
     paddingTop: "15px",
     paddingBottom: "15px",
@@ -179,13 +179,13 @@ const pagesHeaderStyle = theme => ({
       top: "0"
     },
     "&:after": {
-      background: "#000",
+      background: "#ffffff",
       opacity: ".8"
     }
   },
   sidebarButton: {
     "&,&:hover,&:focus": {
-      color: "#FFFFFF"
+      color: "#000000"
     },
     top: "-2px"
   }

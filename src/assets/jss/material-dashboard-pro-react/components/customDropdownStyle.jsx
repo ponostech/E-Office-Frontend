@@ -193,13 +193,11 @@ const customDropdownStyle = theme => ({
   },
   dropdownHeader: {
     display: "block",
-    padding: "0.1875rem 1.25rem",
     fontSize: "0.75rem",
     lineHeight: "1.428571",
     color: "#777",
     whiteSpace: "nowrap",
     fontWeight: "inherit",
-    marginTop: "10px",
     "&:hover,&:focus": {
       backgroundColor: "transparent",
       cursor: "auto"

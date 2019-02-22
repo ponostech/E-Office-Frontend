@@ -1,63 +1,37 @@
-// import React from "react";
-// import PropTypes from "prop-types";
-// import { Switch, Route, Redirect } from "react-router-dom";
-//
-// // @material-ui/core components
-// import withStyles from "@material-ui/core/styles/withStyles";
-//
-// // core components
-// import Footer from "components/Footer/Footer.jsx";
-//
-// import pagesRoutes from "routes/pages.jsx";
-//
-// import pagesStyle from "assets/jss/material-dashboard-pro-react/layouts/pagesStyle.jsx";
-//
-// import bgImage from "assets/img/register.jpeg";
-// import ApplicantPagesHeader from "../components/Header/ApplicantPagesHeader";
-//
-// class OfficeDashboard extends React.Component {
-//   componentDidMount() {
-//     document.body.style.overflow = "unset";
-//   }
-//   render() {
-//     const { classes, ...rest } = this.props;
-//     return (
-//       <div>
-//         <ApplicantPagesHeader {...rest} />
-//         <div className={classes.wrapper} ref="wrapper">
-//           <div
-//             className={classes.fullPage}
-//             style={{ backgroundImage: "url(" + bgImage + ")" }}
-//           >
-//             <Switch>
-//               {pagesRoutes.map((prop, key) => {
-//                 if (prop.collapse) {
-//                   return null;
-//                 }
-//                 if (prop.redirect) {
-//                   return (
-//                     <Redirect from={prop.path} to={prop.pathTo} key={key} />
-//                   );
-//                 }
-//                 return (
-//                   <Route
-//                     path={prop.path}
-//                     component={prop.component}
-//                     key={key}
-//                   />
-//                 );
-//               })}
-//             </Switch>
-//             <Footer white />
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-//
-// OfficeDashboard.propTypes = {
-//   classes: PropTypes.object.isRequired
-// };
-//
-// export default withStyles(pagesStyle)(OfficeDashboard);
+import React, { Component } from "react";
+import GridContainer from "../components/Grid/GridContainer";
+import GridItem from "../components/Grid/GridItem";
+import OfficePageHeader from "../components/Header/OfficePageHeader";
+import { Route } from "react-router-dom";
+import DeskView from "../views/e-office/DeskView";
+import NewFile from "../views/e-office/files/NewFile";
+import CreatedFiles from "../views/e-office/files/CreatedFiles";
+import SentFiles from "../views/e-office/files/SentFiles";
+import { AmcRoutes } from "../config/routes-constant/AmcRoutes";
+
+class OfficeDashboard extends Component {
+  render() {
+    return (
+      <div>
+        <GridContainer justify={"center"}>
+          <GridItem xs={12} sm={12} md={12}>
+            <OfficePageHeader color={"primary"}/>
+          </GridItem>
+          <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={10}>
+
+            <GridContainer justify={"center"}>
+              <Route path={AmcRoutes.DESK} component={DeskView}/>
+              <Route path={AmcRoutes.NEW_FILE} component={NewFile}/>
+              <Route path={AmcRoutes.CREATED_FILES} component={CreatedFiles}/>
+              <Route path={AmcRoutes.SENT_FILE} component={SentFiles}/>
+
+            </GridContainer>
+
+          </GridItem>
+        </GridContainer>
+      </div>
+    );
+  }
+}
+
+export default OfficeDashboard;
