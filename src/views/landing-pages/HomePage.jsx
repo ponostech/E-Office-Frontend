@@ -56,7 +56,7 @@ class HomePage extends Component {
   render() {
     const cardItems = CARD_DATA.map((item, index) =>
       (
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem key={index} xs={12} sm={12} md={4}>
 
           <Card key={index} style={{ marginBottom: 10 }}>
             <CardHeader color={"primary"} title={item.title}
