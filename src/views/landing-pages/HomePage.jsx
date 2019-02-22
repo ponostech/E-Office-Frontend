@@ -3,6 +3,8 @@ import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import { Button, Card, CardActions, CardContent, CardHeader, Divider } from "@material-ui/core";
 import TextField from "@material-ui/core/es/TextField/TextField";
+import { AmcRoutes } from "../../config/routes-constant/AmcRoutes";
+import { CARD_DATA } from "../model/HomeModel";
 
 class HomePage extends Component {
 
@@ -10,132 +12,93 @@ class HomePage extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    console.log(CARD_DATA);
+  }
+
   handleLink = (event) => {
-    console.log(event.target.name);
     const { history } = this.props;
     switch (event.target.name) {
       case "shopping-license":
+        history.push(AmcRoutes.APPLY_SHOP_LICENSE);
         break;
 
-      case "hoarding-purposal":
+      case "advertiser":
+        history.push(AmcRoutes.APPLY_ADVERTISER);
         break;
-      case "hoarding-purposal":
+      case "propose-hoarding":
+        history.push(AmcRoutes.PROPOSED_HOARDING);
         break;
-      case "hoarding-purposal":
+      case "new-hoarding":
+        history.push(AmcRoutes.APPLY_HOARDING);
         break;
-      case "hoarding-purposal":
+      case "new-kiosk":
+        history.push(AmcRoutes.NEW_KIOSK);
         break;
-      case "hoarding-purposal":
+      case "propose-kiosk":
+        history.push(AmcRoutes.PROPOSED_KIOSK);
         break;
-      case "hoarding-purposal":
+
+      case "new-banner":
+        history.push(AmcRoutes.APPLY_BANNER);
+        break;
+
+      case "check-shopping":
+        break;
+      case "check-advertiser":
+        break;
+      default:
+        history.push(AmcRoutes.HOME);
         break;
     }
   };
 
   render() {
+    const cardItems = CARD_DATA.map((item, index) =>
+      (
+        <GridItem xs={12} sm={12} md={4}>
+
+          <Card key={index} style={{ marginBottom: 10 }}>
+            <CardHeader color={"primary"} title={item.title}
+                        subheader={item.subTitle}/>
+            <CardActions>
+              <Button name={item.id} onClick={this.handleLink.bind(this)} color={"primary"}
+                      variant={"text"}> apply</Button>
+            </CardActions>
+          </Card>
+        </GridItem>));
+
     return (
+
       <GridContainer spacing={8} justify={"center"}>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card style={{marginBottom:10}}>
-            <CardHeader color={"primary"} title={"Banner Advertisement"}
-                        subheader={"Apply your advertisement in a breeze"}/>
-            <CardActions>
-              <Button name={"banner"} onClick={this.handleLink.bind(this)} color={"primary"}
-                      variant={"text"}> Click here to apply</Button>
-            </CardActions>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        {cardItems}
 
-          <Card style={{marginBottom:10}}>
-            <CardHeader color={"primary"} title={"Hoarding Advertisement"}
-                        subheader={"Apply your hoarding advertisement"}/>
-            <CardActions>
-              <Button name={"hoarding"} onClick={this.handleLink.bind(this)} color={"primary"}
-                      variant={"text"}> Click here to apply</Button>
-            </CardActions>
-          </Card>
-
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card style={{marginBottom:10}}>
-            <CardHeader color={"primary"} title={"New Hoarding Proposal"}
-                        subheader={"Propose a new hoarding"}/>
-
-            <CardActions>
-              <Button name={"new-hoarding"} onClick={this.handleLink.bind(this)} color={"primary"}
-                      variant={"text"}> Click here to apply</Button>
-            </CardActions>
-          </Card>
-        </GridItem>
-
-        <GridItem xs={12} sm={12} md={4}>
-          <Card style={{marginBottom:10}}>
-            <CardHeader color={"primary"} title={"Advertiser Registration"}
-                        subheader={"Apply your shopping license in a breeze"}/>
-            <CardActions>
-              <Button name={"advertiser"} onClick={this.handleLink.bind(this)} color={"primary"}
-                      variant={"text"}> Click here to apply</Button>
-            </CardActions>
-          </Card>
-        </GridItem>
-
-        <GridItem xs={12} sm={12} md={4}>
-          <Card style={{marginBottom:10}}>
-            <CardHeader color={"primary"} title={"Shopping License"}
-                        subheader={"Apply your shopping license in a breeze"}/>
-            <CardActions>
-              <Button name={"shopping-license"} onClick={this.handleLink.bind(this)} color={"primary"}
-                      variant={"text"}> Click here to apply</Button>
-            </CardActions>
-          </Card>
-        </GridItem>
-
-        <GridItem xs={12} sm={12} md={4}>
-          <Card style={{marginBottom:10}}>
-            <CardHeader color={"primary"} title={"Kiosk Advertisement"}
-                        subheader={"Apply your kiosk advertisement"}/>
-            <CardActions>
-              <Button name={"kiosk"} onClick={this.handleLink.bind(this)} color={"primary"}
-                      variant={"text"}> Click here to apply</Button>
-            </CardActions>
-          </Card>
-        </GridItem>
-
-        <GridItem xs={12} sm={12} md={4}>
-          <Card style={{marginBottom:10}}>
-            <CardHeader color={"primary"} title={"New Kiosk Proposal"}
-                        subheader={"Submit your new kiosk advertisement proposal"}/>
-            <CardActions>
-              <Button name={"new-kiosk"} onClick={this.handleLink.bind(this)} color={"primary"}
-                      variant={"text"}> Click here to apply</Button>
-            </CardActions>
-          </Card>
-        </GridItem>
-
-        <Divider color={"primary"} style={{ marginTop: 30 }} />
-
-        <GridContainer justify={"center"}>
-          <GridItem xs={12} sm={12} md={6}>
+        <GridContainer justify={"space-around"}>
+          <Divider color={"primary"} style={{ marginTop: 30 }} absolute={true}/>
+          <GridItem xs={12} sm={12} md={4}>
             <Card>
-              <CardHeader title={"Check License status"} placeholder={"Enter your shopping license no to check the License Status"}/>
+              <CardHeader title={"Check your shopping license"}
+                          placeholder={"It is mandaroty to Enter your shopping license no to check your License Status"}/>
               <CardContent>
-                <TextField fullWidth={true} variant={"outlined"} placeholder={"Enter your license no"} label={"License id"}/>
+                <TextField fullWidth={true} variant={"outlined"} placeholder={"Enter your license no"}
+                           label={"License No"}/>
               </CardContent>
               <CardActions>
-                <Button fullWidth={true} variant={"outlined"} color={"primary"}>Check Status</Button>
+                <Button fullWidth={true} variant={"outlined"} color={"primary"}>Check </Button>
               </CardActions>
             </Card>
           </GridItem>
 
-          <GridItem xs={12} sm={12} md={6}>
+          <GridItem xs={12} sm={12} md={4}>
             <Card>
-              <CardHeader title={"Check License status"} placeholder={"Enter your shopping license no to check the License Status"}/>
+              <CardHeader title={"Check Advertiser License"}
+                          placeholder={"It is Mandatory to enter your advertisement license no to check it's Status"}/>
               <CardContent>
-                <TextField fullWidth={true} variant={"outlined"} placeholder={"Enter your license no"} label={"License id"}/>
+                <TextField fullWidth={true} variant={"outlined"} placeholder={"Enter your license no"}
+                           label={"License No"}/>
               </CardContent>
               <CardActions>
-                <Button fullWidth={true} variant={"outlined"} color={"primary"}>Check Status</Button>
+                <Button fullWidth={true} variant={"outlined"} color={"primary"}>Check </Button>
               </CardActions>
             </Card>
           </GridItem>

@@ -19,7 +19,7 @@ class LandingPage extends Component {
       <GridContainer spacing={16} justify={"center"}>
         <GridItem xs={12} sm={12} md={12}>
           <AppBar position={"fixed"} color={"default"}>
-            <Toolbar title={"AMC"} variant={"dense"}>
+            <Toolbar title={"AMC"} variant={"regular"}>
               <GridContainer justify={"space-between"} direction={"row"}>
                 <Typography variant={"title"} color={"textPrimary"}>AMC</Typography>
 
@@ -28,7 +28,7 @@ class LandingPage extends Component {
             </Toolbar>
           </AppBar>
         </GridItem>
-        <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={10}>
+        <GridItem style={{ marginTop: 90 }} xs={12} sm={12} md={10}>
 
           <GridContainer justify={"center"}>
 
@@ -41,6 +41,7 @@ class LandingPage extends Component {
             <Route exact={true} path={AmcRoutes.RENEW_HOARDING} component={ShoppingLicenseForm}/>
             <Route exact={true} path={AmcRoutes.APPLY_HOARDING} component={ShoppingLicenseForm}/>
 
+            <Route exact={true} path={AmcRoutes.PROPOSED_KIOSK} component={ShoppingLicenseForm}/>
             <Route exact={true} path={AmcRoutes.NEW_KIOSK} component={ShoppingLicenseForm}/>
             <Route exact={true} path={AmcRoutes.KIOSK_DETAIL} component={ShoppingLicenseForm}/>
             <Route exact={true} path={AmcRoutes.RENEW_KIOSK} component={ShoppingLicenseForm}/>
@@ -49,7 +50,7 @@ class LandingPage extends Component {
             <Route exact={true} path={AmcRoutes.ADVERTISER_DETAIL} component={ShoppingLicenseForm}/>
             <Route exact={true} path={AmcRoutes.RENEW_ADVERTISER} component={ShoppingLicenseForm}/>
 
-
+            <Redirect from={AmcRoutes.ROOT} to={AmcRoutes.HOME}/>
           </GridContainer>
         </GridItem>
       </GridContainer>

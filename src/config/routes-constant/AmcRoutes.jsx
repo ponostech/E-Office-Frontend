@@ -1,4 +1,5 @@
 export class AmcRoutes {
+  static ROOT="/"
   static LOGIN = "/login";
   static HOME = "/home";
   static E_OFFICE = "/e-office";
@@ -16,9 +17,11 @@ export class AmcRoutes {
   static PROPOSED_HOARDING = "/hoarding/propose";
 
   static NEW_KIOSK = "/kiosk/new";
+  static PROPOSED_KIOSK = "/kiosk/propose";
   static RENEW_KIOSK = "/kiosk/:id/renew";
-
   static KIOSK_DETAIL = "/kiosk/:id";
+
+  static APPLY_BANNER="/banner/new";
 
   static DESK = "/e-office/desk";
   static NEW_FILE = "/e-office/file/new";
