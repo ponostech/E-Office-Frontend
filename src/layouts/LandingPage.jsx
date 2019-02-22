@@ -7,6 +7,7 @@ import GridItem from "../components/Grid/GridItem";
 import GridContainer from "../components/Grid/GridContainer";
 import { AmcRoutes } from "../config/routes-constant/AmcRoutes";
 import HoardingApplicationForm from "../views/hoarding/HoardingApplicationForm";
+import AdvertiserForm from "../views/advertiser/AdvertiserForm";
 
 class LandingPage extends Component {
 
@@ -47,8 +48,8 @@ class LandingPage extends Component {
             <Route exact={true} path={AmcRoutes.KIOSK_DETAIL} component={ShoppingLicenseForm}/>
             <Route exact={true} path={AmcRoutes.RENEW_KIOSK} component={ShoppingLicenseForm}/>
 
-            <Route exact={true} path={AmcRoutes.APPLY_ADVERTISER} component={ShoppingLicenseForm}/>
             <Route exact={true} path={AmcRoutes.ADVERTISER_DETAIL} component={ShoppingLicenseForm}/>
+            <Route exact={true} path={AmcRoutes.APPLY_ADVERTISER} component={AdvertiserForm}/>
             <Route exact={true} path={AmcRoutes.RENEW_ADVERTISER} component={ShoppingLicenseForm}/>
 
             <Redirect from={AmcRoutes.ROOT} to={AmcRoutes.HOME}/>

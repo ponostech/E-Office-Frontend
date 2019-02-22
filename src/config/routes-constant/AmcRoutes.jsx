@@ -6,7 +6,7 @@ export class AmcRoutes {
 
   static APPLY_ADVERTISER = "/advertiser/new";
   static RENEW_ADVERTISER = "/advertiser/:id/renew";
-  static ADVERTISER_DETAIL = "/advertiser/:id";
+  static ADVERTISER_DETAIL = "/advertisers/:id";
 
   static APPLY_SHOP_LICENSE = "/shopping-license/new";
   static RENEW_SHOP_LICENSE = "/shopping-license/:id/renew";

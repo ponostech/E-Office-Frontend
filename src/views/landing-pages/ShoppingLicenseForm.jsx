@@ -6,12 +6,16 @@ import {
   CardContent,
   CardHeader,
   FormControl,
-  FormControlLabel, FormGroup, FormHelperText, Input, InputLabel, Menu, MenuItem, OutlinedInput,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
   Select,
   TextField
 } from "@material-ui/core";
 
 class ShoppingLicenseForm extends Component {
+
+
   render() {
     return (
       <div>
@@ -43,9 +47,10 @@ class ShoppingLicenseForm extends Component {
                 <MenuItem value={30}>Thirty</MenuItem>
               </Select>
             </FormControl>
-              <TextField required={true} placeholder={"eg: private/group/firm"} variant={"outlined"} label={"Type of applicant"} fullWidth={true} margin={"dense"}/>
-              <TextField variant={"outlined"} label={"Name"} fullWidth={true} margin={"dense"}/>
-              <TextField variant={"outlined"} label={"Name"} fullWidth={true} margin={"dense"}/>
+            <TextField required={true} placeholder={"eg: private/group/firm"} variant={"outlined"}
+                       label={"Type of applicant"} fullWidth={true} margin={"dense"}/>
+            <TextField variant={"outlined"} label={"Name"} fullWidth={true} margin={"dense"}/>
+            <TextField variant={"outlined"} label={"Name"} fullWidth={true} margin={"dense"}/>
           </CardContent>
           <CardActions>
             <Button variant={"outlined"} color={"primary"}>Submit</Button>
