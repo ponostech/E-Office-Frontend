@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62e76f74-8b55-4571-bb41-478d28d8ef9b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/config/routes-constant/AmcRoutes.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/e-office/DeskView.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/e-office/files/CreatedFiles.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/e-office/files/NewFile.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/e-office/files/SentFiles.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/jss/material-dashboard-pro-react/components/customDropdownStyle.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/jss/material-dashboard-pro-react/components/customDropdownStyle.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/jss/material-dashboard-pro-react/components/pagesHeaderStyle.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/jss/material-dashboard-pro-react/components/pagesHeaderStyle.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CustomDropdown/CustomDropdown.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/CustomDropdown/CustomDropdown.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header/OfficePageHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/OfficePageHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/LandingPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/LandingPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/OfficeDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/OfficeDashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/pages.jsx" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -71,7 +59,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/layouts/LandingPage.jsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="479">
@@ -83,11 +71,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/views/e-office/files/NewFile.jsx">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="6" column="16" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+            <state relative-caret-position="161">
+              <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -139,7 +127,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/routes/index.jsx" />
         <option value="$PROJECT_DIR$/src/views/e-office/DeskView.jsx" />
         <option value="$PROJECT_DIR$/src/views/e-office/files/NewFile.jsx" />
@@ -152,6 +139,7 @@
         <option value="$PROJECT_DIR$/src/layouts/OfficeDashboard.jsx" />
         <option value="$PROJECT_DIR$/src/config/routes-constant/AmcRoutes.jsx" />
         <option value="$PROJECT_DIR$/src/layouts/LandingPage.jsx" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -173,62 +161,6 @@
             <path>
               <item name="E-Office-Frontend" type="b2602c69:ProjectViewProjectNode" />
               <item name="E-Office-Frontend" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="E-Office-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="E-Office-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="E-Office-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="E-Office-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="E-Office-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="E-Office-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="Header" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="E-Office-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="E-Office-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="E-Office-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="E-Office-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="layouts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="E-Office-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="E-Office-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="E-Office-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="E-Office-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="E-Office-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="E-Office-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="e-office" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="E-Office-Frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="E-Office-Frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="landing-pages" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -279,18 +211,18 @@
       <workItem from="1550737783407" duration="10222000" />
       <workItem from="1550766929352" duration="2894000" />
       <workItem from="1550769875272" duration="740000" />
-      <workItem from="1550810849563" duration="1332000" />
+      <workItem from="1550810849563" duration="1832000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15188000" />
+    <option name="totallyTimeSpent" value="15688000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24972677" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24972677" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -305,7 +237,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="TypeScript" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32894737" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -317,13 +249,6 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Header/PagesHeader.jsx">
       <provider selected="true" editor-type-id="text-editor">
@@ -446,6 +371,13 @@
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
         </state>
       </provider>
     </entry>
