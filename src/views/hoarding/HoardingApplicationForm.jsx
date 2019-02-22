@@ -108,7 +108,7 @@ class HoardingApplicationForm extends Component {
               <FormGroup row={true}>
                 <TextField disabled={true} name={"lat"} variant={"outlined"} margin={"dense"} label={"latitude"}
                            required={true}/>
-                <TextField style={{marginLeft:10}} disabled={true} name={"long"} variant={"outlined"} margin={"dense"} label={"Longitude"}
+                <TextField style={{marginLeft}} disabled={true} name={"long"} variant={"outlined"} margin={"dense"} label={"Longitude"}
                            required={true}/>
                 <IconButton>
                   <MapIcon/>
