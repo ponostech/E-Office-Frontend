@@ -22,8 +22,8 @@ import {
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import TextField from "@material-ui/core/es/TextField/TextField";
-import HoardingAttachment from "./HoardingAttachment";
 import MapIcon from "@material-ui/icons/Map";
+import DocumentsDropzone from "../../components/DocumentsDropzone";
 
 class HoardingApplicationForm extends Component {
 
@@ -93,22 +93,23 @@ class HoardingApplicationForm extends Component {
           <Card>
             <CardHeader title={"Hoarding Application Form"}/>
             <CardContent>
-              <FormControl fullWidth={true} margin={"dense"}>
+              <FormControl variant={"outlined"} fullWidth={true} margin={"dense"}>
                 <InputLabel htmlFor="lc">Local Council</InputLabel>
                 <Select
                   value={this.state.localCouncil}
                   onChange={this.handleChange.bind(this)}
                   input={
-                    <OutlinedInput labelWidth={200} name={"localCouncil"} id={"lc"}/>}
+                    <OutlinedInput labelWidth={100} name={"localCouncil"} id={"lc"}/>}
                 >
-                  {this.state.localCouncils.map((item, i) => <MenuItem key={i} value={item}> item</MenuItem>)}
+                  {this.state.localCouncils.map((item, i) => <MenuItem key={i} value={item}> {item}</MenuItem>)}
                 </Select>
               </FormControl>
 
               <FormGroup row={true}>
-                <TextField disabled={true} name={"lat"} variant={"outlined"} margin={"dense"} label={"latitude"}
+                <TextField  disabled={true} name={"lat"} variant={"outlined"} margin={"dense"} label={"latitude"}
                            required={true}/>
-                <TextField style={{marginLeft:10}} disabled={true} name={"long"} variant={"outlined"} margin={"dense"} label={"Longitude"}
+                <TextField style={{ marginLeft: 10 }} disabled={true} name={"long"} variant={"outlined"}
+                           margin={"dense"} label={"Longitude"}
                            required={true}/>
                 <IconButton>
                   <MapIcon/>
@@ -125,7 +126,7 @@ class HoardingApplicationForm extends Component {
               <FormControlLabel onChange={this.handleChange.bind(this)} name={"bothSide"}
                                 control={<Switch required={true}/>}
                                 label={"Both side?"}/>
-              <FormControl fullWidth={true} margin={"dense"}>
+              <FormControl variant={"outlined"} fullWidth={true} margin={"dense"}>
                 <InputLabel
                   ref={ref => {
                     this.InputLabelRef = ref;
@@ -138,10 +139,10 @@ class HoardingApplicationForm extends Component {
                   value={this.state.displayType}
                   onChange={this.handleChange.bind(this)}
                   input={
-                    <OutlinedInput labelWidth={300} id={"displaytype"} required={true}/>
+                    <OutlinedInput labelWidth={120} id={"displaytype"} required={true}/>
                   }
                 >
-                  {this.state.displayTypes.map((item, index) => <MenuItem key={index} value={item}>item</MenuItem>)}
+                  {this.state.displayTypes.map((item, index) => <MenuItem key={index} value={item}>{item}</MenuItem>)}
                 </Select>
               </FormControl>
               <TextField name={"landlord"} margin={"dense"} fullWidth={true} variant={"outlined"} required={true}
@@ -163,7 +164,6 @@ class HoardingApplicationForm extends Component {
               </FormControl>
               <Divider/>
 
-              {<HoardingAttachment/>}
 
             </CardContent>
             <CardActions>

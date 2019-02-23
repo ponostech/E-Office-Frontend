@@ -6,19 +6,22 @@ import {
   CardContent,
   CardHeader,
   FormControl,
-  InputLabel, OutlinedInput, Select, MenuItem,
-  TextField, FormLabel
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  TextField
 } from "@material-ui/core";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
-import DocumentsUpload from "../../components/DocumentsUpload";
+import DocumentsDropzone from "../../components/DocumentsDropzone";
 
 class AdvertiserForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
-      type:'private',
+      type: "private",
       email: "",
       password: "",
       confirmPassword: "",
@@ -40,7 +43,8 @@ class AdvertiserForm extends Component {
         addresText: ""
       },
       documents: [],
-      types:["private","public"]
+      types: ["private", "public"],
+      openDialog: false
     };
   }
 
@@ -48,21 +52,30 @@ class AdvertiserForm extends Component {
 
   };
   handleChange = (e) => {
-    this.validate()
+    this.validate();
     this.setState({
       [e.target.name]: e.target.value
     });
   };
   validate = () => {
     const newState = this.state.errors;
-    newState.name=true;
-    this.setState({ someProperty: newState })
+    newState.name = true;
+    this.setState({ someProperty: newState });
     if (this.state.name === "") {
       this.setState({
-        errors:newState
-      })
+        errors: newState
+      });
     }
     return true;
+  };
+
+  openDialog = () => {
+    this.setState({ openDialog: true });
+  };
+
+  onDropzoneClosed = (data) => {
+    console.log(data);
+    this.setState({openDialog:false})
   };
 
   render() {
@@ -70,23 +83,24 @@ class AdvertiserForm extends Component {
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={6}>
           <Card>
-            <CardHeader title={"Application Form for Advertiser"} subheader={"Please fill out all the form and press submit button"}/>
+            <CardHeader title={"Application Form for Advertiser"}
+                        subheader={"Please fill out all the form and press submit button"}/>
             <CardContent>
               <TextField error={this.state.errors.name} helperText={this.state.errors.nameText} name={"name"}
                          margin={"dense"}
                          required={true} fullWidth={true} variant={"outlined"}
                          label={"Name"} onChange={this.handleChange.bind(this)} placeholder={"Fullname"}/>
-              <FormControl fullWidth={true} >
+              <FormControl margin={"dense"} fullWidth={true} variant={"outlined"}>
                 <InputLabel htmlFor={"type"}>Type of applicant</InputLabel>
                 <Select
-                    value={this.state.type}
-                    onChange={this.handleChange.bind(this)}
-                    input={
-                       <OutlinedInput labelWidth={160} name={"type"} id={"type"}/>
-                    }
+                  value={this.state.type}
+                  onChange={this.handleChange.bind(this)}
+                  input={
+                    <OutlinedInput labelWidth={140} name={"type"} id={"type"}/>
+                  }
                 >
-                  
-                  {this.state.types.map((val,i)=><MenuItem key={i} value={val}>{val}</MenuItem>)}
+
+                  {this.state.types.map((val, i) => <MenuItem key={i} value={val}>{val}</MenuItem>)}
                 </Select>
               </FormControl>
 
@@ -113,9 +127,8 @@ class AdvertiserForm extends Component {
                          name={"address"} margin={"dense"} required={true} fullWidth={true} variant={"outlined"}
                          label={"Address"} onChange={this.handleChange.bind(this)}
                          placeholder={" hno \n locality \n pincode"}/>
-              {
-                <DocumentsUpload/>
-              }
+              <Button variant={"contained"} onClick={this.openDialog.bind(this)} color={"primary"}>Attach documents</Button>
+
             </CardContent>
             <CardActions>
               <Button variant={"outlined"} color={"primary"} onClick={this.handleSubmit.bind(this)}>Submit
@@ -124,6 +137,16 @@ class AdvertiserForm extends Component {
             </CardActions>
           </Card>
         </GridItem>
+        {
+          <DocumentsDropzone onCloseHandler={this.onDropzoneClosed.bind(this)} openDialog={this.state.openDialog}
+                             documents={[
+                               { name: "Voter id", fileName: "neitiri", type:"image" },
+                               { name: "NOC of landowner", fileName: "noc_landowner",type:"pdf" },
+                               { name: "Tribal Certificate", fileName: "tribal_cert",type:"pdf" }
+                             ]}
+                             acceptedFiles={"image/jpeg, image/png, application/pdf"}
+          />
+        }
       </GridContainer>
     );
   }
