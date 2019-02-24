@@ -23,15 +23,11 @@ class ShoppingLicenseForm extends Component {
           <CardHeader title={"Shopping License Form"} subheader={"Star marks are mandatory"}/>
           <CardContent>
             <FormControl variant="outlined" fullWidth={true}>
-              <InputLabel
-                htmlFor="outlined-age-simple"
-              >
+              <InputLabel htmlFor="outlined-age-simple">
                 Age
               </InputLabel>
               <Select
-                value={20}
-
-                input={
+                value={20} input={
                   <OutlinedInput
                     labelWidth={40}
                     name="age"
@@ -47,8 +43,7 @@ class ShoppingLicenseForm extends Component {
                 <MenuItem value={30}>Thirty</MenuItem>
               </Select>
             </FormControl>
-            <TextField required={true} placeholder={"eg: private/group/firm"} variant={"outlined"}
-                       label={"Type of applicant"} fullWidth={true} margin={"dense"}/>
+            <TextField required={true} placeholder={"eg: private/group/firm"} variant={"outlined"} label={"Type of applicant"} fullWidth={true} margin={"dense"}/>
             <TextField variant={"outlined"} label={"Name"} fullWidth={true} margin={"dense"}/>
             <TextField variant={"outlined"} label={"Name"} fullWidth={true} margin={"dense"}/>
           </CardContent>
