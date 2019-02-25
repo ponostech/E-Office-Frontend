@@ -2,6 +2,7 @@ export class OfficeRoutes {
   static ROOT="/";
   static LOGIN = "/login";
   static HOME = "/home";
+  static FORM = "/form";
   static E_OFFICE = "/e-office";
 
   static APPLY_ADVERTISER = "/advertiser/new";
