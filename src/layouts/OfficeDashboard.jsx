@@ -7,7 +7,7 @@ import DeskView from "../views/e-office/DeskView";
 import NewFile from "../views/e-office/files/NewFile";
 import CreatedFiles from "../views/e-office/files/CreatedFiles";
 import SentFiles from "../views/e-office/files/SentFiles";
-import { AmcRoutes } from "../config/routes-constant/AmcRoutes";
+import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 
 class OfficeDashboard extends Component {
   render() {
@@ -20,10 +20,11 @@ class OfficeDashboard extends Component {
           <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={10}>
 
             <GridContainer justify={"center"}>
-              <Route path={AmcRoutes.DESK} component={DeskView} />
-              <Route path={AmcRoutes.NEW_FILE} component={NewFile} />
-              <Route path={AmcRoutes.CREATED_FILES} component={CreatedFiles} />
-              <Route path={AmcRoutes.SENT_FILE} component={SentFiles} />
+              <Route path={OfficeRoutes.DESK} component={DeskView}/>
+              <Route path={OfficeRoutes.NEW_FILE} component={NewFile}/>
+              <Route path={OfficeRoutes.CREATED_FILES} component={CreatedFiles}/>
+              <Route path={OfficeRoutes.SENT_FILE} component={SentFiles}/>
+
             </GridContainer>
 
           </GridItem>
