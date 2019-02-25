@@ -1,5 +1,10 @@
 export const CARD_DATA = [
   {
+    id: "advertiser",
+    title: "Advertiser License",
+    subTitle: "Acquire New Advertiser license",
+    content: "NA"
+  },{
     id: "propose-hoarding",
     title: "New Hoarding Proposal",
     subTitle: "Apply",

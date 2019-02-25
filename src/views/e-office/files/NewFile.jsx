@@ -4,7 +4,7 @@ class NewFile extends Component {
   render() {
     return (
       <div>
-        New file
+        New file NewFile.jsx
       </div>
     );
   }

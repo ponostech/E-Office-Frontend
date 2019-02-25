@@ -57,12 +57,14 @@ class OfficePageHeader extends React.Component {
   closeMenu = (e) => {
     this.setState({ anchorEl: null, openFile: false, openReceipt: false, openApplication: false });
   };
+
   handleMenuItem = (event) => {
 
     const { name } = event;
     const { history } = this.props;
 
-    console.log(name);
+    //console.log(name);
+
     switch (name) {
       case "new-file":
         history.push("/e-office/file/new");
@@ -115,13 +117,13 @@ class OfficePageHeader extends React.Component {
   handleFile = (e) => {
     const { history } = this.props;
     switch (e) {
-      case "New file":
+      case "Create New":
         history.push("/e-office/file/new");
         break;
-      case "Created":
+      case "List Created":
         history.push("/e-office/file/created");
         break;
-      case "Sent":
+      case "List Sent":
         history.push("/e-office/file/sent");
         break;
       default:
@@ -132,13 +134,13 @@ class OfficePageHeader extends React.Component {
   handleReceipt = (e) => {
     const { history } = this.props;
     switch (e) {
-      case "New Receipt":
+      case "Create New":
         history.push("/e-office/receipt/new");
         break;
-      case "Created":
+      case "List Created":
         history.push("/e-office/receipt/created");
         break;
-      case "Sent":
+      case "List Sent":
         history.push("/e-office/receipt/sent");
         break;
       default:
@@ -149,11 +151,14 @@ class OfficePageHeader extends React.Component {
   handleApplication = (e) => {
     const { history } = this.props;
     switch (e) {
-      case "Obpas":
+      case "OBPAS":
         history.push("/e-office/application/obpas");
         break;
       case "Hoarding":
         history.push("/e-office/application/hoarding");
+        break;
+      case "Shop Licensing":
+        history.push("/e-office/application/shop-licensing");
         break;
       case "Kiosk":
         history.push("/e-office/application/kiosk");
@@ -178,20 +183,33 @@ class OfficePageHeader extends React.Component {
     var menuItems = (
       <GridContainer justify={"space-between"}>
         <div style={{display:"flex",alignItems:"center"}}>
-          <IconButton style={{marginLeft:20}} onClick={this.handleDesk.bind(this)}>
+
+          <IconButton style={{ marginLeft:20 }} onClick={this.handleDesk.bind(this)}>
             <HomeIcon/>
           </IconButton>
-          <CustomDropdown onClick={this.handleFile.bind(this)} dropdownList={["New file", "Created", "Sent"]}
-                          buttonText={"File"} buttonProps={{ color: "transparent" }}/>
-          <CustomDropdown onClick={this.handleReceipt.bind(this)} dropdownList={["New Receipt", "Created", "Sent"]}
-                          buttonText={"Receipt"} buttonProps={{ color: "transparent" }}/>
-          <CustomDropdown onClick={this.handleApplication.bind(this)}
-                          dropdownList={["Obpas", "Hoarding", "Shopping License", "Kiosk"]} buttonText={"Application"}
-                          buttonProps={{ color: "transparent" }}/>
+
+          <CustomDropdown
+              onClick={this.handleFile.bind(this)}
+              dropdownList={["Create New", "List Created", "List Sent"]}
+              buttonText={"File"}
+              buttonProps={{ color: "transparent" }} />
+
+          <CustomDropdown
+              onClick={this.handleReceipt.bind(this)}
+              dropdownList={["Create New", "List Created", "List Sent"]}
+              buttonText={"Receipt"}
+              buttonProps={{ color: "transparent" }} />
+
+          <CustomDropdown
+              onClick={this.handleApplication.bind(this)}
+              dropdownList={["OBPAS", "Hoarding", "Shop Licensing", "Kiosk"]}
+              buttonText={"Application"}
+              buttonProps={{ color: "transparent" }} />
+
         </div>
 
         <div style={{display:"flex",alignItems:'center'}}>
-          <Typography variant={"caption"} color={"textSecondary"}>Hello username</Typography>
+          <Typography variant={"caption"} color={"textSecondary"}>Hello Username</Typography>
           <IconButton onClick={this.handleUser.bind(this)}>
             <UserIcon/>
           </IconButton>
@@ -292,10 +310,10 @@ class OfficePageHeader extends React.Component {
     );
     return (
       <AppBar position="fixed" color={"default"}>
-        <Toolbar>
+        <Toolbar>{/*
           <Hidden smDown>
             <Typography color={"textPrimary"} variant={"title"}>E-AMC</Typography>
-          </Hidden>
+          </Hidden>*/}
           <Hidden mdUp>
             <div className={classes.flex}>
               <Button href="#" className={classes.title} color="transparent">

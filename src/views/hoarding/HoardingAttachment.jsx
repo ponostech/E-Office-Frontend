@@ -51,10 +51,9 @@ class HoardingAttachment extends React.Component {
           </li>
           <li>NOC form concerned Local Council</li>
           <li>NOC from the owner of land/property</li>
-          <li>NOC from the owner of land/property</li>
           <li>Tribal Certificate</li>
           <li>EPIC</li>
-          <li>Two copoies of 6”x4” size photograph taken from the proposed site <br/>
+          <li>Two copies of photograph taken from the proposed site <br/>
             with marking of proposed hoarding thereon
           </li>
           <li>Engineer drawing of the proposed structure in triplicate duly signed by the Applicant</li>
