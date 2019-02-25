@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { Button, Card, CardActions, CardContent, CardHeader, TextField } from "@material-ui/core";
-import Select from "react-select";
 import { StaffViewModel } from "../model/StaffViewModel";
 import GridItem from "../../components/Grid/GridItem";
 import moment from "moment";
-import ImageUpload from "../../components/CustomUpload/ImageUpload";
+import OfficeSelect from "../../components/OfficeSelect";
 
 class StaffRegistrationForm extends Component {
   constructor(props) {
@@ -22,8 +21,16 @@ class StaffRegistrationForm extends Component {
       dobError: "",
 
       submit: false,
-      designations: ["LDC", "UDC", "Assistant"],
-      branches: ["Branch one", "Branch two", "Three", "asdfasd", "fasdfa", "fasdfasd", "fasdfasdf", "fasdfasdf"]
+      designations: [
+        { value: "ldc", label: "LDC" },
+        { value: "UDC", label: "UDC" },
+        { value: "Assistant", label: "Assistant" }
+      ],
+      branches: [
+        { value: "one", label: "one" },
+        { value: "two", label: "two" },
+        { value: "three", label: "three" }
+      ]
     };
   }
 
@@ -103,15 +110,15 @@ class StaffRegistrationForm extends Component {
                        error={Boolean(this.state.nameError)}
                        helperText={this.state.nameError}
             />
-            <Select value={designation}
-                    defaultValue={this.state.designations[0]}
-                    name={"designation"}
-                    placeholder={StaffViewModel.DESIGNATION}
-                    onChange={this.handleSelect.bind(this)}
-                    searchAble={true}
-                    ClearAble={true}
-                    label={StaffViewModel.DESIGNATION}
-                    options={this.state.designations}/>
+            <OfficeSelect value={designation}
+                          defaultValue={this.state.designations[0]}
+                          name={"designation"}
+                          placeholder={StaffViewModel.DESIGNATION}
+                          onChange={this.handleSelect.bind(this)}
+                          searchAble={true}
+                          ClearAble={true}
+                          label={StaffViewModel.DESIGNATION}
+                          options={this.state.designations}/>
 
             <TextField name={"address"}
                        required={true}
@@ -125,14 +132,14 @@ class StaffRegistrationForm extends Component {
                        onChange={this.handleChange.bind(this)}
                        label={StaffViewModel.ADDRESS}/>
 
-            <Select value={branch}
-                    name={"branch"}
-                    variant={"outlined"}
-                    margin={"dense"}
-                    fullWidth={true}
-                    onChange={this.handleSelect.bind(this)}
-                    options={this.state.branches}
-                    placeholder={StaffViewModel.BRANCH}/>
+            <OfficeSelect value={branch}
+                          label={StaffViewModel.BRANCH}
+                          name={"branch"}
+                          variant={"outlined"}
+                          margin={"dense"}
+                          fullWidth={true}
+                          onChange={this.handleSelect.bind(this)}
+                          options={this.state.branches}/>
 
             <TextField name={"dob"}
                        variant={"outlined"}
