@@ -2,17 +2,19 @@ import React, { Component } from "react";
 import { AppBar, Button, Toolbar, Typography } from "@material-ui/core";
 import { Redirect, Route } from "react-router-dom";
 import HomePage from "../views/landing-pages/HomePage";
-import ShoppingLicenseForm from "../views/shop/ShopLicenseForm";
 import GridItem from "../components/Grid/GridItem";
 import GridContainer from "../components/Grid/GridContainer";
-import { AmcRoutes } from "../config/routes-constant/AmcRoutes";
+
 import HoardingApplicationForm from "../views/hoarding/HoardingApplicationForm";
+import ShopLicenseForm from "../views/shop/ShopLicenseForm";
+import StaffRegistrationForm from "../views/staff/StaffRegistrationForm";
+import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 
 class LandingPage extends Component {
 
   handleLogin = (e) => {
     const { history } = this.props;
-    history.push(AmcRoutes.LOGIN);
+    history.push(OfficeRoutes.LOGIN);
   };
 
   render() {
@@ -32,26 +34,29 @@ class LandingPage extends Component {
         <GridItem style={{ marginTop: 90 }} xs={12} sm={12} md={10}>
 
           <GridContainer justify={"center"}>
+            {/*<Redirect from={OfficeRoutes.ROOT} to={OfficeRoutes.HOME}/>*/}
 
-            <Route exact={true} path={AmcRoutes.HOME} component={HomePage}/>
-            <Route exact={true} path={AmcRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
-            <Route exact={true} path={AmcRoutes.SHOP_LICENSE_DETAIL} component={ShopLicenseForm}/>
-            <Route exact={true} path={AmcRoutes.RENEW_SHOP_LICENSE} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
+            <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.SHOP_LICENSE_DETAIL} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.RENEW_SHOP_LICENSE} component={ShopLicenseForm}/>
 
-            <Route exact={true} path={AmcRoutes.PROPOSED_HOARDING} component={HoardingApplicationForm}/>
-            <Route exact={true} path={AmcRoutes.RENEW_HOARDING} component={ShopLicenseForm}/>
-            <Route exact={true} path={AmcRoutes.APPLY_HOARDING} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.PROPOSED_HOARDING} component={HoardingApplicationForm}/>
+            <Route exact={true} path={OfficeRoutes.RENEW_HOARDING} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.APPLY_HOARDING} component={ShopLicenseForm}/>
 
-            <Route exact={true} path={AmcRoutes.PROPOSED_KIOSK} component={ShopLicenseForm}/>
-            <Route exact={true} path={AmcRoutes.NEW_KIOSK} component={ShopLicenseForm}/>
-            <Route exact={true} path={AmcRoutes.KIOSK_DETAIL} component={ShopLicenseForm}/>
-            <Route exact={true} path={AmcRoutes.RENEW_KIOSK} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.PROPOSED_KIOSK} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.NEW_KIOSK} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.KIOSK_DETAIL} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.RENEW_KIOSK} component={ShopLicenseForm}/>
 
-            <Route exact={true} path={AmcRoutes.APPLY_ADVERTISER} component={ShopLicenseForm}/>
-            <Route exact={true} path={AmcRoutes.ADVERTISER_DETAIL} component={ShopLicenseForm}/>
-            <Route exact={true} path={AmcRoutes.RENEW_ADVERTISER} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.ADVERTISER_DETAIL} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.RENEW_ADVERTISER} component={ShopLicenseForm}/>
 
-            <Redirect from={AmcRoutes.ROOT} to={AmcRoutes.HOME}/>
+            {/*Staff routes*/}
+            <Route exact={true} path={OfficeRoutes.NEW_STAFF} component={StaffRegistrationForm}/>
+
           </GridContainer>
         </GridItem>
       </GridContainer>

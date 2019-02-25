@@ -22,7 +22,6 @@ import {
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import TextField from "@material-ui/core/es/TextField/TextField";
-import HoardingAttachment from "./HoardingAttachment";
 import MapIcon from "@material-ui/icons/Map";
 
 class HoardingApplicationForm extends Component {
@@ -108,7 +107,8 @@ class HoardingApplicationForm extends Component {
               <FormGroup row={true}>
                 <TextField disabled={true} name={"lat"} variant={"outlined"} margin={"dense"} label={"latitude"}
                            required={true}/>
-                <TextField style={{marginLeft:20}} disabled={true} name={"long"} variant={"outlined"} margin={"dense"} label={"Longitude"}
+                <TextField style={{ marginLeft: 20 }} disabled={true} name={"long"} variant={"outlined"}
+                           margin={"dense"} label={"Longitude"}
                            required={true}/>
                 <IconButton>
                   <MapIcon/>
@@ -163,7 +163,7 @@ class HoardingApplicationForm extends Component {
               </FormControl>
               <Divider/>
 
-              {<HoardingAttachment/>}
+              {}
 
             </CardContent>
             <CardActions>

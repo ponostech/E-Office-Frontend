@@ -1,5 +1,5 @@
-export class AmcRoutes {
-  static ROOT="/"
+export class OfficeRoutes {
+  static ROOT="/";
   static LOGIN = "/login";
   static HOME = "/home";
   static E_OFFICE = "/e-office";
@@ -36,4 +36,5 @@ export class AmcRoutes {
   static CLOSE_RECEIPT = "/e-office/receipts/close";
   static RECEIPT_DETAIL = "/e-office/receipts/:id";
 
+  static NEW_STAFF = "/staff/new";
 }

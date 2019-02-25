@@ -3,8 +3,8 @@ import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import { Button, Card, CardActions, CardContent, CardHeader, Divider } from "@material-ui/core";
 import TextField from "@material-ui/core/es/TextField/TextField";
-import { AmcRoutes } from "../../config/routes-constant/AmcRoutes";
 import { CARD_DATA } from "../model/HomeModel";
+import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
 
 class HomePage extends Component {
 
@@ -20,27 +20,27 @@ class HomePage extends Component {
     const { history } = this.props;
     switch (event.target.name) {
       case "shopping-license":
-        history.push(AmcRoutes.APPLY_SHOP_LICENSE);
+        history.push(OfficeRoutes.APPLY_SHOP_LICENSE);
         break;
 
       case "advertiser":
-        history.push(AmcRoutes.APPLY_ADVERTISER);
+        history.push(OfficeRoutes.APPLY_ADVERTISER);
         break;
       case "propose-hoarding":
-        history.push(AmcRoutes.PROPOSED_HOARDING);
+        history.push(OfficeRoutes.PROPOSED_HOARDING);
         break;
       case "new-hoarding":
-        history.push(AmcRoutes.APPLY_HOARDING);
+        history.push(OfficeRoutes.APPLY_HOARDING);
         break;
       case "new-kiosk":
-        history.push(AmcRoutes.NEW_KIOSK);
+        history.push(OfficeRoutes.NEW_KIOSK);
         break;
       case "propose-kiosk":
-        history.push(AmcRoutes.PROPOSED_KIOSK);
+        history.push(OfficeRoutes.PROPOSED_KIOSK);
         break;
 
       case "new-banner":
-        history.push(AmcRoutes.APPLY_BANNER);
+        history.push(OfficeRoutes.APPLY_BANNER);
         break;
 
       case "check-shopping":
@@ -48,7 +48,7 @@ class HomePage extends Component {
       case "check-advertiser":
         break;
       default:
-        history.push(AmcRoutes.HOME);
+        history.push(OfficeRoutes.HOME);
         break;
     }
   };
