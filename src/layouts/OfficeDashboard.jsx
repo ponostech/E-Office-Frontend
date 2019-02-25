@@ -20,11 +20,10 @@ class OfficeDashboard extends Component {
           <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={10}>
 
             <GridContainer justify={"center"}>
-              <Route path={AmcRoutes.DESK} component={DeskView}/>
-              <Route path={AmcRoutes.NEW_FILE} component={NewFile}/>
-              <Route path={AmcRoutes.CREATED_FILES} component={CreatedFiles}/>
-              <Route path={AmcRoutes.SENT_FILE} component={SentFiles}/>
-
+              <Route path={AmcRoutes.DESK} component={DeskView} />
+              <Route path={AmcRoutes.NEW_FILE} component={NewFile} />
+              <Route path={AmcRoutes.CREATED_FILES} component={CreatedFiles} />
+              <Route path={AmcRoutes.SENT_FILE} component={SentFiles} />
             </GridContainer>
 
           </GridItem>
