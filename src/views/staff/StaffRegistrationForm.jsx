@@ -4,6 +4,7 @@ import Select from "react-select";
 import { StaffViewModel } from "../model/StaffViewModel";
 import GridItem from "../../components/Grid/GridItem";
 import moment from "moment";
+import ImageUpload from "../../components/CustomUpload/ImageUpload";
 
 class StaffRegistrationForm extends Component {
   constructor(props) {
@@ -150,6 +151,7 @@ class StaffRegistrationForm extends Component {
                        fullWidth={true}
                        onChange={this.handleChange.bind(this)}
                        label={StaffViewModel.BLOOD}/>
+
           </CardContent>
           <CardActions>
             <Button name={"primary"} disabled={this.state.submit} color={"primary"} variant={"outlined"}
