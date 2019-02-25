@@ -2,14 +2,11 @@ import React, { Component } from "react";
 import { AppBar, Button, Toolbar, Typography } from "@material-ui/core";
 import { Redirect, Route } from "react-router-dom";
 import HomePage from "../views/landing-pages/HomePage";
-import ShoppingLicenseForm from "../views/landing-pages/ShoppingLicenseForm";
+import ShoppingLicenseForm from "../views/shop/ShopLicenseForm";
 import GridItem from "../components/Grid/GridItem";
 import GridContainer from "../components/Grid/GridContainer";
 import { AmcRoutes } from "../config/routes-constant/AmcRoutes";
 import HoardingApplicationForm from "../views/hoarding/HoardingApplicationForm";
-import AdvertiserForm from "../views/advertiser/AdvertiserForm";
-
-import Form from "../views/advertiser/Form";
 
 class LandingPage extends Component {
 
@@ -32,31 +29,29 @@ class LandingPage extends Component {
             </Toolbar>
           </AppBar>
         </GridItem>
-        <GridItem style={{ marginTop: 90 }} xs={14} sm={14} md={10}>
+        <GridItem style={{ marginTop: 90 }} xs={12} sm={12} md={10}>
 
           <GridContainer justify={"center"}>
 
-            <Route exact={true} path={AmcRoutes.HOME} component={HomePage} />
+            <Route exact={true} path={AmcRoutes.HOME} component={HomePage}/>
+            <Route exact={true} path={AmcRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
+            <Route exact={true} path={AmcRoutes.SHOP_LICENSE_DETAIL} component={ShopLicenseForm}/>
+            <Route exact={true} path={AmcRoutes.RENEW_SHOP_LICENSE} component={ShopLicenseForm}/>
 
-            <Route exact={true} path={AmcRoutes.APPLY_SHOP_LICENSE} component={Form} />
+            <Route exact={true} path={AmcRoutes.PROPOSED_HOARDING} component={HoardingApplicationForm}/>
+            <Route exact={true} path={AmcRoutes.RENEW_HOARDING} component={ShopLicenseForm}/>
+            <Route exact={true} path={AmcRoutes.APPLY_HOARDING} component={ShopLicenseForm}/>
 
-            <Route exact={true} path={AmcRoutes.SHOP_LICENSE_DETAIL} component={ShoppingLicenseForm} />
-            <Route exact={true} path={AmcRoutes.RENEW_SHOP_LICENSE} component={ShoppingLicenseForm} />
+            <Route exact={true} path={AmcRoutes.PROPOSED_KIOSK} component={ShopLicenseForm}/>
+            <Route exact={true} path={AmcRoutes.NEW_KIOSK} component={ShopLicenseForm}/>
+            <Route exact={true} path={AmcRoutes.KIOSK_DETAIL} component={ShopLicenseForm}/>
+            <Route exact={true} path={AmcRoutes.RENEW_KIOSK} component={ShopLicenseForm}/>
 
-            <Route exact={true} path={AmcRoutes.PROPOSED_HOARDING} component={HoardingApplicationForm} />
-            <Route exact={true} path={AmcRoutes.RENEW_HOARDING} component={ShoppingLicenseForm} />
-            <Route exact={true} path={AmcRoutes.APPLY_HOARDING} component={ShoppingLicenseForm} />
+            <Route exact={true} path={AmcRoutes.APPLY_ADVERTISER} component={ShopLicenseForm}/>
+            <Route exact={true} path={AmcRoutes.ADVERTISER_DETAIL} component={ShopLicenseForm}/>
+            <Route exact={true} path={AmcRoutes.RENEW_ADVERTISER} component={ShopLicenseForm}/>
 
-            <Route exact={true} path={AmcRoutes.PROPOSED_KIOSK} component={ShoppingLicenseForm} />
-            <Route exact={true} path={AmcRoutes.NEW_KIOSK} component={ShoppingLicenseForm} />
-            <Route exact={true} path={AmcRoutes.KIOSK_DETAIL} component={ShoppingLicenseForm} />
-            <Route exact={true} path={AmcRoutes.RENEW_KIOSK} component={ShoppingLicenseForm} />
-
-            <Route exact={true} path={AmcRoutes.ADVERTISER_DETAIL} component={ShoppingLicenseForm} />
-            <Route exact={true} path={AmcRoutes.APPLY_ADVERTISER} component={AdvertiserForm} />
-            <Route exact={true} path={AmcRoutes.RENEW_ADVERTISER} component={ShoppingLicenseForm} />
-
-
+            <Redirect from={AmcRoutes.ROOT} to={AmcRoutes.HOME}/>
           </GridContainer>
         </GridItem>
       </GridContainer>
