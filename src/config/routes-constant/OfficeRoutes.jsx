@@ -1,5 +1,5 @@
 export class OfficeRoutes {
-  static ROOT="/";
+  static ROOT = "/";
   static LOGIN = "/login";
   static HOME = "/home";
   static FORM = "/form";
@@ -22,7 +22,7 @@ export class OfficeRoutes {
   static RENEW_KIOSK = "/kiosk/:id/renew";
   static KIOSK_DETAIL = "/kiosk/:id/details";
 
-  static APPLY_BANNER="/banner/new";
+  static APPLY_BANNER = "/banner/new";
 
   static DESK = "/e-office/desk";
   static NEW_FILE = "/e-office/file/new";
@@ -37,5 +37,7 @@ export class OfficeRoutes {
   static CLOSE_RECEIPT = "/e-office/receipts/close";
   static RECEIPT_DETAIL = "/e-office/receipts/:id/details";
 
+  static LOGIN = "/login";
+  static RESET_PASSWORD = "/reset-password";
   static NEW_STAFF = "/staff/new";
 }
