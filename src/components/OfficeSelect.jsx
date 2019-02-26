@@ -188,7 +188,7 @@ class OfficeSelect extends React.Component {
   };
 
   render() {
-    const { classes, theme, onChange,options,value,isClearable,label,placeholder} = this.props;
+    const { classes, theme, onChange,options,value,isClearable,label,placeholder,} = this.props;
 
     const selectStyles = {
       input: base => ({

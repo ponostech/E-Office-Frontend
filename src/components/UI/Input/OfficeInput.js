@@ -5,7 +5,6 @@ import {Select, TextField, MenuItem, CardActions} from "@material-ui/core";
 class OfficeInput extends Component {
 
   render() {
-    let inputElement = null;
 
     switch (this.props.elementType) {
       case "input":
