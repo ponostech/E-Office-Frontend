@@ -7,12 +7,12 @@ export const CARD_DATA = [
   },{
     id: "propose-hoarding",
     title: "New Hoarding Proposal",
-    subTitle: "Apply",
+    subTitle: "Apply Here For New Hoarding Proposal",
     content: "NA"
   }, {
     id: "new-hoarding",
     title: "Hoarding Advertisement",
-    subTitle: "Apply",
+    subTitle: "Application For Your New Hoarding Advertisement is one click away..click apply",
     content: "NA"
   }, {
     id: "propose-kiosk",
@@ -27,12 +27,12 @@ export const CARD_DATA = [
   },  {
     id: "shopping-license",
     title: "Shopping License",
-    subTitle: "License for yours shop",
+    subTitle: "Apply Here To Acquire License For Your Shop",
     content: "NA"
   }, {
     id: "new-banner",
     title: "Banner Advertisement",
-    subTitle: "Apply",
+    subTitle: "Your Banner Advertisement License Is Done Here",
     content: "NA"
   }
 ];
