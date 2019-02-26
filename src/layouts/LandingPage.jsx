@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { AppBar, Button, Toolbar, Typography } from "@material-ui/core";
-import { Redirect, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import HomePage from "../views/landing-pages/HomePage";
 import GridItem from "../components/Grid/GridItem";
 import GridContainer from "../components/Grid/GridContainer";
@@ -59,7 +59,9 @@ class LandingPage extends Component {
             {/*Staff routes*/}
             <Route exact={true} path={OfficeRoutes.NEW_STAFF} component={StaffRegistrationForm}/>
 
-            <Route exact={true} path={OfficeRoutes.FORM} component={Form} />
+            {/*receipt routes*/}
+
+            <Route exact={true} path={OfficeRoutes.FORM} component={Form}/>
 
           </GridContainer>
         </GridItem>

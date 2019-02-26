@@ -35,7 +35,7 @@ export class OfficeRoutes {
   static CREATED_RECEIPT = "/e-office/receipts/created";
   static SENT_RECEIPT = "/e-office/receipts/sent";
   static CLOSE_RECEIPT = "/e-office/receipts/close";
-  static RECEIPT_DETAIL = "/e-office/receipts/:id";
+  static RECEIPT_DETAIL = "/e-office/receipts/:id/details";
 
   static NEW_STAFF = "/staff/new";
 }
