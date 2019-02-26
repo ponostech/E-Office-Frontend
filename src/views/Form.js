@@ -133,7 +133,7 @@ class Form extends Component {
     );
 
     return (
-      <GridItem>
+      <GridItem >
         <h3>Form</h3>
         <GridItem>
           <Card>{form}</Card>
