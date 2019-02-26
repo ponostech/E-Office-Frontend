@@ -23,6 +23,17 @@ import Dialog from "@material-ui/core/es/Dialog/Dialog";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CloseIcon from "@material-ui/icons/Close";
 import CheckIcon from "@material-ui/icons/Check";
+import Constraint from "../config/Constraint";
+
+// USAGE
+// <DocumentsDropzone documents={[
+//   {name:"Signature of the applicant",fileName:"signature"},
+//   {name:"NOC of landowner",fileName:"noc-landowner"},
+//   {name:"Tribal Certificate",fileName:"tribal-certificate"},
+// ]}
+//                    openDialog={this.state.openDialog}
+//                    onCloseHandler={this.handleDocumentClose.bind(this)}
+//                    acceptedFiles={[...Constraint.ACCEPTED_IMAGES, ...Constraint.ACCEPTED_DOCUMENTS]}/>
 
 class DocumentsDropzone extends Component {
   constructor(props) {
@@ -174,7 +185,7 @@ class DocumentsDropzone extends Component {
                 <Dropzone accept={acceptedFiles} onDrop={this.onDrop}>
                   {({ getRootProps, getInputProps, isDragActive }) => {
                     return (
-                      <div style={{padding:40,border:5,background:"red"}}
+                      <div style={{padding:40,border:5,background:"#f8f8f8"}}
                         {...getRootProps()}
                         className={classNames("dropzone", { "dropzone--isActive": isDragActive })}
                       >
