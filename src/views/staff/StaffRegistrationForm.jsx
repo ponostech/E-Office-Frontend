@@ -78,6 +78,7 @@ class StaffRegistrationForm extends Component {
     }
   };
   handleClick = (e) => {
+    this.setState({ open: true });
     const name = e.target.name;
     switch (name) {
       case "primary":
