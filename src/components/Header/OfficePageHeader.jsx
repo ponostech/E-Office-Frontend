@@ -25,6 +25,7 @@ import pagesHeaderStyle from "assets/jss/material-dashboard-pro-react/components
 import { IconButton, Typography } from "@material-ui/core";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
+import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
 
 class OfficePageHeader extends React.Component {
   constructor(props) {
@@ -118,13 +119,13 @@ class OfficePageHeader extends React.Component {
     const { history } = this.props;
     switch (e) {
       case "Create New":
-        history.push("/e-office/file/new");
+        history.push(OfficeRoutes.NEW_FILE);
         break;
       case "List Created":
-        history.push("/e-office/file/created");
+        history.push(OfficeRoutes.CREATED_FILES);
         break;
       case "List Sent":
-        history.push("/e-office/file/sent");
+        history.push(OfficeRoutes.SENT_FILE);
         break;
       default:
         break;
@@ -135,13 +136,13 @@ class OfficePageHeader extends React.Component {
     const { history } = this.props;
     switch (e) {
       case "Create New":
-        history.push("/e-office/receipt/new");
+        history.push(OfficeRoutes.NEW_RECEIPT);
         break;
       case "List Created":
-        history.push("/e-office/receipt/created");
+        history.push(OfficeRoutes.CREATED_RECEIPT);
         break;
       case "List Sent":
-        history.push("/e-office/receipt/sent");
+        history.push(OfficeRoutes.SENT_RECEIPT);
         break;
       default:
         break;
