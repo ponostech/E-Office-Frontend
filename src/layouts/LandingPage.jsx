@@ -11,6 +11,7 @@ import StaffRegistrationForm from "../views/staff/StaffRegistrationForm";
 import Form from "../views/Form";
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import AdvertiserForm from "../views/advertiser/AdvertiserForm";
+import LoginView from "../views/auth/LoginView";
 
 class LandingPage extends Component {
 
@@ -62,6 +63,7 @@ class LandingPage extends Component {
             {/*receipt routes*/}
 
             <Route exact={true} path={OfficeRoutes.FORM} component={Form}/>
+            <Route exact={true} path={OfficeRoutes.LOGIN} component={LoginView}/>
 
           </GridContainer>
         </GridItem>
