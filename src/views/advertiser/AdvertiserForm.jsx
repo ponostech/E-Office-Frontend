@@ -4,7 +4,7 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
+  CardHeader, Divider,
   FormControl,
   InputLabel,
   MenuItem,
@@ -186,8 +186,9 @@ class AdvertiserForm extends Component {
                 onChange={this.handleChange.bind(this)}
                 placeholder={" hno \n locality \n pincode"}
               />
+              <Divider style={{marginTop:10,marginBottom:10}}/>
               <Button
-                variant={"contained"}
+                variant={"outlined"}
                 onClick={this.openDialog.bind(this)}
                 color={"primary"}
               >
