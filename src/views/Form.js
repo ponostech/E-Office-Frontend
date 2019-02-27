@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import Input from "../../components/UI/Input/Input";
+import { Card, CardActions } from "@material-ui/core";
+import OfficeInput from "../components/UI/Input/OfficeInput";
+import GridItem from "../components/Grid/GridItem";
 
 class Form extends Component {
   state = {
@@ -10,6 +12,12 @@ class Form extends Component {
           type: "text",
           placeholder: "Your name"
         },
+        validation: {
+          required: true,
+          minLength: 6,
+          maxLength: 6
+        },
+        valid: false,
         value: ""
       },
       address: {
@@ -18,6 +26,10 @@ class Form extends Component {
           type: "text",
           placeholder: "Fill your address"
         },
+        validation: {
+          required: false
+        },
+        valid: true,
         value: ""
       },
       email: {
@@ -26,11 +38,16 @@ class Form extends Component {
           type: "email",
           placeholder: "Fill your email address"
         },
+        validation: {
+          required: false
+        },
+        valid: true,
         value: ""
       },
       select: {
         elementType: "select",
         elementConfig: {
+          placeholder: 'Select',
           options: [
             { value: "one", displayValue: "One" },
             { value: "two", displayValue: "Two" }
@@ -41,6 +58,24 @@ class Form extends Component {
     },
     loading: false
   };
+
+  static checkValidity(value, rules) {
+    let isValid = true;
+
+    if (rules.required) {
+      isValid = value.trim() !== "" && isValid;
+    }
+
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+
+    return isValid;
+  }
 
   submitHandler = event => {
     event.preventDefault();
@@ -63,6 +98,10 @@ class Form extends Component {
     };
 
     updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = Form.checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
     updatedAMCForm[inputIdentifier] = updatedFormElement;
     this.setState({ AMCForm: updatedAMCForm });
   };
@@ -79,7 +118,7 @@ class Form extends Component {
     let form = (
       <form onSubmit={this.submitHandler}>
         {formElementsArray.map(formElement => (
-          <Input
+          <OfficeInput
             key={formElement.id}
             elementType={formElement.config.elementType}
             elementConfig={formElement.config.elementConfig}
@@ -87,14 +126,19 @@ class Form extends Component {
             changed={event => this.inputChangedHandler(event, formElement.id)}
           />
         ))}
+        <CardActions>
+          <input type="submit"/>
+        </CardActions>
       </form>
     );
 
     return (
-      <div>
+      <GridItem >
         <h3>Form</h3>
-        {form}
-      </div>
+        <GridItem>
+          <Card>{form}</Card>
+        </GridItem>
+      </GridItem>
     );
   }
 }

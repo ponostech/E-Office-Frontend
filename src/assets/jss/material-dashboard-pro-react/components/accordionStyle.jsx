@@ -1,4 +1,7 @@
-import { primaryColor } from "assets/jss/material-dashboard-pro-react.jsx";
+import {
+  primaryColor,
+  grayColor
+} from "assets/jss/material-dashboard-pro-react.jsx";
 
 const accordionStyle = theme => ({
   root: {
@@ -17,17 +20,17 @@ const accordionStyle = theme => ({
   expansionPanelSummary: {
     minHeight: "auto !important",
     backgroundColor: "transparent",
-    borderBottom: "1px solid #ddd",
+    borderBottom: "1px solid " + grayColor[5],
     padding: "25px 10px 5px 0px",
     borderTopLeftRadius: "3px",
     borderTopRightRadius: "3px",
-    color: "#3C4858",
+    color: grayColor[2],
     "&:hover": {
-      color: primaryColor
+      color: primaryColor[0]
     }
   },
   expansionPanelSummaryExpaned: {
-    color: primaryColor,
+    color: primaryColor[0],
     "& $expansionPanelSummaryExpandIcon": {
       [theme.breakpoints.up("md")]: {
         top: "auto !important"

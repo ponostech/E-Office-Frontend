@@ -1,7 +1,3 @@
-// ##############################
-// // // App styles
-// #############################
-
 import {
   drawerWidth,
   drawerMiniWidth,
@@ -11,7 +7,6 @@ import {
 
 const appStyle = theme => ({
   wrapper: {
-    direction: "rtl",
     position: "relative",
     top: "0",
     height: "100vh",
@@ -19,6 +14,9 @@ const appStyle = theme => ({
       display: "table",
       clear: "both",
       content: '" "'
+    },
+    "& header,& header + div": {
+      direction: "rtl"
     }
   },
   mainPanel: {

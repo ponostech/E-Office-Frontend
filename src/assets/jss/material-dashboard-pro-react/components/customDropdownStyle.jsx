@@ -11,7 +11,11 @@ import {
   dangerColor,
   dangerBoxShadow,
   roseColor,
-  roseBoxShadow
+  roseBoxShadow,
+  whiteColor,
+  blackColor,
+  grayColor,
+  hexToRgb
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const customDropdownStyle = theme => ({
@@ -64,7 +68,7 @@ const customDropdownStyle = theme => ({
   dropdown: {
     borderRadius: "3px",
     border: "0",
-    boxShadow: "0 2px 5px 0 rgba(0, 0, 0, 0.26)",
+    boxShadow: "0 2px 5px 0 rgba(" + hexToRgb(blackColor) + ", 0.26)",
     top: "100%",
     zIndex: "1000",
     minWidth: "160px",
@@ -73,7 +77,7 @@ const customDropdownStyle = theme => ({
     fontSize: "14px",
     textAlign: "left",
     listStyle: "none",
-    backgroundColor: "#fff",
+    backgroundColor: whiteColor,
     backgroundClip: "padding-box"
   },
   menuList: {
@@ -105,56 +109,60 @@ const customDropdownStyle = theme => ({
     clear: "both",
     fontWeight: "400",
     height: "100%",
-    color: "#333",
+    color: grayColor[7],
     whiteSpace: "nowrap"
   },
   darkHover: {
     "&:hover": {
       boxShadow:
-        "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(33, 33, 33, 0.4)",
-      backgroundColor: "#212121",
-      color: "#fff"
+        "0 4px 20px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.14), 0 7px 10px -5px rgba(" +
+        hexToRgb(grayColor[16]) +
+        ", 0.4)",
+      backgroundColor: grayColor[16],
+      color: whiteColor
     }
   },
   primaryHover: {
     "&:hover": {
-      backgroundColor: primaryColor,
-      color: "#FFFFFF",
+      backgroundColor: primaryColor[0],
+      color: whiteColor,
       ...primaryBoxShadow
     }
   },
   infoHover: {
     "&:hover": {
-      backgroundColor: infoColor,
-      color: "#FFFFFF",
+      backgroundColor: infoColor[0],
+      color: whiteColor,
       ...infoBoxShadow
     }
   },
   successHover: {
     "&:hover": {
-      backgroundColor: successColor,
-      color: "#FFFFFF",
+      backgroundColor: successColor[0],
+      color: whiteColor,
       ...successBoxShadow
     }
   },
   warningHover: {
     "&:hover": {
-      backgroundColor: warningColor,
-      color: "#FFFFFF",
+      backgroundColor: warningColor[0],
+      color: whiteColor,
       ...warningBoxShadow
     }
   },
   dangerHover: {
     "&:hover": {
-      backgroundColor: dangerColor,
-      color: "#FFFFFF",
+      backgroundColor: dangerColor[0],
+      color: whiteColor,
       ...dangerBoxShadow
     }
   },
   roseHover: {
     "&:hover": {
-      backgroundColor: roseColor,
-      color: "#FFFFFF",
+      backgroundColor: roseColor[0],
+      color: whiteColor,
       ...roseBoxShadow
     }
   },
@@ -163,7 +171,7 @@ const customDropdownStyle = theme => ({
   },
   dropdownDividerItem: {
     margin: "5px 0",
-    backgroundColor: "rgba(0, 0, 0, 0.12)",
+    backgroundColor: "rgba(" + hexToRgb(blackColor) + ", 0.12)",
     height: "1px",
     overflow: "hidden"
   },
@@ -193,11 +201,13 @@ const customDropdownStyle = theme => ({
   },
   dropdownHeader: {
     display: "block",
+    padding: "0.1875rem 1.25rem",
     fontSize: "0.75rem",
     lineHeight: "1.428571",
-    color: "#777",
+    color: grayColor[1],
     whiteSpace: "nowrap",
     fontWeight: "inherit",
+    marginTop: "10px",
     "&:hover,&:focus": {
       backgroundColor: "transparent",
       cursor: "auto"

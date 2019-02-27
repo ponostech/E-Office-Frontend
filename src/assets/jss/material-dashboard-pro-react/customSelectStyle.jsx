@@ -1,6 +1,10 @@
 import {
   primaryColor,
-  primaryBoxShadow
+  primaryBoxShadow,
+  whiteColor,
+  blackColor,
+  grayColor,
+  hexToRgb
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const customSelectStyle = {
@@ -11,7 +15,7 @@ const customSelectStyle = {
     lineHeight: "1.42857",
     textDecoration: "none",
     textTransform: "uppercase",
-    color: "#3C4858",
+    color: grayColor[2],
     letterSpacing: "0",
     "&:focus": {
       backgroundColor: "transparent"
@@ -24,21 +28,21 @@ const customSelectStyle = {
     }
   },
   selectFormControl: {
-    margin: "10px 1px 10px 0px !important",
+    margin: "7px 0 17px 0 !important",
     "& > div": {
       "&:before": {
         borderBottomWidth: "1px !important",
-        borderBottomColor: "#D2D2D2 !important"
+        borderBottomColor: grayColor[4] + "!important"
       },
       "&:after": {
-        borderBottomColor: primaryColor + "!important"
+        borderBottomColor: primaryColor[0] + "!important"
       }
     }
   },
   selectLabel: {
     fontSize: "12px",
     textTransform: "uppercase",
-    color: "#3C4858 !important",
+    color: grayColor[2] + " !important",
     top: "8px"
   },
   selectMenu: {
@@ -54,7 +58,7 @@ const customSelectStyle = {
       fontSize: "14px",
       textAlign: "left",
       listStyle: "none",
-      backgroundColor: "#fff",
+      backgroundColor: whiteColor,
       backgroundClip: "padding-box"
     },
     "& $selectPaper $selectMenuItemSelectedMultiple": {
@@ -75,26 +79,26 @@ const customSelectStyle = {
     fontWeight: "400",
     lineHeight: "2",
     whiteSpace: "nowrap",
-    color: "#333",
+    color: grayColor[7],
     paddingRight: "30px",
     "&:hover": {
-      backgroundColor: primaryColor,
-      color: "#FFFFFF",
+      backgroundColor: primaryColor[0],
+      color: whiteColor,
       ...primaryBoxShadow
     }
   },
   selectMenuItemSelected: {
-    backgroundColor: primaryColor + "!important",
-    color: "#FFFFFF"
+    backgroundColor: primaryColor[0] + "!important",
+    color: whiteColor
   },
   selectMenuItemSelectedMultiple: {
     backgroundColor: "transparent !important",
     "&:hover": {
-      backgroundColor: primaryColor + "!important",
-      color: "#FFFFFF",
+      backgroundColor: primaryColor[0] + "!important",
+      color: whiteColor,
       ...primaryBoxShadow,
       "&:after": {
-        color: "#FFFFFF"
+        color: whiteColor
       }
     },
     "&:after": {
@@ -105,7 +109,7 @@ const customSelectStyle = {
       borderLeft: "2px solid currentColor",
       transform: "rotate(-45deg)",
       opacity: "1",
-      color: "#3c4858",
+      color: grayColor[2],
       position: "absolute",
       content: "''",
       borderBottom: "2px solid currentColor",
@@ -119,7 +123,7 @@ const customSelectStyle = {
     minWidth: "100%",
     display: "block",
     border: "0",
-    boxShadow: "0 2px 5px 0 rgba(0, 0, 0, 0.26)",
+    boxShadow: "0 2px 5px 0 rgba(" + hexToRgb(blackColor) + ", 0.26)",
     backgroundClip: "padding-box",
     margin: "2px 0 0",
     fontSize: "14px",

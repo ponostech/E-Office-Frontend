@@ -1,10 +1,8 @@
-// ##############################
-// // // GridSystem view styles
-// #############################
+import { grayColor } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const gridSystemStyle = {
   title: {
-    color: "#3C4858",
+    color: grayColor[2],
     textDecoration: "none"
   }
 };

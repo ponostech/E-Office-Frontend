@@ -1,7 +1,3 @@
-// ##############################
-// // // Icons styles
-// #############################
-
 import { boxShadow } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const iconsStyle = {
