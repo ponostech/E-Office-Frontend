@@ -1,3 +1,8 @@
+import {
+  whiteColor,
+  hexToRgb
+} from "assets/jss/material-dashboard-pro-react.jsx";
+
 const customTabsStyle = {
   cardTitle: {
     float: "left",
@@ -28,7 +33,7 @@ const customTabsStyle = {
     borderRadius: "3px",
     lineHeight: "24px",
     border: "0 !important",
-    color: "#fff !important",
+    color: whiteColor + " !important",
     marginLeft: "4px",
     "&:last-child": {
       marginLeft: "0px"
@@ -42,7 +47,7 @@ const customTabsStyle = {
     fontSize: "12px"
   },
   tabSelected: {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    backgroundColor: "rgba(" + hexToRgb(whiteColor) + ", 0.2)",
     transition: "0.2s background-color 0.1s"
   },
   tabWrapper: {

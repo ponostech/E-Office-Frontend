@@ -1,10 +1,9 @@
-// ##############################
-// // // LockScreenPage view styles
-// #############################
-
 import {
   cardTitle,
-  container
+  container,
+  whiteColor,
+  blackColor,
+  hexToRgb
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const lockScreenPageStyle = theme => ({
@@ -19,9 +18,9 @@ const lockScreenPageStyle = theme => ({
   customCardClass: {
     width: "240px",
     margin: "60px auto 0",
-    color: "#FFFFFF",
+    color: whiteColor,
     display: "block",
-    transform: "translate3d(0, 0, 0)",
+    transform: "translate3d(" + hexToRgb(blackColor) + ")",
     transition: "all 300ms linear"
   },
   cardHidden: {

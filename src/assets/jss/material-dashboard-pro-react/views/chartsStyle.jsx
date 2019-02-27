@@ -1,7 +1,3 @@
-// ##############################
-// // // IconCard styles
-// #############################
-
 import {
   primaryColor,
   warningColor,
@@ -17,7 +13,7 @@ const chartsStyle = {
   cardTitle,
   cardCategory: {
     margin: "0",
-    color: "#999999"
+    color: grayColor[0]
   },
   cardIconTitle: {
     ...cardTitle,
@@ -25,30 +21,30 @@ const chartsStyle = {
     marginBottom: "0px"
   },
   legendTitle: {
-    color: grayColor,
+    color: grayColor[0],
     margin: "10px 0 !important",
     display: "flex"
   },
   primary: {
-    color: primaryColor
+    color: primaryColor[0]
   },
   warning: {
-    color: warningColor
+    color: warningColor[0]
   },
   danger: {
-    color: dangerColor
+    color: dangerColor[0]
   },
   success: {
-    color: successColor
+    color: successColor[0]
   },
   info: {
-    color: infoColor
+    color: infoColor[0]
   },
   rose: {
-    color: roseColor
+    color: roseColor[0]
   },
   gray: {
-    color: grayColor
+    color: grayColor[0]
   },
   cardFooter: {
     display: "block"

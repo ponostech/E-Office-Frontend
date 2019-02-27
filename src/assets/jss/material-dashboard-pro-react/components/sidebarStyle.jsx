@@ -1,7 +1,3 @@
-// ##############################
-// // // Sidebar styles
-// #############################
-
 import {
   drawerWidth,
   drawerMiniWidth,
@@ -14,7 +10,11 @@ import {
   successColor,
   warningColor,
   dangerColor,
-  roseColor
+  roseColor,
+  whiteColor,
+  blackColor,
+  grayColor,
+  hexToRgb
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const sidebarStyle = theme => ({
@@ -76,23 +76,23 @@ const sidebarStyle = theme => ({
     }
   },
   blackBackground: {
-    color: "#FFFFFF",
+    color: whiteColor,
     "&:after": {
-      background: "#000",
+      background: blackColor,
       opacity: ".8"
     }
   },
   blueBackground: {
-    color: "#FFFFFF",
+    color: whiteColor,
     "&:after": {
-      background: "#00acc1",
+      background: infoColor[0],
       opacity: ".93"
     }
   },
   whiteBackground: {
-    color: "#3C4858",
+    color: grayColor[2],
     "&:after": {
-      background: "#FFFFFF",
+      background: whiteColor,
       opacity: ".93"
     }
   },
@@ -225,7 +225,7 @@ const sidebarStyle = theme => ({
     width: "auto",
     "&:hover": {
       outline: "none",
-      backgroundColor: "rgba(200, 200, 200, 0.2)",
+      backgroundColor: "rgba(" + hexToRgb(grayColor[17]) + ", 0.2)",
       boxShadow: "none"
     },
     "&,&:hover,&:focus": {
@@ -289,7 +289,7 @@ const sidebarStyle = theme => ({
   },
   collapseActive: {
     outline: "none",
-    backgroundColor: "rgba(200, 200, 200, 0.2)",
+    backgroundColor: "rgba(" + hexToRgb(grayColor[17]) + ", 0.2)",
     boxShadow: "none"
   },
   collapseItemLink: {
@@ -304,7 +304,7 @@ const sidebarStyle = theme => ({
     width: "auto",
     "&:hover": {
       outline: "none",
-      backgroundColor: "rgba(200, 200, 200, 0.2)",
+      backgroundColor: "rgba(" + hexToRgb(grayColor[17]) + ", 0.2)",
       boxShadow: "none"
     },
     "&,&:hover,&:focus": {
@@ -378,57 +378,89 @@ const sidebarStyle = theme => ({
   },
   purple: {
     "&,&:hover,&:focus": {
-      color: "#FFFFFF",
-      backgroundColor: primaryColor,
+      color: whiteColor,
+      backgroundColor: primaryColor[0],
       ...primaryBoxShadow
     }
   },
   blue: {
     "&,&:hover,&:focus": {
-      color: "#FFFFFF",
-      backgroundColor: infoColor,
+      color: whiteColor,
+      backgroundColor: infoColor[0],
       boxShadow:
-        "0 12px 20px -10px rgba(0,188,212,.28), 0 4px 20px 0 rgba(0,0,0,.12), 0 7px 8px -5px rgba(0,188,212,.2)"
+        "0 12px 20px -10px rgba(" +
+        hexToRgb(infoColor[0]) +
+        ",.28), 0 4px 20px 0 rgba(" +
+        hexToRgb(blackColor) +
+        ",.12), 0 7px 8px -5px rgba(" +
+        hexToRgb(infoColor[0]) +
+        ",.2)"
     }
   },
   green: {
     "&,&:hover,&:focus": {
-      color: "#FFFFFF",
-      backgroundColor: successColor,
+      color: whiteColor,
+      backgroundColor: successColor[0],
       boxShadow:
-        "0 12px 20px -10px rgba(76,175,80,.28), 0 4px 20px 0 rgba(0,0,0,.12), 0 7px 8px -5px rgba(76,175,80,.2)"
+        "0 12px 20px -10px rgba(" +
+        hexToRgb(successColor[0]) +
+        ",.28), 0 4px 20px 0 rgba(" +
+        hexToRgb(blackColor) +
+        ",.12), 0 7px 8px -5px rgba(" +
+        hexToRgb(successColor[0]) +
+        ",.2)"
     }
   },
   orange: {
     "&,&:hover,&:focus": {
-      color: "#FFFFFF",
-      backgroundColor: warningColor,
+      color: whiteColor,
+      backgroundColor: warningColor[0],
       boxShadow:
-        "0 12px 20px -10px rgba(255,152,0,.28), 0 4px 20px 0 rgba(0,0,0,.12), 0 7px 8px -5px rgba(255,152,0,.2)"
+        "0 12px 20px -10px rgba(" +
+        hexToRgb(warningColor[0]) +
+        ",.28), 0 4px 20px 0 rgba(" +
+        hexToRgb(blackColor) +
+        ",.12), 0 7px 8px -5px rgba(" +
+        hexToRgb(warningColor[0]) +
+        ",.2)"
     }
   },
   red: {
     "&,&:hover,&:focus": {
-      color: "#FFFFFF",
-      backgroundColor: dangerColor,
+      color: whiteColor,
+      backgroundColor: dangerColor[0],
       boxShadow:
-        "0 12px 20px -10px rgba(244,67,54,.28), 0 4px 20px 0 rgba(0,0,0,.12), 0 7px 8px -5px rgba(244,67,54,.2)"
+        "0 12px 20px -10px rgba(" +
+        hexToRgb(dangerColor[0]) +
+        ",.28), 0 4px 20px 0 rgba(" +
+        hexToRgb(blackColor) +
+        ",.12), 0 7px 8px -5px rgba(" +
+        hexToRgb(dangerColor[0]) +
+        ",.2)"
     }
   },
   white: {
     "&,&:hover,&:focus": {
-      color: "#3C4858",
-      backgroundColor: "#FFFFFF",
+      color: grayColor[2],
+      backgroundColor: whiteColor,
       boxShadow:
-        "0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(60,72,88,.4)"
+        "0 4px 20px 0 rgba(" +
+        hexToRgb(blackColor) +
+        ",.14), 0 7px 10px -5px rgba(" +
+        hexToRgb(grayColor[2]) +
+        ",.4)"
     }
   },
   rose: {
     "&,&:hover,&:focus": {
-      color: "#FFFFFF",
-      backgroundColor: roseColor,
+      color: whiteColor,
+      backgroundColor: roseColor[0],
       boxShadow:
-        "0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(233,30,99,.4)"
+        "0 4px 20px 0 rgba(" +
+        hexToRgb(blackColor) +
+        ",.14), 0 7px 10px -5px rgba(" +
+        hexToRgb(roseColor[0]) +
+        ",.4)"
     }
   },
   sidebarWrapper: {
@@ -493,7 +525,7 @@ const sidebarStyle = theme => ({
   userCollapseLinks: {
     marginTop: "-4px",
     "&:hover,&:focus": {
-      color: "#FFFFFF"
+      color: whiteColor
     }
   }
 });

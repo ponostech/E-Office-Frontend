@@ -1,14 +1,14 @@
-// ##############################
-// // // Wizard component styles
-// #############################
-
 import {
   primaryColor,
   dangerColor,
   successColor,
   roseColor,
   infoColor,
-  warningColor
+  warningColor,
+  whiteColor,
+  blackColor,
+  grayColor,
+  hexToRgb
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const wizardStyle = {
@@ -18,10 +18,10 @@ const wizardStyle = {
     position: "relative",
     width: "100%",
     margin: "25px 0",
-    boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
+    boxShadow: "0 1px 4px 0 rgba(" + hexToRgb(blackColor) + ", 0.14)",
     borderRadius: "6px",
-    color: "rgba(0, 0, 0, 0.87)",
-    background: "#fff",
+    color: "rgba(" + hexToRgb(blackColor) + ", 0.87)",
+    background: whiteColor,
     transition: "all 300ms linear",
     minHeight: "410px"
   },
@@ -43,7 +43,7 @@ const wizardStyle = {
     paddingLeft: "0",
     marginBottom: "0",
     listStyle: "none",
-    backgroundColor: "rgba(200, 200, 200, 0.2)",
+    backgroundColor: "rgba(" + hexToRgb(grayColor[17]) + ", 0.2)",
     "&:after,&:before": {
       display: "table",
       content: '" "'
@@ -75,7 +75,7 @@ const wizardStyle = {
     fontWeight: "500",
     minWidth: "100px",
     textAlign: "center",
-    color: "#555555 !important"
+    color: grayColor[6] + " !important"
   },
   content: {
     marginTop: "20px",
@@ -98,39 +98,63 @@ const wizardStyle = {
     top: "-4px",
     left: "0px",
     borderRadius: "4px",
-    color: "#FFFFFF",
+    color: whiteColor,
     cursor: "pointer",
     fontWeight: "500"
   },
   primary: {
-    backgroundColor: primaryColor,
+    backgroundColor: primaryColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4)"
+      "0 4px 20px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.14), 0 7px 10px -5px rgba(" +
+      hexToRgb(primaryColor[0]) +
+      ", 0.4)"
   },
   warning: {
-    backgroundColor: warningColor,
+    backgroundColor: warningColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(255, 152, 0, 0.4)"
+      "0 4px 20px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.14), 0 7px 10px -5px rgba(" +
+      hexToRgb(warningColor[0]) +
+      ", 0.4)"
   },
   danger: {
-    backgroundColor: dangerColor,
+    backgroundColor: dangerColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(244, 67, 54, 0.4)"
+      "0 4px 20px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.14), 0 7px 10px -5px rgba(" +
+      hexToRgb(dangerColor[0]) +
+      ", 0.4)"
   },
   success: {
-    backgroundColor: successColor,
+    backgroundColor: successColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4)"
+      "0 4px 20px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.14), 0 7px 10px -5px rgba(" +
+      hexToRgb(successColor[0]) +
+      ", 0.4)"
   },
   info: {
-    backgroundColor: infoColor,
+    backgroundColor: infoColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 188, 212, 0.4)"
+      "0 4px 20px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.14), 0 7px 10px -5px rgba(" +
+      hexToRgb(infoColor[0]) +
+      ", 0.4)"
   },
   rose: {
-    backgroundColor: roseColor,
+    backgroundColor: roseColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(233, 30, 99, 0.4)"
+      "0 4px 20px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.14), 0 7px 10px -5px rgba(" +
+      hexToRgb(roseColor[0]) +
+      ", 0.4)"
   },
   footer: {
     padding: "0 15px"

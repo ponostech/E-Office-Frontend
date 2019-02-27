@@ -1,6 +1,15 @@
-// import {
-//
-// } from "assets/jss/material-dashboard-pro-react.jsx";
+import {
+  primaryColor,
+  infoColor,
+  successColor,
+  dangerColor,
+  warningColor,
+  roseColor,
+  whiteColor,
+  blackColor,
+  grayColor,
+  hexToRgb
+} from "assets/jss/material-dashboard-pro-react.jsx";
 
 const cardStyle = {
   card: {
@@ -8,10 +17,10 @@ const cardStyle = {
     marginBottom: "30px",
     marginTop: "30px",
     borderRadius: "6px",
-    color: "rgba(0, 0, 0, 0.87)",
-    background: "#fff",
+    color: "rgba(" + hexToRgb(blackColor) + ", 0.87)",
+    background: whiteColor,
     width: "100%",
-    boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
+    boxShadow: "0 1px 4px 0 rgba(" + hexToRgb(blackColor) + ", 0.14)",
     position: "relative",
     display: "flex",
     flexDirection: "column",
@@ -32,7 +41,13 @@ const cardStyle = {
   },
   cardRaised: {
     boxShadow:
-      "0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"
+      "0 16px 38px -12px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.56), 0 4px 25px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.12), 0 8px 10px -5px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.2)"
   },
   cardBackground: {
     backgroundPosition: "center center",
@@ -47,17 +62,17 @@ const cardStyle = {
       left: "0",
       top: "0",
       content: '""',
-      backgroundColor: "rgba(0, 0, 0, 0.56)",
+      backgroundColor: "rgba(" + hexToRgb(blackColor) + ", 0.56)",
       borderRadius: "6px"
     },
     "& small": {
-      color: "rgba(255, 255, 255, 0.7) !important"
+      color: "rgba(" + hexToRgb(whiteColor) + ", 0.7) !important"
     }
   },
   cardPricing: {
     textAlign: "center",
     "&:after": {
-      backgroundColor: "rgba(0, 0, 0, 0.7) !important"
+      backgroundColor: "rgba(" + hexToRgb(blackColor) + ", 0.7) !important"
     },
     "& ul": {
       listStyle: "none",
@@ -66,16 +81,16 @@ const cardStyle = {
       margin: "10px auto"
     },
     "& ul li": {
-      color: "#999999",
+      color: grayColor[0],
       textAlign: "center",
       padding: "12px 0px",
-      borderBottom: "1px solid rgba(153,153,153,0.3)"
+      borderBottom: "1px solid rgba(" + hexToRgb(grayColor[0]) + ",0.3)"
     },
     "& ul li:last-child": {
       border: 0
     },
     "& ul li b": {
-      color: "#3c4858"
+      color: grayColor[2]
     },
     "& h1": {
       marginTop: "30px"
@@ -97,10 +112,10 @@ const cardStyle = {
   },
   cardPricingColor: {
     "& ul li": {
-      color: "#fff",
-      borderColor: "rgba(255,255,255,0.3)",
+      color: whiteColor,
+      borderColor: "rgba(" + hexToRgb(whiteColor) + ",0.3)",
       "& b, & svg,& .fab,& .fas,& .far,& .fal,& .material-icons": {
-        color: "#fff",
+        color: whiteColor,
         fontWeight: "700"
       }
     }
@@ -109,46 +124,52 @@ const cardStyle = {
     marginTop: "30px"
   },
   primary: {
-    background: "linear-gradient(60deg,#ab47bc,#7b1fa2)",
+    background:
+      "linear-gradient(60deg," + primaryColor[1] + "," + primaryColor[4] + ")",
     "& h1 small": {
-      color: "rgba(255, 255, 255, 0.8)"
+      color: "rgba(" + hexToRgb(whiteColor) + ", 0.8)"
     },
-    color: "#FFFFFF"
+    color: whiteColor
   },
   info: {
-    background: "linear-gradient(60deg,#26c6da,#0097a7)",
+    background:
+      "linear-gradient(60deg," + infoColor[1] + "," + infoColor[4] + ")",
     "& h1 small": {
-      color: "rgba(255, 255, 255, 0.8)"
+      color: "rgba(" + hexToRgb(whiteColor) + ", 0.8)"
     },
-    color: "#FFFFFF"
+    color: whiteColor
   },
   success: {
-    background: "linear-gradient(60deg,#66bb6a,#388e3c)",
+    background:
+      "linear-gradient(60deg," + successColor[1] + "," + successColor[4] + ")",
     "& h1 small": {
-      color: "rgba(255, 255, 255, 0.8)"
+      color: "rgba(" + hexToRgb(whiteColor) + ", 0.8)"
     },
-    color: "#FFFFFF"
+    color: whiteColor
   },
   warning: {
-    background: "linear-gradient(60deg,#ffa726,#f57c00)",
+    background:
+      "linear-gradient(60deg," + warningColor[1] + "," + warningColor[4] + ")",
     "& h1 small": {
-      color: "rgba(255, 255, 255, 0.8)"
+      color: "rgba(" + hexToRgb(whiteColor) + ", 0.8)"
     },
-    color: "#FFFFFF"
+    color: whiteColor
   },
   danger: {
-    background: "linear-gradient(60deg,#ef5350,#d32f2f)",
+    background:
+      "linear-gradient(60deg," + dangerColor[1] + "," + dangerColor[4] + ")",
     "& h1 small": {
-      color: "rgba(255, 255, 255, 0.8)"
+      color: "rgba(" + hexToRgb(whiteColor) + ", 0.8)"
     },
-    color: "#FFFFFF"
+    color: whiteColor
   },
   rose: {
-    background: "linear-gradient(60deg,#ec407a,#c2185b)",
+    background:
+      "linear-gradient(60deg," + roseColor[1] + "," + roseColor[4] + ")",
     "& h1 small": {
-      color: "rgba(255, 255, 255, 0.8)"
+      color: "rgba(" + hexToRgb(whiteColor) + ", 0.8)"
     },
-    color: "#FFFFFF"
+    color: whiteColor
   },
   cardChart: {
     "& p": {
@@ -157,7 +178,7 @@ const cardStyle = {
     }
   },
   cardLogin: {
-    transform: "translate3d(0, 0, 0)",
+    transform: "translate3d(" + hexToRgb(blackColor) + ")",
     transition: "all 300ms linear"
   }
 };
