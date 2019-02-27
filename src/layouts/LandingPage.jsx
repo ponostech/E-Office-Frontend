@@ -6,7 +6,7 @@ import GridItem from "../components/Grid/GridItem";
 import GridContainer from "../components/Grid/GridContainer";
 
 import HoardingApplicationForm from "../views/hoarding/HoardingApplicationForm";
-import ShopLicenseForm from "../views/shop/ShopLicenseForm";
+import ShopLicenseForm from "../views/shop/ShopLicenseApplicationForm";
 import StaffRegistrationForm from "../views/staff/StaffRegistrationForm";
 import StaffList from "../views/staff/StaffList";
 import Form from "../views/Form";
