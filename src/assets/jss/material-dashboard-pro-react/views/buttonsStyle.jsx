@@ -1,6 +1,4 @@
-// ##############################
-// // // Buttons view styles
-// #############################
+import { grayColor } from "assets/jss/material-dashboard-pro-react.jsx";
 
 import buttonGroupStyle from "assets/jss/material-dashboard-pro-react/buttonGroupStyle.jsx";
 
@@ -8,7 +6,7 @@ const buttonsStyle = {
   cardTitle: {
     marginTop: "0",
     marginBottom: "3px",
-    color: "#3C4858",
+    color: grayColor[2],
     fontSize: "18px"
   },
   cardHeader: {

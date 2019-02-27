@@ -1,7 +1,3 @@
-// ##############################
-// // // Table styles
-// #############################
-
 import {
   warningColor,
   primaryColor,
@@ -10,30 +6,32 @@ import {
   infoColor,
   roseColor,
   grayColor,
-  defaultFont
+  blackColor,
+  defaultFont,
+  hexToRgb
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const tableStyle = theme => ({
   warning: {
-    color: warningColor
+    color: warningColor[0]
   },
   primary: {
-    color: primaryColor
+    color: primaryColor[0]
   },
   danger: {
-    color: dangerColor
+    color: dangerColor[0]
   },
   success: {
-    color: successColor
+    color: successColor[0]
   },
   info: {
-    color: infoColor
+    color: infoColor[0]
   },
   rose: {
-    color: roseColor
+    color: roseColor[0]
   },
   gray: {
-    color: grayColor
+    color: grayColor[0]
   },
   right: {
     textAlign: "right"
@@ -55,7 +53,7 @@ const tableStyle = theme => ({
     fontSize: "1.25em !important"
   },
   tableHeadCell: {
-    color: "rgba(0, 0, 0, 0.87)",
+    color: "rgba(" + hexToRgb(blackColor) + ", 0.87)",
     border: "none !important"
   },
   tableCell: {
@@ -65,7 +63,7 @@ const tableStyle = theme => ({
     verticalAlign: "middle",
     fontSize: "1em",
     borderBottom: "none",
-    borderTop: "1px solid #ddd",
+    borderTop: "1px solid " + grayColor[5],
     position: "relative",
     [theme.breakpoints.down("sm")]: {
       minHeight: "24px",
@@ -90,35 +88,35 @@ const tableStyle = theme => ({
     overflowX: "auto"
   },
   tableStripedRow: {
-    backgroundColor: "#f9f9f9"
+    backgroundColor: grayColor[12]
   },
   tableRowHover: {
     "&:hover": {
-      backgroundColor: "#f5f5f5"
+      backgroundColor: grayColor[13]
     }
   },
   warningRow: {
-    backgroundColor: "#fcf8e3",
+    backgroundColor: warningColor[6],
     "&:hover": {
-      backgroundColor: "#faf2cc"
+      backgroundColor: warningColor[5]
     }
   },
   dangerRow: {
-    backgroundColor: "#f2dede",
+    backgroundColor: dangerColor[6],
     "&:hover": {
-      backgroundColor: "#ebcccc"
+      backgroundColor: dangerColor[5]
     }
   },
   successRow: {
-    backgroundColor: "#dff0d8",
+    backgroundColor: successColor[6],
     "&:hover": {
-      backgroundColor: "#d0e9c6"
+      backgroundColor: successColor[5]
     }
   },
   infoRow: {
-    backgroundColor: "#d9edf7",
+    backgroundColor: infoColor[6],
     "&:hover": {
-      backgroundColor: "#c4e3f3"
+      backgroundColor: infoColor[5]
     }
   }
 });

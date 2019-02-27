@@ -7,6 +7,10 @@ import OfficeSelect from "../../components/OfficeSelect";
 import axios from "axios";
 
 class StaffRegistrationForm extends Component {
+    componentDidMount(){
+        document.title = "e-AMC - Staff Registration Form";
+    }
+
     state = {
         name: "",
         designation: "",
