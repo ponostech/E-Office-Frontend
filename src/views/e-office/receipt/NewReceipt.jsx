@@ -34,7 +34,7 @@ class NewReceipt extends Component {
   };
 
   getView = () => {
-    if (this.state.file) {
+    if (!this.state.file) {
       return (
         <Dropzone
           multiple={false}

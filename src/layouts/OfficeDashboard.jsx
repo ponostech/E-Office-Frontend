@@ -6,6 +6,7 @@ import { Route } from "react-router-dom";
 import DeskView from "../views/e-office/DeskView";
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import NewReceipt from "../views/e-office/receipt/NewReceipt";
+import NewFile from "../views/e-office/files/NewFile";
 
 class OfficeDashboard extends Component {
   render() {
@@ -20,6 +21,7 @@ class OfficeDashboard extends Component {
             <GridContainer justify={"center"}>
               <Route path={OfficeRoutes.DESK} component={DeskView}/>
               <Route path={OfficeRoutes.NEW_RECEIPT} component={NewReceipt}/>
+              <Route path={OfficeRoutes.NEW_FILE} component={NewFile}/>
 
 
             </GridContainer>
