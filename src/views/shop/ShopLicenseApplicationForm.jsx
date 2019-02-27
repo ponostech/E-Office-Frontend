@@ -30,50 +30,49 @@ import moment from "../staff/StaffRegistrationForm";
 
 class ShopLicenseApplicationForm extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "",
-      shopName: "",
-      tradeName: "",
-      ownership: "",
-      phoneNumber: "",
-      mobileNumber: "",
-      email: "",
-      tinNo: "",
-      cstNo: "",
-      panNo: "",
-      businessDetail: "",
-      doe: "",
-      address: "",
-      localCouncil: "one",
-      roadDetails: 10,
-      lat: 0,
-      long: 0,
-      location: "",
+  this;
+.
+  state = {
+    name: "",
+    shopName: "",
+    tradeName: "",
+    ownership: "",
+    phoneNumber: "",
+    mobileNumber: "",
+    email: "",
+    tinNo: "",
+    cstNo: "",
+    panNo: "",
+    businessDetail: "",
+    doe: "",
+    address: "",
+    localCouncil: "one",
+    roadDetails: 10,
+    lat: 0,
+    long: 0,
+    location: "",
 
-      areaCategory: "",
-      length: 1,
-      height: 1,
-      clearance: "",
-      bothSide: false,
-      displayType: "",
+    areaCategory: "",
+    length: 1,
+    height: 1,
+    clearance: "",
+    bothSide: false,
+    displayType: "",
 
 
-      premiseType: "owned",
-      attachments: [],
+    premiseType: "owned",
+    attachments: [],
 
-      localCouncils: ["one", "two", "three"],
-      displayTypes: [],
-      ownerships: [
-        { value: "proprietor", label: "Proprietor" },
-        { value: "partnership", label: "Partnership" },
-        { value: "private-ltd", label: "Private Limited" }
-      ],
+    localCouncils: ["one", "two", "three"],
+    displayTypes: [],
+    ownerships: [
+      { value: "proprietor", label: "Proprietor" },
+      { value: "partnership", label: "Partnership" },
+      { value: "private-ltd", label: "Private Limited" }
+    ],
 
-      openDialog: false
-    };
-  }
+    openDialog: false
+  };
 
   componentDidMount = () => {
     const { history } = this.props;
