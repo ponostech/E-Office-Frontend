@@ -4,10 +4,8 @@ import GridItem from "../components/Grid/GridItem";
 import OfficePageHeader from "../components/Header/OfficePageHeader";
 import { Route } from "react-router-dom";
 import DeskView from "../views/e-office/DeskView";
-import NewFile from "../views/e-office/files/NewFile";
-import CreatedFiles from "../views/e-office/files/CreatedFiles";
-import SentFiles from "../views/e-office/files/SentFiles";
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
+import NewReceipt from "../views/e-office/receipt/NewReceipt";
 
 class OfficeDashboard extends Component {
   render() {
@@ -21,9 +19,8 @@ class OfficeDashboard extends Component {
 
             <GridContainer justify={"center"}>
               <Route path={OfficeRoutes.DESK} component={DeskView}/>
-              <Route path={OfficeRoutes.NEW_FILE} component={NewFile}/>
-              <Route path={OfficeRoutes.CREATED_FILES} component={CreatedFiles}/>
-              <Route path={OfficeRoutes.SENT_FILE} component={SentFiles}/>
+              <Route path={OfficeRoutes.NEW_RECEIPT} component={NewReceipt}/>
+
 
             </GridContainer>
 
