@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import { AppBar, Button, Toolbar, Typography } from "@material-ui/core";
-import { Redirect, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import HomePage from "../views/landing-pages/HomePage";
 import GridItem from "../components/Grid/GridItem";
 import GridContainer from "../components/Grid/GridContainer";
 
 import HoardingApplicationForm from "../views/hoarding/HoardingApplicationForm";
-import ShopLicenseForm from "../views/shop/ShopLicenseForm";
+import ShopLicenseForm from "../views/shop/ShopLicenseApplicationForm";
 import StaffRegistrationForm from "../views/staff/StaffRegistrationForm";
 import StaffList from "../views/staff/StaffList";
 import Form from "../views/Form";
 
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
+import AdvertiserForm from "../views/advertiser/AdvertiserForm";
+import LoginView from "../views/auth/LoginView";
 
 class LandingPage extends Component {
 
@@ -53,7 +55,7 @@ class LandingPage extends Component {
             <Route exact={true} path={OfficeRoutes.KIOSK_DETAIL} component={ShopLicenseForm}/>
             <Route exact={true} path={OfficeRoutes.RENEW_KIOSK} component={ShopLicenseForm}/>
 
-            <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={ShopLicenseForm}/>
+            <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserForm}/>
             <Route exact={true} path={OfficeRoutes.ADVERTISER_DETAIL} component={ShopLicenseForm}/>
             <Route exact={true} path={OfficeRoutes.RENEW_ADVERTISER} component={ShopLicenseForm}/>
 
@@ -61,7 +63,10 @@ class LandingPage extends Component {
             <Route exact={true} path={OfficeRoutes.NEW_STAFF} component={StaffRegistrationForm}/>
             <Route exact={true} path={OfficeRoutes.LIST_STAFF} component={StaffList} />
 
-            <Route exact={true} path={OfficeRoutes.FORM} component={Form} />
+            {/*receipt routes*/}
+
+            <Route exact={true} path={OfficeRoutes.FORM} component={Form}/>
+            <Route exact={true} path={OfficeRoutes.LOGIN} component={LoginView}/>
 
           </GridContainer>
         </GridItem>
