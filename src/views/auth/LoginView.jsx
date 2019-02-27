@@ -10,7 +10,7 @@ import GridItem from "../../components/Grid/GridItem";
 import { Button, Card, CardContent, CardHeader, Divider, TextField } from "@material-ui/core";
 import LoginViewModel from "../model/LoginViewModel";
 import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
-
+import { Validators } from "../../utils/Validators";
 
 class LoginView extends React.Component {
   constructor(props) {
@@ -19,14 +19,49 @@ class LoginView extends React.Component {
       email: "",
       password: "",
 
-      emailError:"",
-      passwordError:"",
+      emailError: "",
+      passwordError: "",
+
+      submit: false
     };
   }
 
-  validate=()=>{
-    var emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  }
+  validate = (event) => {
+    var emailRex = Validators.EMAIL_REGEX;
+
+    const { type } = event;
+    const { name, value } = event.target;
+
+    switch (name) {
+      case "email":
+        switch (type) {
+          case "blur":
+            if (value.length === 0)
+              this.setState({ emailError: LoginViewModel.REQUIRED_EMAIL });
+            break;
+          case "focus":
+            emailRex.test(value) ? this.setState({ emailError: "" }) : this.setState({ emailError: LoginViewModel.INVALID_EMAIL });
+            break;
+          default:
+
+        }
+        break;
+      case "password":
+        switch (type) {
+          case "blur":
+            value.length === 0 ? this.setState({ passwordError: LoginViewModel.REQUIRED_PASSWORD }) : this.setState({ passwordError: "" });
+            break;
+          case "focus":
+            break;
+          default:
+        }
+        break;
+      default:
+        break;
+
+    }
+
+  };
   onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
@@ -37,12 +72,26 @@ class LoginView extends React.Component {
     const { history } = this.props;
     //TODO:: Check user role and then go to that routes
 
-    if (this.validate()) {
-      history.push("/applicant");
-
+    const valid = this.state.emailError && this.state.passwordError;
+    console.log(valid);
+    if (valid) {
+      this.submit();
     }
   };
 
+  submit = () => {
+    this.setState({ submit: true });
+    let data = {
+      email: this.state.email,
+      password: this.state.password
+    };
+    // axios.post(ApiRoutes.LOGIN_ROUTE, data)
+    //   .then(response =>{})
+    //   .catch(error=>{})
+    //   .then(()=>{
+    //     this.setState({submit:false})
+    //   })
+  };
   handleForgot = (event) => {
     const { history } = this.props;
     history.push(OfficeRoutes.RESET_PASSWORD);
@@ -63,6 +112,8 @@ class LoginView extends React.Component {
             <CardContent>
               <TextField
                 error={Boolean(this.state.emailError)}
+                onBlur={this.validate.bind(this)}
+                onFocus={this.validate.bind(this)}
                 helperText={this.state.emailError}
                 label={LoginViewModel.EMAIL}
                 name={"email"}
@@ -83,6 +134,8 @@ class LoginView extends React.Component {
               />
               <TextField
                 error={Boolean(this.state.passwordError)}
+                onBlur={this.validate.bind(this)}
+                onFocus={this.validate.bind(this)}
                 helperText={this.state.passwordError}
                 label={LoginViewModel.PASSWORD}
                 name={"password"}
@@ -101,7 +154,8 @@ class LoginView extends React.Component {
                   placeholder: "Password"
                 }}
               />
-              <Button variant={"outlined"}
+              <Button disabled={this.state.submit}
+                      variant={"outlined"}
                       fullWidth={true} color="primary"
                       onClick={this.handleLogin.bind(this)}>
                 Login
