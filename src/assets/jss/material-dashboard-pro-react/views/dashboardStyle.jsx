@@ -1,11 +1,8 @@
-// ##############################
-// // // Dashboard View styles
-// #############################
-
 import {
   successColor,
   tooltip,
-  cardTitle
+  cardTitle,
+  grayColor
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 import hoverCardStyle from "assets/jss/material-dashboard-pro-react/hoverCardStyle.jsx";
@@ -30,7 +27,7 @@ const dashboardStyle = {
     textAlign: "center"
   },
   cardCategory: {
-    color: "#999999",
+    color: grayColor[0],
     fontSize: "14px",
     paddingTop: "10px",
     marginBottom: "0",
@@ -39,10 +36,10 @@ const dashboardStyle = {
   },
   cardProductDesciprion: {
     textAlign: "center",
-    color: "#999999"
+    color: grayColor[0]
   },
   stats: {
-    color: "#999999",
+    color: grayColor[0],
     fontSize: "12px",
     lineHeight: "22px",
     display: "inline-flex",
@@ -66,7 +63,7 @@ const dashboardStyle = {
     margin: "0"
   },
   successText: {
-    color: successColor
+    color: successColor[0]
   },
   upArrowCardCategory: {
     width: 14,

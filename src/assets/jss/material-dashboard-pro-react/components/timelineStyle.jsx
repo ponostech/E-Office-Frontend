@@ -1,13 +1,13 @@
-// ##############################
-// // // Timeline component styles
-// #############################
-
 import {
   infoColor,
   primaryColor,
   successColor,
   dangerColor,
-  warningColor
+  warningColor,
+  whiteColor,
+  blackColor,
+  grayColor,
+  hexToRgb
 } from "assets/jss/material-dashboard-pro-react.jsx";
 const timelineStyle = theme => ({
   timeline: {
@@ -26,7 +26,7 @@ const timelineStyle = theme => ({
       position: "absolute",
       content: '" "',
       width: "3px",
-      backgroundColor: "#E5E5E5",
+      backgroundColor: grayColor[11],
       left: "50%",
       marginLeft: "-1px"
     }
@@ -53,7 +53,7 @@ const timelineStyle = theme => ({
     [theme.breakpoints.down("sm")]: {
       left: "5% !important"
     },
-    color: "#FFFFFF",
+    color: whiteColor,
     width: "50px",
     height: "50px",
     lineHeight: "51px",
@@ -73,29 +73,49 @@ const timelineStyle = theme => ({
     left: "5%"
   },
   info: {
-    backgroundColor: infoColor,
+    backgroundColor: infoColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 188, 212, 0.4)"
+      "0 4px 20px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.14), 0 7px 10px -5px rgba(" +
+      hexToRgb(infoColor[0]) +
+      ", 0.4)"
   },
   success: {
-    backgroundColor: successColor,
+    backgroundColor: successColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4)"
+      "0 4px 20px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.14), 0 7px 10px -5px rgba(" +
+      hexToRgb(successColor[0]) +
+      ", 0.4)"
   },
   danger: {
-    backgroundColor: dangerColor,
+    backgroundColor: dangerColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(244, 67, 54, 0.4)"
+      "0 4px 20px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.14), 0 7px 10px -5px rgba(" +
+      hexToRgb(dangerColor[0]) +
+      ", 0.4)"
   },
   warning: {
-    backgroundColor: warningColor,
+    backgroundColor: warningColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(255, 152, 0, 0.4)"
+      "0 4px 20px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.14), 0 7px 10px -5px rgba(" +
+      hexToRgb(warningColor[0]) +
+      ", 0.4)"
   },
   primary: {
-    backgroundColor: primaryColor,
+    backgroundColor: primaryColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4)"
+      "0 4px 20px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.14), 0 7px 10px -5px rgba(" +
+      hexToRgb(primaryColor[0]) +
+      ", 0.4)"
   },
   badgeIcon: {
     width: "24px",
@@ -123,18 +143,18 @@ const timelineStyle = theme => ({
     padding: "20px",
     marginBottom: "20px",
     position: "relative",
-    boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
+    boxShadow: "0 1px 4px 0 rgba(" + hexToRgb(blackColor) + ", 0.14)",
     borderRadius: "6px",
-    color: "rgba(0, 0, 0, 0.87)",
-    background: "#fff",
+    color: "rgba(" + hexToRgb(blackColor) + ", 0.87)",
+    background: whiteColor,
     "&:before": {
       position: "absolute",
       top: "26px",
       right: "-15px",
       display: "inline-block",
       borderTop: "15px solid transparent",
-      borderLeft: "15px solid #e4e4e4",
-      borderRight: "0 solid #e4e4e4",
+      borderLeft: "15px solid " + grayColor[10],
+      borderRight: "0 solid " + grayColor[10],
       borderBottom: "15px solid transparent",
       content: '" "'
     },
@@ -144,8 +164,8 @@ const timelineStyle = theme => ({
       right: "-14px",
       display: "inline-block",
       borderTop: "14px solid transparent",
-      borderLeft: "14px solid #FFFFFF",
-      borderRight: "0 solid #FFFFFF",
+      borderLeft: "14px solid " + whiteColor,
+      borderRight: "0 solid " + whiteColor,
       borderBottom: "14px solid transparent",
       content: '" "'
     }
@@ -156,7 +176,7 @@ const timelineStyle = theme => ({
   timelinePanelInverted: {
     [theme.breakpoints.up("sm")]: {
       float: "right",
-      backgroundColor: "#FFFFFF",
+      backgroundColor: whiteColor,
       "&:before": {
         borderLeftWidth: "0",
         borderRightWidth: "15px",
@@ -184,7 +204,7 @@ const timelineStyle = theme => ({
     float: "left"
   },
   footerTitle: {
-    color: "#333333",
+    color: grayColor[7],
     fontWeight: "400",
     margin: "10px 0px 0px"
   },

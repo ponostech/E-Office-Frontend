@@ -1,7 +1,3 @@
-// ##############################
-// // // RegularForms view styles
-// #############################
-
 import {
   cardTitle,
   successColor,
@@ -41,10 +37,10 @@ const regularFormsStyle = {
     position: "relative"
   },
   inputAdornmentIconSuccess: {
-    color: successColor + "!important"
+    color: successColor[0] + "!important"
   },
   inputAdornmentIconError: {
-    color: dangerColor + "!important"
+    color: dangerColor[0] + "!important"
   }
 };
 

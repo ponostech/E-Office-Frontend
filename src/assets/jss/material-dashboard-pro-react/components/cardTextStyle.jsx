@@ -4,7 +4,8 @@ import {
   dangerCardHeader,
   infoCardHeader,
   primaryCardHeader,
-  roseCardHeader
+  roseCardHeader,
+  grayColor
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const cardTextStyle = {
@@ -13,7 +14,7 @@ const cardTextStyle = {
     display: "inline-block",
     marginRight: "0",
     borderRadius: "3px",
-    backgroundColor: "#999999",
+    backgroundColor: grayColor[0],
     padding: "15px",
     marginTop: "-20px"
   },

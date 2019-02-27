@@ -23,11 +23,11 @@ button.rbc-input::-moz-focus-inner {
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: stretch;
-      -ms-flex-align: stretch;
-          align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
 }
 .rbc-calendar *,
 .rbc-calendar *:before,
@@ -65,8 +65,8 @@ button.rbc-input::-moz-focus-inner {
 .rbc-header {
   overflow: hidden;
   -webkit-flex: 1 0 0%;
-      -ms-flex: 1 0 0%;
-          flex: 1 0 0%;
+  -ms-flex: 1 0 0%;
+  flex: 1 0 0%;
   text-overflow: ellipsis;
   white-space: nowrap;
   padding: 0 3px;
@@ -75,10 +75,10 @@ button.rbc-input::-moz-focus-inner {
   font-weight: bold;
   font-size: 1em;
   min-height: 0;
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid #ddd;
   color: #999999;
-  &:last-child{
-    span{
+  &:last-child {
+    span {
       padding-right: 15px;
     }
   }
@@ -92,8 +92,8 @@ button.rbc-input::-moz-focus-inner {
 .rbc-row-content {
   position: relative;
   -moz-user-select: none;
-   -ms-user-select: none;
-       user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   -webkit-user-select: none;
   z-index: 4;
   min-height: 90px;
@@ -103,8 +103,8 @@ button.rbc-input::-moz-focus-inner {
   display: -ms-flexbox;
   display: flex;
   -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   margin-bottom: 10px;
   font-size: 16px;
   padding-top: 20px;
@@ -113,16 +113,16 @@ button.rbc-input::-moz-focus-inner {
 }
 .rbc-toolbar .rbc-toolbar-label {
   -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
   padding: 0 10px;
   text-align: center;
   font-family: inherit;
-    line-height: 1.5em;
-    color: inherit;
-    font-weight: 300;
-    margin: 0;
-    font-size: 1.8em;
+  line-height: 1.5em;
+  color: inherit;
+  font-weight: 300;
+  margin: 0;
+  font-size: 1.8em;
 }
 .rbc-toolbar button {
   @include btn-styles($brand-primary);
@@ -136,7 +136,7 @@ button.rbc-input::-moz-focus-inner {
   border-radius: 30px;
   padding: 6px 12px;
   cursor: pointer;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   outline: none;
 }
 .rbc-toolbar button:focus {
@@ -148,13 +148,13 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-btn-group button {
-    margin: 0 0 0 2px;
-    border-radius: 30px;
+  margin: 0 0 0 2px;
+  border-radius: 30px;
 }
-@media screen and (max-width: 526px){
-.rbc-btn-group button {
-  margin: 2px !important;
-}
+@media screen and (max-width: 526px) {
+  .rbc-btn-group button {
+    margin: 2px !important;
+  }
 }
 
 .rbc-btn-group button + button {
@@ -212,8 +212,8 @@ button.rbc-input::-moz-focus-inner {
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
 }
 .rbc-row-segment {
   padding: 2px 6px 1px;
@@ -232,20 +232,20 @@ button.rbc-input::-moz-focus-inner {
 }
 .rbc-month-view {
   position: relative;
-  border: 1px solid #DDD;
+  border: 1px solid #ddd;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-flex: 1 0 0;
-      -ms-flex: 1 0 0px;
-          flex: 1 0 0;
+  -ms-flex: 1 0 0px;
+  flex: 1 0 0;
   width: 100%;
   -moz-user-select: none;
-   -ms-user-select: none;
-       user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   -webkit-user-select: none;
   height: 100%;
   border-left: none;
@@ -259,8 +259,8 @@ button.rbc-input::-moz-focus-inner {
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
 }
 
 .rbc-month-row {
@@ -269,24 +269,24 @@ button.rbc-input::-moz-focus-inner {
   display: flex;
   position: relative;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-flex: 1 0 0;
-      -ms-flex: 1 0 0px;
-          flex: 1 0 0;
+  -ms-flex: 1 0 0px;
+  flex: 1 0 0;
   // -webkit-flex-basis: 0px;
-      -ms-flex-preferred-size: 0px;
-          // flex-basis: 0px;
+  -ms-flex-preferred-size: 0px;
+  // flex-basis: 0px;
   overflow: hidden;
   height: 100%;
 }
 .rbc-month-row + .rbc-month-row {
-  border-top: 1px solid #DDD;
+  border-top: 1px solid #ddd;
 }
 .rbc-date-cell {
   -webkit-flex: 1 1 0;
-      -ms-flex: 1 1 0px;
-          flex: 1 1 0;
+  -ms-flex: 1 1 0px;
+  flex: 1 1 0;
   min-width: 0;
   padding-right: 5px;
   text-align: right;
@@ -305,24 +305,24 @@ button.rbc-input::-moz-focus-inner {
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   -webkit-flex: 1 0 0;
-      -ms-flex: 1 0 0px;
-          flex: 1 0 0;
+  -ms-flex: 1 0 0px;
+  flex: 1 0 0;
   overflow: hidden;
 }
 .rbc-day-bg {
   -webkit-flex: 1 0 0%;
-      -ms-flex: 1 0 0%;
-          flex: 1 0 0%;
+  -ms-flex: 1 0 0%;
+  flex: 1 0 0%;
 }
 .rbc-day-bg + .rbc-day-bg {
-  border-left: 1px solid #DDD;
+  border-left: 1px solid #ddd;
 }
 .rbc-rtl .rbc-day-bg + .rbc-day-bg {
   border-left-width: 0;
-  border-right: 1px solid #DDD;
+  border-right: 1px solid #ddd;
 }
 .rbc-overlay {
   position: absolute;
@@ -345,16 +345,16 @@ button.rbc-input::-moz-focus-inner {
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-flex: 1 0 0;
-      -ms-flex: 1 0 0px;
-          flex: 1 0 0;
+  -ms-flex: 1 0 0px;
+  flex: 1 0 0;
   overflow: auto;
 }
 .rbc-agenda-view table.rbc-agenda-table {
   width: 100%;
-  border: 1px solid #DDD;
+  border: 1px solid #ddd;
   border-spacing: 0;
   border-collapse: collapse;
 }
@@ -368,19 +368,19 @@ button.rbc-input::-moz-focus-inner {
   text-transform: lowercase;
 }
 .rbc-agenda-view table.rbc-agenda-table tbody > tr > td + td {
-  border-left: 1px solid #DDD;
+  border-left: 1px solid #ddd;
 }
 .rbc-rtl .rbc-agenda-view table.rbc-agenda-table tbody > tr > td + td {
   border-left-width: 0;
-  border-right: 1px solid #DDD;
+  border-right: 1px solid #ddd;
 }
 .rbc-agenda-view table.rbc-agenda-table tbody > tr + tr {
-  border-top: 1px solid #DDD;
+  border-top: 1px solid #ddd;
 }
 .rbc-agenda-view table.rbc-agenda-table thead > tr > th {
   padding: 3px 5px;
   text-align: left;
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid #ddd;
 }
 .rbc-rtl .rbc-agenda-view table.rbc-agenda-table thead > tr > th {
   text-align: right;
@@ -389,10 +389,10 @@ button.rbc-input::-moz-focus-inner {
   text-transform: lowercase;
 }
 .rbc-agenda-time-cell .rbc-continues-after:after {
-  content: ' »';
+  content: " »";
 }
 .rbc-agenda-time-cell .rbc-continues-prior:before {
-  content: '« ';
+  content: "« ";
 }
 .rbc-agenda-date-cell,
 .rbc-agenda-time-cell {
@@ -406,30 +406,30 @@ button.rbc-input::-moz-focus-inner {
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   min-height: 100%;
 }
 .rbc-time-column .rbc-timeslot-group {
   -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 .rbc-timeslot-group {
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid #ddd;
   min-height: 40px;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-flow: column nowrap;
-      -ms-flex-flow: column nowrap;
-          flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
 }
 .rbc-time-gutter,
 .rbc-header-gutter {
   -webkit-flex: none;
-      -ms-flex: none;
-          flex: none;
+  -ms-flex: none;
+  flex: none;
 }
 .rbc-label {
   padding: 0 5px;
@@ -455,18 +455,18 @@ button.rbc-input::-moz-focus-inner {
   max-height: 100%;
   min-height: 20px;
   -webkit-flex-flow: column wrap;
-      -ms-flex-flow: column wrap;
-          flex-flow: column wrap;
+  -ms-flex-flow: column wrap;
+  flex-flow: column wrap;
   -webkit-align-items: flex-start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
   overflow: hidden;
   position: absolute;
 }
 .rbc-day-slot .rbc-event-label {
   -webkit-flex: none;
-      -ms-flex: none;
-          flex: none;
+  -ms-flex: none;
+  flex: none;
   padding-right: 5px;
   width: auto;
   font-weight: bold;
@@ -474,25 +474,25 @@ button.rbc-input::-moz-focus-inner {
   -moz-box-sizing: content-box;
   box-sizing: content-box;
   color: #fff;
-      white-space: nowrap;
+  white-space: nowrap;
 }
 .rbc-day-slot .rbc-event-content {
   width: 100%;
   -webkit-flex: 1 1 0;
-      -ms-flex: 1 1 0px;
-          flex: 1 1 0;
+  -ms-flex: 1 1 0px;
+  flex: 1 1 0;
   word-wrap: break-word;
   line-height: 1;
   height: 100%;
   min-height: 1em;
 }
-.rbc-day-slot .rbc-time-slot + .rbc-time-slot{
+.rbc-day-slot .rbc-time-slot + .rbc-time-slot {
   border-top: 1px dotted #ddd;
 }
 .rbc-time-slot {
   -webkit-flex: 1 0 0;
-      -ms-flex: 1 0 0px;
-          flex: 1 0 0;
+  -ms-flex: 1 0 0px;
+  flex: 1 0 0;
 }
 .rbc-time-slot.rbc-now {
   font-weight: bold;
@@ -517,13 +517,13 @@ button.rbc-input::-moz-focus-inner {
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   width: 100%;
-  border: 1px solid #DDD;
+  border: 1px solid #ddd;
   min-height: 0;
   border-left: none;
   border-right: none;
@@ -550,71 +550,71 @@ button.rbc-input::-moz-focus-inner {
   display: -ms-flexbox;
   display: flex;
   -webkit-flex: 0 0 auto;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
   -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
 }
 .rbc-time-header.rbc-overflowing {
-  border-right: 1px solid #DDD;
+  border-right: 1px solid #ddd;
 }
 .rbc-rtl .rbc-time-header.rbc-overflowing {
   border-right-width: 0;
-  border-left: 1px solid #DDD;
+  border-left: 1px solid #ddd;
 }
 .rbc-time-header > .rbc-row:first-child {
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid #ddd;
 }
 .rbc-time-header > .rbc-row.rbc-row-resource {
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid #ddd;
 }
 .rbc-time-header-content {
   -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   min-width: 0;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  border-left: 1px solid #DDD;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  border-left: 1px solid #ddd;
 }
 .rbc-rtl .rbc-time-header-content {
   border-left-width: 0;
-  border-right: 1px solid #DDD;
+  border-right: 1px solid #ddd;
 }
 .rbc-time-content {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-flex: 1 0 0%;
-      -ms-flex: 1 0 0%;
-          flex: 1 0 0%;
+  -ms-flex: 1 0 0%;
+  flex: 1 0 0%;
   -webkit-align-items: flex-start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
   width: 100%;
-  border-top: 2px solid #DDD;
+  border-top: 2px solid #ddd;
   overflow-y: auto;
   position: relative;
 }
 .rbc-time-content > .rbc-time-gutter {
   -webkit-flex: none;
-      -ms-flex: none;
-          flex: none;
+  -ms-flex: none;
+  flex: none;
 }
 .rbc-time-content > * + * > * {
-  border-left: 1px solid #DDD;
+  border-left: 1px solid #ddd;
 }
 .rbc-rtl .rbc-time-content > * + * > * {
   border-left-width: 0;
-  border-right: 1px solid #DDD;
+  border-right: 1px solid #ddd;
 }
 .rbc-time-content > .rbc-day-slot {
   width: 100%;
   -moz-user-select: none;
-   -ms-user-select: none;
-       user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   -webkit-user-select: none;
 }
 .rbc-current-time-indicator {
@@ -628,7 +628,7 @@ button.rbc-input::-moz-focus-inner {
   width: 100%;
   position: relative; /* for resize handle and other inner positioning */
   display: block; /* make the <a> tag block */
-  font-size: .85em;
+  font-size: 0.85em;
   border-radius: 2px;
   padding: 0;
   background-color: $brand-success; /* default BACKGROUND color */
@@ -639,32 +639,38 @@ button.rbc-input::-moz-focus-inner {
   padding-bottom: 1px;
   line-height: 1.2;
 
-  &.event-azure{
+  &.event-azure {
     background-color: $brand-info;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 188, 212, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
+      0 7px 10px -5px rgba(0, 188, 212, 0.4);
   }
-  &.event-green{
+  &.event-green {
     background-color: $brand-success;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
+      0 7px 10px -5px rgba(76, 175, 80, 0.4);
   }
-  &.event-orange{
+  &.event-orange {
     background-color: $brand-warning;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(255, 152, 0, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
+      0 7px 10px -5px rgba(255, 152, 0, 0.4);
   }
-  &.event-red{
+  &.event-red {
     background-color: $brand-danger;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(244, 67, 54, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
+      0 7px 10px -5px rgba(244, 67, 54, 0.4);
   }
-  &.event-rose{
+  &.event-rose {
     background-color: $brand-rose;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(233, 30, 99, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
+      0 7px 10px -5px rgba(233, 30, 99, 0.4);
   }
-  &.event-default{
+  &.event-default {
     background-color: #999999;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(153, 153, 153, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
+      0 7px 10px -5px rgba(153, 153, 153, 0.4);
   }
 
-  .rbc-event-content{
+  .rbc-event-content {
     position: relative;
     z-index: 2;
     white-space: nowrap;
@@ -674,7 +680,7 @@ button.rbc-input::-moz-focus-inner {
   }
 }
 .rbc-day-slot .rbc-event {
-     display: block !important;
-     height: unset !important;
-     max-height: unset !important;
+  display: block !important;
+  height: unset !important;
+  max-height: unset !important;
 }

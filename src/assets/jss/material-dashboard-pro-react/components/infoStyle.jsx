@@ -1,7 +1,3 @@
-// ##############################
-// // // Info component styles
-// #############################
-
 import {
   primaryColor,
   warningColor,
@@ -24,42 +20,42 @@ const infoStyle = {
     marginRight: "10px"
   },
   primary: {
-    color: primaryColor
+    color: primaryColor[0]
   },
   warning: {
-    color: warningColor
+    color: warningColor[0]
   },
   danger: {
-    color: dangerColor
+    color: dangerColor[0]
   },
   success: {
-    color: successColor
+    color: successColor[0]
   },
   info: {
-    color: infoColor
+    color: infoColor[0]
   },
   rose: {
-    color: roseColor
+    color: roseColor[0]
   },
   gray: {
-    color: grayColor
+    color: grayColor[0]
   },
   icon: {
     width: "36px",
     height: "36px"
   },
   descriptionWrapper: {
-    color: grayColor,
+    color: grayColor[0],
     overflow: "hidden"
   },
   title: {
-    color: "#3C4858",
+    color: grayColor[2],
     margin: "30px 0 15px",
     textDecoration: "none",
     fontSize: "18px"
   },
   description: {
-    color: grayColor,
+    color: grayColor[0],
     overflow: "hidden",
     marginTop: "0px",
     fontSize: "14px"
