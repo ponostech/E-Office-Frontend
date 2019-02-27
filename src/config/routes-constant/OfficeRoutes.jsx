@@ -31,11 +31,11 @@ export class OfficeRoutes {
   static CLOSE_FILE = "/e-office/sent";
   static FILE_DETAIL = "/e-office/files/:id";
 
-  static NEW_RECEIPT = "/e-office/receipts/new";
-  static CREATED_RECEIPT = "/e-office/receipts/created";
-  static SENT_RECEIPT = "/e-office/receipts/sent";
-  static CLOSE_RECEIPT = "/e-office/receipts/close";
-  static RECEIPT_DETAIL = "/e-office/receipts/:id/details";
+  static NEW_RECEIPT = "/e-office/receipt/new";
+  static CREATED_RECEIPT = "/e-office/receipt/created";
+  static SENT_RECEIPT = "/e-office/receipt/sent";
+  static CLOSE_RECEIPT = "/e-office/receipt/close";
+  static RECEIPT_DETAIL = "/e-office/receipt/:id/details";
 
   static LOGIN = "/login";
   static RESET_PASSWORD = "/reset-password";
