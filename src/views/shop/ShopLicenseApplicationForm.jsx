@@ -16,7 +16,8 @@ import {
   OutlinedInput,
   Radio,
   RadioGroup,
-  Select
+  Select,
+  Switch
 } from "@material-ui/core";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
@@ -26,53 +27,57 @@ import DocumentsDropzone from "../../components/DocumentsDropzone";
 import Constraint from "../../config/Constraint";
 import OfficeSelect from "../../components/OfficeSelect";
 import { ShopLicenseFormModel } from "../model/ShopLicenseFormModel";
+import { StaffViewModel } from "../model/StaffViewModel";
 import moment from "../staff/StaffRegistrationForm";
 
 class ShopLicenseApplicationForm extends Component {
 
-  this;
-.
-  state = {
-    name: "",
-    shopName: "",
-    tradeName: "",
-    ownership: "",
-    phoneNumber: "",
-    mobileNumber: "",
-    email: "",
-    tinNo: "",
-    cstNo: "",
-    panNo: "",
-    businessDetail: "",
-    doe: "",
-    address: "",
-    localCouncil: "one",
-    roadDetails: 10,
-    lat: 0,
-    long: 0,
-    location: "",
+  constructor(props) {
+    super(props);
+    this.state = {
+      name:"",
+      shopName:"",
+      tradeName:"",
+      location:"",
+      ownership: "",
+      phoneNumber:"",
+      mobileNumber:"",
+      email:"",
+      tinNo:"",
+      cstNo:"",
+      panNo:"",
+      premiseType:"",
+      businessDetail:"",
+      doe:"",
+      address:"",
+      localCouncil: "one",
+      roadDetails: 10,
+      lat: 0,
+      long: 0,
+      location: "",
 
-    areaCategory: "",
-    length: 1,
-    height: 1,
-    clearance: "",
-    bothSide: false,
-    displayType: "",
+      areaCategory: "",
+      length: 1,
+      height: 1,
+      clearance: "",
+      bothSide: false,
+      displayType: "",
 
 
-    premiseType: "owned",
-    attachments: [],
+      premiseType: "owned",
+      attachments: [],
 
-    localCouncils: ["one", "two", "three"],
-    displayTypes: [],
-    ownerships: [
-      { value: "proprietor", label: "Proprietor" },
-      { value: "partnership", label: "Partnership" },
-      { value: "private-ltd", label: "Private Limited" }
-    ],
+      localCouncils: ["one", "two", "three"],
+      displayTypes: [],
+      ownerships: [
+        { value: "proprietor", label: "Proprietor" },
+        { value: "partnership", label: "Partnership" },
+        { value: "private-ltd", label: "Private Limited" }
+      ],
 
-    openDialog: false
-  };
+      openDialog: false
+    };
+  }
 
   componentDidMount = () => {
     const { history } = this.props;
@@ -90,9 +95,9 @@ class ShopLicenseApplicationForm extends Component {
     const { checked } = e.target;
     if (checked) {
       this.setState({
-        [e.target.name]: checked
-      });
-    } else {
+        [e.target.name]:checked
+      })
+    }else{
       this.setState({
         [e.target.name]: e.target.value
       });
@@ -297,7 +302,7 @@ class ShopLicenseApplicationForm extends Component {
                          fullWidth={true}
                          onChange={this.handleChange.bind(this)}
                          type={"date"}
-                         InputLabelProps={{ shrink: true }}
+                         InputLabelProps={{shrink:true}}
                          label={ShopLicenseFormModel.DOE}
                          error={Boolean(this.state.doeError)}
                          helperText={this.state.doeError}
@@ -309,10 +314,7 @@ class ShopLicenseApplicationForm extends Component {
 
               <DocumentsDropzone documents={[
                 { name: "Signature of the applicant", fileName: "signature" },
-                {
-                  name: "NOC from the house or land owner where business is intended to be run",
-                  fileName: "noc-landowner"
-                },
+                { name: "NOC from the house or land owner where business is intended to be run", fileName: "noc-landowner" },
                 { name: "NOC from Local Council where business is intended to be run", fileName: "noc-local-council" },
                 { name: "EPIC", fileName: "epic" },
                 { name: "Residential Certificate (From D.C. Office)", fileName: "residential-certificate" },
