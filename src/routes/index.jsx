@@ -3,7 +3,7 @@ import OfficeDashboard from "../layouts/OfficeDashboard";
 
 var indexRoutes = [
   {path: '/e-office', name: 'e-Office Dashboard', component: OfficeDashboard },
-  {path: '/', name: 'e-Office', component: LandingPage },
+  {path: '/', name: 'e-Office Landing', component: LandingPage },
 ];
 
 export default indexRoutes;
