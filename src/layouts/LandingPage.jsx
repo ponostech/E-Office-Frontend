@@ -6,9 +6,11 @@ import GridItem from "../components/Grid/GridItem";
 import GridContainer from "../components/Grid/GridContainer";
 
 import HoardingApplicationForm from "../views/hoarding/HoardingApplicationForm";
-import ShopLicenseForm from "../views/shop/ShopLicenseForm";
+import ShopLicenseForm from "../views/shop/ShopLicenseApplicationForm";
 import StaffRegistrationForm from "../views/staff/StaffRegistrationForm";
+import StaffList from "../views/staff/StaffList";
 import Form from "../views/Form";
+
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import AdvertiserForm from "../views/advertiser/AdvertiserForm";
 import LoginView from "../views/auth/LoginView";
@@ -59,6 +61,7 @@ class LandingPage extends Component {
 
             {/*Staff routes*/}
             <Route exact={true} path={OfficeRoutes.NEW_STAFF} component={StaffRegistrationForm}/>
+            <Route exact={true} path={OfficeRoutes.LIST_STAFF} component={StaffList} />
 
             {/*receipt routes*/}
 

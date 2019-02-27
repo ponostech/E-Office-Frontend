@@ -8,10 +8,6 @@ import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
 
 class HomePage extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     console.log(CARD_DATA);
   }

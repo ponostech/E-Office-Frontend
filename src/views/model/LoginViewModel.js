@@ -7,5 +7,6 @@ export default class LoginViewModel {
   static PASSWORD="Password";
   static REQUIRED_EMAIL="Email is required";
   static REQUIRED_PASSWORD="Password is required";
+  static INVALID_EMAIL="Invalid email";
 
 };
