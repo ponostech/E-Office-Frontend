@@ -1,4 +1,5 @@
 export class ShopLicenseFormModel {
+
   static TITLE = "APPLICATION FORM FOR SHOP LICENSE";
   static SUB_HEADER = "Please fill out the form and submit your application";
   static PRIMARY_BUTTON_TEXT = "Submit Application";
@@ -24,5 +25,7 @@ export class ShopLicenseFormModel {
   static SHOPNAME_REQUIRED = "Name of shop is required";
 
   static DOE_FUTURE_ERROR = "Date of establishment can't be a future";
+
+
 
 }
