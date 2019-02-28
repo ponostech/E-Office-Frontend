@@ -17,19 +17,7 @@ class NewReceipt extends Component {
 
   onDrop = (acceptedFiles, rejectedFiles) => {
     let temp = [...this.state.selectedFiles, ...acceptedFiles];
-    acceptedFiles.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const readAsArrayBuffer = reader.result;
-        let f = new Blob([readAsArrayBuffer], { type: "application/pdf" });
-        let t = URL.createObjectURL(f);
-        this.setState({ file: f });
-      };
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-
-      reader.readAsArrayBuffer(file);
-    });
+     console.log(acceptedFiles)
 
   };
 
@@ -90,7 +78,7 @@ class NewReceipt extends Component {
         </GridItem>
         <GridItem xs={12} sm={12} md={6}>
 
-          <Button variant={"extendedFab"} color={"primary"}>Create and Generate Receipt
+          <Button variant={"outlined"} color={"primary"}>Create and Generate Receipt
             No</Button>
           <Button style={{ marginTop: 10 }} variant={"outlined"} color={"secondary"}>
             reset
