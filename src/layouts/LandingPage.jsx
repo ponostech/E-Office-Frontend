@@ -19,6 +19,7 @@ import Form from "../views/Form";
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import AdvertiserForm from "../views/advertiser/AdvertiserForm";
 import LoginView from "../views/auth/LoginView";
+import HoardingList from "../views/hoarding/HoardingList";
 
 class LandingPage extends Component {
 
@@ -44,8 +45,7 @@ class LandingPage extends Component {
                 <Route exact={true} path={OfficeRoutes.RENEW_SHOP_LICENSE} component={ShopLicenseForm}/>
 
                 <Route exact={true} path={OfficeRoutes.PROPOSED_HOARDING} component={HoardingApplicationForm}/>
-                <Route exact={true} path={OfficeRoutes.RENEW_HOARDING} component={ShopLicenseForm}/>
-                <Route exact={true} path={OfficeRoutes.APPLY_HOARDING} component={ShopLicenseForm}/>
+                <Route exact={true} path={OfficeRoutes.HOARDING_LIST} component={HoardingList}/>
 
                 <Route exact={true} path={OfficeRoutes.PROPOSED_KIOSK} component={ShopLicenseForm}/>
                 <Route exact={true} path={OfficeRoutes.NEW_KIOSK} component={ShopLicenseForm}/>
