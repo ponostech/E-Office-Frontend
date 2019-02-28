@@ -16,8 +16,7 @@ import {
   OutlinedInput,
   Radio,
   RadioGroup,
-  Select,
-  Switch
+  Select
 } from "@material-ui/core";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
@@ -28,31 +27,25 @@ import Constraint from "../../config/Constraint";
 import OfficeSelect from "../../components/OfficeSelect";
 import { ShopLicenseFormModel } from "../model/ShopLicenseFormModel";
 import moment from "moment";
-import CardBody from "../../components/Card/CardBody.jsx";
-import loginPageStyle from "../../assets/jss/material-dashboard-pro-react/views/loginPageStyle";
-import withStyles from "@material-ui/core/styles/withStyles";
-import axios from "axios";
 
 class ShopLicenseApplicationForm extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      name:"",
-      shopName:"",
-      tradeName:"",
-      location:"",
+      name: "",
+      shopName: "",
+      tradeName: "",
       ownership: "",
-      phoneNumber:"",
-      mobileNumber:"",
-      email:"",
-      tinNo:"",
-      cstNo:"",
-      panNo:"",
-      premiseType:"",
-      businessDetail:"",
-      doe:"",
-      address:"",
+      phoneNumber: "",
+      mobileNumber: "",
+      email: "",
+      tinNo: "",
+      cstNo: "",
+      panNo: "",
+      businessDetail: "",
+      doe: "",
+      address: "",
       localCouncil: "one",
       roadDetails: 10,
       lat: 0,
@@ -97,9 +90,9 @@ class ShopLicenseApplicationForm extends Component {
     const { checked } = e.target;
     if (checked) {
       this.setState({
-        [e.target.name]:checked
-      })
-    }else{
+        [e.target.name]: checked
+      });
+    } else {
       this.setState({
         [e.target.name]: e.target.value
       });
@@ -164,12 +157,9 @@ class ShopLicenseApplicationForm extends Component {
 
   render() {
     const { ownership } = this.props;
-    const {classes} = this.props;
     return (
-
-        <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={8} md={6}>
-
+      <GridContainer justify={"center"}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader title={"Shop License Application Form"}/>
             <CardContent>
@@ -243,8 +233,8 @@ class ShopLicenseApplicationForm extends Component {
                          required={false}
                          variant={"outlined"}
                          label={"CST No (If any)"}
-                         fullWidth={true} m
-                         argin={"dense"}/>
+                         fullWidth={true}
+                         margin={"dense"}/>
               <TextField name={"panNo"}
                          required={false}
                          variant={"outlined"}
@@ -294,7 +284,7 @@ class ShopLicenseApplicationForm extends Component {
                   <FormControlLabel value={"leased"} control={<Radio/>} label={"Leased"}/>
                 </RadioGroup>
               </FormControl>
-              <TextField name={"busnessDetail"}
+              <TextField name={"businessDetail"}
                          margin={"dense"}
                          fullWidth={true}
                          variant={"outlined"}
@@ -307,7 +297,7 @@ class ShopLicenseApplicationForm extends Component {
                          fullWidth={true}
                          onChange={this.handleChange.bind(this)}
                          type={"date"}
-                         InputLabelProps={{shrink:true}}
+                         InputLabelProps={{ shrink: true }}
                          label={ShopLicenseFormModel.DOE}
                          error={Boolean(this.state.doeError)}
                          helperText={this.state.doeError}
@@ -319,11 +309,20 @@ class ShopLicenseApplicationForm extends Component {
 
               <DocumentsDropzone documents={[
                 { name: "Signature of the applicant", fileName: "signature" },
-                { name: "NOC from the house or land owner where business is intended to be run", fileName: "noc-landowner" },
-                { name: "NOC from Local Council where business is intended to be run", fileName: "noc-local-council" },
+                {
+                  name: "NOC from the house or land owner where business is intended to be run",
+                  fileName: "noc-landowner"
+                },
+                {
+                  name: "NOC from Local Council where business is intended to be run",
+                  fileName: "noc-local-council"
+                },
                 { name: "EPIC", fileName: "epic" },
                 { name: "Residential Certificate (From D.C. Office)", fileName: "residential-certificate" },
-                { name: "License/Registration Certificate from Food Licensing Authority", fileName: "certificate-fla" },
+                {
+                  name: "License/Registration Certificate from Food Licensing Authority",
+                  fileName: "certificate-fla"
+                },
                 { name: "Tribal Certificate", fileName: "tribal-certificate" }
               ]}
                                  openDialog={this.state.openDialog}
@@ -337,7 +336,6 @@ class ShopLicenseApplicationForm extends Component {
               <Button color={"secondary"} variant={"outlined"} onClick={this.clearForm.bind(this)}> Reset</Button>
             </CardActions>
           </Card>
-
         </GridItem>
       </GridContainer>
 
