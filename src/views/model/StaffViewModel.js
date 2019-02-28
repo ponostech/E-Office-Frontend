@@ -15,5 +15,7 @@ export class StaffViewModel {
   static ADDRESS_REQUIRED="Address is required";
   static DOB_REQUIRED="Date of birth is required";
   static DOB_FUTURE_ERROR="Date of birth can't be a future";
+  static ATTACHMENT_LABEL="Upload signature";
+  static RESELECT_ATTACHMENT=" Reset";
 
 }
