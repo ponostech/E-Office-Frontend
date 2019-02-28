@@ -11,6 +11,12 @@ const pagesStyle = theme => ({
     position: "relative",
     top: "0"
   },
+  container: {
+    zIndex: "4",
+    [theme.breakpoints.down("sm")]: {
+      paddingBottom: "100px"
+    }
+  },
   fullPage: {
     padding: "120px 0",
     position: "relative",
