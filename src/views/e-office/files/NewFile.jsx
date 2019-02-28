@@ -18,6 +18,9 @@ class NewFile extends Component {
       prevRef: null,
       nextRef: null,
 
+      fileNoError: "",
+      subjectError: "",
+
       classifications: [
         { value: "one", label: "One" },
         { value: "two", label: "Two" },
@@ -31,23 +34,65 @@ class NewFile extends Component {
         { value: "one", label: "One" },
         { value: "two", label: "Two" },
         { value: "three", label: "Three" }
-      ]
+      ],
+
+      submit: false
     };
   }
 
   handleChange = (e) => {
-    console.log(e)
-    const{name,value}=e.target;
-
-        this.setState({[name]:value});
-  };
-  handleSelect = (identifier, selectedValue) => {
-    console.log(identifier)
-    this.setState({
-      [identifier]: selectedValue.value
-    });
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
   };
 
+  handleSelect = (value, identifier) => {
+    switch (identifier.name) {
+      case "category":
+        this.setState({ category: value });
+        break;
+      case "classification":
+        this.setState({ classification: value });
+        break;
+      case "dealer":
+        this.setState({ dealer: value });
+        break;
+      default:
+        break;
+
+    }
+  };
+
+  validateBlur = (e) => {
+    const { value, name } = e.target;
+    switch (name) {
+      case "fileNo":
+        value.length === 0 ? this.setState({ fileNoError: NewFileViewModel.REQUIRED_FILENO }) : this.setState({ fileNoError: "" });
+        break;
+      case "subject":
+        value.length === 0 ? this.setState({ subjectError: NewFileViewModel.REQUIRED_SUBJECT }) : this.setState({ subjectError: "" });
+        break;
+    }
+  };
+
+  submit = (e) => {
+    let valid = this.state.fileNoError.length !== 0 || this.state.subjectError.length !== 0;
+    console.log(valid);
+    if (valid) {
+      const data = {};
+      this.setState({ submit: true });
+      // axios.post(ApiRoutes.CREATE_FILE, data)
+      //   .then(res=>{
+      //
+      //   })
+      //   .catch(err=>{
+      //
+      //   })
+      //   .then(()=>{
+      //     this.setState({submit:false})
+      //   })
+
+    }
+  };
 
   render() {
     return (
@@ -55,9 +100,12 @@ class NewFile extends Component {
 
         <GridItem xs={12} sm={12} md={6}>
           <Card>
-            <CardHeader title={NewFileViewModel.TITLE}/>
+            <CardHeader title={NewFileViewModel.TITLE} subheader={NewFileViewModel.SUBTITLE}/>
             <CardContent>
               <TextField
+                error={Boolean(this.state.fileNoError)}
+                helperText={this.state.fileNoError}
+                onBlur={this.validateBlur.bind(this)}
                 required={true}
                 margin={"dense"}
                 label={NewFileViewModel.FILENO_LABEL}
@@ -66,6 +114,9 @@ class NewFile extends Component {
                 name={"fileNo"} fullWidth={true}/>
               <TextField
                 required={true}
+                error={Boolean(this.state.subjectError)}
+                helperText={this.state.subjectError}
+                onBlur={this.validateBlur.bind(this)}
                 margin={"dense"}
                 label={NewFileViewModel.SUBJECT_LABEL}
                 variant={"outlined"}
@@ -78,18 +129,18 @@ class NewFile extends Component {
                 label={NewFileViewModel.DEALER_LABEL}
                 name={"dealer"}
                 isClearable={true}
-                value={this.state.dealer}
                 options={this.state.dealers}
                 onChange={this.handleSelect.bind(this)}/>
               <OfficeSelect
+                value={this.state.category}
                 label={NewFileViewModel.CATEGORY_LABEL}
                 isClearable={true}
                 name={"category"}
-                value={this.state.category}
+                placeHolder={NewFileViewModel.CATEGORY_PLACEHOLDER}
+                defaultValue={this.state.category}
                 options={this.state.categories}
                 onChange={this.handleSelect.bind(this)}/>
               <OfficeSelect
-                value={this.state.classification}
                 label={NewFileViewModel.CLASSIFICATION_LABEL}
                 name={"classification"}
                 isClearable={true}
@@ -111,21 +162,18 @@ class NewFile extends Component {
                 name={"prevRef"}
                 variant={"outlined"}
                 onChange={this.handleChange.bind(this)}
-                fullWidth={true}
-                rows={3}
-                multiline={true}/>
-                <TextField
-                  margin={"dense"}
-                  label={NewFileViewModel.NEXT_LABEL}
+                fullWidth={true}/>
+              <TextField
+                margin={"dense"}
+                label={NewFileViewModel.NEXT_LABEL}
                 name={"nextRef"}
                 variant={"outlined"}
                 onChange={this.handleChange.bind(this)}
-                fullWidth={true}
-                rows={3}
-                multiline={true}/>
+                fullWidth={true}/>
             </CardContent>
             <CardActions>
-              <Button variant={"outlined"} color={"primary"}>{NewFileViewModel.PRIMARY_BTN_TEXT}</Button>
+              <Button disabled={this.state.submit} variant={"outlined"}
+                      color={"primary"} onClick={this.submit.bind(this)}>{NewFileViewModel.PRIMARY_BTN_TEXT}</Button>
               <Button variant={"outlined"} color={"secondary"}>{NewFileViewModel.SECONDARY_BTN_TEXT}</Button>
             </CardActions>
           </Card>
