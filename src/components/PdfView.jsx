@@ -17,26 +17,26 @@ class PdfView extends Component {
 
   onDocumentLoadSuccess = ({ numPages }) => {
     this.setState({ numPages });
-    console.log(numPages)
+    console.log(numPages);
   };
 
   gotoFirst = () => {
     this.setState({ pageNumber: 1 });
   };
   gotoNext = () => {
-    let num = this.state.pageNumber < this.state.numPages ? this.state.pageNumber+1 : this.state.numPages;
+    let num = this.state.pageNumber < this.state.numPages ? this.state.pageNumber + 1 : this.state.numPages;
     this.setState({ pageNumber: num });
   };
   gotoPrev = () => {
     let num = this.state.pageNumber > 1 ? this.state.pageNumber - 1 : 1;
-    this.setState({pageNum:num})
+    this.setState({ pageNum: num });
   };
   gotoLast = () => {
-    this.setState({pageNumber:this.state.numPages})
+    this.setState({ pageNumber: this.state.numPages });
   };
 
   render() {
-    const { pageNumber, numPages,title, ...rest } = this.state;
+    const { pageNumber, numPages, title, ...rest } = this.state;
     const { file } = this.props;
 
     return (
@@ -51,7 +51,7 @@ class PdfView extends Component {
             <Page pageNumber={pageNumber}/>
           </Document>
 
-          <div style={{display:'flex',justify:'center'}}>
+          <div style={{ display: "flex", justify: "center" }}>
             <IconButton onClick={this.gotoFirst.bind(this)}>
               <FirstIcon/>
             </IconButton>
