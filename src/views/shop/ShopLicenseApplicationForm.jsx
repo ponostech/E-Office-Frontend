@@ -27,8 +27,11 @@ import DocumentsDropzone from "../../components/DocumentsDropzone";
 import Constraint from "../../config/Constraint";
 import OfficeSelect from "../../components/OfficeSelect";
 import { ShopLicenseFormModel } from "../model/ShopLicenseFormModel";
-import { StaffViewModel } from "../model/StaffViewModel";
-import moment from "../staff/StaffRegistrationForm";
+import moment from "moment";
+import CardBody from "../../components/Card/CardBody.jsx";
+import loginPageStyle from "../../assets/jss/material-dashboard-pro-react/views/loginPageStyle";
+import withStyles from "@material-ui/core/styles/withStyles";
+import axios from "axios";
 
 class ShopLicenseApplicationForm extends Component {
 
@@ -55,7 +58,6 @@ class ShopLicenseApplicationForm extends Component {
       lat: 0,
       long: 0,
       location: "",
-
       areaCategory: "",
       length: 1,
       height: 1,
@@ -162,9 +164,12 @@ class ShopLicenseApplicationForm extends Component {
 
   render() {
     const { ownership } = this.props;
+    const {classes} = this.props;
     return (
-      <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={12} md={8}>
+
+        <GridContainer justify={"center"}>
+        <GridItem xs={12} sm={8} md={6}>
+
           <Card>
             <CardHeader title={"Shop License Application Form"}/>
             <CardContent>
@@ -332,8 +337,10 @@ class ShopLicenseApplicationForm extends Component {
               <Button color={"secondary"} variant={"outlined"} onClick={this.clearForm.bind(this)}> Reset</Button>
             </CardActions>
           </Card>
+
         </GridItem>
       </GridContainer>
+
     );
   }
 }
