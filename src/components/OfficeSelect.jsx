@@ -188,7 +188,7 @@ class OfficeSelect extends React.Component {
   };
 
   render() {
-    const { classes, theme, onChange,options,value,isClearable,label,placeholder,} = this.props;
+    const {required, name,classes, theme, onChange,options,value,isClearable,label,placeholder,} = this.props;
 
     const selectStyles = {
       input: base => ({
@@ -203,6 +203,7 @@ class OfficeSelect extends React.Component {
     return (
         <NoSsr>
           <Select
+            name={name}
             classes={classes}
             styles={selectStyles}
             options={options}
@@ -210,6 +211,7 @@ class OfficeSelect extends React.Component {
             value={value}
             onChange={onChange}
             textFieldProps={{
+              required:required,
               label: label,
               InputLabelProps: {
                 shrink: true,
@@ -229,7 +231,9 @@ OfficeSelect.defaultProps = {
   placeholder:''
 }
 OfficeSelect.propsType={
+  required:PropTypes.bool,
   label:PropTypes.string.isRequired,
+  name:PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
   options:PropTypes.array.isRequired,

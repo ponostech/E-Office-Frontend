@@ -1,4 +1,8 @@
-import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
+import {
+  cardTitle,
+  grayColor
+} from "assets/jss/material-dashboard-pro-react.jsx";
+
 const userProfileStyles = {
   cardTitle,
   cardIconTitle: {
@@ -12,11 +16,11 @@ const userProfileStyles = {
   },
   cardCategory: {
     marginTop: "10px",
-    color: "#999999 !important",
+    color: grayColor[0] + " !important",
     textAlign: "center"
   },
   description: {
-    color: "#999999"
+    color: grayColor[0]
   },
   updateProfileButton: {
     float: "right"

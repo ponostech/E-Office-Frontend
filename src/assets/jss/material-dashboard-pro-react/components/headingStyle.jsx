@@ -1,6 +1,4 @@
-// ##############################
-// // // Heading component styles
-// #############################
+import { grayColor } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const headingStyle = {
   heading: {
@@ -17,7 +15,7 @@ const headingStyle = {
   },
   title: {
     marginTop: "10px",
-    color: "#3C4858",
+    color: grayColor[2],
     textDecoration: "none"
   },
   category: {

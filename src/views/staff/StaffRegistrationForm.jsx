@@ -1,10 +1,16 @@
 import React, {Component} from "react";
-import {Button, Card, CardActions, CardContent, CardHeader, TextField} from "@material-ui/core";
+import {Button, Card, CardActions, CardHeader, TextField} from "@material-ui/core";
+
+import CardBody from "../../components/Card/CardBody.jsx";
+
 import {StaffViewModel} from "../model/StaffViewModel";
 import GridItem from "../../components/Grid/GridItem";
 import moment from "moment";
 import OfficeSelect from "../../components/OfficeSelect";
 import axios from "axios";
+import loginPageStyle from "../../assets/jss/material-dashboard-pro-react/views/loginPageStyle";
+import withStyles from "@material-ui/core/styles/withStyles";
+import GridContainer from "../../components/Grid/GridContainer";
 
 class StaffRegistrationForm extends Component {
     state = {
@@ -14,6 +20,7 @@ class StaffRegistrationForm extends Component {
         branch: "",
         dob: null,
         blood: "",
+
         nameError: "",
         addressError: "",
         dobError: "",
@@ -29,6 +36,10 @@ class StaffRegistrationForm extends Component {
         ],
         submit: false
     };
+
+    componentDidMount() {
+        document.title = "e-AMC | Staff Registration Form";
+    }
 
     handleChange = (e) => {
         const {name, value} = e.target;
@@ -104,91 +115,98 @@ class StaffRegistrationForm extends Component {
     render() {
         const {designation} = this.props;
         const {branch} = this.props;
+        const {classes} = this.props;
 
         return (
-            <GridItem xs={12} sm={12} md={5}>
-                <Card>
-                    <CardHeader title={StaffViewModel.TILE} subheader={StaffViewModel.SUBHEADER}/>
-                    <CardContent>
-                        <TextField name={"name"}
-                                   required={true}
-                                   variant={"outlined"}
-                                   margin={"dense"}
-                                   fullWidth={true}
-                                   onChange={this.handleChange.bind(this)}
-                                   label={StaffViewModel.NAME}
-                                   error={Boolean(this.state.nameError)}
-                                   helperText={this.state.nameError}
-                        />
+            <div className={classes.container}>
+                <GridContainer justify="center">
+                    <GridItem xs={12} sm={8} md={6}>
+                        <form>
+                            <Card>
+                                <CardHeader title={StaffViewModel.TILE} subheader={StaffViewModel.SUBHEADER}/>
+                                <CardBody>
+                                    <TextField name={"name"}
+                                               required={true}
+                                               variant={"outlined"}
+                                               margin={"dense"}
+                                               fullWidth={true}
+                                               onChange={this.handleChange.bind(this)}
+                                               label={StaffViewModel.NAME}
+                                               error={Boolean(this.state.nameError)}
+                                               helperText={this.state.nameError}
+                                    />
 
-                        <OfficeSelect value={designation}
-                                      defaultValue={this.state.designations[0]}
-                                      name={"designation"}
-                                      placeholder={StaffViewModel.DESIGNATION}
-                                      onChange={this.handleSelect.bind(this, 'designation')}
-                                      searchAble={true}
-                                      ClearAble={true}
-                                      label={StaffViewModel.DESIGNATION}
-                                      options={this.state.designations}/>
+                                    <OfficeSelect value={designation}
+                                                  defaultValue={this.state.designations[0]}
+                                                  name={"designation"}
+                                                  placeholder={StaffViewModel.DESIGNATION}
+                                                  onChange={this.handleSelect.bind(this, 'designation')}
+                                                  searchAble={true}
+                                                  ClearAble={true}
+                                                  label={StaffViewModel.DESIGNATION}
+                                                  options={this.state.designations}/>
 
-                        <TextField name={"address"}
-                                   required={true}
-                                   multiline={true}
-                                   rows={3}
-                                   variant={"outlined"}
-                                   margin={"dense"}
-                                   fullWidth={true}
-                                   error={Boolean(this.state.addressError)}
-                                   helperText={this.state.addressError}
-                                   onChange={this.handleChange.bind(this)}
-                                   label={StaffViewModel.ADDRESS}/>
+                                    <TextField name={"address"}
+                                               required={true}
+                                               multiline={true}
+                                               rows={3}
+                                               variant={"outlined"}
+                                               margin={"dense"}
+                                               fullWidth={true}
+                                               error={Boolean(this.state.addressError)}
+                                               helperText={this.state.addressError}
+                                               onChange={this.handleChange.bind(this)}
+                                               label={StaffViewModel.ADDRESS}/>
 
-                        <OfficeSelect value={branch}
-                                      label={StaffViewModel.BRANCH}
-                                      name={"branch"}
-                                      variant={"outlined"}
-                                      margin={"dense"}
-                                      fullWidth={true}
-                                      onChange={this.handleSelect.bind(this, 'branch')}
-                                      options={this.state.branches}/>
+                                    <OfficeSelect value={branch}
+                                                  label={StaffViewModel.BRANCH}
+                                                  name={"branch"}
+                                                  variant={"outlined"}
+                                                  margin={"dense"}
+                                                  fullWidth={true}
+                                                  onChange={this.handleSelect.bind(this, 'branch')}
+                                                  options={this.state.branches}/>
 
-                        <TextField name={"dob"}
-                                   variant={"outlined"}
-                                   margin={"dense"}
-                                   required={true}
-                                   fullWidth={true}
-                                   onChange={this.handleChange.bind(this)}
-                                   type={"date"}
-                                   label={StaffViewModel.DOB}
-                                   error={Boolean(this.state.dobError)}
-                                   helperText={this.state.dobError}
-                        />
+                                    <TextField name={"dob"}
+                                               variant={"outlined"}
+                                               margin={"dense"}
+                                               required={true}
+                                               fullWidth={true}
+                                               onChange={this.handleChange.bind(this)}
+                                               type={"date"}
+                                               label={StaffViewModel.DOB}
+                                               error={Boolean(this.state.dobError)}
+                                               helperText={this.state.dobError}
+                                    />
 
-                        <TextField name={"blood"}
-                                   variant={"outlined"}
-                                   margin={"dense"}
-                                   fullWidth={true}
-                                   onChange={this.handleChange.bind(this)}
-                                   label={StaffViewModel.BLOOD}/>
+                                    <TextField name={"blood"}
+                                               variant={"outlined"}
+                                               margin={"dense"}
+                                               fullWidth={true}
+                                               onChange={this.handleChange.bind(this)}
+                                               label={StaffViewModel.BLOOD}/>
 
-                    </CardContent>
-                    <CardActions>
-                        <Button name={"primary"} disabled={this.state.submit}
-                                color={"primary"} variant={"outlined"}
-                                onClick={this.handleClick.bind(this)}>
-                            {StaffViewModel.PRIMARY_TEXT}
-                        </Button>
-                        <Button name={"secondary"}
-                                color={"secondary"}
-                                variant={"outlined"}
-                                onClick={this.handleClick.bind(this)}>
-                            {StaffViewModel.SECONDARY_TEXT}
-                        </Button>
-                    </CardActions>
-                </Card>
-            </GridItem>
+                                </CardBody>
+                                <CardActions>
+                                    <Button name={"primary"} disabled={this.state.submit}
+                                            color={"primary"} variant={"outlined"}
+                                            onClick={this.handleClick.bind(this)}>
+                                        {StaffViewModel.PRIMARY_TEXT}
+                                    </Button>
+                                    <Button name={"secondary"}
+                                            color={"secondary"}
+                                            variant={"outlined"}
+                                            onClick={this.handleClick.bind(this)}>
+                                        {StaffViewModel.SECONDARY_TEXT}
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </form>
+                    </GridItem>
+                </GridContainer>
+            </div>
         );
     }
 }
 
-export default StaffRegistrationForm;
+export default withStyles(loginPageStyle)(StaffRegistrationForm);

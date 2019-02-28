@@ -1,6 +1,4 @@
-// ##############################
-// // // Modal component styles
-// #############################
+import { grayColor } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const modalStyle = theme => ({
   modalRoot: {
@@ -11,7 +9,7 @@ const modalStyle = theme => ({
   modal: {
     [theme.breakpoints.up("sm")]: {
       maxWidth: "500px",
-      margin: "1.75rem auto"
+      margin: "auto"
     },
     borderRadius: "6px",
     marginTop: "100px !important",
@@ -33,7 +31,7 @@ const modalStyle = theme => ({
     lineHeight: "1.42857143"
   },
   modalCloseButton: {
-    color: "#999999",
+    color: grayColor[0],
     marginTop: "-12px",
     WebkitAppearance: "none",
     padding: "0",

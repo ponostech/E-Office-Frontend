@@ -4,7 +4,10 @@ import {
   dangerCardHeader,
   infoCardHeader,
   primaryCardHeader,
-  roseCardHeader
+  roseCardHeader,
+  whiteColor,
+  blackColor,
+  hexToRgb
 } from "assets/jss/material-dashboard-pro-react.jsx";
 const cardHeaderStyle = {
   cardHeader: {
@@ -17,7 +20,7 @@ const cardHeaderStyle = {
       margin: "0 15px",
       padding: "0",
       position: "relative",
-      color: "#FFFFFF"
+      color: whiteColor
     },
     "&:first-child": {
       borderRadius: "calc(.25rem - 1px) calc(.25rem - 1px) 0 0"
@@ -75,7 +78,11 @@ const cardHeaderStyle = {
       borderRadius: "6px",
       pointerEvents: "none",
       boxShadow:
-        "0 5px 15px -8px rgba(0, 0, 0, 0.24), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"
+        "0 5px 15px -8px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.24), 0 8px 10px -5px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.2)"
     },
     "& a": {
       display: "block"
@@ -122,37 +129,37 @@ const cardHeaderStyle = {
   },
   cardHeaderText: {},
   warningCardHeader: {
-    color: "#FFFFFF",
+    color: whiteColor,
     "&:not($cardHeaderText):not($cardHeaderIcon)": {
       ...warningCardHeader
     }
   },
   successCardHeader: {
-    color: "#FFFFFF",
+    color: whiteColor,
     "&:not($cardHeaderText):not($cardHeaderIcon)": {
       ...successCardHeader
     }
   },
   dangerCardHeader: {
-    color: "#FFFFFF",
+    color: whiteColor,
     "&:not($cardHeaderText):not($cardHeaderIcon)": {
       ...dangerCardHeader
     }
   },
   infoCardHeader: {
-    color: "#FFFFFF",
+    color: whiteColor,
     "&:not($cardHeaderText):not($cardHeaderIcon)": {
       ...infoCardHeader
     }
   },
   primaryCardHeader: {
-    color: "#FFFFFF",
+    color: whiteColor,
     "&:not($cardHeaderText):not($cardHeaderIcon)": {
       ...primaryCardHeader
     }
   },
   roseCardHeader: {
-    color: "#FFFFFF",
+    color: whiteColor,
     "&:not($cardHeaderText):not($cardHeaderIcon)": {
       ...roseCardHeader
     }

@@ -1,10 +1,8 @@
-// ##############################
-// // // LoginPage view styles
-// #############################
-
 import {
   container,
-  cardTitle
+  cardTitle,
+  whiteColor,
+  grayColor
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const loginPageStyle = theme => ({
@@ -17,7 +15,7 @@ const loginPageStyle = theme => ({
   },
   cardTitle: {
     ...cardTitle,
-    color: "#FFFFFF"
+    color: whiteColor
   },
   textCenter: {
     textAlign: "center"
@@ -27,7 +25,7 @@ const loginPageStyle = theme => ({
   },
   customButtonClass: {
     "&,&:focus,&:hover": {
-      color: "#FFFFFF"
+      color: whiteColor
     },
     marginLeft: "5px",
     marginRight: "5px"
@@ -36,7 +34,7 @@ const loginPageStyle = theme => ({
     marginRight: "18px"
   },
   inputAdornmentIcon: {
-    color: "#555"
+    color: grayColor[6]
   },
   cardHidden: {
     opacity: "0",
