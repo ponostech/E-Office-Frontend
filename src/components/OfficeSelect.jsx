@@ -87,6 +87,7 @@ function Control(props) {
       label={"label"}
       variant={"outlined"}
       margin={"normal"}
+      placeholder={props.placeHolder}
       fullWidth
       InputProps={{
         inputComponent,
@@ -188,7 +189,7 @@ class OfficeSelect extends React.Component {
   };
 
   render() {
-    const {required, name,classes, theme, onChange,options,value,isClearable,label,placeholder,} = this.props;
+    const {required, name,classes, theme, onChange,options,value,isClearable,label,placeholder,...rest} = this.props;
 
     const selectStyles = {
       input: base => ({
@@ -219,6 +220,7 @@ class OfficeSelect extends React.Component {
             }}
             placeholder={placeholder}
             isClearable={isClearable}
+            {...rest}
           />
         </NoSsr>
     );
@@ -239,7 +241,7 @@ OfficeSelect.propsType={
   options:PropTypes.array.isRequired,
   value:PropTypes.any.isRequired,
   onChange:PropTypes.func.isRequired,
-  placeholder:PropTypes.string,
+  placeHolder:PropTypes.string,
   isClearable:PropTypes.bool,
   isMulti:PropTypes.bool
 }

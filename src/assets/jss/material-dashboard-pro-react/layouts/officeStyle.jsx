@@ -1,17 +1,17 @@
 const container = {
-
+  paddingRight: "15px",
+  paddingLeft: "15px",
   marginRight: "auto",
   marginLeft: "auto",
-  width:'100%',
-  // "@media (min-width: 768px)": {
-  //   width: "750px"
-  // },
-  // "@media (min-width: 992px)": {
-  //   width: "970px"
-  // },
-  // "@media (min-width: 1200px)": {
-  //   width: "100%"
-  // },
+  "@media (min-width: 768px)": {
+    width: "750px"
+  },
+  "@media (min-width: 992px)": {
+    width: "970px"
+  },
+  "@media (min-width: 1200px)": {
+    width: "1170px"
+  },
   "&:before,&:after": {
     display: "table",
     content: '" "'
@@ -20,7 +20,7 @@ const container = {
     clear: "both"
   }
 };
-const pagesStyle = theme => ({
+const officeStyle = theme => ({
   wrapper: {
     height: "auto",
     minHeight: "100vh",
@@ -42,7 +42,7 @@ const pagesStyle = theme => ({
     display: "flex!important",
     margin: "0",
     border: "0",
-    // color: "#fff",
+    color: "#fff",
     alignItems: "center",
     backgroundSize: "cover",
     backgroundPosition: "center center",
@@ -72,4 +72,4 @@ const pagesStyle = theme => ({
   }
 });
 
-export default pagesStyle;
+export default officeStyle;

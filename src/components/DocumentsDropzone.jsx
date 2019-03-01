@@ -40,13 +40,15 @@ class DocumentsDropzone extends Component {
     super(props);
     this.state = {
       files: [],
-      maxDocError: ""
+      maxDocError: "",
+      docSize:0,
     };
   }
 
 
   componentWillReceiveProps(nextProps, nextContext) {
     const { documents } = nextProps;
+    this.setState({docSize:documents.length})
     for (let i = 0; i < documents.length; i++) {
       let attr = { found: false };
       documents[i] = { ...documents[i], ...attr };
@@ -116,6 +118,9 @@ class DocumentsDropzone extends Component {
 
     switch (event.target.name) {
       case "confirm":
+        if (this.state.files.size===0) {
+          return
+        }
         onCloseHandler(this.state);
         break;
       case "cancel":
@@ -137,6 +142,7 @@ class DocumentsDropzone extends Component {
 
   render() {
     const { documents, openDialog, fullScreen, acceptedFiles,title,subHeader } = this.props;
+    console.log(typeof acceptedFiles)
 
     const { files } = this.state;
     const view = (
@@ -229,7 +235,7 @@ class DocumentsDropzone extends Component {
             </CardContent>
           </DialogContent>
           <DialogActions>
-            <Button name={"confirm"} onClick={this.onClose.bind(this)} variant={"outlined"}
+            <Button disabled={this.state.files.length !== this.state.docSize} name={"confirm"} onClick={this.onClose.bind(this)} variant={"outlined"}
                     color={"primary"}>Confirm</Button>
             <Button name={"cancel"} onClick={this.onClose.bind(this)} variant={"outlined"}
                     color={"secondary"}>Cancel</Button>
