@@ -32,7 +32,7 @@ class LandingPage extends Component {
     const { classes, ...rest } = this.props;
     return (
       <div>
-        <AuthNavbar brandText="" {...rest} />
+        <AuthNavbar brandText="" OfficeRoutes={OfficeRoutes} {...rest} />
         <div className={classes.wrapper} ref="wrapper">
           <div
             className={classes.fullPage}

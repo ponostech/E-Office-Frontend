@@ -20,11 +20,13 @@ import PersonAdd from "@material-ui/icons/PersonAdd";
 import Fingerprint from "@material-ui/icons/Fingerprint";
 import LockOpen from "@material-ui/icons/LockOpen";
 import MonetizationOn from "@material-ui/icons/MonetizationOn";
+import Home from "@material-ui/icons/Home";
 
 // core components
 import Button from "components/CustomButtons/Button";
 
 import authNavbarStyle from "assets/jss/material-dashboard-pro-react/components/authNavbarStyle.jsx";
+import {OfficeRoutes} from "../../config/routes-constant/OfficeRoutes";
 
 class AuthNavbar extends React.Component {
   constructor(props) {
@@ -46,14 +48,24 @@ class AuthNavbar extends React.Component {
     }
   }
   render() {
-    const { classes, color, brandText } = this.props;
+    const { classes, color, brandText, OfficeRoutes } = this.props;
     const appBarClasses = cx({
       [" " + classes[color]]: color
     });
     var list = (
       <List className={classes.list}>
         <ListItem className={classes.listItem}>
-          <NavLink to={"/admin/dashboard"} className={classes.navLink}>
+          <NavLink to={"/home"} className={classes.navLink}>
+            <Home className={classes.listItemIcon} />
+            <ListItemText
+                primary={"Home"}
+                disableTypography={true}
+                className={classes.listItemText}
+            />
+          </NavLink>
+        </ListItem>
+        <ListItem className={classes.listItem}>
+          <NavLink to={"/e-office"} className={classes.navLink}>
             <Dashboard className={classes.listItemIcon} />
             <ListItemText
               primary={"Dashboard"}
@@ -64,14 +76,14 @@ class AuthNavbar extends React.Component {
         </ListItem>
         <ListItem className={classes.listItem}>
           <NavLink
-            to={"/auth/pricing-page"}
+            to={"/faq"}
             className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute("/auth/pricing-page")
+              [classes.navLinkActive]: this.activeRoute("/faq")
             })}
           >
             <MonetizationOn className={classes.listItemIcon} />
             <ListItemText
-              primary={"Pricing"}
+              primary={"FAQ"}
               disableTypography={true}
               className={classes.listItemText}
             />
@@ -79,14 +91,14 @@ class AuthNavbar extends React.Component {
         </ListItem>
         <ListItem className={classes.listItem}>
           <NavLink
-            to={"/auth/register-page"}
+            to={"/staff/new"}
             className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute("/auth/register-page")
+              [classes.navLinkActive]: this.activeRoute("/staff/new")
             })}
           >
             <PersonAdd className={classes.listItemIcon} />
             <ListItemText
-              primary={"Register"}
+              primary={"Register Staff"}
               disableTypography={true}
               className={classes.listItemText}
             />
@@ -94,9 +106,24 @@ class AuthNavbar extends React.Component {
         </ListItem>
         <ListItem className={classes.listItem}>
           <NavLink
-            to={"/auth/login-page"}
+            to={OfficeRoutes.APPLY_ADVERTISER}
             className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute("/auth/login-page")
+              [classes.navLinkActive]: this.activeRoute(OfficeRoutes.APPLY_ADVERTISER)
+            })}
+          >
+            <PersonAdd className={classes.listItemIcon} />
+            <ListItemText
+              primary={"Register Advertiser"}
+              disableTypography={true}
+              className={classes.listItemText}
+            />
+          </NavLink>
+        </ListItem>
+        <ListItem className={classes.listItem}>
+          <NavLink
+            to={"/login"}
+            className={cx(classes.navLink, {
+              [classes.navLinkActive]: this.activeRoute("/login")
             })}
           >
             <Fingerprint className={classes.listItemIcon} />
