@@ -39,7 +39,7 @@ class LoginView extends React.Component {
             if (value.length === 0)
               this.setState({ emailError: LoginViewModel.REQUIRED_EMAIL });
             break;
-          case "focus":
+          case "change":
             emailRex.test(value) ? this.setState({ emailError: "" }) : this.setState({ emailError: LoginViewModel.INVALID_EMAIL });
             break;
           default:
@@ -51,7 +51,7 @@ class LoginView extends React.Component {
           case "blur":
             value.length === 0 ? this.setState({ passwordError: LoginViewModel.REQUIRED_PASSWORD }) : this.setState({ passwordError: "" });
             break;
-          case "focus":
+          case "change":
             break;
           default:
         }
@@ -63,6 +63,7 @@ class LoginView extends React.Component {
 
   };
   onChange = (event) => {
+    this.validate(event)
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -113,7 +114,6 @@ class LoginView extends React.Component {
               <TextField
                 error={Boolean(this.state.emailError)}
                 onBlur={this.validate.bind(this)}
-                onFocus={this.validate.bind(this)}
                 helperText={this.state.emailError}
                 label={LoginViewModel.EMAIL}
                 name={"email"}
@@ -135,7 +135,6 @@ class LoginView extends React.Component {
               <TextField
                 error={Boolean(this.state.passwordError)}
                 onBlur={this.validate.bind(this)}
-                onFocus={this.validate.bind(this)}
                 helperText={this.state.passwordError}
                 label={LoginViewModel.PASSWORD}
                 name={"password"}
