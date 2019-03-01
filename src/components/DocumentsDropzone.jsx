@@ -40,13 +40,15 @@ class DocumentsDropzone extends Component {
     super(props);
     this.state = {
       files: [],
-      maxDocError: ""
+      maxDocError: "",
+      docSize:0,
     };
   }
 
 
   componentWillReceiveProps(nextProps, nextContext) {
     const { documents } = nextProps;
+    this.setState({docSize:documents.length})
     for (let i = 0; i < documents.length; i++) {
       let attr = { found: false };
       documents[i] = { ...documents[i], ...attr };
@@ -233,7 +235,7 @@ class DocumentsDropzone extends Component {
             </CardContent>
           </DialogContent>
           <DialogActions>
-            <Button disabled={this.state.files.size===0} name={"confirm"} onClick={this.onClose.bind(this)} variant={"outlined"}
+            <Button disabled={this.state.files.length !== this.state.docSize} name={"confirm"} onClick={this.onClose.bind(this)} variant={"outlined"}
                     color={"primary"}>Confirm</Button>
             <Button name={"cancel"} onClick={this.onClose.bind(this)} variant={"outlined"}
                     color={"secondary"}>Cancel</Button>
