@@ -218,12 +218,10 @@ class HoardingApplicationForm extends Component {
 
               <DocumentsDropzone documents={[
                 { name: "Signature of the applicant", fileName: "signature" },
-                { name: "NOC of landowner", fileName: "noc-landowner" },
-                { name: "Tribal Certificate", fileName: "tribal-certificate" }
               ]}
                                  openDialog={this.state.openDialog}
                                  onCloseHandler={this.handleDocumentClose.bind(this)}
-                                 acceptedFiles={Constraint.ACCEPTED_IMAGES + " " + Constraint.ACCEPTED_DOCUMENTS}/>
+                                 acceptedFiles={Constraint.ACCEPTED_IMAGES + "," + Constraint.ACCEPTED_DOCUMENTS}/>
 
             </CardContent>
             <CardActions>
