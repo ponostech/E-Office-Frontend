@@ -25,13 +25,16 @@ import TextField from "@material-ui/core/es/TextField/TextField";
 import MapIcon from "@material-ui/icons/Map";
 import DocumentsDropzone from "../../components/DocumentsDropzone";
 import Constraint from "../../config/Constraint";
+import axios from "axios";
+import { ApiRoutes } from "../../config/ApiRoutes";
+import OfficeSelect from "../../components/OfficeSelect";
 
 class HoardingApplicationForm extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      localCouncil: "one",
+      localCouncil: null,
       roadDetails: 10,
       lat: 0,
       long: 0,
@@ -47,11 +50,30 @@ class HoardingApplicationForm extends Component {
       landLordType: "private",
       attachments: [],
 
-      localCouncils: ["one", "two", "three"],
+      localCouncils: [],
       displayTypes: [],
 
       openDialog: false
     };
+  }
+
+  componentWillMount() {
+    axios.get(ApiRoutes.LOCAL_COUNCIL)
+      .then(res => {
+        const{status}=res.data.status;
+        const { local_councils } = res.data.data;
+        let data = [];
+        local_councils.forEach(function(item) {
+          let value = item.id;
+          let label = item.name;
+          data.push({ value, label });
+        });
+        console.log(data)
+        this.setState({ localCouncils: data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   componentDidMount = () => {
@@ -70,9 +92,9 @@ class HoardingApplicationForm extends Component {
     const { checked } = e.target;
     if (checked) {
       this.setState({
-        [e.target.name]:checked
-      })
-    }else{
+        [e.target.name]: checked
+      });
+    } else {
       this.setState({
         [e.target.name]: e.target.value
       });
@@ -83,6 +105,12 @@ class HoardingApplicationForm extends Component {
   handleSelect = (e) => {
     this.setState({
       landLordType: e.target.value
+    });
+  };
+
+  handleLocalCouncilSelect = (e) => {
+    this.setState({
+      localCouncil: ""
     });
   };
   submitForm = (e) => {
@@ -118,17 +146,16 @@ class HoardingApplicationForm extends Component {
           <Card>
             <CardHeader title={"Hoarding Application Form"}/>
             <CardContent>
-              <FormControl variant={"outlined"} fullWidth={true} margin={"dense"}>
-                <InputLabel htmlFor="lc">Local Council</InputLabel>
-                <Select
-                  value={this.state.localCouncil}
-                  onChange={this.handleChange.bind(this)}
-                  input={
-                    <OutlinedInput labelWidth={100} name={"localCouncil"} id={"lc"}/>}
-                >
-                  {this.state.localCouncils.map((item, i) => <MenuItem key={i} value={item}> {item}</MenuItem>)}
-                </Select>
-              </FormControl>
+
+
+              <OfficeSelect value={this.state.localCouncil}
+                            label={"Local councils"}
+                            name={"localCouncil"}
+                            variant={"outlined"}
+                            margin={"dense"}
+                            fullWidth={true}
+                            onChange={this.handleLocalCouncilSelect.bind(this)}
+                            options={this.state.localCouncils}/>
 
               <FormGroup row={true}>
                 <TextField disabled={true} name={"lat"}
@@ -218,6 +245,7 @@ class HoardingApplicationForm extends Component {
 
               <DocumentsDropzone documents={[
                 { name: "Signature of the applicant", fileName: "signature" },
+                { name: "PDF", fileName: "test" }
               ]}
                                  openDialog={this.state.openDialog}
                                  onCloseHandler={this.handleDocumentClose.bind(this)}

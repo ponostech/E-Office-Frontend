@@ -267,7 +267,7 @@ class OfficePageHeader extends React.Component {
 
     var list = (
       <div>
-        <Typography color={"transparent"} variant={"title"}>Hello world</Typography>
+        <Typography color={"primary"} variant={"title"}>Hello world</Typography>
         <List className={classes.list}>
           <ListItem className={classes.listItem}>
             <NavLink to={"/apply"} className={classes.navLink}>
@@ -310,7 +310,7 @@ class OfficePageHeader extends React.Component {
       </div>
     );
     return (
-      <AppBar position="fixed" color={"default"}>
+      <AppBar position="fixed" color={"inherit"}>
         <Toolbar>{/*
           <Hidden smDown>
             <Typography color={"textPrimary"} variant={"title"}>E-AMC</Typography>
