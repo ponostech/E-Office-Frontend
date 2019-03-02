@@ -7,28 +7,21 @@ import Constraint from "../../config/Constraint";
 import CardFooter from "../../components/Card/CardFooter";
 import AdvertiserViewModel from "../model/AdvertiserViewModel";
 import AdvertiserInfo from "./AdvertiserInfo";
+import { ApiRoutes } from "../../config/ApiRoutes";
+import axios  from "axios";
 
 class AdvertiserContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       activeStep: 0,
-      data:[]
+      applicantData:undefined,
+      documentData:undefined
     };
     this.infoRef=React.createRef();
     this.docRef=React.createRef();
   }
 
-  validateInfo = () => {
-
-  };
-  validateDoc = () => {
-
-  };
-
-  submit = (allData) => {
-    console.log(allData);
-  };
   handlePrev = (e) => {
     const { activeStep } = this.state;
     if (activeStep > 0) {
@@ -40,15 +33,14 @@ class AdvertiserContainer extends Component {
     const { activeStep } = this.state;
     switch (activeStep) {
       case 0:
-        console.log(this.infoRef)
         if (this.infoRef.current.isValid()) {
-          this.setState({ data:this.infoRef.current.getData()});
+          this.setState({ applicantData:this.infoRef.current.getData()});
           this.setState({ activeStep: activeStep + 1 });
         }
         break;
       case 1:
         if (this.docRef.current.isValid()) {
-          this.setState({data: this.docRef.current.getData() });
+          this.setState({documentData: this.docRef.current.getData() });
           this.setState({ activeStep: activeStep + 1 });
         }
         break;
@@ -56,6 +48,35 @@ class AdvertiserContainer extends Component {
         break;
     }
   };
+
+  handleSubmit=(e)=>{
+    const { applicantData } = this.state;
+    const { documentData } = this.state;
+
+    let params={
+      name:applicantData.name,
+      email:applicantData.email,
+      phone_no:applicantData.phone,
+      password:applicantData.password,
+      type:applicantData.type,
+      registered:0,
+      address:applicantData.address,
+      signature:[applicantData.signature],
+      documents:documentData.files
+    }
+
+    console.log(params)
+
+    this.setState({submit:true})
+    axios.post(ApiRoutes.CREATE_ADVERTISER, params)
+      .then((res)=>{
+        console.log(res)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+      .then(()=>{this.setState({submit:false})})
+  }
 
   getPrevBtn = () => {
     return (
@@ -75,17 +96,17 @@ class AdvertiserContainer extends Component {
 
     switch (this.state.activeStep) {
       case 0:
-        return (<AdvertiserInfo ref={this.infoRef} validateInfo={this.validateInfo}/>);
+        return (<AdvertiserInfo ref={this.infoRef}/>);
       case 1:
         return (
           <DocumentsDropzoneFragment
             ref={this.docRef}
             documents={[
-              { name: "Signature of the applicant", fileName: "signature" },
-              { name: "PDF", fileName: "test" }
+              { name: "Signature of the applicant (Image)", fileName: "signature" },
+              { name: "PDF (Pdf)", fileName: "test" }
             ]}
             acceptedFiles={Constraint.ACCEPTED_IMAGES + " , " + Constraint.ACCEPTED_DOCUMENTS}
-            validateDoc={this.validateDoc}/>
+            />
         );
       case 2:
         return (
@@ -93,7 +114,7 @@ class AdvertiserContainer extends Component {
             <Typography variant={"subheading"}>
               Do you really want to submit ?
             </Typography>
-            <Button variant={"contained"} size={"large"} color={"primary"}>Submit</Button>
+            <Button onClick={this.handleSubmit.bind(this)} variant={"contained"} size={"large"} color={"primary"}>Submit</Button>
           </div>
         );
     }

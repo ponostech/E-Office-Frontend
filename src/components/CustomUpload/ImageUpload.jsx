@@ -24,9 +24,10 @@ class ImageUpload extends React.Component {
     e.preventDefault();
     let reader = new FileReader();
     let file = e.target.files[0];
+    this.props.onFileSelect(file);
     reader.onloadend = () => {
       this.setState({
-        file: file,
+        file,
         imagePreviewUrl: reader.result
       });
     };
@@ -42,22 +43,23 @@ class ImageUpload extends React.Component {
     this.refs.fileInput.click();
   }
   handleRemove() {
-    this.setState({
-      file: null,
+      this.setState({
+        file:null,
       imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImage
     });
     this.refs.fileInput.value = null;
+    this.props.onRemove()
   }
   render() {
     var {
       avatar,
       addButtonProps,
       changeButtonProps,
-      removeButtonProps
+      removeButtonProps,onFileSelect
     } = this.props;
     return (
       <div className="fileinput text-center">
-        <input type="file" onChange={this.handleImageChange} ref="fileInput" />
+        <input type="file" onChange={this.handleImageChange} ref="fileInput" accept={"image/jpeg"} />
         <div className={"thumbnail" + (avatar ? " img-circle" : "")}>
           <img src={this.state.imagePreviewUrl} alt="..." />
         </div>
@@ -90,7 +92,9 @@ ImageUpload.propTypes = {
   avatar: PropTypes.bool,
   addButtonProps: PropTypes.object,
   changeButtonProps: PropTypes.object,
-  removeButtonProps: PropTypes.object
+  removeButtonProps: PropTypes.object,
+  onFileSelect:PropTypes.func.isRequired,
+  onRemove:PropTypes.func.isRequired
 };
 
 export default ImageUpload;
