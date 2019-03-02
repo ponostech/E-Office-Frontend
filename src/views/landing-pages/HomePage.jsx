@@ -27,6 +27,9 @@ const styles = {
     cardCategory: {
         margin: "0",
         color: "#999999"
+    },
+    noTopMargin: {
+        margin: "0"
     }
 };
 
@@ -51,10 +54,10 @@ class HomePage extends Component {
         ));*/
 
         return (
-            <div className={classes.container}>
+            <div>
                 <GridContainer justify="center">
                     <GridItem xs={10} sm={10} md={10}>
-                        <Card>
+                        <Card style={styles.noTopMargin}>
                             <h3 className={classes.pageSubcategoriesTitle}>
                                 Aizawl Municipal Corporation
                             </h3>
@@ -65,20 +68,51 @@ class HomePage extends Component {
                                     alignCenter
                                     tabs={[
                                         {
-                                            tabButton: "Apply Shop License",
+                                            tabButton: "Shop License",
                                             tabIcon: StoreMallDirectory,
                                             tabContent: (
                                                 <Card>
                                                     <CardHeader>
+                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.APPLY_SHOP_LICENSE)}>
+                                                            Apply for Shop Licensing
+                                                        </Button>
+                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.RENEW_SHOP_LICENSE)}>
+                                                            Renew Shop Licensing
+                                                        </Button>
+                                                        <br/>
+                                                        <br/>
                                                         <h4 className={classes.cardTitle}>
                                                             Description about product
                                                         </h4>
                                                         <p className={classes.cardCategory}>
-                                                            <Button color="primary" round
-                                                                    onClick={this.handleLink(OfficeRoutes.APPLY_ADVERTISER)}>Apply</Button>
                                                         </p>
                                                     </CardHeader>
                                                     <CardBody>
+                                                        <br/>
+                                                        <br/>
+                                                        Collaboratively administrate empowered markets via
+                                                        plug-and-play networks. Dynamically procrastinate B2C
+                                                        users after installed base benefits.
+                                                        <br/>
+                                                        <br/>
+                                                        Collaboratively administrate empowered markets via
+                                                        plug-and-play networks. Dynamically procrastinate B2C
+                                                        users after installed base benefits.
+                                                        <br/>
+                                                        <br/>
+                                                        Collaboratively administrate empowered markets via
+                                                        plug-and-play networks. Dynamically procrastinate B2C
+                                                        users after installed base benefits.
+                                                        <br/>
+                                                        <br/>
+                                                        Collaboratively administrate empowered markets via
+                                                        plug-and-play networks. Dynamically procrastinate B2C
+                                                        users after installed base benefits.
+                                                        <br/>
+                                                        <br/>
+                                                        Collaboratively administrate empowered markets via
+                                                        plug-and-play networks. Dynamically procrastinate B2C
+                                                        users after installed base benefits.
                                                         <br/>
                                                         <br/>
                                                         Collaboratively administrate empowered markets via
@@ -91,16 +125,20 @@ class HomePage extends Component {
                                             )
                                         },
                                         {
-                                            tabButton: "Apply Banner/Poster",
+                                            tabButton: "Banner/Poster",
                                             tabIcon: Airplay,
                                             tabContent: (
                                                 <Card>
                                                     <CardHeader>
+                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.APPLY_BANNER)}>
+                                                            Apply for Banner
+                                                        </Button>
+                                                        <br/>
+                                                        <br/>
                                                         <h4 className={classes.cardTitle}>
                                                             Location of the product
                                                         </h4>
                                                         <p className={classes.cardCategory}>
-                                                            <Button color="primary" round onClick={this.handleLink(OfficeRoutes.APPLY_BANNER)}>Apply</Button>
                                                         </p>
                                                     </CardHeader>
                                                     <CardBody>
@@ -116,11 +154,22 @@ class HomePage extends Component {
                                             )
                                         },
                                         {
-                                            tabButton: "Apply Kiosk",
+                                            tabButton: "Kiosk",
                                             tabIcon: Dock,
                                             tabContent: (
                                                 <Card>
                                                     <CardHeader>
+                                                        <Button color="info" round onClick={this.handleLink(OfficeRoutes.APPLY_KIOSK)}>
+                                                            Apply for KIOSK
+                                                        </Button>
+                                                        <Button color="info" round onClick={this.handleLink(OfficeRoutes.RENEW_KIOSK)}>
+                                                            Renew KIOSK
+                                                        </Button>
+                                                        <Button color="warning" round onClick={this.handleLink(OfficeRoutes.PROPOSED_KIOSK)}>
+                                                            Propose new KIOSK
+                                                        </Button>
+                                                        <br/>
+                                                        <br/>
                                                         <h4 className={classes.cardTitle}>
                                                             Apply for KIOSK
                                                         </h4>
@@ -141,79 +190,48 @@ class HomePage extends Component {
                                             )
                                         },
                                         {
-                                            tabButton: "Help Center",
-                                            tabIcon: HelpOutline,
+                                            tabButton: "Hoarding",
+                                            tabIcon: Airplay,
                                             tabContent: (
                                                 <Card>
                                                     <CardHeader>
+                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.APPLY_HOARDING)}>
+                                                            Apply for Hoarding
+                                                        </Button>
+                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.RENEW_HOARDING)}>
+                                                            Renew Hoarding
+                                                        </Button>
+                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.PROPOSED_HOARDING)}>
+                                                            Propose new Hoarding
+                                                        </Button>
+                                                        <br/>
+                                                        <br/>
                                                         <h4 className={classes.cardTitle}>Help center</h4>
                                                         <p className={classes.cardCategory}>
                                                             More information here
                                                         </p>
                                                     </CardHeader>
                                                     <CardBody>
-                                                        From the seamless transition of glass and metal to the
-                                                        streamlined profile, every detail was carefully
-                                                        considered to enhance your experience. So while its
-                                                        display is larger, the phone feels just right.
-                                                        <br/>
-                                                        <br/>
-                                                        Another Text. The first thing you notice when you hold
-                                                        the phone is how great it feels in your hand. The cover
-                                                        glass curves down around the sides to meet the anodized
-                                                        aluminum enclosure in a remarkable, simplified design.
+                                                        Description
                                                     </CardBody>
                                                 </Card>
                                             )
                                         },
                                         {
-                                            tabButton: "Help Center",
+                                            tabButton: "Check License Validity",
                                             tabIcon: HelpOutline,
                                             tabContent: (
                                                 <Card>
                                                     <CardHeader>
-                                                        <h4 className={classes.cardTitle}>Help center</h4>
+                                                        <h4 className={classes.cardTitle}>
+
+                                                        </h4>
                                                         <p className={classes.cardCategory}>
-                                                            More information here
+
                                                         </p>
                                                     </CardHeader>
                                                     <CardBody>
-                                                        From the seamless transition of glass and metal to the
-                                                        streamlined profile, every detail was carefully
-                                                        considered to enhance your experience. So while its
-                                                        display is larger, the phone feels just right.
-                                                        <br/>
-                                                        <br/>
-                                                        Another Text. The first thing you notice when you hold
-                                                        the phone is how great it feels in your hand. The cover
-                                                        glass curves down around the sides to meet the anodized
-                                                        aluminum enclosure in a remarkable, simplified design.
-                                                    </CardBody>
-                                                </Card>
-                                            )
-                                        },
-                                        {
-                                            tabButton: "Help Center",
-                                            tabIcon: HelpOutline,
-                                            tabContent: (
-                                                <Card>
-                                                    <CardHeader>
-                                                        <h4 className={classes.cardTitle}>Help center</h4>
-                                                        <p className={classes.cardCategory}>
-                                                            More information here
-                                                        </p>
-                                                    </CardHeader>
-                                                    <CardBody>
-                                                        From the seamless transition of glass and metal to the
-                                                        streamlined profile, every detail was carefully
-                                                        considered to enhance your experience. So while its
-                                                        display is larger, the phone feels just right.
-                                                        <br/>
-                                                        <br/>
-                                                        Another Text. The first thing you notice when you hold
-                                                        the phone is how great it feels in your hand. The cover
-                                                        glass curves down around the sides to meet the anodized
-                                                        aluminum enclosure in a remarkable, simplified design.
+                                                        Description
                                                     </CardBody>
                                                 </Card>
                                             )
@@ -225,6 +243,7 @@ class HomePage extends Component {
 
                     </GridItem>
                 </GridContainer>
+
                 {/*<GridContainer spacing={8} justify={"center"}>
                     {cardItems}
                     <GridContainer justify={"space-around"}>

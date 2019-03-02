@@ -36,7 +36,7 @@ const officeStyle = theme => ({
   },
 
   fullPage: {
-    padding: "120px 0",
+    padding: "80px 0",
     position: "relative",
     minHeight: "100vh",
     display: "flex!important",

@@ -42,7 +42,7 @@ class LoginView extends React.Component {
             function() {
                 this.setState({ cardAnimaton: "" });
             }.bind(this),
-            700
+            500
         );
     }
     componentWillUnmount() {
