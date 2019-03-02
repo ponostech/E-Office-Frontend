@@ -1,55 +1,48 @@
 import React, { Component } from "react";
-import { Button, Card, CardActionArea, CardActions, CardContent, CardHeader, Divider, Paper } from "@material-ui/core";
-import Dropzone from "react-dropzone";
+import { Button, Card, CardActionArea, CardActions, CardContent, CardHeader, Divider } from "@material-ui/core";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import Constraint from "../../../config/Constraint";
 import PdfView from "../../../components/PdfView";
+import DocumentsDropzone from "../../../components/DocumentsDropzone";
 
 class NewReceipt extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      file: null
+      file: null,
+      open:false
     };
   }
 
-  onDrop = (acceptedFiles, rejectedFiles) => {
-    let temp = [...this.state.selectedFiles, ...acceptedFiles];
-     console.log(acceptedFiles)
+  onClose = (data) => {
+    let fileReader=new FileReader();
+    let temp = data.files[0];
+    let d=URL.createObjectURL(temp);
+    console.log(temp)
+    console.log("fasdfasdf     "+d)
+    this.setState({file:d});
 
   };
 
   getView = () => {
-    if (!this.state.file) {
+    if (this.state.file===null) {
       return (
-        <Dropzone
-          multiple={false}
-          accept={Constraint.ACCEPTED_DOCUMENTS}
-          onDrop={this.onDrop}>
-          {({ getRootProps, getInputProps, isDragActive }) => {
-            return (
-              <Paper style={{ padding: 50 }}
-                     {...getRootProps()}
-                // className={classNames('dropzone', {'dropzone--isActive': isDragActive})}
-              >
-                <input {...getInputProps()} />
-                {
-                  isDragActive ?
-                    <p>Drop files here...</p> :
-                    <p>Try dropping some files here, or click to select files to
-                      upload.</p>
-                }
-              </Paper>
-            );
-          }}
-        </Dropzone>
+        <div>
+          <Button onClick={()=>{this.setState({open:true })}}>Upload</Button>
+        <DocumentsDropzone documents={[
+          { name: "PDF", fileName: "test" }
+        ]} openDialog={this.state.open} onCloseHandler={this.onClose.bind(this)}
+                           acceptedFiles={Constraint.ACCEPTED_DOCUMENTS}/>
+        </div>
       );
     } else {
       return (
         <div>
-          <PdfView title={"File name"} file={this.state.file}/>
+          <embed src={this.state.file} width="500" height="375"
+                 type="application/pdf"/>
+          {/*<PdfView title={"File name"} file={this.state.file}/>*/}
           <Button variant={"outlined"} color={"secondary"}>Cancel</Button>
         </div>
 
@@ -83,6 +76,12 @@ class NewReceipt extends Component {
           <Button style={{ marginTop: 10 }} variant={"outlined"} color={"secondary"}>
             reset
           </Button>
+          <embed src={this.state.file} width="500" height="375"
+                 type="application/pdf"/>
+          <iframe src={`${this.state.file}&embedded=true`}
+                 style={{width:500,height:500}}>
+
+          </iframe>
         </GridItem>
       </GridContainer>
     );
