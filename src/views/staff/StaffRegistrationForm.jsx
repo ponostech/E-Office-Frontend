@@ -19,8 +19,8 @@ class StaffRegistrationForm extends Component {
     name: "",
     designation: null,
     address: "",
-    branch: null,
-    dob: null,
+    branch: "",
+    dob: "12,12,1990",
     blood: "",
 
     nameError: "",
@@ -43,6 +43,8 @@ class StaffRegistrationForm extends Component {
 
   componentDidMount() {
     document.title = "e-AMC | Staff Registration Form";
+    this.state.designation = this.state.designations[0];
+    this.state.branch = this.state.branches[0];
   }
 
   handleChange = (e) => {
@@ -71,23 +73,24 @@ class StaffRegistrationForm extends Component {
       name: "name",
       address: "test"
     };
-    this.setState({ submit: true})
+    this.setState({ submit: true });
     axios.post(ApiRoutes.CREATE_STAFF, data)
       .then(res => {
-            setTimeout(e=>{},5000)
+        setTimeout(e => {
+        }, 5000);
 
       })
-      .catch(err=>{
-          console.error("Staff registration error",err)
+      .catch(err => {
+        console.error("Staff registration error", err);
       })
-      .then(()=>this.setState({submit:false}));
+      .then(() => this.setState({ submit: false }));
   };
 
   handleClick = (e) => {
     this.setState({ open: true });
-    const valid = (this.state.nameError.length!==0 && this.state.addressError.length!==0);
+    const valid = (this.state.nameError.length !== 0 && this.state.addressError.length !== 0);
 
-    console.log(valid)
+    console.log(valid);
     const name = e.target.name;
     switch (name) {
       case "primary":
@@ -96,7 +99,15 @@ class StaffRegistrationForm extends Component {
         }
         break;
       case "secondary":
-        //TODO: clear data
+        this.setState({
+          name: "",
+          address: "",
+          dob: "",
+          blood: "",
+          designation:this.state.designations[0],
+          branch:this.state.branches[0],
+          attachments:[]
+        });
         break;
       case "upload":
         this.setState({ openDialog: true });
@@ -113,13 +124,16 @@ class StaffRegistrationForm extends Component {
     this.setState({ openDialog: false });
   };
   handleBlur = (e) => {
-    const { name,value } = e.target;
+    const { name, value } = e.target;
     switch (name) {
       case "name":
-        value.length===0?this.setState({ nameError: StaffViewModel.NAME_REQUIRED }):this.setState({nameError:''});
+        value.length === 0 ? this.setState({ nameError: StaffViewModel.NAME_REQUIRED }) : this.setState({ nameError: "" });
         break;
       case "address":
-        value.length===0?this.setState({ addressError: StaffViewModel.ADDRESS_REQUIRED }):this.setState({addressError:''});
+        value.length === 0 ? this.setState({ addressError: StaffViewModel.ADDRESS_REQUIRED }) : this.setState({ addressError: "" });
+        break;
+        case "dob":
+        value.length === 0 ? this.setState({ dobError: StaffViewModel.DOB_REQUIRED }) : this.setState({ dobError: "" });
         break;
       default:
         break;
@@ -166,7 +180,6 @@ class StaffRegistrationForm extends Component {
 
   render() {
     const { designation } = this.props;
-    const { branch } = this.props;
     const { classes } = this.props;
 
     return (
@@ -178,6 +191,7 @@ class StaffRegistrationForm extends Component {
                 <CardHeader title={StaffViewModel.TILE} subheader={StaffViewModel.SUBHEADER}/>
                 <CardBody>
                   <TextField
+                    value={this.state.name}
                     ref={"nameRef"}
                     name={"name"}
                     onBlur={this.handleBlur.bind(this)}
@@ -203,7 +217,7 @@ class StaffRegistrationForm extends Component {
                     options={this.state.designations}/>
 
                   <TextField
-                    ref={"addressRef"}
+                    value={this.state.address}
                     name={"address"}
                     onBlur={this.handleBlur.bind(this)}
                     required={true}
@@ -217,7 +231,7 @@ class StaffRegistrationForm extends Component {
                     onChange={this.handleChange.bind(this)}
                     label={StaffViewModel.ADDRESS}/>
 
-                  <OfficeSelect value={branch}
+                  <OfficeSelect value={this.state.branch}
                                 label={StaffViewModel.BRANCH}
                                 name={"branch"}
                                 variant={"outlined"}
@@ -227,6 +241,7 @@ class StaffRegistrationForm extends Component {
                                 options={this.state.branches}/>
 
                   <TextField name={"dob"}
+                             value={this.state.dob}
                              variant={"outlined"}
                              margin={"dense"}
                              required={true}
@@ -242,6 +257,7 @@ class StaffRegistrationForm extends Component {
                   />
 
                   <TextField
+                    value={this.state.blood}
                     ref={"bloodRef"}
                     name={"blood"}
                     variant={"outlined"}
