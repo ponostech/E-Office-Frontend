@@ -75,7 +75,7 @@ class PdfView extends Component {
 
 
 PdfView.propTypes = {
-  file: PropTypes.string,
+  file: PropTypes.any,
   title: PropTypes.string
 };
 export default PdfView;
