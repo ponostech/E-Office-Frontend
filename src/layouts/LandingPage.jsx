@@ -40,6 +40,7 @@ class LandingPage extends Component {
             <div className={classes.container}>
               <Switch>
                 <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
+
                 <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
                 <Route exact={true} path={OfficeRoutes.SHOP_LICENSE_DETAIL} component={ShopLicenseForm}/>
                 <Route exact={true} path={OfficeRoutes.RENEW_SHOP_LICENSE} component={ShopLicenseForm}/>
