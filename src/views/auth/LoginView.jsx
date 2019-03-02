@@ -6,6 +6,7 @@ import { Grid } from "@material-ui/core";
 import Email from "@material-ui/icons/Email";
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Face from "@material-ui/icons/Face";
 import Icon from "@material-ui/core/Icon";
 
 import LoginViewModel from "../model/LoginViewModel";
@@ -23,8 +24,6 @@ import Card from "../../components/Card/Card.jsx";
 import CardBody from "../../components/Card/CardBody.jsx";
 import CardHeader from "../../components/Card/CardHeader.jsx";
 import CardFooter from "../../components/Card/CardFooter.jsx";
-import axios from "axios";
-import { ApiRoutes } from "../../config/ApiRoutes";
 
 class LoginView extends React.Component {
     state = {
@@ -62,7 +61,7 @@ class LoginView extends React.Component {
                         if (value.length === 0)
                             this.setState({emailError: LoginViewModel.REQUIRED_EMAIL});
                         break;
-                    case "change":
+                    case "focus":
                         emailRex.test(value) ? this.setState({emailError: ""}) : this.setState({emailError: LoginViewModel.INVALID_EMAIL});
                         break;
                     default:
@@ -74,7 +73,7 @@ class LoginView extends React.Component {
                     case "blur":
                         value.length === 0 ? this.setState({passwordError: LoginViewModel.REQUIRED_PASSWORD}) : this.setState({passwordError: ""});
                         break;
-                    case "change":
+                    case "focus":
                         break;
                     default:
                 }
@@ -103,22 +102,18 @@ class LoginView extends React.Component {
         }
     };
 
-    submit = (e) => {
+    submit = () => {
         this.setState({submit: true});
         let data = {
             email: this.state.email,
             password: this.state.password
         };
-        axios.post(ApiRoutes.LOGIN_ROUTE, data)
-          .then(response =>{
-                console.log(response)
-          })
-          .catch(error=>{
-              console.error(" Login error: ",error)
-          })
-          .then(()=>{
-            this.setState({submit:false})
-          })
+        // axios.post(ApiRoutes.LOGIN_ROUTE, data)
+        //   .then(response =>{})
+        //   .catch(error=>{})
+        //   .then(()=>{
+        //     this.setState({submit:false})
+        //   })
     };
 
     handleForgot = (event) => {
@@ -134,83 +129,77 @@ class LoginView extends React.Component {
     render() {
         const {classes} = this.props;
         return (
-          <div className={classes.container}>
-              <GridContainer justify="center">
-                  <GridItem xs={12} sm={10} md={6}>
-                      <form>
-                          <Card login className={classes[this.state.cardAnimaton]}>
-                              <CardHeader
-                                className={`${classes.cardHeader} ${classes.textCenter}`}
-                                color="success"
-                              >
-                                  <h4 className={classes.cardTitle}>Log in</h4>
-                              </CardHeader>
-                              <CardBody>
-                                  <CustomInput
-                                    labelText="Email..."
-                                    name="email"
-                                    id="email"
-                                    formControlProps={{
-                                        fullWidth: true
-                                    }}
-                                    inputProps={{
-                                        onBlur:this.validate.bind(this),
-                                        onChange: this.handleChange("email"),
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                              <Email className={classes.inputAdornmentIcon}/>
-                                          </InputAdornment>
-                                        )
-                                    }}
-                                    error={Boolean(this.state.emailError)}
-                                    helpText={this.state.emailError}
-                                  />
-                                  <CustomInput
-                                    labelText="Password"
-                                    id="password"
-                                    name="password"
-                                    formControlProps={{
-                                        fullWidth: true
-                                    }}
-                                    inputProps={{
-                                        type:"password",
-                                        onChange: this.handleChange("password"),
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                              <Icon className={classes.inputAdornmentIcon}>
-                                                  lock_outline
-                                              </Icon>
-                                          </InputAdornment>
-                                        )
-                                    }}
-                                    error={Boolean(this.state.passwordError)}
-                                    helpText={this.state.passwordError}
-                                  />
-                              </CardBody>
-                              <CardFooter className={classes.justifyContentCenter}>
-                                  <Grid container direction="column"
-                                        justify="center"
-                                        alignItems="center">
-                                      <Grid item>
-                                          <Button disabled={this.state.submit} color="primary" round onClick={this.submit.bind(this)}>
-                                              Login
-                                          </Button>
-                                      </Grid>
-                                      <Grid item>
-                                          <Button simple onClick={this.handleForgot.bind(this)} color="primary">
-                                              Forgot password?
-                                          </Button>
-                                          <Button simple onClick={this.handleRegister.bind(this)} color="primary" round>
-                                              Create an account?
-                                          </Button>
-                                      </Grid>
-                                  </Grid>
-                              </CardFooter>
-                          </Card>
-                      </form>
-                  </GridItem>
-              </GridContainer>
-              {/*<GridContainer justify="center">
+            <div className={classes.container}>
+                <GridContainer justify="center">
+                    <GridItem xs={12} sm={10} md={6}>
+                        <form>
+                            <Card login className={classes[this.state.cardAnimaton]}>
+                                <CardHeader
+                                    className={`${classes.cardHeader} ${classes.textCenter}`}
+                                    color="success"
+                                >
+                                    <h4 className={classes.cardTitle}>Log in</h4>
+                                </CardHeader>
+                                <CardBody>
+                                    <CustomInput
+                                        labelText="Email..."
+                                        name="email"
+                                        id="email"
+                                        formControlProps={{
+                                            fullWidth: true
+                                        }}
+                                        inputProps={{
+                                            onChange: this.handleChange('email'),
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <Email className={classes.inputAdornmentIcon} />
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                    <CustomInput
+                                        labelText="Password"
+                                        id="password"
+                                        name="password"
+                                        formControlProps={{
+                                            fullWidth: true
+                                        }}
+                                        inputProps={{
+                                            onChange: this.handleChange('password'),
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <Icon className={classes.inputAdornmentIcon}>
+                                                        lock_outline
+                                                    </Icon>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                </CardBody>
+                                <CardFooter className={classes.justifyContentCenter}>
+                                    <Grid container  direction="column"
+                                          justify="center"
+                                          alignItems="center">
+                                        <Grid item>
+                                            <Button color="default" round>
+                                                Login
+                                            </Button>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button simple onClick={this.handleForgot.bind(this)} color="success">
+                                                Forgot password?
+                                            </Button>
+                                            <Button simple onClick={this.handleRegister.bind(this)} color="success" round >
+                                                Create an account?
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </CardFooter>
+                            </Card>
+                        </form>
+                    </GridItem>
+                </GridContainer>
+                {/*<GridContainer justify="center">
                     <GridItem xs={12} sm={12} md={4}>
                         <Card>
                             <CardHeader title={LoginViewModel.TITLE}/>
@@ -277,7 +266,7 @@ class LoginView extends React.Component {
                         </Card>
                     </GridItem>
                 </GridContainer>*/}
-          </div>
+            </div>
         );
     }
 }
