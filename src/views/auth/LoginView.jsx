@@ -181,15 +181,15 @@ class LoginView extends React.Component {
                                           justify="center"
                                           alignItems="center">
                                         <Grid item>
-                                            <Button color="primary" round>
+                                            <Button color="default" round>
                                                 Login
                                             </Button>
                                         </Grid>
                                         <Grid item>
-                                            <Button simple onClick={this.handleForgot.bind(this)} color="primary">
+                                            <Button simple onClick={this.handleForgot.bind(this)} color="success">
                                                 Forgot password?
                                             </Button>
-                                            <Button simple onClick={this.handleRegister.bind(this)} color="primary" round >
+                                            <Button simple onClick={this.handleRegister.bind(this)} color="success" round >
                                                 Create an account?
                                             </Button>
                                         </Grid>
