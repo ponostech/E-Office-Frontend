@@ -19,7 +19,6 @@ class StaffList extends Component {
         });
 
         return (
-
             <div>
                 <SimpleTable staffs={this.state.staffs} />
             </div>
