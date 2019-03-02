@@ -3,18 +3,19 @@ import { FormControl, InputLabel, MenuItem, OutlinedInput, Select, TextField } f
 import AdvertiserViewModel from "../model/AdvertiserViewModel";
 import PropTypes from "prop-types";
 import { Validators } from "../../utils/Validators";
+import ImageUpload from "../../components/CustomUpload/ImageUpload";
 
 class AdvertiserInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
-      type: "private",
+      type: "Individual",
       email: "",
       password: "",
       confirmPassword: "",
-      applicantType: "",
       address: "",
+      signature: null,
       agree: false,
 
       nameError: "",
@@ -23,25 +24,36 @@ class AdvertiserInfo extends Component {
       phoneError: "",
       confirmPasswordError: "",
       addressError: "",
-      types: ["private", "public"]
+      types: ["Individual", "Firm","Group(NGO)",],
     };
+  }
+  removeSignature=()=>{
+    this.setState({signature:null})
   }
 
   isValid = () => {
-    const invalid = Boolean(this.state.nameError) ||
-      Boolean(this.state.emailError) ||
-      Boolean(this.state.addressError) ||
-      Boolean(this.state.passwordError) ||
-      Boolean(this.state.confirmPassword) ||
-      Boolean(this.state.phoneError);
+    if (this.state.name.length === 0) {
+      return false
+    }
+    if (this.state.email.length === 0 || !Validators.EMAIL_REGEX.test(this.state.email)) {
+      return false;
+    }
+    if (this.state.password.length === 0 || this.state.password.length<7) {
+      return false;
+    }
+    if (!this.state.type) {
+      return false
+    }
+    return this.state.signature != null;
 
-    console.log(invalid);
-    return true;
+
   };
 
-  getData=()=>{
-    console.log(this.state)
+  getData = () => {
     return this.state;
+  };
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
   }
 
   handleRequired = (e) => {
@@ -57,20 +69,20 @@ class AdvertiserInfo extends Component {
         break;
       case "password":
         if (value.length === 0) {
-          this.setState({ passwordError: AdvertiserViewModel.REQUIRED_PASSWORD })
+          this.setState({ passwordError: AdvertiserViewModel.REQUIRED_PASSWORD });
         }
         break;
       case "confirmPassword":
         if (value.length === 0) {
-          this.setState({ confirmPasswordError: AdvertiserViewModel.REQUIRED_CONFIRM_PASSWORD })
+          this.setState({ confirmPasswordError: AdvertiserViewModel.REQUIRED_CONFIRM_PASSWORD });
         }
         break;
       case "phone":
         if (value.length === 0) {
-          this.setState({ phoneError: AdvertiserViewModel.REQUIRED_PHONE })
+          this.setState({ phoneError: AdvertiserViewModel.REQUIRED_PHONE });
         }
         break;
-        case "address":
+      case "address":
         value.length === 0 ? this.setState({ addressError: AdvertiserViewModel.REQUIRED_ADDRESS }) : this.setState({ addressError: "" });
         break;
       default:
@@ -103,14 +115,15 @@ class AdvertiserInfo extends Component {
     }
 
   };
-
+  selectSignature=(file)=>{
+    this.setState({ signature: file });
+  }
   openDialog = () => {
     this.setState({ openDialog: true });
   };
 
   render() {
     return (
-
       <div>
         <TextField
           error={Boolean(this.state.nameError)}
@@ -146,7 +159,6 @@ class AdvertiserInfo extends Component {
             ))}
           </Select>
         </FormControl>
-
         <TextField
           error={Boolean(this.state.emailError)}
           helperText={this.state.emailError}
@@ -218,13 +230,14 @@ class AdvertiserInfo extends Component {
           onChange={this.handleChange.bind(this)}
           placeholder={" hno \n locality \n pincode"}
         />
+        <ImageUpload onRemove={this.removeSignature.bind(this)} onFileSelect={this.selectSignature.bind(this)}/>
       </div>
 
     );
   }
+
 }
 
 AdvertiserInfo.propTypes = {
-  validateInfo: PropTypes.func.isRequired
 };
 export default AdvertiserInfo;

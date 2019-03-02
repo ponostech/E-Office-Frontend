@@ -33,17 +33,20 @@ class DocumentsDropzoneFragment extends Component {
     this.state = {
       files: [],
       maxDocError: "",
-      docSize: 0,
+      docSize: 0
     };
   }
 
-  isValid=()=>{
-    console.log("adfasdfasd")
-    return false;
-  }
-  getData=()=>{
+  isValid = () => {
+    if (this.state.files.length === 0) {
+      return false;
+    }
+    return this.props.documents.length === this.state.files.length;
+
+  };
+  getData = () => {
     return this.state;
-  }
+  };
 
   componentWillReceiveProps(nextProps, nextContext) {
     const { documents } = nextProps;
@@ -114,7 +117,7 @@ class DocumentsDropzoneFragment extends Component {
   };
 
   render() {
-    let { documents, acceptedFiles,...rest } = this.props;
+    let { documents, acceptedFiles, ...rest } = this.props;
 
     const { files } = this.state;
     const view = (
@@ -202,6 +205,6 @@ class DocumentsDropzoneFragment extends Component {
 
 DocumentsDropzoneFragment.propTypes = {
   documents: PropTypes.array.isRequired,
-  acceptedFiles: PropTypes.string.isRequired,
+  acceptedFiles: PropTypes.string.isRequired
 };
 export default DocumentsDropzoneFragment;
