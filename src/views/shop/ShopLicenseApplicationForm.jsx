@@ -1,48 +1,33 @@
 import React, {Component} from "react";
-import {
-    Grid,
-    Paper,
-    Button,
-    Divider,
-    FormControl,
-    FormControlLabel,
-    FormGroup,
-    FormLabel,
-    IconButton,
-    InputLabel,
-    MenuItem,
-    OutlinedInput,
-    Radio,
-    RadioGroup,
-    Select,
-    withStyles,
-    InputAdornment
-} from "@material-ui/core";
+import Datetime from 'react-datetime';
 
-import TextField from "@material-ui/core/es/TextField/TextField";
-import MapIcon from "@material-ui/icons/Map";
-import DocumentsDropzone from "../../components/DocumentsDropzone";
-import Constraint from "../../config/Constraint";
-import OfficeSelect from "../../components/OfficeSelect";
+import {FormControl, InputAdornment, InputLabel, MenuItem, Paper, Select, withStyles} from "@material-ui/core";
 import {ShopLicenseFormModel} from "../model/ShopLicenseFormModel";
 import moment from "moment";
-
 // @material ui icons
-import {Email, MailOutline, Face} from "@material-ui/icons";
-
+import {
+    Business,
+    CreditCard,
+    Email,
+    Face,
+    LocationOn,
+    MailOutline,
+    MyLocation,
+    Shop,
+    Smartphone
+} from "@material-ui/icons";
 // theme core components
 import GridContainer from "../../components/Grid/GridContainer.jsx";
 import GridItem from "../../components/Grid/GridItem.jsx";
 import Card from "../../components/Card/Card";
-import CardHeader  from "../../components/Card/CardHeader";
-import CardBody  from "../../components/Card/CardBody";
-import CardFooter  from "../../components/Card/CardFooter";
+import CardHeader from "../../components/Card/CardHeader";
+import CardBody from "../../components/Card/CardBody";
+import CardFooter from "../../components/Card/CardFooter";
 import CardIcon from "../../components/Card/CardIcon";
 import CustomInput from "../../components/CustomInput/CustomInput";
+import Button from "../../components/CustomButtons/Button.jsx";
 
-const  styles  = {
-
-};
+import styles from "../../assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
 
 class ShopLicenseApplicationForm extends Component {
     state = {
@@ -50,6 +35,7 @@ class ShopLicenseApplicationForm extends Component {
             name: "",
             shopName: "",
             tradeName: "",
+            applicantType: "",
             shopLocation: "",
             ownership: "",
             mobileNo: "",
@@ -86,13 +72,13 @@ class ShopLicenseApplicationForm extends Component {
     };
 
     handleChange = name => (event) => {
-            this.setState({
-                formValues: {
-                    ...this.state.formValues,
-                    [name]: event.target.value
-                }
-            });
-            console.log(this.state);
+        this.setState({
+            formValues: {
+                ...this.state.formValues,
+                [name]: event.target.value
+            }
+        });
+        console.log(this.state);
     };
 
     handleSelect = (selectedValue) => {
@@ -141,6 +127,7 @@ class ShopLicenseApplicationForm extends Component {
 
     render() {
         const {classes, ownership} = this.props;
+
         return (
             <div>
                 <GridContainer justify="center">
@@ -150,93 +137,280 @@ class ShopLicenseApplicationForm extends Component {
                                 <Card>
                                     <CardHeader color="rose" icon>
                                         <CardIcon color="rose">
-                                            <MailOutline />
+                                            <MailOutline/>
                                         </CardIcon>
                                         <h4 className={classes.cardIconTitle}>Shop License Application Form</h4>
                                     </CardHeader>
                                     <CardBody>
-                                        <CustomInput
-                                            labelText="Name of Applicant..."
-                                            name="name"
-                                            formControlProps={{
-                                                fullWidth: true
-                                            }}
-                                            inputProps={{
-                                                onChange: this.handleChange('name'),
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <Face className={classes.inputAdornmentIcon} />
-                                                    </InputAdornment>
-                                                )
-                                            }}
-                                        />
-                                        <CustomInput
-                                            labelText="Name of Shop..."
-                                            name="shopName"
-                                            formControlProps={{
-                                                fullWidth: true
-                                            }}
-                                            inputProps={{
-                                                onChange: this.handleChange('shopName'),
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <Face className={classes.inputAdornmentIcon} />
-                                                    </InputAdornment>
-                                                )
-                                            }}
-                                        />
-                                        <CustomInput
-                                            labelText="Name of Trade..."
-                                            name="tradeName"
-                                            formControlProps={{
-                                                fullWidth: true
-                                            }}
-                                            inputProps={{
-                                                onChange: this.handleChange('tradeName'),
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <Face className={classes.inputAdornmentIcon} />
-                                                    </InputAdornment>
-                                                )
-                                            }}
-                                        />
-                                        <CustomInput
-                                            labelText="Location of Shops"
-                                            name="shopLocation"
-                                            formControlProps={{
-                                                fullWidth: true
-                                            }}
-                                            inputProps={{
-                                                multiline: true,
-                                                rows: 5,
-                                                onChange: this.handleChange('shopLocation'),
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <Face className={classes.inputAdornmentIcon} />
-                                                    </InputAdornment>
-                                                )
-                                            }}
-                                        />
-                                        <CustomInput
-                                            labelText="Address of Applicant"
-                                            name="address"
-                                            formControlProps={{
-                                                fullWidth: true
-                                            }}
-                                            inputProps={{
-                                                multiline: true,
-                                                rows: 5,
-                                                onChange: this.handleChange('address'),
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <Face className={classes.inputAdornmentIcon} />
-                                                    </InputAdornment>
-                                                )
-                                            }}
-                                        />
+                                        <GridContainer>
+                                            <GridItem md={6} xs={12}>
+                                                <CustomInput
+                                                    labelText="Name of Applicant..."
+                                                    name="name"
+                                                    formControlProps={{
+                                                        fullWidth: true
+                                                    }}
+                                                    inputProps={{
+                                                        onChange: this.handleChange('name'),
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <Face className={classes.inputAdornmentIcon}/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <CustomInput
+                                                    labelText="Name of Shop..."
+                                                    name="shopName"
+                                                    formControlProps={{
+                                                        fullWidth: true
+                                                    }}
+                                                    inputProps={{
+                                                        onChange: this.handleChange('shopName'),
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <Shop className={classes.inputAdornmentIcon}/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <CustomInput
+                                                    labelText="Name of Trade..."
+                                                    name="tradeName"
+                                                    formControlProps={{
+                                                        fullWidth: true
+                                                    }}
+                                                    inputProps={{
+                                                        onChange: this.handleChange('tradeName')
+                                                    }}
+                                                />
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <FormControl
+                                                    fullWidth
+                                                    className={classes.selectFormControl}
+                                                >
+                                                    <InputLabel
+                                                        className={classes.labelRoot}
+                                                        htmlFor='applicantType'>
+                                                        Choose Applicant Type
+                                                    </InputLabel>
+                                                    <Select
+                                                        MenuProps={{
+                                                            className: classes.selectMenu
+                                                        }}
+                                                        classes={{
+                                                            select: classes.select
+                                                        }}
+                                                        value={this.state.formValues.applicantType}
+                                                        onChange={this.handleChange("applicantType")}
+                                                        inputProps={{
+                                                            name: "applicantType",
+                                                            id: "simple-select"
+                                                        }}
+                                                    >
+                                                        <MenuItem
+                                                            disabled
+                                                            classes={{
+                                                                root: classes.selectMenuItem
+                                                            }}
+                                                        >
+                                                            Choose Applicant Type
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            classes={{
+                                                                root: classes.selectMenuItem,
+                                                                selected: classes.selectMenuItemSelected
+                                                            }}
+                                                            value="proprietor"
+                                                        >
+                                                            Proprietor
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            classes={{
+                                                                root: classes.selectMenuItem,
+                                                                selected: classes.selectMenuItemSelected
+                                                            }}
+                                                            value="partnership"
+                                                        >
+                                                            Partnership
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            classes={{
+                                                                root: classes.selectMenuItem,
+                                                                selected: classes.selectMenuItemSelected
+                                                            }}
+                                                            value="private-limited"
+                                                        >
+                                                            Private Limited
+                                                        </MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <CustomInput
+                                                    labelText="Residential Address"
+                                                    name="address"
+                                                    formControlProps={{
+                                                        fullWidth: true
+                                                    }}
+                                                    inputProps={{
+                                                        multiline: true,
+                                                        rows: 5,
+                                                        onChange: this.handleChange('address'),
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <LocationOn className={classes.inputAdornmentIcon}/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <CustomInput
+                                                    labelText="Location of Shops"
+                                                    name="shopLocation"
+                                                    formControlProps={{
+                                                        fullWidth: true
+                                                    }}
+                                                    inputProps={{
+                                                        multiline: true,
+                                                        rows: 5,
+                                                        onChange: this.handleChange('shopLocation'),
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <MyLocation className={classes.inputAdornmentIcon}/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <CustomInput
+                                                    labelText="Mobile No."
+                                                    name="mobileNo"
+                                                    formControlProps={{
+                                                        fullWidth: true
+                                                    }}
+                                                    inputProps={{
+                                                        onChange: this.handleChange('mobileNo'),
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <Smartphone className={classes.inputAdornmentIcon}/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <CustomInput
+                                                    success={this.state.emailState === "success"}
+                                                    error={this.state.emailState === "error"}
+                                                    labelText="Email Address *"
+                                                    formControlProps={{
+                                                        fullWidth: true
+                                                    }}
+                                                    inputProps={{
+                                                        onChange: this.handleChange('email'),
+                                                        type: "email",
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <Email className={classes.inputAdornmentIcon}/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <CustomInput
+                                                    labelText="Tin No. (if any)"
+                                                    name="tinNo"
+                                                    formControlProps={{
+                                                        fullWidth: true
+                                                    }}
+                                                    inputProps={{
+                                                        onChange: this.handleChange('tinNo'),
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <CreditCard className={classes.inputAdornmentIcon}/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <CustomInput
+                                                    labelText="CST No. (if any)"
+                                                    name="cstNo"
+                                                    formControlProps={{
+                                                        fullWidth: true
+                                                    }}
+                                                    inputProps={{
+                                                        onChange: this.handleChange('cstNo'),
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <CreditCard className={classes.inputAdornmentIcon}/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <CustomInput
+                                                    labelText="PAN No."
+                                                    name="panNo"
+                                                    formControlProps={{
+                                                        fullWidth: true
+                                                    }}
+                                                    inputProps={{
+                                                        onChange: this.handleChange('panNo'),
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <CreditCard className={classes.inputAdornmentIcon}/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <FormControl>
+                                                    <Datetime
+                                                        timeFormat={false}
+                                                        inputProps={{
+                                                            onChange: this.handleChange('establishmentDate'),
+                                                            placeholder: "Date of Establishment"
+                                                        }}
+                                                    />
+                                                </FormControl>
+                                            </GridItem>
+                                            <GridItem md={12} xs={12}>
+                                                <CustomInput
+                                                    labelText="Details of Business"
+                                                    name="businessDetail"
+                                                    formControlProps={{
+                                                        fullWidth: true
+                                                    }}
+                                                    inputProps={{
+                                                        onChange: this.handleChange('businessDetail'),
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <Business className={classes.inputAdornmentIcon}/>
+                                                            </InputAdornment>
+                                                        ),
+                                                        multiline: true,
+                                                        rows: 5
+                                                    }}
+                                                />
+                                            </GridItem>
+                                        </GridContainer>
                                     </CardBody>
                                     <CardFooter>
-
+                                        <Button color="rose" round>Submit Application</Button>
+                                        <br/>
                                     </CardFooter>
                                 </Card>
                             </form>
@@ -433,4 +607,4 @@ class ShopLicenseApplicationForm extends Component {
     }
 }
 
-export default withStyles(styles) (ShopLicenseApplicationForm);
+export default withStyles(styles)(ShopLicenseApplicationForm);
