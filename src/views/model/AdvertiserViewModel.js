@@ -7,6 +7,8 @@ export default class AdvertiserViewModel {
   static CONFIRM_PASSWORD = "Confirm Password";
   static ADDRESS = "Address";
   static APPLICANT_TYPE = "Type of applicant";
+  static SIGNATURE="Signature";
+
   static DOC_ATTACHMENT = "Document attachment";
   static APPLICANT_DETAIL = "Applicant Details";
   static REQUIRED_NAME = " Name is required";
