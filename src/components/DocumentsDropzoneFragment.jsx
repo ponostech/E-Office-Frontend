@@ -30,38 +30,38 @@ import CheckIcon from "@material-ui/icons/Check";
 class DocumentsDropzoneFragment extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      files: [],
-      maxDocError: "",
-      docSize: 0,
-    };
+    this.state={
+      errors:""
+    }
+
   }
 
-  isValid=()=>{
-    console.log("adfasdfasd")
-    return false;
-  }
-  getData=()=>{
-    return this.state;
-  }
+  isValid = () => {
+    if (this.props.files.length === 0) {
+      return false;
+    }
+    return this.props.documents.length === this.props.files.length;
+
+  };
+  getData = () => {
+  };
 
   componentWillReceiveProps(nextProps, nextContext) {
-    const { documents } = nextProps;
-    this.setState({ docSize: documents.length });
-    for (let i = 0; i < documents.length; i++) {
-      let attr = { found: false };
-      documents[i] = { ...documents[i], ...attr };
-    }
+    // const { documents } = nextProps;
+    // for (let i = 0; i < documents.length; i++) {
+    //   let attr = { found: false };
+    //   documents[i] = { ...documents[i], ...attr };
+    // }
   }
 
   onDrop = (acceptedFiles, rejectedFiles) => {
     // Do something with files
-    const { documents } = this.props;
-    const maxDoc = documents.length;
-    let temp = [...this.state.files, ...acceptedFiles];
+    let documents  = this.props.documents;
+    let temp = [...this.props.files, ...acceptedFiles];
     let files = this.getUnique(temp, "name");
 
     let newFiles = [];
+    let newDocs = [];
     documents.forEach(function(doc) {
       files.forEach(file => {
         let fname = file.name.substring(0, file.name.lastIndexOf("."));
@@ -69,13 +69,17 @@ class DocumentsDropzoneFragment extends Component {
         if (fname === doc.fileName) {
           newFiles.push(file);
           doc.found = true;
+          newDocs.push(doc);
         }
       });
     });
-    console.log(newFiles);
-    this.setState({
-      files: newFiles
-    });
+
+    this.props.updateFiles(newFiles);
+    this.props.updateDocuments(newDocs)
+    // this.setState({
+    //   files: newFiles,
+    //   documents:newDocs
+    // });
   };
 
 
@@ -92,9 +96,9 @@ class DocumentsDropzoneFragment extends Component {
 
   handleItemDelete = (file) => {
     const { documents } = this.props;
-    const files = this.state.files.filter(value => value.name !== file.name);
-    this.setState({ files });
+    const files = this.props.files.filter(value => value.name !== file.name);
     let found = false;
+    let newDocs=[];
     documents.forEach(function(item, i) {
       files.forEach(function(file, j) {
         let fname = file.name.substring(0, file.name.lastIndexOf("."));
@@ -102,11 +106,18 @@ class DocumentsDropzoneFragment extends Component {
           found = true;
         }
       });
-      item.found = found;
+      let newDoc={
+         name:item.name,
+         fileName:item.fileName,
+         found:found
+      };
+      newDocs.push(newDoc);
+      // item.found = found;
 
     });
-    if (found)
-      this.setState({ files });
+       this.props.updateFiles(files);
+      // this.setState({ files });
+    this.props.updateDocuments(newDocs);
   };
 
   closeSnackBar = () => {
@@ -114,9 +125,8 @@ class DocumentsDropzoneFragment extends Component {
   };
 
   render() {
-    let { documents, acceptedFiles,...rest } = this.props;
+    let { acceptedFiles,documents,files, ...rest } = this.props;
 
-    const { files } = this.state;
     const view = (
       files.map(value => {
         return <ListItem key={value.name}>
@@ -177,12 +187,12 @@ class DocumentsDropzoneFragment extends Component {
             vertical: "bottom",
             horizontal: "center"
           }}
-          open={Boolean(this.state.maxDocError)}
+          open={Boolean(this.state.errors)}
           autoHideDuration={5000}
           ContentProps={{
             "aria-describedby": "message-id"
           }}
-          message={<span id="message-id">{this.state.maxDocError}</span>}
+          message={<span id="message-id">{this.state.errors}</span>}
           action={[
             <IconButton
               key="close"
@@ -202,6 +212,9 @@ class DocumentsDropzoneFragment extends Component {
 
 DocumentsDropzoneFragment.propTypes = {
   documents: PropTypes.array.isRequired,
+  files: PropTypes.array.isRequired,
   acceptedFiles: PropTypes.string.isRequired,
+  updateFiles:PropTypes.func.isRequired,
+  updateDocuments:PropTypes.func.isRequired,
 };
 export default DocumentsDropzoneFragment;

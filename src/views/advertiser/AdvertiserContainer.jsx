@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import { Button, Card, CardHeader, Step, StepLabel, Stepper, Typography } from "@material-ui/core";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography
+} from "@material-ui/core";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import DocumentsDropzoneFragment from "../../components/DocumentsDropzoneFragment";
@@ -7,27 +17,33 @@ import Constraint from "../../config/Constraint";
 import CardFooter from "../../components/Card/CardFooter";
 import AdvertiserViewModel from "../model/AdvertiserViewModel";
 import AdvertiserInfo from "./AdvertiserInfo";
+import { AdvertiserService } from "../../services/AdvertiserService";
+import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
+import SubmitDialog from "../../components/SubmitDialog";
 
 class AdvertiserContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       activeStep: 0,
-      data:[]
+      applicantData: undefined,
+      files: [],
+      documents: [
+        { name: "Signature of the applicant (Image)", fileName: "signature", found: false },
+        { name: "PDF (Pdf)", fileName: "test", found: false }
+      ]
     };
-    this.infoRef=React.createRef();
-    this.docRef=React.createRef();
+    this.advertiserService = new AdvertiserService();
+    this.infoRef = React.createRef();
+    this.docRef = React.createRef();
   }
 
-  validateInfo = () => {
-
-  };
-  validateDoc = () => {
-
+  updateFiles = (newFiles) => {
+    this.setState({ files: newFiles });
   };
 
-  submit = (allData) => {
-    console.log(allData);
+  updateDocuments = (newDocs) => {
+    this.setState({ documents: newDocs });
   };
   handlePrev = (e) => {
     const { activeStep } = this.state;
@@ -40,21 +56,43 @@ class AdvertiserContainer extends Component {
     const { activeStep } = this.state;
     switch (activeStep) {
       case 0:
-        console.log(this.infoRef)
         if (this.infoRef.current.isValid()) {
-          this.setState({ data:this.infoRef.current.getData()});
+          this.setState({ applicantData: this.infoRef.current.getData() });
           this.setState({ activeStep: activeStep + 1 });
         }
         break;
       case 1:
         if (this.docRef.current.isValid()) {
-          this.setState({data: this.docRef.current.getData() });
+          this.setState({ documentData: this.docRef.current.getData() });
           this.setState({ activeStep: activeStep + 1 });
         }
         break;
       case 2:
         break;
     }
+  };
+
+  handleSubmit = (e) => {
+    const { history } = this.props;
+    this.setState({ submit: true });
+    this.advertiserService.create(this.state)
+      .then(res => {
+        console.log(res);
+        if (!res.status) {
+          this.setState({
+
+          });
+        } else {
+          const{access_token}=res;
+          localStorage.setItem("token", access_token);
+          history.push(OfficeRoutes.APPLY_ADVERTISER)
+
+        }
+      })
+      .then(() => {
+        console.log("im fucking fullfillled");
+        this.setState({ submit: false });
+      });
   };
 
   getPrevBtn = () => {
@@ -75,26 +113,32 @@ class AdvertiserContainer extends Component {
 
     switch (this.state.activeStep) {
       case 0:
-        return (<AdvertiserInfo ref={this.infoRef} validateInfo={this.validateInfo}/>);
+        return (<AdvertiserInfo ref={this.infoRef} applicantData={this.state.applicantData}/>);
       case 1:
         return (
           <DocumentsDropzoneFragment
+            updateDocuments={this.updateDocuments.bind(this)}
+            updateFiles={this.updateFiles.bind(this)}
             ref={this.docRef}
-            documents={[
-              { name: "Signature of the applicant", fileName: "signature" },
-              { name: "PDF", fileName: "test" }
-            ]}
+            files={this.state.files}
+            documents={this.state.documents}
             acceptedFiles={Constraint.ACCEPTED_IMAGES + " , " + Constraint.ACCEPTED_DOCUMENTS}
-            validateDoc={this.validateDoc}/>
+          />
         );
       case 2:
         return (
-          <div>
-            <Typography variant={"subheading"}>
-              Do you really want to submit ?
-            </Typography>
-            <Button variant={"contained"} size={"large"} color={"primary"}>Submit</Button>
-          </div>
+          <Card>
+            <CardHeader title={"Confirm"}/>
+            <CardContent>
+              <Typography variant={"subheading"}>
+                Do you really want to submit ?
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button onClick={this.handleSubmit.bind(this)} variant={"contained"} size={"large"}
+                      color={"primary"}>Submit</Button>
+            </CardActions>
+          </Card>
         );
     }
   }
@@ -121,8 +165,9 @@ class AdvertiserContainer extends Component {
             <CardFooter>
               {this.getPrevBtn()}
               {this.getNextBtn()}
-
             </CardFooter>
+
+            <SubmitDialog open={this.state.submit} text={"Submitting form ...."}/>
           </Card>
         </GridItem>
       </GridContainer>

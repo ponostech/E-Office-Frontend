@@ -20,6 +20,7 @@ import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import AdvertiserForm from "../views/advertiser/AdvertiserForm";
 import LoginView from "../views/auth/LoginView";
 import HoardingList from "../views/hoarding/HoardingList";
+import AdvertiserContainer from "../views/advertiser/AdvertiserContainer";
 
 class LandingPage extends Component {
 
@@ -40,10 +41,12 @@ class LandingPage extends Component {
             <div className={classes.container}>
               <Switch>
                 <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
+
                 <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
                 <Route exact={true} path={OfficeRoutes.SHOP_LICENSE_DETAIL} component={ShopLicenseForm}/>
                 <Route exact={true} path={OfficeRoutes.RENEW_SHOP_LICENSE} component={ShopLicenseForm}/>
 
+                <Route exact={true} path={OfficeRoutes.APPLY_HOARDING} component={HoardingApplicationForm}/>
                 <Route exact={true} path={OfficeRoutes.PROPOSED_HOARDING} component={HoardingApplicationForm}/>
                 <Route exact={true} path={OfficeRoutes.HOARDING_LIST} component={HoardingList}/>
 
@@ -52,7 +55,7 @@ class LandingPage extends Component {
                 <Route exact={true} path={OfficeRoutes.KIOSK_DETAIL} component={ShopLicenseForm}/>
                 <Route exact={true} path={OfficeRoutes.RENEW_KIOSK} component={ShopLicenseForm}/>
 
-                <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserForm}/>
+                <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserContainer}/>
                 <Route exact={true} path={OfficeRoutes.ADVERTISER_DETAIL} component={ShopLicenseForm}/>
                 <Route exact={true} path={OfficeRoutes.RENEW_ADVERTISER} component={ShopLicenseForm}/>
 

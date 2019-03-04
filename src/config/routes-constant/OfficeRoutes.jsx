@@ -9,9 +9,9 @@ export class OfficeRoutes {
   static RENEW_ADVERTISER = "/advertiser/:id/renew";
   static ADVERTISER_DETAIL = "/advertiser/:id/detail";
 
-  static APPLY_SHOP_LICENSE = "/shopping-license/new";
-  static RENEW_SHOP_LICENSE = "/shopping-license/:id/renew";
-  static SHOP_LICENSE_DETAIL = "/shopping-license/:id/detail";
+  static APPLY_SHOP_LICENSE = "/shop-license/new";
+  static RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
+  static SHOP_LICENSE_DETAIL = "/shop-license/:id/detail";
 
   static APPLY_HOARDING = "/hoarding/new";
   static RENEW_HOARDING = "/hoarding/:id/renew";
