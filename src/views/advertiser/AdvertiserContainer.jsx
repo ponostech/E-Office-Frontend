@@ -90,7 +90,6 @@ class AdvertiserContainer extends Component {
         }
       })
       .then(() => {
-        console.log("im fucking fullfillled");
         this.setState({ submit: false });
       });
   };
