@@ -12,6 +12,7 @@ import GridContainer from "../../components/Grid/GridContainer";
 import ImageUpload from "../../components/CustomUpload/ImageUpload";
 import { StaffService } from "../../services/StaffService";
 import SubmitDialog from "../../components/SubmitDialog";
+import OfficeSnackbar from "../../components/OfficeSnackbar";
 
 class StaffRegistrationForm extends Component {
 
@@ -40,6 +41,7 @@ class StaffRegistrationForm extends Component {
       { value: "three", label: "three" }
     ],
     submit: false,
+    complete: false,
     attachments: []
 
   };
@@ -90,6 +92,7 @@ class StaffRegistrationForm extends Component {
     this.setState({ submit: true });
     this.staffService.create(this.state)
       .then(res => {
+        this.setState({complete:true })
         console.log(res);
       })
       .then(() => {
@@ -156,9 +159,10 @@ class StaffRegistrationForm extends Component {
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={6}>
             <form>
-              <Card>
+              <Card style={{padding:50}}>
                 <CardHeader title={StaffViewModel.TILE} subheader={StaffViewModel.SUBHEADER}/>
                 <SubmitDialog open={this.state.submit} text={StaffViewModel.SUBMIT}/>
+                <OfficeSnackbar variant={"success"} open={this.state.complete} message={StaffViewModel.CREATE_MESSAGE} />
                 <CardBody>
                   <TextField
                     value={this.state.name}

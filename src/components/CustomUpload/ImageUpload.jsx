@@ -77,8 +77,8 @@ class ImageUpload extends React.Component {
     return (
         <FormControl>
           <InputLabel htmlFor={"image"}>{label}</InputLabel>
-      <div id="image" className="fileinput text-center">
-        <input type="file" onChange={this.handleImageChange.bind(this)} ref="fileInput" accept={"image/jpeg"}/>
+          <div id="image" className="fileinput text-center">
+          <input type="file" onChange={this.handleImageChange.bind(this)} ref="fileInput" accept={"image/jpeg ,  image/png"}/>
         <div className={"thumbnail" + (avatar ? " img-circle" : "")}>
           <img src={this.state.imagePreviewUrl} alt="..."/>
         </div>
