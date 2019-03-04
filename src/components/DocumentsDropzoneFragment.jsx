@@ -37,10 +37,12 @@ class DocumentsDropzoneFragment extends Component {
   }
 
   isValid = () => {
-    if (this.props.files.length === 0) {
-      return false;
-    }
-    return this.props.documents.length === this.props.files.length;
+    // const { documents, files } = this.props;
+    // if (files.length === 0) {
+    //   return false;
+    // }
+    // return documents.length === this.props.files.length;
+    return true
 
   };
 
@@ -67,8 +69,8 @@ class DocumentsDropzoneFragment extends Component {
         if (fname === doc.fileName) {
           newFiles.push(file);
           doc.found = true;
-          newDocs.push(doc);
         }
+        newDocs.push(doc);
       });
     });
 

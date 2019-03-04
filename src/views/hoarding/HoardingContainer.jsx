@@ -20,6 +20,7 @@ import SubmitDialog from "../../components/SubmitDialog";
 import HoardingApplicationFormModel from "../model/HoardingApplicationFormModel";
 import { LocalCouncilService } from "../../services/LocalCouncilService";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
+import { HoardingService } from "../../services/HoardingService";
 
 class HoardingContainer extends Component {
   constructor(props) {
@@ -43,7 +44,10 @@ class HoardingContainer extends Component {
 
         localCouncils: [],
         categories: [],
-        displayTypes: []
+        displayTypes: [
+          {value:"one",label:"One"},
+          {value:"two",label:"TEo"},
+        ]
       },
       files: [],
       documents: [
@@ -58,6 +62,7 @@ class HoardingContainer extends Component {
     this.hoardingRef = React.createRef("hoardingRef");
     this.docRef = React.createRef("docRef");
     this.localCouncilservice = new LocalCouncilService();
+    this.hoardingService=new HoardingService();
   }
 
   componentWillMount() {
@@ -110,6 +115,17 @@ class HoardingContainer extends Component {
 
   handleSubmit = (e) => {
 
+    this.setState({ submit: true})
+    this.hoardingService.create(this.state)
+      .then(data=>{
+        console.log("whyyy nee")
+        console.log(data)
+
+      })
+      .then(()=>{
+        this.setState({submit:false,complete:true})
+      })
+
   };
   handleNext = (e) => {
     const { activeStep } = this.state;
@@ -121,6 +137,7 @@ class HoardingContainer extends Component {
         }
         break;
       case 1:
+        console.log(this.docRef.current.isValid());
         if (this.docRef.current.isValid()) {
           this.setState({ activeStep: activeStep + 1 });
         }
@@ -193,6 +210,9 @@ class HoardingContainer extends Component {
             <SubmitDialog open={this.state.submit} text={"Submitting form ...."}/>
           </Card>
         </GridItem>
+
+        <SubmitDialog open={this.state.submit} text={"Submitting form ...."}/>
+        <OfficeSnackbar variant={"success"} message={"Your application is submitted successfully"} open={this.state.complete} onClose={(e)=>this.setState({complete:false})}/>
       </GridContainer>
 
 
