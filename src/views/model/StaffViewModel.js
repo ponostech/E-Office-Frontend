@@ -17,5 +17,6 @@ export class StaffViewModel {
   static DOB_FUTURE_ERROR="Date of birth can't be a future";
   static ATTACHMENT_LABEL="Upload signature";
   static RESELECT_ATTACHMENT=" Reset";
+  static SUBMIT="Submit ...";
 
 }

@@ -1,31 +1,34 @@
 import React, { Component } from "react";
-import { Button, Card, CardActions, CardHeader, Chip, TextField } from "@material-ui/core";
+import { Button, Card, CardActions, CardHeader, Divider, TextField } from "@material-ui/core";
 
 import CardBody from "../../components/Card/CardBody.jsx";
 
 import { StaffViewModel } from "../model/StaffViewModel";
 import GridItem from "../../components/Grid/GridItem";
 import OfficeSelect from "../../components/OfficeSelect";
-import axios from "axios";
 import loginPageStyle from "../../assets/jss/material-dashboard-pro-react/views/loginPageStyle";
 import withStyles from "@material-ui/core/styles/withStyles";
 import GridContainer from "../../components/Grid/GridContainer";
-import DocumentsDropzone from "../../components/DocumentsDropzone";
-import Constraint from "../../config/Constraint";
-import { ApiRoutes } from "../../config/ApiRoutes";
+import ImageUpload from "../../components/CustomUpload/ImageUpload";
+import { StaffService } from "../../services/StaffService";
+import SubmitDialog from "../../components/SubmitDialog";
 
 class StaffRegistrationForm extends Component {
+
+  staffService = new StaffService();
+
   state = {
     name: "",
     designation: null,
     address: "",
     branch: "",
-    dob: "12,12,1990",
+    dob: "1991/12/12",
     blood: "",
 
     nameError: "",
     addressError: "",
     dobError: "",
+    signature: null,
     designations: [
       { value: "ldc", label: "LDC" },
       { value: "udc", label: "UDC" },
@@ -37,8 +40,8 @@ class StaffRegistrationForm extends Component {
       { value: "three", label: "three" }
     ],
     submit: false,
-    openDialog: false,
     attachments: []
+
   };
 
   componentDidMount() {
@@ -69,60 +72,63 @@ class StaffRegistrationForm extends Component {
   };
 
   onSubmit = (e) => {
-    const data = {
-      name: "name",
-      address: "test"
-    };
-    this.setState({ submit: true });
-    axios.post(ApiRoutes.CREATE_STAFF, data)
-      .then(res => {
-        setTimeout(e => {
-        }, 5000);
+    // const invalid = this.state.name.length===0 || this.state.address.length === 0 || this.state.dob.length === 0 || this.state.signature === null
 
+    // if (!this.state.name) {
+    //   return
+    // }
+    // if (this.state.address) {
+    //   return
+    // }
+    // if (!this.state.dob) {
+    //   return ;
+    // }
+    // if (!this.state.signature) {
+    //   return
+    // }
+
+    this.setState({ submit: true });
+    this.staffService.create(this.state)
+      .then(res => {
+        console.log(res);
       })
-      .catch(err => {
-        console.error("Staff registration error", err);
-      })
-      .then(() => this.setState({ submit: false }));
+      .then(() => {
+        this.setState({ submit: false });
+      });
   };
 
   handleClick = (e) => {
-    this.setState({ open: true });
-    const valid = (this.state.nameError.length !== 0 && this.state.addressError.length !== 0);
-
-    console.log(valid);
     const name = e.target.name;
     switch (name) {
       case "primary":
-        if (valid) {
           this.onSubmit();
-        }
         break;
       case "secondary":
         this.setState({
           name: "",
           address: "",
-          dob: "",
+          dob: '',
           blood: "",
-          designation:this.state.designations[0],
-          branch:this.state.branches[0],
-          attachments:[]
+          designation: this.state.designations[0],
+          branch: this.state.branches[0],
+          signature:null,
         });
-        break;
-      case "upload":
-        this.setState({ openDialog: true });
         break;
       default:
         break;
     }
   };
 
-  handleDocuments = (data) => {
-    if (data) {
-      this.setState({ attachments: data.files });
-    }
-    this.setState({ openDialog: false });
+  onSignatureSelect = (signature) => {
+    this.setState({ signature });
   };
+  onSignatureRemove = () => {
+    this.setState({ signature: null });
+  };
+  setImagePreviewUrl = (url) => {
+
+  };
+
   handleBlur = (e) => {
     const { name, value } = e.target;
     switch (name) {
@@ -132,7 +138,7 @@ class StaffRegistrationForm extends Component {
       case "address":
         value.length === 0 ? this.setState({ addressError: StaffViewModel.ADDRESS_REQUIRED }) : this.setState({ addressError: "" });
         break;
-        case "dob":
+      case "dob":
         value.length === 0 ? this.setState({ dobError: StaffViewModel.DOB_REQUIRED }) : this.setState({ dobError: "" });
         break;
       default:
@@ -140,43 +146,6 @@ class StaffRegistrationForm extends Component {
     }
   };
 
-  getAttachmentView = () => {
-    const docExist = this.state.attachments.length > 0;
-    if (docExist) {
-      return (
-        <div>
-          <div>
-            {this.state.attachments.map(value => {
-              return (
-                <Chip style={{ margin: 10 }} key={value.name} color={"primary"} variant={"outlined"}
-                      label={value.name}/>
-              );
-            })}
-          </div>
-          <div>
-            <Button
-              name={"reset"}
-              onClick={(e) => {
-                this.setState({ attachments: [] });
-              }
-              }
-              variant={"outlined"} color={"secondary"}>
-              {StaffViewModel.RESELECT_ATTACHMENT}
-            </Button>
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <Button
-          name={"upload"}
-          onClick={this.handleClick.bind(this)}
-          variant={"outlined"} color={"primary"}>
-          {StaffViewModel.ATTACHMENT_LABEL}
-        </Button>
-      );
-    }
-  };
 
   render() {
     const { designation } = this.props;
@@ -189,6 +158,7 @@ class StaffRegistrationForm extends Component {
             <form>
               <Card>
                 <CardHeader title={StaffViewModel.TILE} subheader={StaffViewModel.SUBHEADER}/>
+                <SubmitDialog open={this.state.submit} text={StaffViewModel.SUBMIT}/>
                 <CardBody>
                   <TextField
                     value={this.state.name}
@@ -265,13 +235,18 @@ class StaffRegistrationForm extends Component {
                     fullWidth={true}
                     onChange={this.handleChange.bind(this)}
                     label={StaffViewModel.BLOOD}/>
-                  {this.getAttachmentView()}
+                  {/*{this.getAttachmentView()}*/}
 
-                  <DocumentsDropzone documents={[
-                    { name: "Staff signature", fileName: "signature" }
-                  ]}
-                                     openDialog={this.state.openDialog} onCloseHandler={this.handleDocuments.bind(this)}
-                                     acceptedFiles={Constraint.ACCEPTED_IMAGES}/>
+                  <Divider/>
+                  <ImageUpload setImagePreviewUrl={this.setImagePreviewUrl.bind(this)}
+                               onFileSelect={this.onSignatureSelect.bind(this)}
+                               onRemove={this.onSignatureRemove.bind(this)} label={StaffViewModel.SIGNATURE}/>
+                  {/*<DocumentsDropzone documents={[*/}
+                  {/*{ name: "Staff signature", fileName: "signature" }*/}
+                  {/*]}*/}
+                  {/*openDialog={this.state.openDialog} onCloseHandler={this.handleDocuments.bind(this)}*/}
+                  {/*acceptedFiles={Constraint.ACCEPTED_IMAGES}/>*/}
+
                 </CardBody>
                 <CardActions>
                   <Button name={"primary"} disabled={this.state.submit}
