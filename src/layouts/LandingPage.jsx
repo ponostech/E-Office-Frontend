@@ -21,6 +21,7 @@ import AdvertiserForm from "../views/advertiser/AdvertiserForm";
 import LoginView from "../views/auth/LoginView";
 import HoardingList from "../views/hoarding/HoardingList";
 import AdvertiserContainer from "../views/advertiser/AdvertiserContainer";
+import BannerApplicationForm from "../views/banner/BannerApplicationForm";
 
 class LandingPage extends Component {
 
@@ -61,6 +62,9 @@ class LandingPage extends Component {
 
                 <Route exact={true} path={OfficeRoutes.NEW_STAFF} component={StaffRegistrationForm}/>
                 <Route exact={true} path={OfficeRoutes.LIST_STAFF} component={StaffList}/>
+
+
+                <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
 
                 <Route exact={true} path={OfficeRoutes.FORM} component={Form}/>
                 <Route exact={true} path={OfficeRoutes.LOGIN} component={LoginView}/>
