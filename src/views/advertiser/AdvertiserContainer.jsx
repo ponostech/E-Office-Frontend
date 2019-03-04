@@ -63,7 +63,7 @@ class AdvertiserContainer extends Component {
         break;
       case 1:
         if (this.docRef.current.isValid()) {
-          this.setState({ documentData: this.docRef.current.getData() });
+          // this.setState({ documentData: this.docRef.current.getData() });
           this.setState({ activeStep: activeStep + 1 });
         }
         break;

@@ -28,13 +28,17 @@ class GMapDialog extends Component {
     }
   };
 
+  confirm=(e)=>{
+    console.log(e)
+  }
+
   render() {
     const { open, onClose, isMarkerShown, ...rest } = this.props;
     return (
       <div>
         <Dialog open={open} onClose={this.confirm.bind(this)} {...rest}>
           <DialogContent>
-            <<GoogleMap
+            <GoogleMap
               {...rest}
               defaultZoom={8}
               defaultCenter={{ lat: this.state.lat, lng: this.state.long }}
@@ -58,5 +62,5 @@ GMapDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   isMarkerShown: PropTypes.bool.isRequired
 };
-export default GMapDialog;
+export default ( GMapDialog );
 
