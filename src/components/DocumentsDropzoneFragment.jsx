@@ -43,8 +43,6 @@ class DocumentsDropzoneFragment extends Component {
     return this.props.documents.length === this.props.files.length;
 
   };
-  getData = () => {
-  };
 
   componentWillReceiveProps(nextProps, nextContext) {
     // const { documents } = nextProps;
