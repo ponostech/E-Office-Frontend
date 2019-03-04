@@ -56,13 +56,8 @@ class HoardingInfo extends Component {
   getData = () => {
     return this.state;
   };
-  handleSelect = (e) => {
-    this.setState({
-      landLordType: e.target.value
-    });
-  };
 
-  handleOfficeSelect = (value, identifier) => {
+  handleOfficeSelect = (identifier, value) => {
     this.setState({
       [identifier]: value
     });
@@ -180,7 +175,7 @@ class HoardingInfo extends Component {
           <OfficeSelect value={this.state.displayType}
                         variant={"outlined"}
                         margin={"dense"}
-                        onChange={this.handleSelect.bind(this, "displayType")}
+                        onChange={this.handleOfficeSelect.bind(this, "displayType")}
                         fullWidth={true}
                         options={this.state.displayTypes}
                         label={HoardingApplicationFormModel.DISPLAY_TYPE}
@@ -215,7 +210,7 @@ class HoardingInfo extends Component {
               name={"landlordType"}
               row={true}
               value={this.state.landLordType}
-              onChange={this.handleSelect.bind(this)}
+              onChange={this.handleOfficeSelect.bind(this,"landlordType")}
             >
               <FormControlLabel value={"1"} control={<Radio/>} label={"Private"}/>
               <FormControlLabel value={"0"} control={<Radio/>} label={"Public"}/>
