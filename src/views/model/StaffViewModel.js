@@ -18,5 +18,6 @@ export class StaffViewModel {
   static ATTACHMENT_LABEL="Upload signature";
   static RESELECT_ATTACHMENT=" Reset";
   static SUBMIT="Submit ...";
+  static CREATE_MESSAGE="New Staff is created";
 
 }
