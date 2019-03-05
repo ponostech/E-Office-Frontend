@@ -5,7 +5,7 @@ export class OfficeRoutes {
   static FORM = "/form";
   static E_OFFICE = "/e-office";
 
-  static APPLY_ADVERTISER = "/advertiser/new";
+  static APPLY_ADVERTISER = "/register/advertiser";
   static RENEW_ADVERTISER = "/advertiser/:id/renew";
   static ADVERTISER_DETAIL = "/advertiser/:id/detail";
 
@@ -42,4 +42,8 @@ export class OfficeRoutes {
   static RESET_PASSWORD = "/reset-password";
   static NEW_STAFF = "/staff/new";
   static LIST_STAFF = "/staff";
+
+  static ADVERTISER_DASHBOARD="/advertiser";
+  static ADVERTISER_HOARDING="/advertiser/hoarding";
+  static ADVERTISER_KIOSK="/advertiser/kiosk";
 }
