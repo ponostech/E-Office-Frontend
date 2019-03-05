@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import {
+  Button,
   Divider,
   Fab,
   FormControl,
-  FormControlLabel,
+  FormControlLabel, FormGroup,
   FormLabel,
   Radio,
   RadioGroup,
@@ -18,13 +19,13 @@ import GridItem from "../../components/Grid/GridItem";
 class HoardingInfo extends Component {
   constructor(props) {
     super(props);
-    if (props.applicantData) {
+    if (props.hoardingData) {
       console.log("fasdfasdfa");
-      this.state = props.applicantData;
+      this.state = props.hoardingData;
     } else {
       this.state = {
-        localCouncil: props.applicantData.localCouncil,
-        category: props.applicantData.category,
+        localCouncil: props.hoardingData.localCouncil,
+        category: props.hoardingData.category,
         lat: 0,
         long: 0,
         location: "",
@@ -37,9 +38,9 @@ class HoardingInfo extends Component {
         landLord: "",
         landlordType: 0,
 
-        localCouncils: props.applicantData.localCouncils,
-        categories: props.applicantData.categories,
-        displayTypes: props.applicantData.displayTypes
+        localCouncils: props.hoardingData.localCouncils,
+        categories: props.hoardingData.categories,
+        displayTypes: props.hoardingData.displayTypes
       };
 
     }
@@ -174,6 +175,7 @@ class HoardingInfo extends Component {
         <GridItem xs={12} sm={12} md={12}>
           <OfficeSelect value={this.state.displayType}
                         variant={"outlined"}
+                        placeHolder={"Display type"}
                         margin={"dense"}
                         onChange={this.handleOfficeSelect.bind(this, "displayType")}
                         fullWidth={true}
@@ -181,20 +183,20 @@ class HoardingInfo extends Component {
                         label={HoardingApplicationFormModel.DISPLAY_TYPE}
           />
         </GridItem>
-        <GridItem xs={12} sm={12} md={5}>
+        <GridItem xs={12} sm={12} md={4}>
           <TextField name={"lat"} margin={"dense"} fullWidth={true} variant={"outlined"} required={true}
                      label={HoardingApplicationFormModel.LAT}
                      onChange={this.handleChange.bind(this)}/>
         </GridItem>
-        <GridItem xs={12} sm={12} md={5}>
+        <GridItem xs={12} sm={12} md={4}>
           <TextField name={"long"} margin={"dense"} fullWidth={true} variant={"outlined"} required={true}
                      label={HoardingApplicationFormModel.LONG}
                      onChange={this.handleChange.bind(this)}/>
         </GridItem>
-        <GridItem xs={12} sm={12} md={2}>
-          <Fab variant={"extended"} color={"primary"} onClick={(e) => {
-            this.setState({ openGmap: true });
-          }}>Map</Fab>
+        <GridItem xs={12} sm={12} md={4}>
+            <Button variant={"contained"} color={"primary"} onClick={(e) => {
+              this.setState({ openGmap: true });
+            }}>Get coordination</Button>
         </GridItem>
 
         <GridItem xs={12} sm={12} md={12}>

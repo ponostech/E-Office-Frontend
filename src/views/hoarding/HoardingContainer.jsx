@@ -27,7 +27,7 @@ class HoardingContainer extends Component {
     super(props);
     this.state = {
       activeStep: 0,
-      applicantData: {
+      hoardingData: {
         localCouncil: undefined,
         category: undefined,
         lat: 0,
@@ -77,12 +77,12 @@ class HoardingContainer extends Component {
             }
             newLocalCouncils.push(lc)
           })
-          this.setState(state=>{state.applicantData.localCouncils=newLocalCouncils});
+          this.setState(state=>{state.hoardingData.localCouncils=newLocalCouncils});
         } else {
           this.setState({ hasError: true });
         }
       }).then(() => {
-      this.setState(state=>state.applicantData.localCouncil=state.applicantData.localCouncils[0]);
+      this.setState(state=>state.hoardingData.localCouncil=state.hoardingData.localCouncils[0]);
     });
   }
 
@@ -90,7 +90,7 @@ class HoardingContainer extends Component {
     this.setState({ documents });
   };
   updateFiles = (files) => {
-    this.setState(files);
+    this.setState({files});
   };
   getPrevBtn = () => {
     return (
@@ -120,10 +120,10 @@ class HoardingContainer extends Component {
       .then(data=>{
         console.log("whyyy nee")
         console.log(data)
-
+        this.setState({submit:false,complete:true})
       })
       .then(()=>{
-        this.setState({submit:false,complete:true})
+        this.setState({submit:false})
       })
 
   };
@@ -132,7 +132,7 @@ class HoardingContainer extends Component {
     switch (activeStep) {
       case 0:
         if (this.hoardingRef.current.isValid()) {
-          this.setState({ applicantData: this.hoardingRef.current.getData() });
+          this.setState({ hoardingData: this.hoardingRef.current.getData() });
           this.setState({ activeStep: activeStep + 1 });
         }
         break;
@@ -152,7 +152,7 @@ class HoardingContainer extends Component {
 
     switch (this.state.activeStep) {
       case 0:
-        return (<HoardingInfo ref={this.hoardingRef} applicantData={this.state.applicantData}/>);
+        return (<HoardingInfo ref={this.hoardingRef} hoardingData={this.state.hoardingData}/>);
       case 1:
         return (
           <DocumentsDropzoneFragment
@@ -193,7 +193,7 @@ class HoardingContainer extends Component {
             <CardHeader title={HoardingApplicationFormModel.TITLE} subheader={HoardingApplicationFormModel.SUBHEADER}/>
             <Stepper activeStep={this.state.activeStep} alternativeLabel={true}>
               <Step key={1}>
-                <StepLabel>{HoardingApplicationFormModel.APPLICATN_INFO}</StepLabel>
+                <StepLabel>{HoardingApplicationFormModel.HOARDING_INFO}</StepLabel>
               </Step>
               <Step key={2}>
                 <StepLabel>{HoardingApplicationFormModel.ATTACHMENT}</StepLabel>

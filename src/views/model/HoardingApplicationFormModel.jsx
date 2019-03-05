@@ -14,5 +14,6 @@ export default class HoardingApplicationFormModel {
   static DISPLAY_TYPE_REQUIRED="Display type is required";
   static LOCAL_COUNCIL_REQUIRED="Select local council";
   static CATEGORY_REQUIRED="Category is required";
+  static HOARDING_INFO="Hoarding Info";
 
 };

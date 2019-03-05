@@ -6,21 +6,20 @@ export class HoardingService {
   async create(state) {
     // const token = localStorage.getItem("token");
     let data = {
-      local_council_id: state.applicantData.localCouncil.value,
-      address:state.applicantData.address,
-      both_side:state.applicantData.bothSide,
-      road_details:state.applicantData.roadDetail,
-      length:state.applicantData.length,
-      height:state.applicantData.height,
+      local_council_id: state.hoardingData.localCouncil.value,
+      address:state.hoardingData.address,
+      both_side:state.hoardingData.bothSide,
+      road_details:state.hoardingData.roadDetail,
+      length:state.hoardingData.length,
+      height:state.hoardingData.height,
       ground_clearance:"not sure",
-      area_category_id:state.applicantData.category,
-      display_type:state.applicantData.displayType,
-      coordinate:state.applicantData.coordinate,
-      land_owner_name:state.applicantData.landLord,
-      land_owner_type:state.applicantData.landlordType,
+      area_category_id:state.hoardingData.category,
+      display_type:state.hoardingData.displayType,
+      coordinate:state.hoardingData.coordinate,
+      land_owner_name:state.hoardingData.landLord,
+      land_owner_type:state.hoardingData.landlordType,
       status:0
     };
-    console.log("who call me")
     try {
       let res= await axios.post(ApiRoutes.NEW_HOARDING, data);
       return res;

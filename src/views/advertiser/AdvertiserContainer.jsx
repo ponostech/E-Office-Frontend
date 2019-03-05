@@ -35,7 +35,8 @@ class AdvertiserContainer extends Component {
         { name: "PDF (Pdf)", fileName: "test", found: false }
       ],
       complete:false,
-      submit:false
+      submit:false,
+      errorMessage:''
     };
     this.advertiserService = new AdvertiserService();
     this.infoRef = React.createRef();
@@ -64,6 +65,8 @@ class AdvertiserContainer extends Component {
         if (this.infoRef.current.isValid()) {
           this.setState({ applicantData: this.infoRef.current.getData() });
           this.setState({ activeStep: activeStep + 1 });
+        }else{
+          this.setState({errorMessage:'There is some error'})
         }
         break;
       case 1:
@@ -177,6 +180,7 @@ class AdvertiserContainer extends Component {
             <OfficeSnackbar variant={"success"} message={"Your application is submitted successfully"} open={this.state.complete} onClose={(e)=>this.setState({complete:false})}/>
           </Card>
         </GridItem>
+        <OfficeSnackbar variant={"error"} message={this.state.errorMessage} open={Boolean(this.state.errorMessage)} onClose={()=>this.setState({errorMessage:''})}/>
       </GridContainer>
 
 

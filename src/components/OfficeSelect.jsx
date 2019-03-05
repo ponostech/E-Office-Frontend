@@ -217,7 +217,7 @@ class OfficeSelect extends React.Component {
               label: label,
               variant:variant,
               InputLabelProps: {
-                shrink: shrink,
+                shrink: Boolean(value),
               },
             }}
             placeholder={placeholder}

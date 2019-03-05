@@ -180,12 +180,15 @@ class StaffRegistrationForm extends Component {
                   />
 
                   <OfficeSelect
+                    variant={"outlined"}
+                    shrink={true}
+                    margin={"dense"}
                     value={designation}
+                    fullWidth={true}
                     defaultValue={this.state.designations[0]}
                     name={"designation"}
                     placeholder={StaffViewModel.DESIGNATION}
                     onChange={this.handleSelect.bind(this, "designation")}
-                    searchAble={true}
                     ClearAble={true}
                     label={StaffViewModel.DESIGNATION}
                     options={this.state.designations}/>
