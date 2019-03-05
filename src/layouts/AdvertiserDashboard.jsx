@@ -18,6 +18,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import dashRoutes from "../routes/advertiserRoutes";
+import SingletonAuth from "../utils/SingletonAuth";
 
 const switchRoutes = (
   <Switch>
@@ -48,6 +49,10 @@ class AdvertiserDashboard extends React.Component {
   }
 
   componentDidMount() {
+    let user=new SingletonAuth().getCurrentUser();
+    if (user) {
+        console.log(user)
+    }
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.mainPanel, {
         suppressScrollX: true,
