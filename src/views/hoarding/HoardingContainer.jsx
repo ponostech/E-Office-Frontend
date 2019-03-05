@@ -21,6 +21,7 @@ import HoardingApplicationFormModel from "../model/HoardingApplicationFormModel"
 import { LocalCouncilService } from "../../services/LocalCouncilService";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
 import { HoardingService } from "../../services/HoardingService";
+import SingletonAuth from "../../utils/SingletonAuth";
 
 class HoardingContainer extends Component {
   constructor(props) {
@@ -74,6 +75,9 @@ class HoardingContainer extends Component {
   }
 
   componentWillMount() {
+    let currentUser = new SingletonAuth().getCurrentUser();
+    console.log("Current user");
+    console.log(currentUser);
     let newLocalCouncils = [];
     this.localCouncilservice.get()
       .then(data => {
