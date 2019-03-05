@@ -20,6 +20,8 @@ import AdvertiserInfo from "./AdvertiserInfo";
 import { AdvertiserService } from "../../services/AdvertiserService";
 import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
 import SubmitDialog from "../../components/SubmitDialog";
+import axios from "axios";
+import OfficeSnackbar from "../../components/OfficeSnackbar";
 
 class AdvertiserContainer extends Component {
   constructor(props) {
@@ -31,11 +33,15 @@ class AdvertiserContainer extends Component {
       documents: [
         { name: "Signature of the applicant (Image)", fileName: "signature", found: false },
         { name: "PDF (Pdf)", fileName: "test", found: false }
-      ]
+      ],
+      complete:false,
+      submit:false,
+      errorMessage:''
     };
     this.advertiserService = new AdvertiserService();
     this.infoRef = React.createRef();
     this.docRef = React.createRef();
+
   }
 
   updateFiles = (newFiles) => {
@@ -59,11 +65,13 @@ class AdvertiserContainer extends Component {
         if (this.infoRef.current.isValid()) {
           this.setState({ applicantData: this.infoRef.current.getData() });
           this.setState({ activeStep: activeStep + 1 });
+        }else{
+          this.setState({errorMessage:'There is some error'})
         }
         break;
       case 1:
         if (this.docRef.current.isValid()) {
-          this.setState({ documentData: this.docRef.current.getData() });
+          // this.setState({ documentData: this.docRef.current.getData() });
           this.setState({ activeStep: activeStep + 1 });
         }
         break;
@@ -84,14 +92,15 @@ class AdvertiserContainer extends Component {
           });
         } else {
           const{access_token}=res;
+          axios.defaults.headers.common = {'Authorization': `bearer ${access_token}`};
           localStorage.setItem("token", access_token);
           history.push(OfficeRoutes.APPLY_ADVERTISER)
 
         }
       })
       .then(() => {
-        console.log("im fucking fullfillled");
         this.setState({ submit: false });
+        this.setState({complete:true})
       });
   };
 
@@ -168,8 +177,10 @@ class AdvertiserContainer extends Component {
             </CardFooter>
 
             <SubmitDialog open={this.state.submit} text={"Submitting form ...."}/>
+            <OfficeSnackbar variant={"success"} message={"Your application is submitted successfully"} open={this.state.complete} onClose={(e)=>this.setState({complete:false})}/>
           </Card>
         </GridItem>
+        <OfficeSnackbar variant={"error"} message={this.state.errorMessage} open={Boolean(this.state.errorMessage)} onClose={()=>this.setState({errorMessage:''})}/>
       </GridContainer>
 
 

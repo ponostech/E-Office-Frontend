@@ -4,5 +4,7 @@ export class ApiRoutes {
   static LOCAL_COUNCIL = "/local-councils";
   static CREATE_STAFF = "/register/staff";
   static CREATE_ADVERTISER="/register/advertiser";
+  static GET_ADVERTISER_HOARDING="/advertiser/hoardings";
+  static NEW_HOARDING="/hoardings";
 
 }
