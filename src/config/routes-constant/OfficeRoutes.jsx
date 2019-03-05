@@ -42,4 +42,8 @@ export class OfficeRoutes {
   static RESET_PASSWORD = "/reset-password";
   static NEW_STAFF = "/staff/new";
   static LIST_STAFF = "/staff";
+
+  static ADVERTISER_DASHBOARD="/advertiser";
+  static ADVERTISER_HOARDING="/advertiser/hoarding";
+  static ADVERTISER_KIOSK="/advertiser/kiosk";
 }
