@@ -189,7 +189,7 @@ class OfficeSelect extends React.Component {
   };
 
   render() {
-    const {required, name,classes, theme, onChange,options,value,isClearable,label,placeholder,variant,shrink,fullWidth,...rest} = this.props;
+    const {required, name,classes, theme, onChange,options,value,isClearable,label,placeholder,variant,margin,fullWidth,error,helperText,...rest} = this.props;
 
     const selectStyles = {
       input: base => ({
@@ -212,9 +212,12 @@ class OfficeSelect extends React.Component {
             value={value}
             onChange={onChange}
             textFieldProps={{
+              error:error,
+              helperText:helperText,
               fullWidth:fullWidth,
               required:required,
               label: label,
+              margin:margin,
               variant:variant,
               InputLabelProps: {
                 shrink: Boolean(value),
@@ -249,6 +252,9 @@ OfficeSelect.propsType={
   variant:PropTypes.string,
   shrink: PropTypes.bool,
   fullWidth: PropTypes.bool,
+  margin:PropTypes.string,
+  error:PropTypes.bool,
+  helperText:PropTypes.string
 }
 
 export default withStyles(styles, { withTheme: true })(OfficeSelect);
