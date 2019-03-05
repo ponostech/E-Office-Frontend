@@ -92,9 +92,10 @@ class AdvertiserContainer extends Component {
           });
         } else {
           const{access_token}=res;
+          console.log(res)
           axios.defaults.headers.common = {'Authorization': `bearer ${access_token}`};
           localStorage.setItem("token", access_token);
-          history.push(OfficeRoutes.APPLY_ADVERTISER)
+          history.push(OfficeRoutes.ADVERTISER_DASHBOARD)
 
         }
       })

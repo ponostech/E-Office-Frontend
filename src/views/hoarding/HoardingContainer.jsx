@@ -37,16 +37,17 @@ class HoardingContainer extends Component {
         length: 1,
         height: 1,
         bothSide: false,
-        displayType:null,
+        displayType: {value:"ILLUMINATED", label:'ILLUMINATED'},
 
-        landLord:'',
-        landlordType:0,
+        landLord: "",
+        landlordType: "0",
 
         localCouncils: [],
         categories: [],
         displayTypes: [
-          {value:"one",label:"One"},
-          {value:"two",label:"TEo"},
+          { value: "ILLUMINATED", label: "ILLUMINATED" },
+          { value: "NON-ILLUMINATED", label: "NON ILLUMINATED" },
+          { value: "FLICKERING_LIGHT", label: "FLICKERING LIGHT" }
         ]
       },
       files: [],
@@ -57,32 +58,41 @@ class HoardingContainer extends Component {
       submit: false,
       complete: false,
       hasError: false,
-      errorMessage: ""
+      errorMessage: "",
+
+      localCouncilError: "",
+      addressError: "",
+      lengthError: "",
+      heightError: "",
+      categoryError: "",
+      displayTypeError: ""
     };
     this.hoardingRef = React.createRef("hoardingRef");
     this.docRef = React.createRef("docRef");
     this.localCouncilservice = new LocalCouncilService();
-    this.hoardingService=new HoardingService();
+    this.hoardingService = new HoardingService();
   }
 
   componentWillMount() {
-    let newLocalCouncils=[]
+    let newLocalCouncils = [];
     this.localCouncilservice.get()
       .then(data => {
         if (data.status) {
           data.data.local_councils.forEach(function(item) {
-            let lc={
-              value:item.id,
-              label:item.name
-            }
-            newLocalCouncils.push(lc)
-          })
-          this.setState(state=>{state.hoardingData.localCouncils=newLocalCouncils});
+            let lc = {
+              value: item.id,
+              label: item.name
+            };
+            newLocalCouncils.push(lc);
+          });
+          this.setState(state => {
+            state.hoardingData.localCouncils = newLocalCouncils;
+          });
         } else {
           this.setState({ hasError: true });
         }
       }).then(() => {
-      this.setState(state=>state.hoardingData.localCouncil=state.hoardingData.localCouncils[0]);
+      this.setState(state => state.hoardingData.localCouncil = state.hoardingData.localCouncils[0]);
     });
   }
 
@@ -90,7 +100,7 @@ class HoardingContainer extends Component {
     this.setState({ documents });
   };
   updateFiles = (files) => {
-    this.setState({files});
+    this.setState({ files });
   };
   getPrevBtn = () => {
     return (
@@ -115,16 +125,18 @@ class HoardingContainer extends Component {
 
   handleSubmit = (e) => {
 
-    this.setState({ submit: true})
+    this.setState({ submit: true });
     this.hoardingService.create(this.state)
-      .then(data=>{
-        console.log("whyyy nee")
-        console.log(data)
-        this.setState({submit:false,complete:true})
+      .then(data => {
+        console.log("whyyy nee");
+        console.log(data);
+        // if (data.status) {
+        this.setState({ submit: false, complete: true });
+        // }
       })
-      .then(()=>{
-        this.setState({submit:false})
-      })
+      .then(() => {
+        this.setState({ submit: false });
+      });
 
   };
   handleNext = (e) => {
@@ -212,7 +224,8 @@ class HoardingContainer extends Component {
         </GridItem>
 
         <SubmitDialog open={this.state.submit} text={"Submitting form ...."}/>
-        <OfficeSnackbar variant={"success"} message={"Your application is submitted successfully"} open={this.state.complete} onClose={(e)=>this.setState({complete:false})}/>
+        <OfficeSnackbar variant={"success"} message={"Your application is submitted successfully"}
+                        open={this.state.complete} onClose={(e) => this.setState({ complete: false })}/>
       </GridContainer>
 
 
