@@ -23,6 +23,7 @@ import HoardingList from "../views/hoarding/HoardingList";
 import AdvertiserContainer from "../views/advertiser/AdvertiserContainer";
 import HoardingContainer from "../views/hoarding/HoardingContainer";
 
+
 class LandingPage extends Component {
 
   handleLogin = (e) => {
@@ -62,6 +63,9 @@ class LandingPage extends Component {
 
                 <Route exact={true} path={OfficeRoutes.NEW_STAFF} component={StaffRegistrationForm}/>
                 <Route exact={true} path={OfficeRoutes.LIST_STAFF} component={StaffList}/>
+
+
+                <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
 
                 <Route exact={true} path={OfficeRoutes.FORM} component={Form}/>
                 <Route exact={true} path={OfficeRoutes.LOGIN} component={LoginView}/>
