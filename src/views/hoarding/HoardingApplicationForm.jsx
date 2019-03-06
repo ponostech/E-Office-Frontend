@@ -302,7 +302,7 @@ class HoardingApplicationForm extends Component {
               <CardActions>
                 <Button color={"primary"} variant={"outlined"} onClick={this.submitForm.bind(this)}> Submit
                   Application</Button>
-                <Button color={"secondary"} variant={"outlined"} onClick={this.clearForm.bind(this)}> Reset</Button>
+                <Button color={"secondary"} variant={"KioskI"} onClick={this.clearForm.bind(this)}> Reset</Button>
               </CardActions>
             </Card>
           </GridItem>

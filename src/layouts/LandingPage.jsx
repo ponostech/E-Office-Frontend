@@ -17,11 +17,11 @@ import StaffList from "../views/staff/StaffList";
 import Form from "../views/Form";
 
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
-import AdvertiserForm from "../views/advertiser/AdvertiserForm";
 import LoginView from "../views/auth/LoginView";
 import HoardingList from "../views/hoarding/HoardingList";
 import AdvertiserContainer from "../views/advertiser/AdvertiserContainer";
 import HoardingContainer from "../views/hoarding/HoardingContainer";
+import BannerApplicationForm from "../views/banner/BannerApplicationForm";
 
 
 class LandingPage extends Component {

@@ -19,5 +19,6 @@ export default class HoardingApplicationFormModel {
   static HEIGHT_REQUIRED="Height is required";
   static REQUIRED_CATEGORY="Category is required";
   static REQUIRED_DISPLAYTYPE="Display type is required";
+  static CLEARANCE="Clearance";
 
 };
