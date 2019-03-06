@@ -22,6 +22,8 @@ import CardFooter from "../../../../components/Card/CardFooter";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import KioskViewModel from "../../../model/KioskViewModel";
 import Constraint from "../../../../config/Constraint";
+import { KioskFormModel } from "../../../model/KioskFormModel";
+import { KioskService } from "../../../../services/KioskService";
 
 
 class KioskFormContainer extends Component {
@@ -29,17 +31,19 @@ class KioskFormContainer extends Component {
     super(props);
     this.state = {
       activeStep: 0,
+
       kioskData: {
         localCouncil: undefined,
         category: undefined,
-        lat: 0,
-        long: 0,
-        location: "",
-        areaCategory: "",
+        address: "",
         length: 1,
         height: 1,
+        roadDetail:1,
+        clearance:1,
         bothSide: false,
-        displayType: {value:"ILLUMINATED", label:'ILLUMINATED'},
+        collapsible: false,
+        coordinate: "",
+        displayType: { value: "ILLUMINATED", label: "ILLUMINATED" },
 
         landLord: "",
         landlordType: "0",
@@ -67,12 +71,13 @@ class KioskFormContainer extends Component {
       lengthError: "",
       heightError: "",
       categoryError: "",
-      displayTypeError: ""
+      displayTypeError: "",
+      collapsibleError: "",
     };
     this.kioskRef = React.createRef("kioskRef");
     this.docRef = React.createRef("docRef");
     this.localCouncilservice = new LocalCouncilService();
-    this.hoardingService = new HoardingService();
+    this.kioskService = new KioskService();
   }
 
   componentWillMount() {
@@ -90,13 +95,13 @@ class KioskFormContainer extends Component {
             newLocalCouncils.push(lc);
           });
           this.setState(state => {
-            state.hoardingData.localCouncils = newLocalCouncils;
+            state.kioskData.localCouncils = newLocalCouncils;
           });
         } else {
           this.setState({ hasError: true });
         }
       }).then(() => {
-      this.setState(state => state.hoardingData.localCouncil = state.hoardingData.localCouncils[0]);
+      this.setState(state => state.kioskData.localCouncil = state.kioskData.localCouncils[0]);
     });
   }
 
@@ -130,7 +135,7 @@ class KioskFormContainer extends Component {
   handleSubmit = (e) => {
 
     this.setState({ submit: true });
-    this.hoardingService.create(this.state)
+    this.kioskService.create(this.state)
       .then(data => {
         console.log(data);
         // if (data.status) {
@@ -146,8 +151,8 @@ class KioskFormContainer extends Component {
     const { activeStep } = this.state;
     switch (activeStep) {
       case 0:
-        if (this.hoardingRef.current.isValid()) {
-          this.setState({ hoardingData: this.hoardingRef.current.getData() });
+        if (this.kioskRef.current.isValid()) {
+          this.setState({ kioskData: this.kioskRef.current.getData() });
           this.setState({ activeStep: activeStep + 1 });
         }
         break;
@@ -167,7 +172,7 @@ class KioskFormContainer extends Component {
 
     switch (this.state.activeStep) {
       case 0:
-        return (<KioskInfo ref={this.hoardingRef} kioskData={this.state.kioskData}/>);
+        return (<KioskInfo ref={this.kioskRef} kioskData={this.state.kioskData}/>);
       case 1:
         return (
           <DocumentsDropzoneFragment
@@ -205,7 +210,7 @@ class KioskFormContainer extends Component {
         <GridItem xs={12} sm={12} md={8}>
           <OfficeSnackbar open={this.state.hasError} message={this.state.errorMessage} variant={"error"}/>
           <Card style={{ padding: 40 }}>
-            <CardHeader title={KioskViewModel.TITLE} subheader={KioskViewModel.SUBHEADER}/>
+            <CardHeader title={KioskFormModel.TITLE} subheader={KioskFormModel.SUBHEADER}/>
             <Stepper activeStep={this.state.activeStep} alternativeLabel={true}>
               <Step key={1}>
                 <StepLabel>{KioskViewModel.KIOSK_INFO}</StepLabel>
@@ -226,7 +231,7 @@ class KioskFormContainer extends Component {
           </Card>
         </GridItem>
 
-        <SubmitDialog open={this.state.submit} text={"Submitting form ...."}/>
+        <SubmitDialog open={this.state.submit} text={"Please wait ...."}/>
         <OfficeSnackbar variant={"success"} message={"Your application is submitted successfully"}
                         open={this.state.complete} onClose={(e) => this.setState({ complete: false })}/>
       </GridContainer>

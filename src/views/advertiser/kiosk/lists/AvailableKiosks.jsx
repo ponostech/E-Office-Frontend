@@ -62,8 +62,7 @@ class AvailableKiosks extends Component {
     console.log(this.props)
     const { history } = this.props;
     return (
-      <GridContainer justify={"space-around"}>
-        <GridItem xs={12} sm={12} md={6}>
+      <GridContainer justify={"space-between"}>
           <TextField variant={"standard"}
                      label={"Search here"}
                      margin={"dense"}
@@ -76,13 +75,10 @@ class AvailableKiosks extends Component {
                        ),
                        placeholder: "Type here"
                      }}/>
-        </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
           <Button color={"primary"} variant={"contained"} onClick={()=>{
             history.push(OfficeRoutes.PROPOSED_KIOSK)
           }}>Propose Hoarding</Button>
 
-        </GridItem>
         <GridItem xs={12} sm={12} md={12}>
           <ReactTable
             columns={columns}
