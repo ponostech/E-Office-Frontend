@@ -18,10 +18,10 @@ export class OfficeRoutes {
   static PROPOSED_HOARDING = "/hoarding/propose";
   static HOARDING_LIST="/hoarding/list/:user";
 
-  static NEW_KIOSK = "/kiosk/new";
-  static PROPOSED_KIOSK = "/kiosk/propose";
-  static RENEW_KIOSK = "/kiosk/:id/renew";
-  static KIOSK_DETAIL = "/kiosk/:id/details";
+  static NEW_KIOSK = "/advertiser/kiosk/new";
+  static PROPOSED_KIOSK = "/advertiser/kiosk/propose";
+  static RENEW_KIOSK = "/advertiser/kiosk/:id/renew";
+  static KIOSK_DETAIL = "/advertiser/kiosk/:id/details";
 
   static APPLY_BANNER = "/banner/new";
 
