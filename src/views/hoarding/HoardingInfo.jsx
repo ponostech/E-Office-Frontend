@@ -15,6 +15,8 @@ import OfficeSelect from "../../components/OfficeSelect";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
+import GMapDialog from "../../components/GmapDialog";
+
 
 class HoardingInfo extends Component {
   constructor(props) {
@@ -46,7 +48,8 @@ class HoardingInfo extends Component {
         displayTypes: props.hoardingData.displayTypes,
 
         errorMessage: "",
-        prestine: true
+        prestine: true,
+        openMap: false
       };
 
     }
@@ -72,6 +75,9 @@ class HoardingInfo extends Component {
     this.setState({
       [identifier]: value
     });
+  };
+  setCoordinate = (data) => {
+    this.setState({ coordinate: data, openMap: false });
   };
   handleRadio = (e) => {
     this.setState({ landLordType: e.target.value });
@@ -277,7 +283,7 @@ class HoardingInfo extends Component {
                        label={HoardingApplicationFormModel.COORDINATE}
                        onChange={this.handleChange.bind(this)}/>
             <Button variant={"contained"} color={"primary"} onClick={(e) => {
-              this.setState({ openGmap: true });
+              this.setState({ openMap: true });
             }}>GMAP</Button>
           </div>
 
@@ -312,7 +318,20 @@ class HoardingInfo extends Component {
           </FormControl>
         </GridItem>
         <Divider/>
-        {/*<GMapDialog open={this.state.openGmap} onClose={()=>{}} isMarkerShown={true}/>*/}
+
+        <GMapDialog open={this.state.openMap}
+                    fullScreen={true}
+                    onClose={this.setCoordinate.bind(this)}
+                    containerElement={
+                      <div
+                        style={{
+                          height: `280px`,
+                          borderRadius: "6px",
+                          overflow: "hidden"
+                        }}
+                      />
+                    }
+        />
         <OfficeSnackbar open={Boolean(this.state.errorMessage)} variant={"error"} message={this.state.errorMessage}
                         onClose={() => {
                           this.setState({ errorMessage: "" });
