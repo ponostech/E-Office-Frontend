@@ -23,17 +23,7 @@ const theme = createMuiTheme({
   },
   props: {
     MuiInput:{
-      cssLabel: {
-        '&$cssFocused': {
           color: purple[500],
-        },
-      },
-      cssFocused: {},
-      cssUnderline: {
-        '&:after': {
-          borderBottomColor: purple[500],
-        },
-      },
     },
     // Name of the component ⚛️
     MuiButtonBase: {

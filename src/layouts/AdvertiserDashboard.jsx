@@ -21,13 +21,17 @@ import dashRoutes from "../routes/advertiserRoutes";
 import SingletonAuth from "../utils/SingletonAuth";
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import KioskFormContainer from "../views/advertiser/kiosk/form/KioskFormContainer";
+import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
+import HoardingContainer from "../views/hoarding/HoardingContainer";
 
 const switchRoutes = (
   <Switch>
+    <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>
     <Route exact path={OfficeRoutes.PROPOSED_KIOSK} component={KioskFormContainer}/>
+    <Route exact path={OfficeRoutes.PROPOSED_HOARDING} component={HoardingContainer}/>
     {dashRoutes.map((prop, key) => {
       if (prop.redirect)
-        return <Redirect from={prop.path} to={prop.pathTo} key={key}/>;
+        return <Redirect exact from={prop.path} to={prop.pathTo} key={key}/>;
       if (prop.collapse)
         return prop.views.map((prop, key) => {
           return (

@@ -8,7 +8,8 @@ import GridItem from "../../components/Grid/GridItem";
 import { HoardingListViewModel } from "../model/HoardingListViewModel";
 import AvailableHoardingList from "./AvailableHoardingList";
 import PendingHoardingList from "./PendingHoardingList";
-import { Card, CardHeader } from "@material-ui/core";
+import { Button, Card, CardHeader } from "@material-ui/core";
+import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
 
 const styles = theme => ({
   root: {
@@ -66,14 +67,16 @@ class HoardingList extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes,history } = this.props;
     const { value } = this.state;
 
     return (
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={12}>
-        <Card>
-          <CardHeader title={HoardingListViewModel.TITLE}/>
+        <Card style={{padding:20}}>
+          <CardHeader title={HoardingListViewModel.TITLE} action={(
+            <Button color={"primary"} variant={"contained"} onClick={(e)=>history.push(OfficeRoutes.PROPOSED_HOARDING)}>New Hoarding</Button>
+          )}/>
           <Tabs
             value={value}
             onChange={this.handleChange}

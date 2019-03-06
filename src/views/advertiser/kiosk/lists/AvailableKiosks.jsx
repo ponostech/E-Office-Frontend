@@ -52,17 +52,16 @@ class AvailableKiosks extends Component {
     },{
       Header: "Action",
       accessor: "action",
-      Cell:props=> <div style={{background:'gray',borderRadius:50}}>
+      Cell:props=> <div style={{background:'white',borderRadius:50}}>
         <IconButton><ViewIcon/></IconButton>
         <IconButton><EditIcon/></IconButton>
         <IconButton><DeleteIcon/></IconButton>
       </div>
     }];
 
-    console.log(this.props)
     const { history } = this.props;
     return (
-      <GridContainer justify={"space-between"}>
+      <GridContainer >
           <TextField variant={"standard"}
                      label={"Search here"}
                      margin={"dense"}
@@ -75,9 +74,6 @@ class AvailableKiosks extends Component {
                        ),
                        placeholder: "Type here"
                      }}/>
-          <Button color={"primary"} variant={"contained"} onClick={()=>{
-            history.push(OfficeRoutes.PROPOSED_KIOSK)
-          }}>Propose Hoarding</Button>
 
         <GridItem xs={12} sm={12} md={12}>
           <ReactTable

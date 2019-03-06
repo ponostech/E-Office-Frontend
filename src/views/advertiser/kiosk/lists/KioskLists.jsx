@@ -9,6 +9,7 @@ import GridItem from "../../../../components/Grid/GridItem";
 import AvailableKiosks from "./AvailableKiosks";
 import PendingKiosks from "./PendingKiosks";
 import KioskViewModel from "../../../model/KioskViewModel";
+import { OfficeRoutes } from "../../../../config/routes-constant/OfficeRoutes";
 
 const styles = theme => ({
   root: {
@@ -66,14 +67,14 @@ class KioskLists extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes,history } = this.props;
     const { value } = this.state;
 
     return (
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={12}>
-        <Card style={{padding:30}}>
-          <CardHeader title={KioskViewModel.TITLE} action={<Button color={"primary"} style={{margin:20}} variant={"contained"}> New Kiosk</Button>}/>
+        <Card style={{padding:20}}>
+          <CardHeader title={KioskViewModel.TITLE} action={<Button onClick={(e)=>history.push(OfficeRoutes.PROPOSED_KIOSK)} color={"primary"} style={{margin:20}} variant={"contained"}> New Kiosk</Button>}/>
           <CardContent>
             <Tabs
               value={value}
