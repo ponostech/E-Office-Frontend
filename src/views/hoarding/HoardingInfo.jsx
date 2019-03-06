@@ -14,6 +14,7 @@ import HoardingApplicationFormModel from "../model/HoardingApplicationFormModel"
 import OfficeSelect from "../../components/OfficeSelect";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
+import OfficeSnackbar from "../../components/OfficeSnackbar";
 
 class HoardingInfo extends Component {
   constructor(props) {
@@ -25,14 +26,10 @@ class HoardingInfo extends Component {
       this.state = {
         localCouncil: props.hoardingData.localCouncil,
         category: props.hoardingData.category,
-        lat: 0,
-        long: 0,
-        location: "",
-        areaCategory: "",
-        length: 1,
-        height: 1,
+        coordinate: "",
+        address: "",
         bothSide: false,
-        displayType: null,
+        displayType: props.hoardingData.displayType,
 
         landLord: "",
         landlordType: "0",
@@ -48,18 +45,23 @@ class HoardingInfo extends Component {
         categories: props.hoardingData.categories,
         displayTypes: props.hoardingData.displayTypes,
 
-        prestine:true
+        errorMessage: "",
+        prestine: true
       };
 
     }
   }
 
-  setNewState = (state) => {
-    this.setState({ state });
-  };
-
-
   isValid = () => {
+    if (this.state.address.lenth === 0) {
+      this.setState({ errorMessage: HoardingApplicationFormModel.REQUIRED_ADDRESS });
+      return false;
+    }
+    if (this.state.coordinate.length === 0) {
+      this.setState({ errorMessage: HoardingApplicationFormModel.REQUIRED_COORDINATE });
+      return false;
+    }
+    this.setState({ errorMessage: "" });
     return true;
   };
   getData = () => {
@@ -72,8 +74,10 @@ class HoardingInfo extends Component {
     });
   };
   handleRadio = (e) => {
-    console.log(e.target.value);
     this.setState({ landLordType: e.target.value });
+  };
+  handleSwitch = (e) => {
+    this.setState({ [e.target.name]: e.target.checked });
   };
   handleChange = (e) => {
     const { checked } = e.target;
@@ -87,7 +91,7 @@ class HoardingInfo extends Component {
       });
     }
 
-    this.setState({prestine:false})
+    this.setState({ prestine: false });
 
   };
 
@@ -128,7 +132,7 @@ class HoardingInfo extends Component {
   render() {
     return (
       <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={6}>
           <OfficeSelect
             onBlur={this.handleBlur.bind(this)}
             error={Boolean(this.state.localCouncilError)}
@@ -143,22 +147,7 @@ class HoardingInfo extends Component {
             onChange={this.handleOfficeSelect.bind(this, "localCouncil")}
             options={this.state.localCouncils}/>
         </GridItem>
-        <GridItem xs={12} sm={12} md={12}>
-
-          <TextField name={"address"}
-                     onBlur={this.handleBlur.bind(this)}
-                     error={Boolean(this.state.addressError)}
-                     helperText={this.state.addressError}
-                     margin={"dense"}
-                     multiline={true}
-                     rows={3}
-                     fullWidth={true}
-                     variant={"standard"}
-                     onChange={this.handleChange.bind(this)}
-                     label={"Address"}/>
-        </GridItem>
-
-        <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={6}>
 
           <OfficeSelect value={this.state.category}
                         error={Boolean(this.state.categoryError)}
@@ -173,9 +162,27 @@ class HoardingInfo extends Component {
                         options={this.state.categories}/>
 
         </GridItem>
+        <GridItem xs={12} sm={12} md={12}>
+
+          <TextField name={"address"}
+                     value={this.state.address}
+                     error={Boolean(this.state.addressError)}
+                     helperText={this.state.addressError}
+                     margin={"dense"}
+                     onBlur={this.handleBlur.bind(this)}
+                     multiline={true}
+                     rows={3}
+                     fullWidth={true}
+                     variant={"standard"}
+                     onChange={this.handleChange.bind(this)}
+                     label={"Address"}/>
+        </GridItem>
+
+
         <GridItem xs={12} sm={12} md={6}>
           <TextField name={"length"}
                      type={"number"}
+                     value={this.state.length}
                      margin={"dense"}
                      fullWidth={true}
                      variant={"standard"}
@@ -189,6 +196,7 @@ class HoardingInfo extends Component {
         </GridItem>
         <GridItem xs={12} sm={12} md={6}>
           <TextField name={"height"}
+                     value={this.state.height}
                      type={"number"}
                      margin={"dense"}
                      fullWidth={true}
@@ -197,64 +205,93 @@ class HoardingInfo extends Component {
                      label={"Height"}
                      required={true}
                      onBlur={this.handleBlur.bind(this)}
-                error={Boolean(this.state.heightError)}
+                     error={Boolean(this.state.heightError)}
                      helperText={this.state.heightError}
           />
 
         </GridItem>
 
-        <GridItem xs={12} sm={12} md={6}>
-          <FormControlLabel onChange={this.handleChange.bind(this)}
-                            name={"bothSide"}
-                            control={<Switch required={true}/>}
-                            label={"Both side?"}/>
-        </GridItem>
 
         <GridItem xs={12} sm={12} md={6}>
-          <TextField name={"roadDetail"}
+          <TextField name={"clearance"}
+                     value={this.state.clearance}
                      onBlur={this.handleBlur.bind(this)}
                      type={"number"}
-                     margin={"dense"} fullWidth={true}
-                     variant={"standard"} required={true}
+                     margin={"dense"}
+                     fullWidth={true}
+                     variant={"standard"}
+                     required={true}
+                     label={HoardingApplicationFormModel.CLEARANCE}
+                     onChange={this.handleChange.bind(this)}
+          />
+        </GridItem>
+        <GridItem xs={12} sm={12} md={6}>
+          <TextField name={"roadDetail"}
+                     value={this.state.roadDetail}
+                     onBlur={this.handleBlur.bind(this)}
+                     error={Boolean(this.state.roadDetailError)}
+                     helperText={this.state.roadDetailError}
+                     type={"number"}
+                     margin={"dense"}
+                     fullWidth={true}
+                     variant={"standard"}
+                     required={true}
                      label={HoardingApplicationFormModel.ROAD_DETAIL}
                      onChange={this.handleChange.bind(this)}
           />
         </GridItem>
-        <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={6}>
+          <FormControl margin={"dense"}>
+            <FormControlLabel onChange={this.handleSwitch.bind(this)}
+                              name={"bothSide"}
+                              control={
+                                <Switch
+                                  value={this.state.bothSide}
+                                  checked={this.state.bothSide}
+                                  required={true}/>
+                              }
+                              label={"Both side?"}/>
+          </FormControl>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={6}>
           <OfficeSelect
             name={"displayType"}
             value={this.state.displayType}
-                        error={Boolean(this.state.displayError)}
-                        onBlur={this.handleBlur.bind(this)}
-                        variant={"standard"}
-                        placeHolder={"Display type"}
-                        margin={"dense"}
-                        onChange={this.handleOfficeSelect.bind(this, "displayType")}
-                        fullWidth={true}
-                        options={this.state.displayTypes}
-                        label={HoardingApplicationFormModel.DISPLAY_TYPE}
+            error={Boolean(this.state.displayError)}
+            onBlur={this.handleBlur.bind(this)}
+            variant={"standard"}
+            placeHolder={"Display type"}
+            margin={"dense"}
+            onChange={this.handleOfficeSelect.bind(this, "displayType")}
+            fullWidth={true}
+            options={this.state.displayTypes}
+            label={HoardingApplicationFormModel.DISPLAY_TYPE}
           />
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <TextField name={"lat"} margin={"dense"} fullWidth={true} variant={"standard"} required={true}
-                     label={HoardingApplicationFormModel.LAT}
-                     onChange={this.handleChange.bind(this)}/>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <TextField name={"long"} margin={"dense"} fullWidth={true} variant={"standard"} required={true}
-                     label={HoardingApplicationFormModel.LONG}
-                     onChange={this.handleChange.bind(this)}/>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Button variant={"contained"} color={"primary"} onClick={(e) => {
-            this.setState({ openGmap: true });
-          }}>Get coordination</Button>
         </GridItem>
 
         <GridItem xs={12} sm={12} md={12}>
-          <TextField name={"landlord"} margin={"dense"}
-                     fullWidth={true} variant={"standard"}
-                     required={true}
+          <div style={{ display: "flex" }}>
+            <TextField name={"lat"} margin={"dense"}
+                       fullWidth={true} variant={"standard"}
+                       required={true}
+                       label={HoardingApplicationFormModel.COORDINATE}
+                       onChange={this.handleChange.bind(this)}/>
+            <Button variant={"contained"} color={"primary"} onClick={(e) => {
+              this.setState({ openGmap: true });
+            }}>GMAP</Button>
+          </div>
+
+        </GridItem>
+        <GridItem xs={12} sm={12} md={12}>
+          <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+        </GridItem>
+
+        <GridItem xs={12} sm={12} md={12}>
+          <TextField name={"landlord"}
+                     margin={"dense"}
+                     value={this.state.landLord}
+                     fullWidth={true}
+                     variant={"standard"}
                      label={"Name of the landlord/land owner"}
                      onChange={this.handleChange.bind(this)}
           />
@@ -276,6 +313,10 @@ class HoardingInfo extends Component {
         </GridItem>
         <Divider/>
         {/*<GMapDialog open={this.state.openGmap} onClose={()=>{}} isMarkerShown={true}/>*/}
+        <OfficeSnackbar open={Boolean(this.state.errorMessage)} variant={"error"} message={this.state.errorMessage}
+                        onClose={() => {
+                          this.setState({ errorMessage: "" });
+                        }}/>
       </GridContainer>
     );
   }

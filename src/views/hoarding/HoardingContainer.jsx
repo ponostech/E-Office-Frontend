@@ -31,12 +31,11 @@ class HoardingContainer extends Component {
       hoardingData: {
         localCouncil: undefined,
         category: undefined,
-        lat: 0,
-        long: 0,
-        location: "",
-        areaCategory: "",
+        coordinate:'',
+        address: "",
         length: 1,
         height: 1,
+        clearance:'',
         bothSide: false,
         displayType: {value:"ILLUMINATED", label:'ILLUMINATED'},
 
