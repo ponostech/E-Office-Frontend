@@ -5,6 +5,8 @@ export class ApiRoutes {
   static CREATE_STAFF = "/register/staff";
   static CREATE_ADVERTISER="/register/advertiser";
   static GET_ADVERTISER_HOARDING="/advertiser/hoardings";
+
   static NEW_HOARDING="/hoardings";
+  static NEW_KIOSK="/kiosks";
 
 }
