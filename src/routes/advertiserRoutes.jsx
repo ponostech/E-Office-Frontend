@@ -26,11 +26,6 @@ var dashRoutes = [
     icon: VerifiedUser,
     component: HoardingList
   },{
-    path: OfficeRoutes.PROPOSED_HOARDING,
-    name: "Hoarding new",
-    icon: VerifiedUser,
-    component: HoardingContainer
-  },{
     path: OfficeRoutes.ADVERTISER_KIOSK,
     name: "Kiosk",
     icon: VerifiedUser,

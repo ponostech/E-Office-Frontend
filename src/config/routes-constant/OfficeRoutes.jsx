@@ -44,6 +44,7 @@ export class OfficeRoutes {
   static LIST_STAFF = "/staff";
 
   static ADVERTISER_DASHBOARD="/advertiser";
-  static ADVERTISER_HOARDING="/advertiser/hoarding";
+  static ADVERTISER_HOARDING="/advertiser/hoarding/list";
   static ADVERTISER_KIOSK="/advertiser/kiosk";
+  static ADVERTISER_PROFILE="/advertiser/profile";
 }

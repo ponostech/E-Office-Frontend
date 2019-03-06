@@ -1,9 +1,22 @@
 import React, { Component } from "react";
-import { FormControl, InputLabel, MenuItem, OutlinedInput, Select, TextField } from "@material-ui/core";
+import {
+  FormControl,
+  Input,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  TextField
+} from "@material-ui/core";
 import AdvertiserViewModel from "../model/AdvertiserViewModel";
 import { Validators } from "../../utils/Validators";
 import ImageUpload from "../../components/CustomUpload/ImageUpload";
-
+import UserIcon from "@material-ui/icons/AccountCircleRounded";
+import EmailIcon from "@material-ui/icons/Email";
+import PasswordIcon from "@material-ui/icons/Lock";
+import AddressIcon from "@material-ui/icons/LocationCity";
+import PhoneIcon from "@material-ui/icons/Phone";
 class AdvertiserInfo extends Component {
   constructor(props) {
     super(props);
@@ -143,25 +156,35 @@ class AdvertiserInfo extends Component {
           margin={"dense"}
           required={true}
           fullWidth={true}
-          variant={"outlined"}
+          variant={"standard"}
           label={AdvertiserViewModel.NAME}
           onBlur={this.handleRequired.bind(this)}
           onChange={this.handleChange.bind(this)}
           placeholder={"Fullname"}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                position="end">
+                <UserIcon color={"action"}/>
+              </InputAdornment>
+            ),
+          }}
         />
         <FormControl
           required={true}
           margin={"dense"}
           fullWidth={true}
-          variant={"outlined"}
+          variant={"standard"}
         >
           <InputLabel htmlFor={"type"}>{AdvertiserViewModel.APPLICANT_TYPE}</InputLabel>
           <Select
             value={this.state.type}
             onChange={this.handleChange.bind(this)}
             input={
-              <OutlinedInput required={true} labelWidth={140} name={"type"} id={"type"}/>
+              <Input required={true}
+                     labelWidth={140} name={"type"} id={"type"}/>
             }
+
           >
             {this.state.types.map((val, i) => (
               <MenuItem key={i} value={val}>
@@ -179,11 +202,19 @@ class AdvertiserInfo extends Component {
           margin={"dense"}
           required={true}
           fullWidth={true}
-          variant={"outlined"}
+          variant={"standard"}
           label={AdvertiserViewModel.EMAIL}
           placeholder={"Email"}
           onBlur={this.handleRequired.bind(this)}
           onChange={this.handleChange.bind(this)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                position="end">
+                <EmailIcon color={"action"}/>
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           value={this.state.phone}
@@ -194,11 +225,19 @@ class AdvertiserInfo extends Component {
           margin={"dense"}
           required={true}
           fullWidth={true}
-          variant={"outlined"}
+          variant={"standard"}
           label={"Phone"}
           placeholder={"Phone"}
           onBlur={this.handleRequired.bind(this)}
           onChange={this.handleChange.bind(this)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                position="end">
+                <PhoneIcon color={"action"}/>
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           value={this.state.password}
@@ -209,11 +248,19 @@ class AdvertiserInfo extends Component {
           margin={"dense"}
           required={true}
           fullWidth={true}
-          variant={"outlined"}
+          variant={"standard"}
           label={AdvertiserViewModel.PASSWORD}
           onBlur={this.handleRequired.bind(this)}
           onChange={this.handleChange.bind(this)}
           placeholder={"Password"}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                position="end">
+                <PasswordIcon color={"action"}/>
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           value={this.state.confirmPassword}
@@ -224,11 +271,19 @@ class AdvertiserInfo extends Component {
           margin={"dense"}
           required={true}
           fullWidth={true}
-          variant={"outlined"}
+          variant={"standard"}
           label={AdvertiserViewModel.CONFIRM_PASSWORD}
           onBlur={this.handleRequired.bind(this)}
           onChange={this.handleChange.bind(this)}
           placeholder={"Confirm password"}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                position="end">
+                <PasswordIcon color={"action"}/>
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           value={this.state.address}
@@ -240,11 +295,19 @@ class AdvertiserInfo extends Component {
           margin={"dense"}
           required={true}
           fullWidth={true}
-          variant={"outlined"}
+          variant={"standard"}
           label={AdvertiserViewModel.ADDRESS}
           onBlur={this.handleRequired.bind(this)}
           onChange={this.handleChange.bind(this)}
           placeholder={" hno \n locality \n pincode"}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                position="end">
+                <AddressIcon color={"action"}/>
+              </InputAdornment>
+            ),
+          }}
         />
         <ImageUpload label={AdvertiserViewModel.SIGNATURE} file={this.state.signature} imagePreviewUrl={this.state.imagePreviewUrl}  onRemove={this.removeSignature.bind(this)} onFileSelect={this.selectSignature.bind(this)} setImagePreviewUrl={this.setImagePreviewUrl.bind(this)}/>
       </div>
