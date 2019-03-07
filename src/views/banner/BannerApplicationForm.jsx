@@ -195,7 +195,7 @@ class BannerApplicationForm extends Component {
                                                           onChange={this.handleSelect.bind(this,"Ownership")}
                                                           searchAble={true}
                                                           ClearAble={true}
-                                                          label={BannerApplicationFormModel.Ownership}
+                                                          label={BannerApplicationFormModel.Type_of_Applicant}
                                                           options={this.state.ownerships}/>
                                             </GridItem>
                                             <GridItem md={6} xs={12}>

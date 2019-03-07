@@ -19,6 +19,7 @@ export class BannerApplicationFormModel {
   static BUSINESSDETAIL = "BusinessDetail";
   static DOE = "Date of Establishment";
   static BLOOD = "Blood group";
+  static TYPE_OF_APPLICANT = "Type of Applicant";
 
   static DOE_REQUIRED = "Date of establishment is required";
   static NAME_REQUIRED = "Name of Applicant is required";
