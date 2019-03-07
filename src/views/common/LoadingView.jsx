@@ -9,7 +9,7 @@ class LoadingView extends Component {
     return (
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={md} {...rest}>
-        <CircularProgress variant={"indeterminate"} style={{width:100,height:100}}/>
+            <CircularProgress variant={"indeterminate"} style={{width:100,height:100}}/>
 
         </GridItem>
       </GridContainer>

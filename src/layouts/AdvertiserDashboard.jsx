@@ -23,9 +23,11 @@ import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import KioskFormContainer from "../views/advertiser/kiosk/form/KioskFormContainer";
 import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
 import HoardingContainer from "../views/hoarding/HoardingContainer";
+import KioskDetail from "../views/advertiser/kiosk/KioskDetail";
 
 const switchRoutes = (
   <Switch>
+    <Route exact path={OfficeRoutes.KIOSK_DETAIL} component={KioskDetail}/>
     <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>
     <Route exact path={OfficeRoutes.PROPOSED_KIOSK} component={KioskFormContainer}/>
     <Route exact path={OfficeRoutes.PROPOSED_HOARDING} component={HoardingContainer}/>
