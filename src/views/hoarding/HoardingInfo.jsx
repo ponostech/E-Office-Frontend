@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-  Button,
+  Button, Dialog, DialogActions, DialogContent,
   Divider,
   FormControl,
   FormControlLabel,
@@ -16,7 +16,25 @@ import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
 import GMapDialog from "../../components/GmapDialog";
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from "react-google-maps";
+import { MAP_API_KEY } from "../../config/Config";
 
+const RegularMap = withScriptjs(
+  withGoogleMap(props => (
+    <GoogleMap
+      defaultZoom={8}
+      defaultCenter={{ lat: 40.748817, lng: -73.985428 }}
+      defaultOptions={{
+        scrollwheel: true
+      }}
+      onClick={(e)=>{
+        console.log(e)
+      }}
+    >
+      <Marker position={{ lat: 40.748817, lng: -73.985428 }}/>
+    </GoogleMap>
+  ))
+);
 
 class HoardingInfo extends Component {
   constructor(props) {
@@ -53,6 +71,7 @@ class HoardingInfo extends Component {
       };
 
     }
+    this.dialogRef = React.createRef();
   }
 
   isValid = () => {
@@ -319,19 +338,9 @@ class HoardingInfo extends Component {
         </GridItem>
         <Divider/>
 
-        <GMapDialog open={this.state.openMap}
-                    fullScreen={true}
-                    onClose={this.setCoordinate.bind(this)}
-                    containerElement={
-                      <div
-                        style={{
-                          height: `280px`,
-                          borderRadius: "6px",
-                          overflow: "hidden"
-                        }}
-                      />
-                    }
-        />
+
+      <GMapDialog open={this.state.openMap} onClose={(data)=>this.setState({openMap:false})} fullScreen={true} isMarkerShown={true}/>
+
         <OfficeSnackbar open={Boolean(this.state.errorMessage)} variant={"error"} message={this.state.errorMessage}
                         onClose={() => {
                           this.setState({ errorMessage: "" });

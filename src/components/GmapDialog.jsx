@@ -4,32 +4,21 @@ import { GoogleMap, Marker, withGoogleMap, withScriptjs } from "react-google-map
 import * as PropTypes from "prop-types";
 import GridContainer from "./Grid/GridContainer";
 import GridItem from "./Grid/GridItem";
-
-const SatelliteMap = withScriptjs(
-  withGoogleMap(props => (
-    <GoogleMap
-      defaultZoom={3}
-      mapTypeId={"satellite"}
-      defaultCenter={{ lat: 40.748817, lng: -73.985428 }}
-      defaultOptions={{
-        scrollwheel: false
-      }}
-    >
-      <Marker position={{ lat: 40.748817, lng: -73.985428 }}/>
-    </GoogleMap>
-  ))
-);
+import { MAP_API_KEY } from "../config/Config";
 
 const RegularMap = withScriptjs(
   withGoogleMap(props => (
     <GoogleMap
       defaultZoom={8}
-      defaultCenter={{ lat: 40.748817, lng: -73.985428 }}
+      defaultCenter={{ lat: props.lat, lng: props.lng }}
       defaultOptions={{
-        scrollwheel: false
+        scrollwheel: true
+      }}
+      onClick={(e)=>{
+        props.onClick(e.latLng)
       }}
     >
-      <Marker position={{ lat: 40.748817, lng: -73.985428 }}/>
+      <Marker position={{ lat: props.lat, lng: props.lng }}/>
     </GoogleMap>
   ))
 );
@@ -38,20 +27,20 @@ class GMapDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lat: 90,
-      long: 30
+      lat: 20,
+      lng: 78
     };
   }
 
   handleClick = (e) => {
-    const { lat, long } = this.state;
+    const { lat, lng } = this.state;
     const { onClose } = this.props;
     const { name } = e.target;
     switch (name) {
       case "confirm":
-        onClose(lat, long);
+        onClose(lat, lng);
         break;
-      case "cancel":
+      case "close":
         onClose(null);
         break;
       default:
@@ -64,34 +53,45 @@ class GMapDialog extends Component {
   }
 
   render() {
-    const { open, onClose, isMarkerShown,containerElement, ...rest } = this.props;
+    const { open, onClose, isMarkerShown, ...rest } = this.props;
+    const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${MAP_API_KEY}`;
+    console.log(MAP_URL);
     return (
         <Dialog open={open} onClose={this.confirm.bind(this)} {...rest} fullScreen={true}>
           <DialogContent>
-            <GridContainer>
-              <GridItem md={12}>
-                <SatelliteMap
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhiSrRw6VWNkaDCGJJ4-pzRxaNgUo4KAc"
+                <RegularMap
+                  onClick={(latLng)=>{
+                      this.setState({
+                        lat:latLng.lat(),
+                        lng:latLng.lng()
+                      })
+                  }}
+                  isMarkerShown={isMarkerShown}
+                  googleMapURL={MAP_URL}
                   loadingElement={<div style={{ height: `100%` }}/>}
-                  containerElement={
-                    containerElement
-                  }
+                  containerElement={<div style={{width:'100%',height:'100%'}}> helll </div>}
                   mapElement={<div style={{ height: `100%` }}/>}
+                  lat={this.state.lat}
+                  lng={this.state.lng}
                 />
-              </GridItem>
-            </GridContainer>
+            {/*withScriptJs(*/}
+            {/*withGoogleMap(*/}
             {/*<GoogleMap*/}
               {/*{...rest}*/}
               {/*defaultZoom={8}*/}
               {/*defaultCenter={{ lat: this.state.lat, lng: this.state.long }}*/}
+              {/*onClick={(e)=>this.setState({lat:e.pa.x,long:e.pa.y})}*/}
             {/*>*/}
               {/*{isMarkerShown && <Marker position={{ lat: this.state.lat, lng: this.state.long }}/>}*/}
             {/*</GoogleMap>*/}
+            {/*)*/}
+            {/*)*/}
+
 
           </DialogContent>
           <DialogActions>
-            <Button variant={"outlined"} color={"primary"} onClick={this.handleClick.bind(this)}>Confirm</Button>
-          <Button variant={"outlined"} color={"secondary"} onClick={this.handleClick.bind(this)}>Close</Button>
+            <Button name={"confirm"} variant={"contained"} color={"primary"} onClick={this.handleClick.bind(this)}>Confirm</Button>
+          <Button name={"close"} variant={"contained"} color={"secondary"} onClick={this.handleClick.bind(this)}>Close</Button>
         </DialogActions>
       </Dialog>
   )
@@ -103,5 +103,5 @@ GMapDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   isMarkerShown: PropTypes.bool.isRequired
 };
-export default withGoogleMap( GMapDialog );
+export default GMapDialog;
 
