@@ -9,6 +9,9 @@ import NewReceipt from "../views/e-office/receipt/NewReceipt";
 import NewFile from "../views/e-office/files/NewFile";
 import officeStyle from "../assets/jss/material-dashboard-pro-react/layouts/officeStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Detail from "../views/e-office/receipt/Detail";
+import CreatedReceipt from "../views/e-office/receipt/CreatedReceipt";
+import SentReceipt from "../views/e-office/receipt/SentReceipt";
 
 class OfficeDashboard extends Component {
   render() {
@@ -18,10 +21,14 @@ class OfficeDashboard extends Component {
           <GridItem xs={12} sm={12} md={12}>
             <OfficePageHeader color={"primary"}/>
           </GridItem>
-              <GridItem style={{ marginTop: 70,marginRight:40 }} xs={12} sm={12} md={10}>
+              <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={10}>
                 <GridContainer justify={"center"}>
                   <Route path={OfficeRoutes.DESK} component={DeskView}/>
                   <Route path={OfficeRoutes.NEW_RECEIPT} component={NewReceipt}/>
+                  <Route path={OfficeRoutes.RECEIPT_DETAIL} component={Detail}/>
+                  <Route path={OfficeRoutes.CREATED_RECEIPT} component={CreatedReceipt}/>
+                  <Route path={OfficeRoutes.SENT_RECEIPT} component={SentReceipt}/>
+
                   <Route path={OfficeRoutes.NEW_FILE} component={NewFile}/>
                 </GridContainer>
 
