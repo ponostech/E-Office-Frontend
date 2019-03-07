@@ -11,6 +11,7 @@ import green from '@material-ui/core/colors/green';
 import blue from '@material-ui/core/colors/blue';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import purple from "@material-ui/core/es/colors/purple";
 const theme = createMuiTheme({
   palette: {
     primary:{
@@ -21,6 +22,9 @@ const theme = createMuiTheme({
     },
   },
   props: {
+    MuiInput:{
+          color: purple[500],
+    },
     // Name of the component ⚛️
     MuiButtonBase: {
       // The properties to apply

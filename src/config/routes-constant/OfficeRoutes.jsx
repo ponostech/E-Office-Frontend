@@ -5,7 +5,7 @@ export class OfficeRoutes {
   static FORM = "/form";
   static E_OFFICE = "/e-office";
 
-  static APPLY_ADVERTISER = "/advertiser/new";
+  static APPLY_ADVERTISER = "/register/advertiser";
   static RENEW_ADVERTISER = "/advertiser/:id/renew";
   static ADVERTISER_DETAIL = "/advertiser/:id/detail";
 
@@ -18,10 +18,10 @@ export class OfficeRoutes {
   static PROPOSED_HOARDING = "/hoarding/propose";
   static HOARDING_LIST="/hoarding/list/:user";
 
-  static NEW_KIOSK = "/kiosk/new";
-  static PROPOSED_KIOSK = "/kiosk/propose";
-  static RENEW_KIOSK = "/kiosk/:id/renew";
-  static KIOSK_DETAIL = "/kiosk/:id/details";
+  static NEW_KIOSK = "/advertiser/kiosk/new";
+  static PROPOSED_KIOSK = "/advertiser/kiosk/propose";
+  static RENEW_KIOSK = "/advertiser/kiosk/:id/renew";
+  static KIOSK_DETAIL = "/advertiser/kiosk/:id/details";
 
   static APPLY_BANNER = "/banner/new";
 
@@ -44,6 +44,7 @@ export class OfficeRoutes {
   static LIST_STAFF = "/staff";
 
   static ADVERTISER_DASHBOARD="/advertiser";
-  static ADVERTISER_HOARDING="/advertiser/hoarding";
+  static ADVERTISER_HOARDING="/advertiser/hoarding/list";
   static ADVERTISER_KIOSK="/advertiser/kiosk";
+  static ADVERTISER_PROFILE="/advertiser/profile";
 }

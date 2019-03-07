@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
-import { HoardingListViewModel } from "../model/HoardingListViewModel";
-import AvailableHoardingList from "./AvailableHoardingList";
-import PendingHoardingList from "./PendingHoardingList";
-import { Button, Card, CardHeader } from "@material-ui/core";
-import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
+import { Button, Card, CardContent, CardHeader } from "@material-ui/core";
+import GridContainer from "../../../../components/Grid/GridContainer";
+import GridItem from "../../../../components/Grid/GridItem";
+import AvailableKiosks from "./AvailableKiosks";
+import PendingKiosks from "./PendingKiosks";
+import KioskViewModel from "../../../model/KioskViewModel";
+import { OfficeRoutes } from "../../../../config/routes-constant/OfficeRoutes";
 
 const styles = theme => ({
   root: {
@@ -57,7 +57,7 @@ const styles = theme => ({
   },
 });
 
-class HoardingList extends React.Component {
+class KioskLists extends React.Component {
   state = {
     value: "available",
   };
@@ -74,26 +74,26 @@ class HoardingList extends React.Component {
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={12}>
         <Card style={{padding:20}}>
-          <CardHeader title={HoardingListViewModel.TITLE} action={(
-            <Button color={"primary"} variant={"contained"} onClick={(e)=>history.push(OfficeRoutes.PROPOSED_HOARDING)}>New Hoarding</Button>
-          )}/>
-          <Tabs
-            value={value}
-            onChange={this.handleChange}
-            classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-          >
-            <Tab disableRipple value={"available"}
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={HoardingListViewModel.AVAILABLE}/>
-            <Tab value={"pending"}
-                 disableRipple
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={HoardingListViewModel.PENDING}/>
+          <CardHeader title={KioskViewModel.TITLE} action={<Button onClick={(e)=>history.push(OfficeRoutes.PROPOSED_KIOSK)} color={"primary"} style={{margin:20}} variant={"contained"}> New Kiosk</Button>}/>
+          <CardContent>
+            <Tabs
+              value={value}
+              onChange={this.handleChange}
+              classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
+            >
+              <Tab disableRipple value={"available"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={KioskViewModel.AVAILABLE}/>
+              <Tab value={"pending"}
+                   disableRipple
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={KioskViewModel.PENDING}/>
 
-          </Tabs>
+            </Tabs>
+          </CardContent>
           <div style={{marginTop:20}}>
-            {value==="available" && <AvailableHoardingList/>}
-            {value==="pending" && <PendingHoardingList/>}
+            {value==="available" && <AvailableKiosks/>}
+            {value==="pending" && <PendingKiosks/>}
           </div>
         </Card>
         </GridItem>
@@ -102,8 +102,8 @@ class HoardingList extends React.Component {
   }
 }
 
-HoardingList.propTypes = {
+KioskLists.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(HoardingList);
+export default withStyles(styles)(KioskLists);

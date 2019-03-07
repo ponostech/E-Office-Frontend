@@ -10,34 +10,40 @@ import {
   Stepper,
   Typography
 } from "@material-ui/core";
-import HoardingInfo from "./HoardingInfo";
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
-import DocumentsDropzoneFragment from "../../components/DocumentsDropzoneFragment";
-import Constraint from "../../config/Constraint";
-import CardFooter from "../../components/Card/CardFooter";
-import SubmitDialog from "../../components/SubmitDialog";
-import HoardingApplicationFormModel from "../model/HoardingApplicationFormModel";
-import { LocalCouncilService } from "../../services/LocalCouncilService";
-import OfficeSnackbar from "../../components/OfficeSnackbar";
-import { HoardingService } from "../../services/HoardingService";
-import SingletonAuth from "../../utils/SingletonAuth";
+import { LocalCouncilService } from "../../../../services/LocalCouncilService";
+import { HoardingService } from "../../../../services/HoardingService";
+import SingletonAuth from "../../../../utils/SingletonAuth";
+import DocumentsDropzoneFragment from "../../../../components/DocumentsDropzoneFragment";
+import KioskInfo from "./KioskInfo";
+import GridContainer from "../../../../components/Grid/GridContainer";
+import GridItem from "../../../../components/Grid/GridItem";
+import OfficeSnackbar from "../../../../components/OfficeSnackbar";
+import CardFooter from "../../../../components/Card/CardFooter";
+import SubmitDialog from "../../../../components/SubmitDialog";
+import KioskViewModel from "../../../model/KioskViewModel";
+import Constraint from "../../../../config/Constraint";
+import { KioskFormModel } from "../../../model/KioskFormModel";
+import { KioskService } from "../../../../services/KioskService";
 
-class HoardingContainer extends Component {
+
+class KioskFormContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       activeStep: 0,
-      hoardingData: {
+
+      kioskData: {
         localCouncil: undefined,
         category: undefined,
-        coordinate:'',
         address: "",
         length: 1,
         height: 1,
-        clearance:'',
+        roadDetail:1,
+        clearance:1,
         bothSide: false,
-        displayType: {value:"ILLUMINATED", label:'ILLUMINATED'},
+        collapsible: false,
+        coordinate: "",
+        displayType: { value: "ILLUMINATED", label: "ILLUMINATED" },
 
         landLord: "",
         landlordType: "0",
@@ -65,18 +71,18 @@ class HoardingContainer extends Component {
       lengthError: "",
       heightError: "",
       categoryError: "",
-      displayTypeError: ""
+      displayTypeError: "",
+      collapsibleError: "",
     };
-    this.hoardingRef = React.createRef("hoardingRef");
+    this.kioskRef = React.createRef("kioskRef");
     this.docRef = React.createRef("docRef");
     this.localCouncilservice = new LocalCouncilService();
-    this.hoardingService = new HoardingService();
+    this.kioskService = new KioskService();
   }
 
   componentWillMount() {
     let currentUser = new SingletonAuth().getCurrentUser();
-    console.log("Current user");
-    console.log(currentUser);
+
     let newLocalCouncils = [];
     this.localCouncilservice.get()
       .then(data => {
@@ -89,13 +95,13 @@ class HoardingContainer extends Component {
             newLocalCouncils.push(lc);
           });
           this.setState(state => {
-            state.hoardingData.localCouncils = newLocalCouncils;
+            state.kioskData.localCouncils = newLocalCouncils;
           });
         } else {
           this.setState({ hasError: true });
         }
       }).then(() => {
-      this.setState(state => state.hoardingData.localCouncil = state.hoardingData.localCouncils[0]);
+      this.setState(state => state.kioskData.localCouncil = state.kioskData.localCouncils[0]);
     });
   }
 
@@ -129,9 +135,8 @@ class HoardingContainer extends Component {
   handleSubmit = (e) => {
 
     this.setState({ submit: true });
-    this.hoardingService.create(this.state)
+    this.kioskService.create(this.state)
       .then(data => {
-        console.log("whyyy nee");
         console.log(data);
         // if (data.status) {
         this.setState({ submit: false, complete: true });
@@ -146,8 +151,8 @@ class HoardingContainer extends Component {
     const { activeStep } = this.state;
     switch (activeStep) {
       case 0:
-        if (this.hoardingRef.current.isValid()) {
-          this.setState({ hoardingData: this.hoardingRef.current.getData() });
+        if (this.kioskRef.current.isValid()) {
+          this.setState({ kioskData: this.kioskRef.current.getData() });
           this.setState({ activeStep: activeStep + 1 });
         }
         break;
@@ -167,7 +172,7 @@ class HoardingContainer extends Component {
 
     switch (this.state.activeStep) {
       case 0:
-        return (<HoardingInfo ref={this.hoardingRef} hoardingData={this.state.hoardingData}/>);
+        return (<KioskInfo ref={this.kioskRef} kioskData={this.state.kioskData}/>);
       case 1:
         return (
           <DocumentsDropzoneFragment
@@ -205,13 +210,13 @@ class HoardingContainer extends Component {
         <GridItem xs={12} sm={12} md={8}>
           <OfficeSnackbar open={this.state.hasError} message={this.state.errorMessage} variant={"error"}/>
           <Card style={{ padding: 40 }}>
-            <CardHeader title={HoardingApplicationFormModel.TITLE} subheader={HoardingApplicationFormModel.SUBHEADER}/>
+            <CardHeader title={KioskFormModel.TITLE} subheader={KioskFormModel.SUBHEADER}/>
             <Stepper activeStep={this.state.activeStep} alternativeLabel={true}>
               <Step key={1}>
-                <StepLabel>{HoardingApplicationFormModel.HOARDING_INFO}</StepLabel>
+                <StepLabel>{KioskViewModel.KIOSK_INFO}</StepLabel>
               </Step>
               <Step key={2}>
-                <StepLabel>{HoardingApplicationFormModel.ATTACHMENT}</StepLabel>
+                <StepLabel>{KioskViewModel.ATTACHMENT}</StepLabel>
               </Step>
             </Stepper>
             <div style={{ margin: 20 }}>
@@ -226,7 +231,7 @@ class HoardingContainer extends Component {
           </Card>
         </GridItem>
 
-        <SubmitDialog open={this.state.submit} text={"Submitting form ...."}/>
+        <SubmitDialog open={this.state.submit} text={"Please wait ...."}/>
         <OfficeSnackbar variant={"success"} message={"Your application is submitted successfully"}
                         open={this.state.complete} onClose={(e) => this.setState({ complete: false })}/>
       </GridContainer>
@@ -236,4 +241,4 @@ class HoardingContainer extends Component {
   }
 }
 
-export default HoardingContainer;
+export default KioskFormContainer;

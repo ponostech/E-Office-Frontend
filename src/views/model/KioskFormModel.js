@@ -1,10 +1,10 @@
-export default class HoardingApplicationFormModel {
-  static TITLE = "Hoarding Application form";
-  static SUBHEADER = "Hoarding Application form";
+export class KioskFormModel {
+  static TITLE = "Purposal of Kiosk Advertisement";
+  static SUBHEADER = "";
 
   static CATEGORY = "Area's category";
   static LOCAL_COUNCILS = "Local councils";
-  static ROAD_DETAIL = "Road";
+  static ROAD_DETAIL = "Road Details";
 
   static APPLICATN_INFO = "Applicant info";
   static ATTACHMENT = "Document attachment";
@@ -19,8 +19,8 @@ export default class HoardingApplicationFormModel {
   static HEIGHT_REQUIRED="Height is required";
   static REQUIRED_CATEGORY="Category is required";
   static REQUIRED_DISPLAYTYPE="Display type is required";
+  static REQUIRED_COLLAPSE="Collapsible is required";
   static CLEARANCE="Clearance";
-  static COORDINATE="Coordinate(Latitude & Longitude)";
-  static REQUIRED_COORDINATE=" Latitude and longitude of an area is required";
-
-};
+  static COLLAPSIBLE="Collapsible?";
+  static COORDINATE="Coordinate";
+}

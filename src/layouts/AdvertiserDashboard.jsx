@@ -18,12 +18,20 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import dashRoutes from "../routes/advertiserRoutes";
+import SingletonAuth from "../utils/SingletonAuth";
+import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
+import KioskFormContainer from "../views/advertiser/kiosk/form/KioskFormContainer";
+import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
+import HoardingContainer from "../views/hoarding/HoardingContainer";
 
 const switchRoutes = (
   <Switch>
+    <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>
+    <Route exact path={OfficeRoutes.PROPOSED_KIOSK} component={KioskFormContainer}/>
+    <Route exact path={OfficeRoutes.PROPOSED_HOARDING} component={HoardingContainer}/>
     {dashRoutes.map((prop, key) => {
       if (prop.redirect)
-        return <Redirect from={prop.path} to={prop.pathTo} key={key}/>;
+        return <Redirect exact from={prop.path} to={prop.pathTo} key={key}/>;
       if (prop.collapse)
         return prop.views.map((prop, key) => {
           return (
@@ -48,6 +56,10 @@ class AdvertiserDashboard extends React.Component {
   }
 
   componentDidMount() {
+    let user=new SingletonAuth().getCurrentUser();
+    if (user) {
+        console.log(user)
+    }
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.mainPanel, {
         suppressScrollX: true,
