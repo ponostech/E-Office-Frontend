@@ -29,6 +29,7 @@ import Button from "../../components/CustomButtons/Button.jsx";
 
 import styles from "../../assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
 import OfficeSelect from "../../components/OfficeSelect";
+import HoardingApplicationFormModel from "../model/HoardingApplicationFormModel";
 
 class BannerApplicationForm extends Component {
     state = {
@@ -183,7 +184,7 @@ class BannerApplicationForm extends Component {
                                                         onChange: this.handleChange('phone_no'),
                                                         endAdornment: (
                                                             <InputAdornment position="end">
-                                                                <Shop className={classes.inputAdornmentIcon}/>
+                                                                <Smartphone className={classes.inputAdornmentIcon}/>
                                                             </InputAdornment>
                                                         )
                                                     }}
@@ -193,71 +194,17 @@ class BannerApplicationForm extends Component {
                                             <OfficeSelect variant={"standard"}
                                                           value={this.state.ownership}
                                                           defaultValue={this.state.ownerships[0]}
-                                                          name={"ownership"}
+                                                          name={"application_type"}
                                                           placeholder={BannerApplicationFormModel.Ownership}
                                                           onChange={this.handleSelect.bind(this,"Ownership")}
                                                           searchAble={true}
                                                           ClearAble={true}
-                                                          label={BannerApplicationFormModel.Type_of_Applicant}
+                                                          fullWidth={true}
+                                                          label={BannerApplicationFormModel.TYPE_OF_APPLICANT}
                                                           options={this.state.ownerships}/>
                                             </GridItem>
-                                            <GridItem md={6} xs={12}>
-                                              <CustomInput
-                                                labelText="Residential Address"
-                                                name="address"
-                                                formControlProps={{
-                                                  fullWidth: true
-                                                }}
-                                                inputProps={{
-                                                  multiline: true,
-                                                  rows: 5,
-                                                  onChange: this.handleChange('address'),
-                                                  endAdornment: (
-                                                    <InputAdornment position="end">
-                                                      <LocationOn className={classes.inputAdornmentIcon}/>
-                                                    </InputAdornment>
-                                                  )
-                                                }}
-                                              />
-                                            </GridItem>
-                                            <GridItem md={6} xs={12}>
-                                                <CustomInput
-                                                    labelText="Residential Address"
-                                                    name="address"
-                                                    formControlProps={{
-                                                        fullWidth: true
-                                                    }}
-                                                    inputProps={{
-                                                        multiline: true,
-                                                        rows: 5,
-                                                        onChange: this.handleChange('address'),
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <LocationOn className={classes.inputAdornmentIcon}/>
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
-                                                />
-                                            </GridItem>
-                                            <GridItem md={6} xs={12}>
-                                                <CustomInput
-                                                    labelText="Location of Banner"
-                                                    name="location"
-                                                    formControlProps={{
-                                                        fullWidth: true
-                                                    }}
-                                                    inputProps={{
-                                                        multiline: true,
-                                                        rows: 5,
-                                                        onChange: this.handleChange('shopLocation'),
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <MyLocation className={classes.inputAdornmentIcon}/>
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
-                                                />
-                                            </GridItem>
+
+
                                             <GridItem md={6} xs={12}>
                                                 <CustomInput
                                                     labelText="Mobile No."
@@ -273,6 +220,25 @@ class BannerApplicationForm extends Component {
                                                             </InputAdornment>
                                                         )
                                                     }}
+                                                />
+                                            </GridItem>
+                                            <GridItem md={6} xs={12}>
+                                                <CustomInput
+                                                  labelText="Residential Address"
+                                                  name="address"
+                                                  formControlProps={{
+                                                      fullWidth: true
+                                                  }}
+                                                  inputProps={{
+                                                      multiline: true,
+                                                      rows: 3,
+                                                      onChange: this.handleChange('address'),
+                                                      endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <LocationOn className={classes.inputAdornmentIcon}/>
+                                                        </InputAdornment>
+                                                      )
+                                                  }}
                                                 />
                                             </GridItem>
                                             <GridItem md={6} xs={12}>
