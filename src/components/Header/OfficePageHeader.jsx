@@ -17,6 +17,7 @@ import Assessment from "@material-ui/icons/Assessment";
 import UserIcon from "@material-ui/icons/AccountCircleRounded";
 import HomeIcon from "@material-ui/icons/Home";
 import MenuIcon from "@material-ui/icons/Menu";
+import SettingIcon from "@material-ui/icons/Settings";
 // core components
 import Button from "components/CustomButtons/Button";
 
@@ -64,8 +65,6 @@ class OfficePageHeader extends React.Component {
     const { name } = event;
     const { history } = this.props;
 
-    //console.log(name);
-
     switch (name) {
       case "new-file":
         history.push("/e-office/file/new");
@@ -86,7 +85,16 @@ class OfficePageHeader extends React.Component {
         history.push("/e-office/receipt/sent");
         break;
       case "obpas":
-        history.push("/e-office/application/obpas");
+        history.push(OfficeRoutes.OBPAS);
+        break;
+        case "hoardings":
+        history.push(OfficeRoutes.OBPAS);
+        break;
+        case "":
+        history.push(OfficeRoutes.OBPAS);
+        break;
+        case "obpas":
+        history.push(OfficeRoutes.OBPAS);
         break;
       default:
         break;
@@ -153,16 +161,19 @@ class OfficePageHeader extends React.Component {
     const { history } = this.props;
     switch (e) {
       case "OBPAS":
-        history.push("/e-office/application/obpas");
+        history.push(OfficeRoutes.OBPAS);
         break;
       case "Hoarding":
-        history.push("/e-office/application/hoarding");
+        history.push(OfficeRoutes.HOARDINGS);
         break;
       case "Shop Licensing":
-        history.push("/e-office/application/shop-licensing");
+        history.push(OfficeRoutes.SHOP_LICENSES);
         break;
       case "Kiosk":
-        history.push("/e-office/application/kiosk");
+        history.push(OfficeRoutes.KIOSKS);
+        break;
+        case "Banners":
+        history.push(OfficeRoutes.BANNERS);
         break;
       default:
         break;
@@ -175,7 +186,7 @@ class OfficePageHeader extends React.Component {
   };
 
   render() {
-    const { classes, color } = this.props;
+    const { classes, color,history } = this.props;
     const { anchorEl } = this.state;
     const appBarClasses = cx({
       [" " + classes[color]]: color
@@ -203,7 +214,7 @@ class OfficePageHeader extends React.Component {
 
           <CustomDropdown
               onClick={this.handleApplication.bind(this)}
-              dropdownList={["OBPAS", "Hoarding", "Shop Licensing", "Kiosk"]}
+              dropdownList={["OBPAS", "Hoarding", "Shop Licensing", "Kiosk","Banners"]}
               buttonText={"Application"}
               buttonProps={{ color: "transparent" }} />
 
@@ -213,6 +224,11 @@ class OfficePageHeader extends React.Component {
           <Typography variant={"caption"} color={"textSecondary"}>Hello Username</Typography>
           <IconButton onClick={this.handleUser.bind(this)}>
             <UserIcon/>
+          </IconButton>
+          <IconButton onClick={()=>{
+            history.push(OfficeRoutes.SETTING)
+          }}>
+            <SettingIcon/>
           </IconButton>
         </div>
 

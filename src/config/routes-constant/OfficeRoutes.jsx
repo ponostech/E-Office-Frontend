@@ -47,4 +47,13 @@ export class OfficeRoutes {
   static ADVERTISER_HOARDING="/advertiser/hoarding/list";
   static ADVERTISER_KIOSK="/advertiser/kiosk";
   static ADVERTISER_PROFILE="/advertiser/profile";
+
+
+  static SHOP_LICENSES="/e-office/applications/shop-license";
+  static HOARDINGS="/e-office/applications/hoardings";
+  static BANNERS="/e-office/applications/banners";
+  static KIOSKS="/e-office/applications/kiosks";
+  static OBPAS="/e-office/applications/obpas";
+
+  static SETTING="/e-office/setting";
 }

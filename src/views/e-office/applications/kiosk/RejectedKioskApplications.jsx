@@ -3,12 +3,12 @@ import ReactTable from "react-table";
 import { Button, Checkbox, IconButton, InputAdornment, TextField } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import 'react-table/react-table.css'
+import GridItem from "../../../../components/Grid/GridItem";
 
 import DeleteIcon from '@material-ui/icons/DeleteForever';
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
+import GridContainer from "../../../../components/Grid/GridContainer";
 
-class DeskView extends Component {
+class RejectedKioskApplications extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,20 +47,19 @@ class DeskView extends Component {
     }];
     return (
       <div>
-        <GridContainer>
-          <GridItem>
-            <TextField variant={"standard"}
-                       margin={"dense"}
-                       InputProps={{
-                         endAdornment: (
-                           <InputAdornment
-                             position="end">
-                             <SearchIcon color={"action"}/>
-                           </InputAdornment>
-                         ),
-                         placeholder: "Search"
-                       }}/>
-          </GridItem>
+        <GridContainer justify={"space-between"}>
+          <Button color={"primary"} variant={"contained"}>Site Verification</Button>
+          <TextField variant={"standard"}
+                     margin={"dense"}
+                     InputProps={{
+                       endAdornment: (
+                         <InputAdornment
+                           position="end">
+                           <SearchIcon color={"action"}/>
+                         </InputAdornment>
+                       ),
+                       placeholder: "Search"
+                     }}/>
         </GridContainer>
 
         <GridItem xs={12} sm={12} md={12}>
@@ -78,4 +77,4 @@ class DeskView extends Component {
   }
 }
 
-export default DeskView;
+export default RejectedKioskApplications;

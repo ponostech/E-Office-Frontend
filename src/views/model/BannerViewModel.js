@@ -1,5 +1,5 @@
-export class HoardingListViewModel {
-  static TITLE = "List of Hoarding Applications";
+export class BannerViewModel {
+  static TITLE = "List of Banner Applications";
 
   static  NEW = "New Applications";
   static  GRANTED = "Granted Applications";
