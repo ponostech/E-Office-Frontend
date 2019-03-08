@@ -20,6 +20,7 @@ export default class FormControlUtils {
       helperText={helperText}
       margin={margin}
       onChange={onChange}
+        fullWidth={fullWidth}
         {...rest}
       />
   }
@@ -35,6 +36,7 @@ export default class FormControlUtils {
       helperText={helperText}
       margin={margin}
       onChange={onChange}
+        fullWidth={fullWidth}
         {...rest}
       />
   }
@@ -49,6 +51,7 @@ export default class FormControlUtils {
       margin={margin}
       options={options}
       onChange={onChange}
+        fullWidth={fullWidth}
         {...rest}
       />
   }
