@@ -30,7 +30,7 @@ export class OfficeRoutes {
   static CREATED_FILES = "/e-office/created";
   static SENT_FILE = "/e-office/sent";
   static CLOSE_FILE = "/e-office/sent";
-  static FILE_DETAIL = "/e-office/files/:id";
+  static FILE_DETAIL = "/e-office/file/:id/detail";
 
   static NEW_RECEIPT = "/e-office/receipt/new";
   static CREATED_RECEIPT = "/e-office/receipt/created";

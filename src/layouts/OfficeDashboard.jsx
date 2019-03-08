@@ -17,6 +17,7 @@ import KioskApplications from "../views/e-office/applications/kiosk/KioskApplica
 import ShopLicenseApplications from "../views/e-office/applications/shop-license/ShopLicenseApplications";
 import HoardingApplications from "../views/e-office/applications/hoarding/HoardingApplications";
 import Settings from "../views/e-office/settings/Setting";
+import FileDetail from "../views/e-office/files/details/FileDetail";
 
 class OfficeDashboard extends Component {
   render() {
@@ -26,7 +27,7 @@ class OfficeDashboard extends Component {
         <GridItem xs={12} sm={12} md={12}>
           <OfficePageHeader color={"primary"}/>
         </GridItem>
-        <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={10}>
+        <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
           <GridContainer justify={"center"}>
             <Route path={OfficeRoutes.DESK} component={DeskView}/>
             <Route path={OfficeRoutes.NEW_RECEIPT} component={NewReceipt}/>
@@ -35,6 +36,7 @@ class OfficeDashboard extends Component {
             <Route path={OfficeRoutes.SENT_RECEIPT} component={SentReceipt}/>
 
             <Route path={OfficeRoutes.NEW_FILE} component={NewFile}/>
+            <Route path={OfficeRoutes.FILE_DETAIL} component={FileDetail}/>
 
             <Route path={OfficeRoutes.OBPAS} component={NewFile}/>
             <Route path={OfficeRoutes.HOARDINGS} component={HoardingApplications}/>
