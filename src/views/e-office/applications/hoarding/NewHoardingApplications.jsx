@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import ReactTable from "react-table";
 import { Button, Checkbox, IconButton, InputAdornment, TextField } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import 'react-table/react-table.css'
+import "react-table/react-table.css";
+import GridItem from "../../../../components/Grid/GridItem";
 
-import DeleteIcon from '@material-ui/icons/DeleteForever';
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
+import DeleteIcon from "@material-ui/icons/DeleteForever";
+import GridContainer from "../../../../components/Grid/GridContainer";
 
-class DeskView extends Component {
+class NewHoardingApplications extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,8 +30,8 @@ class DeskView extends Component {
     const columns = [{
       Header: "Action",
       accessor: "application_no",
-      Cell:props=> <Checkbox name={"check"} />// String-based value accessors!
-    },{
+      Cell: props => <Checkbox name={"check"}/>// String-based value accessors!
+    }, {
       Header: "Name",
       accessor: "application_no" // String-based value accessors!
     }, {
@@ -41,13 +41,13 @@ class DeskView extends Component {
     }, {
       Header: "Actions",
       accessor: "application_no",
-      Cell: props => <IconButton>
-        <DeleteIcon/>
-      </IconButton> // Custom cell components!
+      Cell: props => <Button color={"secondary"} variant={"contained"}>
+        Reject
+      </Button> // Custom cell components!
     }];
     return (
       <div>
-        <GridContainer>
+        <GridContainer justify={"space-between"}>
           <GridItem>
             <TextField variant={"standard"}
                        margin={"dense"}
@@ -61,6 +61,10 @@ class DeskView extends Component {
                          placeholder: "Search"
                        }}/>
           </GridItem>
+          <GridItem>
+            <Button color={"primary"} variant={"contained"}>Site Verification</Button>
+          </GridItem>
+
         </GridContainer>
 
         <GridItem xs={12} sm={12} md={12}>
@@ -78,4 +82,4 @@ class DeskView extends Component {
   }
 }
 
-export default DeskView;
+export default NewHoardingApplications;
