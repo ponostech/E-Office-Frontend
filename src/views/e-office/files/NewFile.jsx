@@ -125,6 +125,7 @@ class NewFile extends Component {
                 fullWidth={true}/>
 
               <OfficeSelect
+                fullWidth={true}
                 required={true}
                 label={NewFileViewModel.DEALER_LABEL}
                 name={"dealer"}
@@ -132,6 +133,7 @@ class NewFile extends Component {
                 options={this.state.dealers}
                 onChange={this.handleSelect.bind(this)}/>
               <OfficeSelect
+                fullWidth={true}
                 value={this.state.category}
                 label={NewFileViewModel.CATEGORY_LABEL}
                 isClearable={true}
@@ -141,6 +143,7 @@ class NewFile extends Component {
                 options={this.state.categories}
                 onChange={this.handleSelect.bind(this)}/>
               <OfficeSelect
+                fullWidth={true}
                 label={NewFileViewModel.CLASSIFICATION_LABEL}
                 name={"classification"}
                 isClearable={true}

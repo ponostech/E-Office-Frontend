@@ -87,13 +87,13 @@ class OfficePageHeader extends React.Component {
       case "obpas":
         history.push(OfficeRoutes.OBPAS);
         break;
-        case "hoardings":
+      case "hoardings":
         history.push(OfficeRoutes.OBPAS);
         break;
-        case "":
+      case "":
         history.push(OfficeRoutes.OBPAS);
         break;
-        case "obpas":
+      case "obpas":
         history.push(OfficeRoutes.OBPAS);
         break;
       default:
@@ -157,6 +157,9 @@ class OfficePageHeader extends React.Component {
 
     }
   };
+  handleReport = (e) => {
+    console.log(e);
+  };
   handleApplication = (e) => {
     const { history } = this.props;
     switch (e) {
@@ -172,7 +175,7 @@ class OfficePageHeader extends React.Component {
       case "Kiosk":
         history.push(OfficeRoutes.KIOSKS);
         break;
-        case "Banners":
+      case "Banners":
         history.push(OfficeRoutes.BANNERS);
         break;
       default:
@@ -186,7 +189,7 @@ class OfficePageHeader extends React.Component {
   };
 
   render() {
-    const { classes, color,history } = this.props;
+    const { classes, color, history } = this.props;
     const { anchorEl } = this.state;
     const appBarClasses = cx({
       [" " + classes[color]]: color
@@ -194,39 +197,46 @@ class OfficePageHeader extends React.Component {
 
     var menuItems = (
       <GridContainer justify={"space-between"}>
-        <div style={{display:"flex",alignItems:"center"}}>
+        <div style={{ display: "flex", alignItems: "center" }}>
 
-          <IconButton style={{ marginLeft:20 }} onClick={this.handleDesk.bind(this)}>
+          <IconButton style={{ marginLeft: 20 }} onClick={this.handleDesk.bind(this)}>
             <HomeIcon/>
           </IconButton>
 
           <CustomDropdown
-              onClick={this.handleFile.bind(this)}
-              dropdownList={["Create New", "List Created", "List Sent"]}
-              buttonText={"File"}
-              buttonProps={{ color: "transparent" }} />
+            onClick={this.handleFile.bind(this)}
+            dropdownList={["Create New", "List Created", "List Sent"]}
+            buttonText={"File"}
+            buttonProps={{ color: "transparent" }}/>
 
           <CustomDropdown
-              onClick={this.handleReceipt.bind(this)}
-              dropdownList={["Create New", "List Created", "List Sent"]}
-              buttonText={"Receipt"}
-              buttonProps={{ color: "transparent" }} />
+            onClick={this.handleReceipt.bind(this)}
+            dropdownList={["Create New", "List Created", "List Sent"]}
+            buttonText={"Receipt"}
+            buttonProps={{ color: "transparent" }}/>
 
           <CustomDropdown
-              onClick={this.handleApplication.bind(this)}
-              dropdownList={["OBPAS", "Hoarding", "Shop Licensing", "Kiosk","Banners"]}
-              buttonText={"Application"}
-              buttonProps={{ color: "transparent" }} />
+            onClick={this.handleApplication.bind(this)}
+            dropdownList={["OBPAS", "Hoarding", "Shop Licensing", "Kiosk", "Banners"]}
+            buttonText={"Application"}
+            buttonProps={{ color: "transparent" }}/>
+          <CustomDropdown
+            onClick={this.handleReport.bind(this)}
+            dropdownList={["Report one", "Report two"]}
+            buttonText={"Report"}
+            buttonProps={{ color: "transparent" }}/>
 
+          <Button style={{ background: "transparent", color: "black" }} onClick={(e) => {
+          }} simple={true}> DSC</Button>
         </div>
 
-        <div style={{display:"flex",alignItems:'center'}}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Typography variant={"caption"} color={"textSecondary"}>Hello Username</Typography>
           <IconButton onClick={this.handleUser.bind(this)}>
             <UserIcon/>
           </IconButton>
-          <IconButton onClick={()=>{
-            history.push(OfficeRoutes.SETTING)
+          <IconButton onClick={() => {
+            history.push(OfficeRoutes.SETTING);
           }}>
             <SettingIcon/>
           </IconButton>

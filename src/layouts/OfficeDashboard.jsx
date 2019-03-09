@@ -18,6 +18,8 @@ import ShopLicenseApplications from "../views/e-office/applications/shop-license
 import HoardingApplications from "../views/e-office/applications/hoarding/HoardingApplications";
 import Settings from "../views/e-office/settings/Setting";
 import FileDetail from "../views/e-office/files/details/FileDetail";
+import CreatedFiles from "../views/e-office/files/CreatedFiles";
+import SentFiles from "../views/e-office/files/SentFiles";
 
 class OfficeDashboard extends Component {
   render() {
@@ -37,6 +39,8 @@ class OfficeDashboard extends Component {
 
             <Route path={OfficeRoutes.NEW_FILE} component={NewFile}/>
             <Route path={OfficeRoutes.FILE_DETAIL} component={FileDetail}/>
+            <Route path={OfficeRoutes.CREATED_FILES} component={CreatedFiles}/>
+            <Route path={OfficeRoutes.SENT_FILE} component={SentFiles}/>
 
             <Route path={OfficeRoutes.OBPAS} component={NewFile}/>
             <Route path={OfficeRoutes.HOARDINGS} component={HoardingApplications}/>
