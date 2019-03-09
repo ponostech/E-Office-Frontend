@@ -21,6 +21,7 @@ import InboxIcon from "@material-ui/icons/Inbox";
 import CloseIcon from "@material-ui/icons/Close";
 import PrintIcon from "@material-ui/icons/Print";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
+import ReceiptMovementDialog from "./movement/ReceiptMovementDialog";
 // import {Document,Page} from "react-pdf";
 
 
@@ -74,10 +75,14 @@ class Detail extends Component {
       id: 12,
       numPages: null,
       pageNumber: 1,
-      value: 0
+      value: 0,
+      openSentDialog:false
     };
   }
 
+  onMoveReceipt=(e)=>{
+      this.setState({openSentDialog:false})
+  }
   handleTabChange = (event, value) => {
     this.setState({ value });
   };
@@ -90,93 +95,98 @@ class Detail extends Component {
 
     return (
 
-        <Card style={{ padding: 10 }}>
-          <CardHeader title={"Receipt id:123123"} action={
-            <IconButton>
-              <CloseIcon/>
-            </IconButton>
-          }/>
-          <GridContainer justify={"center"}>
-            <GridItem xs={12} sm={12} md={12}>
-              <GridContainer justify={"space-between"}>
-                <div>
-                  <Tooltip title={"Edit"}>
-                    <IconButton>
-                      <EditIcon/>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Delete"}>
-                    <IconButton>
-                      <DeleteIcon/>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Forward"}>
-                    <IconButton>
-                      <SentIcon/>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Put in a file"}>
-                    <IconButton>
-                      <InboxIcon/>
-                    </IconButton>
-                  </Tooltip>
-                </div>
-                <div>
-                  <Tooltip title={"Download"}>
-                    <IconButton>
-                      <DownloadIcon/>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Print"}>
-                    <IconButton>
-                      <PrintIcon/>
-                    </IconButton>
-                  </Tooltip>
-                </div>
-              </GridContainer>
-            </GridItem>
-            <GridItem xs={12} sm={12} md={7}>
-              <Card>
-                <CardHeader>
-                  <Typography color={"textPrimary"} variant={"headline"}>Receipt No: {this.state.id}</Typography>
-                </CardHeader>
-                <CardContent>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={12}>
+          <Card style={{ padding: 10 }}>
+            <CardHeader title={"Receipt id:123123"} action={
+              <IconButton>
+                <CloseIcon/>
+              </IconButton>
+            }/>
+            <GridContainer justify={"center"}>
+              <GridItem xs={12} sm={12} md={12}>
+                <GridContainer justify={"space-between"}>
+                  <div>
+                    <Tooltip title={"Edit"}>
+                      <IconButton>
+                        <EditIcon/>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Delete"}>
+                      <IconButton>
+                        <DeleteIcon/>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Forward"}>
+                      <IconButton onClick={(e)=>this.setState({openSendDialog:true})}>
+                        <SentIcon/>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Put in a file"}>
+                      <IconButton>
+                        <InboxIcon/>
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                  <div>
+                    <Tooltip title={"Download"}>
+                      <IconButton>
+                        <DownloadIcon/>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Print"}>
+                      <IconButton>
+                        <PrintIcon/>
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                </GridContainer>
+              </GridItem>
+              <GridItem xs={12} sm={12} md={7}>
+                <Card>
+                  <CardHeader>
+                    <Typography color={"textPrimary"} variant={"headline"}>Receipt No: {this.state.id}</Typography>
+                  </CardHeader>
+                  <CardContent>
 
-                  pdf details goes here
-                  {/*<Document*/}
-                  {/*file="/test.pdf"*/}
-                  {/*onLoadSuccess={this.onDocumentLoadSuccess}*/}
-                  {/*>*/}
-                  {/*<Page pageNumber={1} />*/}
-                  {/*</Document>*/}
-                  {/*<p>Page {pageNumber} of {numPages}</p>*/}
-                </CardContent>
-              </Card>
-            </GridItem>
-            <GridItem xs={12} sm={12} md={5}>
-              <Card>
-                <CardHeader>
-                  <Typography color={"textPrimary"} variant={"headline"}>Some kind of things</Typography>
-                </CardHeader>
-                <CardContent>
+                    pdf details goes here
+                    {/*<Document*/}
+                    {/*file="/test.pdf"*/}
+                    {/*onLoadSuccess={this.onDocumentLoadSuccess}*/}
+                    {/*>*/}
+                    {/*<Page pageNumber={1} />*/}
+                    {/*</Document>*/}
+                    {/*<p>Page {pageNumber} of {numPages}</p>*/}
+                  </CardContent>
+                </Card>
+              </GridItem>
+              <GridItem xs={12} sm={12} md={5}>
+                <Card>
+                  <CardHeader title={"Receipt Info"} security={"info"} subheader={"Correspondence and issues"}>
+                  </CardHeader>
+                  <CardContent>
 
 
-                  <Tabs value={value} textColor={"primary"} onChange={this.handleTabChange.bind(this)} fullWidth={true}>
-                    <Tab fullWidth={true} label={"Receipt detail"}/>
-                    <Tab fullWidth={true} label={"Communication"}/>
-                    <Tab fullWidth={true} label={"Category"}/>
-                  </Tabs>
-                  {value === 0 && <ReceiptDetail>Receipt Detail</ReceiptDetail>}
-                  {value === 1 && <CommunicationDetail>Communication</CommunicationDetail>}
-                  {value === 2 && <CategoryDetail> Category</CategoryDetail>}
-                </CardContent>
-                <CardActions>
-                  <Button variant={"extendedFab"} color={"primary"}>Close</Button>
-                </CardActions>
-              </Card>
-            </GridItem>
-          </GridContainer>
-        </Card>
+                    <Tabs value={value} textColor={"primary"} onChange={this.handleTabChange.bind(this)}
+                          variant={"fullWidth"}>
+                      <Tab value={0} fullWidth={true} label={"Receipt detail"}/>
+                      <Tab value={1} fullWidth={true} label={"Communication"}/>
+                      <Tab value={2} fullWidth={true} label={"Category"}/>
+                    </Tabs>
+                    {value === 0 && <ReceiptDetail>Receipt Detail</ReceiptDetail>}
+                    {value === 1 && <CommunicationDetail>Communication</CommunicationDetail>}
+                    {value === 2 && <CategoryDetail> Category</CategoryDetail>}
+                  </CardContent>
+                  <CardActions>
+                    <Button variant={"extendedFab"} color={"primary"}>Close</Button>
+                  </CardActions>
+                </Card>
+              </GridItem>
+            </GridContainer>
+          </Card>
+        </GridItem>
+        <ReceiptMovementDialog open={this.state.openSentDialog} onClose={this.onMoveReceipt}/>
+      </GridContainer>
     );
   }
 }

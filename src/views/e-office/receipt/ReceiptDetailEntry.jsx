@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { AppBar, Button, Card, CardContent, Divider, Tab, Tabs } from "@material-ui/core";
+import { AppBar, Button, Card, CardContent, Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import FormControlUtils from "../../../utils/FormControlUtils";
 
 const DetailEntry = (props) => {
-  return <Card>
-    <CardContent>
+  return <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
           {FormControlUtils.Input("name", "name", "name", false, false, "text", "dense", () => {
@@ -34,12 +33,10 @@ const DetailEntry = (props) => {
         </GridItem>
       </GridContainer>
 
-    </CardContent>
-  </Card>;
+  </div>;
 };
 const CommunicationEntry = (props) => {
-  return <Card>
-    <CardContent>
+  return <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
           {FormControlUtils.Input("name", "name", "name", false, false, "text", "dense", () => {
@@ -65,16 +62,13 @@ const CommunicationEntry = (props) => {
           {FormControlUtils.Input("name", "name", "name", false, false, "text", "dense", () => {
           }, true)}
         </GridItem>
-      </GridContainer>
 
-    </CardContent>
-  </Card>;
+      </GridContainer>
+  </div>;
 };
 
 const AddressEntry = (props) => {
-  return <Card>
-    <CardContent>
-      <GridContainer>
+  return <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
           {FormControlUtils.Input("name", "name", "name", false, false, "text", "dense", () => {
           }, true)}
@@ -101,8 +95,6 @@ const AddressEntry = (props) => {
         </GridItem>
       </GridContainer>
 
-    </CardContent>
-  </Card>;
 };
 
 class ReceiptDetailEntry extends Component {
@@ -120,21 +112,20 @@ class ReceiptDetailEntry extends Component {
   render() {
     const { value } = this.state;
     return (
-      <div>
-        <AppBar position="static">
-          <Tabs value={value} onChange={this.handleTabChange.bind(this)}>
-            <Tab label="Item One"/>
-            <Tab label="Item Two"/>
-            <Tab label="Item Three"/>
+      <Paper style={{padding:20}}>
+        <Typography style={{margin:10}} variant={"headline"}>Receipt Info</Typography>
+          <Tabs style={{background:'white'}} indicatorColor={"primary"} variant={"standard"}  value={value} onChange={this.handleTabChange.bind(this)}>
+            <Tab value={0} label="Receipt Detail"/>
+            <Tab value={1} label="Communication"/>
+            <Tab value={2} label="Category"/>
           </Tabs>
-        </AppBar>
         {value === 0 && <DetailEntry>Receipt Detail</DetailEntry>}
         {value === 1 && <CommunicationEntry>Communication</CommunicationEntry>}
         {value === 2 && <AddressEntry> Category</AddressEntry>}
         <Divider style={{marginTop:10,marginBottom:10}}/>
         <Button variant={"contained"} color={"primary"}>Save</Button>
         <Button variant={"contained"} color={"secondary"}>Reset</Button>
-      </div>
+      </Paper>
     );
   }
 }
