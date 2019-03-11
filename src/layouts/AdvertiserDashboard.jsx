@@ -22,8 +22,8 @@ import SingletonAuth from "../utils/SingletonAuth";
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import KioskFormContainer from "../views/advertiser/kiosk/form/KioskFormContainer";
 import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
-import HoardingContainer from "../views/hoarding/HoardingContainer";
 import KioskDetail from "../views/advertiser/kiosk/KioskDetail";
+import HoardingContainer from "../views/advertiser/hoarding/HoardingContainer";
 
 const switchRoutes = (
   <Switch>
@@ -138,7 +138,6 @@ class AdvertiserDashboard extends React.Component {
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
           />
-          {/* On the /maps/full-screen-maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
           {this.getRoute() ? (
             <div className={classes.content}>
               <div className={classes.container}>{switchRoutes}</div>

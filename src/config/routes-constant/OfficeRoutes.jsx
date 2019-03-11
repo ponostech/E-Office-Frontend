@@ -15,7 +15,7 @@ export class OfficeRoutes {
 
   static APPLY_HOARDING = "/hoarding/new";
   static RENEW_HOARDING = "/hoarding/:id/renew";
-  static PROPOSED_HOARDING = "/hoarding/propose";
+  static PROPOSED_HOARDING = "/advertiser/hoarding/propose";
   static HOARDING_LIST = "/hoarding/list/:user";
 
   static NEW_KIOSK = "/advertiser/kiosk/new";

@@ -4,12 +4,12 @@ import { withStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { Card, CardHeader, IconButton, Tooltip } from "@material-ui/core";
-import GridContainer from "../../../../components/Grid/GridContainer";
-import GridItem from "../../../../components/Grid/GridItem";
-import AvailableKiosks from "./AvailableKiosks";
-import PendingKiosks from "./PendingKiosks";
-import KioskViewModel from "../../../model/KioskViewModel";
 import FilterIcon from "@material-ui/icons/FilterList";
+import { HoardingListViewModel } from "../../model/HoardingListViewModel";
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
+import AvailableHoardingList from "./AvailableHoardingList";
+import PendingHoardingList from "./PendingHoardingList";
 
 const styles = theme => ({
   root: {
@@ -57,7 +57,7 @@ const styles = theme => ({
   }
 });
 
-class KioskLists extends React.Component {
+class HoardingList extends React.Component {
   state = {
     value: "available"
   };
@@ -74,7 +74,7 @@ class KioskLists extends React.Component {
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader title={KioskViewModel.TITLE} action={
+            <CardHeader title={HoardingListViewModel.TITLE} action={
               <Tooltip title={"Filter"}>
                 <IconButton>
                   <FilterIcon/>
@@ -88,16 +88,16 @@ class KioskLists extends React.Component {
             >
               <Tab disableRipple value={"available"}
                    classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={KioskViewModel.AVAILABLE}/>
+                   label={HoardingListViewModel.AVAILABLE}/>
               <Tab value={"pending"}
                    disableRipple
                    classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={KioskViewModel.PENDING}/>
+                   label={HoardingListViewModel.PENDING}/>
 
             </Tabs>
             <div style={{ marginTop: 20, padding: 10 }}>
-              {value === "available" && <AvailableKiosks/>}
-              {value === "pending" && <PendingKiosks/>}
+              {value === "available" && <AvailableHoardingList/>}
+              {value === "pending" && <PendingHoardingList/>}
             </div>
           </Card>
         </GridItem>
@@ -106,8 +106,8 @@ class KioskLists extends React.Component {
   }
 }
 
-KioskLists.propTypes = {
+HoardingList.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(KioskLists);
+export default withStyles(styles)(HoardingList);

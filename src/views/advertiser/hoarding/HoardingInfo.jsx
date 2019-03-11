@@ -10,14 +10,13 @@ import {
   Switch,
   TextField
 } from "@material-ui/core";
-import HoardingApplicationFormModel from "../model/HoardingApplicationFormModel";
-import OfficeSelect from "../../components/OfficeSelect";
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
-import OfficeSnackbar from "../../components/OfficeSnackbar";
-import GMapDialog from "../../components/GmapDialog";
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from "react-google-maps";
-import { MAP_API_KEY } from "../../config/Config";
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
+import OfficeSelect from "../../../components/OfficeSelect";
+import GMapDialog from "../../../components/GmapDialog";
+import OfficeSnackbar from "../../../components/OfficeSnackbar";
+import HoardingApplicationFormModel from "../../model/HoardingApplicationFormModel";
 
 const RegularMap = withScriptjs(
   withGoogleMap(props => (

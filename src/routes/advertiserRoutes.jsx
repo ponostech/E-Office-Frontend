@@ -1,16 +1,11 @@
-
 // @material-ui/icons
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import VerifiedUser from "@material-ui/icons/VerifiedUser";
 // import ContentPaste from "@material-ui/icons/ContentPaste";
-import DateRange from "@material-ui/icons/DateRange";
 import Dashboard from "../views/advertiser/Dashboard";
-import HoardingList from "../views/hoarding/HoardingList";
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
-import StaffRegistrationForm from "../views/staff/StaffRegistrationForm";
-import HoardingContainer from "../views/hoarding/HoardingContainer";
 import KioskLists from "../views/advertiser/kiosk/lists/KioskLists";
-
+import HoardingList from "../views/advertiser/hoarding/HoardingList";
 
 
 var dashRoutes = [
@@ -25,7 +20,7 @@ var dashRoutes = [
     name: "Hoarding",
     icon: VerifiedUser,
     component: HoardingList
-  },{
+  }, {
     path: OfficeRoutes.ADVERTISER_KIOSK,
     name: "Kiosk",
     icon: VerifiedUser,
