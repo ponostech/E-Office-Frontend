@@ -8,5 +8,6 @@ export default class KioskViewModel {
   static REJECTED="Reject Applications";
   static GRANTED="Granted Applications";
   static NEW_APPLICATION="New Applications";
+  static ACTIVE="Active Hoarding";
 
 };

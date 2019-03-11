@@ -207,7 +207,7 @@ class KioskFormContainer extends Component {
     let view = this.getView();
     return (
       <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={12} md={8}>
+        <GridItem xs={12} sm={12} md={10}>
           <OfficeSnackbar open={this.state.hasError} message={this.state.errorMessage} variant={"error"}/>
           <Card style={{ padding: 40 }}>
             <CardHeader title={KioskFormModel.TITLE} subheader={KioskFormModel.SUBHEADER}/>

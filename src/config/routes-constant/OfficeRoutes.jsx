@@ -7,7 +7,7 @@ export class OfficeRoutes {
 
   static APPLY_ADVERTISER = "/register/advertiser";
   static RENEW_ADVERTISER = "/advertiser/:id/renew";
-  static ADVERTISER_DETAIL = "/advertiser/:id/detail";
+  // static ADVERTISER_DETAIL = "/advertiser/:id/detail";
 
   static APPLY_SHOP_LICENSE = "/shop-license/new";
   static RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
@@ -16,7 +16,7 @@ export class OfficeRoutes {
   static APPLY_HOARDING = "/hoarding/new";
   static RENEW_HOARDING = "/hoarding/:id/renew";
   static PROPOSED_HOARDING = "/hoarding/propose";
-  static HOARDING_LIST="/hoarding/list/:user";
+  static HOARDING_LIST = "/hoarding/list/:user";
 
   static NEW_KIOSK = "/advertiser/kiosk/new";
   static PROPOSED_KIOSK = "/advertiser/kiosk/propose";
@@ -43,17 +43,22 @@ export class OfficeRoutes {
   static NEW_STAFF = "/staff/new";
   static LIST_STAFF = "/staff";
 
-  static ADVERTISER_DASHBOARD="/advertiser";
-  static ADVERTISER_HOARDING="/advertiser/hoarding/list";
-  static ADVERTISER_KIOSK="/advertiser/kiosk";
-  static ADVERTISER_PROFILE="/advertiser/profile";
+  static ADVERTISER_DASHBOARD = "/advertiser";
+  static ADVERTISER_HOARDING = "/advertiser/hoarding/list";
+  static ADVERTISER_KIOSK = "/advertiser/kiosk";
+  static ADVERTISER_PROFILE = "/advertiser/profile";
 
 
-  static SHOP_LICENSES="/e-office/applications/shop-license";
-  static HOARDINGS="/e-office/applications/hoardings";
-  static BANNERS="/e-office/applications/banners";
-  static KIOSKS="/e-office/applications/kiosks";
-  static OBPAS="/e-office/applications/obpas";
+  static SHOP_LICENSES = "/e-office/applications/shop-license";
+  static HOARDINGS = "/e-office/applications/hoardings";
+  static HOARDING_DETAILS = "/e-office/applications/hoardings/:id/detail";
+  static BANNERS = "/e-office/applications/banners";
+  static KIOSKS = "/e-office/applications/kiosks";
+  static OBPAS = "/e-office/applications/obpas";
 
-  static SETTING="/e-office/setting";
+  static SETTING = "/e-office/setting";
+  static ADVERTISERS = "/e-office/advertisers";
+
+  static ADVERTISER_DETAIL=`/e-office/advertisers/:id/details`;
+
 }
