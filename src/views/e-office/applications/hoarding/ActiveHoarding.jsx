@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import ReactTable from "react-table";
-import { Button, Checkbox, IconButton, InputAdornment, TextField } from "@material-ui/core";
+import { Checkbox, IconButton, InputAdornment, TextField } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import 'react-table/react-table.css'
 import GridItem from "../../../../components/Grid/GridItem";
 
 import DeleteIcon from '@material-ui/icons/DeleteForever';
-import GridContainer from "../../../../components/Grid/GridContainer";
 
-class NewShopLicenseApplications extends Component {
+class ActiveHoarding extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,26 +46,20 @@ class NewShopLicenseApplications extends Component {
     }];
     return (
       <div>
-        <GridContainer justify={"space-between"}>
-          <GridItem>
-            <TextField variant={"standard"}
-                       margin={"dense"}
-                       InputProps={{
-                         endAdornment: (
-                           <InputAdornment
-                             position="end">
-                             <SearchIcon color={"action"}/>
-                           </InputAdornment>
-                         ),
-                         placeholder: "Search"
-                       }}/>
-          </GridItem>
-          <GridItem>
-            <Button color={"primary"} variant={"contained"}>Site Verification</Button>
-          </GridItem>
+        <GridItem xs={12} sm={12} md={12}>
+          <TextField variant={"standard"}
+                     margin={"dense"}
+                     InputProps={{
+                       startAdornment: (
+                         <InputAdornment
+                           position="start">
+                           <SearchIcon/>
+                         </InputAdornment>
+                       ),
+                       placeholder: "Search"
+                     }}/>
 
-        </GridContainer>
-
+        </GridItem>
         <GridItem xs={12} sm={12} md={12}>
           <ReactTable
             columns={columns}
@@ -82,4 +75,4 @@ class NewShopLicenseApplications extends Component {
   }
 }
 
-export default NewShopLicenseApplications;
+export default ActiveHoarding;

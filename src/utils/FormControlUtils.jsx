@@ -1,7 +1,7 @@
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Switch, TextField } from "@material-ui/core";
 import React from "react";
 import OfficeSelect from "../components/OfficeSelect";
-import StandaloneSearchBox from 'react-google-maps/lib/components/places/StandaloneSearchBox'
+import StandaloneSearchBox from "react-google-maps/lib/components/places/StandaloneSearchBox";
 
 const defaultRadioValues=[
   {value:"0",lable:'label 1'},

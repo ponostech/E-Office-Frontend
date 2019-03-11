@@ -228,6 +228,10 @@ class OfficePageHeader extends React.Component {
 
           <Button style={{ background: "transparent", color: "black" }} onClick={(e) => {
           }} simple={true}> DSC</Button>
+
+          <Button style={{ background: "transparent", color: "black" }} onClick={(e) => {
+            history.push(OfficeRoutes.ADVERTISERS)
+          }} simple={true}> Advertisers</Button>
         </div>
 
         <div style={{ display: "flex", alignItems: "center" }}>

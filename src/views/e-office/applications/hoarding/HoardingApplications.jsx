@@ -13,6 +13,7 @@ import FilterIcon from "@material-ui/icons/FilterList";
 import NewHoardingApplications from "./NewHoardingApplications";
 import RejectedHoardingApplications from "./RejectedHoardingApplications";
 import GrantedHoardingApplications from "./GrantedHoardingApplications";
+import ActiveHoarding from "./ActiveHoarding";
 
 
 const styles = theme => ({
@@ -93,7 +94,10 @@ class HoardingApplications extends React.Component {
                 onChange={this.handleChange}
                 classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
               >
-                <Tab disableRipple value={"new"}
+                <Tab disableRipple value={"active"}
+                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                     label={KioskViewModel.ACTIVE}/>
+                     <Tab disableRipple value={"new"}
                      classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                      label={KioskViewModel.NEW_APPLICATION}/>
                 <Tab value={"granted"}
@@ -108,6 +112,7 @@ class HoardingApplications extends React.Component {
               </Tabs>
             </CardContent>
             <div style={{ marginTop: 20 }}>
+              {value === "active" && <ActiveHoarding/>}
               {value === "new" && <NewHoardingApplications/>}
               {value === "granted" && <GrantedHoardingApplications/>}
               {value === "reject" && <RejectedHoardingApplications/>}

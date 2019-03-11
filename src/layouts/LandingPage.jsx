@@ -10,7 +10,6 @@ import Footer from "../components/Footer/Footer.jsx";
 import pagesStyle from "../assets/jss/material-dashboard-pro-react/layouts/pagesStyle.jsx";
 
 import HomePage from "../views/landing-pages/HomePage";
-import HoardingApplicationForm from "../views/hoarding/HoardingApplicationForm";
 import ShopLicenseForm from "../views/shop/ShopLicenseApplicationForm";
 import StaffRegistrationForm from "../views/staff/StaffRegistrationForm";
 import StaffList from "../views/staff/StaffList";
@@ -35,7 +34,7 @@ class LandingPage extends Component {
     const { classes, ...rest } = this.props;
     return (
       <div>
-        <AuthNavbar brandText="" OfficeRoutes={OfficeRoutes} {...rest} />
+        <AuthNavbar color={"primary"} brandText="" OfficeRoutes={OfficeRoutes} {...rest} />
         <div className={classes.wrapper} ref="wrapper">
           <div
             className={classes.fullPage}
