@@ -203,6 +203,10 @@ class OfficePageHeader extends React.Component {
             <HomeIcon/>
           </IconButton>
 
+          <Button variant={"contained"} color={"primary"} onClick={(e) => {
+            history.push(OfficeRoutes.DESK)
+          }} > Desk</Button>
+
           <CustomDropdown
             onClick={this.handleFile.bind(this)}
             dropdownList={["Create New", "List Created", "List Sent"]}

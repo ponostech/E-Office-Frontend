@@ -16,12 +16,13 @@ import {
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import SentIcon from "@material-ui/icons/Drafts";
+import SentIcon from "@material-ui/icons/Send";
 import InboxIcon from "@material-ui/icons/Inbox";
 import CloseIcon from "@material-ui/icons/Close";
 import PrintIcon from "@material-ui/icons/Print";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ReceiptMovementDialog from "./movement/ReceiptMovementDialog";
+import FilesDialog from "../files/FilesDialog";
 // import {Document,Page} from "react-pdf";
 
 
@@ -76,12 +77,16 @@ class Detail extends Component {
       numPages: null,
       pageNumber: 1,
       value: 0,
-      openSentDialog:false
+      openSentDialog:false,
+      openFileDialog:false,
     };
   }
 
   onMoveReceipt=(e)=>{
       this.setState({openSentDialog:false})
+  }
+  handleFileSelect=(e)=>{
+      this.setState({openFileDialog:false})
   }
   handleTabChange = (event, value) => {
     this.setState({ value });
@@ -92,14 +97,15 @@ class Detail extends Component {
 
   render() {
     const { value } = this.state;
+    const { history } = this.props;
 
     return (
 
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <Card style={{ padding: 10 }}>
+          <Card>
             <CardHeader title={"Receipt id:123123"} action={
-              <IconButton>
+              <IconButton onClick={(e)=>history.goBack()}>
                 <CloseIcon/>
               </IconButton>
             }/>
@@ -118,12 +124,12 @@ class Detail extends Component {
                       </IconButton>
                     </Tooltip>
                     <Tooltip title={"Forward"}>
-                      <IconButton onClick={(e)=>this.setState({openSendDialog:true})}>
+                      <IconButton onClick={(e)=>this.setState({openSentDialog:true})}>
                         <SentIcon/>
                       </IconButton>
                     </Tooltip>
                     <Tooltip title={"Put in a file"}>
-                      <IconButton>
+                      <IconButton onClick={(e)=>this.setState({openFileDialog:true})}>
                         <InboxIcon/>
                       </IconButton>
                     </Tooltip>
@@ -164,7 +170,6 @@ class Detail extends Component {
                 <Card>
                   <CardHeader title={"Receipt Info"} security={"info"} subheader={"Correspondence and issues"}>
                   </CardHeader>
-                  <CardContent>
 
 
                     <Tabs value={value} textColor={"primary"} onChange={this.handleTabChange.bind(this)}
@@ -176,16 +181,17 @@ class Detail extends Component {
                     {value === 0 && <ReceiptDetail>Receipt Detail</ReceiptDetail>}
                     {value === 1 && <CommunicationDetail>Communication</CommunicationDetail>}
                     {value === 2 && <CategoryDetail> Category</CategoryDetail>}
+                  <CardContent>
                   </CardContent>
                   <CardActions>
-                    <Button variant={"extendedFab"} color={"primary"}>Close</Button>
                   </CardActions>
                 </Card>
               </GridItem>
             </GridContainer>
           </Card>
         </GridItem>
-        <ReceiptMovementDialog open={this.state.openSentDialog} onClose={this.onMoveReceipt}/>
+        <ReceiptMovementDialog open={this.state.openSentDialog} onClose={this.onMoveReceipt} receipt={{id:12312}}/>
+        <FilesDialog open={this.state.openFileDialog} onClose={this.handleFileSelect}/>
       </GridContainer>
     );
   }

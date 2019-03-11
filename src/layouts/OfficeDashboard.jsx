@@ -3,7 +3,6 @@ import GridContainer from "../components/Grid/GridContainer";
 import GridItem from "../components/Grid/GridItem";
 import OfficePageHeader from "../components/Header/OfficePageHeader";
 import { Route } from "react-router-dom";
-import DeskView from "../views/e-office/DeskView";
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import NewReceipt from "../views/e-office/receipt/NewReceipt";
 import NewFile from "../views/e-office/files/NewFile";
@@ -23,6 +22,7 @@ import SentFiles from "../views/e-office/files/SentFiles";
 import HoardingDetails from "../views/e-office/applications/hoarding/HoardingDetails";
 import AdvertiserList from "../views/e-office/applications/advertisers/AdvertiserList";
 import AdvertiserDetails from "../views/e-office/applications/advertisers/AdvertiserDetails";
+import DeskView from "../views/e-office/desk/DeskView";
 
 class OfficeDashboard extends Component {
   render() {

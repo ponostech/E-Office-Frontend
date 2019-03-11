@@ -1,78 +1,72 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  TextField,
-  Tooltip
-} from "@material-ui/core";
-import OfficeSelect from "../../../../components/OfficeSelect";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
-import CloseIcon from "@material-ui/icons/Close";
+import FormControlUtils from "../../../../utils/FormControlUtils";
 
 class ReceiptMovementDialog extends Component {
-
-  constructor(props) {
+  constructor(props){
     super(props);
+    this.state={
+      to:undefined,
 
-    this.state = {
-      data: {},
-      options: [
-        { value: "Kimi", label: "Kimi" },
-        { value: "Kimi", label: "Kimi" },
-        { value: "Kimi", label: "Kimi" }
-      ]
-    };
+      data:{
+
+      },
+      toError:''
+    }
   }
+  handleChange=(e)=>{
+    const{name,value}=e.target;
+    this.setState({[name]:value})
+  }
+  handleClick=(e)=>{
+    const {open,onClose,receipt } = this.props;
+    const{name} =e.target;
+    switch (name) {
+      case "sent":
+        onClose(this.state.data)
+        break;
+      case "cancel":
+        onClose(null);
+        break;
+      default:
+        break
 
-  handleClose = (e) => {
-    const { data } = this.state;
-    this.props.onClose(data);
-  };
-
+    }
+  }
   render() {
-    const { open } = this.props;
-    return (
-      <Dialog open={open} onClose={this.handleClose.bind(this)}>
-        <Card style={{padding:20}}>
-          <CardHeader title={"Receipt movement"} action={
-            <Tooltip title={"Close"}>
-              <IconButton onClick={this.handleClose.bind(this)}>
-                <CloseIcon color={"action"}/>
-              </IconButton>
-            </Tooltip>
-          }/>
-          <CardContent>
-            <OfficeSelect
-              options={this.state.options}
-              name={"to"}
-              margin={"dense"}
-              fullWidth={true}
-            />
-            <TextField type={"date"} variant={"standard"} name={"date"} label={"Date"} fullWidth={true}/>
-            <TextField multiline={true} variant={"standard"} rows={3} name={"date"} label={"Remark"}
-                       fullWidth={true}/>
+    const {to,cc, toError } = this.state;
+    const {open,onClose,receipt } = this.props;
 
-          </CardContent>
+    return (
+        <Dialog open={open} onClose={onClose}>
+          <DialogTitle title={"Sent Receipt"}>
+            Sent Receipt
+          </DialogTitle>
+          <DialogContent>
+            <Typography variant={"headline"}>Receipt No:123123123
+            </Typography>
+            <Typography variant={"subheading"}>Receipt No:123123123
+            </Typography>
+            {FormControlUtils.Input("user",this.state.to,"To",true,Boolean(toError),toError,"dense",this.handleChange,true)}
+            {FormControlUtils.Input("user",this.state.to,"To",true,Boolean(toError),toError,"dense",this.handleChange,true)}
+            {FormControlUtils.Input("user",this.state.to,"To",true,Boolean(toError),toError,"dense",this.handleChange,true)}
+            {FormControlUtils.Input("user",this.state.to,"To",true,Boolean(toError),toError,"dense",this.handleChange,true)}
+            {FormControlUtils.TextArea("user",this.state.to,"To",true,Boolean(toError),toError,"dense",this.handleChange,true)}
+          </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose.bind(this)} color={"primary"} variant={"contained"}>Send</Button>
-            <Button onClick={this.handleClose.bind(this)} color={"secondary"} variant={"contained"}>Close</Button>
+            <Button name={"sent"} onClick={this.handleClick.bind(this)} color={"primary"} variant={"contained"}> Sent</Button>
+            <Button name={"cancel"} onClick={this.handleClick.bind(this)} color={"secondary"} variant={"contained"}> Cancel</Button>
           </DialogActions>
-        </Card>
-      </Dialog>
+        </Dialog>
     );
   }
 }
 
-ReceiptMovementDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired
-};
+ReceiptMovementDialog.propTypes={
+  open:PropTypes.bool.isRequired,
+  onClose:PropTypes.func.isRequired,
+  receipt:PropTypes.object.isRequired
+}
 
 export default ReceiptMovementDialog;
