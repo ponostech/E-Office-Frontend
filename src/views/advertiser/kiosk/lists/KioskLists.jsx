@@ -73,9 +73,8 @@ class KioskLists extends React.Component {
     return (
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={12}>
-        <Card style={{padding:20}}>
+        <Card >
           <CardHeader title={KioskViewModel.TITLE} action={<Button onClick={(e)=>history.push(OfficeRoutes.PROPOSED_KIOSK)} color={"primary"} style={{margin:20}} variant={"contained"}> New Kiosk</Button>}/>
-          <CardContent>
             <Tabs
               value={value}
               onChange={this.handleChange}
@@ -90,7 +89,6 @@ class KioskLists extends React.Component {
                    label={KioskViewModel.PENDING}/>
 
             </Tabs>
-          </CardContent>
           <div style={{marginTop:20}}>
             {value==="available" && <AvailableKiosks/>}
             {value==="pending" && <PendingKiosks/>}

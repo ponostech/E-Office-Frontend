@@ -74,13 +74,12 @@ class KioskApplications extends React.Component {
     return (
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={12}>
-          <Card style={{ padding: 20 }}>
+          <Card >
             <CardHeader title={KioskViewModel.TITLE} action={
               <IconButton>
                 <FilterIcon/>
               </IconButton>
             }/>
-            <CardContent>
               <Tabs
                 value={value}
                 onChange={this.handleChange}
@@ -100,7 +99,6 @@ class KioskApplications extends React.Component {
                      label={KioskViewModel.PENDING}/>
 
               </Tabs>
-            </CardContent>
             <div style={{ marginTop: 20 }}>
               {value === "new" && <NewKioskApplications/>}
               {value === "granted" && <GrantedKioskApplications/>}

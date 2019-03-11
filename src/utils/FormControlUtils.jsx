@@ -14,6 +14,7 @@ export default class FormControlUtils {
       return <TextField
         variant={"standard"}
         value={value}
+        label={label}
       name={name}
       required={required}
       error={error}
@@ -28,7 +29,7 @@ export default class FormControlUtils {
       return <TextField
         variant={"standard"}
         value={value}
-        rows={30}
+        rows={3}
         multiline={true}
       name={name}
       required={required}

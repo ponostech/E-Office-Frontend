@@ -15,6 +15,7 @@ import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import SearchIcon from "@material-ui/icons/Search";
 import ReactTable from "react-table";
+import  PropTypes from "prop-types";
 
 const columns = [
   {
@@ -123,6 +124,11 @@ class ReceiptListDialog extends Component {
       </Dialog>
     );
   }
+}
+
+ReceiptListDialog.propTypes={
+  open:PropTypes.bool.isRequired,
+  onClose:PropTypes.func.isRequired
 }
 
 export default ReceiptListDialog;

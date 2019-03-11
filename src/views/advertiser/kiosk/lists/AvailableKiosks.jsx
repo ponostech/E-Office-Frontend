@@ -62,18 +62,20 @@ class AvailableKiosks extends Component {
     const { history } = this.props;
     return (
       <GridContainer >
-          <TextField variant={"standard"}
-                     label={"Search here"}
-                     margin={"dense"}
-                     InputProps={{
-                       endAdornment: (
-                         <InputAdornment
-                           position="end">
-                           <SearchIcon color={"action"}/>
-                         </InputAdornment>
-                       ),
-                       placeholder: "Type here"
-                     }}/>
+         <GridItem>
+           <TextField variant={"standard"}
+                      label={"Search here"}
+                      margin={"dense"}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment
+                            position="end">
+                            <SearchIcon color={"action"}/>
+                          </InputAdornment>
+                        ),
+                        placeholder: "Type here"
+                      }}/>
+         </GridItem>
 
         <GridItem xs={12} sm={12} md={12}>
           <ReactTable
