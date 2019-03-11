@@ -64,7 +64,7 @@ const styles = theme => ({
 
 class HoardingApplications extends React.Component {
   state = {
-    value: "new"
+    value: "active"
   };
 
   handleChange = (event, value) => {
@@ -78,8 +78,9 @@ class HoardingApplications extends React.Component {
     return (
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={12}>
-          <Card style={{ padding: 20 }}>
-            <CardHeader title={HoardingListViewModel.TITLE}
+          <Card>
+            <CardHeader
+                        title={HoardingListViewModel.TITLE}
                         action={
                           <Tooltip title={"Filter"}>
                             <IconButton>
@@ -87,8 +88,8 @@ class HoardingApplications extends React.Component {
                             </IconButton>
                           </Tooltip>
                         }
-            />
-            <CardContent>
+            >
+            </CardHeader>
               <Tabs
                 value={value}
                 onChange={this.handleChange}
@@ -110,13 +111,14 @@ class HoardingApplications extends React.Component {
                      label={KioskViewModel.REJECTED}/>
 
               </Tabs>
-            </CardContent>
+          <CardContent>
             <div style={{ marginTop: 20 }}>
               {value === "active" && <ActiveHoarding/>}
               {value === "new" && <NewHoardingApplications/>}
               {value === "granted" && <GrantedHoardingApplications/>}
               {value === "reject" && <RejectedHoardingApplications/>}
             </div>
+            </CardContent>
           </Card>
         </GridItem>
       </GridContainer>

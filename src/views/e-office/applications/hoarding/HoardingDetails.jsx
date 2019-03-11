@@ -3,7 +3,7 @@ import {
   Button,
   Card, CardActions,
   CardContent,
-  CardHeader, Checkbox,
+  CardHeader, Checkbox, Chip,
   Divider, FormControlLabel,
   IconButton,
   List,
@@ -11,16 +11,19 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Switch,
-  TextField, Typography
+  TextField, Tooltip, Typography
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import AvatarIcon from "@material-ui/icons/People";
+import FileIcon from "@material-ui/icons/AttachFile";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import GridItem from "../../../../components/Grid/GridItem";
 import CardAvatar from "../../../../components/Card/CardAvatar";
+import { withRouter } from "react-router-dom";
 
 class HoardingDetails extends Component {
   render() {
+    const { history } = this.props;
     return (
       <div>
         <Card>
@@ -29,9 +32,17 @@ class HoardingDetails extends Component {
               <AvatarIcon/>
             </CardAvatar>
           }  action={
-            <IconButton>
-              <CloseIcon/>
-            </IconButton>
+            <div>
+              <Chip color={"primary"} variant={"default"} label={"NEW"}/>
+              <Tooltip title={"Put in file"}>
+                <IconButton onClick={(e)=>console.log(history)}>
+                  <FileIcon/>
+                </IconButton>
+              </Tooltip>
+              <IconButton onClick={(e)=>history.goBack()}>
+                <CloseIcon/>
+              </IconButton>
+            </div>
           }/>
 
           <CardContent>
@@ -111,4 +122,5 @@ class HoardingDetails extends Component {
   }
 }
 
-export default HoardingDetails;
+export default withRouter(HoardingDetails);
+
