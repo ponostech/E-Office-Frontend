@@ -7,8 +7,6 @@ import NoMatch from "./views/NoMatch";
 import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
 import { ApiRoutes } from "./config/ApiRoutes";
 import axios from "axios";
-import green from '@material-ui/core/colors/green';
-import blue from '@material-ui/core/colors/blue';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import purple from "@material-ui/core/es/colors/purple";

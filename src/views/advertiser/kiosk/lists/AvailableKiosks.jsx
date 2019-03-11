@@ -1,94 +1,164 @@
 import React, { Component } from "react";
 import ReactTable from "react-table";
-import { Button, IconButton, InputAdornment, Switch, TextField } from "@material-ui/core";
+import { Button, InputAdornment, TextField } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import "react-table/react-table.css";
 import GridItem from "../../../../components/Grid/GridItem";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import { OfficeRoutes } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 
-import ViewIcon from '@material-ui/icons/PanoramaFishEye'
-import EditIcon from '@material-ui/icons/Edit'
-import DeleteIcon from '@material-ui/icons/Delete'
+const columns = [{
+  Header: "Application No",
+  accessor: "application_no" // String-based value accessors!
+}, {
+  Header: "length",
+  accessor: "length"
+}, {
+  Header: "Height",
+  accessor: "height"
+}, {
+  Header: "coordinate",
+  accessor: "coordinate",
+  Cell: props => {
+    return (
+      <Button variant={"extendedFab"} color={"secondary"}>
+        coordinate
+      </Button>
+    );
+  }
+}, {
+  Header: "Local Council",
+  accessor: "localCouncil"
+}, {
+  Header: "Land Owner",
+  accessor: "landOwner"
+}, {
+  Header: "Action",
+  accessor: "application_no",
+  Cell: props => {
+    return (
+      <Button variant={"contained"} color={"primary"}>Apply</Button>
+    );
+  }
+}
+];
+
 class AvailableKiosks extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [
-        { id:1,place:'place',length:12,height:20,bothSide:true,landlord:'Kimi',action:(<Button color={"primary"}>action</Button>)},
-        { id:1,place:'place',length:12,height:20,bothSide:false,landlord:'Kimi',action:(<Button color={"primary"}>action</Button>)},
-        { id:1,place:'place',length:12,height:20,bothSide:false,landlord:'Kimi',action:(<Button color={"primary"}>action</Button>)},
-        { id:1,place:'place',length:12,height:20,bothSide:true,landlord:'Kimi',action:(<Button color={"primary"}>action</Button>)},
-        { id:1,place:'place',length:12,height:20,bothSide:true,landlord:'Kimi',action:(<Button color={"primary"}>action</Button>)},
+        {
+          application_no: "123",
+          length: 12,
+          height: 123,
+          coordinate: { lat: 122, lng: 343 },
+          localCouncil: "Chhinga veng",
+          landOwner: "Kimi"
+        },
+        {
+          application_no: "33",
+          length: 12,
+          height: 123,
+          coordinate: { lat: 122, lng: 343 },
+          localCouncil: "Chhinga veng",
+          landOwner: "Kimi"
+        },
+        {
+          application_no: "3",
+          length: 12,
+          height: 123,
+          coordinate: { lat: 122, lng: 343 },
+          localCouncil: "Chhinga veng",
+          landOwner: "Kimi"
+        },
+        {
+          application_no: "54",
+          length: 12,
+          height: 123,
+          coordinate: { lat: 122, lng: 343 },
+          localCouncil: "Chhinga veng",
+          landOwner: "Kimi"
+        },
+        {
+          application_no: "565",
+          length: 12,
+          height: 123,
+          coordinate: { lat: 122, lng: 343 },
+          localCouncil: "Chhinga veng",
+          landOwner: "Kimi"
+        },
+        {
+          application_no: "77",
+          length: 12,
+          height: 123,
+          coordinate: { lat: 122, lng: 343 },
+          localCouncil: "Chhinga veng",
+          landOwner: "Kimi"
+        },
+        {
+          application_no: "88",
+          length: 12,
+          height: 123,
+          coordinate: { lat: 122, lng: 343 },
+          localCouncil: "Chhinga veng",
+          landOwner: "Kimi"
+        },
+        {
+          application_no: "99",
+          length: 12,
+          height: 123,
+          coordinate: { lat: 122, lng: 343 },
+          localCouncil: "Chhinga veng",
+          landOwner: "Kimi"
+        },
+        {
+          application_no: "12",
+          length: 12,
+          height: 123,
+          coordinate: { lat: 122, lng: 343 },
+          localCouncil: "Chhinga veng",
+          landOwner: "Kimi"
+        }
       ]
 
     };
   }
 
   render() {
-    const columns = [{
-      Header: "ID",
-      accessor: "name" // String-based value accessors!
-    }, {
-      Header: "Place",
-      accessor: "place",
-      Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
-    } ,{
-      Header: "Length",
-      accessor: "length",
-      Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
-    }, {
-      Header: "Height",
-      accessor: "height",
-      Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
-    } ,{
-      Header: "Bothside",
-      accessor: "bothSide",
-      Cell: props => <Switch  value={props.value}/> // Custom cell components!
-    },{
-      Header: "LandOwner",
-      accessor: "landlord",
-    },{
-      Header: "Action",
-      accessor: "action",
-      Cell:props=> <div style={{background:'white',borderRadius:50}}>
-        <IconButton><ViewIcon/></IconButton>
-        <IconButton><EditIcon/></IconButton>
-        <IconButton><DeleteIcon/></IconButton>
-      </div>
-    }];
-
     const { history } = this.props;
     return (
-      <GridContainer >
-         <GridItem>
-           <TextField variant={"standard"}
-                      label={"Search here"}
-                      margin={"dense"}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment
-                            position="end">
-                            <SearchIcon color={"action"}/>
-                          </InputAdornment>
-                        ),
-                        placeholder: "Type here"
-                      }}/>
-         </GridItem>
+      <div>
+        <GridContainer justify={"space-between"}>
+          <GridItem>
+            <TextField variant={"standard"}
+                       margin={"dense"}
+                       InputProps={{
+                         endAdornment: (
+                           <InputAdornment
+                             position="end">
+                             <SearchIcon/>
+                           </InputAdornment>
+                         ),
+                         placeholder: "Search"
+                       }}/>
 
+          </GridItem>
+          <Button onClick={(e) => history.push(OfficeRoutes.PROPOSED_KIOSK)} color={"primary"} style={{ margin: 20 }}
+                  variant={"contained"}> New Kiosk</Button>
+        </GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <ReactTable
             columns={columns}
-            resizable={true}
             data={this.state.data}
             showPagination={true}
+            showPaginationTop={false}
             showPaginationBottom={true}
             showPageSizeOptions={true}
             pageSizeOptions={[5, 10, 20, 25, 50, 100]}
             defaultPageSize={10}/>
         </GridItem>
-      </GridContainer>
+      </div>
     );
   }
 }

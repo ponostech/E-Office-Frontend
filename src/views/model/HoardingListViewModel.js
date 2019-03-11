@@ -5,5 +5,7 @@ export class HoardingListViewModel {
   static  GRANTED = "Granted Applications";
   static  REJECTED = "Rejected Applications";
   static  FILTER = "Filter";
+  static  AVAILABLE = "Available";
+  static  PENDING = "Pending";
 
 }

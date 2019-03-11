@@ -2,13 +2,51 @@ import React, { Component } from "react";
 import ReactTable from "react-table";
 import { Button, IconButton, InputAdornment, TextField } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import DetailIcon from "@material-ui/icons/RemoveRedEye";
-import GridItem from "../../../../components/Grid/GridItem";
-import GridContainer from "../../../../components/Grid/GridContainer";
-import { OfficeRoutes } from "../../../../config/routes-constant/OfficeRoutes";
+import DetailIcon from "@material-ui/icons/RemoveRedEyeSharp";
 import { withRouter } from "react-router-dom";
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
+import { OfficeRoutes } from "../../../config/routes-constant/OfficeRoutes";
 
-class PendingKiosks extends Component {
+const columns = [{
+  Header: "Application No",
+  accessor: "application_no" // String-based value accessors!
+}, {
+  Header: "length",
+  accessor: "length"
+}, {
+  Header: "Height",
+  accessor: "height"
+}, {
+  Header: "coordinate",
+  accessor: "coordinate",
+  Cell: props => {
+    return (
+      <Button variant={"extendedFab"} color={"secondary"}>
+        coordinate
+      </Button>
+    );
+  }
+}, {
+  Header: "Local Council",
+  accessor: "localCouncil"
+}, {
+  Header: "Land Owner",
+  accessor: "landOwner"
+}, {
+  Header: "Action",
+  accessor: "application_no",
+  Cell: props => {
+    return (
+      <IconButton color={"primary"}>
+        <DetailIcon/>
+      </IconButton>
+    );
+  }
+}
+];
+
+class PendingHoardingList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -92,48 +130,6 @@ class PendingKiosks extends Component {
 
   render() {
     const { history } = this.props;
-
-    const columns = [{
-      Header: "Application No",
-      accessor: "application_no" // String-based value accessors!
-    }, {
-      Header: "length",
-      accessor: "length"
-    }, {
-      Header: "Height",
-      accessor: "height"
-    }, {
-      Header: "coordinate",
-      accessor: "coordinate",
-      Cell: props => {
-        return (
-          <Button variant={"extendedFab"} color={"secondary"}>
-            coordinate
-          </Button>
-        );
-      }
-    }, {
-      Header: "Local Council",
-      accessor: "localCouncil"
-    }, {
-      Header: "Land Owner",
-      accessor: "landOwner"
-    },
-      {
-        Header: "action",
-        accessor: "application_no",
-        Cell:props=>{
-          return(
-            <IconButton onClick={(e)=>{
-              history.push(OfficeRoutes.KIOSK_DETAIL)
-            }}>
-              <DetailIcon/>
-            </IconButton>
-          )
-        }
-      },
-    ];
-
     return (
       <div>
         <GridContainer justify={"space-between"}>
@@ -151,8 +147,8 @@ class PendingKiosks extends Component {
                        }}/>
 
           </GridItem>
-          <Button onClick={(e) => history.push(OfficeRoutes.PROPOSED_KIOSK)} color={"primary"} style={{ margin: 20 }}
-                  variant={"contained"}> New Kiosk</Button>
+          <Button onClick={(e) => history.push(OfficeRoutes.PROPOSED_HOARDING)} color={"primary"} style={{ margin: 20 }}
+                  variant={"contained"}> New Hoarding proposal</Button>
         </GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <ReactTable
@@ -170,4 +166,4 @@ class PendingKiosks extends Component {
   }
 }
 
-export default withRouter(PendingKiosks);
+export default withRouter(PendingHoardingList);

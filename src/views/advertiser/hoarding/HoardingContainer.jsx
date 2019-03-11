@@ -11,17 +11,17 @@ import {
   Typography
 } from "@material-ui/core";
 import HoardingInfo from "./HoardingInfo";
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
-import DocumentsDropzoneFragment from "../../components/DocumentsDropzoneFragment";
-import Constraint from "../../config/Constraint";
-import CardFooter from "../../components/Card/CardFooter";
-import SubmitDialog from "../../components/SubmitDialog";
-import HoardingApplicationFormModel from "../model/HoardingApplicationFormModel";
-import { LocalCouncilService } from "../../services/LocalCouncilService";
-import OfficeSnackbar from "../../components/OfficeSnackbar";
-import { HoardingService } from "../../services/HoardingService";
-import SingletonAuth from "../../utils/SingletonAuth";
+import SingletonAuth from "../../../utils/SingletonAuth";
+import { LocalCouncilService } from "../../../services/LocalCouncilService";
+import { HoardingService } from "../../../services/HoardingService";
+import DocumentsDropzoneFragment from "../../../components/DocumentsDropzoneFragment";
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
+import OfficeSnackbar from "../../../components/OfficeSnackbar";
+import CardFooter from "../../../components/Card/CardFooter";
+import SubmitDialog from "../../../components/SubmitDialog";
+import HoardingApplicationFormModel from "../../model/HoardingApplicationFormModel";
+import Constraint from "../../../config/Constraint";
 
 class HoardingContainer extends Component {
   constructor(props) {
