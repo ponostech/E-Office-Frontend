@@ -1,25 +1,126 @@
 import React, { Component } from "react";
 import ReactTable from "react-table";
-import { Checkbox, IconButton, InputAdornment, TextField } from "@material-ui/core";
+import { Button, Checkbox, Chip, InputAdornment, TextField } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import 'react-table/react-table.css'
+import "react-table/react-table.css";
 import GridItem from "../../../../components/Grid/GridItem";
 
-import DeleteIcon from '@material-ui/icons/DeleteForever';
 
 class RejectedHoardingApplications extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [
-        { application_no: "12", age: 12 },
-        { application_no: "123", age: 12 },
-        { application_no: "32", age: 12 },
-        { application_no: "321", age: 12 },
-        { application_no: "22", age: 12 },
-        { application_no: "11", age: 12 },
-        { application_no: "44", age: 12 },
-        { application_no: "56", age: 12 }
+        {
+          application_no: "12",
+          address: "fake address",
+          length: 12,
+          height: 290,
+          type: "ILLUMINATE",
+          localCouncil: "Chhinga veng",
+          landOwner: "Kima",
+          expired: "12/12/2019"
+        },
+        {
+          application_no: "23",
+          address: "fake address",
+          length: 12,
+          height: 290,
+          type: "ILLUMINATE",
+          localCouncil: "Chhinga veng",
+          landOwner: "Kima",
+          expired: "12/12/2019"
+        },
+        {
+          application_no: "123",
+          address: "fake address",
+          length: 12,
+          height: 290,
+          type: "ILLUMINATE",
+          localCouncil: "Chhinga veng",
+          landOwner: "Kima",
+          expired: "12/12/2019"
+        },
+        {
+          application_no: "434",
+          address: "fake address",
+          length: 12,
+          height: 290,
+          type: "ILLUMINATE",
+          localCouncil: "Chhinga veng",
+          landOwner: "Kima",
+          expired: "12/12/2019"
+        },
+        {
+          application_no: "55",
+          address: "fake address",
+          length: 12,
+          height: 290,
+          type: "ILLUMINATE",
+          localCouncil: "Chhinga veng",
+          landOwner: "Kima",
+          expired: "12/12/2019"
+        },
+        {
+          application_no: "66",
+          address: "fake address",
+          length: 12,
+          height: 290,
+          type: "ILLUMINATE",
+          localCouncil: "Chhinga veng",
+          landOwner: "Kima",
+          expired: "12/12/2019"
+        },
+        {
+          application_no: "878",
+          address: "fake address",
+          length: 12,
+          height: 290,
+          type: "ILLUMINATE",
+          localCouncil: "Chhinga veng",
+          landOwner: "Kima",
+          expired: "12/12/2019"
+        },
+        {
+          application_no: "77",
+          address: "fake address",
+          length: 12,
+          height: 290,
+          type: "ILLUMINATE",
+          localCouncil: "Chhinga veng",
+          landOwner: "Kima",
+          expired: "12/12/2019"
+        },
+        {
+          application_no: "34",
+          address: "fake address",
+          length: 12,
+          height: 290,
+          type: "ILLUMINATE",
+          localCouncil: "Chhinga veng",
+          landOwner: "Kima",
+          expired: "12/12/2019"
+        },
+        {
+          application_no: "90",
+          address: "fake address",
+          length: 12,
+          height: 290,
+          type: "ILLUMINATE",
+          localCouncil: "Chhinga veng",
+          landOwner: "Kima",
+          expired: "12/12/2019"
+        },
+        {
+          application_no: "6565",
+          address: "fake address",
+          length: 12,
+          height: 290,
+          type: "ILLUMINATE",
+          localCouncil: "Chhinga veng",
+          landOwner: "Kima",
+          expired: "12/12/2019"
+        }
       ]
 
     };
@@ -27,22 +128,50 @@ class RejectedHoardingApplications extends Component {
 
   render() {
     const columns = [{
-      Header: "Action",
+      Header: "",
       accessor: "application_no",
-      Cell:props=> <Checkbox name={"check"} />// String-based value accessors!
-    },{
-      Header: "Name",
+      Cell: props => <Checkbox name={"check"}/>,
+      maxWidth: 40
+    }, {
+      Header: "Applciation No",
       accessor: "application_no" // String-based value accessors!
     }, {
-      Header: "Age",
-      accessor: "age",
+      Header: "length",
+      accessor: "length",
       Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
     }, {
-      Header: "Actions",
+      Header: "Height",
+      accessor: "height" // String-based value accessors!
+    }, {
+      Header: "Type of Ads",
+      accessor: "type" // String-based value accessors!
+    }, {
+      Header: "Local Council",
+      accessor: "localCouncil" // String-based value accessors!
+    }, {
+      Header: "Land Owner",
+      accessor: "landOwner"
+    }, {
+      Header: "Expiry Date",
+      accessor: "expired"
+    }, {
+      Header: "Status",
       accessor: "application_no",
-      Cell: props => <IconButton>
-        <DeleteIcon/>
-      </IconButton> // Custom cell components!
+      Cell: props => {
+        return (
+          <Chip label={"Rejected"} color={"secondary"}/>
+        );
+      }
+    }, {
+      Header: "Action",
+      accessor: "application_no",
+      Cell: props => {
+        return (
+          <Button variant={"extendedFab"} color={"primary"}>
+            Notify
+          </Button>
+        );
+      }
     }];
     return (
       <div>
@@ -68,7 +197,8 @@ class RejectedHoardingApplications extends Component {
             showPaginationBottom={true}
             showPageSizeOptions={true}
             pageSizeOptions={[5, 10, 20, 25, 50, 100]}
-            defaultPageSize={10}/>
+            defaultPageSize={10}
+          />
         </GridItem>
       </div>
     );

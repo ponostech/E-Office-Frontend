@@ -55,16 +55,28 @@ class CreatedFiles extends Component {
             <CardHeader title={"Created Files"} action={
               (
                 <div>
-                  <Tooltip title={"Export"}>
+                  <Tooltip title={"Edit"}>
+                  <IconButton>
+                    <EditIcon/>
+                  </IconButton>
+                </Tooltip>
+                  <Tooltip title={"Forward"}>
                     <IconButton>
-                      <ExportIcon/>
+                      <SentIcon/>
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title={"Pdf"}>
-                    <IconButton>
-                      <PdfIcon/>
+                  <Tooltip title={"Attach receipt"}>
+                    <IconButton onClick={(e)=>this.setState({openAttachDialog:true})}>
+                      <AttachIcon/>
                     </IconButton>
                   </Tooltip>
+                  <Tooltip title={"Details"}>
+                    <IconButton onClick={()=>history.push(OfficeRoutes.FILE_DETAIL)}>
+                      <EyeIcon/>
+                    </IconButton>
+                  </Tooltip>
+                  {"  "}
+
                 </div>
               )
             }/>
@@ -83,42 +95,28 @@ class CreatedFiles extends Component {
                              }}/>
                 </div>
                 <div style={{margin:5}}>
-                  <Button color={"primary"} variant={"contained"}>New Button</Button>
+                  <Button color={"primary"} variant={"contained"}>New File</Button>
+                  <Tooltip title={"Export"}>
+                    <IconButton>
+                      <ExportIcon/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={"Pdf"}>
+                    <IconButton>
+                      <PdfIcon/>
+                    </IconButton>
+                  </Tooltip>
                 </div>
               </GridContainer>
 
               <GridContainer>
-                <GridItem xs={11} sm={11} md={11}>
+                <GridItem xs={12} sm={12} md={12}>
                   <ReactTable
                     data={[]}
                     columns={columns}
                     defaultPageSize={5}
                     pageSizeOptions={[5, 10, 20, 50, 100, 500]}
                   />
-                </GridItem>
-                <GridItem >
-                  <GridContainer direction={"column"}>
-                  <Tooltip title={"Edit"}>
-                      <IconButton>
-                        <EditIcon/>
-                      </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Forward"}>
-                    <IconButton>
-                      <SentIcon/>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Attach receipt"}>
-                    <IconButton onClick={(e)=>this.setState({openAttachDialog:true})}>
-                      <AttachIcon/>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Details"}>
-                    <IconButton onClick={()=>history.push(OfficeRoutes.FILE_DETAIL)}>
-                      <EyeIcon/>
-                    </IconButton>
-                  </Tooltip>
-                  </GridContainer>
                 </GridItem>
               </GridContainer>
             </CardContent>
