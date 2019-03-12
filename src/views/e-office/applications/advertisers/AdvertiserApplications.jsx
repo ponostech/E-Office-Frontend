@@ -7,11 +7,11 @@ import { Card, CardHeader, IconButton } from "@material-ui/core";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import GridItem from "../../../../components/Grid/GridItem";
 import KioskViewModel from "../../../model/KioskViewModel";
-import NewKioskApplications from "./NewKioskApplications";
-import GrantedKioskApplications from "../hoarding/GrantedHoardingApplications";
-import RejectedKioskApplications from "./RejectedKioskApplications";
 import FilterIcon from "@material-ui/icons/FilterList";
-import PendingKioskApplications from "./PendingKioskApplications";
+import PendingAdvertisementApplications from "./PendingAdvertisementApplications";
+import GrantedAdvertiserApplication from "./GrantedAdvertiserApplication";
+import RejectedAdvertiserApplication from "./RejectedAdvertiserApplication";
+import NewAdvertiserApplication from "./NewAdvertiserApplication";
 
 const styles = theme => ({
   root: {
@@ -59,7 +59,7 @@ const styles = theme => ({
   }
 });
 
-class KioskApplications extends React.Component {
+class AdvertiserApplications extends React.Component {
   state = {
     value: "new"
   };
@@ -76,7 +76,7 @@ class KioskApplications extends React.Component {
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader title={KioskViewModel.TITLE} action={
+            <CardHeader title={"List of advertiser applications"} action={
               <IconButton>
                 <FilterIcon/>
               </IconButton>
@@ -88,28 +88,25 @@ class KioskApplications extends React.Component {
             >
               <Tab disableRipple value={"new"}
                    classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={"New Applications"}/>
-              <Tab value={"granted"}
-                   disableRipple
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={"Granted Applications"}/>
-
-              <Tab value={"pending"}
+                   label={"New Application"}/>
+              <Tab value={"process"}
                    disableRipple
                    classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                    label={"On Process"}/>
-
+              <Tab value={"granted"}
+                   disableRipple
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Granted"}/>
               <Tab value={"rejected"}
                    disableRipple
                    classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={"Rejected Applications"}/>
-
+                   label={"Rejected"}/>
             </Tabs>
             <div style={{ marginTop: 20 }}>
-              {value === "new" && <NewKioskApplications/>}
-              {value === "granted" && <GrantedKioskApplications/>}
-              {value === "pending" && <PendingKioskApplications/>}
-              {value === "rejected" && <RejectedKioskApplications/>}
+              {value === "new" && <NewAdvertiserApplication/>}
+              {value === "process" && <PendingAdvertisementApplications/>}
+              {value === "granted" && <GrantedAdvertiserApplication/>}
+              {value === "rejected" && <RejectedAdvertiserApplication/>}
             </div>
           </Card>
         </GridItem>
@@ -118,8 +115,8 @@ class KioskApplications extends React.Component {
   }
 }
 
-KioskApplications.propTypes = {
+AdvertiserApplications.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(KioskApplications);
+export default withStyles(styles)(AdvertiserApplications);

@@ -5,15 +5,18 @@ import { Button, Card, CardContent, CardHeader, IconButton, InputAdornment, Tool
 import ReactTable from "react-table";
 import TextField from "@material-ui/core/es/TextField/TextField";
 
-import SearchIcon from '@material-ui/icons/Search'
-import ExportIcon from '@material-ui/icons/ImportExport'
-import PdfIcon from '@material-ui/icons/PictureAsPdf'
-import EditIcon from '@material-ui/icons/Edit'
-import SentIcon from '@material-ui/icons/Send'
-import AttachIcon from '@material-ui/icons/AttachFile'
-import EyeIcon from '@material-ui/icons/Details'
+import SearchIcon from "@material-ui/icons/Search";
+import ExportIcon from "@material-ui/icons/ImportExport";
+import PdfIcon from "@material-ui/icons/PictureAsPdf";
+import EditIcon from "@material-ui/icons/Edit";
+import SentIcon from "@material-ui/icons/Send";
+import AttachIcon from "@material-ui/icons/AttachFile";
+import EyeIcon from "@material-ui/icons/Details";
 import { OfficeRoutes } from "../../../config/routes-constant/OfficeRoutes";
 import ReceiptListDialog from "../receipt/ReceiptListDialog";
+import MovementDialog from "./movements/MovementDialog";
+
+
 const columns = [
   {
     Header: "Receipt No",
@@ -39,13 +42,19 @@ const columns = [
 class CreatedFiles extends Component {
   constructor(props) {
     super(props);
-    this.state={
-      openAttachDialog: false
-    }
+    this.state = {
+      openAttachDialog: false,
+      openSend: false
+    };
   }
-  onReceiptSelect=(receipt)=>{
-      this.setState({openAttachDialog:false})
-  }
+
+  onReceiptSelect = (receipt) => {
+    this.setState({ openAttachDialog: false });
+  };
+  handleClosed = (e) => {
+    this.setState({ openSend: false });
+  };
+
   render() {
     const { history } = this.props;
     return (
@@ -56,22 +65,24 @@ class CreatedFiles extends Component {
               (
                 <div>
                   <Tooltip title={"Edit"}>
-                  <IconButton>
-                    <EditIcon/>
-                  </IconButton>
-                </Tooltip>
-                  <Tooltip title={"Forward"}>
                     <IconButton>
+                      <EditIcon/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={"Forward"}>
+                    <IconButton onClick={(e) => {
+                      this.setState({ openSend: true });
+                    }}>
                       <SentIcon/>
                     </IconButton>
                   </Tooltip>
                   <Tooltip title={"Attach receipt"}>
-                    <IconButton onClick={(e)=>this.setState({openAttachDialog:true})}>
+                    <IconButton onClick={(e) => this.setState({ openAttachDialog: true })}>
                       <AttachIcon/>
                     </IconButton>
                   </Tooltip>
                   <Tooltip title={"Details"}>
-                    <IconButton onClick={()=>history.push(OfficeRoutes.FILE_DETAIL)}>
+                    <IconButton onClick={() => history.push(OfficeRoutes.FILE_DETAIL)}>
                       <EyeIcon/>
                     </IconButton>
                   </Tooltip>
@@ -81,8 +92,8 @@ class CreatedFiles extends Component {
               )
             }/>
             <CardContent>
-              <GridContainer  justify={"space-between"}>
-                <div style={{margin:5}}>
+              <GridContainer justify={"space-between"}>
+                <div style={{ margin: 5 }}>
                   <TextField placeholder={"Type here"}
                              InputProps={{
                                endAdornment: (
@@ -94,7 +105,7 @@ class CreatedFiles extends Component {
                                placeholder: "Type here"
                              }}/>
                 </div>
-                <div style={{margin:5}}>
+                <div style={{ margin: 5 }}>
                   <Button color={"primary"} variant={"contained"}>New File</Button>
                   <Tooltip title={"Export"}>
                     <IconButton>
@@ -124,6 +135,7 @@ class CreatedFiles extends Component {
           </Card>
         </GridItem>
         <ReceiptListDialog open={this.state.openAttachDialog} onClose={this.onReceiptSelect}/>
+        <MovementDialog open={this.state.openSend} onClose={this.handleClosed.bind(this)}/>
       </GridContainer>
     );
   }
