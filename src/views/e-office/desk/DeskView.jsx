@@ -78,6 +78,7 @@ class DeskView extends React.Component {
             <CardHeader
               title={"My Desk"}
               action={
+
                 <Tooltip title={"Filter"}>
                   <IconButton>
                     <FilterIcon/>
