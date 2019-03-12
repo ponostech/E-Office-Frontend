@@ -7,22 +7,21 @@ import { Paper } from "@material-ui/core";
 class NewReceipt extends Component {
   render() {
     return (
-      <div>
-        <GridContainer>
+        <GridContainer justify={"center"}>
           <GridItem xs={12} sm={12} md={6}>
             <Paper style={{padding:20}}>
-              <input type={"file"} accept={"application/pdf"}/>
+              <input onChange={(e)=>{console.log(e)}} type={"file"} accept={"application/pdf"}/>
             <div>
               pdf detail and cancel
             </div>
             </Paper>
           </GridItem>
           <GridItem xs={12} sm={12} md={6}>
+            <div>
             <ReceiptDetailEntry/>
-
+            </div>
           </GridItem>
         </GridContainer>
-      </div>
     );
   }
 }

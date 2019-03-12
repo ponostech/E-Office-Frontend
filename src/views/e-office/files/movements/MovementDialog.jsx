@@ -51,7 +51,7 @@ class MovementDialog extends Component {
   render() {
     const { open } = this.props;
     return (
-      <Dialog fullWidth={true} maxWidth={"md"} open={open} onClose={this.handleClose.bind(this)}>
+      <Dialog fullWidth={true} maxWidth={"sm"} open={open} onClose={this.handleClose.bind(this)}>
         <Card style={{ padding: 20 }}>
           <CardHeader title={"File movement"} action={
             <Tooltip title={"Close"}>

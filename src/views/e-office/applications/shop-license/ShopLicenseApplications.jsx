@@ -6,7 +6,6 @@ import Tab from "@material-ui/core/Tab";
 import { Card, CardContent, CardHeader, IconButton } from "@material-ui/core";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import GridItem from "../../../../components/Grid/GridItem";
-import KioskViewModel from "../../../model/KioskViewModel";
 import GrantedShopLicenseApplications from "./GrantedShopLicenseApplications";
 import NewShopLicenseApplications from "./NewShopLicenseApplications";
 import RejectedShopLicenseApplications from "./RejectedShopLicenseApplications";

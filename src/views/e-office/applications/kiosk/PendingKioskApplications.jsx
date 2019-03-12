@@ -7,8 +7,10 @@ import GridItem from "../../../../components/Grid/GridItem";
 
 import MoreIcon from "@material-ui/icons/MoreVert";
 import CustomDropdown from "../../../../components/CustomDropdown/CustomDropdown";
+import { OfficeRoutes } from "../../../../config/routes-constant/OfficeRoutes";
+import { withRouter } from "react-router-dom";
 
-class GrantedKioskApplications extends Component {
+class PendingKioskApplications extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -127,7 +129,16 @@ class GrantedKioskApplications extends Component {
 
     };
   }
-
+  handleMoreMenu=(menu)=>{
+    const { history } = this.props;
+    switch (menu) {
+      case "View details":
+        history.push(OfficeRoutes.HOARDING_DETAILS);
+        break;
+      default:
+        break;
+    }
+  }
   render() {
     const columns = [{
       Header: "",
@@ -171,16 +182,19 @@ class GrantedKioskApplications extends Component {
       Cell: props => {
         return (
           <CustomDropdown
+            onClick={this.handleMoreMenu.bind(this)}
             buttonProps={{
               simple: true
             }}
             caret={false}
-            buttonIcon={() => <MoreIcon color={"primary"}/>}
-            dropdownList={["one", "two"]}
+            buttonIcon={() => <MoreIcon color={"action"}/>}
+            dropdownList={["View details", "detail"]}
           />
         );
       }
     }];
+
+
     return (
       <div>
         <GridItem xs={12} sm={12} md={12}>
@@ -214,4 +228,4 @@ class GrantedKioskApplications extends Component {
   }
 }
 
-export default GrantedKioskApplications;
+export default withRouter(PendingKioskApplications);

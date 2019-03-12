@@ -8,7 +8,7 @@ import GridItem from "../../../../components/Grid/GridItem";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import CustomDropdown from "../../../../components/CustomDropdown/CustomDropdown";
 
-class GrantedKioskApplications extends Component {
+class ActiveKiosk extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -206,7 +206,6 @@ class GrantedKioskApplications extends Component {
             showPageSizeOptions={true}
             pageSizeOptions={[5, 10, 20, 25, 50, 100]}
             defaultPageSize={10}
-
           />
         </GridItem>
       </div>
@@ -214,4 +213,4 @@ class GrantedKioskApplications extends Component {
   }
 }
 
-export default GrantedKioskApplications;
+export default ActiveKiosk;

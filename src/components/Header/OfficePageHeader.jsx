@@ -178,6 +178,9 @@ class OfficePageHeader extends React.Component {
       case "Banners":
         history.push(OfficeRoutes.BANNERS);
         break;
+      case "Advertiser":
+        history.push(OfficeRoutes.ADVERTISERS);
+        break;
       default:
         break;
 
@@ -209,7 +212,7 @@ class OfficePageHeader extends React.Component {
 
           <CustomDropdown
             onClick={this.handleFile.bind(this)}
-            dropdownList={["Create New", "List Created", "List Sent"]}
+            dropdownList={["Create New", "List Created", "List Sent","All files"]}
             buttonText={"File"}
             buttonProps={{ color: "transparent" }}/>
 
@@ -221,7 +224,7 @@ class OfficePageHeader extends React.Component {
 
           <CustomDropdown
             onClick={this.handleApplication.bind(this)}
-            dropdownList={["OBPAS", "Hoarding", "Shop Licensing", "Kiosk", "Banners"]}
+            dropdownList={["OBPAS", "Hoarding", "Shop Licensing", "Kiosk", "Banners","Advertiser"]}
             buttonText={"Application"}
             buttonProps={{ color: "transparent" }}/>
           <CustomDropdown

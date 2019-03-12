@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import ReactTable from "react-table";
-import { Button, Checkbox, IconButton, InputAdornment, TextField } from "@material-ui/core";
+import { Checkbox, IconButton, InputAdornment, TextField } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import 'react-table/react-table.css'
+import "react-table/react-table.css";
 import GridItem from "../../../../components/Grid/GridItem";
 
-import DeleteIcon from '@material-ui/icons/DeleteForever';
+import DeleteIcon from "@material-ui/icons/DeleteForever";
 import GridContainer from "../../../../components/Grid/GridContainer";
 
 class GrantedShopLicenseApplications extends Component {
@@ -30,8 +30,8 @@ class GrantedShopLicenseApplications extends Component {
     const columns = [{
       Header: "Action",
       accessor: "application_no",
-      Cell:props=> <Checkbox name={"check"} />// String-based value accessors!
-    },{
+      Cell: props => <Checkbox name={"check"}/>// String-based value accessors!
+    }, {
       Header: "Name",
       accessor: "application_no" // String-based value accessors!
     }, {
@@ -48,19 +48,19 @@ class GrantedShopLicenseApplications extends Component {
     return (
       <div>
         <GridContainer>
-         <GridItem>
-           <TextField variant={"standard"}
-                      margin={"dense"}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment
-                            position="end">
-                            <SearchIcon color={"action"}/>
-                          </InputAdornment>
-                        ),
-                        placeholder: "Search"
-                      }}/>
-         </GridItem>
+          <GridItem>
+            <TextField variant={"standard"}
+                       margin={"dense"}
+                       InputProps={{
+                         endAdornment: (
+                           <InputAdornment
+                             position="end">
+                             <SearchIcon color={"action"}/>
+                           </InputAdornment>
+                         ),
+                         placeholder: "Search"
+                       }}/>
+          </GridItem>
         </GridContainer>
 
         <GridItem xs={12} sm={12} md={12}>

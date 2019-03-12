@@ -1,49 +1,47 @@
 import React, { Component } from "react";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import GridItem from "../../../../components/Grid/GridItem";
-import { Card, CardActions, CardContent, CardHeader, Paper, TextField } from "@material-ui/core";
-import FormControlUtils from "../../../../utils/FormControlUtils";
-import ReactTable from "react-table";
-import ActiveHoarding from "../hoarding/ActiveHoarding";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Chip,
+  IconButton,
+  Tooltip,
+  Typography
+} from "@material-ui/core";
+import FilterIcon from "@material-ui/icons/FilterList";
+import GrantedAdvertiserApplication from "./GrantedAdvertiserApplication";
+import AdvertiserApplications from "./AdvertiserApplications";
 
 class AdvertiserDetails extends Component {
   render() {
     return (
-      <Paper style={{padding:10}}>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={3}>
-            <Card>
-              <CardHeader title={"Advertiser details"}/>
-              <CardContent>
-                {FormControlUtils.Input("name","value","Name",false,false,"","dense",null,true)}
-                {FormControlUtils.Input("name","value","Name",false,false,"","dense",null,true)}
-                {FormControlUtils.Input("name","value","Name",false,false,"","dense",null,true)}
-                {FormControlUtils.Input("name","value","Name",false,false,"","dense",null,true)}
-                {FormControlUtils.Input("name","value","Name",false,false,"","dense",null,true,)}
-
-              </CardContent>
-              <CardActions>
-
-              </CardActions>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={9}>
-            <Card>
-              <CardHeader title={"List of advertisements"}/>
-              <CardContent>
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <TextField label={"Search"} variant={"standard"} margin={"dense"}/>
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
-                    {<ActiveHoarding/>}
-                  </GridItem>
-                </GridContainer>
-              </CardContent>
-            </Card>
-          </GridItem>
-        </GridContainer>
-      </Paper>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={3}>
+          <Card>
+            <CardHeader title={"Advertiser details"}/>
+            <CardContent>
+              <Typography variant={"headline"}>Advertiser id:123123</Typography>
+              <Typography variant={"subheading"}>Name: Kimi</Typography>
+              <Typography variant={"subheading"}>Address: chhinga veng</Typography>
+              <Typography variant={"subheading"}>Type: private</Typography>
+              <Typography variant={"subheading"}>Email: email#mail.com</Typography>
+              <Typography variant={"subheading"}>Phone: 123131233</Typography>
+              <Chip style={{ margin: 10 }} label={"NEW"}/>
+            </CardContent>
+            <CardActions>
+              <Button variant={"contained"} color={"primary"}> Download</Button>
+              <Button variant={"contained"} color={"default"}>Print </Button>
+            </CardActions>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={9}>
+          {<AdvertiserApplications/>}
+        </GridItem>
+      </GridContainer>
     );
   }
 }

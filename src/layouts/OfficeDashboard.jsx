@@ -20,9 +20,9 @@ import FileDetail from "../views/e-office/files/details/FileDetail";
 import CreatedFiles from "../views/e-office/files/CreatedFiles";
 import SentFiles from "../views/e-office/files/SentFiles";
 import HoardingDetails from "../views/e-office/applications/hoarding/HoardingDetails";
-import AdvertiserList from "../views/e-office/applications/advertisers/AdvertiserList";
 import AdvertiserDetails from "../views/e-office/applications/advertisers/AdvertiserDetails";
 import DeskView from "../views/e-office/desk/DeskView";
+import AdvertiserApplications from "../views/e-office/applications/advertisers/AdvertiserApplications";
 
 class OfficeDashboard extends Component {
   render() {
@@ -52,7 +52,7 @@ class OfficeDashboard extends Component {
             <Route exact path={OfficeRoutes.KIOSKS} component={KioskApplications}/>
             <Route exact path={OfficeRoutes.SHOP_LICENSES} component={ShopLicenseApplications}/>
 
-            <Route exact path={OfficeRoutes.ADVERTISERS} component={AdvertiserList}/>
+            <Route exact path={OfficeRoutes.ADVERTISERS} component={AdvertiserApplications}/>
             <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
 
             <Route path={OfficeRoutes.SETTING} component={Settings}/>
