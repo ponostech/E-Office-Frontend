@@ -18,28 +18,10 @@ import GMapDialog from "../../../components/GmapDialog";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import HoardingApplicationFormModel from "../../model/HoardingApplicationFormModel";
 
-const RegularMap = withScriptjs(
-  withGoogleMap(props => (
-    <GoogleMap
-      defaultZoom={8}
-      defaultCenter={{ lat: 40.748817, lng: -73.985428 }}
-      defaultOptions={{
-        scrollwheel: true
-      }}
-      onClick={(e)=>{
-        console.log(e)
-      }}
-    >
-      <Marker position={{ lat: 40.748817, lng: -73.985428 }}/>
-    </GoogleMap>
-  ))
-);
-
 class HoardingInfo extends Component {
   constructor(props) {
     super(props);
     if (props.hoardingData) {
-      console.log("fasdfasdfa");
       this.state = props.hoardingData;
     } else {
       this.state = {
@@ -165,7 +147,7 @@ class HoardingInfo extends Component {
             defaultValues={this.state.localCouncils[0]}
             label={HoardingApplicationFormModel.LOCAL_COUNCILS}
             name={"localCouncil"}
-            variant={"standard"}
+            variant={"outlined"}
             margin={"dense"}
             fullWidth={true}
             onChange={this.handleOfficeSelect.bind(this, "localCouncil")}
@@ -179,7 +161,7 @@ class HoardingInfo extends Component {
                         onBlur={this.handleBlur.bind(this)}
                         label={HoardingApplicationFormModel.CATEGORY}
                         name={"category"}
-                        variant={"standard"}
+                        variant={"outlined"}
                         margin={"dense"}
                         fullWidth={true}
                         onChange={this.handleOfficeSelect.bind(this, "category")}
@@ -197,7 +179,7 @@ class HoardingInfo extends Component {
                      multiline={true}
                      rows={3}
                      fullWidth={true}
-                     variant={"standard"}
+                     variant={"outlined"}
                      onChange={this.handleChange.bind(this)}
                      label={"Address"}/>
         </GridItem>
@@ -209,7 +191,7 @@ class HoardingInfo extends Component {
                      value={this.state.length}
                      margin={"dense"}
                      fullWidth={true}
-                     variant={"standard"}
+                     variant={"outlined"}
                      onChange={this.handleChange.bind(this)}
                      label={"Length"}
                      required={true}
@@ -224,7 +206,7 @@ class HoardingInfo extends Component {
                      type={"number"}
                      margin={"dense"}
                      fullWidth={true}
-                     variant={"standard"}
+                     variant={"outlined"}
                      onChange={this.handleChange.bind(this)}
                      label={"Height"}
                      required={true}
@@ -243,7 +225,7 @@ class HoardingInfo extends Component {
                      type={"number"}
                      margin={"dense"}
                      fullWidth={true}
-                     variant={"standard"}
+                     variant={"outlined"}
                      required={true}
                      label={HoardingApplicationFormModel.CLEARANCE}
                      onChange={this.handleChange.bind(this)}
@@ -258,7 +240,7 @@ class HoardingInfo extends Component {
                      type={"number"}
                      margin={"dense"}
                      fullWidth={true}
-                     variant={"standard"}
+                     variant={"outlined"}
                      required={true}
                      label={HoardingApplicationFormModel.ROAD_DETAIL}
                      onChange={this.handleChange.bind(this)}
@@ -283,7 +265,7 @@ class HoardingInfo extends Component {
             value={this.state.displayType}
             error={Boolean(this.state.displayError)}
             onBlur={this.handleBlur.bind(this)}
-            variant={"standard"}
+            variant={"outlined"}
             placeHolder={"Display type"}
             margin={"dense"}
             onChange={this.handleOfficeSelect.bind(this, "displayType")}
@@ -296,7 +278,7 @@ class HoardingInfo extends Component {
         <GridItem xs={12} sm={12} md={12}>
           <div style={{ display: "flex" }}>
             <TextField name={"lat"} margin={"dense"}
-                       fullWidth={true} variant={"standard"}
+                       fullWidth={true} variant={"outlined"}
                        required={true}
                        label={HoardingApplicationFormModel.COORDINATE}
                        onChange={this.handleChange.bind(this)}/>
@@ -311,11 +293,11 @@ class HoardingInfo extends Component {
         </GridItem>
 
         <GridItem xs={12} sm={12} md={12}>
-          <TextField name={"landlord"}
+          <TextField name={"landLord"}
                      margin={"dense"}
                      value={this.state.landLord}
                      fullWidth={true}
-                     variant={"standard"}
+                     variant={"outlined"}
                      label={"Name of the landlord/land owner"}
                      onChange={this.handleChange.bind(this)}
           />
@@ -330,8 +312,8 @@ class HoardingInfo extends Component {
               row={true}
               onChange={this.handleRadio.bind(this)}
             >
-              <FormControlLabel value={"0"} control={<Radio/>} label={"Private"}/>
-              <FormControlLabel value={"1"} control={<Radio/>} label={"Public"}/>
+              <FormControlLabel value={"0"} control={<Radio color={"primary"}/>} label={"Private"}/>
+              <FormControlLabel value={"1"} control={<Radio color={"primary"}/>} label={"Public"}/>
             </RadioGroup>
           </FormControl>
         </GridItem>

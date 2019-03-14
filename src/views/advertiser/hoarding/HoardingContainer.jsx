@@ -107,14 +107,14 @@ class HoardingContainer extends Component {
   };
   getPrevBtn = () => {
     return (
-      <Button disabled={this.state.activeStep === 0} variant={"contained"} color={"primary"}
+      <Button disabled={this.state.activeStep === 0} variant={"outlined"} color={"primary"}
               onClick={this.handlePrev.bind(this)}>Back</Button>
     );
   };
 
   getNextBtn = () => {
     return (
-      <Button disabled={this.state.activeStep === 2} variant={"contained"} color={"primary"}
+      <Button disabled={this.state.activeStep === 2} variant={"outlined"} color={"primary"}
               onClick={this.handleNext.bind(this)}>Next</Button>
     );
   };
@@ -202,7 +202,7 @@ class HoardingContainer extends Component {
     let view = this.getView();
     return (
       <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={12} md={10}>
+        <GridItem xs={12} sm={12} md={8}>
           <OfficeSnackbar open={this.state.hasError} message={this.state.errorMessage} variant={"error"}/>
           <Card style={{ padding: 40 }}>
             <CardHeader title={HoardingApplicationFormModel.TITLE} subheader={HoardingApplicationFormModel.SUBHEADER}/>

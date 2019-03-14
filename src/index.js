@@ -22,10 +22,14 @@ const theme = createMuiTheme({
     },
 
   },
-  shadows:["none"],
+  // shadows:["none"],
   props: {
+    MuiAppBar:{
+      elevation:2
+    },
     MuiCard:{
       raised:false,
+      elevation:0
     },
     MuiInput: {
       color: "#26B99A"
