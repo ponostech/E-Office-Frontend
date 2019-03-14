@@ -56,13 +56,7 @@ class AdvertiserHeader extends React.Component {
       case "New Hoarding proposal":
         history.push(OfficeRoutes.ADVERTISER_NEW_HOARDING);
         break;
-      case "Active Hoarding":
-        history.push(OfficeRoutes.ADVERTISER_HOARDING);
-        break;
-      case "Pending Application":
-        history.push(OfficeRoutes.ADVERTISER_HOARDING);
-        break;
-      case "Rejected Application":
+      case "List of Hoardings":
         history.push(OfficeRoutes.ADVERTISER_HOARDING);
         break;
       default:
@@ -76,15 +70,10 @@ class AdvertiserHeader extends React.Component {
       case "New Kiosk proposal":
         history.push(OfficeRoutes.PROPOSED_KIOSK);
         break;
-      case "Active Kiosk":
+      case "List of Kiosks":
         history.push(OfficeRoutes.ADVERTISER_KIOSK);
         break;
-      case "Pending Application":
-        history.push(OfficeRoutes.ADVERTISER_HOARDING);
-        break;
-      case "Rejected Application":
-        history.push(OfficeRoutes.ADVERTISER_HOARDING);
-        break;
+
       default:
         break;
     }
@@ -108,13 +97,13 @@ class AdvertiserHeader extends React.Component {
 
           <CustomDropdown
             onClick={this.handleHoarding.bind(this)}
-            dropdownList={["New Hoarding proposal", "Active Hoarding", "Pending Application", "Rejected Application"]}
+            dropdownList={["New Hoarding proposal", "List of Hoardings"]}
             buttonText={"Hoarding"}
             buttonProps={{ color: "transparent" }}/>
 
           <CustomDropdown
             onClick={this.handleKiosk.bind(this)}
-            dropdownList={["New Kiosk proposal", "Active Kiosk", "Pending Application", "Rejected Application"]}
+            dropdownList={["New Kiosk proposal", "List of Kiosks"]}
             buttonText={"Kiosk"}
             buttonProps={{ color: "transparent" }}/>
 

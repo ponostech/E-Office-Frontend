@@ -82,6 +82,7 @@ class HoardingList extends React.Component {
               </Tooltip>
             }/>
             <Tabs
+              variant={"scrollable"}
               value={value}
               onChange={this.handleChange}
               classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}

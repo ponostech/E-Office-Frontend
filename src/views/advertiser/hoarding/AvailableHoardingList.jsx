@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import ReactTable from "react-table";
-import { Checkbox, Chip, InputAdornment, TextField } from "@material-ui/core";
+import { Checkbox, Chip, IconButton, InputAdornment, TextField, Tooltip } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import EyeIcon from "@material-ui/icons/RemoveRedEyeSharp";
+import ApplyIcon from "@material-ui/icons/ImportExport";
 import "react-table/react-table.css";
 
 import MoreIcon from "@material-ui/icons/MoreVert";
 import CustomDropdown from "../../../components/CustomDropdown/CustomDropdown";
 import GridItem from "../../../components/Grid/GridItem";
+import { OfficeRoutes } from "../../../config/routes-constant/OfficeRoutes";
+import { withRouter } from "react-router-dom";
 
 class AvailableHoardingList extends Component {
   constructor(props) {
@@ -129,6 +133,7 @@ class AvailableHoardingList extends Component {
   }
 
   render() {
+    const { history } = this.props;
     const columns = [{
       Header: "",
       accessor: "application_no",
@@ -167,17 +172,20 @@ class AvailableHoardingList extends Component {
     }, {
       Header: "Action",
       accessor: "application_no",
-      maxWidth: 60,
       Cell: props => {
         return (
-          <CustomDropdown
-            buttonProps={{
-              simple: true
-            }}
-            caret={false}
-            buttonIcon={() => <MoreIcon color={"primary"}/>}
-            dropdownList={["one", "two"]}
-          />
+          <div>
+            <Tooltip title="Detail view">
+                    <IconButton onClick={(e)=>history.push(OfficeRoutes.HOARDING_DETAILS)}>
+                      <EyeIcon/>
+                    </IconButton>
+            </Tooltip>
+            <Tooltip title="Click here to apply ">
+              <IconButton onClick={(e)=>history.push(OfficeRoutes.HOARDING_DETAILS)}>
+                <ApplyIcon/>
+              </IconButton>
+            </Tooltip>
+          </div>
         );
       }
     }];
@@ -214,4 +222,4 @@ class AvailableHoardingList extends Component {
   }
 }
 
-export default AvailableHoardingList;
+export default withRouter(AvailableHoardingList);
