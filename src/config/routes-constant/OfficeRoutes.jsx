@@ -13,11 +13,6 @@ export class OfficeRoutes {
   static RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
   static SHOP_LICENSE_DETAIL = "/shop-license/:id/detail";
 
-  static APPLY_HOARDING = "/hoarding/new";
-  static RENEW_HOARDING = "/hoarding/:id/renew";
-  static PROPOSED_HOARDING = "/advertiser/hoarding/propose";
-  static HOARDING_LIST = "/hoarding/list/:user";
-
   static NEW_KIOSK = "/advertiser/kiosk/new";
   static PROPOSED_KIOSK = "/advertiser/kiosk/propose";
   static RENEW_KIOSK = "/advertiser/kiosk/:id/renew";
@@ -45,8 +40,11 @@ export class OfficeRoutes {
 
   static ADVERTISER_DASHBOARD = "/advertiser";
   static ADVERTISER_HOARDING = "/advertiser/hoarding/list";
+  static ADVERTISER_NEW_HOARDING = "/advertiser/hoarding/new";
   static ADVERTISER_KIOSK = "/advertiser/kiosk";
+  static ADVERTISER_NEW_KIOSK = "/advertiser/kiosk/new";
   static ADVERTISER_PROFILE = "/advertiser/profile";
+  static ADVERTISER_SETTING="/advertiser/setting";
 
 
   static SHOP_LICENSES = "/e-office/applications/shop-license";

@@ -63,8 +63,8 @@ class LandingPage extends Component {
 
                 <Redirect from={OfficeRoutes.ROOT} to={OfficeRoutes.HOME}/>
               </Switch>
-              <Footer white/>
             </div>
+            <Footer white/>
           </div>
         </div>
       </div>
