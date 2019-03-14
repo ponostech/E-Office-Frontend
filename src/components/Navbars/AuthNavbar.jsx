@@ -64,46 +64,7 @@ class AuthNavbar extends React.Component {
             />
           </NavLink>
         </ListItem>
-        <ListItem className={classes.listItem}>
-          <NavLink to={"/e-office"} className={classes.navLink}>
-            <Dashboard className={classes.listItemIcon} />
-            <ListItemText
-              primary={"Dashboard"}
-              disableTypography={true}
-              className={classes.listItemText}
-            />
-          </NavLink>
-        </ListItem>
-        <ListItem className={classes.listItem}>
-          <NavLink
-            to={"/faq"}
-            className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute("/faq")
-            })}
-          >
-            <MonetizationOn className={classes.listItemIcon} />
-            <ListItemText
-              primary={"FAQ"}
-              disableTypography={true}
-              className={classes.listItemText}
-            />
-          </NavLink>
-        </ListItem>
-        <ListItem className={classes.listItem}>
-          <NavLink
-            to={"/staff/new"}
-            className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute("/staff/new")
-            })}
-          >
-            <PersonAdd className={classes.listItemIcon} />
-            <ListItemText
-              primary={"Register Staff"}
-              disableTypography={true}
-              className={classes.listItemText}
-            />
-          </NavLink>
-        </ListItem>
+
         <ListItem className={classes.listItem}>
           <NavLink
             to={OfficeRoutes.APPLY_ADVERTISER}
@@ -134,28 +95,12 @@ class AuthNavbar extends React.Component {
             />
           </NavLink>
         </ListItem>
-        <ListItem className={classes.listItem}>
-          <NavLink
-            to={"/auth/lock-screen-page"}
-            className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute(
-                "/auth/lock-screen-page"
-              )
-            })}
-          >
-            <LockOpen className={classes.listItemIcon} />
-            <ListItemText
-              primary={"Lock"}
-              disableTypography={true}
-              className={classes.listItemText}
-            />
-          </NavLink>
-        </ListItem>
+
       </List>
     );
     return (
-      <AppBar position="static" className={classes.appBar + appBarClasses}>
-        <Toolbar className={classes.container}>
+      <AppBar elevation={1} position="static" color={"primary"}>
+        <Toolbar variant={"regular"}>
           <Hidden smDown>
             <div className={classes.flex}>
               <Button href="#" className={classes.title} color="transparent">

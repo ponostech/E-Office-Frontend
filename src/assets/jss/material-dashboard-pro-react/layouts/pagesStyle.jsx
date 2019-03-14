@@ -36,6 +36,7 @@ const pagesStyle = theme => ({
   },
 
   fullPage: {
+    background:'white',
     padding: "120px 0",
     position: "relative",
     minHeight: "100vh",

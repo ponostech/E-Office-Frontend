@@ -35,7 +35,8 @@ const styles = {
         textAlign: "center"
     },
     noTopMargin: {
-        margin: "0"
+        margin: "0",
+        zDepthShadows:"none"
     },
     title: {
         ...defaultFont,
@@ -115,12 +116,12 @@ class HomePage extends Component {
                     <GridItem xs={10} sm={10} md={10}>
                         <Card style={styles.noTopMargin}>
                             <h3 className={classes.pageSubcategoriesTitle}>
-                                Service Provided by Aizawl Municipal Corporation
+                                Services Provided by Aizawl Municipal Corporation
                             </h3>
                             <div className={classes.container}>
                                 <NavPills
                                     xs={10} sm={6} md={6}
-                                    color="success"
+                                    color="primary"
                                     alignCenter
                                     tabs={[
                                         {
@@ -142,7 +143,7 @@ class HomePage extends Component {
                                                                             Licensing</h6>
                                                                         <div className={classes.icon}>
                                                                             <StoreMallDirectory
-                                                                                className={classes.iconRose}/>
+                                                                                className={classes.primary}/>
                                                                         </div>
                                                                         <h3 className={`${classes.cardTitle} ${classes.marginTop30}`}>
                                                                             Title

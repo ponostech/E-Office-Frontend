@@ -158,7 +158,7 @@ class AdvertiserContainer extends Component {
     let view = this.getView();
     return (
       <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card style={{ padding: 40 }}>
             <CardHeader title={AdvertiserViewModel.TITLE} subheader={AdvertiserViewModel.SUBHEADER}/>
             <Stepper activeStep={this.state.activeStep} alternativeLabel={true}>

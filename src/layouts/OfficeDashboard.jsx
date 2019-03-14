@@ -32,7 +32,7 @@ class OfficeDashboard extends Component {
         <GridItem xs={12} sm={12} md={12}>
           <OfficePageHeader color={"primary"}/>
         </GridItem>
-        <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={10}>
+        <GridItem style={{ marginTop: 70,background:'white' }} xs={12} sm={12} md={12}>
           <GridContainer justify={"center"}>
             <Route exact path={OfficeRoutes.DESK} component={DeskView}/>
             <Route exact path={OfficeRoutes.NEW_RECEIPT} component={NewReceipt}/>
