@@ -11,7 +11,7 @@ import Redirect from "react-router-dom/es/Redirect";
 import HoardingContainer from "../views/advertiser/hoarding/HoardingContainer";
 import KioskFormContainer from "../views/advertiser/kiosk/form/KioskFormContainer";
 import KioskLists from "../views/advertiser/kiosk/lists/KioskLists";
-import PendingHoardingList from "../views/advertiser/hoarding/PendingHoardingList";
+import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
 
 class AdvertiserDashboard extends Component {
   render() {
@@ -22,16 +22,17 @@ class AdvertiserDashboard extends Component {
         </GridItem>
         <GridItem style={{ marginTop: 70, background: "white" }} xs={12} sm={12} md={12}>
           <GridContainer justify={"center"}>
-            <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
 
             <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={HoardingContainer}/>
-            <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={PendingHoardingList}/>
+            <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
 
             <Route exact path={OfficeRoutes.PROPOSED_KIOSK} component={KioskFormContainer}/>
             <Route exact path={OfficeRoutes.ADVERTISER_KIOSK} component={KioskLists}/>
 
 
             <Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>
+            <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>
+
             <Route exact path={OfficeRoutes.ADVERTISER_DASHBOARD} component={Dashboard}/>
 
           </GridContainer>
