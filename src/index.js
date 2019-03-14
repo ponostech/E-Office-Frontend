@@ -24,6 +24,9 @@ const theme = createMuiTheme({
   },
   shadows:["none"],
   props: {
+    MuiCard:{
+      raised:false,
+    },
     MuiInput: {
       color: "#26B99A"
     },

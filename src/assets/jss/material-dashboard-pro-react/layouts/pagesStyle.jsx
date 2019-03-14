@@ -30,6 +30,7 @@ const pagesStyle = theme => ({
   container: {
     ...container,
     zIndex: "4",
+    marginBottom:50,
     [theme.breakpoints.down("sm")]: {
       paddingBottom: "100px"
     }
@@ -37,7 +38,6 @@ const pagesStyle = theme => ({
 
   fullPage: {
     background:'white',
-    padding: "120px 0",
     position: "relative",
     minHeight: "100vh",
     display: "flex!important",
