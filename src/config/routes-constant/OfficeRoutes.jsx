@@ -13,7 +13,6 @@ export class OfficeRoutes {
   static RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
   static SHOP_LICENSE_DETAIL = "/shop-license/:id/detail";
 
-  static NEW_KIOSK = "/advertiser/kiosk/new";
   static PROPOSED_KIOSK = "/advertiser/kiosk/propose";
   static RENEW_KIOSK = "/advertiser/kiosk/:id/renew";
   static KIOSK_DETAIL = "/advertiser/kiosk/:id/details";

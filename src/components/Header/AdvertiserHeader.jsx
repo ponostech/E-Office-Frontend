@@ -1,6 +1,6 @@
 import React from "react";
 import cx from "classnames";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 // @material-ui/core components
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -17,8 +17,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingIcon from "@material-ui/icons/Settings";
 // core components
-import Button from "components/CustomButtons/Button";
-import { IconButton, Typography } from "@material-ui/core";
+import { Button, IconButton, Typography } from "@material-ui/core";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
 import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
@@ -51,32 +50,34 @@ class AdvertiserHeader extends React.Component {
     // }
   }
 
-  handleKiosk = (e) => {
-    const { history } = this.props;
-    switch (e) {
-      case "Create New":
-        history.push(OfficeRoutes.NEW_RECEIPT);
-        break;
-      case "List Created":
-        history.push(OfficeRoutes.CREATED_RECEIPT);
-        break;
-      case "List Sent":
-        history.push(OfficeRoutes.SENT_RECEIPT);
-        break;
-      default:
-        break;
-
-    }
-  };
-
   handleHoarding = (e) => {
     const { history } = this.props;
     switch (e) {
       case "New Hoarding proposal":
-        history.push(OfficeRoutes.NEW_KIOSK);
+        history.push(OfficeRoutes.ADVERTISER_NEW_HOARDING);
         break;
       case "Active Hoarding":
         history.push(OfficeRoutes.ADVERTISER_HOARDING);
+        break;
+      case "Pending Application":
+        history.push(OfficeRoutes.ADVERTISER_HOARDING);
+        break;
+      case "Rejected Application":
+        history.push(OfficeRoutes.ADVERTISER_HOARDING);
+        break;
+      default:
+        break;
+    }
+  };
+
+  handleKiosk = (e) => {
+    const { history } = this.props;
+    switch (e) {
+      case "New Kiosk proposal":
+        history.push(OfficeRoutes.PROPOSED_KIOSK);
+        break;
+      case "Active Kiosk":
+        history.push(OfficeRoutes.ADVERTISER_KIOSK);
         break;
       case "Pending Application":
         history.push(OfficeRoutes.ADVERTISER_HOARDING);
@@ -101,24 +102,24 @@ class AdvertiserHeader extends React.Component {
       <GridContainer justify={"space-between"}>
         <div style={{ display: "flex", alignItems: "center" }}>
 
-          <IconButton style={{ marginLeft: 20 }} onClick={this.handleDesk.bind(this)}>
+          <IconButton style={{ marginLeft: 20 }}>
             <HomeIcon/>
           </IconButton>
 
           <CustomDropdown
             onClick={this.handleHoarding.bind(this)}
             dropdownList={["New Hoarding proposal", "Active Hoarding", "Pending Application", "Rejected Application"]}
-            buttonText={"File"}
+            buttonText={"Hoarding"}
             buttonProps={{ color: "transparent" }}/>
 
           <CustomDropdown
             onClick={this.handleKiosk.bind(this)}
             dropdownList={["New Kiosk proposal", "Active Kiosk", "Pending Application", "Rejected Application"]}
-            buttonText={"File"}
+            buttonText={"Kiosk"}
             buttonProps={{ color: "transparent" }}/>
 
-          <Button style={{ background: "transparent", color: "black" }} onClick={(e) => {
-          }} simple={true}> DSC</Button>
+          <Button variant={"text"} size={"small"}  onClick={(e) => {
+          }}> License</Button>
 
         </div>
 
@@ -225,4 +226,4 @@ class AdvertiserHeader extends React.Component {
 }
 
 
-export default AdvertiserHeader;
+export default withRouter(AdvertiserHeader);
