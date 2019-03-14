@@ -56,9 +56,7 @@ const pagesStyle = theme => ({
       width: "100%",
       border: "none !important"
     },
-    "&:before": {
-      backgroundColor: "rgba(0, 0, 0, 0.65)"
-    },
+
     "&:before,&:after": {
       display: "block",
       content: '""',

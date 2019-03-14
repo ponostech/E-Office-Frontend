@@ -1,23 +1,25 @@
 import React, { Component } from "react";
 import ReactTable from "react-table";
-import GridItem from "../../components/Grid/GridItem";
-import { InputAdornment, TextField } from "@material-ui/core";
+import { Checkbox, IconButton, InputAdornment, TextField } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import 'react-table/react-table.css'
+import GridItem from "../../../../components/Grid/GridItem";
 
-class AvailableHoardingList extends Component {
+import DeleteIcon from '@material-ui/icons/DeleteForever';
+
+class GrantedBannersApplications extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [
-        { name: "kimi", age: 12 },
-        { name: "kimi", age: 12 },
-        { name: "kimi", age: 12 },
-        { name: "kimi", age: 12 },
-        { name: "kimi", age: 12 },
-        { name: "kimi", age: 12 },
-        { name: "kimi", age: 12 },
-        { name: "kimi", age: 12 }
+        { application_no: "12", age: 12 },
+        { application_no: "123", age: 12 },
+        { application_no: "32", age: 12 },
+        { application_no: "321", age: 12 },
+        { application_no: "22", age: 12 },
+        { application_no: "11", age: 12 },
+        { application_no: "44", age: 12 },
+        { application_no: "56", age: 12 }
       ]
 
     };
@@ -25,12 +27,22 @@ class AvailableHoardingList extends Component {
 
   render() {
     const columns = [{
+      Header: "Action",
+      accessor: "application_no",
+      Cell:props=> <Checkbox name={"check"} />// String-based value accessors!
+    },{
       Header: "Name",
-      accessor: "name" // String-based value accessors!
+      accessor: "application_no" // String-based value accessors!
     }, {
       Header: "Age",
       accessor: "age",
       Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
+    }, {
+      Header: "Actions",
+      accessor: "application_no",
+      Cell: props => <IconButton>
+        <DeleteIcon/>
+      </IconButton> // Custom cell components!
     }];
     return (
       <div>
@@ -63,4 +75,4 @@ class AvailableHoardingList extends Component {
   }
 }
 
-export default AvailableHoardingList;
+export default GrantedBannersApplications;

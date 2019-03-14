@@ -1,92 +1,46 @@
-import React, { Component } from "react";
-import { Button, Card, CardActionArea, CardActions, CardContent, CardHeader, Divider, Paper } from "@material-ui/core";
-import Dropzone from "react-dropzone";
+import React, {Component} from "react";
+import {pdfjs} from "react-pdf";
+
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
-import Constraint from "../../../config/Constraint";
-import PdfView from "../../../components/PdfView";
+import ReceiptDetailEntry from "./ReceiptDetailEntry";
+import {Paper} from "@material-ui/core";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class NewReceipt extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      file: null
+    state = {
+        pdfFile: "https://amcmizoram.com/uploads/files/AMC%20Roadmap%20to%20Stability_15012019035648.pdf",
+        numPages: null,
+        pageNumber: 1,
     };
-  }
 
-  onDrop = (acceptedFiles, rejectedFiles) => {
-    let temp = [...this.state.selectedFiles, ...acceptedFiles];
-     console.log(acceptedFiles)
+    render() {
+        const {pdfFile} = this.state;
 
-  };
+        return (
+            <GridContainer justify={"center"}>
+                <GridItem xs={12} sm={12} md={7}>
+                    <Paper style={{padding: 20}}>
+                        <input onChange={(e) => {
+                            console.log(e)
+                        }} type={"file"} accept={"application/pdf"}/>
 
-  getView = () => {
-    if (!this.state.file) {
-      return (
-        <Dropzone
-          multiple={false}
-          accept={Constraint.ACCEPTED_DOCUMENTS}
-          onDrop={this.onDrop}>
-          {({ getRootProps, getInputProps, isDragActive }) => {
-            return (
-              <Paper style={{ padding: 50 }}
-                     {...getRootProps()}
-                // className={classNames('dropzone', {'dropzone--isActive': isDragActive})}
-              >
-                <input {...getInputProps()} />
-                {
-                  isDragActive ?
-                    <p>Drop files here...</p> :
-                    <p>Try dropping some files here, or click to select files to
-                      upload.</p>
-                }
-              </Paper>
-            );
-          }}
-        </Dropzone>
-      );
-    } else {
-      return (
-        <div>
-          <PdfView title={"File name"} file={this.state.file}/>
-          <Button variant={"outlined"} color={"secondary"}>Cancel</Button>
-        </div>
-
-      );
+                        <object style={{height: "80vh"}} data={pdfFile} type="application/pdf" width="100%"
+                                height="100%">
+                            <p>It appears you don't have a PDF plugin for this browser. You can <a href="myfile.pdf">click
+                                here to download the PDF file.</a></p>
+                        </object>
+                    </Paper>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={5}>
+                    <div>
+                        <ReceiptDetailEntry/>
+                    </div>
+                </GridItem>
+            </GridContainer>
+        );
     }
-  };
-
-  render() {
-
-    return (
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card>
-            <CardHeader title={"New receipt"}/>
-
-            <CardContent>
-              <Divider/>
-              {this.getView()}
-              <Divider/>
-
-            </CardContent>
-            <CardActionArea>
-              <CardActions title={"Upload"}/>
-            </CardActionArea>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
-
-          <Button variant={"outlined"} color={"primary"}>Create and Generate Receipt
-            No</Button>
-          <Button style={{ marginTop: 10 }} variant={"outlined"} color={"secondary"}>
-            reset
-          </Button>
-        </GridItem>
-      </GridContainer>
-    );
-  }
 }
 
 export default NewReceipt;

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Document, Page } from "react-pdf";
+// import { Document, Page } from "react-pdf";
 import PropTypes from "prop-types";
 import GridContainer from "./Grid/GridContainer";
 import GridItem from "./Grid/GridItem";
@@ -45,11 +45,11 @@ class PdfView extends Component {
           <Typography variant={"title"}>
             {title}
           </Typography>
-          <Document file={file}
-                    onLoadSuccess={this.onDocumentLoadSuccess.bind(this)}
-          >
-            <Page pageNumber={pageNumber}/>
-          </Document>
+          {/*<Document file={file}*/}
+                    {/*onLoadSuccess={this.onDocumentLoadSuccess.bind(this)}*/}
+          {/*>*/}
+            {/*<Page pageNumber={pageNumber}/>*/}
+          {/*</Document>*/}
 
           <div style={{ display: "flex", justify: "center" }}>
             <IconButton onClick={this.gotoFirst.bind(this)}>
@@ -75,7 +75,7 @@ class PdfView extends Component {
 
 
 PdfView.propTypes = {
-  file: PropTypes.string,
+  file: PropTypes.any,
   title: PropTypes.string
 };
 export default PdfView;

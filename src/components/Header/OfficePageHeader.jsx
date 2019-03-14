@@ -17,6 +17,7 @@ import Assessment from "@material-ui/icons/Assessment";
 import UserIcon from "@material-ui/icons/AccountCircleRounded";
 import HomeIcon from "@material-ui/icons/Home";
 import MenuIcon from "@material-ui/icons/Menu";
+import SettingIcon from "@material-ui/icons/Settings";
 // core components
 import Button from "components/CustomButtons/Button";
 
@@ -64,8 +65,6 @@ class OfficePageHeader extends React.Component {
     const { name } = event;
     const { history } = this.props;
 
-    //console.log(name);
-
     switch (name) {
       case "new-file":
         history.push("/e-office/file/new");
@@ -86,7 +85,16 @@ class OfficePageHeader extends React.Component {
         history.push("/e-office/receipt/sent");
         break;
       case "obpas":
-        history.push("/e-office/application/obpas");
+        history.push(OfficeRoutes.OBPAS);
+        break;
+      case "hoardings":
+        history.push(OfficeRoutes.OBPAS);
+        break;
+      case "":
+        history.push(OfficeRoutes.OBPAS);
+        break;
+      case "obpas":
+        history.push(OfficeRoutes.OBPAS);
         break;
       default:
         break;
@@ -149,20 +157,29 @@ class OfficePageHeader extends React.Component {
 
     }
   };
+  handleReport = (e) => {
+    console.log(e);
+  };
   handleApplication = (e) => {
     const { history } = this.props;
     switch (e) {
       case "OBPAS":
-        history.push("/e-office/application/obpas");
+        history.push(OfficeRoutes.OBPAS);
         break;
       case "Hoarding":
-        history.push("/e-office/application/hoarding");
+        history.push(OfficeRoutes.HOARDINGS);
         break;
       case "Shop Licensing":
-        history.push("/e-office/application/shop-licensing");
+        history.push(OfficeRoutes.SHOP_LICENSES);
         break;
       case "Kiosk":
-        history.push("/e-office/application/kiosk");
+        history.push(OfficeRoutes.KIOSKS);
+        break;
+      case "Banners":
+        history.push(OfficeRoutes.BANNERS);
+        break;
+      case "Advertiser":
+        history.push(OfficeRoutes.ADVERTISERS);
         break;
       default:
         break;
@@ -175,7 +192,7 @@ class OfficePageHeader extends React.Component {
   };
 
   render() {
-    const { classes, color } = this.props;
+    const { classes, color, history } = this.props;
     const { anchorEl } = this.state;
     const appBarClasses = cx({
       [" " + classes[color]]: color
@@ -183,36 +200,56 @@ class OfficePageHeader extends React.Component {
 
     var menuItems = (
       <GridContainer justify={"space-between"}>
-        <div style={{display:"flex",alignItems:"center"}}>
+        <div style={{ display: "flex", alignItems: "center" }}>
 
-          <IconButton style={{ marginLeft:20 }} onClick={this.handleDesk.bind(this)}>
+          <IconButton style={{ marginLeft: 20 }} onClick={this.handleDesk.bind(this)}>
             <HomeIcon/>
           </IconButton>
 
-          <CustomDropdown
-              onClick={this.handleFile.bind(this)}
-              dropdownList={["Create New", "List Created", "List Sent"]}
-              buttonText={"File"}
-              buttonProps={{ color: "transparent" }} />
+          <Button variant={"contained"} color={"primary"} onClick={(e) => {
+            history.push(OfficeRoutes.DESK)
+          }} > Desk</Button>
 
           <CustomDropdown
-              onClick={this.handleReceipt.bind(this)}
-              dropdownList={["Create New", "List Created", "List Sent"]}
-              buttonText={"Receipt"}
-              buttonProps={{ color: "transparent" }} />
+            onClick={this.handleFile.bind(this)}
+            dropdownList={["Create New", "List Created", "List Sent","All files"]}
+            buttonText={"File"}
+            buttonProps={{ color: "transparent" }}/>
 
           <CustomDropdown
-              onClick={this.handleApplication.bind(this)}
-              dropdownList={["OBPAS", "Hoarding", "Shop Licensing", "Kiosk"]}
-              buttonText={"Application"}
-              buttonProps={{ color: "transparent" }} />
+            onClick={this.handleReceipt.bind(this)}
+            dropdownList={["Create New", "List Created", "List Sent"]}
+            buttonText={"Receipt"}
+            buttonProps={{ color: "transparent" }}/>
 
+          <CustomDropdown
+            onClick={this.handleApplication.bind(this)}
+            dropdownList={["OBPAS", "Hoarding", "Shop Licensing", "Kiosk", "Banners","Advertiser"]}
+            buttonText={"Application"}
+            buttonProps={{ color: "transparent" }}/>
+          <CustomDropdown
+            onClick={this.handleReport.bind(this)}
+            dropdownList={["Report one", "Report two"]}
+            buttonText={"Report"}
+            buttonProps={{ color: "transparent" }}/>
+
+          <Button style={{ background: "transparent", color: "black" }} onClick={(e) => {
+          }} simple={true}> DSC</Button>
+
+          <Button style={{ background: "transparent", color: "black" }} onClick={(e) => {
+            history.push(OfficeRoutes.ADVERTISERS)
+          }} simple={true}> Advertisers</Button>
         </div>
 
-        <div style={{display:"flex",alignItems:'center'}}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Typography variant={"caption"} color={"textSecondary"}>Hello Username</Typography>
           <IconButton onClick={this.handleUser.bind(this)}>
             <UserIcon/>
+          </IconButton>
+          <IconButton onClick={() => {
+            history.push(OfficeRoutes.SETTING);
+          }}>
+            <SettingIcon/>
           </IconButton>
         </div>
 
@@ -267,7 +304,7 @@ class OfficePageHeader extends React.Component {
 
     var list = (
       <div>
-        <Typography color={"transparent"} variant={"title"}>Hello world</Typography>
+        <Typography color={"primary"} variant={"title"}>Hello world</Typography>
         <List className={classes.list}>
           <ListItem className={classes.listItem}>
             <NavLink to={"/apply"} className={classes.navLink}>
@@ -310,7 +347,7 @@ class OfficePageHeader extends React.Component {
       </div>
     );
     return (
-      <AppBar position="fixed" color={"default"}>
+      <AppBar position="fixed" color={"inherit"}>
         <Toolbar>{/*
           <Hidden smDown>
             <Typography color={"textPrimary"} variant={"title"}>E-AMC</Typography>

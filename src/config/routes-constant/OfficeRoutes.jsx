@@ -5,23 +5,23 @@ export class OfficeRoutes {
   static FORM = "/form";
   static E_OFFICE = "/e-office";
 
-  static APPLY_ADVERTISER = "/advertiser/new";
+  static APPLY_ADVERTISER = "/register/advertiser";
   static RENEW_ADVERTISER = "/advertiser/:id/renew";
-  static ADVERTISER_DETAIL = "/advertiser/:id/detail";
+  // static ADVERTISER_DETAIL = "/advertiser/:id/detail";
 
-  static APPLY_SHOP_LICENSE = "/shopping-license/new";
-  static RENEW_SHOP_LICENSE = "/shopping-license/:id/renew";
-  static SHOP_LICENSE_DETAIL = "/shopping-license/:id/detail";
+  static APPLY_SHOP_LICENSE = "/shop-license/new";
+  static RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
+  static SHOP_LICENSE_DETAIL = "/shop-license/:id/detail";
 
   static APPLY_HOARDING = "/hoarding/new";
   static RENEW_HOARDING = "/hoarding/:id/renew";
-  static PROPOSED_HOARDING = "/hoarding/propose";
-  static HOARDING_LIST="/hoarding/list/:user";
+  static PROPOSED_HOARDING = "/advertiser/hoarding/propose";
+  static HOARDING_LIST = "/hoarding/list/:user";
 
-  static NEW_KIOSK = "/kiosk/new";
-  static PROPOSED_KIOSK = "/kiosk/propose";
-  static RENEW_KIOSK = "/kiosk/:id/renew";
-  static KIOSK_DETAIL = "/kiosk/:id/details";
+  static NEW_KIOSK = "/advertiser/kiosk/new";
+  static PROPOSED_KIOSK = "/advertiser/kiosk/propose";
+  static RENEW_KIOSK = "/advertiser/kiosk/:id/renew";
+  static KIOSK_DETAIL = "/advertiser/kiosk/:id/details";
 
   static APPLY_BANNER = "/banner/new";
 
@@ -30,7 +30,7 @@ export class OfficeRoutes {
   static CREATED_FILES = "/e-office/created";
   static SENT_FILE = "/e-office/sent";
   static CLOSE_FILE = "/e-office/sent";
-  static FILE_DETAIL = "/e-office/files/:id";
+  static FILE_DETAIL = "/e-office/file/:id/detail";
 
   static NEW_RECEIPT = "/e-office/receipt/new";
   static CREATED_RECEIPT = "/e-office/receipt/created";
@@ -42,4 +42,23 @@ export class OfficeRoutes {
   static RESET_PASSWORD = "/reset-password";
   static NEW_STAFF = "/staff/new";
   static LIST_STAFF = "/staff";
+
+  static ADVERTISER_DASHBOARD = "/advertiser";
+  static ADVERTISER_HOARDING = "/advertiser/hoarding/list";
+  static ADVERTISER_KIOSK = "/advertiser/kiosk";
+  static ADVERTISER_PROFILE = "/advertiser/profile";
+
+
+  static SHOP_LICENSES = "/e-office/applications/shop-license";
+  static HOARDINGS = "/e-office/applications/hoardings";
+  static HOARDING_DETAILS = "/e-office/applications/hoardings/:id/detail";
+  static BANNERS = "/e-office/applications/banners";
+  static KIOSKS = "/e-office/applications/kiosks";
+  static OBPAS = "/e-office/applications/obpas";
+
+  static SETTING = "/e-office/setting";
+  static ADVERTISERS = "/e-office/advertisers";
+
+  static ADVERTISER_DETAIL=`/e-office/advertisers/:id/details`;
+
 }
