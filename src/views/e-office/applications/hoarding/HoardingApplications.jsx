@@ -80,16 +80,17 @@ class HoardingApplications extends React.Component {
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader
-                        title={HoardingListViewModel.TITLE}
-                        action={
-                          <Tooltip title={"Filter"}>
-                            <IconButton>
-                              <FilterIcon/>
-                            </IconButton>
-                          </Tooltip>
-                        }
+              title={HoardingListViewModel.TITLE}
+              action={
+                <Tooltip title={"Filter"}>
+                  <IconButton>
+                    <FilterIcon/>
+                  </IconButton>
+                </Tooltip>
+              }
             >
             </CardHeader>
+            <CardContent>
               <Tabs
                 value={value}
                 onChange={this.handleChange}
@@ -98,7 +99,7 @@ class HoardingApplications extends React.Component {
                 <Tab disableRipple value={"active"}
                      classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                      label={KioskViewModel.ACTIVE}/>
-                     <Tab disableRipple value={"new"}
+                <Tab disableRipple value={"new"}
                      classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                      label={KioskViewModel.NEW_APPLICATION}/>
                 <Tab value={"granted"}
@@ -111,14 +112,13 @@ class HoardingApplications extends React.Component {
                      label={KioskViewModel.REJECTED}/>
 
               </Tabs>
-          <CardContent>
+            </CardContent>
             <div style={{ marginTop: 20 }}>
               {value === "active" && <ActiveHoarding/>}
               {value === "new" && <NewHoardingApplications/>}
               {value === "granted" && <GrantedHoardingApplications/>}
               {value === "reject" && <RejectedHoardingApplications/>}
             </div>
-            </CardContent>
           </Card>
         </GridItem>
       </GridContainer>
