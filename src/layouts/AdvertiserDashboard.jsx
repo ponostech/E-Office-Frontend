@@ -16,7 +16,7 @@ import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
 class AdvertiserDashboard extends Component {
   render() {
     return (
-      <GridContainer justify={"center"}>
+      <GridContainer justify={"center"} style={{background:"#fff"}}>
         <GridItem xs={12} sm={12} md={12}>
           <AdvertiserHeader color={"primary"}/>
         </GridItem>
