@@ -31,13 +31,13 @@ class HoardingContainer extends Component {
       hoardingData: {
         localCouncil: undefined,
         category: undefined,
-        coordinate:'',
+        coordinate: "",
         address: "",
         length: 1,
         height: 1,
-        clearance:'',
+        clearance: "",
         bothSide: false,
-        displayType: {value:"ILLUMINATED", label:'ILLUMINATED'},
+        displayType: { value: "ILLUMINATED", label: "ILLUMINATED" },
 
         landLord: "",
         landlordType: "0",
@@ -131,7 +131,6 @@ class HoardingContainer extends Component {
     this.setState({ submit: true });
     this.hoardingService.create(this.state)
       .then(data => {
-        console.log("whyyy nee");
         console.log(data);
         // if (data.status) {
         this.setState({ submit: false, complete: true });
