@@ -1,545 +1,290 @@
-import React, {Component} from "react";
-import Datetime from 'react-datetime';
+import React, { Component } from "react";
+import { Button, Card, CardActions, CardHeader, Divider, TextField } from "@material-ui/core";
 
-import {FormControl, InputAdornment, InputLabel, MenuItem, Paper, Select, withStyles} from "@material-ui/core";
-import {BannerApplicationFormModel} from "../model/BannerApplicationFormModel";
-import moment from "moment";
-// @material ui icons
-import {
-    Business,
-    CreditCard,
-    Email,
-    Face,
-    LocationOn,
-    MailOutline,
-    MyLocation,
-    Shop,
-    Smartphone
-} from "@material-ui/icons";
-// theme core components
-import GridContainer from "../../components/Grid/GridContainer.jsx";
-import GridItem from "../../components/Grid/GridItem.jsx";
-import Card from "../../components/Card/Card";
-import CardHeader from "../../components/Card/CardHeader";
-import CardBody from "../../components/Card/CardBody";
-import CardFooter from "../../components/Card/CardFooter";
-import CardIcon from "../../components/Card/CardIcon";
-import CustomInput from "../../components/CustomInput/CustomInput";
-import Button from "../../components/CustomButtons/Button.jsx";
+import CardBody from "../../components/Card/CardBody.jsx";
 
-import styles from "../../assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
+import { BannerViewModel } from "../model/BannerViewModel";
+import GridItem from "../../components/Grid/GridItem";
 import OfficeSelect from "../../components/OfficeSelect";
-import HoardingApplicationFormModel from "../model/HoardingApplicationFormModel";
+import loginPageStyle from "../../assets/jss/material-dashboard-pro-react/views/loginPageStyle";
+import withStyles from "@material-ui/core/styles/withStyles";
+import GridContainer from "../../components/Grid/GridContainer";
+import ImageUpload from "../../components/CustomUpload/ImageUpload";
+import { StaffService } from "../../services/StaffService";
+import SubmitDialog from "../../components/SubmitDialog";
+import OfficeSnackbar from "../../components/OfficeSnackbar";
 
 class BannerApplicationForm extends Component {
-    state = {
-        formValues: {
-            name: "",
-            phone_no: "",
-            applicant_type: "",
-            local_council_id: "",
-            address: "",
-            ownership: undefined,
-            advertisement_type: "",
-            display_on: "",
-            locations: "",
-            length: "",
-            height: "",
-            no_advertisements: "",
-            establishmentDate: "",
-            from: "",
-            to:"",
-            latitude: 0,
-            longitude: 0,
-            details:"",
-            status:"",
-            signature:"",
-            attachments: []
-        },
+
+  //staffService = new StaffService();
+
+  state = {
+        name: "",
+        phone_no: "",
+        applicant_type: "",
+        local_council_id: "",
+        address: "",
+        ownership: {value: "private", label: "Private"},
+        display_type:  {value: "vehicle", label: "Vehicle"},
+        display_on: "",
+        locations: "",
+        length: "",
+        height: "",
+        no_advertisements: "",
+        establishmentDate: "",
+        from: "",
+        to:"",
+        latitude: 0,
+        longitude: 0,
+        details:"",
+        status:"",
+        signature:"",
         localCouncils: ["one", "two", "three"],
         ownerships: [
-            {value: "private", label: "Private"},
-            {value: "firm", label: "Firm"},
-            {value: "company", label: "Company"},
-            {value: "charitable trust", label: "Charitable Trust"},
-            {value: "others", label: "Others"}
-        ],
-        openDialog: false
-    };
+        {value: "private", label: "Private"},
+        {value: "firm", label: "Firm"},
+        {value: "company", label: "Company"},
+        {value: "charitable trust", label: "Charitable Trust"},
+        {value: "others", label: "Others"}
+      ],
+        display_types: [
+        {value: "vehicle", label: "Vehicle"},
+        {value: "umbrella", label: "Umbrella"},
+        {value: "balloons", label: "Balloons"},
+        {value: "video", label: "Video"},
+        {value: "audio/sound", label: "Audio/Sound"}
+    ],
+        openDialog: false,
+        submit: false,
+        complete: false,
+        attachments: []
 
-    componentDidMount = () => {
-        const {history} = this.props;
-        if (this.state.fakeAuth) {
-            history.back();
-        } else {
-            this.setState({
-                displayTypes: ["one", "two", "three"]
-            });
-        }
-    };
+  };
 
-    handleChange = name => (event) => {
-        this.setState({
-            formValues: {
-                ...this.state.formValues,
-                [name]: event.target.value
-            }
-        });
-        console.log(this.state);
-    };
+  componentDidMount() {
+    document.title = "e-AMC | Banners/Posters ApplicationForm";
+    this.state.ownerships = this.state.ownerships[0];
+    //this.state.branch = this.state.branches[0];
+  }
 
-    handleSelect = (selectedValue,identifier) => {
-      switch (identifier) {
-        case "ownership":
-          this.setState({ownership:selectedValue});
+  handleChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value
+    });
+  };
 
-          break;
+  handleSelect = (identifier, value) => {
+    switch (identifier) {
+      case "ownerships":
+        this.setState({ ownership: value });
+        break;
+      case "display_types":
+        this.setState({ display_type: value });
+        break;
 
-      }
-    };
+      default:
+        break;
 
-    submitForm = (e) => {
-        if (this.validate()) {
-
-        }
-    };
-    handleRadio = (e) => {
-        this.setState({
-            premiseType: e.target.value
-        });
-    };
-    handleDocumentClose = (documents = []) => {
-        this.setState({
-            openDialog: false
-        });
-        if (documents) {
-            this.setState({
-                attachments: documents
-            });
-        }
-    };
-    validate = () => {
-        if (this.state.doeError === "") {
-            this.setState({doeError: BannerApplicationFormModel.DOE_REQUIRED});
-            return false;
-        }
-
-        let doe = moment(this.state.do);
-        let today = moment.now();
-        if (doe > today) {
-            this.setState({doeError: BannerApplicationFormModel.DOE_FUTURE_ERROR});
-            return;
-        }
-        this.setState({
-            nameError: "",
-            addressError: "",
-            doeError: ""
-        });
-        return true;
-    };
-
-    render() {
-        const {classes, ownership} = this.props;
-
-        return (
-            <div>
-                <GridContainer justify="center">
-                    <GridItem xs={10} sm={10} md={10}>
-                        <Paper>
-                            <form>
-                                <Card>
-                                    <CardHeader color="rose" icon>
-                                        <CardIcon color="rose">
-                                            <MailOutline/>
-                                        </CardIcon>
-                                        <h4 className={classes.cardIconTitle}>Banner Application Form</h4>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <GridContainer>
-                                            <GridItem md={6} xs={12}>
-                                                <CustomInput
-                                                    labelText="Name of Applicant..."
-                                                    name="name"
-                                                    formControlProps={{
-                                                        fullWidth: true
-                                                    }}
-                                                    inputProps={{
-                                                        onChange: this.handleChange('name'),
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <Face className={classes.inputAdornmentIcon}/>
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
-                                                />
-                                            </GridItem>
-                                            <GridItem md={6} xs={12}>
-                                                <CustomInput
-                                                    labelText="Mobile No.."
-                                                    name="phone_no"
-                                                    formControlProps={{
-                                                        fullWidth: true
-                                                    }}
-                                                    inputProps={{
-                                                        onChange: this.handleChange('phone_no'),
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <Smartphone className={classes.inputAdornmentIcon}/>
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
-                                                />
-                                            </GridItem>
-                                            <GridItem md={6} xs={12}>
-                                            <OfficeSelect variant={"standard"}
-                                                          value={this.state.ownership}
-                                                          defaultValue={this.state.ownerships[0]}
-                                                          name={"application_type"}
-                                                          placeholder={BannerApplicationFormModel.Ownership}
-                                                          onChange={this.handleSelect.bind(this,"Ownership")}
-                                                          searchAble={true}
-                                                          ClearAble={true}
-                                                          fullWidth={true}
-                                                          label={BannerApplicationFormModel.TYPE_OF_APPLICANT}
-                                                          options={this.state.ownerships}/>
-                                            </GridItem>
-
-
-                                            <GridItem md={6} xs={12}>
-                                                <CustomInput
-                                                    labelText="Mobile No."
-                                                    name="mobileNo"
-                                                    formControlProps={{
-                                                        fullWidth: true
-                                                    }}
-                                                    inputProps={{
-                                                        onChange: this.handleChange('mobileNo'),
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <Smartphone className={classes.inputAdornmentIcon}/>
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
-                                                />
-                                            </GridItem>
-                                            <GridItem md={6} xs={12}>
-                                                <CustomInput
-                                                  labelText="Residential Address"
-                                                  name="address"
-                                                  formControlProps={{
-                                                      fullWidth: true
-                                                  }}
-                                                  inputProps={{
-                                                      multiline: true,
-                                                      rows: 3,
-                                                      onChange: this.handleChange('address'),
-                                                      endAdornment: (
-                                                        <InputAdornment position="end">
-                                                            <LocationOn className={classes.inputAdornmentIcon}/>
-                                                        </InputAdornment>
-                                                      )
-                                                  }}
-                                                />
-                                            </GridItem>
-                                            <GridItem md={6} xs={12}>
-                                                <CustomInput
-                                                    success={this.state.emailState === "success"}
-                                                    error={this.state.emailState === "error"}
-                                                    labelText="Email Address *"
-                                                    formControlProps={{
-                                                        fullWidth: true
-                                                    }}
-                                                    inputProps={{
-                                                        onChange: this.handleChange('email'),
-                                                        type: "email",
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <Email className={classes.inputAdornmentIcon}/>
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
-                                                />
-                                            </GridItem>
-                                            <GridItem md={6} xs={12}>
-                                                <CustomInput
-                                                    labelText="Tin No. (if any)"
-                                                    name="tinNo"
-                                                    formControlProps={{
-                                                        fullWidth: true
-                                                    }}
-                                                    inputProps={{
-                                                        onChange: this.handleChange('tinNo'),
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <CreditCard className={classes.inputAdornmentIcon}/>
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
-                                                />
-                                            </GridItem>
-                                            <GridItem md={6} xs={12}>
-                                                <CustomInput
-                                                    labelText="CST No. (if any)"
-                                                    name="cstNo"
-                                                    formControlProps={{
-                                                        fullWidth: true
-                                                    }}
-                                                    inputProps={{
-                                                        onChange: this.handleChange('cstNo'),
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <CreditCard className={classes.inputAdornmentIcon}/>
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
-                                                />
-                                            </GridItem>
-                                            <GridItem md={6} xs={12}>
-                                                <CustomInput
-                                                    labelText="PAN No."
-                                                    name="panNo"
-                                                    formControlProps={{
-                                                        fullWidth: true
-                                                    }}
-                                                    inputProps={{
-                                                        onChange: this.handleChange('panNo'),
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <CreditCard className={classes.inputAdornmentIcon}/>
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
-                                                />
-                                            </GridItem>
-                                            <GridItem md={6} xs={12}>
-                                                <FormControl>
-                                                    <Datetime
-                                                        timeFormat={false}
-                                                        inputProps={{
-                                                            onChange: this.handleChange('establishmentDate'),
-                                                            placeholder: "Date of Establishment"
-                                                        }}
-                                                    />
-                                                </FormControl>
-                                            </GridItem>
-                                            <GridItem md={12} xs={12}>
-                                                <CustomInput
-                                                    labelText="Details of Banner"
-                                                    name="details"
-                                                    formControlProps={{
-                                                        fullWidth: true
-                                                    }}
-                                                    inputProps={{
-                                                        onChange: this.handleChange('details'),
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <Business className={classes.inputAdornmentIcon}/>
-                                                            </InputAdornment>
-                                                        ),
-                                                        multiline: true,
-                                                        rows: 5
-                                                    }}
-                                                />
-                                            </GridItem>
-                                        </GridContainer>
-                                    </CardBody>
-                                    <CardFooter>
-                                        <Button color="rose" round>Submit Application</Button>
-                                        <br/>
-                                    </CardFooter>
-                                </Card>
-                            </form>
-                        </Paper>
-                    </GridItem>
-                </GridContainer>
-                {/*<GridContainer justify={"center"}>
-                    <GridItem xs={12} sm={12} md={12}>
-                        <Card>
-                            <CardHeader title={"Shop License Application Form"}/>
-                            <CardContent>
-                                <TextField name={"name"}
-                                           margin={"dense"}
-                                           fullWidth={true}
-                                           variant={"outlined"}
-                                           onChange={this.handleChange.bind(this)}
-                                           label={"Name of Applicant"}/>
-                                <TextField name={"shopName"}
-                                           margin={"dense"}
-                                           fullWidth={true}
-                                           variant={"outlined"}
-                                           onChange={this.handleChange.bind(this)}
-                                           label={"Name of Shop or Firm"}/>
-                                <TextField name={"tradeName"}
-                                           margin={"dense"}
-                                           fullWidth={true}
-                                           variant={"outlined"}
-                                           onChange={this.handleChange.bind(this)}
-                                           label={"Name of trade"}/>
-                                <TextField name={"location"}
-                                           margin={"dense"}
-                                           fullWidth={true}
-                                           variant={"outlined"}
-                                           onChange={this.handleChange.bind(this)}
-                                           label={"Location"}/>
-                                <OfficeSelect value={ownership}
-                                              defaultValue={this.state.ownership[0]}
-                                              name={"ownership"}
-                                              placeholder={ShopLicenseFormModel.Ownership}
-                                              onChange={this.handleSelect.bind(this)}
-                                              searchAble={true}
-                                              ClearAble={true}
-                                              label={ShopLicenseFormModel.Ownership}
-                                              options={this.state.ownerships}/>
-                                <TextField
-                                           multiline={true}
-                                           rows={3}
-                                           fullWidth={true}
-                                           variant={"outlined"}
-                                           onChange={this.handleChange.bind(this)}
-                                           label={"Residential Address"}/>
-                                <TextField name={"mobileNo"}
-                                           margin={"dense"}
-                                           fullWidth={true}
-                                           variant={"outlined"}
-                                           onChange={this.handleChange.bind(this)}
-                                           label={"Phone No."}/>
-                                <TextField name={"mobileNo"}
-                                           margin={"dense"}
-                                           fullWidth={true}
-                                           variant={"outlined"}
-                                           onChange={this.handleChange.bind(this)}
-                                           label={"Mobile No."}/>
-                                <TextField name={"email"}
-                                           type={"email"}
-                                           margin={"dense"}
-                                           fullWidth={true}
-                                           variant={"outlined"}
-                                           onChange={this.handleChange.bind(this)}
-                                           label={"E-mail"}/>
-                                <TextField name={"tinNo"}
-                                           required={false}
-                                           variant={"outlined"}
-                                           label={"Tin No (If any)"}
-                                           fullWidth={true}
-                                           margin={"dense"}/>
-                                <TextField name={"cstNo"}
-                                           required={false}
-                                           variant={"outlined"}
-                                           label={"CST No (If any)"}
-                                           fullWidth={true}
-                                           margin={"dense"}/>
-                                <TextField name={"panNo"}
-                                           required={false}
-                                           variant={"outlined"}
-                                           label={"PAN No (If any)"}
-                                           fullWidth={true}
-                                           margin={"dense"}/>
-                                <FormControl variant={"outlined"} fullWidth={true} margin={"dense"}>
-                                    <InputLabel htmlFor="lc">Local Council</InputLabel>
-                                    <Select
-                                        value={this.state.localCouncil}
-                                        onChange={this.handleChange.bind(this)}
-                                        input={
-                                            <OutlinedInput labelWidth={100} name={"localCouncil"} id={"lc"}/>}
-                                    >
-                                        {this.state.localCouncils.map((item, i) => <MenuItem key={i}
-                                                                                             value={item}> {item}</MenuItem>)}
-                                    </Select>
-                                </FormControl>
-
-                                <FormGroup row={true}>
-                                    <TextField disabled={true} name={"lat"}
-                                               variant={"outlined"}
-                                               margin={"dense"}
-                                               label={"latitude"}
-                                               required={true}/>
-                                    <TextField style={{marginLeft: 20}}
-                                               disabled={true}
-                                               name={"long"}
-                                               variant={"outlined"}
-                                               margin={"dense"}
-                                               label={"Longitude"}
-                                               required={true}/>
-                                    <IconButton>
-                                        <MapIcon/>
-                                    </IconButton>
-                                </FormGroup>
-
-                                <FormControl fullWidth={true} margin={"dense"}>
-                                    <FormLabel>Whether premises owned or leased?</FormLabel>
-                                    <RadioGroup
-                                        name={"premiseType"}
-                                        row={true}
-                                        value={this.state.premiseType}
-                                        onChange={this.handleRadio.bind(this)}
-                                    >
-
-                                        <FormControlLabel value={"owned"} control={<Radio/>} label={"Owned"}/>
-                                        <FormControlLabel value={"leased"} control={<Radio/>} label={"Leased"}/>
-                                    </RadioGroup>
-                                </FormControl>
-                                <TextField name={"businessDetail"}
-                                           margin={"dense"}
-                                           fullWidth={true}
-                                           variant={"outlined"}
-                                           onChange={this.handleChange.bind(this)}
-                                           label={"Details of Business"}/>
-                                <TextField name={"doe"}
-                                           variant={"outlined"}
-                                           margin={"dense"}
-                                           required={true}
-                                           fullWidth={true}
-                                           onChange={this.handleChange.bind(this)}
-                                           type={"date"}
-                                           InputLabelProps={{shrink: true}}
-                                           label={ShopLicenseFormModel.DOE}
-                                           error={Boolean(this.state.doeError)}
-                                           helperText={this.state.doeError}
-                                />
-                                <Button variant={"outlined"} onClick={() => this.setState({openDialog: true})}>
-                                    Document attachment
-                                </Button>
-                                <Divider/>
-
-                                <DocumentsDropzone documents={[
-                                    {name: "Signature of the applicant", fileName: "signature"},
-                                    {
-                                        name: "NOC from the house or land owner where business is intended to be run",
-                                        fileName: "noc-landowner"
-                                    },
-                                    {
-                                        name: "NOC from Local Council where business is intended to be run",
-                                        fileName: "noc-local-council"
-                                    },
-                                    {name: "EPIC", fileName: "epic"},
-                                    {
-                                        name: "Residential Certificate (From D.C. Office)",
-                                        fileName: "residential-certificate"
-                                    },
-                                    {
-                                        name: "License/Registration Certificate from Food Licensing Authority",
-                                        fileName: "certificate-fla"
-                                    },
-                                    {name: "Tribal Certificate", fileName: "tribal-certificate"}
-                                ]}
-                                                   openDialog={this.state.openDialog}
-                                                   onCloseHandler={this.handleDocumentClose.bind(this)}
-                                                   acceptedFiles={Constraint.ACCEPTED_IMAGES + " " + Constraint.ACCEPTED_DOCUMENTS}/>
-
-                            </CardContent>
-                            <CardActions>
-                                <Button color={"primary"} variant={"outlined"} onClick={this.submitForm.bind(this)}> Submit
-                                    Application</Button>
-                                <Button color={"secondary"} variant={"outlined"}
-                                        onClick={this.clearForm.bind(this)}> Reset</Button>
-                            </CardActions>
-                        </Card>
-                    </GridItem>
-                </GridContainer>*/}
-
-            </div>
-        );
     }
+  };
+
+  onSubmit = (e) => {
+    // const invalid = this.state.name.length===0 || this.state.address.length === 0 || this.state.dob.length === 0 || this.state.signature === null
+
+    // if (!this.state.name) {
+    //   return
+    // }
+    // if (this.state.address) {
+    //   return
+    // }
+    // if (!this.state.dob) {
+    //   return ;
+    // }
+    // if (!this.state.signature) {
+    //   return
+    // }
+
+    this.setState({ submit: true });
+    this.staffService.create(this.state)
+      .then(res => {
+        this.setState({complete:true })
+        console.log(res);
+      })
+      .then(() => {
+        this.setState({ submit: false });
+      });
+  };
+
+  handleClick = (e) => {
+    const name = e.target.name;
+    switch (name) {
+      case "primary":
+          this.onSubmit();
+        break;
+      case "secondary":
+        this.setState({
+          name: "",
+          address: "",
+          dob: '',
+          blood: "",
+          signature:null,
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
+  onSignatureSelect = (signature) => {
+    this.setState({ signature });
+  };
+  onSignatureRemove = () => {
+    this.setState({ signature: null });
+  };
+  setImagePreviewUrl = (url) => {
+
+  };
+
+  handleBlur = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "name":
+        value.length === 0 ? this.setState({ nameError: BannerViewModel.NAME_REQUIRED }) : this.setState({ nameError: "" });
+        break;
+      case "address":
+        value.length === 0 ? this.setState({ addressError: BannerViewModel.ADDRESS_REQUIRED }) : this.setState({ addressError: "" });
+        break;
+        default:
+        break;
+    }
+  };
+
+
+  render() {
+    const { ownership } = this.props;
+    const { dispay_type } = this.props;
+    const { classes } = this.props;
+
+    return (
+      <div className={classes.container}>
+         <GridItem xs={12} sm={12} md={10}>
+            <form>
+              <Card style={{padding:50}}>
+                <CardHeader title={BannerViewModel.TILE} subheader={BannerViewModel.SUBHEADER}/>
+                <SubmitDialog open={this.state.submit} text={BannerViewModel.SUBMIT}/>
+                <OfficeSnackbar variant={"success"} open={this.state.complete} message={BannerViewModel.CREATE_MESSAGE} />
+                <CardBody>
+                  <GridContainer>
+                    <GridItem md={6} xs={12}>
+                  <TextField
+                    value={this.state.name}
+                    ref={"nameRef"}
+                    name={"name"}
+                    onBlur={this.handleBlur.bind(this)}
+                    required={true}
+                    variant={"outlined"}
+                    margin={"dense"}
+                    fullWidth={true}
+                    onChange={this.handleChange.bind(this)}
+                    label={BannerViewModel.NAME}
+                    error={Boolean(this.state.nameError)}
+                    helperText={this.state.nameError}
+                  />
+                    </GridItem>
+                    <GridItem md={6} xs={12}>
+                  <OfficeSelect
+                    variant={"outlined"}
+                    margin={"dense"}
+                    value={this.state.ownership}
+                    fullWidth={true}
+                    name={"application_type"}
+                    onChange={this.handleSelect.bind(this, "ownership")}
+                    ClearAble={true}
+                    label={BannerViewModel.APPLICANT_TYPE}
+                    options={this.state.ownerships}/>
+                    </GridItem>
+                  </GridContainer>
+                  <GridContainer>
+                    <GridItem md={6} xs={12}>
+                  <TextField
+                    value={this.state.address}
+                    name={"address"}
+                    onBlur={this.handleBlur.bind(this)}
+                    required={true}
+                    multiline={true}
+                    rows={3}
+                    variant={"outlined"}
+                    margin={"dense"}
+                    fullWidth={true}
+                    error={Boolean(this.state.addressError)}
+                    helperText={this.state.addressError}
+                    onChange={this.handleChange.bind(this)}
+                    label={BannerViewModel.ADDRESS}/>
+                    </GridItem>
+                    <GridItem md={6} xs={12}>
+                  <OfficeSelect value={this.state.display_type}
+                                label={BannerViewModel.DISPLAY_TYPE}
+                                name={"display_type"}
+                                variant={"outlined"}
+                                margin={"dense"}
+                                fullWidth={true}
+                                onChange={this.handleSelect.bind(this, "display_type")}
+                                options={this.state.display_types}/>
+                    </GridItem>
+                  </GridContainer>
+                    <GridContainer>
+                      <GridItem md={6} xs={12}>
+                  <TextField name={"dob"}
+                             value={this.state.dob}
+                             variant={"outlined"}
+                             margin={"dense"}
+                             required={true}
+                             fullWidth={true}
+                             onChange={this.handleChange.bind(this)}
+                             type={"date"}
+                             InputLabelProps={
+                               { shrink: true }
+                             }
+                             label={BannerViewModel.DOB}
+                             error={Boolean(this.state.dobError)}
+                             helperText={this.state.dobError}
+                  />
+                      </GridItem>
+                    </GridContainer>
+                  {/*{this.getAttachmentView()}*/}
+
+                  <Divider/>
+                  <ImageUpload setImagePreviewUrl={this.setImagePreviewUrl.bind(this)}
+                               onFileSelect={this.onSignatureSelect.bind(this)}
+                               onRemove={this.onSignatureRemove.bind(this)} label={BannerViewModel.SIGNATURE}/>
+                  {/*<DocumentsDropzone documents={[*/}
+                  {/*{ name: "Staff signature", fileName: "signature" }*/}
+                  {/*]}*/}
+                  {/*openDialog={this.state.openDialog} onCloseHandler={this.handleDocuments.bind(this)}*/}
+                  {/*acceptedFiles={Constraint.ACCEPTED_IMAGES}/>*/}
+
+                </CardBody>
+                <CardActions>
+                  <Button name={"primary"} disabled={this.state.submit}
+                          color={"primary"} variant={"outlined"}
+                          onClick={this.handleClick.bind(this)}>
+                    {BannerViewModel.PRIMARY_TEXT}
+                  </Button>
+                  <Button name={"secondary"}
+                          color={"secondary"}
+                          variant={"outlined"}
+                          onClick={this.handleClick.bind(this)}>
+                    {BannerViewModel.SECONDARY_TEXT}
+                  </Button>
+                </CardActions>
+              </Card>
+            </form>
+          </GridItem>
+         </div>
+    );
+  }
+
 }
 
-export default withStyles(styles)(BannerApplicationForm);
+export default withStyles(loginPageStyle)(BannerApplicationForm);
