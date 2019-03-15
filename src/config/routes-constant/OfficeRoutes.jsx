@@ -19,18 +19,6 @@ export class OfficeRoutes {
 
   static APPLY_BANNER = "/banner/new";
 
-  static DESK = "/e-office/desk";
-  static NEW_FILE = "/e-office/file/new";
-  static CREATED_FILES = "/e-office/created";
-  static SENT_FILE = "/e-office/sent";
-  static CLOSE_FILE = "/e-office/sent";
-  static FILE_DETAIL = "/e-office/file/:id/detail";
-
-  static NEW_RECEIPT = "/e-office/receipt/new";
-  static CREATED_RECEIPT = "/e-office/receipt/created";
-  static SENT_RECEIPT = "/e-office/receipt/sent";
-  static CLOSE_RECEIPT = "/e-office/receipt/close";
-  static RECEIPT_DETAIL = "/e-office/receipt/:id/details";
 
   static LOGIN = "/login";
   static RESET_PASSWORD = "/reset-password";
@@ -45,6 +33,19 @@ export class OfficeRoutes {
   static ADVERTISER_PROFILE = "/advertiser/profile";
   static ADVERTISER_SETTING="/advertiser/setting";
 
+  /*E-Office routes*/
+  static DESK = "/e-office/desk";
+  static NEW_FILE = "/e-office/file/new";
+  static CREATED_FILES = "/e-office/created";
+  static SENT_FILE = "/e-office/sent";
+  static CLOSE_FILE = "/e-office/sent";
+  static FILE_DETAIL = "/e-office/file/:id/detail";
+
+  static NEW_RECEIPT = "/e-office/receipt/new";
+  static CREATED_RECEIPT = "/e-office/receipt/created";
+  static SENT_RECEIPT = "/e-office/receipt/sent";
+  static CLOSE_RECEIPT = "/e-office/receipt/close";
+  static RECEIPT_DETAIL = "/e-office/receipt/:id/details";
 
   static SHOP_LICENSES = "/e-office/applications/shop-license";
   static HOARDINGS = "/e-office/applications/hoardings";

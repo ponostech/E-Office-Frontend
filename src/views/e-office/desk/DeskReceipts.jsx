@@ -36,10 +36,9 @@ const columns = [
     accessor: "date"
   }, {
     Header: "Action",
-    accessor: "action"
-  }, {
-    Header: "Priority",
-    accessor: "priority"
+    accessor: "action",
+    sortable: false,
+    filterable: false
   }
 ];
 
