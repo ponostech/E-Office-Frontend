@@ -15,9 +15,9 @@ import Form from "../views/Form";
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import LoginView from "../views/auth/LoginView";
 import AdvertiserContainer from "../views/advertiser/AdvertiserContainer";
-import BannerApplicationForm from "../views/banner/BannerApplicationForm";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import pagesStyle from "../assets/jss/material-dashboard-pro-react/layouts/pagesStyle";
+import BannerApplicationForm from "../views/banner/BannerApplicationForm";
 
 class LandingPage extends Component {
 
