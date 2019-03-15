@@ -15,8 +15,8 @@ import TextField from "@material-ui/core/es/TextField/TextField";
 import GridContainer from "../../../components/Grid/GridContainer";
 import AdvertiserViewModel from "../../model/AdvertiserViewModel";
 import { Validators } from "../../../utils/Validators";
-import ImageUpload from "../AdvertiserInfo";
 import GridItem from "../../../components/Grid/GridItem";
+import ImageUpload from "../../../components/CustomUpload/ImageUpload";
 
 class Profile extends Component {
   constructor(props) {
@@ -27,8 +27,6 @@ class Profile extends Component {
       type: "Individual",
       email: "",
       phone: "",
-      password: "",
-      confirmPassword: "",
       address: "",
       signature: null,
       imagePreviewUrl: null,
@@ -53,16 +51,6 @@ class Profile extends Component {
       case "email":
         if (value.length === 0) {
           this.setState({ emailError: AdvertiserViewModel.REQUIRED_EMAIL });
-        }
-        break;
-      case "password":
-        if (value.length === 0) {
-          this.setState({ passwordError: AdvertiserViewModel.REQUIRED_PASSWORD });
-        }
-        break;
-      case "confirmPassword":
-        if (value.length === 0) {
-          this.setState({ confirmPasswordError: AdvertiserViewModel.REQUIRED_CONFIRM_PASSWORD });
         }
         break;
       case "phone":
@@ -101,6 +89,8 @@ class Profile extends Component {
       default:
         break;
     }
+  };
+  handleSubmit = (e) => {
 
   };
   removeSignature = () => {
@@ -116,11 +106,8 @@ class Profile extends Component {
   render() {
     return (
       <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader
-              title={"Update Profile"}
-            />
             <CardContent>
               <TextField
                 value={this.state.name}
@@ -187,36 +174,7 @@ class Profile extends Component {
                 onBlur={this.handleRequired.bind(this)}
                 onChange={this.handleChange.bind(this)}
               />
-              <TextField
-                value={this.state.password}
-                error={Boolean(this.state.passwordError)}
-                helperText={this.state.passwordError}
-                type={"password"}
-                name={"password"}
-                margin={"dense"}
-                required={true}
-                fullWidth={true}
-                variant={"outlined"}
-                label={AdvertiserViewModel.PASSWORD}
-                onBlur={this.handleRequired.bind(this)}
-                onChange={this.handleChange.bind(this)}
-                placeholder={"Password"}
-              />
-              <TextField
-                value={this.state.confirmPassword}
-                error={Boolean(this.state.confirmPasswordError)}
-                helperText={this.state.confirmPasswordError}
-                type={"password"}
-                name={"confirmPassword"}
-                margin={"dense"}
-                required={true}
-                fullWidth={true}
-                variant={"outlined"}
-                label={AdvertiserViewModel.CONFIRM_PASSWORD}
-                onBlur={this.handleRequired.bind(this)}
-                onChange={this.handleChange.bind(this)}
-                placeholder={"Confirm password"}
-              />
+
               <TextField
                 value={this.state.address}
                 error={Boolean(this.state.addressError)}
@@ -240,11 +198,11 @@ class Profile extends Component {
             </CardContent>
             <CardActions>
               <Button
-                variant={"contained"}
+                variant={"outlined"}
                 color={"primary"}
                 onClick={this.handleSubmit.bind(this)}
               >
-                Submit Application
+                Update
               </Button>
               <Button
                 variant={"outlined"}
