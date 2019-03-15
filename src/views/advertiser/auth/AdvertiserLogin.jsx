@@ -42,7 +42,7 @@ class AdvertiserLogin extends Component {
             <Divider/>
           </GridItem>
           <GridItem md={12}>
-            <Button size={"medium"} color={"primary"} fullWidth={true} variant={"outlined"}>Login</Button>
+            <Button size={"medium"} color={"primary"} fullWidth={false} variant={"outlined"}>Login</Button>
           </GridItem>
           <GridItem md={12}>
             <Divider/>
