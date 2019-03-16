@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import GridContainer from "../components/Grid/GridContainer";
-import GridItem from "../components/Grid/GridItem";
+import Grid from "@material-ui/core/Grid";
 import OfficePageHeader from "../components/Header/OfficePageHeader";
 import {Route} from "react-router-dom";
 import {OfficeRoutes} from "../config/routes-constant/OfficeRoutes";
@@ -27,11 +26,11 @@ import AdvertiserApplications from "../views/e-office/applications/advertisers/A
 class OfficeDashboard extends Component {
     render() {
         return (
-            <GridContainer justify={"center"}>
-                <GridItem xs={12} sm={12} md={12}>
+            <Grid container justify={"center"}>
+                <Grid item xs={12} sm={12} md={12}>
                     <OfficePageHeader color={"primary"}/>
-                </GridItem>
-                <GridItem style={{marginTop: 70, background: 'white'}} xs={12} sm={12} md={12}>
+                </Grid>
+                <Grid item style={{marginTop: 70, background: 'white'}} xs={12} sm={12} md={12}>
                         <Route exact path={OfficeRoutes.DESK} component={DeskView}/>
 
                         <Route exact path={OfficeRoutes.NEW_RECEIPT} component={NewReceipt}/>
@@ -55,8 +54,8 @@ class OfficeDashboard extends Component {
                         <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
 
                         <Route path={OfficeRoutes.SETTING} component={Settings}/>
-                </GridItem>
-            </GridContainer>
+                </Grid>
+            </Grid>
         );
     }
 }
