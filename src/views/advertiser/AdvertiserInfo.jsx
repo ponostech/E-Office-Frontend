@@ -14,6 +14,9 @@ import { Validators } from "../../utils/Validators";
 import ImageUpload from "../../components/CustomUpload/ImageUpload";
 import VisibilityOn from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import axios from "axios";
+import { ApiRoutes } from "../../config/ApiRoutes";
+
 class AdvertiserInfo extends Component {
   constructor(props) {
     super(props);
@@ -74,7 +77,14 @@ class AdvertiserInfo extends Component {
     return this.state;
   };
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentWillMount() {
+    axios.get(`${ApiRoutes.DOCUMENTS}/advertiser`)
+      .then(res=>{
+          console.log(res)
+      })
+      .catch(err=>{
+        console.log(err);
+      })
   }
 
   handleRequired = (e) => {
