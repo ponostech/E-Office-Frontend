@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {Button, Card, CardActions, CardHeader, Divider, TextField} from "@material-ui/core";
+import React, { Component } from "react";
+import { Button, Card, CardActions, CardHeader, Divider, TextField } from "@material-ui/core";
 
 import CardBody from "../../components/Card/CardBody.jsx";
 
-import {BannerViewModel} from "../model/BannerViewModel";
+import { BannerViewModel } from "../model/BannerViewModel";
 import GridItem from "../../components/Grid/GridItem";
 import OfficeSelect from "../../components/OfficeSelect";
 import loginPageStyle from "../../assets/jss/material-dashboard-pro-react/views/loginPageStyle";
@@ -16,32 +16,33 @@ import OfficeSnackbar from "../../components/OfficeSnackbar";
 class BannerApplicationForm extends Component {
     // staffService = new StaffService();
     state = {
+        owner: "",
         name: "",
+        trade_id:"",
         ownership: null,
+        type: "",
+        owner_address: "",
+        latitude: 0,
+        longitude: 0,
+        local_council_id: "",
+        phone_no: "",
+        email: "",
         address: "",
+        tin_no: "",
+        cst_no: "",
+        gst_no: "",
+        pan_no: "",
+        premise_type: "",
+        details: "",
+        estd: "",
+        documents: "",
+        passport: "",
         display_type: null,
-        dob: "1991/12/12",
-        blood: "",
         nameError: "",
         phoneError:"",
         addressError: "",
         dobError: "",
         signature: null,
-        name: "",
-        phone_no: "",
-        applicant_type: "",
-        local_council_id: "",
-        address: "",
-        advertisement_type: "",
-        display_on: "",
-        locations: "",
-        length: "",
-        height: "",
-        from: "",
-        to: "",
-        latitude: 0,
-        longitude: 0,
-        details: "",
         status: "",
         display_types: [
             {value: "", label: "Please Select"},
