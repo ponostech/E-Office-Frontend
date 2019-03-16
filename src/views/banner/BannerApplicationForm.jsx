@@ -23,6 +23,7 @@ class BannerApplicationForm extends Component {
         dob: "1991/12/12",
         blood: "",
         nameError: "",
+        phoneError:"",
         addressError: "",
         dobError: "",
         signature: null,
@@ -206,11 +207,15 @@ class BannerApplicationForm extends Component {
                                         <TextField
                                             value={this.state.phone_no}
                                             ref={"phoneRef"}
+                                            onBlur={this.handleBlur.bind(this)}
+                                            required={true}
                                             name={"phone_no"}
                                             variant={"outlined"}
                                             margin={"dense"}
                                             fullWidth={true}
                                             onChange={this.handleChange.bind(this)}
+                                            error={Boolean(this.state.phoneError)}
+                                            helperText={this.state.phoneError}
                                             label={BannerViewModel.PHONE_NO}/>
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={6}>
