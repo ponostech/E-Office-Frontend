@@ -26,8 +26,8 @@ import { Validators } from "../../utils/Validators";
 import axios from "axios";
 import { ApiRoutes } from "../../config/ApiRoutes";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
-import DocumentUpload from "../../components/DocumentUpload";
 import SubmitDialog from "../../components/SubmitDialog";
+import DocumentS3 from "../../components/DocumentS3";
 
 class AdvertiserForm extends Component {
   constructor(props) {
@@ -56,8 +56,8 @@ class AdvertiserForm extends Component {
       error: false,
 
       documents: [
-        {id:1,name:"Nox"},
-        {id:2,name:"fasd"},
+        { id: 1, name: "EPIC", type: "image/*" },
+        { id: 2, name: "DATA", type: "application/pdf" }
       ]
     };
     this.docRef = React.createRef();
@@ -65,16 +65,17 @@ class AdvertiserForm extends Component {
   }
 
   componentDidMount() {
-    const route = `http://localhost:8000/api/v1/documents/advertiser`;
-    console.log(route);
-    axios.get(route)
-      .then(res=>{
-        console.log(res)
-      })
-      .catch(err=>{
-        console.log(err)
-      })
+    // const route = `http://localhost:8000/api/v1/documents/advertiser`;
+    // console.log(route);
+    // axios.get(route)
+    //   .then(res => {
+    //     console.log(res);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   }
+
   componentWillMount() {
 
 
@@ -221,7 +222,7 @@ class AdvertiserForm extends Component {
       <GridContainer direction="row-reverse"
                      justify="center"
                      alignItems="flex-start">
-        <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={10}>
           <Card>
             <CardHeader title={"Form of Application for registered Advertiser"}/>
             <CardContent>
@@ -370,7 +371,8 @@ class AdvertiserForm extends Component {
 
                 <GridItem xs={12} sm={12} md={6}>
 
-                  <DocumentUpload documents={this.state.documents} ref={this.docRef}/>
+                  {/*<DocumentUpload documents={this.state.documents} ref={this.docRef}/>*/}
+                  <DocumentS3 ref={this.refs.docRef} documents={this.state.documents}/>
                   {/*<AdvertiserDocument ref={this.refs.docRef}/>*/}
                   <TextField
                     required={true}
@@ -402,7 +404,7 @@ class AdvertiserForm extends Component {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <FormControlLabel control={
-                    <Checkbox color={"primary"} onChange={(val, checked) => this.setState({agree:checked})}/>
+                    <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
                   }
                                     label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoadring Regulations 2013," +
                                     " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
