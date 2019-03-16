@@ -8,6 +8,7 @@ import {
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const footerStyle = {
+  margin:20,
   block: {},
   left: {
     float: "left!important",

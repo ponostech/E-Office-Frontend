@@ -4,6 +4,7 @@ import GridItem from "../../../components/Grid/GridItem";
 import { Button, Card, CardActions, CardContent, CardHeader, TextField } from "@material-ui/core";
 import { NewFileViewModel } from "../../model/NewFileViewModel";
 import OfficeSelect from "../../../components/OfficeSelect";
+import { OfficeRoutes } from "../../../config/routes-constant/OfficeRoutes";
 
 class NewFile extends Component {
   constructor(props) {
@@ -75,23 +76,26 @@ class NewFile extends Component {
   };
 
   submit = (e) => {
-    let valid = this.state.fileNoError.length !== 0 || this.state.subjectError.length !== 0;
-    console.log(valid);
-    if (valid) {
-      const data = {};
-      this.setState({ submit: true });
-      // axios.post(ApiRoutes.CREATE_FILE, data)
-      //   .then(res=>{
-      //
-      //   })
-      //   .catch(err=>{
-      //
-      //   })
-      //   .then(()=>{
-      //     this.setState({submit:false})
-      //   })
+    const { history } = this.props;
 
-    }
+    history.push(OfficeRoutes.FILE_DETAIL);
+    // let valid = this.state.fileNoError.length !== 0 || this.state.subjectError.length !== 0;
+    // console.log(valid);
+    // if (valid) {
+    //   const data = {};
+    //   this.setState({ submit: true });
+    //   // axios.post(ApiRoutes.CREATE_FILE, data)
+    //   //   .then(res=>{
+    //   //
+    //   //   })
+    //   //   .catch(err=>{
+    //   //
+    //   //   })
+    //   //   .then(()=>{
+    //   //     this.setState({submit:false})
+    //   //   })
+    //
+    // }
   };
 
   render() {
@@ -125,6 +129,10 @@ class NewFile extends Component {
                 fullWidth={true}/>
 
               <OfficeSelect
+                margin={"dense"}
+                variant={"outlined"}
+                value={this.state.dealer}
+                fullWidth={true}
                 required={true}
                 label={NewFileViewModel.DEALER_LABEL}
                 name={"dealer"}
@@ -132,15 +140,22 @@ class NewFile extends Component {
                 options={this.state.dealers}
                 onChange={this.handleSelect.bind(this)}/>
               <OfficeSelect
+                variant={"outlined"}
+                margin={"dense"}
+                fullWidth={true}
                 value={this.state.category}
                 label={NewFileViewModel.CATEGORY_LABEL}
                 isClearable={true}
                 name={"category"}
-                placeHolder={NewFileViewModel.CATEGORY_PLACEHOLDER}
-                defaultValue={this.state.category}
                 options={this.state.categories}
                 onChange={this.handleSelect.bind(this)}/>
+
+
               <OfficeSelect
+                variant={"outlined"}
+                margin={"dense"}
+                value={this.state.classification}
+                fullWidth={true}
                 label={NewFileViewModel.CLASSIFICATION_LABEL}
                 name={"classification"}
                 isClearable={true}

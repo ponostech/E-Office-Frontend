@@ -83,7 +83,7 @@ class AdvertiserForm extends Component {
         <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader
-              title={"Application Form for Advertiser"}
+              title={"Application for Advertiser"}
               subheader={"Please fill out all the form and press submit button"}
             />
             <CardContent>

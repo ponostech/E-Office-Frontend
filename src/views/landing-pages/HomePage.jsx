@@ -1,9 +1,8 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
-import StoreMallDirectory from "@material-ui/icons/StoreMallDirectory";
-import {Airplay, Dock} from "@material-ui/icons";
+import { Airplay } from "@material-ui/icons";
 import HelpOutline from "@material-ui/icons/HelpOutline";
 // core components
 import GridContainer from "../../components/Grid/GridContainer.jsx";
@@ -14,267 +13,349 @@ import CardHeader from "../../components/Card/CardHeader.jsx";
 import CardBody from "../../components/Card/CardBody.jsx";
 import Button from "../../components/CustomButtons/Button.jsx";
 
+import StoreMallDirectory from "@material-ui/icons/StoreMallDirectory";
 import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
-import {cardTitle} from "assets/jss/material-dashboard-pro-react.jsx";
+
+import {
+  cardTitle,
+  defaultFont,
+  grayColor,
+  hexToRgb,
+  roseColor,
+  whiteColor
+} from "../../assets/jss/material-dashboard-pro-react.jsx";
+
+import Typography from "@material-ui/core/Typography";
 
 const styles = {
-    cardTitle,
-    pageSubcategoriesTitle: {
-        color: "#3C4858",
-        textDecoration: "none",
-        textAlign: "center"
+  cardTitle,
+  pageSubcategoriesTitle: {
+    color: "#3C4858",
+    textDecoration: "none",
+    textAlign: "center"
+  },
+  noTopMargin: {
+    margin: "0",
+    zDepthShadows: "none"
+  },
+  title: {
+    ...defaultFont,
+    color: whiteColor,
+    marginTop: "5vh",
+    marginBottom: "30px",
+    textAlign: "center"
+  },
+  description: {
+    fontSize: "18px",
+    color: whiteColor,
+    textAlign: "center"
+  },
+  cardTitleWhite: {
+    ...cardTitle,
+    color: whiteColor + " !important"
+  },
+  cardCategory: {
+    color: grayColor[0],
+    marginTop: "10px"
+  },
+  cardCategoryWhite: {
+    color: whiteColor,
+    marginTop: "10px"
+  },
+  icon: {
+    color: "rgba(" + hexToRgb(whiteColor) + ", 0.76)",
+    margin: "10px auto 0",
+    width: "130px",
+    height: "130px",
+    border: "1px solid " + grayColor[11],
+    borderRadius: "50%",
+    lineHeight: "174px",
+    "& svg": {
+      width: "55px",
+      height: "55px"
     },
-    cardCategory: {
-        margin: "0",
-        color: "#999999"
-    },
-    noTopMargin: {
-        margin: "0"
+    "& .fab,& .fas,& .far,& .fal,& .material-icons": {
+      width: "55px",
+      fontSize: "55px"
     }
+  },
+  iconWhite: {
+    color: whiteColor
+  },
+  iconRose: {
+    color: roseColor[0]
+  },
+  marginTop30: {
+    marginTop: "30px"
+  }
 };
 
 class HomePage extends Component {
-    handleLink = link => event => {
-        const {history} = this.props;
-        history.push(link);
-    };
+  handleLink = link => event => {
+    const { history } = this.props;
+    history.push(link);
+  };
 
-    render() {
-        const {classes} = this.props;
+  render() {
+    const { classes } = this.props;
 
-        /*const cardItems = CARD_DATA.map((item, index) => (
-            <GridItem key={index} xs={12} sm={12} md={4}>
-                <Card key={index} style={{marginBottom: 10}}>
-                    <CardHeader color={"primary"} title={item.title} subheader={item.subTitle}/>
-                    <CardActions>
-                        <Button name={item.id} onClick={this.handleLink.bind(this)} color={"primary"} variant={"text"}>Apply</Button>
-                    </CardActions>
-                </Card>
-            </GridItem>
-        ));*/
-
-        return (
-            <div>
-                <GridContainer justify="center">
-                    <GridItem xs={10} sm={10} md={10}>
-                        <Card style={styles.noTopMargin}>
-                            <h3 className={classes.pageSubcategoriesTitle}>
-                                Aizawl Municipal Corporation
-                            </h3>
-                            <div className={classes.container}>
-                                <NavPills
-                                    xs={10} sm={6} md={6}
-                                    color="success"
-                                    alignCenter
-                                    tabs={[
-                                        {
-                                            tabButton: "Shop License",
-                                            tabIcon: StoreMallDirectory,
-                                            tabContent: (
-                                                <Card>
-                                                    <CardHeader>
-                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.APPLY_SHOP_LICENSE)}>
-                                                            Apply for Shop Licensing
-                                                        </Button>
-                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.RENEW_SHOP_LICENSE)}>
-                                                            Renew Shop Licensing
-                                                        </Button>
-                                                        <br/>
-                                                        <br/>
-                                                        <h4 className={classes.cardTitle}>
-                                                            Description about product
-                                                        </h4>
-                                                        <p className={classes.cardCategory}>
-                                                        </p>
-                                                    </CardHeader>
-                                                    <CardBody>
-                                                        <br/>
-                                                        <br/>
-                                                        Collaboratively administrate empowered markets via
-                                                        plug-and-play networks. Dynamically procrastinate B2C
-                                                        users after installed base benefits.
-                                                        <br/>
-                                                        <br/>
-                                                        Collaboratively administrate empowered markets via
-                                                        plug-and-play networks. Dynamically procrastinate B2C
-                                                        users after installed base benefits.
-                                                        <br/>
-                                                        <br/>
-                                                        Collaboratively administrate empowered markets via
-                                                        plug-and-play networks. Dynamically procrastinate B2C
-                                                        users after installed base benefits.
-                                                        <br/>
-                                                        <br/>
-                                                        Collaboratively administrate empowered markets via
-                                                        plug-and-play networks. Dynamically procrastinate B2C
-                                                        users after installed base benefits.
-                                                        <br/>
-                                                        <br/>
-                                                        Collaboratively administrate empowered markets via
-                                                        plug-and-play networks. Dynamically procrastinate B2C
-                                                        users after installed base benefits.
-                                                        <br/>
-                                                        <br/>
-                                                        Collaboratively administrate empowered markets via
-                                                        plug-and-play networks. Dynamically procrastinate B2C
-                                                        users after installed base benefits.
-                                                        <br/>
-                                                        <br/>
-                                                    </CardBody>
-                                                </Card>
-                                            )
-                                        },
-                                        {
-                                            tabButton: "Banner/Poster",
-                                            tabIcon: Airplay,
-                                            tabContent: (
-                                                <Card>
-                                                    <CardHeader>
-                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.APPLY_BANNER)}>
-                                                            Apply for Banner
-                                                        </Button>
-                                                        <br/>
-                                                        <br/>
-                                                        <h4 className={classes.cardTitle}>
-                                                            Location of the product
-                                                        </h4>
-                                                        <p className={classes.cardCategory}>
-                                                        </p>
-                                                    </CardHeader>
-                                                    <CardBody>
-                                                        Efficiently unleash cross-media information without
-                                                        cross-media value. Quickly maximize timely deliverables
-                                                        for real-time schemas.
-                                                        <br/>
-                                                        <br/>
-                                                        Dramatically maintain clicks-and-mortar solutions
-                                                        without functional solutions.
-                                                    </CardBody>
-                                                </Card>
-                                            )
-                                        },
-                                        {
-                                            tabButton: "Kiosk",
-                                            tabIcon: Dock,
-                                            tabContent: (
-                                                <Card>
-                                                    <CardHeader>
-                                                        <Button color="info" round onClick={this.handleLink(OfficeRoutes.APPLY_KIOSK)}>
-                                                            Apply for KIOSK
-                                                        </Button>
-                                                        <Button color="info" round onClick={this.handleLink(OfficeRoutes.RENEW_KIOSK)}>
-                                                            Renew KIOSK
-                                                        </Button>
-                                                        <Button color="warning" round onClick={this.handleLink(OfficeRoutes.PROPOSED_KIOSK)}>
-                                                            Propose new KIOSK
-                                                        </Button>
-                                                        <br/>
-                                                        <br/>
-                                                        <h4 className={classes.cardTitle}>
-                                                            Apply for KIOSK
-                                                        </h4>
-                                                        <p className={classes.cardCategory}>
-                                                            More information here
-                                                        </p>
-                                                    </CardHeader>
-                                                    <CardBody>
-                                                        Completely synergize resource taxing relationships via
-                                                        premier niche markets. Professionally cultivate
-                                                        one-to-one customer service with robust ideas.
-                                                        <br/>
-                                                        <br/>
-                                                        Dynamically innovate resource-leveling customer service
-                                                        for state of the art customer service.
-                                                    </CardBody>
-                                                </Card>
-                                            )
-                                        },
-                                        {
-                                            tabButton: "Hoarding",
-                                            tabIcon: Airplay,
-                                            tabContent: (
-                                                <Card>
-                                                    <CardHeader>
-                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.APPLY_HOARDING)}>
-                                                            Apply for Hoarding
-                                                        </Button>
-                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.RENEW_HOARDING)}>
-                                                            Renew Hoarding
-                                                        </Button>
-                                                        <Button color="primary" round onClick={this.handleLink(OfficeRoutes.PROPOSED_HOARDING)}>
-                                                            Propose new Hoarding
-                                                        </Button>
-                                                        <br/>
-                                                        <br/>
-                                                        <h4 className={classes.cardTitle}>Help center</h4>
-                                                        <p className={classes.cardCategory}>
-                                                            More information here
-                                                        </p>
-                                                    </CardHeader>
-                                                    <CardBody>
-                                                        Description
-                                                    </CardBody>
-                                                </Card>
-                                            )
-                                        },
-                                        {
-                                            tabButton: "Check License Validity",
-                                            tabIcon: HelpOutline,
-                                            tabContent: (
-                                                <Card>
-                                                    <CardHeader>
-                                                        <h4 className={classes.cardTitle}>
-
-                                                        </h4>
-                                                        <p className={classes.cardCategory}>
-
-                                                        </p>
-                                                    </CardHeader>
-                                                    <CardBody>
-                                                        Description
-                                                    </CardBody>
-                                                </Card>
-                                            )
-                                        }
-                                    ]}
-                                />
-                            </div>
+    return (
+      <div>
+        <GridContainer justify="center">
+          <GridItem xs={10} sm={10} md={10}>
+            <Card style={styles.noTopMargin}>
+              <h3 className={classes.pageSubcategoriesTitle}>
+                Services Provided by Aizawl Municipal Corporation
+              </h3>
+              <div className={classes.container}>
+                <NavPills
+                  xs={10} sm={6} md={6}
+                  color="primary"
+                  alignCenter
+                  tabs={[
+                    {
+                      tabButton: "Shop License",
+                      tabIcon: StoreMallDirectory,
+                      tabContent: (
+                        <Card>
+                          <CardHeader>
+                            <Typography variant='headline' align="center">
+                              What are you planning to do?
+                            </Typography>
+                          </CardHeader>
+                          <CardBody>
+                            <GridContainer justify="center">
+                              <GridItem xs={12} sm={12} md={3}>
+                                <Card pricing raised>
+                                  <CardBody pricing>
+                                    <h6 className={classes.cardCategory}>New Shop
+                                      Licensing</h6>
+                                    <div className={classes.icon}>
+                                      <StoreMallDirectory
+                                        className={classes.iconRose}/>
+                                    </div>
+                                    <h3 className={`${classes.cardTitle} ${classes.marginTop30}`}>
+                                      Application for Shop Licensing
+                                    </h3>
+                                    <p className={classes.cardDescription}>
+                                      Submit your renewal application by clicking on the button below
+                                    </p>
+                                    <Button color="rose"
+                                            round
+                                            onClick={this.handleLink(OfficeRoutes.APPLY_SHOP_LICENSE)}>
+                                      Apply for Shop Licensing
+                                    </Button>
+                                  </CardBody>
+                                </Card>
+                              </GridItem>
+                              <GridItem xs={12} sm={12} md={3}>
+                                <Card pricing raised>
+                                  <CardBody pricing>
+                                    <h6 className={classes.cardCategory}>Renew Shop
+                                      Licensing</h6>
+                                    <div className={classes.icon}>
+                                      <StoreMallDirectory
+                                        className={classes.iconRose}/>
+                                    </div>
+                                    <h3 className={`${classes.cardTitle} ${classes.marginTop30}`}>
+                                      Renewal of Shop License
+                                    </h3>
+                                    <p className={classes.cardDescription}>
+                                      Submit your renewal application by clicking on the button below
+                                    </p>
+                                    <Button color="rose" onClick={this.handleLink(OfficeRoutes.RENEW_SHOP_LICENSE)}
+                                            round>
+                                      Renew Shop Licensing
+                                    </Button>
+                                  </CardBody>
+                                </Card>
+                              </GridItem>
+                            </GridContainer>
+                          </CardBody>
                         </Card>
+                      )
+                    },
+                    {
+                      tabButton: "Banner/Poster",
+                      tabIcon: Airplay,
+                      tabContent: (
+                        <Card>
+                          <CardHeader>
+                            <Typography variant='headline' align="center">
+                              Select your option below
+                            </Typography>
+                          </CardHeader>
+                          <CardBody>
+                            <GridContainer justify="center">
+                              <GridItem xs={12} sm={12} md={3}>
+                                <Card pricing raised>
+                                  <CardBody pricing>
+                                    <h6 className={classes.cardCategory}>Apply for
+                                      New Banner/Poster</h6>
+                                    <div className={classes.icon}>
+                                      <StoreMallDirectory
+                                        className={classes.iconRose}/>
+                                    </div>
+                                    <h3 className={`${classes.cardTitle} ${classes.marginTop30}`}>
+                                      Click button Below
+                                    </h3>
+                                    <p className={classes.cardDescription}>
 
-                    </GridItem>
-                </GridContainer>
+                                    </p>
+                                    <Button color="rose" round
+                                            onClick={this.handleLink(OfficeRoutes.APPLY_BANNER)}>
+                                      Apply for Banner
+                                    </Button>
+                                  </CardBody>
+                                </Card>
+                              </GridItem>
+                            </GridContainer>
+                          </CardBody>
+                        </Card>
+                      )
+                    },
+                    {
+                      tabButton: "Kiosk",
+                      tabIcon: Airplay,
+                      tabContent: (
+                        <Card>
+                          <CardHeader>
+                            <Typography variant='headline' align="center">
 
-                {/*<GridContainer spacing={8} justify={"center"}>
-                    {cardItems}
-                    <GridContainer justify={"space-around"}>
-                        <Divider color={"primary"} style={{marginTop: 30}} absolute={true}/>
-                        <GridItem xs={12} sm={12} md={4}>
-                            <Card>
-                                <CardHeader title={"Check your shopping license"} placeholder={"It is mandaroty to Enter your shopping license no to check your License Status"}/>
-                                <CardContent>
-                                    <TextField fullWidth={true} variant={"outlined"} placeholder={"Enter your license no"} label={"License No"}/>
-                                </CardContent>
-                                <CardActions>
-                                    <Button fullWidth={true} variant={"outlined"} color={"primary"}>Check </Button>
-                                </CardActions>
-                            </Card>
-                        </GridItem>
-                        <GridItem xs={12} sm={12} md={4}>
-                            <Card>
-                                <CardHeader title={"Check Advertiser License"} placeholder={"It is Mandatory to enter your advertisement license no to check it's Status"}/>
-                                <CardContent>
-                                    <TextField fullWidth={true} variant={"outlined"} placeholder={"Enter your license no"} label={"License No"}/>
-                                </CardContent>
-                                <CardActions>
-                                    <Button fullWidth={true} variant={"outlined"} color={"primary"}>Check </Button>
-                                </CardActions>
-                            </Card>
-                        </GridItem>
-                    </GridContainer>
-                </GridContainer>*/}
-            </div>
-        );
-    }
+                            </Typography>
+                          </CardHeader>
+                          <CardBody>
+                            <GridContainer justify="center">
+                              <GridItem xs={12} sm={12} md={3}>
+                                <Card pricing raised>
+                                  <CardBody pricing>
+                                    <h6 className={classes.cardCategory}>Apply for
+                                      New Hoarding</h6>
+                                    <div className={classes.icon}>
+                                      <StoreMallDirectory
+                                        className={classes.iconRose}/>
+                                    </div>
+                                    <h3 className={`${classes.cardTitle} ${classes.marginTop30}`}>
+                                      Click button Below
+                                    </h3><p className={classes.cardDescription}>
+                                    Click here to download
+                                  </p>
+                                    <Button color="rose" round
+                                            onClick={this.handleLink(OfficeRoutes.ADVERTISER_LOGIN)}>
+                                      Apply for New Kiosk
+                                    </Button>
+                                  </CardBody>
+                                </Card>
+                              </GridItem>
+                            </GridContainer>
+                          </CardBody>
+                        </Card>
+                      )
+                    }, {
+                      tabButton: "Hoarding",
+                      tabIcon: Airplay,
+                      tabContent: (
+                        <Card>
+                          <CardHeader>
+                            <Typography variant='headline' align="center">
+
+                            </Typography>
+                          </CardHeader>
+                          <CardBody>
+                            <GridContainer justify="center">
+                              <GridItem xs={12} sm={12} md={3}>
+                                <Card pricing raised>
+                                  <CardBody pricing>
+                                    <h6 className={classes.cardCategory}>Apply for
+                                      New Hoarding</h6>
+                                    <div className={classes.icon}>
+                                      <StoreMallDirectory
+                                        className={classes.iconRose}/>
+                                    </div>
+                                    <h3
+                                      className={`${classes.cardTitle} ${classes.marginTop30}`}>
+                                      Click button Below
+                                    </h3><p className={classes.cardDescription}>
+                                    Click here to download
+                                  </p>
+                                    <Button color="rose" round
+                                            onClick={this.handleLink(OfficeRoutes.ADVERTISER_LOGIN)}>
+                                      Apply for New Hoarding
+                                    </Button>
+                                  </CardBody>
+                                </Card>
+                              </GridItem>
+                            </GridContainer>
+                          </CardBody>
+                        </Card>
+                      )
+                    },
+                    {
+                      tabButton: "Advertiser",
+                      tabIcon: Airplay,
+                      tabContent: (
+                        <Card>
+                          <CardHeader>
+                            <Typography variant='headline' align="center">
+
+                            </Typography>
+                          </CardHeader>
+                          <CardBody>
+                            <GridContainer justify="center">
+                              <GridItem xs={12} sm={12} md={3}>
+                                <Card pricing raised>
+                                  <CardBody pricing>
+                                    <h6 className={classes.cardCategory}>Advertiser Registration</h6>
+                                    <div className={classes.icon}>
+                                      <StoreMallDirectory
+                                        className={classes.iconRose}/>
+                                    </div>
+                                    <h3
+                                      className={`${classes.cardTitle} ${classes.marginTop30}`}>
+                                      Click button Below
+                                    </h3><p className={classes.cardDescription}>
+                                    Click here to download
+                                  </p>
+                                    <Button color="rose" round
+                                            onClick={this.handleLink(OfficeRoutes.APPLY_ADVERTISER)}>
+                                      New Registration
+                                    </Button>
+                                  </CardBody>
+                                </Card>
+                              </GridItem>
+                            </GridContainer>
+                          </CardBody>
+                        </Card>
+                      )
+                    },
+                    {
+                      tabButton: "Check License Validity",
+                      tabIcon: HelpOutline,
+                      tabContent: (
+                        <Card>
+                          <CardHeader>
+                            <h4 className={classes.cardTitle}>
+
+                            </h4>
+                            <p className={classes.cardCategory}>
+
+                            </p>
+                          </CardHeader>
+                          <CardBody>
+                            Description
+                          </CardBody>
+                        </Card>
+                      )
+                    }
+                  ]}
+                />
+              </div>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      </div>
+    );
+  }
 }
 
 export default withStyles(styles)(HomePage);

@@ -1,8 +1,9 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import defaultImage from "assets/img/default-avatar.png";
 
 class PictureUpload extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -11,6 +12,11 @@ class PictureUpload extends React.Component {
     };
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit=(e)=>{
+    e.preventDefault();
+
   }
   handleImageChange(e) {
     e.preventDefault();
@@ -24,12 +30,7 @@ class PictureUpload extends React.Component {
     };
     reader.readAsDataURL(file);
   }
-  handleSubmit(e) {
-    e.preventDefault();
-    // this.state.file is the file/image uploaded
-    // in this function you can save the image (this.state.file) on form submit
-    // you have to call it yourself
-  }
+
   render() {
     return (
       <div className="picture-container">
@@ -45,6 +46,10 @@ class PictureUpload extends React.Component {
       </div>
     );
   }
+}
+
+PictureUpload.propTypes={
+  file: PropTypes.object.isRequired
 }
 
 export default PictureUpload;

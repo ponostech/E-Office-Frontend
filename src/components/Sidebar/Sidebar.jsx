@@ -22,6 +22,7 @@ import HeaderLinks from "components/Header/HeaderLinks.jsx";
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";
 
 import avatar from "assets/img/faces/avatar.jpg";
+import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
 
 var ps;
 
@@ -87,7 +88,8 @@ class Sidebar extends React.Component {
       logoText,
       routes,
       bgColor,
-      rtlActive
+      rtlActive,
+      history
     } = this.props;
     const itemText =
       classes.itemText +
@@ -182,6 +184,7 @@ class Sidebar extends React.Component {
                 </ListItem>
                 <ListItem className={classes.collapseItem}>
                   <NavLink
+                    onClick={(e)=>history.push(OfficeRoutes.ADVERTISER_PROFILE)}
                     to="#"
                     className={
                       classes.itemLink + " " + classes.userCollapseLinks

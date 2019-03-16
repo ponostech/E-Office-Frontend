@@ -7,61 +7,54 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  Snackbar,
   Tooltip,
   Typography
 } from "@material-ui/core";
 import classNames from "classnames";
 import Dropzone from "react-dropzone";
 import DeleteIcon from "@material-ui/icons/Delete";
-import CloseIcon from "@material-ui/icons/Close";
 import CheckIcon from "@material-ui/icons/Check";
-
-// USAGE
-// <DocumentsDropzone documents={[
-//   {name:"Signature of the applicant",fileName:"signature"},
-//   {name:"NOC of landowner",fileName:"noc-landowner"},
-//   {name:"Tribal Certificate",fileName:"tribal-certificate"},
-// ]}
-//                    openDialog={this.state.openDialog}
-//                    onCloseHandler={this.handleDocumentClose.bind(this)}
-//                    acceptedFiles={[...Constraint.ACCEPTED_IMAGES, ...Constraint.ACCEPTED_DOCUMENTS]}/>
+import OfficeSnackbar from "./OfficeSnackbar";
 
 class DocumentsDropzoneFragment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: [],
-      maxDocError: "",
-      docSize: 0,
+      errorMessage: ""
     };
+
   }
 
-  isValid=()=>{
-    console.log("adfasdfasd")
-    return false;
-  }
-  getData=()=>{
-    return this.state;
-  }
+  isValid = () => {
+    const { documents, files } = this.props;
+    if (files.length === 0) {
+      this.setState({ errorMessage: "Required file is not uploaded yet" });
+      return false;
+    }
+    if (documents.length !== files.length) {
+      this.setState({ errorMessage: "Required file is not uploaded yet" });
+      return false;
+    }
+    return true;
+
+  };
 
   componentWillReceiveProps(nextProps, nextContext) {
-    const { documents } = nextProps;
-    this.setState({ docSize: documents.length });
-    for (let i = 0; i < documents.length; i++) {
-      let attr = { found: false };
-      documents[i] = { ...documents[i], ...attr };
-    }
+    // const { documents } = nextProps;
+    // for (let i = 0; i < documents.length; i++) {
+    //   let attr = { found: false };
+    //   documents[i] = { ...documents[i], ...attr };
+    // }
   }
 
   onDrop = (acceptedFiles, rejectedFiles) => {
     // Do something with files
-    const { documents } = this.props;
-    const maxDoc = documents.length;
-    let temp = [...this.state.files, ...acceptedFiles];
+    let documents  = this.props.documents;
+    let temp = [...this.props.files, ...acceptedFiles];
     let files = this.getUnique(temp, "name");
 
     let newFiles = [];
+    let newDocs = [];
     documents.forEach(function(doc) {
       files.forEach(file => {
         let fname = file.name.substring(0, file.name.lastIndexOf("."));
@@ -71,11 +64,12 @@ class DocumentsDropzoneFragment extends Component {
           doc.found = true;
         }
       });
+      newDocs.push(doc);
     });
-    console.log(newFiles);
-    this.setState({
-      files: newFiles
-    });
+
+    this.props.updateFiles(newFiles);
+    this.props.updateDocuments(newDocs);
+
   };
 
 
@@ -92,9 +86,9 @@ class DocumentsDropzoneFragment extends Component {
 
   handleItemDelete = (file) => {
     const { documents } = this.props;
-    const files = this.state.files.filter(value => value.name !== file.name);
-    this.setState({ files });
+    const files = this.props.files.filter(value => value.name !== file.name);
     let found = false;
+    let newDocs = [];
     documents.forEach(function(item, i) {
       files.forEach(function(file, j) {
         let fname = file.name.substring(0, file.name.lastIndexOf("."));
@@ -102,11 +96,18 @@ class DocumentsDropzoneFragment extends Component {
           found = true;
         }
       });
-      item.found = found;
+      let newDoc = {
+        name: item.name,
+        fileName: item.fileName,
+        found: found
+      };
+      newDocs.push(newDoc);
+      // item.found = found;
 
     });
-    if (found)
-      this.setState({ files });
+    this.props.updateFiles(files);
+    // this.setState({ files });
+    this.props.updateDocuments(newDocs);
   };
 
   closeSnackBar = () => {
@@ -114,9 +115,8 @@ class DocumentsDropzoneFragment extends Component {
   };
 
   render() {
-    let { documents, acceptedFiles,...rest } = this.props;
+    let { acceptedFiles, documents, files, ...rest } = this.props;
 
-    const { files } = this.state;
     const view = (
       files.map(value => {
         return <ListItem key={value.name}>
@@ -171,29 +171,8 @@ class DocumentsDropzoneFragment extends Component {
         <List dense={true}>
           {view}
         </List>
-        <Snackbar
-          color={"error"}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center"
-          }}
-          open={Boolean(this.state.maxDocError)}
-          autoHideDuration={5000}
-          ContentProps={{
-            "aria-describedby": "message-id"
-          }}
-          message={<span id="message-id">{this.state.maxDocError}</span>}
-          action={[
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              onClick={this.closeSnackBar}
-            >
-              <CloseIcon/>
-            </IconButton>
-          ]}
-        />
+        <OfficeSnackbar onClose={() => this.setState({ errorMessage: "" })} open={Boolean(this.state.errorMessage)}
+                        message={this.state.errorMessage} variant={"error"}/>
       </div>
 
     );
@@ -202,6 +181,9 @@ class DocumentsDropzoneFragment extends Component {
 
 DocumentsDropzoneFragment.propTypes = {
   documents: PropTypes.array.isRequired,
+  files: PropTypes.array.isRequired,
   acceptedFiles: PropTypes.string.isRequired,
+  updateFiles: PropTypes.func.isRequired,
+  updateDocuments: PropTypes.func.isRequired
 };
 export default DocumentsDropzoneFragment;

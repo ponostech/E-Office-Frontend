@@ -85,7 +85,6 @@ const pagesHeaderStyle = theme => ({
     ...defaultFont,
     fontSize: "14px",
     margin: 0,
-    marginRight: "-15px",
     paddingLeft: "0",
     listStyle: "none",
     color: whiteColor,

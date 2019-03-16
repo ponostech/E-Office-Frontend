@@ -19,17 +19,14 @@ import {
   Select,
   Switch
 } from "@material-ui/core";
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
 import TextField from "@material-ui/core/es/TextField/TextField";
 import MapIcon from "@material-ui/icons/Map";
-import DocumentsDropzone from "../../components/DocumentsDropzone";
-import Constraint from "../../config/Constraint";
 import axios from "axios";
-import { ApiRoutes } from "../../config/ApiRoutes";
-import OfficeSelect from "../../components/OfficeSelect";
-import HoardingApplicationFormModel from "../model/HoardingApplicationFormModel";
-import LoadingView from "../common/LoadingView";
+import LoadingView from "../../common/LoadingView";
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
+import OfficeSelect from "../../../components/OfficeSelect";
+import DocumentsDropzone from "../../../components/DocumentsDropzone";
 
 class HoardingApplicationForm extends Component {
 
@@ -302,7 +299,7 @@ class HoardingApplicationForm extends Component {
               <CardActions>
                 <Button color={"primary"} variant={"outlined"} onClick={this.submitForm.bind(this)}> Submit
                   Application</Button>
-                <Button color={"secondary"} variant={"outlined"} onClick={this.clearForm.bind(this)}> Reset</Button>
+                <Button color={"secondary"} variant={"KioskI"} onClick={this.clearForm.bind(this)}> Reset</Button>
               </CardActions>
             </Card>
           </GridItem>
