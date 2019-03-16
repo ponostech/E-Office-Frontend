@@ -18,6 +18,7 @@ import AdvertiserContainer from "../views/advertiser/AdvertiserContainer";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import pagesStyle from "../assets/jss/material-dashboard-pro-react/layouts/pagesStyle";
 import BannerApplicationForm from "../views/banner/BannerApplicationForm";
+import AdvertiserLogin from "../views/advertiser/auth/AdvertiserLogin";
 
 class LandingPage extends Component {
 
@@ -41,6 +42,7 @@ class LandingPage extends Component {
 
                 <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
 
+                <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
                 <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserContainer}/>
 
                 <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>

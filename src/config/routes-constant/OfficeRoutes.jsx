@@ -5,6 +5,7 @@ export class OfficeRoutes {
   static FORM = "/form";
   static E_OFFICE = "/e-office";
 
+  static ADVERTISER_LOGIN = "/auth/advertiser/login";
   static APPLY_ADVERTISER = "/register/advertiser";
   static RENEW_ADVERTISER = "/advertiser/:id/renew";
   // static ADVERTISER_DETAIL = "/advertiser/:id/detail";
@@ -31,7 +32,7 @@ export class OfficeRoutes {
   static ADVERTISER_KIOSK = "/advertiser/kiosk";
   static ADVERTISER_NEW_KIOSK = "/advertiser/kiosk/new";
   static ADVERTISER_PROFILE = "/advertiser/profile";
-  static ADVERTISER_SETTING="/advertiser/setting";
+  static ADVERTISER_SETTING = "/advertiser/setting";
 
   /*E-Office routes*/
   static DESK = "/e-office/desk";
@@ -57,6 +58,6 @@ export class OfficeRoutes {
   static SETTING = "/e-office/setting";
   static ADVERTISERS = "/e-office/advertisers";
 
-  static ADVERTISER_DETAIL=`/e-office/advertisers/:id/details`;
+  static ADVERTISER_DETAIL = `/e-office/advertisers/:id/details`;
 
 }
