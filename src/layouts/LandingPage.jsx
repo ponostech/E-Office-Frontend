@@ -8,17 +8,15 @@ import Footer from "../components/Footer/Footer.jsx";
 
 import HomePage from "../views/landing-pages/HomePage";
 import ShopLicenseForm from "../views/shop/ShopLicenseApplicationForm";
-import StaffRegistrationForm from "../views/staff/StaffRegistrationForm";
-import StaffList from "../views/staff/StaffList";
 import Form from "../views/Form";
 
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import LoginView from "../views/auth/LoginView";
-import AdvertiserContainer from "../views/advertiser/AdvertiserContainer";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import pagesStyle from "../assets/jss/material-dashboard-pro-react/layouts/pagesStyle";
 import BannerApplicationForm from "../views/banner/BannerApplicationForm";
 import AdvertiserLogin from "../views/advertiser/auth/AdvertiserLogin";
+import AdvertiserForm from "../views/advertiser/AdvertiserForm";
 
 class LandingPage extends Component {
 
@@ -43,7 +41,7 @@ class LandingPage extends Component {
                 <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
 
                 <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
-                <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserContainer}/>
+                <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserForm}/>
 
                 <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
 
