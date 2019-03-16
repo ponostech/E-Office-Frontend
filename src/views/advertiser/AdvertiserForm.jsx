@@ -6,8 +6,11 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader, Checkbox, Divider,
-  FormControl, FormControlLabel,
+  CardHeader,
+  Checkbox,
+  Divider,
+  FormControl,
+  FormControlLabel,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -20,10 +23,11 @@ import AdvertiserViewModel from "../model/AdvertiserViewModel";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import VisibilityOn from "@material-ui/icons/Visibility";
 import { Validators } from "../../utils/Validators";
-import AdvertiserDocument from "./AdvertiserDocument";
 import axios from "axios";
 import { ApiRoutes } from "../../config/ApiRoutes";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
+import DocumentUpload from "../../components/DocumentUpload";
+import SubmitDialog from "../../components/SubmitDialog";
 
 class AdvertiserForm extends Component {
   constructor(props) {
@@ -36,6 +40,7 @@ class AdvertiserForm extends Component {
       password: "",
       confirmPassword: "",
       address: "",
+      signature: null,
 
       agree: false,
 
@@ -47,11 +52,41 @@ class AdvertiserForm extends Component {
       confirmPasswordError: "",
       addressError: "",
       types: ["Individual", "Firm", "Group(NGO)"],
-      success:false,
-      error:false,
+      success: false,
+      error: false,
+
+      documents: [
+        {id:1,name:"Nox"},
+        {id:2,name:"fasd"},
+      ]
     };
-    this.docRef=React.createRef();
+    this.docRef = React.createRef();
+
   }
+
+  componentDidMount() {
+    const route = `http://localhost:8000/api/v1/documents/advertiser`;
+    console.log(route);
+    axios.get(route)
+      .then(res=>{
+        console.log(res)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+  }
+  componentWillMount() {
+
+
+  }
+
+  handleSignature = (e) => {
+    const { files } = e.target;
+    let item = files[0];
+    this.setState({
+      signature: item
+    });
+  };
 
   handleClickShowPassword = (e) => {
     this.setState(state => ({ showPassword: !state.showPassword }));
@@ -77,30 +112,45 @@ class AdvertiserForm extends Component {
   };
 
 
-  handleClick=(e)=>{
+  handleClick = (e) => {
     const { name } = e.target;
-    let data = {
-
-    };
+    let data = {};
+    // if (!this.isValid) {
+    //   this.setState({errorMessage:'There is still an error'})
+    //   return
+    // }
+    let documents = this.docRef.getUploadDocuments();
+    this.setState({ submit: true });
     switch (name) {
       case "submit":
         axios.post(ApiRoutes.CREATE_ADVERTISER, data)
-          .then(res=>{
+          .then(res => {
 
           })
-          .catch(err=>{
+          .catch(err => {
 
           })
-          .then(()=>{
-
-          })
+          .then(() => {
+            this.setState({ submit: false });
+          });
         break;
       case "cancel":
+        this.setState({
+          name: "",
+          type: "Individual",
+          email: "",
+          phone: "",
+          password: "",
+          confirmPassword: "",
+          address: "",
+          agree: false,
+          showPassword: false
+        });
         break;
       default:
         break;
     }
-  }
+  };
 
   handleRequired = (e) => {
     const { name, value } = e.target;
@@ -166,6 +216,7 @@ class AdvertiserForm extends Component {
   };
 
   render() {
+    var self = this;
     return (
       <GridContainer direction="row-reverse"
                      justify="center"
@@ -174,9 +225,7 @@ class AdvertiserForm extends Component {
           <Card>
             <CardHeader title={"Form of Application for registered Advertiser"}/>
             <CardContent>
-
               <GridContainer>
-
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     value={this.state.name}
@@ -320,13 +369,40 @@ class AdvertiserForm extends Component {
                 </GridItem>
 
                 <GridItem xs={12} sm={12} md={6}>
-                  <AdvertiserDocument ref={this.refs.docRef}/>
+
+                  <DocumentUpload documents={this.state.documents} ref={this.docRef}/>
+                  {/*<AdvertiserDocument ref={this.refs.docRef}/>*/}
+                  <TextField
+                    required={true}
+                    name={"signature"}
+                    variant={"outlined"}
+                    margin={"dense"}
+                    label={"Signature"}
+                    value={this.state.signature ? this.state.signature.name : null}
+                    fullWidth={true}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position={"end"}>
+                          <input
+                            style={{ display: "none" }}
+                            id="signature-id"
+                            name={"signature"}
+                            type={"file"}
+                            onChange={self.handleSignature.bind(this)}
+                          />
+                          <label htmlFor={"signature-id"}>
+                            <Button size={"small"} variant="outlined" component="span">
+                              Upload
+                            </Button>
+                          </label>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
                 </GridItem>
-
-
                 <GridItem xs={12} sm={12} md={12}>
                   <FormControlLabel control={
-                    <Checkbox color={"primary"} onChange={(val, checked) => this.setState({})}/>
+                    <Checkbox color={"primary"} onChange={(val, checked) => this.setState({agree:checked})}/>
                   }
                                     label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoadring Regulations 2013," +
                                     " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
@@ -342,7 +418,7 @@ class AdvertiserForm extends Component {
             <CardActions>
               <GridContainer justify={"flex-end"}>
                 <GridItem>
-                  <Button name={"confirm"} disabled={this.state.agree} onClick={this.handleClick.bind(this)}
+                  <Button name={"submit"} disabled={!this.state.agree} onClick={this.handleClick.bind(this)}
                           variant={"outlined"} color={"primary"}> Submit</Button>
                   {" "}
                   <Button name={"cancel"} onClick={this.handleClick.bind(this)} variant={"outlined"}
@@ -353,8 +429,11 @@ class AdvertiserForm extends Component {
           </Card>
 
         </GridItem>
-        <OfficeSnackbar variant={"success"} open={this.state.success} onClose={(e)=>this.setState({success:false})} message={"Your application is submitted"}/>
-        <OfficeSnackbar variant={"error"} open={this.state.error} onClose={(e)=>this.setState({error:false})} message={"Your application is submitted"}/>
+        <OfficeSnackbar variant={"success"} open={this.state.success} onClose={(e) => this.setState({ success: false })}
+                        message={"Your application is submitted"}/>
+        <OfficeSnackbar variant={"error"} open={!!this.state.error} onClose={(e) => this.setState({ error: false })}
+                        message={this.state.error}/>
+        <SubmitDialog open={this.state.submit} text={"Your application is submitting ... "}/>
       </GridContainer>
     );
   }
