@@ -4,12 +4,11 @@ import GridContainer from "../../../../components/Grid/GridContainer";
 import FileInfo from "./FileInfo";
 import FileMenu from "./FileMenu";
 import ApplicationReport from "./ApplicationReport";
-import { Paper } from "@material-ui/core";
 
 class FileDetail extends Component {
   render() {
     return (
-        <GridContainer>
+        <GridContainer spacing={0}>
           <GridItem xs={12} sm={12} md={4}>
             <FileInfo/>
           </GridItem>
