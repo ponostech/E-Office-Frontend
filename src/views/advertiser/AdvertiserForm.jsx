@@ -28,6 +28,7 @@ import { ApiRoutes } from "../../config/ApiRoutes";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
 import SubmitDialog from "../../components/SubmitDialog";
 import DocumentS3 from "../../components/DocumentS3";
+import FileUpload from "../../components/FileUpload";
 
 class AdvertiserForm extends Component {
   constructor(props) {
@@ -56,8 +57,8 @@ class AdvertiserForm extends Component {
       error: false,
 
       documents: [
-        { id: 1, name: "EPIC", type: "image/*" },
-        { id: 2, name: "DATA", type: "application/pdf" }
+        { id: 1, name: "EPIC", type: "image" },
+        { id: 2, name: "DATA", type: "pdf" }
       ]
     };
     this.docRef = React.createRef();
@@ -370,37 +371,9 @@ class AdvertiserForm extends Component {
                 </GridItem>
 
                 <GridItem xs={12} sm={12} md={6}>
-
-                  {/*<DocumentUpload documents={this.state.documents} ref={this.docRef}/>*/}
-                  <DocumentS3 ref={this.refs.docRef} documents={this.state.documents}/>
-                  {/*<AdvertiserDocument ref={this.refs.docRef}/>*/}
-                  <TextField
-                    required={true}
-                    name={"signature"}
-                    variant={"outlined"}
-                    margin={"dense"}
-                    label={"Signature"}
-                    value={this.state.signature ? this.state.signature.name : null}
-                    fullWidth={true}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position={"end"}>
-                          <input
-                            style={{ display: "none" }}
-                            id="signature-id"
-                            name={"signature"}
-                            type={"file"}
-                            onChange={self.handleSignature.bind(this)}
-                          />
-                          <label htmlFor={"signature-id"}>
-                            <Button size={"small"} variant="outlined" component="span">
-                              Upload
-                            </Button>
-                          </label>
-                        </InputAdornment>
-                      )
-                    }}
-                  />
+                  {this.state.documents.map(doc=>
+                      <FileUpload document={doc} onUploadSuccess={(data)=>console.log(data)} onUploadFailure={()=>console.log("me")}/>
+                  )}
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <FormControlLabel control={

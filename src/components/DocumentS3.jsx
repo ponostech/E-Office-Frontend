@@ -9,14 +9,14 @@ import CloseIcon from "@material-ui/icons/Close";
 import DocumentIcon from "@material-ui/icons/Book";
 
 const config = {
-  bucketName: "amc-abpas",
+  bucketName: process.env.BUCKET_NAME,
   dirName: "office", /* optional */
-  region: "ap-south-1",
-  accessKeyId: "AKIAIJ53GJ7IMQGYMYWQ",
-  secretAccessKey: "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"
+  region: process.env.REGION,
+  accessKeyId: process.env.S3_ACCESS_KEY,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
 };
 
-var uploadDocument = [];
+console.log(config)
 
 class DocumentS3 extends Component {
   constructor(props) {
@@ -24,9 +24,9 @@ class DocumentS3 extends Component {
     const { documents } = props;
     let temp = [];
     for (let i = 0; i < documents.length; i++) {
-      let attr = { status: 'prestine',file:null };
+      let attr = { status: "prestine", file: null };
       documents[i] = { ...documents[i], ...attr };
-      temp.push(documents[i])
+      temp.push(documents[i]);
     }
     this.state = {
       neededDoc: temp
@@ -45,11 +45,11 @@ class DocumentS3 extends Component {
     if (value.file) {
       return value.file.name;
     }
-    return null;
+    return undefined;
   };
 
   getUploadDocuments = () => {
-    return [...new Set(uploadDocument)];
+    return this.state.neededDoc;
   };
   getStatusIcon = (id) => {
     const { neededDoc } = this.state;
@@ -68,7 +68,8 @@ class DocumentS3 extends Component {
       case "fail":
         return <CloseIcon color={"error"}/>;
       case "progress":
-        return <CircularProgress style={{marginTop:10,marginBottom:10}} color={"primary"} variant={"indeterminate"}/>;
+        return <CircularProgress style={{ marginTop: 10, marginBottom: 10 }} color={"primary"}
+                                 variant={"indeterminate"}/>;
       case "prestine":
         return <DocumentIcon/>;
       default:
@@ -120,7 +121,7 @@ class DocumentS3 extends Component {
                                   let newItem = val;
                                   if (newItem.id === doc.id) {
                                     newItem.status = "progress";
-                                    newItem.file=file
+                                    newItem.file = file;
                                   }
                                   newDoc.push(newItem);
                                 });
@@ -135,7 +136,7 @@ class DocumentS3 extends Component {
                                       let newItem = val;
                                       if (newItem.id === doc.id) {
                                         newItem.status = "success";
-                                        newItem.file=file
+                                        newItem.file = file;
                                       }
                                       newDoc.push(newItem);
                                     });
@@ -149,7 +150,7 @@ class DocumentS3 extends Component {
                                       let newItem = val;
                                       if (newItem.id === doc.id) {
                                         newItem.status = "fail";
-                                        newItem.file=file
+                                        newItem.file = file;
                                       }
                                       newDoc.push(newItem);
                                     });

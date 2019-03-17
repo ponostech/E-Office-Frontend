@@ -14,12 +14,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 import PersonAdd from "@material-ui/icons/PersonAdd";
-import LoginIcon from "@material-ui/icons/OutlinedFlag";
+import LoginIcon from "@material-ui/icons/ArrowRight";
 import Home from "@material-ui/icons/Home";
-// core components
-
 import authNavbarStyle from "assets/jss/material-dashboard-pro-react/components/authNavbarStyle.jsx";
 import { Button } from "@material-ui/core";
+
+// core components
 
 class AuthNavbar extends React.Component {
   constructor(props) {
@@ -45,7 +45,7 @@ class AuthNavbar extends React.Component {
   }
 
   render() {
-    const { classes, color, brandText, OfficeRoutes,history } = this.props;
+    const { classes, color, brandText, OfficeRoutes, history } = this.props;
     const appBarClasses = cx({
       [" " + classes[color]]: color
     });
@@ -77,25 +77,27 @@ class AuthNavbar extends React.Component {
             />
           </NavLink>
         </ListItem>
-        <Button onClick={(e)=>history.push(OfficeRoutes.LOGIN)} style={{ marginleft: 10, paddingLeft:20,paddingRight:20 }} size={"small"} color={"primary"} variant={"extendedFab"}>
-          Login <LoginIcon fontSize={"small"} />
+        <Button onClick={(e) => history.push(OfficeRoutes.LOGIN)}
+                style={{ marginleft: 10, paddingLeft: 20, paddingRight: 20 }} size={"small"} color={"primary"}
+                variant={"extendedFab"}>
+          Login <LoginIcon fontSize={"small"}/>
         </Button>
 
       </List>
     );
     return (
-      <AppBar elevation={1} position="static" color={"primary"}>
-        <Toolbar  variant={"regular"}>
+      <AppBar elevation={5} position="static" color={"primary"}>
+        <Toolbar variant={"regular"}>
           <Hidden smDown>
             <div className={classes.flex}>
-              <Button href="#" className={classes.title} color="transparent">
+              <Button href="#" className={classes.title} color="inherit">
                 {brandText}
               </Button>
             </div>
           </Hidden>
           <Hidden mdUp>
             <div className={classes.flex}>
-              <Button href="#" className={classes.title} color="transparent">
+              <Button href="#" className={classes.title} color="inherit">
                 AMC
               </Button>
             </div>
@@ -104,7 +106,7 @@ class AuthNavbar extends React.Component {
           <Hidden mdUp>
             <Button
               className={classes.sidebarButton}
-              color="transparent"
+              color="inherit"
               justIcon
               aria-label="open drawer"
               onClick={this.handleDrawerToggle}
@@ -113,20 +115,20 @@ class AuthNavbar extends React.Component {
             </Button>
           </Hidden>
           <Hidden mdUp>
-              <Drawer
-                variant="temporary"
-                anchor={"right"}
-                open={this.state.open}
-                classes={{
-                  paper: classes.drawerPaper
-                }}
-                onClose={this.handleDrawerToggle}
-                ModalProps={{
-                  keepMounted: true // Better open performance on mobile.
-                }}
-              >
-                {list}
-              </Drawer>
+            <Drawer
+              variant="temporary"
+              anchor={"right"}
+              open={this.state.open}
+              classes={{
+                paper: classes.drawerPaper
+              }}
+              onClose={this.handleDrawerToggle}
+              ModalProps={{
+                keepMounted: true // Better open performance on mobile.
+              }}
+            >
+              {list}
+            </Drawer>
           </Hidden>
         </Toolbar>
       </AppBar>
