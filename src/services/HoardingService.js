@@ -9,29 +9,24 @@ export class HoardingService {
     const config={ headers: {"Authorization" : `Bearer ${token}`} }
 
     let data = {
-      local_council_id: state.hoardingData.localCouncil.value,
-      address:state.hoardingData.address,
-      both_side:state.hoardingData.bothSide?1:0,
-      road_details:state.hoardingData.roadDetail,
-      length:state.hoardingData.length,
-      height:state.hoardingData.height,
+      local_council_id: state.localCouncil.value,
+      address:state.address,
+      both_side:state.bothSide?1:0,
+      road_details:state.roadDetail,
+      length:state.length,
+      height:state.height,
       ground_clearance:"not sure",
-      area_category_id:state.hoardingData.category,
-      display_type:state.hoardingData.displayType,
+      area_category_id:state.category,
+      display_type:state.displayType,
       coordinate:'',
-      land_owner_name:state.hoardingData.landLord,
-      land_owner_type:state.hoardingData.landlordType,
+      land_owner_name:state.landLord,
+      land_owner_type:state.landlordType,
       status:0,
-      documents:state.files
+      documents:[]
     };
     console.log(data);
-    try {
       let res= await axios.post(ApiRoutes.NEW_HOARDING, data,config);
-      console.log(res)
       return res;
-    } catch (e) {
-      console.log("Hoarding creation Error "+e);
-    }
   }
 
   async get(advertiserId) {
