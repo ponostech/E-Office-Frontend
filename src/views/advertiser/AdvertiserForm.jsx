@@ -27,8 +27,8 @@ import axios from "axios";
 import { ApiRoutes } from "../../config/ApiRoutes";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
 import SubmitDialog from "../../components/SubmitDialog";
-import DocumentS3 from "../../components/DocumentS3";
 import FileUpload from "../../components/FileUpload";
+import HelpIcon from "@material-ui/icons/Help";
 
 class AdvertiserForm extends Component {
   constructor(props) {
@@ -53,84 +53,82 @@ class AdvertiserForm extends Component {
       confirmPasswordError: "",
       addressError: "",
       types: ["Individual", "Firm", "Group(NGO)"],
+
       success: false,
       error: false,
 
+      //dialog variable
+      submit: "",
+      errorMessage: "",
+
+      prestine: true,
       documents: [
         { id: 1, name: "EPIC", type: "image" },
         { id: 2, name: "DATA", type: "pdf" }
       ]
     };
-    this.docRef = React.createRef();
 
   }
 
   componentDidMount() {
-    // const route = `http://localhost:8000/api/v1/documents/advertiser`;
-    // console.log(route);
-    // axios.get(route)
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    const route = `http://localhost:8000/api/v1/documents/advertiser`;
+    console.log(route);
+    axios.get(route)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
-
-  componentWillMount() {
-
-
-  }
-
-  handleSignature = (e) => {
-    const { files } = e.target;
-    let item = files[0];
-    this.setState({
-      signature: item
-    });
-  };
 
   handleClickShowPassword = (e) => {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
-  isValid = () => {
-    if (this.state.name.length === 0) {
-      return false;
-    }
-    if (this.state.email.length === 0 || !Validators.EMAIL_REGEX.test(this.state.email)) {
-      return false;
-    }
-    if (this.state.phone.length === 0 || Validators.PHONE_REGEX.test(this.state.phone)) {
-      return false;
-    }
-    if (this.state.password.length === 0 || this.state.password.length < 7) {
-      return false;
-    }
-    if (!this.state.type) {
-      return false;
-    }
-    return this.state.signature != null;
+  isInvalid = () => {
+    return this.state.prestine || !!this.state.nameError || !!this.state.emailError || !!this.state.addressError || !!this.state.emailError
+      || !!this.state.emailError || !!this.state.passwordError;
   };
 
 
   handleClick = (e) => {
     const { name } = e.target;
-    let data = {};
-    // if (!this.isValid) {
-    //   this.setState({errorMessage:'There is still an error'})
-    //   return
-    // }
-    let documents = this.docRef.getUploadDocuments();
+    let data = {
+      name: this.state.name,
+      type: this.state.type,
+      phone_no: this.state.phone,
+      email: this.state.email,
+      password: this.state.password,
+      address: this.state.address,
+      registered: 0,
+      signature: [],
+      documents: []
+    };
+    //check validity of data
+    if (this.isInvalid()) {
+      this.setState({ errorMessage: "There is an error" });
+      return;
+    }
+    //show submit dialog
     this.setState({ submit: true });
     switch (name) {
       case "submit":
         axios.post(ApiRoutes.CREATE_ADVERTISER, data)
           .then(res => {
+            console.log(res);
+            if (res.data.status) {
+              this.setState({
+                success: true
+              });
+            } else {
+              console.log(res.data.messages);
+              this.setState({ errorMessage: "Validation Error" });
+            }
 
           })
           .catch(err => {
-
+            this.setState({ errorMessage: err.toString() });
           })
           .then(() => {
             this.setState({ submit: false });
@@ -212,6 +210,8 @@ class AdvertiserForm extends Component {
         break;
     }
 
+    this.setState({ prestine: false });
+
   };
   openDialog = () => {
     this.setState({ openDialog: true });
@@ -225,9 +225,19 @@ class AdvertiserForm extends Component {
                      alignItems="flex-start">
         <GridItem xs={12} sm={12} md={10}>
           <Card>
-            <CardHeader title={"Form of Application for registered Advertiser"}/>
+            <CardHeader style={{ textAlign: "center" }} title={"Form of Application for registered Advertiser"}
+                        action={
+                          <IconButton>
+                            <HelpIcon/>
+                          </IconButton>
+                        }>
+            </CardHeader>
             <CardContent>
               <GridContainer>
+
+                <GridItem xs={12} sm={12} md={12}>
+                  <Divider style={{ marginBottom: 10 }}/>
+                </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     value={this.state.name}
@@ -371,8 +381,9 @@ class AdvertiserForm extends Component {
                 </GridItem>
 
                 <GridItem xs={12} sm={12} md={6}>
-                  {this.state.documents.map(doc=>
-                      <FileUpload document={doc} onUploadSuccess={(data)=>console.log(data)} onUploadFailure={()=>console.log("me")}/>
+                  {this.state.documents.map((doc, index) =>
+                    <FileUpload key={index} document={doc} onUploadSuccess={(data) => console.log(data)}
+                                onUploadFailure={(err) => console.log(err)}/>
                   )}
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
@@ -404,10 +415,11 @@ class AdvertiserForm extends Component {
           </Card>
 
         </GridItem>
-        <OfficeSnackbar variant={"success"} open={this.state.success} onClose={(e) => this.setState({ success: false })}
+        <OfficeSnackbar variant={"success"} open={this.state.success} onClose={(e) => this.setState({ success: "" })}
                         message={"Your application is submitted"}/>
-        <OfficeSnackbar variant={"error"} open={!!this.state.error} onClose={(e) => this.setState({ error: false })}
-                        message={this.state.error}/>
+        <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
+                        onClose={(e) => this.setState({ errorMessage: "" })}
+                        message={this.state.errorMessage}/>
         <SubmitDialog open={this.state.submit} text={"Your application is submitting ... "}/>
       </GridContainer>
     );

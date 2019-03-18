@@ -19,11 +19,11 @@ const config = {
 class FileUpload extends Component {
   constructor(props) {
     super(props);
-    let data=props.document;
+    let data = props.document;
     data.status = "prestine";
-    this.state={
-      file:data
-    }
+    this.state = {
+      file: data
+    };
   }
 
 
@@ -56,13 +56,14 @@ class FileUpload extends Component {
   };
 
   render() {
+    const { onUploadSuccess, onUploadFailure } = this.props;
     const { file } = this.state;
     var self = this;
 
     return (
       <>
         <TextField
-          name={file}
+          name={file.name}
           variant={"outlined"}
           margin={"dense"}
           label={file.name}
@@ -85,25 +86,27 @@ class FileUpload extends Component {
                   type={"file"}
                   onChange={(e) => {
                     let item = e.target.files[0];
-                    let temp=file
-                    temp.file=temp;
+                    let temp = file;
+                    temp.file = temp;
                     temp.status = "progress";
                     self.setState({
-                      file:temp
-                    })
+                      file: temp
+                    });
                     S3FileUpload
                       .uploadFile(file, config)
                       .then(data => {
-                        temp.status="success";
+                        temp.status = "success";
                         self.setState({
-                          file:temp
-                        })
+                          file: temp
+                        });
+                        onUploadSuccess(data)
                       })
                       .catch(err => {
-                        temp.status="fail";
+                        temp.status = "fail";
                         self.setState({
-                          file:temp
-                        })
+                          file: temp
+                        });
+                        onUploadFailure(err)
                       });
                   }}
                 />
