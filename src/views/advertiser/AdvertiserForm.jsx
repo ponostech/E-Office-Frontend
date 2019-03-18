@@ -56,7 +56,6 @@ class AdvertiserForm extends Component {
 
       success: false,
       error: false,
-
       //dialog variable
       submit: "",
       errorMessage: "",
@@ -390,7 +389,7 @@ class AdvertiserForm extends Component {
                   <FormControlLabel control={
                     <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
                   }
-                                    label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoadring Regulations 2013," +
+                                    label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoarding Regulations 2013," +
                                     " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
                 </GridItem>
 
