@@ -1,5 +1,5 @@
 export class KioskFormModel {
-  static TITLE = "Purposal of Kiosk Advertisement";
+  static TITLE = "Application form of new kiosk advertisement";
   static SUBHEADER = "";
 
   static CATEGORY = "Area's category";

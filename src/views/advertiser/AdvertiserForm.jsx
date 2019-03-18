@@ -122,7 +122,7 @@ class AdvertiserForm extends Component {
               });
             } else {
               console.log(res.data.messages);
-              this.setState({ errorMessage: "Validation Error" });
+              this.setState({ errorMessage: res.data.messages.toString() });
             }
 
           })
