@@ -13,6 +13,7 @@ import KioskFormContainer from "../views/advertiser/kiosk/form/KioskFormContaine
 import KioskLists from "../views/advertiser/kiosk/lists/KioskLists";
 import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
 import NewHoardingForm from "../views/advertiser/hoarding/form/NewHoardingForm";
+import NewKioskForm from "../views/advertiser/kiosk/form/NewKioskForm";
 
 class AdvertiserDashboard extends Component {
   render() {
@@ -27,7 +28,7 @@ class AdvertiserDashboard extends Component {
             <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>
             <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
 
-            <Route exact path={OfficeRoutes.PROPOSED_KIOSK} component={KioskFormContainer}/>
+            <Route exact path={OfficeRoutes.PROPOSED_KIOSK} component={NewKioskForm}/>
             <Route exact path={OfficeRoutes.ADVERTISER_KIOSK} component={KioskLists}/>
 
 
