@@ -188,9 +188,9 @@ class NewHoardingForm extends Component {
       .then(data => {
         console.log(data);
       })
-      .catch(err=>{
-        this.setState({errorMessage:err.toString()})
-        console.log(err)
+      .catch(err => {
+        this.setState({ errorMessage: err.toString() });
+        console.log(err);
       })
       .then(() => {
         this.setState({ submit: false });
@@ -262,7 +262,7 @@ class NewHoardingForm extends Component {
             <CardContent>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
-                  <Divider style={{marginBottom:10}}/>
+                  <Divider style={{ marginBottom: 10 }}/>
                 </GridItem>
                 <GridItem sm={12} xs={12} md={6}>
                   <GridContainer>
@@ -416,23 +416,26 @@ class NewHoardingForm extends Component {
                   </GridContainer>
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
-                      <TextField name={"lat"} margin={"dense"}
-                                 fullWidth={true} variant={"outlined"}
-                                 required={true}
-                                 label={HoardingApplicationFormModel.COORDINATE}
-                                 InputProps={{
-                                   endAdornment: (
-                                     <InputAdornment position={"end"}>
-                                       <Tooltip title={"Click here to see the map"}>
-                                         <IconButton onClick={(e) => {
-                                           this.setState({ openMap: true });
-                                         }}>
-                                           <MapIcon color={"action"}/>
-                                         </IconButton>
-                                       </Tooltip>
-                                     </InputAdornment>
-                                   )
-                                 }}
+                      <TextField
+                        value={this.state.coordinate}
+                        name={"lat"}
+                        margin={"dense"}
+                        fullWidth={true} variant={"outlined"}
+                        required={true}
+                        label={HoardingApplicationFormModel.COORDINATE}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position={"end"}>
+                              <Tooltip title={"Click here to see the map"}>
+                                <IconButton onClick={(e) => {
+                                  this.setState({ openMap: true });
+                                }}>
+                                  <MapIcon color={"action"}/>
+                                </IconButton>
+                              </Tooltip>
+                            </InputAdornment>
+                          )
+                        }}
                       />
                     </GridItem>
                   </GridContainer>
@@ -516,7 +519,9 @@ class NewHoardingForm extends Component {
                         onClose={(e) => {
                           this.setState({ success: "" });
                         }}/>
-        <GMapDialog open={this.state.openMap} onClose={(data) => this.setState({ openMap: false })} fullScreen={true}
+        <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
+          this.setState({ openMap: false, coordinate: `Latitude: ${lat} , Longitude: ${lng}` });
+        }} fullScreen={true}
                     isMarkerShown={true}/>
 
         <OfficeSnackbar open={Boolean(this.state.errorMessage)} variant={"error"} message={this.state.errorMessage}

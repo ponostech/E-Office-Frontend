@@ -55,13 +55,15 @@ class FileUpload extends Component {
   };
 
   render() {
-    const { onUploadSuccess, onUploadFailure } = this.props;
+    const { onUploadSuccess, onUploadFailure,required,...rest } = this.props;
     const { file } = this.state;
     var self = this;
 
     return (
       <>
         <TextField
+          {...rest}
+          required={required}
           name={file.name}
           variant={"outlined"}
           margin={"dense"}
@@ -126,13 +128,15 @@ class FileUpload extends Component {
 }
 
 FileUpload.defaultProps = {
-  title: "Document Attachment"
+  title: "Document Attachment",
+  required:false
 };
 FileUpload.propTypes = {
   document: PropTypes.object.isRequired,
   onUploadSuccess: PropTypes.func.isRequired,
   onUploadFailure: PropTypes.func.isRequired,
-  title: PropTypes.string
+  title: PropTypes.string,
+  required:PropTypes.bool
 };
 
 export default FileUpload;
