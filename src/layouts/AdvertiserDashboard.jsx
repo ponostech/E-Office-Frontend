@@ -12,6 +12,8 @@ import HoardingContainer from "../views/advertiser/hoarding/HoardingContainer";
 import KioskFormContainer from "../views/advertiser/kiosk/form/KioskFormContainer";
 import KioskLists from "../views/advertiser/kiosk/lists/KioskLists";
 import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
+import NewHoardingForm from "../views/advertiser/hoarding/form/NewHoardingForm";
+import NewKioskForm from "../views/advertiser/kiosk/form/NewKioskForm";
 
 class AdvertiserDashboard extends Component {
   render() {
@@ -23,10 +25,10 @@ class AdvertiserDashboard extends Component {
         <GridItem style={{ marginTop: 70, background: "white" }} xs={12} sm={12} md={12}>
           <GridContainer justify={"center"}>
 
-            <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={HoardingContainer}/>
+            <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>
             <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
 
-            <Route exact path={OfficeRoutes.PROPOSED_KIOSK} component={KioskFormContainer}/>
+            <Route exact path={OfficeRoutes.PROPOSED_KIOSK} component={NewKioskForm}/>
             <Route exact path={OfficeRoutes.ADVERTISER_KIOSK} component={KioskLists}/>
 
 

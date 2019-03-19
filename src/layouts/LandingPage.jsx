@@ -28,33 +28,33 @@ class LandingPage extends Component {
   render() {
     const { classes, ...rest } = this.props;
     return (
-        <div>
-          <AuthNavbar color={"primary"} brandText="E-AMC" OfficeRoutes={OfficeRoutes} {...rest} />
-          <div className={classes.wrapper} ref="wrapper">
-            <div
-                className={classes.fullPage}
-            >
-              <div className={classes.container}>
-                <Switch>
-                  <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
+      <div>
+        <AuthNavbar color={"primary"} brandText="E-AMC" OfficeRoutes={OfficeRoutes} {...rest} />
+        <div className={classes.wrapper} ref="wrapper">
+          <div
+            className={classes.fullPage}
+          >
+            <div className={classes.container}>
+              <Switch>
+                <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
 
-                  <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
+                <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
 
-                  <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
-                  <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserForm}/>
+                <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
+                <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserForm}/>
 
-                  <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
+                <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
 
-                  <Route exact={true} path={OfficeRoutes.FORM} component={Form}/>
-                  <Route exact={true} path={OfficeRoutes.LOGIN} component={LoginView}/>
+                <Route exact={true} path={OfficeRoutes.FORM} component={Form}/>
+                <Route exact={true} path={OfficeRoutes.LOGIN} component={LoginView}/>
 
-                  <Redirect from={OfficeRoutes.ROOT} to={OfficeRoutes.HOME}/>
-                </Switch>
-              </div>
-              <Footer white/>
+                <Redirect from={OfficeRoutes.ROOT} to={OfficeRoutes.HOME}/>
+              </Switch>
             </div>
           </div>
+            <Footer white/>
         </div>
+      </div>
 
 
     );

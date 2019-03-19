@@ -25,44 +25,34 @@ class AdvertiserLogin extends Component {
     return (
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={4}>
-          <Card style={{padding:40}} raised={true} blog={true}>
-            <GridItem xs={12} sm={12} md={12}>
+          <Card style={{ padding: 60 }} raised={true} blog={true}>
+            <GridContainer justify={"center"}>
               <Typography variant={"headline"}>Login as Advertiser</Typography>
-            </GridItem>
-            <GridItem xs={12} sm={12} md={12}>
-              <TextField label={"Email"} name={"email"} variant={"outlined"} margin={"dense"} fullWidth={true}/>
-            </GridItem>
-            <GridItem xs={12} sm={12} md={12}>
-              <TextField label={"Password"}
-                         type={this.state.showPassword ? "password" : "text"}
-                         name={"password"}
-                         InputProps={{
-                           endAdornment: (
-                             <InputAdornment position={"end"}>
-                               <IconButton onClick={this.handleShowPassword.bind(this)}>
-                                 {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
-                               </IconButton>
-                             </InputAdornment>
-                           )
-                         }}
-                         variant={"outlined"} margin={"dense"} fullWidth={true}/>
-            </GridItem>
-            <GridItem xs={12} sm={12} md={12}>
-              <Button size={"medium"} color={"primary"} fullWidth={true} variant={"outlined"}>Login</Button>
-            </GridItem>
-            <GridItem xs={12} sm={12} md={12}>
-              <Divider/>
-            </GridItem>
-           <GridContainer justify={"center"}>
-             <GridItem xs={12} sm={12} md={6}>
-               <Button fullWidth={true} variant={"text"} color={"primary"}>Forgot password?</Button>
-             </GridItem>
-             <GridItem xs={12} sm={12} md={6}>
-               <Button fullWidth={true} variant={"text"} color={"primary"} onClick={(e) => {
-                 history.push(OfficeRoutes.APPLY_ADVERTISER);
-               }}>Registration</Button>
-             </GridItem>
-           </GridContainer>
+            </GridContainer>
+            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+            <TextField label={"Email"} name={"email"} variant={"outlined"} margin={"dense"} fullWidth={true}/>
+            <TextField label={"Password"}
+                       type={this.state.showPassword ? "password" : "text"}
+                       name={"password"}
+                       InputProps={{
+                         endAdornment: (
+                           <InputAdornment position={"end"}>
+                             <IconButton onClick={this.handleShowPassword.bind(this)}>
+                               {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
+                             </IconButton>
+                           </InputAdornment>
+                         )
+                       }}
+                       variant={"outlined"} margin={"dense"} fullWidth={true}/>
+            {" "}
+            <Button size={"large"} color={"primary"} fullWidth={true} variant={"outlined"}>Login</Button>
+            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+            <GridContainer justify={"center"}>
+              <Button variant={"text"} color={"primary"}>Forgot password?</Button>
+              <Button variant={"text"} color={"primary"} onClick={(e) => {
+                history.push(OfficeRoutes.APPLY_ADVERTISER);
+              }}>Registration</Button>
+            </GridContainer>
           </Card>
 
         </GridItem>

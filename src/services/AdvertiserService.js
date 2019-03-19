@@ -5,14 +5,14 @@ export class AdvertiserService {
 
   async create(state) {
     let data = {
-      name: state.applicantData.name,
-      email: state.applicantData.email,
-      type:state.applicantData.type,
-      password: state.applicantData.password,
-      phone_no: state.applicantData.phone,
+      name: state.name,
+      email: state.email,
+      type:state.type,
+      password: state.password,
+      phone_no: state.phone,
       registered:0,
-      address:state.applicantData.address,
-      signature: [state.applicantData.signature],
+      address:state.address,
+      signature: [state.signature],
       documents: state.files
     };
     try {

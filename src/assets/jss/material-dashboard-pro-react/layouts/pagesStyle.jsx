@@ -44,7 +44,7 @@ const pagesStyle = theme => ({
     margin: "0",
     border: "0",
     // color: "#fff",
-    alignItems: "center",
+    // alignItems: "center",
     backgroundSize: "cover",
     backgroundPosition: "center center",
     height: "100%",
