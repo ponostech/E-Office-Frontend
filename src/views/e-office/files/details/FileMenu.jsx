@@ -7,9 +7,8 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DraftList from "../draft/DraftList";
 import NotesheetList from "../notesheet/NotesheetList";
-import FileMovement from "../movements/FileMovement";
+import FileMovementList from "../movements/FileMovement";
 import {withStyles} from '@material-ui/core/styles';
-import FileAttribute from "./FileAttribute";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -115,19 +114,19 @@ class FileMenu extends Component {
                     indicatorColor={"primary"}
                     textColor={"primary"}
                     onChange={this.handleApplicationTabChange.bind(this)}>
-                    <Tab value={"application"} value={"application"}
+                    <Tab value={"application"}
                          classes={{labelContainer: classes.tabLabelContainer}} label={"Applications"}/>
-                    <Tab
-                        classes={{labelContainer: classes.tabLabelContainer}} value={"proposal"}
-                        label={"Proposals"}/>
-                    <Tab
-                        classes={{labelContainer: classes.tabLabelContainer}} value={"report"}
-                        label={"Reports"}/>
+                    <Tab value={"proposal"}
+                         classes={{labelContainer: classes.tabLabelContainer}}
+                         label={"Proposals"}/>
+                    <Tab value={"report"}
+                         classes={{labelContainer: classes.tabLabelContainer}}
+                         label={"Reports"}/>
                 </Tabs>
                 <div>
                     {applicationTabValue === "application" && <DraftList/>}
                     {applicationTabValue === "proposal" && <NotesheetList/>}
-                    {applicationTabValue === "report" && <FileMovement/>}
+                    {applicationTabValue === "report" && <FileMovementList/>}
                 </div>
                 <Divider/>
                 <Tabs
@@ -145,7 +144,7 @@ class FileMenu extends Component {
                 <div>
                     {draftTabValue === "draft" && <DraftList/>}
                     {draftTabValue === "notesheet" && <NotesheetList/>}
-                    {draftTabValue === "movement" && <FileMovement/>}
+                    {draftTabValue === "movement" && <FileMovementList/>}
                 </div>
             </>
         );
@@ -172,7 +171,7 @@ class FileMenu extends Component {
         );
 
         return (
-            <div style={{ flex: 1 }}>
+            <div style={{flex: 1}}>
                 <Button variant="contained" size="small" color="primary" onClick={this.toggleDrawer('left', true)}
                         style={{float: "left", margin: 8}}>
                     Open File Info
@@ -193,10 +192,10 @@ class FileMenu extends Component {
                 >
                     <div className={classes.drawerLeftHeader}>
                         <IconButton onClick={this.toggleDrawer('left', false)}>
-                            <ChevronLeftIcon />
+                            <ChevronLeftIcon/>
                         </IconButton>
                     </div>
-                    <Divider />
+                    <Divider/>
                     {leftList}
                 </Drawer>
 
@@ -211,10 +210,10 @@ class FileMenu extends Component {
                 >
                     <div className={classes.drawerHeader}>
                         <IconButton onClick={this.toggleDrawer('right', false)}>
-                           <ChevronRightIcon />
+                            <ChevronRightIcon/>
                         </IconButton>
                     </div>
-                    <Divider />
+                    <Divider/>
                     {sideList}
                 </Drawer>
             </div>

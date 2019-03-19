@@ -15,9 +15,6 @@ class NotesheetList extends Component {
           <ListItem>
             <ListItemText primary={"Subject three"} secondary={"Created by kimi on 12/12/2017"}/>
           </ListItem>
-          <ListItem>
-            <ListItemText primary={"Subject four"} secondary={"Created by kimi on 12/12/2016"}/>
-          </ListItem>
         </List>
       </div>
     );
