@@ -4,23 +4,25 @@ import PropTypes from "prop-types";
 import {NavLink, withRouter} from "react-router-dom";
 
 // @material-ui/core components
-import withStyles from "@material-ui/core/styles/withStyles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
-
+import {withStyles} from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
+import {Grid} from "@material-ui/core";
 
 // core components
-import pagesHeaderStyle from "assets/jss/material-dashboard-pro-react/components/pagesHeaderStyle.jsx";
-import {IconButton, Typography} from "@material-ui/core";
-import GridContainer from "../Grid/GridContainer";
+import {IconButton} from "@material-ui/core";
 import Button from "../CustomButtons/Button";
 
 import {OfficeRoutes} from "../../config/routes-constant/OfficeRoutes";
 import TopMenu from "./E-Office/TopMenu";
 import MobileTopMenu from "./E-Office/MobileTopMenu";
+
+const styles = theme => {
+
+};
 
 class OfficePageHeader extends React.Component {
     state = {
@@ -66,9 +68,9 @@ class OfficePageHeader extends React.Component {
                         </div>
                     </Hidden>
                     <Hidden smDown>
-                        <GridContainer justify={"space-between"}>
+                        <Grid container justify={"space-between"}>
                             <TopMenu routes={OfficeRoutes} linkClick={this.handleLinkClick}/>
-                        </GridContainer>
+                        </Grid>
                     </Hidden>
                     <Hidden mdUp>
                         <IconButton
@@ -245,4 +247,4 @@ OfficePageHeader.propTypes = {
  };*/
 
 
-export default withRouter(withStyles(pagesHeaderStyle)(OfficePageHeader));
+export default withRouter(withStyles(styles)(OfficePageHeader));

@@ -1,26 +1,33 @@
-import React, { Component } from "react";
-import GridItem from "../../../../components/Grid/GridItem";
-import GridContainer from "../../../../components/Grid/GridContainer";
-import FileInfo from "./FileInfo";
-import FileMenu from "./FileMenu";
+import React, {Component} from "react";
+import {withStyles} from '@material-ui/core/styles';
+
 import ApplicationReport from "./ApplicationReport";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+
+const styles = theme => ({
+    container: {
+        display: "flex"
+    },
+    root: {
+        flexGrow: 1,
+    }
+});
 
 class FileDetail extends Component {
-  render() {
-    return (
-        <GridContainer spacing={0}>
-          <GridItem xs={12} sm={12} md={4}>
-            <FileInfo/>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
-            <ApplicationReport/>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={2}>
-            <FileMenu/>
-          </GridItem>
-        </GridContainer>
-    );
-  }
+    render() {
+        const {classes} = this.props;
+        return (
+            <Grid container className={classes.container}>
+                <Grid item xs={12}>
+                    <Typography variant="title">
+                        Subject:
+                    </Typography>
+                </Grid>
+                <ApplicationReport/>
+            </Grid>
+        );
+    }
 }
 
-export default FileDetail;
+export default withStyles(styles)(FileDetail);

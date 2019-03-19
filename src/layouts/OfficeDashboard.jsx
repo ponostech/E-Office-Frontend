@@ -31,29 +31,29 @@ class OfficeDashboard extends Component {
                     <OfficePageHeader color={"primary"}/>
                 </Grid>
                 <Grid item style={{marginTop: 70, background: 'white'}} xs={12} sm={12} md={12}>
-                        <Route exact path={OfficeRoutes.DESK} component={DeskView}/>
+                    <Route exact path={OfficeRoutes.DESK} component={DeskView}/>
 
-                        <Route exact path={OfficeRoutes.NEW_RECEIPT} component={NewReceipt}/>
-                        <Route exact path={OfficeRoutes.RECEIPT_DETAIL} component={Detail}/>
-                        <Route exact path={OfficeRoutes.CREATED_RECEIPT} component={CreatedReceipt}/>
-                        <Route exact path={OfficeRoutes.SENT_RECEIPT} component={SentReceipt}/>
+                    <Route exact path={OfficeRoutes.NEW_RECEIPT} component={NewReceipt}/>
+                    <Route exact path={OfficeRoutes.RECEIPT_DETAIL} component={Detail}/>
+                    <Route exact path={OfficeRoutes.CREATED_RECEIPT} component={CreatedReceipt}/>
+                    <Route exact path={OfficeRoutes.SENT_RECEIPT} component={SentReceipt}/>
 
-                        <Route exact path={OfficeRoutes.NEW_FILE} component={NewFile}/>
-                        <Route exact path={OfficeRoutes.FILE_DETAIL} component={FileDetail}/>
-                        <Route exact path={OfficeRoutes.CREATED_FILES} component={CreatedFiles}/>
-                        <Route exact path={OfficeRoutes.SENT_FILE} component={SentFiles}/>
+                    <Route exact path={OfficeRoutes.NEW_FILE} component={NewFile}/>
+                    <Route exact path={OfficeRoutes.FILE_DETAIL} component={FileDetail}/>
+                    <Route exact path={OfficeRoutes.CREATED_FILES} component={CreatedFiles}/>
+                    <Route exact path={OfficeRoutes.SENT_FILE} component={SentFiles}/>
 
-                        <Route exact path={OfficeRoutes.OBPAS} component={NewFile}/>
-                        <Route exact path={OfficeRoutes.HOARDINGS} component={HoardingApplications}/>
-                        <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
-                        <Route exact path={OfficeRoutes.BANNERS} component={BannerApplications}/>
-                        <Route exact path={OfficeRoutes.KIOSKS} component={KioskApplications}/>
-                        <Route exact path={OfficeRoutes.SHOP_LICENSES} component={ShopLicenseApplications}/>
+                    <Route exact path={OfficeRoutes.OBPAS} component={NewFile}/>
+                    <Route exact path={OfficeRoutes.HOARDINGS} component={HoardingApplications}/>
+                    <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
+                    <Route exact path={OfficeRoutes.BANNERS} component={BannerApplications}/>
+                    <Route exact path={OfficeRoutes.KIOSKS} component={KioskApplications}/>
+                    <Route exact path={OfficeRoutes.SHOP_LICENSES} component={ShopLicenseApplications}/>
 
-                        <Route exact path={OfficeRoutes.ADVERTISERS} component={AdvertiserApplications}/>
-                        <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
+                    <Route exact path={OfficeRoutes.ADVERTISERS} component={AdvertiserApplications}/>
+                    <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
 
-                        <Route path={OfficeRoutes.SETTING} component={Settings}/>
+                    <Route path={OfficeRoutes.SETTING} component={Settings}/>
                 </Grid>
             </Grid>
         );
