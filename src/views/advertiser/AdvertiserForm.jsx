@@ -29,6 +29,7 @@ import OfficeSnackbar from "../../components/OfficeSnackbar";
 import SubmitDialog from "../../components/SubmitDialog";
 import FileUpload from "../../components/FileUpload";
 import HelpIcon from "@material-ui/icons/Help";
+import { DocumentService } from "../../services/DocumentService";
 
 class AdvertiserForm extends Component {
   constructor(props) {
@@ -61,24 +62,25 @@ class AdvertiserForm extends Component {
       errorMessage: "",
 
       prestine: true,
-      documents: [
-        { id: 1, name: "EPIC", type: "image" },
-        { id: 2, name: "DATA", type: "pdf" }
-      ]
+      documents: []
     };
 
+    this.documentService=new DocumentService();
   }
 
   componentDidMount() {
-    const route = `http://localhost:8000/api/v1/documents/advertiser`;
-    console.log(route);
-    axios.get(route)
-      .then(res => {
-        console.log(res);
+
+    this.documentService.get("advertiser")
+      .then(res=>{
+        if (res.status) {
+          const{documents}=res.data
+          this.setState({documents})
+        }
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err=>{
+          this.setState({errorMessage:err.toString()})
+      })
+
   }
 
   handleClickShowPassword = (e) => {
@@ -381,7 +383,10 @@ class AdvertiserForm extends Component {
 
                 <GridItem xs={12} sm={12} md={6}>
                   {this.state.documents.map((doc, index) =>
-                    <FileUpload key={index} document={doc} onUploadSuccess={(data) => console.log(data)}
+                    <FileUpload key={index} document={doc}
+                                onUploadSuccess={(data) =>{
+                      console.log(data)
+                    }}
                                 onUploadFailure={(err) => console.log(err)}/>
                   )}
                 </GridItem>

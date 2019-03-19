@@ -8,13 +8,12 @@ import DocumentIcon from "@material-ui/icons/Book";
 import ImageIcon from "@material-ui/icons/Image";
 
 const config = {
-  bucketName: process.env.BUCKET_NAME,
+  bucketName: "amc-abpas",
   dirName: "office", /* optional */
-  region: process.env.REGION,
-  accessKeyId: process.env.S3_ACCESS_KEY,
-  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
+  region: "ap-south-1",
+  accessKeyId: "AKIAIBU5VMJNNQUFRKPA",
+  secretAccessKey:"W8hmIvzBCxpd5rPwztzKAk1GR4kKV6K50"
 };
-
 
 class FileUpload extends Component {
   constructor(props) {
@@ -79,21 +78,22 @@ class FileUpload extends Component {
             endAdornment: (
               <InputAdornment position={"end"}>
                 <input
-                  accept={file.type = "image" ? "image/*" : "application/pdf"}
+                  accept={file.mime}
                   style={{ display: "none" }}
                   id={file.id}
                   name={file.name}
                   type={"file"}
                   onChange={(e) => {
                     let item = e.target.files[0];
+
                     let temp = file;
-                    temp.file = temp;
+                    temp.file = item;
                     temp.status = "progress";
                     self.setState({
                       file: temp
                     });
                     S3FileUpload
-                      .uploadFile(file, config)
+                      .uploadFile(item, config)
                       .then(data => {
                         temp.status = "success";
                         self.setState({
