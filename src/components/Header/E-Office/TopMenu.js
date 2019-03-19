@@ -26,34 +26,51 @@ const menu = (props) => {
                 </Button>
 
                 <CustomDropdown
-                    dropdownList={["Create New", "List Created", "List Sent", "All files"]}
+                    dropdownList={[
+                        {title: "Create New", link: routes.NEW_FILE},
+                        {title: "List Created", link: routes.CREATED_FILES},
+                        {title: "List Sent", link: routes.SENT_FILE},
+                        {title: "List Closed", link: routes.CLOSE_FILE},
+                        {title: "Single File", link: routes.FILE_DETAIL},
+                    ]}
+                    linkClick={props.linkClick}
                     buttonText={"File"}
                     buttonProps={{color: "transparent"}}/>
 
                 <CustomDropdown
-                    onClick={props.linkClick.bind(this, '/home')}
-                    dropdownList={["Create New", "List Created", "List Sent"]}
+                    dropdownList={[
+                        {title: "Create New", link: routes.NEW_RECEIPT},
+                        {title: "List Created", link: routes.CREATED_RECEIPT},
+                        {title: "List Sent", link: routes.SENT_RECEIPT},
+                        {title: "List Closed", link: routes.CLOSE_RECEIPT},
+                        {title: "Single Receipt", link: routes.RECEIPT_DETAIL},
+                    ]}
+                    linkClick={props.linkClick}
                     buttonText={"Receipt"}
                     buttonProps={{color: "transparent"}}/>
 
                 <CustomDropdown
-                    onClick={props.linkClick.bind(this, '/home')}
-                    dropdownList={["OBPAS", "Hoarding", "Shop Licensing", "Kiosk", "Banners", "Advertiser"]}
+                    dropdownList={[
+                        {title: "OBPAS", link: routes.OBPAS},
+                        {title: "Hoarding", link: routes.HOARDINGS},
+                        {title: "Shop Licensing", link: routes.SHOP_LICENSES},
+                        {title: "Kiosk", link: routes.KIOSKS},
+                        {title: "Banners", link: routes.BANNERS},
+                        {title: "Advertiser", link: routes.ADVERTISERS},
+                    ]}
+                    linkClick={props.linkClick}
                     buttonText={"Application"}
                     buttonProps={{color: "transparent"}}/>
 
                 <CustomDropdown
-                    onClick={props.linkClick.bind(this, '/home')}
-                    dropdownList={["Report one", "Report two"]}
+                    dropdownList={[
+                        {title: "Report One", link: routes.OBPAS},
+                        {title: "Report Two", link: routes.OBPAS}
+                    ]}
+                    linkClick={props.linkClick}
                     buttonText={"Report"}
                     buttonProps={{color: "transparent"}}/>
 
-                <Button style={{background: "transparent", color: "black"}} onClick={(e) => {
-                }} simple={true}> DSC</Button>
-
-                <Button style={{background: "transparent", color: "black"}} onClick={(e) => {
-                    history.push(routes.ADVERTISERS)
-                }} simple={true}> Advertisers</Button>
             </div>
 
             <div style={{display: "flex", alignItems: "center"}}>

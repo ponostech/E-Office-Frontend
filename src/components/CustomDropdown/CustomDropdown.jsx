@@ -44,8 +44,8 @@ class CustomDropdown extends React.Component {
     if(this.props && this.props.onClick){
       this.props.onClick(param);
     }
-    console.log("update");
   }
+
   render() {
     const { open } = this.state;
     const {
@@ -101,18 +101,21 @@ class CustomDropdown extends React.Component {
                 key={key}
                 className={dropdownItem}
                 style={{ overflow: "visible", padding: 0 }}
+                onMouseUp={() => this.handleCloseMenu(prop)}
+                onClick={this.props.linkClick.bind(this, prop.link)}
               >
-                {prop}
+                {prop.title}
               </MenuItem>
             );
           }
           return (
             <MenuItem
               key={key}
-              onClick={() => this.handleCloseMenu(prop)}
+              onMouseUp={() => this.handleCloseMenu(prop)}
               className={dropdownItem}
+              onClick={this.props.linkClick.bind(this, prop.link)}
             >
-              {prop}
+              {prop.title}
             </MenuItem>
           );
         })}
