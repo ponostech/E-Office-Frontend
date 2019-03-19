@@ -1,7 +1,7 @@
 export class BannerViewModel {
   static TITLE = "List of Banner Applications";
   static SUB_HEADER = "Please fill out the form and submit your application";
-  static PRIMARY_TEXT = "Save";
+  static PRIMARY_TEXT = "Submit";
   static SECONDARY_TEXT = "Reset";
   static NAME = "Name";
   static LOCATION = "Location";
@@ -27,5 +27,7 @@ export class BannerViewModel {
   static ADDRESS_REQUIRED="Address is required";
   static PHONE_REQUIRED="Mobile Number is required";
   static DOB_FUTURE_ERROR="Date of birth can't be a future";
+  static LOCALCOUNCIL="Local Council";
+  static DETAILS="Details"
 
 }
