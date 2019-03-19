@@ -10,5 +10,6 @@ export class ApiRoutes {
   static NEW_HOARDING="/hoardings";
   static NEW_KIOSK="/kiosks";
   static DOCUMENTS="/documents";
+  static CREATE_SHOP_LICENSE="shop-license";
 
 }

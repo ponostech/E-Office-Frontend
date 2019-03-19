@@ -14,22 +14,22 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: "#26B99A",
-      contrastText:"#fff"
+      contrastText: "#fff"
     },
-    secondary:{
+    secondary: {
       main: "#b93e46",
-      contrastText:'#fff'
-    },
+      contrastText: "#fff"
+    }
 
   },
   // shadows:["none"],
   props: {
-    MuiAppBar:{
-      elevation:2
+    MuiAppBar: {
+      elevation: 2
     },
-    MuiCard:{
-      raised:false,
-      elevation:0
+    MuiCard: {
+      raised: false,
+      elevation: 0
     },
     MuiInput: {
       color: "#26B99A"
@@ -38,8 +38,9 @@ const theme = createMuiTheme({
     MuiButtonBase: {
       // The properties to apply
       disableRipple: true, // No more ripple, on the whole application 💣!
-      color:'#fff'
-    }
+      color: "#fff"
+    },
+
   }
 });
 const hist = createBrowserHistory();
