@@ -1,3 +1,4 @@
+/*
 import React, {Component} from "react";
 import {Tab, Tabs} from "@material-ui/core";
 import DraftList from "../draft/DraftList";
@@ -124,4 +125,4 @@ class FileInfo extends Component {
     }
 }
 
-export default withStyles(styles)(FileInfo);
+export default withStyles(styles)(FileInfo);*/

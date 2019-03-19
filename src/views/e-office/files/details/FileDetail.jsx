@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import {withStyles} from '@material-ui/core/styles';
 
 import ApplicationReport from "./ApplicationReport";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
     container: {
@@ -16,9 +18,14 @@ class FileDetail extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <div className={classes.container}>
+            <Grid container className={classes.container}>
+                <Grid item xs={12}>
+                    <Typography variant="title">
+                        Subject:
+                    </Typography>
+                </Grid>
                 <ApplicationReport/>
-            </div>
+            </Grid>
         );
     }
 }

@@ -37,15 +37,11 @@ class ApplicationReport extends Component {
         const { classes } = this.props;
         return (
             <>
-                <Typography variant="h6" gutterBottom>
-                    Notesheet{/*
-                    <FileInfo/>
-                    <FileMenu/>*/}
-                </Typography>
-                <Button variant="contained" color="primary" size="small" className={classes.button}>
+                <Button variant="contained" size="small"  color="primary" className={classes.button}>
                     Create Note
                     <Icon className={classes.rightIcon}>add</Icon>
                 </Button>
+                <FileMenu/>
                 <List className={classes.root}>
                     <ListItem alignItems="flex-start">
                         <ListItemAvatar>
