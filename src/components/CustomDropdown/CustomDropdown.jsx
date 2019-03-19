@@ -111,8 +111,8 @@ class CustomDropdown extends React.Component {
           return (
             <MenuItem
               key={key}
-              onMouseUp={() => this.handleCloseMenu(prop)}
               className={dropdownItem}
+              onMouseUp={() => this.handleCloseMenu(prop)}
               onClick={this.props.linkClick.bind(this, prop.link)}
             >
               {prop.title}
