@@ -5,7 +5,7 @@ class SubmitDialog extends Component {
   render() {
     const { open,text } = this.props;
     return (
-      <Dialog open={open}>
+      <Dialog fullWidth={true} maxWidth={"sm"} open={open}>
         <DialogTitle title={"Submit"}>
           Submit
         </DialogTitle>
