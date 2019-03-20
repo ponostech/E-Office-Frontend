@@ -1,5 +1,4 @@
 import React from "react";
-import cx from "classnames";
 import { NavLink, withRouter } from "react-router-dom";
 // @material-ui/core components
 import AppBar from "@material-ui/core/AppBar";
@@ -52,16 +51,8 @@ class AdvertiserHeader extends React.Component {
 
   handleHoarding = (e) => {
     const { history } = this.props;
-    switch (e) {
-      case "New Hoarding proposal":
-        history.push(OfficeRoutes.ADVERTISER_NEW_HOARDING);
-        break;
-      case "List of Hoardings":
-        history.push(OfficeRoutes.ADVERTISER_HOARDING);
-        break;
-      default:
-        break;
-    }
+    history.push(OfficeRoutes.ADVERTISER_NEW_HOARDING);
+
   };
 
   handleKiosk = (e) => {
@@ -96,19 +87,16 @@ class AdvertiserHeader extends React.Component {
           </IconButton>
 
           <CustomDropdown
-            onClick={this.handleHoarding.bind(this)}
-            dropdownList={["New Hoarding proposal", "List of Hoardings"]}
+            dropdownList={[
+              { title: "New hoarding", link: OfficeRoutes.ADVERTISER_NEW_HOARDING },
+              { title: "List Created", link: OfficeRoutes.CREATED_FILES },
+              { title: "List Sent", link: OfficeRoutes.SENT_FILE },
+              { title: "List Closed", link: OfficeRoutes.CLOSE_FILE },
+              { title: "Single File", link: OfficeRoutes.FILE_DETAIL }
+            ]}
+            linkClick={this.handleHoarding.bind(this)}
             buttonText={"Hoarding"}
             buttonProps={{ color: "transparent" }}/>
-
-          <CustomDropdown
-            onClick={this.handleKiosk.bind(this)}
-            dropdownList={["New Kiosk proposal", "List of Kiosks"]}
-            buttonText={"Kiosk"}
-            buttonProps={{ color: "transparent" }}/>
-
-          <Button variant={"text"} size={"small"}  onClick={(e) => {
-          }}> License</Button>
 
         </div>
 
