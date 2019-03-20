@@ -12,7 +12,8 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  TextField
+  TextField,
+  Typography
 } from "@material-ui/core";
 
 import { ShopLicenseViewModel } from "../model/ShopLicenseViewModel";
@@ -25,42 +26,40 @@ import SubmitDialog from "../../components/SubmitDialog";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
 import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
-import moment from "moment";
 
 class ShopLicenseApplicationForm extends Component {
   documentService = new DocumentService();
   state = {
     name: "",
-    ownership: undefined,
-    trade: undefined,
-    display_type: undefined,
-
-    address: "",
-
-    owner_addressError: "",
-    signature: null,
     phone: "",
-    applicant_type: "",
-    local_council_id: "",
-    advertisement_type: "",
-    display_on: "",
-    locations: "",
-    length: "",
-    height: "",
-    from: "",
-    to: "",
-    latitude: 0,
-    longitude: 0,
-    details: "",
-    premise_type: "Owned",
+    type: "",
+    email: "",
+    address: "",
+    places: "",
+    tradeName: "",
+    shopName: "",
+    latitude: undefined,
+    longitude: undefined,
+    businessDetail: "",
+    estd: undefined,
+    tinNo: "",
+    cstNo: "",
+    gstNo: "",
+    panNo: "",
+    premised: "Owned",
+    displayType: undefined,
+
+    uploadDocuments: [],
 
     nameError: "",
+    typeError: "",
     addressError: "",
+    coordinateError: "",
     phoneError: "",
-    detailsError: "",
-    estd:undefined,
+    shopNameError: "",
+    businessDetailError: "",
     estdError: "",
-    ownerError: "",
+
     display_types: [
       { value: "vehicle", label: "Vehicle" },
       { value: "umbrella", label: "Umbrella" },
@@ -69,7 +68,7 @@ class ShopLicenseApplicationForm extends Component {
       { value: "audio/sound", label: "Audio/Sound" },
       { value: "others", label: "Others" }
     ],
-    ownerships: [
+    types: [
       { value: "proprietor", label: "Proprietor" },
       { value: "partnership", label: "Partnership" },
       { value: "private limited", label: "Private Limited" }
@@ -79,6 +78,7 @@ class ShopLicenseApplicationForm extends Component {
       { value: "2", label: "2" },
       { value: "3", label: "3" }
     ],
+
     agree: false,
     submit: false,
     complete: false,
@@ -94,7 +94,7 @@ class ShopLicenseApplicationForm extends Component {
     // this.state.ownership = this.state.ownerships[0];
     // this.state.display_type = this.state.display_types[0];
     // this.state.trade = this.state.trades[0];
-    console.log(this.state.estd)
+    console.log(this.state.estd);
     this.fetchDocuments();
   }
 
@@ -123,11 +123,11 @@ class ShopLicenseApplicationForm extends Component {
       case "trade":
         this.setState({ trade: value });
         break;
-      case "ownership":
-        this.setState({ ownership: value });
+      case "type":
+        this.setState({ type: value });
         break;
-      case "display_type":
-        this.setState({ display_type: value });
+      case "displayType":
+        this.setState({ displayType: value });
         break;
       default:
         break;
@@ -139,7 +139,7 @@ class ShopLicenseApplicationForm extends Component {
   };
   handleRadio = (e) => {
     this.setState({
-      premise_type: e.target.value
+      premised: e.target.value
     });
   };
 
@@ -157,7 +157,7 @@ class ShopLicenseApplicationForm extends Component {
           owner_address: "",
           details: "",
           premise_type: "",
-          ownership: this.state.ownerships[0],
+          ownership: this.state.types[0],
           display_type: this.state.display_types[0],
           trade: this.state.trades[0],
           signature: null
@@ -168,32 +168,21 @@ class ShopLicenseApplicationForm extends Component {
     }
   };
 
-  onSignatureSelect = (signature) => {
-    this.setState({ signature });
+  handleSelectBlur = (identifier,e) => {
+    const { value } = e.target;
+    console.log(e.target)
+    switch (identifier) {
+      case 'type':
+        this.state.type?this.setState({typeError:''}):this.setState({typeError:ShopLicenseViewModel.TYPE_REQUIRED})
+        break;
+    }
   };
-  onSignatureRemove = () => {
-    this.setState({ signature: null });
-  };
-  setImagePreviewUrl = (url) => {
-
-  };
-
   handleBlur = (e) => {
     const { name, value } = e.target;
-    /*console.log(name);
-    console.log(value);*/
-    console.log(value.length);
 
     switch (name) {
-      case "owner":
-        value.length === 0 ? this.setState({ ownerError: ShopLicenseViewModel.OWNER_REQUIRED }) : this.setState({ ownerError: "" });
-        break;
-      case "owner_address":
-        value.length === 0 ? this.setState({ owner_addressError: ShopLicenseViewModel.OWNER_ADDRESS_REQUIRED }) : this.setState({ owner_addressError: "" });
-        break;
-
       case "name":
-        value.length === 0 ? this.setState({ nameError: ShopLicenseViewModel.NAME_REQUIRED }) : this.setState({ nameError: "" });
+        value.length === 0 ? this.setState({ ownerError: ShopLicenseViewModel.OWNER_REQUIRED }) : this.setState({ ownerError: "" });
         break;
       case "address":
         value.length === 0 ? this.setState({ addressError: ShopLicenseViewModel.ADDRESS_REQUIRED }) : this.setState({ addressError: "" });
@@ -215,230 +204,286 @@ class ShopLicenseApplicationForm extends Component {
 
   render() {
     const { ownership, display_type, trade } = this.state;
-    const { classes } = this.props;
 
     return (
 
-      <GridContainer justify="center">
+      <GridContainer justify="flex-start">
         <GridItem xs={12} sm={12} md={10}>
           <form>
             <Card>
-              <CardHeader style={{ textAlign: "center" }} title={ShopLicenseViewModel.TITLE}
-                          subheader={ShopLicenseViewModel.SUB_HEADER}/>
+              <CardHeader title={ShopLicenseViewModel.TITLE}/>
 
               <CardContent>
                 <GridContainer>
                   <GridItem md={12} sm={12} xs={12}>
                     <Divider style={{ marginBottom: 10 }}/>
                   </GridItem>
-                  <GridItem md={6} sm={12} xs={12}>
-                    <TextField
-                      value={this.state.owner}
-                      ref={"nameRef"}
-                      name={"owner"}
-                      onBlur={this.handleBlur.bind(this)}
-                      required={true}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={ShopLicenseViewModel.OWNER}
-                      error={Boolean(this.state.ownerError)}
-                      helperText={this.state.ownerError}
-                    />
-                    <TextField
-                      value={this.state.phone}
-                      ref={"phoneRef"}
-                      onBlur={this.handleBlur.bind(this)}
-                      required={true}
-                      name={"phone"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={ShopLicenseViewModel.PHONE}
-                      error={Boolean(this.state.phoneError)}
-                      helperText={this.state.phoneError}
-                    />
-                    <OfficeSelect
-                      variant={"outlined"}
-                      margin={"dense"}
-                      value={ownership}
-                      required={true}
-                      fullWidth={true}
-                      name={"type"}
-                      onChange={this.handleSelect.bind(this, "ownership")}
-                      ClearAble={true}
-                      label={ShopLicenseViewModel.APPLICANT_TYPE}
-                      options={this.state.ownerships}/>
-                    <TextField
-                      value={this.state.owner_address}
-                      name={"owner_address"}
-                      onBlur={this.handleBlur.bind(this)}
-                      required={true}
-                      multiline={true}
-                      rows={3}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      error={Boolean(this.state.owner_addressError)}
-                      helperText={this.state.owner_addressError}
-                      onChange={this.handleChange.bind(this)}
-                      label={ShopLicenseViewModel.OWNER_ADDRESS}/>
-                    <TextField
-                      type={"email"}
-                      value={this.state.email}
-                      ref={"nameRef"}
-                      name={"email"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={ShopLicenseViewModel.EMAIL}
-                    />
-                    <TextField
-                      value={this.state.name}
-                      ref={"nameRef"}
-                      name={"name"}
-                      onBlur={this.handleBlur.bind(this)}
-                      required={true}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={ShopLicenseViewModel.NAME}
-                      error={Boolean(this.state.nameError)}
-                      helperText={this.state.nameError}
-                    />
-                    <OfficeSelect
-                      variant={"outlined"}
-                      margin={"dense"}
-                      value={trade}
-                      fullWidth={true}
-                      name={"trade_id"}
-                      onChange={this.handleSelect.bind(this, "trade")}
-                      ClearAble={true}
-                      label={ShopLicenseViewModel.TRADE_TYPE}
-                      options={this.state.trades}/>
-                    <TextField
-                      value={this.state.address}
-                      name={"address"}
-                      onBlur={this.handleBlur.bind(this)}
-                      required={true}
-                      multiline={true}
-                      rows={3}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      error={Boolean(this.state.addressError)}
-                      helperText={this.state.addressError}
-                      onChange={this.handleChange.bind(this)}
-                      label={ShopLicenseViewModel.ADDRESS}/>
-                    <TextField
-                      value={this.state.details}
-                      ref={"nameRef"}
-                      name={"details"}
-                      onBlur={this.handleBlur.bind(this)}
-                      required={true}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={ShopLicenseViewModel.DETAILS}
-                      error={Boolean(this.state.detailsError)}
-                      helperText={this.state.detailsError}
-                    />
-                    <TextField name={"estd"}
-                               value={this.state.estd}
-                               variant={"outlined"}
-                               margin={"dense"}
-                               required={true}
-                               onBlur={this.handleBlur.bind(this)}
-                               fullWidth={true}
-                               onChange={this.handleChange.bind(this)}
-                               type={"date"}
-                               InputLabelProps={
-                                 { shrink: true }
-                               }
-                               label={ShopLicenseViewModel.ESTD}
-                               error={Boolean(this.state.estdError)}
-                               helperText={this.state.estdError}
-                    />
-                    <TextField
-                      value={this.state.tin_no}
-                      name={"tin_no"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={ShopLicenseViewModel.TIN_NO}
-                    />
-                    <TextField
-                      value={this.state.cst_no}
-                      name={"cst_no"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={ShopLicenseViewModel.CST_NO}
-                    />
-                    <TextField
-                      value={this.state.pan_no}
-                      name={"pan_no"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={ShopLicenseViewModel.PAN_NO}
-                    />
-                    <TextField
-                      value={this.state.gst_no}
-                      name={"gst_no"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={ShopLicenseViewModel.GST_NO}
-                    />
-                    <FormControl fullWidth={true} margin={"dense"}>
-                      <FormLabel>Whether Premises owned or leased?</FormLabel>
-                      <RadioGroup
-                        name={"premise_type"}
-                        row={true}
-                        value={this.state.premise_type}
-                        onChange={this.handleRadio.bind(this)}
-                      >
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField
+                        value={this.state.name}
+                        ref={"nameRef"}
+                        name={"owner"}
+                        onBlur={this.handleBlur.bind(this)}
+                        required={true}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        onChange={this.handleChange.bind(this)}
+                        label={ShopLicenseViewModel.OWNER}
+                        error={Boolean(this.state.nameError)}
+                        helperText={this.state.nameError}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField
+                        value={this.state.phone}
+                        onBlur={this.handleBlur.bind(this)}
+                        required={true}
+                        name={"phone"}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        onChange={this.handleChange.bind(this)}
+                        label={ShopLicenseViewModel.PHONE}
+                        error={Boolean(this.state.phoneError)}
+                        helperText={this.state.phoneError}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <OfficeSelect
+                        variant={"outlined"}
+                        margin={"dense"}
+                        value={this.state.type}
+                        required={true}
+                        fullWidth={true}
+                        name={"type"}
+                        error={!!this.state.typeError}
+                        onBlur={this.handleSelectBlur.bind(this, "type")}
+                        onChange={this.handleSelect.bind(this, "type")}
+                        ClearAble={true}
+                        label={ShopLicenseViewModel.APPLICANT_TYPE}
+                        helperText={this.state.typeError}
+                        options={this.state.types}/>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField
+                        type={"email"}
+                        value={this.state.email}
+                        name={"email"}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        onChange={this.handleChange.bind(this)}
+                        label={ShopLicenseViewModel.EMAIL}
+                      />
 
-                        <FormControlLabel value={"Owned"} control={<Radio/>} label={"Owned"}/>
-                        <FormControlLabel value={"Leased"} control={<Radio/>} label={"Leased"}/>
-                      </RadioGroup>
-                    </FormControl>
-                    <OfficeSelect value={display_type}
-                                  label={ShopLicenseViewModel.DISPLAY_TYPE}
-                                  name={"display_on"}
-                                  variant={"outlined"}
-                                  margin={"dense"}
-                                  fullWidth={true}
-                                  onChange={this.handleSelect.bind(this, "display_type")}
-                                  options={this.state.display_types}/>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField
+                        value={this.state.address}
+                        name={"address"}
+                        onBlur={this.handleBlur.bind(this)}
+                        required={true}
+                        multiline={true}
+                        rows={3}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        error={Boolean(this.state.addressError)}
+                        helperText={this.state.addressError}
+                        onChange={this.handleChange.bind(this)}
+                        label={ShopLicenseViewModel.OWNER_ADDRESS}/>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField
+                        value={this.state.coordinate}
+                        name={"address"}
+                        onBlur={this.handleBlur.bind(this)}
+                        required={true}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        error={Boolean(this.state.coordinateError)}
+                        helperText={this.state.coordinateError}
+                        onChange={this.handleChange.bind(this)}
+                        label={ShopLicenseViewModel.ADDRESS}/>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <OfficeSelect
+                        variant={"outlined"}
+                        margin={"dense"}
+                        value={trade}
+                        fullWidth={true}
+                        name={"trade"}
+                        onChange={this.handleSelect.bind(this, "trade")}
+                        ClearAble={true}
+                        label={ShopLicenseViewModel.TRADE_TYPE}
+                        options={this.state.trades}/>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField
+                        value={this.state.shopName}
+                        name={"name"}
+                        onBlur={this.handleBlur.bind(this)}
+                        required={true}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        onChange={this.handleChange.bind(this)}
+                        label={ShopLicenseViewModel.SHOP_NAME}
+                        error={Boolean(this.state.shopNameError)}
+                        helperText={this.state.shopNameError}
+                      />
+
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField
+                        value={this.state.businessDetail}
+                        ref={"nameRef"}
+                        name={"details"}
+                        onBlur={this.handleBlur.bind(this)}
+                        required={true}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        onChange={this.handleChange.bind(this)}
+                        label={ShopLicenseViewModel.DETAILS}
+                        error={Boolean(this.state.businessDetailError)}
+                        helperText={this.state.businessDetailError}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField name={"estd"}
+                                 value={this.state.estd}
+                                 variant={"outlined"}
+                                 margin={"dense"}
+                                 required={true}
+                                 onBlur={this.handleBlur.bind(this)}
+                                 fullWidth={true}
+                                 onChange={this.handleChange.bind(this)}
+                                 type={"date"}
+                                 InputLabelProps={
+                                   { shrink: true }
+                                 }
+                                 label={ShopLicenseViewModel.ESTD}
+                                 error={Boolean(this.state.estdError)}
+                                 helperText={this.state.estdError}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField
+                        value={this.state.tinNo}
+                        name={"tin_no"}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        onChange={this.handleChange.bind(this)}
+                        label={ShopLicenseViewModel.TIN_NO}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField
+                        value={this.state.cstNo}
+                        name={"cst_no"}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        onChange={this.handleChange.bind(this)}
+                        label={ShopLicenseViewModel.CST_NO}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField
+                        value={this.state.panNo}
+                        name={"pan_no"}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        onChange={this.handleChange.bind(this)}
+                        label={ShopLicenseViewModel.PAN_NO}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <TextField
+                        value={this.state.gstNo}
+                        name={"gst_no"}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        onChange={this.handleChange.bind(this)}
+                        label={ShopLicenseViewModel.GST_NO}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <FormControl fullWidth={true} margin={"dense"}>
+                        <FormLabel>Whether Premises owned or leased?</FormLabel>
+                        <RadioGroup
+                          name={"premised"}
+                          row={true}
+                          value={this.state.premised}
+                          onChange={this.handleRadio.bind(this)}
+                        >
+
+                          <FormControlLabel value={"Owned"} control={<Radio/>} label={"Owned"}/>
+                          <FormControlLabel value={"Leased"} control={<Radio/>} label={"Leased"}/>
+                        </RadioGroup>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <OfficeSelect value={this.state.displayType}
+                                    label={ShopLicenseViewModel.DISPLAY_TYPE}
+                                    name={"displayType"}
+                                    variant={"outlined"}
+                                    margin={"dense"}
+                                    fullWidth={true}
+                                    onChange={this.handleSelect.bind(this, "display_type")}
+                                    options={this.state.display_types}/>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <FileUpload required={true} document={{ id: 1, name: "Signature", mime: "image/*" }}
+                                  onUploadSuccess={(data) => {
+                                    this.setState(state => {
+                                      state.signature = {
+                                        name: "signature",
+                                        path: data.location
+                                      };
+                                    });
+                                  }} onUploadFailure={(err) => {
+                        console.log(err);
+                      }}/>
+                    </GridItem>
+                  </GridContainer>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                   </GridItem>
-                  <GridItem sm={12} xs={12} md={6}>
-                    <FileUpload required={true} document={{ id: 1, name: "Signature", mime: "image/*" }}
-                                onUploadSuccess={(data) => {
-                                  console.log(data);
-                                }} onUploadFailure={(err) => {
-                      console.log(err);
-                    }}/>
+                  <GridContainer justify={"flex-start"}>
+                    <Typography style={{ marginTop: 20, marginBottom: 10 }} variant={"headline"}>Upload
+                      Document</Typography>
+                  </GridContainer>
+                  <GridContainer>
+
                     {
                       this.state.documents.map((doc, index) => {
-                        return <FileUpload key={index} document={doc} onUploadSuccess={(data) => {
-                          console.log(data);
-                        }} onUploadFailure={(err) => {
-                          console.log(err);
-                        }}/>;
+                        return <GridItem sm={12} xs={12} md={6}>
+
+                          <FileUpload key={index} document={doc} onUploadSuccess={(data) => {
+                            let temp = {
+                              name: doc.name,
+                              path: data.location
+                            };
+                            this.setState(state => {
+                              state.uploadDocuments.push(temp);
+                            });
+                          }} onUploadFailure={(err) => {
+                            console.log(err);
+                          }}/>
+                        </GridItem>;
+
                       })
                     }
-                  </GridItem>
+                  </GridContainer>
+
                 </GridContainer>
 
                 <GridItem xs={12} sm={12} md={12}>
@@ -460,7 +505,10 @@ class ShopLicenseApplicationForm extends Component {
                             onClick={this.handleClick.bind(this)}>
                       {ShopLicenseViewModel.PRIMARY_TEXT}
                     </Button>
-                    {" "}
+                    {"\u00A0 "}
+                    {"\u00A0 "}
+                    {"\u00A0 "}
+                    {"\u00A0 "}
                     <Button name={"secondary"}
                             color={"secondary"}
                             variant={"outlined"}

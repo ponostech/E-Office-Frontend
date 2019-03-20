@@ -31,11 +31,8 @@ class BannerDetail extends Component {
 
     detailList:[],
 
-    invalid: false
+    invalid: true,
   };
-  componentDidMount() {
-    this.setValidity()
-  }
 
   handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,8 +40,12 @@ class BannerDetail extends Component {
       [name]:value
     })
 
-    this.setValidity()
+   this.setValidity()
   };
+
+  getBannerDetails=()=>{
+    return this.state.detailList;
+  }
   handleBlur = (e) => {
     const { name, value } = e.target;
     switch (name) {
@@ -64,10 +65,19 @@ class BannerDetail extends Component {
         value.length === 0 ? this.setState({ toError: "To field is required" }) : this.setState({ toError: "" });
         break;
     }
-    this.setValidity()
   };
 
   handleAdd = (e) => {
+
+    const invalid=Boolean(this.state.lengthError) ||
+    Boolean(this.state.heightError) ||
+    Boolean(this.state.locationsError) ||
+    Boolean(this.state.fromError) ||
+    Boolean(this.state.toError) || this.state.prestine;
+
+    if (invalid) {
+      return
+    }
     const { length, height, locations, from, to } = this.state;
     let temp = {
       length, height, locations, from, to
@@ -80,7 +90,8 @@ class BannerDetail extends Component {
       height:'',
       locations:'',
       from:'',
-      to:''
+      to:'',
+      invalid:true
     })
   };
 
@@ -98,11 +109,11 @@ class BannerDetail extends Component {
   };
 
   setValidity=()=>{
-    const invalid= !!this.state.lengthError ||
-      !!this.state.heightError ||
-      !!this.state.locationsError ||
-      !!this.state.fromError ||
-      !!this.state.toError
+    const invalid= Boolean(this.state.lengthError) ||
+      Boolean(this.state.heightError) ||
+      Boolean(this.state.locationsError) ||
+      Boolean(this.state.fromError) ||
+      Boolean(this.state.toError)
 
     this.setState({invalid})
   }
@@ -195,7 +206,8 @@ class BannerDetail extends Component {
           </GridItem>
           <GridItem style={{padding:4}}  sm={12} md={1}>
             <Tooltip title={"Click here to add"}>
-              <IconButton disabled={this.state.invalid} onClick={this.handleAdd.bind(this)} color={"primary"}>
+              <IconButton  disabled={this.state.invalid
+              } onClick={this.handleAdd.bind(this)} color={"primary"}>
                 <AddIcon fontSize={"large"} color={"inherit"}/>
               </IconButton>
             </Tooltip>
@@ -207,7 +219,7 @@ class BannerDetail extends Component {
         </GridContainer>
         <GridContainer>
          <GridItem xs={12} sm={12} md={12}>
-           <Divider/>
+           <Divider style={{marginTop:10}}/>
            <List style={{padding:"4px"}}>
              {this.state.detailList.map((item,index)=>{
                return (

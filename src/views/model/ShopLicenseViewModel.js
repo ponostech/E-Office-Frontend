@@ -11,7 +11,7 @@ export class ShopLicenseViewModel {
   static OWNER = "Name of Applicant";
   static EMAIL = "Email";
   static TRADE = "Trade";
-  static NAME = "Name of Shop or Firm";
+  static SHOP_NAME = "Name of Shop or Firm";
   static LOCATION = "Location";
   static Ownership = "Ownership";
   static APPLICANT_TYPE = "Type of Applicant";
@@ -25,6 +25,7 @@ export class ShopLicenseViewModel {
   static PAN_NO = "PAN No";
   static GST_NO = "GST No";
   static ESTD = "Date of Establishment";
+  static DISPLAY_TYPE = "Type of Display";
 
 
   static ATTACHMENT_LABEL="Upload signature";
@@ -37,9 +38,8 @@ export class ShopLicenseViewModel {
   static NAME_REQUIRED="Shop/Firm Name is required";
   static ADDRESS_REQUIRED="Location is required";
   static DETAILS_REQUIRED="Details of Business is required";
-  static OWNER_ADDRESS_REQUIRED="Residential Address is required";
   static ESTD_REQUIRED="Date of establishment is required";
   static PHONE_REQUIRED="Mobile Number is required";
-  static DOB_FUTURE_ERROR="Date of establishment can't be a future";
+  static TYPE_REQUIRED="Type of applicant is required";
 
 }

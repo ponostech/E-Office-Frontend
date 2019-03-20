@@ -22,6 +22,7 @@ const theme = createMuiTheme({
     }
 
   },
+  spacing:[4,8,12,16,20],
   // shadows:["none"],
   props: {
     MuiAppBar: {
