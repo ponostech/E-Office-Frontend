@@ -4,7 +4,8 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader, Checkbox,
+  CardHeader,
+  Checkbox,
   Divider,
   FormControlLabel,
   TextField,
@@ -21,6 +22,7 @@ import BannerDetail from "./BannerDetail";
 import { LocalCouncilService } from "../../services/LocalCouncilService";
 import FileUpload from "../../components/FileUpload";
 
+
 class BannerApplicationForm extends Component {
   localCouncilservice = new LocalCouncilService();
 
@@ -35,7 +37,7 @@ class BannerApplicationForm extends Component {
     signature: undefined,
     localCouncils: [],
 
-    agree:false,
+    agree: false,
     display_types: [
       { value: "", label: "Please Select" },
       { value: "vehicle", label: "Vehicle" },
@@ -187,11 +189,11 @@ class BannerApplicationForm extends Component {
               <CardContent>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <Divider style={{marginBottom:10}}/>
+                    <Divider style={{ marginBottom: 10 }}/>
                   </GridItem>
                 </GridContainer>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={4}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <TextField
                       value={this.state.name}
                       name={"name"}
@@ -205,6 +207,19 @@ class BannerApplicationForm extends Component {
                       error={Boolean(this.state.nameError)}
                       helperText={this.state.nameError}
                     />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <OfficeSelect
+                      value={this.state.type}
+                      label={BannerViewModel.APPLICANT_TYPE}
+                      name={"type"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleSelect.bind(this, "type")}
+                      options={this.state.types}/>
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
                     <TextField
                       value={this.state.phone}
                       onBlur={this.handleBlur.bind(this)}
@@ -217,17 +232,8 @@ class BannerApplicationForm extends Component {
                       error={Boolean(this.state.phoneError)}
                       helperText={this.state.phoneError}
                       label={BannerViewModel.PHONE_NO}/>
-
-                    <OfficeSelect
-                      value={this.state.type}
-                      label={BannerViewModel.APPLICANT_TYPE}
-                      name={"type"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleSelect.bind(this, "type")}
-                      options={this.state.types}/>
-
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
                     <OfficeSelect
                       value={this.state.localCouncil}
                       label={BannerViewModel.LOCALCOUNCIL}
@@ -237,6 +243,22 @@ class BannerApplicationForm extends Component {
                       fullWidth={true}
                       onChange={this.handleSelect.bind(this, "localCouncil")}
                       options={this.state.localCouncils}/>
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.details}
+                      name={"details"}
+                      onBlur={this.handleBlur.bind(this)}
+                      multiline={true}
+                      rows={3}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleChange.bind(this)}
+                      label={BannerViewModel.DETAILS}/>
+
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
                     <TextField
                       value={this.state.address}
                       name={"address"}
@@ -251,7 +273,8 @@ class BannerApplicationForm extends Component {
                       helperText={this.state.addressError}
                       onChange={this.handleChange.bind(this)}
                       label={BannerViewModel.ADDRESS}/>
-
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
                     <OfficeSelect
                       variant={"outlined"}
                       margin={"dense"}
@@ -262,19 +285,8 @@ class BannerApplicationForm extends Component {
                       ClearAble={true}
                       label={BannerViewModel.DISPLAY_TYPE}
                       options={this.state.display_types}/>
-
-                    <TextField
-                      value={this.state.details}
-                      name={"details"}
-                      onBlur={this.handleBlur.bind(this)}
-                      multiline={true}
-                      rows={3}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={BannerViewModel.DETAILS}/>
-
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
                     <FileUpload required={true} document={{ id: 1, name: "Signature of applicant" }}
                                 onUploadSuccess={(data) => {
 
@@ -282,50 +294,49 @@ class BannerApplicationForm extends Component {
 
                     }}/>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={8}>
-                    <Typography variant={"headline"}>Add Banner details</Typography>
-                    <Divider style={{marginTop:10,marginBottom:10}}/>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={12}>
+
+                    <Typography variant={"headline"}> Banner details</Typography>
+                    <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                     <BannerDetail/>
                   </GridItem>
 
                 </GridContainer>
                 {/*<GridContainer justify={"center"}>*/}
-                  {/*<GridItem xs={12} sm={12} md={12}>*/}
-                    {/*<Typography variant={"headline"}>Add Banner details</Typography>*/}
-                    {/*<Divider style={{marginBottom:10,marginTop:10}}/>*/}
-                    {/*<BannerDetail/>*/}
-                  {/*</GridItem>*/}
+                {/*<GridItem xs={12} sm={12} md={12}>*/}
+                {/*<Typography variant={"headline"}>Add Banner details</Typography>*/}
+                {/*<Divider style={{marginBottom:10,marginTop:10}}/>*/}
+                {/*<BannerDetail/>*/}
+                {/*</GridItem>*/}
                 {/*</GridContainer>*/}
                 <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <FormControlLabel control={
-                        <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
-                      }
-                                        label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoarding Regulations 2013," +
-                                        " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <FormControlLabel control={
+                      <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
+                    }
+                                      label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoarding Regulations 2013," +
+                                      " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
                   </GridItem>
                 </GridContainer>
 
               </CardContent>
-              <CardActions>
-                <GridContainer justify={"flex-end"}>
-                  <GridItem>
-                    <Button name={"primary"} disabled={!this.state.agree}
-                            color={"primary"} variant={"outlined"}
-                            onClick={this.handleClick.bind(this)}>
-                      {BannerViewModel.PRIMARY_TEXT}
-                    </Button>
-                    {" "}
-                    <Button name={"secondary"}
-                            color={"secondary"}
-                            variant={"outlined"}
-                            onClick={this.handleClick.bind(this)}>
-                      {BannerViewModel.SECONDARY_TEXT}
-                    </Button>
-                  </GridItem>
-                </GridContainer>
-
-
+              <CardActions style={{ justifyContent: "flex-end" }}>
+                <div>
+                  <Button name={"primary"} disabled={!this.state.agree}
+                          color={"primary"} variant={"outlined"}
+                          onClick={this.handleClick.bind(this)}>
+                    {BannerViewModel.PRIMARY_TEXT}
+                  </Button>
+                  {" "}
+                  <Button name={"secondary"}
+                          color={"secondary"}
+                          variant={"outlined"}
+                          onClick={this.handleClick.bind(this)}>
+                    {BannerViewModel.SECONDARY_TEXT}
+                  </Button>
+                </div>
               </CardActions>
 
             </Card>
