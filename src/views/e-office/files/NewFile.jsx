@@ -5,41 +5,40 @@ import {Button, Card, CardActions, CardContent, CardHeader, TextField} from "@ma
 import {NewFileViewModel} from "../../model/NewFileViewModel";
 import OfficeSelect from "../../../components/OfficeSelect";
 import {OfficeRoutes} from "../../../config/routes-constant/OfficeRoutes";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 class NewFile extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            fileNo: "",
-            subject: "",
-            dealer: null,
-            category: null,
-            classification: null,
-            remark: "",
-            prevRef: null,
-            nextRef: null,
+    state = {
+        fileNo: "",
+        subject: "",
+        dealer: null,
+        category: null,
+        classification: null,
+        remark: "",
+        prevRef: null,
+        nextRef: null,
 
-            fileNoError: "",
-            subjectError: "",
+        fileNoError: "",
+        subjectError: "",
 
-            classifications: [
-                {value: "one", label: "One"},
-                {value: "two", label: "Two"},
-                {value: "three", label: "Three"}
-            ],
-            categories: [
-                {value: "one", label: "One"},
-                {value: "two", label: "Two"},
-                {value: "three", label: "Three"}
-            ], dealers: [
-                {value: "one", label: "One"},
-                {value: "two", label: "Two"},
-                {value: "three", label: "Three"}
-            ],
+        classifications: [
+            {value: "one", label: "One"},
+            {value: "two", label: "Two"},
+            {value: "three", label: "Three"}
+        ],
+        categories: [
+            {value: "one", label: "One"},
+            {value: "two", label: "Two"},
+            {value: "three", label: "Three"}
+        ], dealers: [
+            {value: "one", label: "One"},
+            {value: "two", label: "Two"},
+            {value: "three", label: "Three"}
+        ],
 
-            submit: false
-        };
-    }
+        submit: false
+    };
 
     handleChange = (e) => {
         const {name, value} = e.target;
@@ -171,6 +170,10 @@ class NewFile extends Component {
                                 fullWidth={true}
                                 rows={3}
                                 multiline={true}/>
+
+                            <ReactQuill theme="snow" value={this.state.remark}
+                                        onChange={this.handleChange.bind(this)} />
+
                             <TextField
                                 margin={"dense"}
                                 label={NewFileViewModel.PREVIOUS_LABEL}

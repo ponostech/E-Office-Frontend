@@ -18,9 +18,9 @@ const styles = theme => ({
         margin: 0
     },
     cardContent: {
-      padding:0,
-      margin:0,
-        fontSize:10
+        padding: 0,
+        margin: 0,
+        fontSize: 10
     },
     root: {
         flexGrow: 1,
