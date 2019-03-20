@@ -256,7 +256,7 @@ class NewHoardingForm extends Component {
     return (
       <GridContainer justify={"center"}
                      alignItems="flex-start">
-        <GridItem xs={12} sm={12} md={10}>
+        <GridItem style={{ padding: "4px!important" }} xs={12} sm={12} md={10}>
           <Card>
             <CardHeader style={{ textAlign: "center" }} title={HoardingApplicationFormModel.TITLE}/>
             <CardContent>
@@ -497,16 +497,14 @@ class NewHoardingForm extends Component {
               </GridContainer>
 
             </CardContent>
-            <CardActions>
-              <GridContainer justify={"flex-end"}>
-                <GridItem>
-                  <Button disabled={!this.state.agree} name={"submit"} variant={"outlined"} color={"primary"}
-                          onClick={this.handleClick.bind(this)}>Submit</Button>
-                  {" "}
-                  <Button name={"reset"} variant={"outlined"} color={"secondary"}
-                          onClick={this.handleClick.bind(this)}>Reset</Button>
-                </GridItem>
-              </GridContainer>
+            <CardActions style={{ alignItems: "flex-end" }}>
+              <div>
+                <Button disabled={!this.state.agree} name={"submit"} variant={"outlined"} color={"primary"}
+                        onClick={this.handleClick.bind(this)}>Submit</Button>
+                {" "}
+                <Button name={"reset"} variant={"outlined"} color={"secondary"}
+                        onClick={this.handleClick.bind(this)}>Reset</Button>
+              </div>
 
             </CardActions>
           </Card>
