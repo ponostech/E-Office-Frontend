@@ -5,11 +5,8 @@ import { Route } from "react-router-dom";
 import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import AdvertiserHeader from "../components/Header/AdvertiserHeader";
 import HoardingList from "../views/advertiser/hoarding/HoardingList";
-import AdvertiserDetails from "../views/e-office/applications/advertisers/AdvertiserDetails";
 import Dashboard from "../views/advertiser/Dashboard";
 import Redirect from "react-router-dom/es/Redirect";
-import HoardingContainer from "../views/advertiser/hoarding/HoardingContainer";
-import KioskFormContainer from "../views/advertiser/kiosk/form/KioskFormContainer";
 import KioskLists from "../views/advertiser/kiosk/lists/KioskLists";
 import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
 import NewHoardingForm from "../views/advertiser/hoarding/form/NewHoardingForm";
@@ -18,11 +15,11 @@ import NewKioskForm from "../views/advertiser/kiosk/form/NewKioskForm";
 class AdvertiserDashboard extends Component {
   render() {
     return (
-      <GridContainer justify={"center"} style={{background:"#fff"}}>
+      <GridContainer justify={"center"} style={{ background: "#fff" }}>
         <GridItem xs={12} sm={12} md={12}>
           <AdvertiserHeader color={"primary"}/>
         </GridItem>
-        <GridItem style={{ marginTop: 70, background: "white" }} xs={12} sm={12} md={12}>
+        <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
           <GridContainer justify={"center"}>
 
             <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>

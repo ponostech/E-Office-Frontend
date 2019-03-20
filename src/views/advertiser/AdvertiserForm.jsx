@@ -17,7 +17,8 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
-  TextField
+  TextField,
+  Typography
 } from "@material-ui/core";
 import AdvertiserViewModel from "../model/AdvertiserViewModel";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -42,7 +43,9 @@ class AdvertiserForm extends Component {
       password: "",
       confirmPassword: "",
       address: "",
-      signature: null,
+      signature:undefined,
+      documents: [],
+      documentsUpload: [],
 
       agree: false,
 
@@ -58,28 +61,27 @@ class AdvertiserForm extends Component {
       success: false,
       error: false,
       //dialog variable
-      submit: "",
+      submit: false,
       errorMessage: "",
 
       prestine: true,
-      documents: []
     };
 
-    this.documentService=new DocumentService();
+    this.documentService = new DocumentService();
   }
 
   componentDidMount() {
 
     this.documentService.get("advertiser")
-      .then(res=>{
+      .then(res => {
         if (res.status) {
-          const{documents}=res.data
-          this.setState({documents})
+          const { documents } = res.data;
+          this.setState({ documents });
         }
       })
-      .catch(err=>{
-          this.setState({errorMessage:err.toString()})
-      })
+      .catch(err => {
+        this.setState({ errorMessage: err.toString() });
+      });
 
   }
 
@@ -103,8 +105,8 @@ class AdvertiserForm extends Component {
       password: this.state.password,
       address: this.state.address,
       registered: 0,
-      signature: [],
-      documents: []
+      signature: this.state.signature,
+      documents: this.state.documentsUpload
     };
     //check validity of data
     if (this.isInvalid()) {
@@ -221,12 +223,11 @@ class AdvertiserForm extends Component {
   render() {
     var self = this;
     return (
-      <GridContainer direction="row-reverse"
-                     justify="center"
-                     alignItems="flex-start">
+      <GridContainer
+                     justify="flex-start">
         <GridItem xs={12} sm={12} md={10}>
           <Card>
-            <CardHeader style={{ textAlign: "center" }} title={"Form of Application for registered Advertiser"}
+            <CardHeader title={"Form of Application for registered Advertiser"}
                         action={
                           <IconButton>
                             <HelpIcon/>
@@ -239,157 +240,193 @@ class AdvertiserForm extends Component {
                 <GridItem xs={12} sm={12} md={12}>
                   <Divider style={{ marginBottom: 10 }}/>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <TextField
-                    value={this.state.name}
-                    error={Boolean(this.state.nameError)}
-                    helperText={this.state.nameError}
-                    name={"name"}
-                    margin={"dense"}
-                    required={true}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    label={AdvertiserViewModel.NAME}
-                    onBlur={this.handleRequired.bind(this)}
-                    onChange={this.handleChange.bind(this)}
-                    placeholder={"Fullname"}
-                  />
-                  <FormControl
-                    required={true}
-                    margin={"dense"}
-                    fullWidth={true}
-                    variant={"outlined"}
-                  >
-                    <InputLabel htmlFor={"type"}>{AdvertiserViewModel.APPLICANT_TYPE}</InputLabel>
-                    <Select
-                      value={this.state.type}
+                <GridContainer>
+                  <GridItem spacing={0} xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.name}
+                      error={Boolean(this.state.nameError)}
+                      helperText={this.state.nameError}
+                      name={"name"}
+                      margin={"dense"}
+                      required={true}
+                      fullWidth={true}
+                      variant={"outlined"}
+                      label={AdvertiserViewModel.NAME}
+                      onBlur={this.handleRequired.bind(this)}
                       onChange={this.handleChange.bind(this)}
-                      input={
-                        <OutlinedInput required={true}
-                                       labelWidth={140} name={"type"} id={"type"}/>
-                      }
-
+                      placeholder={"Fullname"}
+                    />
+                  </GridItem>
+                  <GridItem spacing={32} xs={12} sm={12} md={6}>
+                    <FormControl
+                      required={true}
+                      margin={"dense"}
+                      fullWidth={true}
+                      variant={"outlined"}
                     >
-                      {this.state.types.map((val, i) => (
-                        <MenuItem key={i} value={val}>
-                          {val}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <TextField
-                    value={this.state.email}
-                    error={Boolean(this.state.emailError)}
-                    helperText={this.state.emailError}
-                    type={"email"}
-                    name={"email"}
-                    margin={"dense"}
-                    required={true}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    label={AdvertiserViewModel.EMAIL}
-                    placeholder={"Email"}
-                    onBlur={this.handleRequired.bind(this)}
-                    onChange={this.handleChange.bind(this)}
-                  />
-                  <TextField
-                    value={this.state.phone}
-                    error={Boolean(this.state.phoneError)}
-                    helperText={this.state.phoneError}
-                    type={"phone"}
-                    name={"phone"}
-                    margin={"dense"}
-                    required={true}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    label={"Phone"}
-                    placeholder={"Phone"}
-                    onBlur={this.handleRequired.bind(this)}
-                    onChange={this.handleChange.bind(this)}
-                  />
-                  <TextField
-                    value={this.state.password}
-                    error={Boolean(this.state.passwordError)}
-                    helperText={this.state.passwordError}
-                    type={this.state.showPassword ? "text" : "password"}
-                    name={"password"}
-                    margin={"dense"}
-                    required={true}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="Toggle password visibility"
-                            onClick={this.handleClickShowPassword.bind(this)}
-                          >
-                            {this.state.showPassword ? <VisibilityOn/> : <VisibilityOff/>}
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }}
-                    label={AdvertiserViewModel.PASSWORD}
-                    onBlur={this.handleRequired.bind(this)}
-                    onChange={this.handleChange.bind(this)}
-                    placeholder={"Password"}
-                  />
-                  <TextField
-                    value={this.state.confirmPassword}
-                    error={Boolean(this.state.confirmPasswordError)}
-                    helperText={this.state.confirmPasswordError}
-                    type={this.state.showPassword ? "text" : "password"}
-                    name={"confirmPassword"}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="Toggle password visibility"
-                            onClick={this.handleClickShowPassword.bind(this)}
-                          >
-                            {this.state.showPassword ? <VisibilityOn/> : <VisibilityOff/>}
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }}
-                    margin={"dense"}
-                    required={true}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    label={AdvertiserViewModel.CONFIRM_PASSWORD}
-                    onBlur={this.handleRequired.bind(this)}
-                    onChange={this.handleChange.bind(this)}
-                    placeholder={"Confirm password"}
-                  />
-                  <TextField
-                    value={this.state.address}
-                    error={Boolean(this.state.addressError)}
-                    helperText={this.state.addressError}
-                    multiline={true}
-                    rows={3}
-                    name={"address"}
-                    margin={"dense"}
-                    required={true}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    label={AdvertiserViewModel.ADDRESS}
-                    onBlur={this.handleRequired.bind(this)}
-                    onChange={this.handleChange.bind(this)}
-                    placeholder={" hno \n locality \n pincode"}
+                      <InputLabel htmlFor={"type"}>{AdvertiserViewModel.APPLICANT_TYPE}</InputLabel>
+                      <Select
+                        value={this.state.type}
+                        onChange={this.handleChange.bind(this)}
+                        input={
+                          <OutlinedInput required={true}
+                                         labelWidth={140} name={"type"} id={"type"}/>
+                        }
 
-                  />
+                      >
+                        {this.state.types.map((val, i) => (
+                          <MenuItem key={i} value={val}>
+                            {val}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.email}
+                      error={Boolean(this.state.emailError)}
+                      helperText={this.state.emailError}
+                      type={"email"}
+                      name={"email"}
+                      margin={"dense"}
+                      required={true}
+                      fullWidth={true}
+                      variant={"outlined"}
+                      label={AdvertiserViewModel.EMAIL}
+                      placeholder={"Email"}
+                      onBlur={this.handleRequired.bind(this)}
+                      onChange={this.handleChange.bind(this)}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.phone}
+                      error={Boolean(this.state.phoneError)}
+                      helperText={this.state.phoneError}
+                      type={"phone"}
+                      name={"phone"}
+                      margin={"dense"}
+                      required={true}
+                      fullWidth={true}
+                      variant={"outlined"}
+                      label={"Phone"}
+                      placeholder={"Phone"}
+                      onBlur={this.handleRequired.bind(this)}
+                      onChange={this.handleChange.bind(this)}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.password}
+                      error={Boolean(this.state.passwordError)}
+                      helperText={this.state.passwordError}
+                      type={this.state.showPassword ? "text" : "password"}
+                      name={"password"}
+                      margin={"dense"}
+                      required={true}
+                      fullWidth={true}
+                      variant={"outlined"}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="Toggle password visibility"
+                              onClick={this.handleClickShowPassword.bind(this)}
+                            >
+                              {this.state.showPassword ? <VisibilityOn/> : <VisibilityOff/>}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                      label={AdvertiserViewModel.PASSWORD}
+                      onBlur={this.handleRequired.bind(this)}
+                      onChange={this.handleChange.bind(this)}
+                      placeholder={"Password"}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.confirmPassword}
+                      error={Boolean(this.state.confirmPasswordError)}
+                      helperText={this.state.confirmPasswordError}
+                      type={this.state.showPassword ? "text" : "password"}
+                      name={"confirmPassword"}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="Toggle password visibility"
+                              onClick={this.handleClickShowPassword.bind(this)}
+                            >
+                              {this.state.showPassword ? <VisibilityOn/> : <VisibilityOff/>}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                      margin={"dense"}
+                      required={true}
+                      fullWidth={true}
+                      variant={"outlined"}
+                      label={AdvertiserViewModel.CONFIRM_PASSWORD}
+                      onBlur={this.handleRequired.bind(this)}
+                      onChange={this.handleChange.bind(this)}
+                      placeholder={"Confirm password"}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.address}
+                      error={Boolean(this.state.addressError)}
+                      helperText={this.state.addressError}
+                      multiline={true}
+                      rows={3}
+                      name={"address"}
+                      margin={"dense"}
+                      required={true}
+                      fullWidth={true}
+                      variant={"outlined"}
+                      label={AdvertiserViewModel.ADDRESS}
+                      onBlur={this.handleRequired.bind(this)}
+                      onChange={this.handleChange.bind(this)}
+                      placeholder={" hno \n locality \n pincode"}
 
-                </GridItem>
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <FileUpload document={{ id: 40, name: "Signature", mime: "image/*" }} onUploadSuccess={(data) => {
+                      let temp={
+                        name:"signature",
+                        path:data.location
+                      }
+                      this.setState({signature:temp})
+                    }} onUploadFailure={(data) => {
+                      console.log(data);
+                    }}/>
+                  </GridItem>
+                </GridContainer>
+                <GridContainer justify={"flex-start"}>
+                    <Typography style={{ marginTop: 20, marginBottom: 10 }} variant={"headline"}>Document
+                      Attachment</Typography>
+                </GridContainer>
 
-                <GridItem xs={12} sm={12} md={6}>
                   {this.state.documents.map((doc, index) =>
-                    <FileUpload key={index} document={doc}
-                                onUploadSuccess={(data) =>{
-                      console.log(data)
-                    }}
-                                onUploadFailure={(err) => console.log(err)}/>
+                    <GridItem key={index} xs={12} sm={12} md={6}>
+
+                      <FileUpload key={index} document={doc}
+                                  onUploadSuccess={(data) => {
+                                    let temp={
+                                      name:doc.id,
+                                      path:data.location
+                                    };
+                                    this.setState(state=>{
+                                      state.documentsUpload.push(temp)
+                                    })
+                                  }}
+                                  onUploadFailure={(err) => console.log(err)}/>
+                    </GridItem>
                   )}
-                </GridItem>
+
                 <GridItem xs={12} sm={12} md={12}>
                   <FormControlLabel control={
                     <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
