@@ -57,17 +57,7 @@ class AdvertiserHeader extends React.Component {
 
   handleKiosk = (e) => {
     const { history } = this.props;
-    switch (e) {
-      case "New Kiosk proposal":
-        history.push(OfficeRoutes.PROPOSED_KIOSK);
-        break;
-      case "List of Kiosks":
-        history.push(OfficeRoutes.ADVERTISER_KIOSK);
-        break;
-
-      default:
-        break;
-    }
+    history.push(OfficeRoutes.PROPOSED_KIOSK);
   };
 
   handleUser = (e) => {
@@ -96,6 +86,17 @@ class AdvertiserHeader extends React.Component {
             ]}
             linkClick={this.handleHoarding.bind(this)}
             buttonText={"Hoarding"}
+            buttonProps={{ color: "transparent" }}/>
+          <CustomDropdown
+            dropdownList={[
+              { title: "New Kiosk", link: OfficeRoutes.ADVERTISER_NEW_KIOSK },
+              { title: "List Created", link: OfficeRoutes.CREATED_FILES },
+              { title: "List Sent", link: OfficeRoutes.SENT_FILE },
+              { title: "List Closed", link: OfficeRoutes.CLOSE_FILE },
+              { title: "Single File", link: OfficeRoutes.FILE_DETAIL }
+            ]}
+            linkClick={this.handleKiosk.bind(this)}
+            buttonText={"Kiosk"}
             buttonProps={{ color: "transparent" }}/>
 
         </div>
