@@ -27,8 +27,8 @@ class GMapDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lat: 20,
-      lng: 78
+      lat: 23.7,
+      lng: 93.7
     };
   }
 

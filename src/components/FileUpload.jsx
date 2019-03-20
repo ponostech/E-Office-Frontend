@@ -12,7 +12,7 @@ const config = {
   dirName: "office", /* optional */
   region: "ap-south-1",
   accessKeyId: "AKIAIBU5VMJNNQUFRKPA",
-  secretAccessKey:"W8hmIvzBCxpd5rPwztzKAk1GR4kKV6K50"
+  secretAccessKey:"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"
 };
 
 class FileUpload extends Component {
