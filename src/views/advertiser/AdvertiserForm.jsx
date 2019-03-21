@@ -115,7 +115,7 @@ class AdvertiserForm extends Component {
     };
     //check validity of data
     if (this.isInvalid()) {
-      this.setState({ errorMessage: "There is an error" });
+      this.setState({ errorMessage: "Please enter all required fields" });
       return;
     }
     //show submit dialog
@@ -130,12 +130,15 @@ class AdvertiserForm extends Component {
                 success: true
               });
             } else {
-              console.log(res.data.messages);
-              this.setState({ errorMessage: res.data.messages.toString() });
+              if (res.data.validation_error) {
+                console.log(res.data.messages);
+                this.setState({ errorMessage: res.data.messages.toString() });
+              }
             }
 
           })
           .catch(err => {
+            console.log(err);
             this.setState({ errorMessage: err.toString() });
           })
           .then(() => {
@@ -206,7 +209,7 @@ class AdvertiserForm extends Component {
           this.setState({ emailError: "" });
         break;
       case "password":
-        value.length < 7 ? this.setState({ passwordError: AdvertiserViewModel.MIN_PASSWORD }) : this.setState({ passwordError: "" });
+        value.length < 6 ? this.setState({ passwordError: AdvertiserViewModel.MIN_PASSWORD }) : this.setState({ passwordError: "" });
         break;
       case "confirmPassword":
         value !== this.state.password ? this.setState({ confirmPasswordError: AdvertiserViewModel.MATCH_PASSWORD }) : this.setState({ confirmPasswordError: "" });
@@ -238,7 +241,7 @@ class AdvertiserForm extends Component {
                 <GridItem xs={12} sm={12} md={12}>
                   <Typography variant={"headline"}>Form of Application for registered Advertiser</Typography>
                 </GridItem>
-                <GridItem  xs={12} sm={12} md={12}>
+                <GridItem xs={12} sm={12} md={12}>
                   <Divider style={{ marginBottom: 10, marginTop: 10 }}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -374,13 +377,17 @@ class AdvertiserForm extends Component {
                     placeholder={"Confirm password"}
                   />
                 </GridItem>
+
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                  {/*<StandaloneSearchBox*/}
+                  {/*googleMapURL={"https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places"}*/}
+                  {/*onPlacesChanged={function(data) {*/}
+                  {/*console.log(data)*/}
+                  {/*}}>*/}
                   <TextField
                     value={this.state.address}
                     error={Boolean(this.state.addressError)}
                     helperText={this.state.addressError}
-                    multiline={true}
-                    rows={3}
                     name={"address"}
                     margin={"dense"}
                     required={true}
@@ -390,8 +397,25 @@ class AdvertiserForm extends Component {
                     onBlur={this.handleRequired.bind(this)}
                     onChange={this.handleChange.bind(this)}
                     placeholder={" hno \n locality \n pincode"}
-
                   />
+                  {/*</StandaloneSearchBox>*/}
+                  {/*<StandaloneSearchBox*/}
+                  {/*onPlacesChanged={(data)=>console.log(data)}>*/}
+                  <TextField
+                    value={this.state.address}
+                    error={Boolean(this.state.addressError)}
+                    helperText={this.state.addressError}
+                    name={"address"}
+                    margin={"dense"}
+                    required={true}
+                    fullWidth={true}
+                    variant={"outlined"}
+                    label={AdvertiserViewModel.ADDRESS}
+                    onBlur={this.handleRequired.bind(this)}
+                    onChange={this.handleChange.bind(this)}
+                    placeholder={" hno \n locality \n pincode"}
+                  />
+                  {/*</StandaloneSearchBox>*/}
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <FileUpload document={{ id: 40, name: "Signature", mime: "image/*" }} onUploadSuccess={(data) => {
@@ -405,8 +429,8 @@ class AdvertiserForm extends Component {
                   }}/>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
-                  <Typography style={{ marginTop: 10, marginBottom: 10 }} variant={"headline"}>Document
-                    Attachment</Typography>
+                  <Typography style={{ marginTop: 10, marginBottom: 10 }} variant={"headline"}>
+                    Upload Documents</Typography>
                 </GridItem>
 
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>

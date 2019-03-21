@@ -4,7 +4,7 @@ import { GoogleMap, Marker, withGoogleMap, withScriptjs } from "react-google-map
 import * as PropTypes from "prop-types";
 import GridContainer from "./Grid/GridContainer";
 import GridItem from "./Grid/GridItem";
-import { MAP_API_KEY } from "../config/Config";
+import { MAP_API_KEY } from "../Configuration";
 
 const RegularMap = withScriptjs(
   withGoogleMap(props => (
