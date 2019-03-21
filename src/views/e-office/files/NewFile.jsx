@@ -5,40 +5,46 @@ import {Button, Card, CardActions, CardContent, CardHeader, TextField} from "@ma
 import {NewFileViewModel} from "../../model/NewFileViewModel";
 import OfficeSelect from "../../../components/OfficeSelect";
 import {OfficeRoutes} from "../../../config/routes-constant/OfficeRoutes";
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Grid from "@material-ui/core/Grid";
 
 class NewFile extends Component {
-    state = {
-        fileNo: "",
-        subject: "",
-        dealer: null,
-        category: null,
-        classification: null,
-        remark: "",
-        prevRef: null,
-        nextRef: null,
+    constructor(props) {
+        super(props);
+        this.state = {
+            fileNo: "",
+            subject: "",
+            dealingId: null,
+            category: null,
+            classification: null,
+            remark: "",
+            prevRef: null,
+            nextRef: null,
 
-        fileNoError: "",
-        subjectError: "",
+            fileNoError: "",
+            subjectError: "",
 
-        classifications: [
-            {value: "one", label: "One"},
-            {value: "two", label: "Two"},
-            {value: "three", label: "Three"}
-        ],
-        categories: [
-            {value: "one", label: "One"},
-            {value: "two", label: "Two"},
-            {value: "three", label: "Three"}
-        ], dealers: [
-            {value: "one", label: "One"},
-            {value: "two", label: "Two"},
-            {value: "three", label: "Three"}
-        ],
+            classifications: [
+                {value: "one", label: "One"},
+                {value: "two", label: "Two"},
+                {value: "three", label: "Three"}
+            ],
+            categories: [
+                {value: "one", label: "One"},
+                {value: "two", label: "Two"},
+                {value: "three", label: "Three"}
+            ], dealers: [
+                {value: "one", label: "One"},
+                {value: "two", label: "Two"},
+                {value: "three", label: "Three"}
+            ],
 
-        submit: false
-    };
+            submit: false
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
+    }
+
 
     handleChange = (e) => {
         const {name, value} = e.target;
@@ -53,8 +59,8 @@ class NewFile extends Component {
             case "classification":
                 this.setState({classification: value});
                 break;
-            case "dealer":
-                this.setState({dealer: value});
+            case "dealingId":
+                this.setState({dealingId: value});
                 break;
             default:
                 break;
@@ -76,125 +82,122 @@ class NewFile extends Component {
 
     submit = (e) => {
         const {history} = this.props;
-
         history.push(OfficeRoutes.FILE_DETAIL);
-        // let valid = this.state.fileNoError.length !== 0 || this.state.subjectError.length !== 0;
-        // console.log(valid);
-        // if (valid) {
-        //   const data = {};
-        //   this.setState({ submit: true });
-        //   // axios.post(ApiRoutes.CREATE_FILE, data)
-        //   //   .then(res=>{
-        //   //
-        //   //   })
-        //   //   .catch(err=>{
-        //   //
-        //   //   })
-        //   //   .then(()=>{
-        //   //     this.setState({submit:false})
-        //   //   })
-        //
-        // }
     };
 
     render() {
         return (
-            <GridContainer justify={"center"}>
-
-                <GridItem xs={12} sm={12} md={6}>
+            <GridContainer justify={"flex-start"}>
+                <GridItem xs={12} sm={12} md={8}>
                     <Card>
                         <CardHeader title={NewFileViewModel.TITLE} subheader={NewFileViewModel.SUBTITLE}/>
                         <CardContent>
-                            <TextField
-                                error={Boolean(this.state.fileNoError)}
-                                helperText={this.state.fileNoError}
-                                onBlur={this.validateBlur.bind(this)}
-                                required={true}
-                                margin={"dense"}
-                                label={NewFileViewModel.FILENO_LABEL}
-                                variant={"outlined"}
-                                onChange={this.handleChange.bind(this)}
-                                name={"fileNo"} fullWidth={true}/>
-                            <TextField
-                                required={true}
-                                error={Boolean(this.state.subjectError)}
-                                helperText={this.state.subjectError}
-                                onBlur={this.validateBlur.bind(this)}
-                                margin={"dense"}
-                                label={NewFileViewModel.SUBJECT_LABEL}
-                                variant={"outlined"}
-                                onChange={this.handleChange.bind(this)}
-                                name={"subject"}
-                                fullWidth={true}/>
-
-                            <OfficeSelect
-                                margin={"dense"}
-                                variant={"outlined"}
-                                value={this.state.dealer}
-                                fullWidth={true}
-                                required={true}
-                                label={NewFileViewModel.DEALER_LABEL}
-                                name={"dealer"}
-                                isClearable={true}
-                                options={this.state.dealers}
-                                onChange={this.handleSelect.bind(this)}/>
-                            <OfficeSelect
-                                variant={"outlined"}
-                                margin={"dense"}
-                                fullWidth={true}
-                                value={this.state.category}
-                                label={NewFileViewModel.CATEGORY_LABEL}
-                                isClearable={true}
-                                name={"category"}
-                                options={this.state.categories}
-                                onChange={this.handleSelect.bind(this)}/>
-
-
-                            <OfficeSelect
-                                variant={"outlined"}
-                                margin={"dense"}
-                                value={this.state.classification}
-                                fullWidth={true}
-                                label={NewFileViewModel.CLASSIFICATION_LABEL}
-                                name={"classification"}
-                                isClearable={true}
-                                options={this.state.classifications}
-                                onChange={this.handleSelect.bind(this)}/>
-
-                            <TextField
-                                margin={"dense"}
-                                label={NewFileViewModel.REMARK_LABEL}
-                                name={"remark"}
-                                variant={"outlined"}
-                                onChange={this.handleChange.bind(this)}
-                                fullWidth={true}
-                                rows={3}
-                                multiline={true}/>
-
-                            <ReactQuill theme="snow" value={this.state.remark}
-                                        onChange={this.handleChange.bind(this)} />
-
-                            <TextField
-                                margin={"dense"}
-                                label={NewFileViewModel.PREVIOUS_LABEL}
-                                name={"prevRef"}
-                                variant={"outlined"}
-                                onChange={this.handleChange.bind(this)}
-                                fullWidth={true}/>
-                            <TextField
-                                margin={"dense"}
-                                label={NewFileViewModel.NEXT_LABEL}
-                                name={"nextRef"}
-                                variant={"outlined"}
-                                onChange={this.handleChange.bind(this)}
-                                fullWidth={true}/>
+                            <Grid container xs={12} spacing={16}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        error={Boolean(this.state.fileNoError)}
+                                        helperText={this.state.fileNoError}
+                                        onBlur={this.validateBlur.bind(this)}
+                                        required={true}
+                                        margin={"dense"}
+                                        label={NewFileViewModel.FILE_NO_LABEL}
+                                        variant={"outlined"}
+                                        onChange={this.handleChange}
+                                        name={"fileNo"} fullWidth={true}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required={true}
+                                        error={Boolean(this.state.subjectError)}
+                                        helperText={this.state.subjectError}
+                                        onBlur={this.validateBlur.bind(this)}
+                                        margin={"dense"}
+                                        label={NewFileViewModel.SUBJECT_LABEL}
+                                        variant={"outlined"}
+                                        onChange={this.handleChange}
+                                        name={"subject"}
+                                        fullWidth={true}/>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <OfficeSelect
+                                        margin={"dense"}
+                                        variant={"outlined"}
+                                        value={this.state.dealingId}
+                                        fullWidth={true}
+                                        required={true}
+                                        label={NewFileViewModel.DEALER_LABEL}
+                                        name={"dealingId"}
+                                        isClearable={true}
+                                        options={this.state.dealers}
+                                        onChange={this.handleSelect}/>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <OfficeSelect
+                                        required={true}
+                                        variant={"outlined"}
+                                        margin={"dense"}
+                                        fullWidth={true}
+                                        value={this.state.category}
+                                        label={NewFileViewModel.CATEGORY_LABEL}
+                                        isClearable={true}
+                                        name={"category"}
+                                        options={this.state.categories}
+                                        onChange={this.handleSelect}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <OfficeSelect
+                                        variant={"outlined"}
+                                        margin={"dense"}
+                                        value={this.state.classification}
+                                        fullWidth={true}
+                                        label={NewFileViewModel.CLASSIFICATION_LABEL}
+                                        name={"classification"}
+                                        isClearable={true}
+                                        options={this.state.classifications}
+                                        onChange={this.handleSelect}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        margin={"dense"}
+                                        label={NewFileViewModel.REMARK_LABEL}
+                                        name={"remark"}
+                                        variant={"outlined"}
+                                        onChange={this.handleChange}
+                                        fullWidth={true}
+                                        rows={3}
+                                        multiline={true}/>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        margin={"dense"}
+                                        label={NewFileViewModel.PREVIOUS_LABEL}
+                                        name={"prevRef"}
+                                        variant={"outlined"}
+                                        onChange={this.handleChange}
+                                        fullWidth={true}/>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        margin={"dense"}
+                                        label={NewFileViewModel.NEXT_LABEL}
+                                        name={"nextRef"}
+                                        variant={"outlined"}
+                                        onChange={this.handleChange}
+                                        fullWidth={true}/>
+                                </Grid>
+                            </Grid>
                         </CardContent>
                         <CardActions>
-                            <Button disabled={this.state.submit} variant={"outlined"}
-                                    color={"primary"}
-                                    onClick={this.submit.bind(this)}>{NewFileViewModel.PRIMARY_BTN_TEXT}</Button>
-                            <Button variant={"outlined"}
-                                    color={"secondary"}>{NewFileViewModel.SECONDARY_BTN_TEXT}</Button>
+                            <Grid container justify={"center"}>
+                                <Grid item>
+                                    <Button disabled={this.state.submit} variant={"outlined"}
+                                            color={"primary"}
+                                            onClick={this.submit.bind(this)}>{NewFileViewModel.PRIMARY_BTN_TEXT}</Button>
+
+                                    <Button variant={"outlined"}
+                                            color={"secondary"}>{NewFileViewModel.SECONDARY_BTN_TEXT}</Button>
+                                </Grid>
+                            </Grid>
                         </CardActions>
                     </Card>
                 </GridItem>
