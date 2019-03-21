@@ -5,6 +5,7 @@ import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import ReceiptDetailEntry from "./ReceiptDetailEntry";
 import {Paper} from "@material-ui/core";
+import FileUpload from "../../../components/FileUpload";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -22,10 +23,11 @@ class NewReceipt extends Component {
             <GridContainer justify={"center"}>
                 <GridItem xs={12} sm={12} md={7}>
                     <Paper style={{padding: 20}}>
-                        <input onChange={(e) => {
-                            console.log(e)
-                        }} type={"file"} accept={"application/pdf"}/>
-
+                       <FileUpload document={{id:0,name:"document",mime:"application/pdf"}} onUploadSuccess={data=>{
+                           this.setState({
+                               pdfFile:data.location
+                           })
+                       }} onUploadFailure={(err)=>console.log(err)}/>
                         <object style={{height: "80vh"}} data={pdfFile} type="application/pdf" width="100%"
                                 height="100%">
                             <p>It appears you don't have a PDF plugin for this browser. You can <a href="myfile.pdf">click
