@@ -6,13 +6,14 @@ import TickIcon from "@material-ui/icons/Check";
 import ErrorIcon from "@material-ui/icons/Error";
 import DocumentIcon from "@material-ui/icons/Book";
 import ImageIcon from "@material-ui/icons/Image";
+import { BUCKET_NAME, REGION, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY } from "../Configuration";
 
 const config = {
-  bucketName: "amc-abpas",
+  bucketName: BUCKET_NAME,
   dirName: "office", /* optional */
-  region: "ap-south-1",
-  accessKeyId: "AKIAIBU5VMJNNQUFRKPA",
-  secretAccessKey:"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"
+  region: REGION,
+  accessKeyId: S3_ACCESS_KEY,
+  secretAccessKey:S3_SECRET_ACCESS_KEY
 };
 
 class FileUpload extends Component {
@@ -24,8 +25,6 @@ class FileUpload extends Component {
       file: data
     };
   }
-
-
   getFilename = (file) => {
     if (file.file) {
       return file.file.name;

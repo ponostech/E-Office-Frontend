@@ -30,6 +30,8 @@ import SubmitDialog from "../../components/SubmitDialog";
 import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
+import { ErrorToString } from "../../utils/ErrorUtil";
+import AddressField from "../../components/AddressField";
 
 const style = {
   root: {
@@ -96,12 +98,10 @@ class AdvertiserForm extends Component {
 
   isInvalid = () => {
     return this.state.prestine || !!this.state.nameError || !!this.state.emailError || !!this.state.addressError || !!this.state.emailError
-      || !!this.state.emailError || !!this.state.passwordError;
+      || !!this.state.emailError || !!this.state.passwordError
   };
 
-
-  handleClick = (e) => {
-    const { name } = e.target;
+  submit = () => {
     let data = {
       name: this.state.name,
       type: this.state.type,
@@ -109,38 +109,47 @@ class AdvertiserForm extends Component {
       email: this.state.email,
       password: this.state.password,
       address: this.state.address,
-      registered: 0,
+      registered: 1,
       signature: this.state.signature,
       documents: this.state.documentsUpload
     };
-    //check validity of data
     if (this.isInvalid()) {
-      this.setState({ errorMessage: "There is an error" });
+      this.setState({ errorMessage: "Please enter all required fields" });
       return;
     }
-    //show submit dialog
     this.setState({ submit: true });
+    axios.post(ApiRoutes.CREATE_ADVERTISER, data)
+      .then(res => {
+        console.log(res);
+        if (res.data.status) {
+          this.setState({
+            success: true
+          });
+        } else {
+          if (res.data.validation_error) {
+            const msg=ErrorToString(res.data.messages);
+            //TODO::parse validation error message
+            this.setState({ errorMessage: msg});
+          }else{
+
+          }
+        }
+
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({ errorMessage: err.toString() });
+      })
+      .then(() => {
+        this.setState({ submit: false });
+      });
+  };
+
+  handleClick = (e) => {
+    const { name } = e.target;
     switch (name) {
       case "submit":
-        axios.post(ApiRoutes.CREATE_ADVERTISER, data)
-          .then(res => {
-            console.log(res);
-            if (res.data.status) {
-              this.setState({
-                success: true
-              });
-            } else {
-              console.log(res.data.messages);
-              this.setState({ errorMessage: res.data.messages.toString() });
-            }
-
-          })
-          .catch(err => {
-            this.setState({ errorMessage: err.toString() });
-          })
-          .then(() => {
-            this.setState({ submit: false });
-          });
+        this.submit();
         break;
       case "cancel":
         this.setState({
@@ -196,9 +205,7 @@ class AdvertiserForm extends Component {
 
   handleChange = e => {
     const { name, value } = e.target;
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+
 
     switch (name) {
       case "email":
@@ -206,18 +213,20 @@ class AdvertiserForm extends Component {
           this.setState({ emailError: "" });
         break;
       case "password":
-        value.length < 7 ? this.setState({ passwordError: AdvertiserViewModel.MIN_PASSWORD }) : this.setState({ passwordError: "" });
+        value.length < 6 ? this.setState({ passwordError: AdvertiserViewModel.MIN_PASSWORD }) : this.setState({ passwordError: "" });
         break;
       case "confirmPassword":
         value !== this.state.password ? this.setState({ confirmPasswordError: AdvertiserViewModel.MATCH_PASSWORD }) : this.setState({ confirmPasswordError: "" });
         break;
       case "phone":
-        !Validators.PHONE_REGEX.test(this.state.phone) ? this.setState({ phoneError: AdvertiserViewModel.PHONE_ERROR }) : this.setState({ phoneError: "" });
+        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: AdvertiserViewModel.PHONE_ERROR }) : this.setState({ phoneError: "" });
         break;
       default:
         break;
     }
-
+    this.setState({
+      [e.target.name]: e.target.value
+    });
     this.setState({ prestine: false });
 
   };
@@ -238,7 +247,7 @@ class AdvertiserForm extends Component {
                 <GridItem xs={12} sm={12} md={12}>
                   <Typography variant={"headline"}>Form of Application for registered Advertiser</Typography>
                 </GridItem>
-                <GridItem  xs={12} sm={12} md={12}>
+                <GridItem xs={12} sm={12} md={12}>
                   <Divider style={{ marginBottom: 10, marginTop: 10 }}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -379,8 +388,6 @@ class AdvertiserForm extends Component {
                     value={this.state.address}
                     error={Boolean(this.state.addressError)}
                     helperText={this.state.addressError}
-                    multiline={true}
-                    rows={3}
                     name={"address"}
                     margin={"dense"}
                     required={true}
@@ -390,17 +397,20 @@ class AdvertiserForm extends Component {
                     onBlur={this.handleRequired.bind(this)}
                     onChange={this.handleChange.bind(this)}
                     placeholder={" hno \n locality \n pincode"}
-
                   />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <FileUpload document={{ id: 40, name: "Signature", mime: "image/*" }} onUploadSuccess={(data) => {
-                    let temp = {
-                      name: "signature",
-                      path: data.location
-                    };
-                    this.setState({ signature: temp });
-                  }} onUploadFailure={(data) => {
+                  {/*<AddressField label={"laasdfasdf"} fullWidth={true}/>*/}
+                </GridItem>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                  <FileUpload required={true} document={{ id: 40, name: "Signature", mime: "image/*" }}
+                              onUploadSuccess={(data) => {
+                                let temp = {
+                                  name: "signature",
+                                  path: data.location
+                                };
+                                this.setState({ signature: temp });
+                              }} onUploadFailure={(data) => {
                     console.log(data);
                   }}/>
                 </GridItem>
@@ -409,9 +419,10 @@ class AdvertiserForm extends Component {
                     Attachment</Typography>
                 </GridItem>
 
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  {this.state.documents.map((doc, index) =>
-                    <FileUpload key={index} document={doc}
+                {this.state.documents.map((doc, index) =>
+                  <GridItem key={index} className={classes.root} xs={12} sm={12} md={6}>
+
+                    <FileUpload  document={doc}
                                 onUploadSuccess={(data) => {
                                   let temp = {
                                     name: doc.id,
@@ -422,8 +433,8 @@ class AdvertiserForm extends Component {
                                   });
                                 }}
                                 onUploadFailure={(err) => console.log(err)}/>
-                  )}
-                </GridItem>
+                  </GridItem>
+                )}
                 <GridItem xs={12} sm={12} md={12}>
                   <FormControlLabel control={
                     <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>

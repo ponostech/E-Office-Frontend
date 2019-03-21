@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { Button, Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from "react-google-maps";
 import * as PropTypes from "prop-types";
-import GridContainer from "./Grid/GridContainer";
-import GridItem from "./Grid/GridItem";
-import { MAP_API_KEY } from "../config/Config";
+import { MAP_API_KEY } from "../Configuration";
 
 const RegularMap = withScriptjs(
   withGoogleMap(props => (
@@ -14,8 +12,8 @@ const RegularMap = withScriptjs(
       defaultOptions={{
         scrollwheel: true
       }}
-      onClick={(e)=>{
-        props.onClick(e.latLng)
+      onClick={(e) => {
+        props.onClick(e.latLng);
       }}
     >
       <Marker position={{ lat: props.lat, lng: props.lng }}/>
@@ -48,53 +46,55 @@ class GMapDialog extends Component {
     }
   };
 
-  confirm=(e)=>{
-    console.log(e)
-  }
+  confirm = (e) => {
+    console.log(e);
+  };
 
   render() {
     const { open, onClose, isMarkerShown, ...rest } = this.props;
     const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${MAP_API_KEY}`;
     console.log(MAP_URL);
     return (
-        <Dialog open={open} onClose={this.confirm.bind(this)} {...rest} fullScreen={true}>
-          <DialogContent>
-                <RegularMap
-                  onClick={(latLng)=>{
-                      this.setState({
-                        lat:latLng.lat(),
-                        lng:latLng.lng()
-                      })
-                  }}
-                  isMarkerShown={isMarkerShown}
-                  googleMapURL={MAP_URL}
-                  loadingElement={<div style={{ height: `100%` }}/>}
-                  containerElement={<div style={{width:'100%',height:'100%'}}> helll </div>}
-                  mapElement={<div style={{ height: `100%` }}/>}
-                  lat={this.state.lat}
-                  lng={this.state.lng}
-                />
-            {/*withScriptJs(*/}
-            {/*withGoogleMap(*/}
-            {/*<GoogleMap*/}
-              {/*{...rest}*/}
-              {/*defaultZoom={8}*/}
-              {/*defaultCenter={{ lat: this.state.lat, lng: this.state.long }}*/}
-              {/*onClick={(e)=>this.setState({lat:e.pa.x,long:e.pa.y})}*/}
-            {/*>*/}
-              {/*{isMarkerShown && <Marker position={{ lat: this.state.lat, lng: this.state.long }}/>}*/}
-            {/*</GoogleMap>*/}
-            {/*)*/}
-            {/*)*/}
+      <Dialog open={open} onClose={this.confirm.bind(this)} {...rest} fullScreen={true}>
+        <DialogContent>
+          <RegularMap
+            onClick={(latLng) => {
+              this.setState({
+                lat: latLng.lat(),
+                lng: latLng.lng()
+              });
+            }}
+            isMarkerShown={isMarkerShown}
+            googleMapURL={MAP_URL}
+            loadingElement={<div style={{ height: `100%` }}/>}
+            containerElement={<div style={{ width: "100%", height: "100%" }}> helll </div>}
+            mapElement={<div style={{ height: `100%` }}/>}
+            lat={this.state.lat}
+            lng={this.state.lng}
+          />
+          {/*withScriptJs(*/}
+          {/*withGoogleMap(*/}
+          {/*<GoogleMap*/}
+          {/*{...rest}*/}
+          {/*defaultZoom={8}*/}
+          {/*defaultCenter={{ lat: this.state.lat, lng: this.state.long }}*/}
+          {/*onClick={(e)=>this.setState({lat:e.pa.x,long:e.pa.y})}*/}
+          {/*>*/}
+          {/*{isMarkerShown && <Marker position={{ lat: this.state.lat, lng: this.state.long }}/>}*/}
+          {/*</GoogleMap>*/}
+          {/*)*/}
+          {/*)*/}
 
 
-          </DialogContent>
-          <DialogActions>
-            <Button name={"confirm"} variant={"contained"} color={"primary"} onClick={this.handleClick.bind(this)}>Confirm</Button>
-          <Button name={"close"} variant={"contained"} color={"secondary"} onClick={this.handleClick.bind(this)}>Close</Button>
+        </DialogContent>
+        <DialogActions>
+          <Button name={"confirm"} variant={"contained"} color={"primary"}
+                  onClick={this.handleClick.bind(this)}>Confirm</Button>
+          <Button name={"close"} variant={"contained"} color={"secondary"}
+                  onClick={this.handleClick.bind(this)}>Close</Button>
         </DialogActions>
       </Dialog>
-  )
+    );
   }
 }
 

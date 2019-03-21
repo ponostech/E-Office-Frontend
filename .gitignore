@@ -8,10 +8,11 @@
 /__MACOSX
 # testing
 /coverage
-
 # production
 /build
 
+#key
+/src/Configuration.js
 # misc
 .DS_Store
 .env
