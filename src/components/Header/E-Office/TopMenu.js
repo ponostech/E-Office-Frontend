@@ -30,7 +30,7 @@ const menu = (props) => {
                         {title: "Create New", link: routes.NEW_FILE},
                         {title: "List Created", link: routes.CREATED_FILES},
                         {title: "List Sent", link: routes.SENT_FILE},
-                        {title: "List Closed", link: routes.CLOSE_FILE},
+                        {title: "Archived", link: routes.CLOSE_FILE},
                         {title: "Single File", link: routes.FILE_DETAIL},
                     ]}
                     linkClick={props.linkClick}
