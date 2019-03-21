@@ -84,10 +84,8 @@ function OfficeSnackbar(props) {
 OfficeSnackbar.defaultProps = {
   variant: "success",
   duration: 5000,
-  position: {
-    vertical: "bottom",
-    horizontal: "left"
-  }
+  position:
+    { vertical: "top", horizontal: "right" }
 };
 OfficeSnackbar.propTypes = {
   classes: PropTypes.object.isRequired,
