@@ -25,11 +25,6 @@ class FileUpload extends Component {
       file: data
     };
   }
-
-  componentDidMount() {
-    console.log(config)
-  }
-
   getFilename = (file) => {
     if (file.file) {
       return file.file.name;
