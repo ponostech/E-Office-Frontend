@@ -83,7 +83,7 @@ class DeskView extends React.Component {
         return (
             <>
                 <Card>
-                    <CardHeader
+                    {/*<CardHeader
                         className={classes.cardTitle}
                         title={"My Desk"}
                         action={
@@ -94,28 +94,12 @@ class DeskView extends React.Component {
                             </Tooltip>
                         }
                     >
-                    </CardHeader>
+                    </CardHeader>*/}
                     <CardContent
                         className={classes.cardContent}
                     >
                         <GridContainer spacing={16} justify={"space-between"}>
-                            <GridItem xs={12}>
-                                <Tabs
-                                    value={value}
-                                    onChange={this.handleChange}
-                                    classes={{root: classes.tabsRoot, indicator: classes.tabsIndicator}}
-                                >
-                                    <Tab disableRipple value={"file"}
-                                         classes={{root: classes.tabRoot, selected: classes.tabSelected}}
-                                         label={"List of Files"}/>
-                                    <Tab disableRipple value={"receipt"}
-                                         classes={{root: classes.tabRoot, selected: classes.tabSelected}}
-                                         label={"List of Receipts"}/>
-
-                                </Tabs>
-                            </GridItem>
-                            {value === "file" && <DeskFiles/>}
-                            {value === "receipt" && <DeskReceipts/>}
+                            <DeskFiles/>
                         </GridContainer>
                     </CardContent>
                 </Card>
