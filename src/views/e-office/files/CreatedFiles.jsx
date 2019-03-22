@@ -1,18 +1,5 @@
 import React, {Component} from "react";
-import GridContainer from "../../../components/Grid/GridContainer";
-import GridItem from "../../../components/Grid/GridItem";
-import {Button, Card, CardContent, CardHeader, IconButton, InputAdornment, Tooltip} from "@material-ui/core";
-
-import TextField from "@material-ui/core/es/TextField/TextField";
-
-import SearchIcon from "@material-ui/icons/Search";
-import ExportIcon from "@material-ui/icons/ImportExport";
-import PdfIcon from "@material-ui/icons/PictureAsPdf";
-import EditIcon from "@material-ui/icons/Edit";
-import SentIcon from "@material-ui/icons/Send";
-import AttachIcon from "@material-ui/icons/AttachFile";
-import EyeIcon from "@material-ui/icons/Details";
-import {OfficeRoutes} from "../../../config/routes-constant/OfficeRoutes";
+import {Card, CardContent} from "@material-ui/core";
 import ReceiptListDialog from "../receipt/ReceiptListDialog";
 import MovementDialog from "./movements/MovementDialog";
 import Grid from "@material-ui/core/Grid";

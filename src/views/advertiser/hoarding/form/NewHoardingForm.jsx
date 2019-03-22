@@ -243,6 +243,7 @@ class NewHoardingForm extends Component {
         break;
       case "displayType":
         this.state.displayType === undefined ? this.setState({ displayTypeError: "Display type is required" }) : this.setState({ displayTypeError: "" });
+      default:
         break;
     }
   };

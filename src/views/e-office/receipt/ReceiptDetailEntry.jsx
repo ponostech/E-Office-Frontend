@@ -10,8 +10,6 @@ import {
   Divider,
   FormControl,
   FormControlLabel,
-  IconButton,
-  InputAdornment,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -19,8 +17,6 @@ import {
   TextField
 } from "@material-ui/core";
 import ReceiptViewModel from "../../model/ReceiptViewModel";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import VisibilityOn from "@material-ui/icons/Visibility";
 import { Validators } from "../../../utils/Validators";
 import axios from "axios";
 import { ApiRoutes } from "../../../config/ApiRoutes";
@@ -229,7 +225,6 @@ class ReceiptDetailEntry extends Component {
   };
 
   render() {
-    var self = this;
     return (
       <GridContainer direction="row-reverse"
                      justify="center"

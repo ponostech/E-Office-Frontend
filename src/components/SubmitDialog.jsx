@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CircularProgress, Dialog, DialogContent, DialogContentText, DialogTitle, Typography } from "@material-ui/core";
+import { CircularProgress, Dialog, DialogContent, DialogTitle } from "@material-ui/core";
 import PropTypes from "prop-types";
 class SubmitDialog extends Component {
   render() {
