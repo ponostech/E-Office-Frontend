@@ -1,15 +1,6 @@
 import React, { Component } from "react";
 import GridContainer from "../../components/Grid/GridContainer";
-import {
-  Divider,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  TextField,
-  Tooltip
-} from "@material-ui/core";
+import { Divider, Grid, IconButton, List, ListItem, TextField } from "@material-ui/core";
 import GridItem from "../../components/Grid/GridItem";
 import AddIcon from "@material-ui/icons/AddCircle";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
@@ -29,23 +20,23 @@ class BannerDetail extends Component {
     fromError: "",
     toError: "",
 
-    detailList:[],
+    detailList: [],
 
-    invalid: true,
+    valid: false
   };
 
   handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({
-      [name]:value
-    })
+      [name]: value
+    });
 
-   this.setValidity()
+    this.setValidity();
   };
 
-  getBannerDetails=()=>{
+  getBannerDetails = () => {
     return this.state.detailList;
-  }
+  };
   handleBlur = (e) => {
     const { name, value } = e.target;
     switch (name) {
@@ -69,15 +60,6 @@ class BannerDetail extends Component {
 
   handleAdd = (e) => {
 
-    const invalid=Boolean(this.state.lengthError) ||
-    Boolean(this.state.heightError) ||
-    Boolean(this.state.locationsError) ||
-    Boolean(this.state.fromError) ||
-    Boolean(this.state.toError) || this.state.prestine;
-
-    if (invalid) {
-      return
-    }
     const { length, height, locations, from, to } = this.state;
     let temp = {
       length, height, locations, from, to
@@ -85,21 +67,14 @@ class BannerDetail extends Component {
     let list = this.state.detailList;
     list.push(temp);
     this.setState({ detailList: list });
-    this.setState({
-      length:'',
-      height:'',
-      locations:'',
-      from:'',
-      to:'',
-      invalid:true
-    })
+
   };
 
-  handleRemove = (index,e) => {
+  handleRemove = (index, e) => {
     let list = this.state.detailList;
     let result = list.filter((item, i) => {
       console.log(index);
-      console.log("i val "+i)
+      console.log("i val " + i);
       if (index !== i) {
         return item;
       }
@@ -108,20 +83,31 @@ class BannerDetail extends Component {
 
   };
 
-  setValidity=()=>{
-    const invalid= Boolean(this.state.lengthError) ||
-      Boolean(this.state.heightError) ||
-      Boolean(this.state.locationsError) ||
-      Boolean(this.state.fromError) ||
-      Boolean(this.state.toError)
+  setValidity = () => {
+    let valid = this.state.length!==0 && this.state.height.length!==0 && this.state.locations.length!==0 && this.state.from.length!==0 && this.state.to.length!==0;
 
-    this.setState({invalid})
-  }
+    this.setState({ valid });
+  };
+  clear = () => {
+    this.setState({
+      length: "",
+      height: "",
+      locations: "",
+      from: "",
+      to: ""
+    });
+  };
+
+  doReset = () => {
+    this.clear();
+    this.setState({ details: [] });
+  };
+
   render() {
     return (
       <>
-        <Grid   container={true} spacing={0}>
-          <GridItem  sm={12} md={2}>
+        <Grid container={true} spacing={0}>
+          <GridItem sm={12} md={2}>
             <TextField name={"length"}
                        type={"number"}
                        fullWidth={true}
@@ -137,7 +123,7 @@ class BannerDetail extends Component {
             />
           </GridItem>
 
-          <GridItem style={{padding:"4px"}}  sm={12} md={2}>
+          <GridItem style={{ padding: "4px" }} sm={12} md={2}>
             <TextField name={"height"}
                        type={"number"}
                        fullWidth={true}
@@ -153,7 +139,7 @@ class BannerDetail extends Component {
             />
           </GridItem>
 
-          <GridItem style={{padding:4}}  sm={12} md={3}>
+          <GridItem style={{ padding: 4 }} sm={12} md={3}>
             <TextField name={"locations"}
                        fullWidth={true}
                        required={true}
@@ -168,7 +154,7 @@ class BannerDetail extends Component {
             />
           </GridItem>
 
-          <GridItem style={{padding:4}}  sm={12} md={2}>
+          <GridItem style={{ padding: 4 }} sm={12} md={2}>
             <TextField name={"from"}
                        fullWidth={true}
                        type={"Date"}
@@ -186,7 +172,7 @@ class BannerDetail extends Component {
                        margin={"dense"}
             />
           </GridItem>
-          <GridItem style={{padding:4}}  sm={12} md={2}>
+          <GridItem style={{ padding: 4 }} sm={12} md={2}>
             <TextField name={"to"}
                        fullWidth={true}
                        type={"date"}
@@ -204,13 +190,11 @@ class BannerDetail extends Component {
                        margin={"dense"}
             />
           </GridItem>
-          <GridItem style={{padding:4}}  sm={12} md={1}>
-            <Tooltip title={"Click here to add"}>
-              <IconButton  disabled={this.state.invalid
-              } onClick={this.handleAdd.bind(this)} color={"primary"}>
-                <AddIcon fontSize={"large"} color={"inherit"}/>
-              </IconButton>
-            </Tooltip>
+          <GridItem style={{ padding: 4 }} sm={12} md={1}>
+            <IconButton disabled={!this.state.valid
+            } onClick={this.handleAdd.bind(this)} color={"primary"}>
+              <AddIcon fontSize={"large"} color={"inherit"}/>
+            </IconButton>
           </GridItem>
         </Grid>
 
@@ -218,40 +202,44 @@ class BannerDetail extends Component {
           <Divider/>
         </GridContainer>
         <GridContainer>
-         <GridItem xs={12} sm={12} md={12}>
-           <Divider style={{marginTop:10}}/>
-           <List style={{padding:"4px"}}>
-             {this.state.detailList.map((item,index)=>{
-               return (
-                 <ListItem key={index}>
-                   <GridContainer>
-                     <GridItem xs={12} sm={12} md={2}>
-                     <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.length} label={"Length"}/>
-                     </GridItem>
-                     <GridItem xs={12} sm={12} md={2}>
-                     <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.height} label={"Height"}/>
-                     </GridItem>
-                     <GridItem xs={12} sm={12} md={3}>
-                     <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.locations} label={"Location"}/>
-                     </GridItem>
-                     <GridItem xs={12} sm={12} md={2}>
-                     <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.from} label={"From"}/>
-                     </GridItem>
-                     <GridItem xs={12} sm={12} md={2}>
-                     <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.to} label={"To"}/>
-                     </GridItem>
-                     <GridItem xs={12} sm={12} md={1}>
-                       <IconButton onClick={this.handleRemove.bind(this,index)}>
-                         <DeleteIcon fontSize={"large"} color={"error"}/>
-                       </IconButton>
-                     </GridItem>
-                   </GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+            <Divider style={{ marginTop: 10 }}/>
+            <List style={{ padding: "4px" }}>
+              {this.state.detailList.map((item, index) => {
+                return (
+                  <ListItem key={index}>
+                    <GridContainer>
+                      <GridItem xs={12} sm={12} md={2}>
+                        <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.length}
+                                   label={"Length"}/>
+                      </GridItem>
+                      <GridItem xs={12} sm={12} md={2}>
+                        <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.height}
+                                   label={"Height"}/>
+                      </GridItem>
+                      <GridItem xs={12} sm={12} md={3}>
+                        <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.locations}
+                                   label={"Location"}/>
+                      </GridItem>
+                      <GridItem xs={12} sm={12} md={2}>
+                        <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.from}
+                                   label={"From"}/>
+                      </GridItem>
+                      <GridItem xs={12} sm={12} md={2}>
+                        <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.to} label={"To"}/>
+                      </GridItem>
+                      <GridItem xs={12} sm={12} md={1}>
+                        <IconButton onClick={this.handleRemove.bind(this, index)}>
+                          <DeleteIcon fontSize={"large"} color={"error"}/>
+                        </IconButton>
+                      </GridItem>
+                    </GridContainer>
 
-                 </ListItem>
-               );
-             })}
-           </List>
-         </GridItem>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </GridItem>
         </GridContainer>
       </>
     );

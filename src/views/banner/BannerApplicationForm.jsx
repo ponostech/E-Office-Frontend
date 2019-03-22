@@ -4,7 +4,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Checkbox,
   Divider,
   FormControlLabel,
@@ -22,12 +21,21 @@ import BannerDetail from "./BannerDetail";
 import { LocalCouncilService } from "../../services/LocalCouncilService";
 import FileUpload from "../../components/FileUpload";
 import { BannerService } from "../../services/BannerService";
+import { ErrorToString } from "../../utils/ErrorUtil";
+import withStyles from "@material-ui/core/es/styles/withStyles";
+import AddressField from "../../components/AddressField";
+import { Validators } from "../../utils/Validators";
 
+const style = {
+  root: {
+    padding: "10px 15px !important"
+  }
+};
 
 class BannerApplicationForm extends Component {
   localCouncilservice = new LocalCouncilService();
   bannerService = new BannerService();
-  bannerRef=React.createRef();
+  bannerRef = React.createRef();
 
   state = {
     name: "",
@@ -38,8 +46,8 @@ class BannerApplicationForm extends Component {
     details: "",
     displayType: undefined,
     signature: undefined,
-    localCouncils: [],
 
+    localCouncils: [],
     agree: false,
     display_types: [
       { value: "vehicle", label: "Vehicle" },
@@ -67,7 +75,7 @@ class BannerApplicationForm extends Component {
 
     submit: false,
     complete: false,
-    attachments: []
+    prestine:true
   };
 
   componentDidMount() {
@@ -100,9 +108,17 @@ class BannerApplicationForm extends Component {
 
   handleChange = (e) => {
     const { name, value } = e.target;
+    switch (name) {
+      case "phone":
+        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: "Phone number must be 10 digit number" }) : this.setState({ phoneError: "" });
+        break;
+      default:
+        break;
+    }
     this.setState({
       [name]: value
     });
+    this.setState({prestine:false})
   };
 
   handleSelect = (identifier, value) => {
@@ -119,29 +135,36 @@ class BannerApplicationForm extends Component {
       default:
         break;
     }
+    this.setState({prestine:false})
   };
 
 
-  isInvalid=()=>{
-    //TODO::validation rule creation
-    return true
-  }
   onSubmit = (e) => {
-    if (this.isInvalid()){
-      this.setState({errorMessage:"validation error"})
-      return
+    let details = this.bannerRef.current.getBannerDetails();
+    const invalid = Boolean(this.state.nameError) || Boolean(this.state.phoneError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
+      || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine) || details.length === 0 || this.state.signature===undefined;
+
+    if (invalid) {
+      this.setState({ errorMessage: "Please fill all the required fields" });
+      return;
     }
-    this.setState({submit:true})
+    this.setState({ submit: true });
     this.bannerService.create(this.state)
-      .then(data=>{
-
+      .then(data => {
+        if (data.status) {
+          this.setState({ success: true });
+        } else {
+          let msg = ErrorToString(data.messages);
+          this.setState({ errorMessage: msg });
+        }
+        console.log(data);
       })
-      .catch(err=>{
-
+      .catch(err => {
+        console.log(err);
       })
-      .then(()=>{
-        this.setState({submit:false})
-      })
+      .then(() => {
+        this.setState({ submit: false });
+      });
 
   };
 
@@ -157,8 +180,9 @@ class BannerApplicationForm extends Component {
           address: "",
           phone_no: "",
           blood: "",
-          signature: null
+          signature: undefined
         });
+        this.bannerRef.current.doReset();
         break;
       default:
         break;
@@ -169,13 +193,13 @@ class BannerApplicationForm extends Component {
   handleSelectBlur = (identifier, e) => {
     switch (identifier) {
       case "type":
-        this.state.type===undefined ? this.setState({ typeError: BannerViewModel.TYPE_REQUIRED }) : this.setState({ typeError: "" });
+        this.state.type === undefined ? this.setState({ typeError: BannerViewModel.TYPE_REQUIRED }) : this.setState({ typeError: "" });
         break;
       case "localCouncil":
-        this.state.localCouncil===undefined ? this.setState({ localCouncilError: BannerViewModel.LOCALCOUNCIL_REQUIRED }) : this.setState({ localCouncilError: "" });
+        this.state.localCouncil === undefined ? this.setState({ localCouncilError: BannerViewModel.LOCALCOUNCIL_REQUIRED }) : this.setState({ localCouncilError: "" });
         break;
       case "displayType":
-        this.state.displayType===undefined ? this.setState({ displayTypeError: BannerViewModel.DISPLAY_TYPE_REQUIRED }) : this.setState({ displayTypeError: "" });
+        this.state.displayType === undefined ? this.setState({ displayTypeError: BannerViewModel.DISPLAY_TYPE_REQUIRED }) : this.setState({ displayTypeError: "" });
         break;
       default:
             break
@@ -183,9 +207,6 @@ class BannerApplicationForm extends Component {
   };
   handleBlur = (e) => {
     const { name, value } = e.target;
-    /*console.log(name);
-    console.log(value);*/
-    console.log(value.length);
 
     switch (name) {
       case "name":
@@ -204,22 +225,20 @@ class BannerApplicationForm extends Component {
 
 
   render() {
-
     return (
 
       <GridContainer justify="flex-start">
         <GridItem xs={12} sm={12} md={10}>
           <form>
             <Card>
-              <CardHeader  title={BannerViewModel.TITLE}/>
               <CardContent>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <Divider style={{ marginBottom: 10 }}/>
+                  <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                    <Typography variant={"headline"}>
+                      {BannerViewModel.TITLE}
+                    </Typography>
                   </GridItem>
-                </GridContainer>
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
                       value={this.state.name}
                       name={"name"}
@@ -234,7 +253,7 @@ class BannerApplicationForm extends Component {
                       helperText={this.state.nameError}
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <OfficeSelect
                       value={this.state.type}
                       label={BannerViewModel.APPLICANT_TYPE}
@@ -249,7 +268,7 @@ class BannerApplicationForm extends Component {
                       onChange={this.handleSelect.bind(this, "type")}
                       options={this.state.types}/>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
                       value={this.state.phone}
                       onBlur={this.handleBlur.bind(this)}
@@ -263,7 +282,7 @@ class BannerApplicationForm extends Component {
                       helperText={this.state.phoneError}
                       label={BannerViewModel.PHONE_NO}/>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <OfficeSelect
                       value={this.state.localCouncil}
                       label={BannerViewModel.LOCALCOUNCIL}
@@ -277,37 +296,7 @@ class BannerApplicationForm extends Component {
                       onChange={this.handleSelect.bind(this, "localCouncil")}
                       options={this.state.localCouncils}/>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
-                    <TextField
-                      value={this.state.details}
-                      name={"details"}
-                      multiline={true}
-                      rows={3}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onBlur={this.handleBlur.bind(this)}
-                      onChange={this.handleChange.bind(this)}
-                      label={BannerViewModel.DETAILS}/>
-
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
-                    <TextField
-                      value={this.state.address}
-                      name={"address"}
-                      required={true}
-                      multiline={true}
-                      rows={3}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      error={Boolean(this.state.addressError)}
-                      helperText={this.state.addressError}
-                      onBlur={this.handleBlur.bind(this)}
-                      onChange={this.handleChange.bind(this)}
-                      label={BannerViewModel.ADDRESS}/>
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <OfficeSelect
                       required={true}
                       variant={"outlined"}
@@ -322,48 +311,77 @@ class BannerApplicationForm extends Component {
                       ClearAble={true}
                       label={BannerViewModel.DISPLAY_TYPE}
                       options={this.state.display_types}/>
+
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <AddressField onPlaceSelect={(data) => console.log(data)}
+                                  textFieldProps={{
+                                    placeholder: "Address",
+                                    value: this.state.address,
+                                    name: "address",
+                                    required: true,
+                                    variant: "outlined",
+                                    margin: "dense",
+                                    fullWidth: true,
+                                    error: Boolean(this.state.addressError),
+                                    helperText: this.state.addressError,
+                                    onBlur: this.handleBlur.bind(this),
+                                    onChange: this.handleChange.bind(this),
+                                    label: BannerViewModel.ADDRESS
+                                  }}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.details}
+                      name={"details"}
+                      multiline={true}
+                      rows={3}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onBlur={this.handleBlur.bind(this)}
+                      onChange={this.handleChange.bind(this)}
+                      label={BannerViewModel.DETAILS}/>
+
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <FileUpload required={true} document={{ id: 1, name: "Signature of applicant" }}
                                 onUploadSuccess={(data) => {
-                                    let temp={
-                                      name:"signature",
-                                      path:data.location
-                                    }
-                                    this.setState({
-                                      signature:temp
-                                    })
+                                  let temp = {
+                                    name: "signature",
+                                    path: data.location
+                                  };
+                                  this.setState({
+                                    signature: temp
+                                  });
                                 }} onUploadFailure={(err) => {
-                                  console.log(err)
+                      console.log(err);
                     }}/>
                   </GridItem>
-                </GridContainer>
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem className={classes.root} xs={12} sm={12} md={12}>
 
-                    <Typography style={{marginTop:20}} variant={"headline"}> Banner details</Typography>
+                    <Typography style={{ marginTop: 20 }} variant={"headline"}> Banner details</Typography>
                     <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                     <BannerDetail ref={this.bannerRef}/>
                   </GridItem>
 
-                </GridContainer>
-                {/*<GridContainer justify={"center"}>*/}
-                {/*<GridItem xs={12} sm={12} md={12}>*/}
-                {/*<Typography variant={"headline"}>Add Banner details</Typography>*/}
-                {/*<Divider style={{marginBottom:10,marginTop:10}}/>*/}
-                {/*<BannerDetail/>*/}
-                {/*</GridItem>*/}
-                {/*</GridContainer>*/}
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
+                  {/*<GridContainer justify={"center"}>*/}
+                  {/*<GridItem xs={12} sm={12} md={12}>*/}
+                  {/*<Typography variant={"headline"}>Add Banner details</Typography>*/}
+                  {/*<Divider style={{marginBottom:10,marginTop:10}}/>*/}
+                  {/*<BannerDetail/>*/}
+                  {/*</GridItem>*/}
+                  {/*</GridContainer>*/}
+                  <GridItem className={classes.root} xs={12} sm={12} md={12}>
                     <FormControlLabel control={
                       <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
                     }
                                       label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoarding Regulations 2013," +
                                       " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
                   </GridItem>
-                </GridContainer>
 
+                </GridContainer>
               </CardContent>
               <CardActions style={{ justifyContent: "flex-end" }}>
                 <div>
@@ -387,8 +405,11 @@ class BannerApplicationForm extends Component {
         </GridItem>
 
         <SubmitDialog open={this.state.submit} text={BannerViewModel.SUBMIT}/>
-        <OfficeSnackbar variant={"success"} open={this.state.complete}
-                        message={BannerViewModel.CREATE_MESSAGE}/>
+        <OfficeSnackbar variant={"success"} open={this.state.success}
+                        message={"Your Application is submitted successfully"} onClose={(e) => this.setState({ success: false })}/>
+        <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
+                        message={this.state.errorMessage}
+                        onClose={(e) => this.setState({ errorMessage: "" })}/>
       </GridContainer>
 
     );
@@ -396,4 +417,4 @@ class BannerApplicationForm extends Component {
 
 }
 
-export default BannerApplicationForm;
+export default withStyles(style)(BannerApplicationForm);

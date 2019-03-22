@@ -20,6 +20,7 @@ export class OfficeRoutes {
   static KIOSK_DETAIL = "/advertiser/kiosk/:id/details";
 
   static APPLY_BANNER = "/banner/new";
+  static APPLY_BANNER_SUCCESS="/banner/:id/success";
 
 
   static LOGIN = "/login";

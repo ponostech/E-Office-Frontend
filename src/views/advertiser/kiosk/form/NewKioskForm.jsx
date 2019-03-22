@@ -4,7 +4,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Checkbox,
   Divider,
   FormControl,
@@ -30,18 +29,19 @@ import FileUpload from "../../../../components/FileUpload";
 import MapIcon from "@material-ui/icons/PinDrop";
 import axios from "axios";
 import { ApiRoutes } from "../../../../config/ApiRoutes";
-import { HoardingService } from "../../../../services/HoardingService";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { DocumentService } from "../../../../services/DocumentService";
 import { KioskFormModel } from "../../../model/KioskFormModel";
 import { KioskService } from "../../../../services/KioskService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 
-const style={
-  // root:{
-  //   padding:"30px !important"
-  // }
-}
+
+const style = {
+  root: {
+    padding: "10px 15px !important"
+  }
+};
+
 class NewKioskForm extends Component {
   constructor(props) {
     super(props);
@@ -196,9 +196,9 @@ class NewKioskForm extends Component {
       .then(data => {
         console.log(data);
       })
-      .catch(err=>{
-        this.setState({errorMessage:err.toString()})
-        console.log(err)
+      .catch(err => {
+        this.setState({ errorMessage: err.toString() });
+        console.log(err);
       })
       .then(() => {
         this.setState({ submit: false });
@@ -277,13 +277,13 @@ class NewKioskForm extends Component {
           <Card>
             <CardContent>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
+                <GridItem className={classes.root} xs={12} sm={12} md={12}>
                   <Typography variant={"headline"}>{KioskFormModel.TITLE}</Typography>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
-                  <Divider style={{marginBottom:10,marginTop:10}}/>
+                  <Divider style={{ marginBottom: 10, marginTop: 10 }}/>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <OfficeSelect
                     value={this.state.localCouncil}
                     defaultValues={this.state.localCouncils[0]}
@@ -298,7 +298,7 @@ class NewKioskForm extends Component {
                     onChange={this.handleOfficeSelect.bind(this, "localCouncil")}
                     options={this.state.localCouncils}/>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <OfficeSelect value={this.state.category}
                                 label={HoardingApplicationFormModel.CATEGORY}
                                 name={"category"}
@@ -311,7 +311,7 @@ class NewKioskForm extends Component {
                                 onChange={this.handleOfficeSelect.bind(this, "category")}
                                 options={this.state.categories}/>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <TextField name={"address"}
                              value={this.state.address}
                              error={Boolean(this.state.addressError)}
@@ -324,7 +324,7 @@ class NewKioskForm extends Component {
                              onChange={this.handleChange.bind(this)}
                              label={"Address"}/>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
+                <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"length"}
                              type={"number"}
                              value={this.state.length}
@@ -339,7 +339,7 @@ class NewKioskForm extends Component {
                              helperText={this.state.lengthError}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
+                <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"height"}
                              value={this.state.height}
                              type={"number"}
@@ -354,7 +354,7 @@ class NewKioskForm extends Component {
                              helperText={this.state.heightError}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
+                <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <FormControl margin={"dense"}>
                     <FormControlLabel onChange={this.handleSwitch.bind(this)}
                                       name={"bothSide"}
@@ -368,7 +368,7 @@ class NewKioskForm extends Component {
                                       label={"Both side?"}/>
                   </FormControl>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
+                <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <FormControl margin={"dense"}>
                     <FormControlLabel onChange={this.handleSwitch.bind(this)}
                                       name={"collapsible"}
@@ -382,7 +382,7 @@ class NewKioskForm extends Component {
                                       label={"Is collapsible?"}/>
                   </FormControl>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
+                <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"clearance"}
                              value={this.state.clearance}
                              onBlur={this.handleBlur.bind(this)}
@@ -396,7 +396,7 @@ class NewKioskForm extends Component {
                   />
 
                 </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
+                <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"roadDetail"}
                              value={this.state.roadDetail}
                              onBlur={this.handleBlur.bind(this)}
@@ -412,7 +412,7 @@ class NewKioskForm extends Component {
                   />
 
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <OfficeSelect
                     name={"displayType"}
                     value={this.state.displayType}
@@ -427,7 +427,7 @@ class NewKioskForm extends Component {
                     label={HoardingApplicationFormModel.DISPLAY_TYPE}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <TextField name={"lat"} margin={"dense"}
                              fullWidth={true} variant={"outlined"}
                              required={true}
@@ -447,7 +447,7 @@ class NewKioskForm extends Component {
                              }}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <TextField name={"landLord"}
                              margin={"dense"}
                              value={this.state.landLord}
@@ -457,7 +457,7 @@ class NewKioskForm extends Component {
                              onChange={this.handleChange.bind(this)}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <FormControl fullWidth={true} margin={"dense"}>
                     <FormLabel>Type of Landlord/ Land owner</FormLabel>
                     <RadioGroup
@@ -472,30 +472,32 @@ class NewKioskForm extends Component {
                     </RadioGroup>
                   </FormControl>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <FileUpload document={{id:0,name:"Signature"}}
-                              onUploadSuccess={(data)=>{
-                                this.setState(state=>{
-                                  state.signature={
-                                    name:data.name,
-                                    path:data.location
-                                  }
-                                })
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                  <FileUpload document={{ id: 0, name: "Signature" }}
+                              onUploadSuccess={(data) => {
+                                this.setState(state => {
+                                  state.signature = {
+                                    name: data.name,
+                                    path: data.location
+                                  };
+                                });
                               }}
-                              onUploadFailure={err=>console.log(err)}/>
+                              onUploadFailure={err => console.log(err)}/>
                 </GridItem>
-                  <GridItem sm={12} xs={12} md={12}>
-                    <Typography variant={"headline"}>Document Attachment</Typography>
-                    {this.state.documents.map((doc, index) => {
-                      return <FileUpload key={index} onUploadSuccess={(data) => {
-                        console.log(data);
-                      }} onUploadFailure={(e) => {
-                        console.log(e);
-                      }} document={doc}/>;
-                    })}
-                  </GridItem>
+                <GridItem sm={12} xs={12} md={12}>
+                  <Typography variant={"headline"}>Document Attachment</Typography>
+                </GridItem>
+                {this.state.documents.map((doc, index) => {
+                  return <GridItem className={classes.root} sm={12} xs={12} md={12}>
+                    <FileUpload key={index} onUploadSuccess={(data) => {
+                      console.log(data);
+                    }} onUploadFailure={(e) => {
+                      console.log(e);
+                    }} document={doc}/>
+                  </GridItem>;
+                })}
 
-                <GridItem xs={12} sm={12} md={12}>
+                <GridItem className={classes.root} xs={12} sm={12} md={12}>
                   <FormControlLabel control={
                     <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
                   }

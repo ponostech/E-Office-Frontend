@@ -29,31 +29,23 @@ class ReceiptDetailEntry extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
       receive_date: "",
       letter_date: "",
       subject: "",
       delivery_mode: "",
       type: "Individual",
-      email: "",
-      phone: "",
-      password: "",
-      confirmPassword: "",
-      address: "",
+      sender_address: "",
       signature: null,
-
       agree: false,
-
-      showPassword: false,
       nameError: "",
-      emailError: "",
+      languageError: "",
+      language: "",
       passwordError: "",
       subjectError: "",
       phoneError: "",
       confirmPasswordError: "",
       addressError: "",
       types: ["Individual", "Firm", "Group(NGO)"],
-
       success: false,
       error: false,
       //dialog variable
@@ -87,7 +79,7 @@ class ReceiptDetailEntry extends Component {
   };
 
   isInvalid = () => {
-    return this.state.prestine || !!this.state.nameError || !!this.state.subjectError || !!this.state.addressError || !!this.state.emailError
+    return this.state.prestine || !!this.state.languageError || !!this.state.subjectError || !!this.state.addressError || !!this.state.emailError
       || !!this.state.emailError || !!this.state.passwordError;
   };
 
@@ -103,6 +95,7 @@ class ReceiptDetailEntry extends Component {
       delivery_mode: this.state.delivery_mode,
       type: this.state.type,
       language: this.state.language,
+      category: this.state.category,
       dealing_hand: this.state.dealing_hand,
       letter_ref_no: this.state.letter_ref_no,
       phone_no: this.state.phone,
@@ -146,11 +139,14 @@ class ReceiptDetailEntry extends Component {
         this.setState({
           name: "",
           type: "Individual",
-          email: "",
-          phone: "",
-          password: "",
-          confirmPassword: "",
-          address: "",
+          receive_date: "",
+          letter_date: "",
+          subject: "",
+          delivery_mode: "",
+          sender_address: "",
+          language: "",
+          category: "",
+          dealing_hand: "",
           agree: false,
           showPassword: false
         });
@@ -169,7 +165,7 @@ class ReceiptDetailEntry extends Component {
       case "subject":
         value.length === 0 ? this.setState({ subjectError: ReceiptViewModel.REQUIRED_SUBJECT }) : this.setState({ subjectError: "" });
         break;
-      case "email":
+      case "language":
         if (value.length === 0) {
           this.setState({ emailError: ReceiptViewModel.REQUIRED_EMAIL });
         }
@@ -361,7 +357,7 @@ class ReceiptDetailEntry extends Component {
                     >
                       {this.state.types.map((val, i) => (
                         <MenuItem key={i} value={val}>
-                          {val}
+                          {val}git
                         </MenuItem>
                       ))}
                     </Select>
@@ -439,7 +435,7 @@ class ReceiptDetailEntry extends Component {
                     helperText={this.state.addressError}
                     multiline={true}
                     rows={3}
-                    name={"address"}
+                    name={"sender_address"}
                     margin={"dense"}
                     required={true}
                     fullWidth={true}
