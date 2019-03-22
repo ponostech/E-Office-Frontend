@@ -6,7 +6,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Checkbox,
   Divider,
   FormControl,
@@ -28,7 +27,6 @@ import { ApiRoutes } from "../../../config/ApiRoutes";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import SubmitDialog from "../../../components/SubmitDialog";
 import FileUpload from "../../../components/FileUpload";
-import HelpIcon from "@material-ui/icons/Help";
 import { DocumentService } from "../../../services/DocumentService";
 
 class ReceiptDetailEntry extends Component {
@@ -38,6 +36,8 @@ class ReceiptDetailEntry extends Component {
       name: "",
       receive_date: "",
       letter_date: "",
+      subject: "",
+      delivery_mode: "",
       type: "Individual",
       email: "",
       phone: "",
@@ -52,6 +52,7 @@ class ReceiptDetailEntry extends Component {
       nameError: "",
       emailError: "",
       passwordError: "",
+      subjectError: "",
       phoneError: "",
       confirmPasswordError: "",
       addressError: "",
@@ -67,21 +68,21 @@ class ReceiptDetailEntry extends Component {
       documents: []
     };
 
-    this.documentService=new DocumentService();
+    this.documentService = new DocumentService();
   }
 
   componentDidMount() {
 
     this.documentService.get("advertiser")
-      .then(res=>{
+      .then(res => {
         if (res.status) {
-          const{documents}=res.data
-          this.setState({documents})
+          const { documents } = res.data;
+          this.setState({ documents });
         }
       })
-      .catch(err=>{
-        this.setState({errorMessage:err.toString()})
-      })
+      .catch(err => {
+        this.setState({ errorMessage: err.toString() });
+      });
 
   }
 
@@ -90,7 +91,7 @@ class ReceiptDetailEntry extends Component {
   };
 
   isInvalid = () => {
-    return this.state.prestine || !!this.state.nameError || !!this.state.emailError || !!this.state.addressError || !!this.state.emailError
+    return this.state.prestine || !!this.state.nameError || !!this.state.subjectError || !!this.state.addressError || !!this.state.emailError
       || !!this.state.emailError || !!this.state.passwordError;
   };
 
@@ -99,7 +100,15 @@ class ReceiptDetailEntry extends Component {
     const { name } = e.target;
     let data = {
       name: this.state.name,
+      subject: this.state.subject,
+      delivery_date: this.state.delivery_date,
+      letter_date: this.state.letter_date,
+      sender_address: this.state.sender_address,
+      delivery_mode: this.state.delivery_mode,
       type: this.state.type,
+      language: this.state.language,
+      dealing_hand: this.state.dealing_hand,
+      letter_ref_no: this.state.letter_ref_no,
       phone_no: this.state.phone,
       email: this.state.email,
       password: this.state.password,
@@ -160,6 +169,9 @@ class ReceiptDetailEntry extends Component {
     switch (name) {
       case "name":
         value.length === 0 ? this.setState({ nameError: ReceiptViewModel.REQUIRED_NAME }) : this.setState({ nameError: "" });
+        break;
+      case "subject":
+        value.length === 0 ? this.setState({ subjectError: ReceiptViewModel.REQUIRED_SUBJECT }) : this.setState({ subjectError: "" });
         break;
       case "email":
         if (value.length === 0) {
@@ -230,11 +242,11 @@ class ReceiptDetailEntry extends Component {
           <Card>
 
             {/*<CardHeader style={{ textAlign: "center" }} title={"Form of Application for registered Advertiser"}*/}
-                        {/*action={*/}
-                          {/*<IconButton>*/}
-                            {/*<HelpIcon/>*/}
-                          {/*</IconButton>*/}
-                        {/*}>*/}
+            {/*action={*/}
+            {/*<IconButton>*/}
+            {/*<HelpIcon/>*/}
+            {/*</IconButton>*/}
+            {/*}>*/}
             {/*</CardHeader>*/}
             <CardContent>
               <GridContainer>
@@ -242,23 +254,39 @@ class ReceiptDetailEntry extends Component {
                 <GridItem xs={12} sm={12} md={12}>
                   <Divider style={{ marginBottom: 10 }}/>
                 </GridItem>
+                <GridItem xs={12} sm={12} md={12}>
+                  <TextField
+                    value={this.state.subject}
+                    error={Boolean(this.state.subjectError)}
+                    helperText={this.state.subjectError}
+                    name={"subject"}
+                    margin={"dense"}
+                    required={true}
+                    fullWidth={true}
+                    variant={"outlined"}
+                    label={ReceiptViewModel.SUBJECT}
+                    onBlur={this.handleRequired.bind(this)}
+                    onChange={this.handleChange.bind(this)}
+                    placeholder={"Subject"}
+                  />
+                </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                <TextField name={"receive_date"}
-                           value={this.state.receive_date}
-                           variant={"outlined"}
-                           margin={"dense"}
-                           required={true}
-                           onBlur={this.handleRequired.bind(this)}
-                           fullWidth={true}
-                           onChange={this.handleChange.bind(this)}
-                           type={"date"}
-                           InputLabelProps={
-                             { shrink: true }
-                           }
-                           label={ReceiptViewModel.RECEIVE_DATE}
-                           error={Boolean(this.state.estdError)}
-                           helperText={this.state.estdError}
-                />
+                  <TextField name={"receive_date"}
+                             value={this.state.receive_date}
+                             variant={"outlined"}
+                             margin={"dense"}
+                             required={true}
+                             onBlur={this.handleRequired.bind(this)}
+                             fullWidth={true}
+                             onChange={this.handleChange.bind(this)}
+                             type={"date"}
+                             InputLabelProps={
+                               { shrink: true }
+                             }
+                             label={ReceiptViewModel.RECEIVE_DATE}
+                             error={Boolean(this.state.estdError)}
+                             helperText={this.state.estdError}
+                  />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField name={"letter_date"}
@@ -279,45 +307,13 @@ class ReceiptDetailEntry extends Component {
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                <TextField
-                  value={this.state.name}
-                  error={Boolean(this.state.nameError)}
-                  helperText={this.state.nameError}
-                  name={"name"}
-                  margin={"dense"}
-                  required={true}
-                  fullWidth={true}
-                  variant={"outlined"}
-                  label={ReceiptViewModel.NAME}
-                  onBlur={this.handleRequired.bind(this)}
-                  onChange={this.handleChange.bind(this)}
-                  placeholder={"Fullname"}
-                />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <TextField
-                    value={this.state.name}
-                    error={Boolean(this.state.nameError)}
-                    helperText={this.state.nameError}
-                    name={"name"}
-                    margin={"dense"}
-                    required={true}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    label={ReceiptViewModel.NAME}
-                    onBlur={this.handleRequired.bind(this)}
-                    onChange={this.handleChange.bind(this)}
-                    placeholder={"Fullname"}
-                  />
-                </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
                   <FormControl
                     required={true}
                     margin={"dense"}
                     fullWidth={true}
                     variant={"outlined"}
                   >
-                    <InputLabel htmlFor={"type"}>{ReceiptViewModel.APPLICANT_TYPE}</InputLabel>
+                    <InputLabel htmlFor={"type"}>{ReceiptViewModel.DELIVERY_MODE}</InputLabel>
                     <Select
                       value={this.state.type}
                       onChange={this.handleChange.bind(this)}
@@ -334,92 +330,114 @@ class ReceiptDetailEntry extends Component {
                       ))}
                     </Select>
                   </FormControl>
-                  </GridItem>
+                </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
-                    value={this.state.email}
-                    error={Boolean(this.state.emailError)}
-                    helperText={this.state.emailError}
-                    type={"email"}
-                    name={"email"}
+                    value={this.state.name}
+                    error={Boolean(this.state.nameError)}
+                    helperText={this.state.nameError}
+                    name={"name"}
                     margin={"dense"}
                     required={true}
                     fullWidth={true}
                     variant={"outlined"}
-                    label={ReceiptViewModel.EMAIL}
-                    placeholder={"Email"}
+                    label={ReceiptViewModel.LANGUAGE}
                     onBlur={this.handleRequired.bind(this)}
                     onChange={this.handleChange.bind(this)}
+                    placeholder={"Fullname"}
                   />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <FormControl
+                    required={true}
+                    margin={"dense"}
+                    fullWidth={true}
+                    variant={"outlined"}
+                  >
+                    <InputLabel htmlFor={"type"}>{ReceiptViewModel.TYPE}</InputLabel>
+                    <Select
+                      value={this.state.type}
+                      onChange={this.handleChange.bind(this)}
+                      input={
+                        <OutlinedInput required={true}
+                                       labelWidth={140} name={"type"} id={"type"}/>
+                      }
+
+                    >
+                      {this.state.types.map((val, i) => (
+                        <MenuItem key={i} value={val}>
+                          {val}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
                   <TextField
-                    value={this.state.phone}
-                    error={Boolean(this.state.phoneError)}
-                    helperText={this.state.phoneError}
-                    type={"phone"}
-                    name={"phone"}
+                    value={this.state.letter_ref_no}
+                    error={Boolean(this.state.nameError)}
+                    helperText={this.state.nameError}
+                    name={"letter_ref_no"}
                     margin={"dense"}
-                    required={true}
                     fullWidth={true}
                     variant={"outlined"}
-                    label={"Phone"}
-                    placeholder={"Phone"}
+                    label={ReceiptViewModel.REF_NO}
                     onBlur={this.handleRequired.bind(this)}
                     onChange={this.handleChange.bind(this)}
+                    placeholder={"Letter reference no"}
                   />
-                  <TextField
-                    value={this.state.password}
-                    error={Boolean(this.state.passwordError)}
-                    helperText={this.state.passwordError}
-                    type={this.state.showPassword ? "text" : "password"}
-                    name={"password"}
-                    margin={"dense"}
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}>
+                  <FormControl
                     required={true}
+                    margin={"dense"}
                     fullWidth={true}
                     variant={"outlined"}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="Toggle password visibility"
-                            onClick={this.handleClickShowPassword.bind(this)}
-                          >
-                            {this.state.showPassword ? <VisibilityOn/> : <VisibilityOff/>}
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }}
-                    label={ReceiptViewModel.PASSWORD}
-                    onBlur={this.handleRequired.bind(this)}
-                    onChange={this.handleChange.bind(this)}
-                    placeholder={"Password"}
-                  />
-                  <TextField
-                    value={this.state.confirmPassword}
-                    error={Boolean(this.state.confirmPasswordError)}
-                    helperText={this.state.confirmPasswordError}
-                    type={this.state.showPassword ? "text" : "password"}
-                    name={"confirmPassword"}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="Toggle password visibility"
-                            onClick={this.handleClickShowPassword.bind(this)}
-                          >
-                            {this.state.showPassword ? <VisibilityOn/> : <VisibilityOff/>}
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }}
-                    margin={"dense"}
+                  >
+                    <InputLabel htmlFor={"type"}>{ReceiptViewModel.CATEGORY}</InputLabel>
+                    <Select
+                      value={this.state.type}
+                      onChange={this.handleChange.bind(this)}
+                      input={
+                        <OutlinedInput required={true}
+                                       labelWidth={140} name={"type"} id={"type"}/>
+                      }
+
+                    >
+                      {this.state.types.map((val, i) => (
+                        <MenuItem key={i} value={val}>
+                          {val}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}>
+                  <FormControl
                     required={true}
+                    margin={"dense"}
                     fullWidth={true}
                     variant={"outlined"}
-                    label={ReceiptViewModel.CONFIRM_PASSWORD}
-                    onBlur={this.handleRequired.bind(this)}
-                    onChange={this.handleChange.bind(this)}
-                    placeholder={"Confirm password"}
-                  />
+                  >
+                    <InputLabel htmlFor={"type"}>{ReceiptViewModel.DEALING_HAND}</InputLabel>
+                    <Select
+                      value={this.state.type}
+                      onChange={this.handleChange.bind(this)}
+                      input={
+                        <OutlinedInput required={true}
+                                       labelWidth={140} name={"type"} id={"type"}/>
+                      }
+
+                    >
+                      {this.state.types.map((val, i) => (
+                        <MenuItem key={i} value={val}>
+                          {val}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}>
                   <TextField
                     value={this.state.address}
                     error={Boolean(this.state.addressError)}
@@ -443,8 +461,8 @@ class ReceiptDetailEntry extends Component {
                 <GridItem xs={12} sm={12} md={6}>
                   {this.state.documents.map((doc, index) =>
                     <FileUpload key={index} document={doc}
-                                onUploadSuccess={(data) =>{
-                                  console.log(data)
+                                onUploadSuccess={(data) => {
+                                  console.log(data);
                                 }}
                                 onUploadFailure={(err) => console.log(err)}/>
                   )}

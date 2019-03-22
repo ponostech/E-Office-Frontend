@@ -383,6 +383,7 @@ class AdvertiserForm extends Component {
                     placeholder={"Confirm password"}
                   />
                 </GridItem>
+
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <AddressField
                     textFieldProps={{
@@ -413,8 +414,8 @@ class AdvertiserForm extends Component {
                   }}/>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
-                  <Typography style={{ marginTop: 10, marginBottom: 10 }} variant={"headline"}>
-                    Upload Documents</Typography>
+                  <Typography style={{ marginTop: 10, marginBottom: 10 }} variant={"headline"}>Document
+                    Attachment</Typography>
                 </GridItem>
 
                 {this.state.documents.map((doc, index) =>
