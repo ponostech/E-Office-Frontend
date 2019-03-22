@@ -17,6 +17,7 @@ import pagesStyle from "../assets/jss/material-dashboard-pro-react/layouts/pages
 import BannerApplicationForm from "../views/banner/BannerApplicationForm";
 import AdvertiserLogin from "../views/advertiser/auth/AdvertiserLogin";
 import AdvertiserForm from "../views/advertiser/AdvertiserForm";
+import AdvertiserRegistrationSuccess from "../views/advertiser/AdvertiserRegistrationSuccess";
 
 class LandingPage extends Component {
 
@@ -42,6 +43,7 @@ class LandingPage extends Component {
 
                 <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
                 <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserForm}/>
+                <Route exact={true} path={OfficeRoutes.ADVERTISER_REGISTRATION_SUCCESS} component={AdvertiserRegistrationSuccess}/>
 
                 <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
 

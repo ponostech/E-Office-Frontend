@@ -383,24 +383,23 @@ class AdvertiserForm extends Component {
                     placeholder={"Confirm password"}
                   />
                 </GridItem>
+
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <TextField
-                    value={this.state.address}
-                    error={Boolean(this.state.addressError)}
-                    helperText={this.state.addressError}
-                    name={"address"}
-                    margin={"dense"}
-                    required={true}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    label={AdvertiserViewModel.ADDRESS}
-                    onBlur={this.handleRequired.bind(this)}
-                    onChange={this.handleChange.bind(this)}
-                    placeholder={" hno \n locality \n pincode"}
-                  />
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  {/*<AddressField label={"laasdfasdf"} fullWidth={true}/>*/}
+                  <AddressField
+                    textFieldProps={{
+                      value:this.state.address,
+                      onChange:this.handleChange.bind(this),
+                      onBlur:this.handleRequired.bind(this),
+                      error:Boolean(this.state.addressError),
+                      helperText:this.state.addressError,
+                      margin:"dense",
+                      variant:"outlined",
+                      fullWidth:true,
+                      name:"address",
+                      required:true,
+                      label:"Address"
+                    }}
+                    onPlaceSelect={(place)=>{console.log(place)}}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <FileUpload required={true} document={{ id: 40, name: "Signature", mime: "image/*" }}
