@@ -88,7 +88,7 @@ class DeskFiles extends Component {
             filterType: "checkbox",
             responsive: "scroll",
             rowsPerPage: 8,
-            serverSide: true,
+            serverSide: false,
             customToolbarSelect: function (selectedRows, displayData, setSelectedRows) {
                 return false;
             },

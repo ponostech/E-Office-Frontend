@@ -1,11 +1,9 @@
 import React, {Component} from "react";
 import {pdfjs} from "react-pdf";
-
-import GridContainer from "../../../components/Grid/GridContainer";
-import GridItem from "../../../components/Grid/GridItem";
 import ReceiptDetailEntry from "./ReceiptDetailEntry";
 import {Paper} from "@material-ui/core";
 import FileUpload from "../../../components/FileUpload";
+import Grid from "@material-ui/core/Grid";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -18,10 +16,9 @@ class NewReceipt extends Component {
 
     render() {
         const {pdfFile} = this.state;
-
         return (
-            <GridContainer justify={"center"}>
-                <GridItem xs={12} sm={12} md={7}>
+            <Grid container justify="flex-start">
+                <Grid item xs={12} sm={12} md={7}>
                     <Paper style={{padding: 20}}>
                        <FileUpload document={{id:0,name:"document",mime:"application/pdf"}} onUploadSuccess={data=>{
                            this.setState({
@@ -34,13 +31,11 @@ class NewReceipt extends Component {
                                 here to download the PDF file.</a></p>
                         </object>
                     </Paper>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={5}>
-                    <div>
-                        <ReceiptDetailEntry/>
-                    </div>
-                </GridItem>
-            </GridContainer>
+                </Grid>
+                <Grid item xs={12} sm={12} md={5}>
+                    <ReceiptDetailEntry/>
+                </Grid>
+            </Grid>
         );
     }
 }
