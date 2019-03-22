@@ -257,7 +257,7 @@ class ShopLicenseApplicationForm extends Component {
 
   render() {
     const {trade} = this.state;
-
+    const {classes} = this.props;
     return (
 
       <GridContainer justify="flex-start">

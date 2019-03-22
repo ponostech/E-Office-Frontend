@@ -225,6 +225,7 @@ class BannerApplicationForm extends Component {
 
 
   render() {
+    const {classes} = this.props;
     return (
 
       <GridContainer justify="flex-start">
