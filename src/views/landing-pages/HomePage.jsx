@@ -82,9 +82,6 @@ const styles = {
   iconWhite: {
     color: whiteColor
   },
-  iconRose: {
-    color: roseColor[0]
-  },
   marginTop30: {
     marginTop: "30px"
   }
@@ -119,20 +116,19 @@ class HomePage extends Component {
                       tabContent: (
                         <Card>
                           <CardHeader>
-                            <Typography variant='headline' align="center">
+                            <Typography variant='h5' align="center">
                               What are you planning to do?
                             </Typography>
                           </CardHeader>
                           <CardBody>
                             <GridContainer justify="center">
-                              <GridItem xs={12} sm={12} md={3}>
+                              <GridItem xs={12} sm={12} md={4} lg={3}>
                                 <Card pricing raised>
                                   <CardBody pricing>
                                     <h6 className={classes.cardCategory}>New Shop
                                       Licensing</h6>
                                     <div className={classes.icon}>
-                                      <StoreMallDirectory
-                                        className={classes.iconRose}/>
+                                      <StoreMallDirectory color="primary"/>
                                     </div>
                                     <h3 className={`${classes.cardTitle} ${classes.marginTop30}`}>
                                       Application for Shop Licensing
@@ -140,7 +136,7 @@ class HomePage extends Component {
                                     <p className={classes.cardDescription}>
                                       Click the button below to get a shop License
                                     </p>
-                                    <Button color="rose"
+                                    <Button color="primary"
                                             round
                                             onClick={this.handleLink(OfficeRoutes.APPLY_SHOP_LICENSE)}>
                                       Apply for Shop Licensing
@@ -148,14 +144,13 @@ class HomePage extends Component {
                                   </CardBody>
                                 </Card>
                               </GridItem>
-                              <GridItem xs={12} sm={12} md={3}>
+                              <GridItem xs={12} sm={12} md={4} lg={3}>
                                 <Card pricing raised>
                                   <CardBody pricing>
                                     <h6 className={classes.cardCategory}>Renew Shop
                                       Licensing</h6>
                                     <div className={classes.icon}>
-                                      <StoreMallDirectory
-                                        className={classes.iconRose}/>
+                                      <StoreMallDirectory color="primary"/>
                                     </div>
                                     <h3 className={`${classes.cardTitle} ${classes.marginTop30}`}>
                                       Renewal of Shop License
@@ -163,8 +158,7 @@ class HomePage extends Component {
                                     <p className={classes.cardDescription}>
                                       Submit your renewal application by clicking on the button below
                                     </p>
-                                    <Button color="rose" onClick={this.handleLink(OfficeRoutes.RENEW_SHOP_LICENSE)}
-                                            round>
+                                    <Button color="primary" onClick={this.handleLink(OfficeRoutes.RENEW_SHOP_LICENSE)} round>
                                       Renew Shop Licensing
                                     </Button>
                                   </CardBody>
@@ -181,20 +175,19 @@ class HomePage extends Component {
                       tabContent: (
                         <Card>
                           <CardHeader>
-                            <Typography variant='headline' align="center">
+                            <Typography variant='h5' align="center">
                               Select your option below
                             </Typography>
                           </CardHeader>
                           <CardBody>
                             <GridContainer justify="center">
-                              <GridItem xs={12} sm={12} md={3}>
+                              <GridItem xs={12} sm={12} md={4} lg={3}>
                                 <Card pricing raised>
                                   <CardBody pricing>
                                     <h6 className={classes.cardCategory}>Apply for
                                       New Banner/Poster</h6>
                                     <div className={classes.icon}>
-                                      <StoreMallDirectory
-                                        className={classes.iconRose}/>
+                                      <StoreMallDirectory color="primary"/>
                                     </div>
                                     <h3 className={`${classes.cardTitle} ${classes.marginTop30}`}>
                                       Click button Below
@@ -202,8 +195,7 @@ class HomePage extends Component {
                                     <p className={classes.cardDescription}>
 
                                     </p>
-                                    <Button color="rose" round
-                                            onClick={this.handleLink(OfficeRoutes.APPLY_BANNER)}>
+                                    <Button color="primary" round  onClick={this.handleLink(OfficeRoutes.APPLY_BANNER)}>
                                       Apply for Banner
                                     </Button>
                                   </CardBody>
@@ -220,27 +212,26 @@ class HomePage extends Component {
                       tabContent: (
                         <Card>
                           <CardHeader>
-                            <Typography variant='headline' align="center">
+                            <Typography variant='h5' align="center">
 
                             </Typography>
                           </CardHeader>
                           <CardBody>
                             <GridContainer justify="center">
-                              <GridItem xs={12} sm={12} md={3}>
+                              <GridItem xs={12} sm={12} md={4} lg={3}>
                                 <Card pricing raised>
                                   <CardBody pricing>
                                     <h6 className={classes.cardCategory}>Apply for
                                       New Hoarding</h6>
                                     <div className={classes.icon}>
-                                      <StoreMallDirectory
-                                        className={classes.iconRose}/>
+                                      <StoreMallDirectory color="primary"/>
                                     </div>
                                     <h3 className={`${classes.cardTitle} ${classes.marginTop30}`}>
                                       Click button Below
                                     </h3><p className={classes.cardDescription}>
                                     Click here to download
                                   </p>
-                                    <Button color="rose" round
+                                    <Button color="primary" round
                                             onClick={this.handleLink(OfficeRoutes.ADVERTISER_LOGIN)}>
                                       Apply for New Kiosk
                                     </Button>
@@ -257,20 +248,19 @@ class HomePage extends Component {
                       tabContent: (
                         <Card>
                           <CardHeader>
-                            <Typography variant='headline' align="center">
+                            <Typography variant='h5' align="center">
 
                             </Typography>
                           </CardHeader>
                           <CardBody>
                             <GridContainer justify="center">
-                              <GridItem xs={12} sm={12} md={3}>
+                              <GridItem xs={12} sm={12} md={4} lg={3}>
                                 <Card pricing raised>
                                   <CardBody pricing>
                                     <h6 className={classes.cardCategory}>Apply for
                                       New Hoarding</h6>
                                     <div className={classes.icon}>
-                                      <StoreMallDirectory
-                                        className={classes.iconRose}/>
+                                      <StoreMallDirectory color="primary"/>
                                     </div>
                                     <h3
                                       className={`${classes.cardTitle} ${classes.marginTop30}`}>
@@ -278,7 +268,7 @@ class HomePage extends Component {
                                     </h3><p className={classes.cardDescription}>
                                     Click here to download
                                   </p>
-                                    <Button color="rose" round
+                                    <Button color="primary" round
                                             onClick={this.handleLink(OfficeRoutes.ADVERTISER_LOGIN)}>
                                       Apply for New Hoarding
                                     </Button>
@@ -296,19 +286,18 @@ class HomePage extends Component {
                       tabContent: (
                         <Card>
                           <CardHeader>
-                            <Typography variant='headline' align="center">
+                            <Typography variant='h5' align="center">
 
                             </Typography>
                           </CardHeader>
                           <CardBody>
                             <GridContainer justify="center">
-                              <GridItem xs={12} sm={12} md={3}>
+                              <GridItem xs={12} sm={12} md={4} lg={3} lg={3}>
                                 <Card pricing raised>
                                   <CardBody pricing>
                                     <h6 className={classes.cardCategory}>Advertiser Registration</h6>
                                     <div className={classes.icon}>
-                                      <StoreMallDirectory
-                                        className={classes.iconRose}/>
+                                      <StoreMallDirectory color="primary"/>
                                     </div>
                                     <h3
                                       className={`${classes.cardTitle} ${classes.marginTop30}`}>
@@ -316,7 +305,7 @@ class HomePage extends Component {
                                     </h3><p className={classes.cardDescription}>
                                     Click the button below to get the license of advertiser
                                   </p>
-                                    <Button color="rose" round
+                                    <Button color="primary" round
                                             onClick={this.handleLink(OfficeRoutes.APPLY_ADVERTISER)}>
                                       New Registration
                                     </Button>

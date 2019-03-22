@@ -123,7 +123,6 @@ class AuthNavbar extends React.Component {
                         <Button
                             className={classes.sidebarButton}
                             color="inherit"
-                            justIcon
                             aria-label="open drawer"
                             onClick={this.handleDrawerToggle}
                         >
