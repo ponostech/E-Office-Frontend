@@ -1,133 +1,93 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import { Card, CardContent, CardHeader, IconButton, Tooltip } from "@material-ui/core";
-import GridContainer from "../../../../components/Grid/GridContainer";
-import GridItem from "../../../../components/Grid/GridItem";
-import KioskViewModel from "../../../model/KioskViewModel";
-import { HoardingListViewModel } from "../../../model/HoardingListViewModel";
 
-import FilterIcon from "@material-ui/icons/FilterList";
-import NewHoardingApplications from "./NewHoardingApplications";
-import RejectedHoardingApplications from "./RejectedHoardingApplications";
-import GrantedHoardingApplications from "./GrantedHoardingApplications";
-import ActiveHoarding from "./ActiveHoarding";
-
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
-  },
-  tabsRoot: {
-    borderBottom: "1px solid #black"
-  },
-  tabsIndicator: {
-    backgroundColor: "#1890ff"
-  },
-  tabRoot: {
-    textTransform: "initial",
-    minWidth: 72,
-    fontWeight: theme.typography.fontWeightRegular,
-    marginRight: theme.spacing.unit * 4,
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "\"Segoe UI\"",
-      "Roboto",
-      "\"Helvetica Neue\"",
-      "Arial",
-      "sans-serif",
-      "\"Apple Color Emoji\"",
-      "\"Segoe UI Emoji\"",
-      "\"Segoe UI Symbol\""
-    ].join(","),
-    "&:hover": {
-      color: "#40a9ff",
-      opacity: 1
-    },
-    "&$tabSelected": {
-      color: "#1890ff",
-      fontWeight: theme.typography.fontWeightMedium
-    },
-    "&:focus": {
-      color: "#40a9ff"
-    }
-  },
-  tabSelected: {},
-  typography: {
-    padding: theme.spacing.unit * 3
-  }
-});
+import MUIDataTable from "mui-datatables";
+import Grid from "@material-ui/core/Grid";
 
 class HoardingApplications extends React.Component {
-  state = {
-    value: "active"
-  };
+    state = {
+        open: false,
+        tableData: [
+            [1, "M.33023/5/2019-AMC", "Matter Relating to IT Cell", "IT Cell", "John Doe", "2nd Feb, 2019", "3rd Feb, 2019"],
+            [2, "Aiden Lloyd", "Business Consultant", "Dallas", 55, "$200,000", "3rd Feb, 2019"],
+            [3, "Jaden Collins", "Attorney", "Santa Ana", 27, "$500,000", "3rd Feb, 2019"],
+        ]
+    };
+    updateTable = (action, tableState) => {
+        console.log('Update table');
+        console.log(action);
+        console.log(tableState);
+        //return this.setState({tableData: tableData2})
+    };
+    showDetails = (rowData, rowMeta) => {
+        this.setState({open:true});
+    };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
+    render() {
+        const {tableData} = this.state;
 
-  render() {
-    const { classes, history } = this.props;
-    const { value } = this.state;
+        const tableOptions = {
+            filterType: "checkbox",
+            responsive: "scroll",
+            rowsPerPage: 8,
+            serverSide: false,
+            onTableChange: function(action, tableState) {
+                this.updateTable(action, tableState);
+            }.bind(this),
+            onRowClick: function (rowData, rowMeta) {
+                this.showDetails(rowData, rowMeta);
+            }.bind(this),
+            customSearch: function (searchQuery, currentRow, columns){
+                console.log("search start");
+                console.log(currentRow);
+                console.log(columns);
+                console.log("search end");
+            },
+        };
 
-    return (
-      <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card>
-            <CardHeader
-              title={HoardingListViewModel.TITLE}
-              action={
-                <Tooltip title={"Filter"}>
-                  <IconButton>
-                    <FilterIcon/>
-                  </IconButton>
-                </Tooltip>
-              }
-            >
-            </CardHeader>
-            <CardContent>
-              <Tabs
-                value={value}
-                onChange={this.handleChange}
-                classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-              >
-                <Tab disableRipple value={"active"}
-                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                     label={KioskViewModel.ACTIVE}/>
-                <Tab disableRipple value={"new"}
-                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                     label={KioskViewModel.NEW_APPLICATION}/>
-                <Tab value={"granted"}
-                     disableRipple
-                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                     label={KioskViewModel.GRANTED}/>
-                <Tab value={"reject"}
-                     disableRipple
-                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                     label={KioskViewModel.REJECTED}/>
+        const tableColumns = [
+            {
+                name: "id",
+                label: "Application ID",
+            },
+            {
+                name: "applicationNo",
+                label: "Application No.",
+            },
+            {
+                name: "fileNo",
+                label: "File No.",
+            },
+            {
+                name: "name",
+                label: "Name of Applicant",
+            },
+            {
+                name: 'location',
+                label: "Location",
+            },
+            {
+                name: "localCouncil",
+                label: "Local Council",
+            },
+            {
+                name: "date",
+                label: "Date of Application",
+            }
+        ];
 
-              </Tabs>
-            </CardContent>
-            <div style={{ marginTop: 20 }}>
-              {value === "active" && <ActiveHoarding/>}
-              {value === "new" && <NewHoardingApplications/>}
-              {value === "granted" && <GrantedHoardingApplications/>}
-              {value === "reject" && <RejectedHoardingApplications/>}
-            </div>
-          </Card>
-        </GridItem>
-      </GridContainer>
-    );
-  }
+        return (
+            <>
+                <Grid item xs={12}>
+                    <MUIDataTable
+                        title={"Hoarding: List of Pending Application"}
+                        data={tableData}
+                        columns={tableColumns}
+                        options={tableOptions}
+                    />
+                </Grid>
+            </>
+        );
+    }
 }
 
-HoardingApplications.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(HoardingApplications);
+export default HoardingApplications;

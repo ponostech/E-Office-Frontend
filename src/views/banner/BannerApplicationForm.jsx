@@ -177,6 +177,8 @@ class BannerApplicationForm extends Component {
       case "displayType":
         this.state.displayType===undefined ? this.setState({ displayTypeError: BannerViewModel.DISPLAY_TYPE_REQUIRED }) : this.setState({ displayTypeError: "" });
         break;
+      default:
+            break
     }
   };
   handleBlur = (e) => {
@@ -202,7 +204,6 @@ class BannerApplicationForm extends Component {
 
 
   render() {
-    const { display_type } = this.state;
 
     return (
 

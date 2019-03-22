@@ -226,6 +226,8 @@ class NewHoardingForm extends Component {
       case "category":
         this.state.category === undefined ? this.setState({ categoryError: "Category is required" }) : this.setState({ categoryError: "" });
         break;
+      default:
+        break;
     }
   };
 

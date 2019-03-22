@@ -235,7 +235,6 @@ class AdvertiserForm extends Component {
   };
 
   render() {
-    var self = this;
     const { classes } = this.props;
     return (
       <GridContainer

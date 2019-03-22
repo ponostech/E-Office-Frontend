@@ -169,11 +169,12 @@ class ShopLicenseApplicationForm extends Component {
   };
 
   handleSelectBlur = (identifier,e) => {
-    const { value } = e.target;
-    console.log(e.target)
+    console.log(e.target);
     switch (identifier) {
       case 'type':
         this.state.type?this.setState({typeError:''}):this.setState({typeError:ShopLicenseViewModel.TYPE_REQUIRED})
+        break;
+      default:
         break;
     }
   };
@@ -203,7 +204,7 @@ class ShopLicenseApplicationForm extends Component {
 
 
   render() {
-    const { ownership, display_type, trade } = this.state;
+    const {trade} = this.state;
 
     return (
 

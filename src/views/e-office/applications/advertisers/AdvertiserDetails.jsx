@@ -8,12 +8,8 @@ import {
   CardContent,
   CardHeader,
   Chip,
-  IconButton,
-  Tooltip,
   Typography
 } from "@material-ui/core";
-import FilterIcon from "@material-ui/icons/FilterList";
-import GrantedAdvertiserApplication from "./GrantedAdvertiserApplication";
 import AdvertiserApplications from "./AdvertiserApplications";
 
 class AdvertiserDetails extends Component {

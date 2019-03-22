@@ -15,7 +15,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Menu from "@material-ui/icons/Menu";
 import PersonAdd from "@material-ui/icons/PersonAdd";
 import LoginIcon from "@material-ui/icons/ArrowRight";
-import Icon from "@material-ui/core/Icon";
 
 import Home from "@material-ui/icons/Home";
 import authNavbarStyle from "assets/jss/material-dashboard-pro-react/components/authNavbarStyle.jsx";
@@ -48,9 +47,7 @@ class AuthNavbar extends React.Component {
 
     render() {
         const {classes, color, brandText, OfficeRoutes, history} = this.props;
-        const appBarClasses = cx({
-            [" " + classes[color]]: color
-        });
+
         var list = (
             <List className={classes.list}>
                 <ListItem className={classes.listItem}>
