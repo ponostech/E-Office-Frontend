@@ -5,15 +5,26 @@ export class ShopService {
 
   async create(state) {
     let data = {
-      name: state.applicantData.name,
-      email: state.applicantData.email,
-      type:state.applicantData.type,
-      password: state.applicantData.password,
-      phone_no: state.applicantData.phone,
-      registered:0,
-      address:state.applicantData.address,
+      name: state.name,
+      phone: state.phone,
+      type: state.type,
+      email: state.email,
+      address: state.address,
+      places: state.places,
+      trade_name: state.tradeName,
+      shop_name: state.shopName,
+      latitude: state.latitude,
+      longitude: state.longitude,
+      business_detail:state.businessDetail,
+      estd: state.estd,
+      tin_no: state.tinNo,
+      cst_no: state.cstNo,
+      gst_no: state.gstNo,
+      pan_no: state.panNo,
+      premised: state.premised,
+      display_type: state.displayType,
       signature: [state.applicantData.signature],
-      documents: state.files
+      documents: state.uploadDocuments
     };
     try {
       let res=await axios.post(ApiRoutes.CREATE_SHOP_LICENSE, data);

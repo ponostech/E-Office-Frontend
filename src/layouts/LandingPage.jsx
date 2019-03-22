@@ -18,6 +18,7 @@ import BannerApplicationForm from "../views/banner/BannerApplicationForm";
 import AdvertiserLogin from "../views/advertiser/auth/AdvertiserLogin";
 import AdvertiserForm from "../views/advertiser/AdvertiserForm";
 import AdvertiserRegistrationSuccess from "../views/advertiser/AdvertiserRegistrationSuccess";
+import BannerApplicationSuccess from "../views/banner/BannerApplicationSuccess";
 
 class LandingPage extends Component {
 
@@ -46,6 +47,7 @@ class LandingPage extends Component {
                 <Route exact={true} path={OfficeRoutes.ADVERTISER_REGISTRATION_SUCCESS} component={AdvertiserRegistrationSuccess}/>
 
                 <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
+                <Route exact={true} path={OfficeRoutes.APPLY_BANNER_SUCCESS} component={BannerApplicationSuccess}/>
 
                 <Route exact={true} path={OfficeRoutes.FORM} component={Form}/>
                 <Route exact={true} path={OfficeRoutes.LOGIN} component={LoginView}/>

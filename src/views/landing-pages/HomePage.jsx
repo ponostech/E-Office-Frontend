@@ -138,7 +138,7 @@ class HomePage extends Component {
                                       Application for Shop Licensing
                                     </h3>
                                     <p className={classes.cardDescription}>
-                                      Submit your renewal application by clicking on the button below
+                                      Click the button below to get a shop License
                                     </p>
                                     <Button color="rose"
                                             round
@@ -312,9 +312,9 @@ class HomePage extends Component {
                                     </div>
                                     <h3
                                       className={`${classes.cardTitle} ${classes.marginTop30}`}>
-                                      Click button Below
+                                      Advertiser License
                                     </h3><p className={classes.cardDescription}>
-                                    Click here to download
+                                    Click the button below to get the license of advertiser
                                   </p>
                                     <Button color="rose" round
                                             onClick={this.handleLink(OfficeRoutes.APPLY_ADVERTISER)}>

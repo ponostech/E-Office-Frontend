@@ -53,7 +53,6 @@ class GMapDialog extends Component {
   render() {
     const { open, onClose, isMarkerShown, ...rest } = this.props;
     const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${MAP_API_KEY}`;
-    console.log(MAP_URL);
     return (
       <Dialog open={open} onClose={this.confirm.bind(this)} {...rest} fullScreen={true}>
         <DialogContent>

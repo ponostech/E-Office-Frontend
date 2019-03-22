@@ -387,6 +387,7 @@ class AdvertiserForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <AddressField
                     textFieldProps={{
+                      placeholder:"Address",
                       value:this.state.address,
                       onChange:this.handleChange.bind(this),
                       onBlur:this.handleRequired.bind(this),
@@ -414,8 +415,9 @@ class AdvertiserForm extends Component {
                   }}/>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
-                  <Typography style={{ marginTop: 10, marginBottom: 10 }} variant={"headline"}>Document
-                    Attachment</Typography>
+                  <Typography style={{ marginTop: 10, marginBottom: 10 }} variant={"headline"}>
+                    Upload Document
+                  </Typography>
                 </GridItem>
 
                 {this.state.documents.map((doc, index) =>
