@@ -7,6 +7,7 @@ export class OfficeRoutes {
 
   static ADVERTISER_LOGIN = "/auth/advertiser/login";
   static APPLY_ADVERTISER = "/register/advertiser";
+  static ADVERTISER_REGISTRATION_SUCCESS="/register/advertiser/success";
   static RENEW_ADVERTISER = "/advertiser/:id/renew";
   // static ADVERTISER_DETAIL = "/advertiser/:id/detail";
 

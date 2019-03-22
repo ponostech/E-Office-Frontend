@@ -1,70 +1,57 @@
-import React from 'react';
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from 'react-places-autocomplete';
-import { TextField } from "@material-ui/core";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withScriptjs } from "react-google-maps";
+import StandaloneSearchBox from "react-google-maps/lib/components/places/StandaloneSearchBox";
+import { MAP_API_KEY } from "../Configuration";
+import { Input, TextField } from "@material-ui/core";
 
-class AddressField extends React.Component {
+const Searchbox = withScriptjs(props => (
+
+  <StandaloneSearchBox
+    ref={props.onSearchBoxMounted}
+    onPlacesChanged={props.onPlacesChanged}
+  >
+    <TextField
+      {...props.textFieldProps}
+    />
+  </StandaloneSearchBox>
+));
+
+class AddressField extends Component {
   constructor(props) {
     super(props);
-    this.state = { address: '' };
+    this.searchboxRef = null;
   }
 
-  handleChange = address => {
-    this.setState({ address });
+  onSearchBoxMounted = ref => {
+    this.searchboxRef = ref;
   };
 
-  handleSelect = address => {
-    geocodeByAddress(address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
-      .catch(error => console.error('Error', error));
+  onPlacesChanged = () => {
+    const places = this.searchboxRef.getPlaces();
+    this.props.onPlaceSelect(places[0]);
   };
 
   render() {
-    const { ...textFieldProps } = this.props;
-    return (
-      <PlacesAutocomplete
-        value={this.state.address}
-        onChange={this.handleChange}
-        onSelect={this.handleSelect}
-      >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div>
-            <TextField
-              {...getInputProps({
-                placeholder: 'Address',
+    const { textFieldProps } = this.props;
 
-              })}
-              {...textFieldProps}
-            />
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
-              {suggestions.map(suggestion => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                return (
-                  <div style={{padding:"10px",zIndex:4}}
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
-                    })}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </PlacesAutocomplete>
+
+
+    return (
+      <Searchbox
+        textFieldProps={textFieldProps}
+        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${MAP_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+        loadingElement={<div style={{ height: `100%` }} />}
+        onPlacesChanged={this.onPlacesChanged}
+        onSearchBoxMounted={this.onSearchBoxMounted}
+      />
     );
   }
 }
-export default AddressField
+
+AddressField.propTypes = {
+  onPlaceSelect: PropTypes.func.isRequired,
+  textFieldProps:PropTypes.object
+};
+
+export default AddressField;

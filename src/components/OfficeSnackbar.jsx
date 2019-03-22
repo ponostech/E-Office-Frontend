@@ -52,6 +52,7 @@ function OfficeSnackbar(props) {
 
   return (
     <Snackbar open={open}
+              onChange={onClose}
               autoHideDuration={duration}
               anchorOrigin={position}
     >
