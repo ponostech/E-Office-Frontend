@@ -400,7 +400,7 @@ class AdvertiserForm extends Component {
                       required:true,
                       label:"Address"
                     }}
-                    onPlaceSelect={(place)=>{console.log(place)}}/>
+                    onPlaceSelect={(place)=>{this.setState({address:place.formatted_address})}}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <FileUpload required={true} document={{ id: 40, name: "Signature", mime: "image/*" }}
