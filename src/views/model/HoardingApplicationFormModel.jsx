@@ -19,6 +19,7 @@ export default class HoardingApplicationFormModel {
   static HEIGHT_REQUIRED="Height is required";
   static REQUIRED_CATEGORY="Category is required";
   static REQUIRED_DISPLAYTYPE="Display type is required";
+  static ADDRESS_REQUIRED="Address is required";
   static CLEARANCE="Clearance";
   static COORDINATE="Coordinate(Latitude & Longitude)";
   static REQUIRED_COORDINATE=" Latitude and longitude of an area is required";

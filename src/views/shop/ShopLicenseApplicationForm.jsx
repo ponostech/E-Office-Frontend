@@ -266,7 +266,7 @@ class ShopLicenseApplicationForm extends Component {
             <Card>
               <CardContent>
                 <GridContainer>
-                  <GridItem md={12} sm={12} xs={12}>
+                  <GridItem  md={12} sm={12} xs={12}>
                     <Typography variant={"headline"}>
                       {ShopLicenseViewModel.TITLE}
                     </Typography>
