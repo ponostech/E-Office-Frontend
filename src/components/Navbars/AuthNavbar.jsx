@@ -157,4 +157,4 @@ AuthNavbar.propTypes = {
     brandText: PropTypes.string
 };
 
-export default withStyles(authNavbarStyle)(AuthNavbar);
+export default  withStyles(authNavbarStyle)(AuthNavbar);
