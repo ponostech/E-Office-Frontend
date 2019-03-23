@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Chip, IconButton, InputAdornment, TextField, Tooltip} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 
-import 'react-table/react-table.css'
+// import 'react-table/react-table.css'
 /*Icons*/
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/DeleteForever";

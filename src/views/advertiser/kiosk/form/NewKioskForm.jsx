@@ -34,6 +34,7 @@ import { DocumentService } from "../../../../services/DocumentService";
 import { KioskFormModel } from "../../../model/KioskFormModel";
 import { KioskService } from "../../../../services/KioskService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
+import { WardServices } from "../../../../services/WardServices";
 
 
 const style = {
@@ -87,6 +88,7 @@ class NewKioskForm extends Component {
     };
 
     this.localCouncilservice = new LocalCouncilService();
+    this.wardServices = new WardServices();
     this.kioskService = new KioskService();
     this.documentService = new DocumentService();
   }
@@ -123,9 +125,8 @@ class NewKioskForm extends Component {
 
   fetchCategory = () => {
     let categories = [];
-    axios.get(ApiRoutes.WARDS)
-      .then(res => {
-        const { data } = res;
+    this.wardServices.get()
+      .then(data => {
         if (data.status) {
           data.data.wards.forEach(function(item) {
             let lc = {
@@ -225,6 +226,7 @@ class NewKioskForm extends Component {
     this.setState({ prestine: false });
 
   };
+
   handleSelectBlur = (identifier, e) => {
     switch (identifier) {
       case "localCouncil":
@@ -232,6 +234,9 @@ class NewKioskForm extends Component {
         break;
       case "category":
         this.state.category === undefined ? this.setState({ categoryError: "Category is required" }) : this.setState({ categoryError: "" });
+        break;
+      case "displayType":
+        this.state.displayType === undefined ? this.setState({ displayTypeError: "Display type is required" }) : this.setState({ displayTypeError: "" });
         break;
     }
   };
@@ -243,6 +248,7 @@ class NewKioskForm extends Component {
         !Boolean(value) ? this.setState({ localCouncilError: HoardingApplicationFormModel.LOCAL_COUNCIL_REQUIRED })
           : this.setState({ localCouncilError: "" });
         break;
+
       case "address":
         !Boolean(value) ? this.setState({ addressError: HoardingApplicationFormModel.ADDRESS_REQUIRED })
           : this.setState({ addressError: "" });
@@ -292,9 +298,10 @@ class NewKioskForm extends Component {
                     variant={"outlined"}
                     margin={"dense"}
                     fullWidth={true}
+                    required={true}
                     helperText={this.state.localCouncilError}
                     error={Boolean(this.state.localCouncilError)}
-                    onBlur={this.handleSelectBlur.bind(this)}
+                    onBlur={this.handleSelectBlur.bind(this,"localCouncil")}
                     onChange={this.handleOfficeSelect.bind(this, "localCouncil")}
                     options={this.state.localCouncils}/>
                 </GridItem>
@@ -305,20 +312,21 @@ class NewKioskForm extends Component {
                                 variant={"outlined"}
                                 margin={"dense"}
                                 fullWidth={true}
+                                required={true}
                                 error={Boolean(this.state.categoryError)}
                                 helperText={this.state.categoryError}
-                                onBlur={this.handleSelectBlur.bind(this)}
+                                onBlur={this.handleSelectBlur.bind(this,"category")}
                                 onChange={this.handleOfficeSelect.bind(this, "category")}
                                 options={this.state.categories}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <TextField name={"address"}
                              value={this.state.address}
+                             margin={"dense"}
+                             required={true}
                              error={Boolean(this.state.addressError)}
                              helperText={this.state.addressError}
-                             margin={"dense"}
                              onBlur={this.handleBlur.bind(this)}
-                             multiline={true}
                              fullWidth={true}
                              variant={"outlined"}
                              onChange={this.handleChange.bind(this)}
@@ -385,12 +393,10 @@ class NewKioskForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"clearance"}
                              value={this.state.clearance}
-                             onBlur={this.handleBlur.bind(this)}
                              type={"number"}
                              margin={"dense"}
                              fullWidth={true}
                              variant={"outlined"}
-                             required={true}
                              label={HoardingApplicationFormModel.CLEARANCE}
                              onChange={this.handleChange.bind(this)}
                   />
@@ -399,14 +405,10 @@ class NewKioskForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"roadDetail"}
                              value={this.state.roadDetail}
-                             onBlur={this.handleBlur.bind(this)}
-                             error={Boolean(this.state.roadDetailError)}
-                             helperText={this.state.roadDetailError}
                              type={"number"}
                              margin={"dense"}
                              fullWidth={true}
                              variant={"outlined"}
-                             required={true}
                              label={HoardingApplicationFormModel.ROAD_DETAIL}
                              onChange={this.handleChange.bind(this)}
                   />
@@ -416,11 +418,13 @@ class NewKioskForm extends Component {
                   <OfficeSelect
                     name={"displayType"}
                     value={this.state.displayType}
-                    error={Boolean(this.state.displayError)}
-                    onBlur={this.handleBlur.bind(this)}
+                    error={Boolean(this.state.displayTypeError)}
+                    helperText={this.state.displayTypeError}
+                    onBlur={this.handleSelectBlur.bind(this,"displayType")}
                     variant={"outlined"}
                     placeHolder={"Display type"}
                     margin={"dense"}
+                    required={true}
                     onChange={this.handleOfficeSelect.bind(this, "displayType")}
                     fullWidth={true}
                     options={this.state.displayTypes}
@@ -428,8 +432,11 @@ class NewKioskForm extends Component {
                   />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <TextField name={"lat"} margin={"dense"}
-                             fullWidth={true} variant={"outlined"}
+                  <TextField name={"coordinate"}
+                             value={this.state.coordinate}
+                             margin={"dense"}
+                             fullWidth={true}
+                             variant={"outlined"}
                              required={true}
                              label={HoardingApplicationFormModel.COORDINATE}
                              InputProps={{
@@ -485,7 +492,7 @@ class NewKioskForm extends Component {
                               onUploadFailure={err => console.log(err)}/>
                 </GridItem>
                 <GridItem sm={12} xs={12} md={12}>
-                  <Typography variant={"headline"}>Document Attachment</Typography>
+                  <Typography variant={"headline"}>Upload Document</Typography>
                 </GridItem>
                 {this.state.documents.map((doc, index) => {
                   return <GridItem className={classes.root} sm={12} xs={12} md={12}>
@@ -530,7 +537,11 @@ class NewKioskForm extends Component {
                         onClose={(e) => {
                           this.setState({ success: "" });
                         }}/>
-        <GMapDialog open={this.state.openMap} onClose={(data) => this.setState({ openMap: false })} fullScreen={true}
+        <GMapDialog open={this.state.openMap} onClose={(lat,lng) => {
+          let msg=`Latitude ${lat} Longitude ${lng}`;
+          this.setState({ openMap: false,latitude:lat,longitude:lng,coordinate:msg })
+
+        }} fullScreen={true}
                     isMarkerShown={true}/>
 
         <OfficeSnackbar open={Boolean(this.state.errorMessage)} variant={"error"} message={this.state.errorMessage}
