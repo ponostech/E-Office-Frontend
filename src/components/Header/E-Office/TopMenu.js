@@ -2,23 +2,17 @@ import React from 'react';
 import {NavLink} from "react-router-dom";
 
 import {IconButton, Typography} from "@material-ui/core";
-import HomeIcon from "@material-ui/icons/Home";
-import Button from "../../CustomButtons/Button";
 import CustomDropdown from "../../CustomDropdown/CustomDropdown";
-
-import UserIcon from "@material-ui/icons/AccountCircleRounded";
-import SettingIcon from "@material-ui/icons/Settings";
 import Icon from "@material-ui/core/es/Icon/Icon";
 
 const menu = (props) => {
-    const {routes, history} = props;
-
+    const {routes} = props;
     return (
         <>
             <div style={{display: "flex", alignItems: "center"}}>
-                <NavLink to={routes.E_OFFICE}><IconButton color="secondary"><HomeIcon/></IconButton></NavLink>
-                <NavLink to={routes.DESK}><IconButton color="primary"><Icon>desktop_mac</Icon></IconButton></NavLink>
-
+                <NavLink to={routes.HOME}><IconButton color="alert"><Icon>apps</Icon></IconButton></NavLink>
+                <NavLink to={routes.E_OFFICE}><IconButton color="secondary"><Icon>home</Icon></IconButton></NavLink>
+                <NavLink to={routes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
                 <CustomDropdown
                     dropdownList={[
                         {title: "Create New", link: routes.NEW_FILE},
@@ -68,14 +62,8 @@ const menu = (props) => {
 
             <div style={{display: "flex", alignItems: "center"}}>
                 <Typography variant={"caption"} color={"textSecondary"}>Hello Username</Typography>
-                <IconButton>
-                    <UserIcon/>
-                </IconButton>
-                <IconButton onClick={() => {
-                    history.push(routes.SETTING);
-                }}>
-                    <SettingIcon/>
-                </IconButton>
+                <IconButton><Icon>account_circle_rounded</Icon></IconButton>
+                <NavLink to={routes.SETTING}><IconButton><Icon>settings</Icon></IconButton></NavLink>
             </div>
         </>
     )
