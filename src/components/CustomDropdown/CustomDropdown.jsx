@@ -13,6 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import Grow from "@material-ui/core/Grow";
 import Divider from "@material-ui/core/Divider";
 import Popper from "@material-ui/core/Popper";
+
 // core components
 import Button from "components/CustomButtons/Button.jsx";
 
@@ -224,7 +225,7 @@ CustomDropdown.propTypes = {
   innerDropDown: PropTypes.bool,
   navDropdown: PropTypes.bool,
   // This is a function that returns the clicked menu item
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 };
 
 export default withStyles(customDropdownStyle)(CustomDropdown);

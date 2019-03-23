@@ -4,6 +4,7 @@ import {NavLink} from "react-router-dom";
 import {IconButton, Typography} from "@material-ui/core";
 import CustomDropdown from "../../CustomDropdown/CustomDropdown";
 import Icon from "@material-ui/core/es/Icon/Icon";
+import {Folder} from "@material-ui/icons";
 
 const menu = (props) => {
     const {routes} = props;
@@ -14,6 +15,12 @@ const menu = (props) => {
                 <NavLink to={routes.E_OFFICE}><IconButton color="secondary"><Icon>home</Icon></IconButton></NavLink>
                 <NavLink to={routes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
                 <CustomDropdown
+                    buttonIcon={Folder}
+                    buttonProps={{
+                        round: true,
+                        style: { marginBottom: "0" },
+                        color: "primary"
+                    }}
                     dropdownList={[
                         {title: "Create New", link: routes.NEW_FILE},
                         {title: "List Created", link: routes.CREATED_FILES},
@@ -22,7 +29,7 @@ const menu = (props) => {
                         {title: "Single File", link: routes.FILE_DETAIL},
                     ]}
                     linkClick={props.linkClick}
-                    buttonText={"File"}
+                    buttonText={""}
                     buttonProps={{color: "transparent"}}/>
 
                 <CustomDropdown
