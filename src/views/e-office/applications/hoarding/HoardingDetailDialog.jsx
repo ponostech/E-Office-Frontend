@@ -1,6 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -26,8 +25,9 @@ const styles = {
 function Transition(props) {
     return <Slide direction="up" {...props} />;
 }
+
 const HoardingDetailDialog = (props) => {
-    const { classes } = props;
+    const {classes} = props;
     return (
         <Dialog
             fullScreen
@@ -38,9 +38,9 @@ const HoardingDetailDialog = (props) => {
             <AppBar className={classes.appBar}>
                 <Toolbar>
                     <IconButton color="inherit" onClick={props.close} aria-label="Close">
-                        <CloseIcon />
+                        <CloseIcon/>
                     </IconButton>
-                    <Typography variant="h6" color="inherit" className={classes.flex}>
+                    <Typography variant="subtitle2" color="inherit" className={classes.flex}>
                         Hoarding Application Details
                     </Typography>
                     <Button color="inherit" onClick={props.close}>
@@ -50,11 +50,11 @@ const HoardingDetailDialog = (props) => {
             </AppBar>
             <List>
                 <ListItem button>
-                    <ListItemText primary="Name of Applicant" secondary="Lalhriatreng" />
+                    <ListItemText primary="Name of Applicant" secondary="Lalhriatreng"/>
                 </ListItem>
-                <Divider />
+                <Divider/>
                 <ListItem button>
-                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>" />
+                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
                 </ListItem>
             </List>
         </Dialog>
