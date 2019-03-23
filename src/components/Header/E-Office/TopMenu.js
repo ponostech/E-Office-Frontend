@@ -1,4 +1,5 @@
 import React from 'react';
+import {NavLink} from "react-router-dom";
 
 import {IconButton, Typography} from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
@@ -7,6 +8,7 @@ import CustomDropdown from "../../CustomDropdown/CustomDropdown";
 
 import UserIcon from "@material-ui/icons/AccountCircleRounded";
 import SettingIcon from "@material-ui/icons/Settings";
+import Icon from "@material-ui/core/es/Icon/Icon";
 
 const menu = (props) => {
     const {routes, history} = props;
@@ -14,16 +16,8 @@ const menu = (props) => {
     return (
         <>
             <div style={{display: "flex", alignItems: "center"}}>
-                <IconButton>
-                    <HomeIcon onClick={props.linkClick.bind(this, routes.E_OFFICE)}/>
-                </IconButton>
-
-                <Button variant={"contained"}
-                        color={"primary"}
-                        onClick={props.linkClick.bind(this, routes.DESK)}
-                >
-                    Desk
-                </Button>
+                <NavLink to={routes.E_OFFICE}><IconButton color="secondary"><HomeIcon/></IconButton></NavLink>
+                <NavLink to={routes.DESK}><IconButton color="primary"><Icon>desktop_mac</Icon></IconButton></NavLink>
 
                 <CustomDropdown
                     dropdownList={[
