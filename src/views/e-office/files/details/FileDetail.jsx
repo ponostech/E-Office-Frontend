@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {withStyles} from '@material-ui/core/styles';
 
 import ApplicationReport from "./ApplicationReport";
-import Grid from "@material-ui/core/Grid";
+import {Grid, Card, CardHeader} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
@@ -20,9 +20,9 @@ class FileDetail extends Component {
         return (
             <Grid container className={classes.container}>
                 <Grid item xs={12}>
-                    <Typography variant="title">
-                        Subject:
-                    </Typography>
+                    <Card>
+                        <CardHeader title="Subject: Matter relating to" />
+                    </Card>
                 </Grid>
                 <ApplicationReport/>
             </Grid>

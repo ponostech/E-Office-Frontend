@@ -10,6 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
 import FileMenu from "./FileMenu";
+import CreateNoteDialog from "../CreateNoteDialog";
 
 const styles = theme => ({
     root: {
@@ -31,11 +32,20 @@ const styles = theme => ({
 });
 
 class ApplicationReport extends Component {
+    state= {
+        openNote: false,
+    };
+    openNoteDialog = () => {
+        this.setState({openNote: true});
+    };
+    closeNoteDialog = () => {
+        this.setState({openNote: false});
+    };
     render() {
         const { classes } = this.props;
         return (
             <>
-                <Button variant="contained" size="small"  color="primary" className={classes.button}>
+                <Button variant="contained" size="small"  color="primary" className={classes.button} onClick={this.openNoteDialog}>
                     Create Note
                     <Icon className={classes.rightIcon}>add</Icon>
                 </Button>
@@ -163,10 +173,11 @@ class ApplicationReport extends Component {
                         />
                     </ListItem>
                 </List>
-                <Button variant="contained" size="small"  color="primary" className={classes.button}>
+                <Button variant="contained" size="small" color="primary" className={classes.button} onClick={this.openNoteDialog}>
                     Create Note
                     <Icon className={classes.rightIcon}>add</Icon>
                 </Button>
+                <CreateNoteDialog open={this.state.openNote} close={this.closeNoteDialog}/>
             </>
         )
     }
