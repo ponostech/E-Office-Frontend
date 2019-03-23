@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import React, {Component} from "react";
+import {Redirect, Route, Switch} from "react-router-dom";
 // @material-ui/core components
 // core components
 import AuthNavbar from "../components/Navbars/AuthNavbar.jsx";
@@ -10,7 +10,7 @@ import HomePage from "../views/landing-pages/HomePage";
 import ShopLicenseForm from "../views/shop/ShopLicenseApplicationForm";
 import Form from "../views/Form";
 
-import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
+import {OfficeRoutes} from "../config/routes-constant/OfficeRoutes";
 import LoginView from "../views/auth/LoginView";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import pagesStyle from "../assets/jss/material-dashboard-pro-react/layouts/pagesStyle";
@@ -22,47 +22,49 @@ import BannerApplicationSuccess from "../views/banner/BannerApplicationSuccess";
 
 class LandingPage extends Component {
 
-  handleLogin = (e) => {
-    const { history } = this.props;
-    history.push(OfficeRoutes.LOGIN);
-  };
+    handleLogin = (e) => {
+        const {history} = this.props;
+        history.push(OfficeRoutes.LOGIN);
+    };
 
-  render() {
-    const { classes, ...rest } = this.props;
-    return (
-      <div>
-        <AuthNavbar color={"primary"} brandText="E-AMC" OfficeRoutes={OfficeRoutes} {...rest} />
-        <div className={classes.wrapper} ref="wrapper">
-          <div
-            className={classes.fullPage}
-          >
-            <div className={classes.container}>
-              <Switch>
-                <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
+    render() {
+        const {classes, ...rest} = this.props;
+        return (
+            <div>
+                <AuthNavbar color={"primary"} brandText="E-AMC" OfficeRoutes={OfficeRoutes} {...rest} />
+                <div className={classes.wrapper} ref="wrapper">
+                    <div
+                        className={classes.fullPage}
+                    >
+                        <div className={classes.container}>
+                            <Switch>
+                                <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
 
-                <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
+                                <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
 
-                <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
-                <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserForm}/>
-                <Route exact={true} path={OfficeRoutes.ADVERTISER_REGISTRATION_SUCCESS} component={AdvertiserRegistrationSuccess}/>
+                                <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
+                                <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserForm}/>
+                                <Route exact={true} path={OfficeRoutes.ADVERTISER_REGISTRATION_SUCCESS}
+                                       component={AdvertiserRegistrationSuccess}/>
 
-                <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
-                <Route exact={true} path={OfficeRoutes.APPLY_BANNER_SUCCESS} component={BannerApplicationSuccess}/>
+                                <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
+                                <Route exact={true} path={OfficeRoutes.APPLY_BANNER_SUCCESS}
+                                       component={BannerApplicationSuccess}/>
 
-                <Route exact={true} path={OfficeRoutes.FORM} component={Form}/>
-                <Route exact={true} path={OfficeRoutes.LOGIN} component={LoginView}/>
+                                <Route exact={true} path={OfficeRoutes.FORM} component={Form}/>
+                                <Route exact={true} path={OfficeRoutes.LOGIN} component={LoginView}/>
 
-                <Redirect from={OfficeRoutes.ROOT} to={OfficeRoutes.HOME}/>
-              </Switch>
+                                <Redirect from={OfficeRoutes.ROOT} to={OfficeRoutes.HOME}/>
+                            </Switch>
+                        </div>
+                    </div>
+                    <Footer white/>
+                </div>
             </div>
-          </div>
-            <Footer white/>
-        </div>
-      </div>
 
 
-    );
-  }
+        );
+    }
 }
 
 export default withStyles(pagesStyle)(LandingPage);
