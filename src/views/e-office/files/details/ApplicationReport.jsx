@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,7 +10,6 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
 import FileMenu from "./FileMenu";
-import FileInfo from "./FileInfo";
 
 const styles = theme => ({
     root: {

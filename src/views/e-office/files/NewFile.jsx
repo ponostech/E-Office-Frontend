@@ -5,7 +5,6 @@ import {Button, Card, CardActions, CardContent, CardHeader, TextField} from "@ma
 import {NewFileViewModel} from "../../model/NewFileViewModel";
 import OfficeSelect from "../../../components/OfficeSelect";
 import {OfficeRoutes} from "../../../config/routes-constant/OfficeRoutes";
-import 'react-quill/dist/quill.snow.css';
 import Grid from "@material-ui/core/Grid";
 
 class NewFile extends Component {
@@ -190,12 +189,17 @@ class NewFile extends Component {
                         <CardActions>
                             <Grid container justify={"center"}>
                                 <Grid item>
-                                    <Button disabled={this.state.submit} variant={"outlined"}
-                                            color={"primary"}
-                                            onClick={this.submit.bind(this)}>{NewFileViewModel.PRIMARY_BTN_TEXT}</Button>
-
-                                    <Button variant={"outlined"}
-                                            color={"secondary"}>{NewFileViewModel.SECONDARY_BTN_TEXT}</Button>
+                                    <Button style={{margin:10}} disabled={this.state.submit} variant="contained"
+                                            color="primary"
+                                            onClick={this.submit.bind(this)}
+                                    >
+                                        {NewFileViewModel.PRIMARY_BTN_TEXT}
+                                    </Button>
+                                    <Button style={{margin:10}} variant="contained"
+                                            color="secondary"
+                                    >
+                                        {NewFileViewModel.SECONDARY_BTN_TEXT}
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </CardActions>

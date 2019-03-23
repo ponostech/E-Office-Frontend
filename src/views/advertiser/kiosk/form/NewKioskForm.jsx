@@ -1,22 +1,22 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Checkbox,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  IconButton,
-  InputAdornment,
-  Radio,
-  RadioGroup,
-  Switch,
-  TextField,
-  Tooltip,
-  Typography
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Checkbox,
+    Divider,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    IconButton,
+    InputAdornment,
+    Radio,
+    RadioGroup,
+    Switch,
+    TextField,
+    Tooltip,
+    Typography
 } from "@material-ui/core";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import GridItem from "../../../../components/Grid/GridItem";
@@ -24,203 +24,204 @@ import GMapDialog from "../../../../components/GmapDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import OfficeSelect from "../../../../components/OfficeSelect";
 import HoardingApplicationFormModel from "../../../model/HoardingApplicationFormModel";
-import { LocalCouncilService } from "../../../../services/LocalCouncilService";
+import {LocalCouncilService} from "../../../../services/LocalCouncilService";
 import FileUpload from "../../../../components/FileUpload";
 import MapIcon from "@material-ui/icons/PinDrop";
+import {ApiRoutes} from "../../../../config/ApiRoutes";
 import SubmitDialog from "../../../../components/SubmitDialog";
-import { DocumentService } from "../../../../services/DocumentService";
-import { KioskFormModel } from "../../../model/KioskFormModel";
-import { KioskService } from "../../../../services/KioskService";
+import {DocumentService} from "../../../../services/DocumentService";
+import {KioskFormModel} from "../../../model/KioskFormModel";
+import {KioskService} from "../../../../services/KioskService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import { WardServices } from "../../../../services/WardServices";
 
 
 const style = {
-  root: {
-    padding: "10px 15px !important"
-  }
+    root: {
+        padding: "10px 15px !important"
+    }
 };
 
 class NewKioskForm extends Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      localCouncil: undefined,
-      category: undefined,
-      coordinate: "",
-      length: undefined,
-      height: undefined,
-      clearance: undefined,
-      address: "",
-      bothSide: false,
-      collapsible: false,
-      displayType: undefined,
+        this.state = {
+            localCouncil: undefined,
+            category: undefined,
+            coordinate: "",
+            length: undefined,
+            height: undefined,
+            clearance: undefined,
+            address: "",
+            bothSide: false,
+            collapsible: false,
+            displayType: undefined,
 
-      landLord: "",
-      landlordType: "0",
+            landLord: "",
+            landlordType: "0",
 
-      localCouncilError: "",
-      addressError: "",
-      lengthError: "",
-      heightError: "",
-      categoryError: "",
-      displayTypeError: "",
+            localCouncilError: "",
+            addressError: "",
+            lengthError: "",
+            heightError: "",
+            categoryError: "",
+            displayTypeError: "",
 
-      localCouncils: [],
-      categories: [],
-      displayTypes: [
-        { value: "ILLUMINATED", label: "ILLUMINATED" },
-        { value: "NON-ILLUMINATED", label: "NON ILLUMINATED" },
-        { value: "FLICKERING_LIGHT", label: "FLICKERING LIGHT" }
-      ],
-      documents: [],
-      errorMessage: "",
-      prestine: true,
-      openMap: false,
+            localCouncils: [],
+            categories: [],
+            displayTypes: [
+                {value: "ILLUMINATED", label: "ILLUMINATED"},
+                {value: "NON-ILLUMINATED", label: "NON ILLUMINATED"},
+                {value: "FLICKERING_LIGHT", label: "FLICKERING LIGHT"}
+            ],
+            documents: [],
+            errorMessage: "",
+            prestine: true,
+            openMap: false,
 
-      agree: false,
+            agree: false,
 
-      success: "",
-      submit: false
+            success: "",
+            submit: false
+        };
+
+        this.localCouncilservice = new LocalCouncilService();
+        this.kioskService = new KioskService();
+        this.wardServices = new WardServices();
+        this.documentService = new DocumentService();
+    }
+
+
+    componentDidMount() {
+        this.fetchLocalCouncil();
+        this.fetchCategory();
+        this.fetchDocument();
+    }
+
+    fetchLocalCouncil = () => {
+        let newLocalCouncils = [];
+        this.localCouncilservice.get()
+            .then(data => {
+                if (data.status) {
+                    data.data.local_councils.forEach(function (item) {
+                        let lc = {
+                            value: item.id,
+                            label: item.name
+                        };
+                        newLocalCouncils.push(lc);
+                    });
+                    this.setState({
+                        localCouncils: newLocalCouncils
+                    });
+                } else {
+                    this.setState({hasError: true});
+                }
+            }).then(() => {
+            this.setState({localCouncil: this.state.localCouncils[0]});
+        });
     };
 
-    this.localCouncilservice = new LocalCouncilService();
-    this.wardServices = new WardServices();
-    this.kioskService = new KioskService();
-    this.documentService = new DocumentService();
-  }
+    fetchCategory = () => {
+        let categories = [];
+            this.wardServices.get()
+            .then(res => {
+                const {data} = res;
+                if (data.status) {
+                    data.data.wards.forEach(function (item) {
+                        let lc = {
+                            value: item.id,
+                            label: item.name
+                        };
+                        categories.push(lc);
+                    });
+                    this.setState({
+                        categories: categories
+                    });
+                } else {
+                    this.setState({hasError: true});
+                }
+            })
+            .catch(err => {
 
+            })
+            .then(() => {
+                this.setState({category: this.state.categories[0]});
+            });
+    };
 
-  componentDidMount() {
-    this.fetchLocalCouncil();
-    this.fetchCategory();
-    this.fetchDocument();
-  }
+    fetchDocument = () => {
+        this.documentService.get("kiosk")
+            .then(data => {
+                if (data.status) {
+                    this.setState({documents: data.data.documents});
+                }
+            })
+            .then(() => {
+                console.log();
+            });
+    };
 
-  fetchLocalCouncil = () => {
-    let newLocalCouncils = [];
-    this.localCouncilservice.get()
-      .then(data => {
-        if (data.status) {
-          data.data.local_councils.forEach(function(item) {
-            let lc = {
-              value: item.id,
-              label: item.name
-            };
-            newLocalCouncils.push(lc);
-          });
-          this.setState({
-            localCouncils: newLocalCouncils
-          });
+    isInvalid = () => {
+        return !this.state.pretine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
+            || !!this.categoryError || !!this.state.displayTypeError;
+    };
+
+    handleOfficeSelect = (identifier, value) => {
+        this.setState({
+            [identifier]: value
+        });
+    };
+    setCoordinate = (data) => {
+        this.setState({coordinate: data, openMap: false});
+    };
+    handleClick = (e) => {
+        const {name} = e.target;
+        switch (name) {
+            case "submit":
+                this.doSubmit();
+                break;
+            case "reset":
+                break;
+            default:
+                break;
+        }
+    };
+    doSubmit = () => {
+        // if (this.isInvalid()) {
+        //   this.setState({ errorMessage: "There is an error" });
+        //   return;
+        // }
+        this.setState({submit: true});
+        this.hoardingService.create(this.state)
+            .then(data => {
+                console.log(data);
+            })
+            .catch(err => {
+                this.setState({errorMessage: err.toString()});
+                console.log(err);
+            })
+            .then(() => {
+                this.setState({submit: false});
+            });
+    };
+    handleRadio = (e) => {
+        this.setState({landLordType: e.target.value});
+    };
+    handleSwitch = (e) => {
+        this.setState({[e.target.name]: e.target.checked});
+    };
+    handleChange = (e) => {
+        const {checked} = e.target;
+        if (checked) {
+            this.setState({
+                [e.target.name]: checked
+            });
         } else {
-          this.setState({ hasError: true });
+            this.setState({
+                [e.target.name]: e.target.value
+            });
         }
-      }).then(() => {
-      this.setState({ localCouncil: this.state.localCouncils[0] });
-    });
-  };
-
-  fetchCategory = () => {
-    let categories = [];
-    this.wardServices.get()
-      .then(data => {
-        if (data.status) {
-          data.data.wards.forEach(function(item) {
-            let lc = {
-              value: item.id,
-              label: item.name
-            };
-            categories.push(lc);
-          });
-          this.setState({
-            categories: categories
-          });
-        } else {
-          this.setState({ hasError: true });
-        }
-      })
-      .catch(err => {
-
-      })
-      .then(() => {
-        this.setState({ category: this.state.categories[0] });
-      });
-  };
-
-  fetchDocument = () => {
-    this.documentService.get("kiosk")
-      .then(data => {
-        if (data.status) {
-          this.setState({ documents: data.data.documents });
-        }
-      })
-      .then(() => {
-        console.log();
-      });
-  };
-
-  isInvalid = () => {
-    return !this.state.pretine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
-      || !!this.categoryError || !!this.state.displayTypeError;
-  };
-
-  handleOfficeSelect = (identifier, value) => {
-    this.setState({
-      [identifier]: value
-    });
-  };
-  setCoordinate = (data) => {
-    this.setState({ coordinate: data, openMap: false });
-  };
-  handleClick = (e) => {
-    const { name } = e.target;
-    switch (name) {
-      case "submit":
-        this.doSubmit();
-        break;
-      case "reset":
-        break;
-      default:
-        break;
-    }
-  };
-  doSubmit = () => {
-    // if (this.isInvalid()) {
-    //   this.setState({ errorMessage: "There is an error" });
-    //   return;
-    // }
-    this.setState({ submit: true });
-    this.hoardingService.create(this.state)
-      .then(data => {
-        console.log(data);
-      })
-      .catch(err => {
-        this.setState({ errorMessage: err.toString() });
-        console.log(err);
-      })
-      .then(() => {
-        this.setState({ submit: false });
-      });
-  };
-  handleRadio = (e) => {
-    this.setState({ landLordType: e.target.value });
-  };
-  handleSwitch = (e) => {
-    this.setState({ [e.target.name]: e.target.checked });
-  };
-  handleChange = (e) => {
-    const { checked } = e.target;
-    if (checked) {
-      this.setState({
-        [e.target.name]: checked
-      });
-    } else {
-      this.setState({
-        [e.target.name]: e.target.value
-      });
-    }
-
     this.setState({ prestine: false });
 
   };
@@ -510,20 +511,29 @@ class NewKioskForm extends Component {
                                     " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
                 </GridItem>
 
-              </GridContainer>
+    };
+    
 
-            </CardContent>
-            <CardActions>
-              <GridContainer justify={"flex-end"}>
-                <GridItem>
-                  <Button disabled={!this.state.agree} name={"submit"} variant={"outlined"} color={"primary"}
-                          onClick={this.handleClick.bind(this)}>Submit</Button>
-                  {" "}
-                  <Button name={"reset"} variant={"outlined"} color={"secondary"}
-                          onClick={this.handleClick.bind(this)}>Reset</Button>
+
+                            </GridContainer>
+
+                        </CardContent>
+                        <CardActions>
+                            <GridContainer justify={"flex-end"}>
+                                <GridItem>
+                                    <Button disabled={!this.state.agree} name={"submit"} variant={"outlined"}
+                                            color={"primary"}
+                                            onClick={this.handleClick.bind(this)}>Submit</Button>
+                                    {" "}
+                                    <Button name={"reset"} variant={"outlined"} color={"secondary"}
+                                            onClick={this.handleClick.bind(this)}>Reset</Button>
+                                </GridItem>
+                            </GridContainer>
+
+                        </CardActions>
+                    </Card>
                 </GridItem>
               </GridContainer>
-
             </CardActions>
           </Card>
         </GridItem>

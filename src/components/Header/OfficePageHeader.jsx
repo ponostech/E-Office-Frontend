@@ -75,7 +75,6 @@ class OfficePageHeader extends React.Component {
                     <Hidden mdUp>
                         <IconButton
                             className={classes.sidebarButton}
-                            justIcon
                             aria-label="open drawer"
                             onClick={this.handleDrawerToggle}
                         >

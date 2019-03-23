@@ -227,15 +227,17 @@ class ShopLicenseApplicationForm extends Component {
   };
 
   handleSelectBlur = (identifier, e) => {
+
     switch (identifier) {
       case "type":
         this.state.type ? this.setState({ typeError: "" }) : this.setState({ typeError: ShopLicenseViewModel.TYPE_REQUIRED });
         break;
-        case "trade":
+        case "tradeName":
         this.state.tradeName===undefined ? this.setState({ tradeNameError:  ShopLicenseViewModel.TRADE_REQUIRED }) : this.setState({ tradeNameError:"" });
         break;
       case "displayType":
         this.state.displayType === undefined ? this.setState({ displayTypeError: ShopLicenseViewModel.DISPLAY_TYPE_REQUIRED }) : this.setState({ displayTypeError: "" });
+      default:
         break;
     }
   };
@@ -269,7 +271,6 @@ class ShopLicenseApplicationForm extends Component {
 
   render() {
     const { classes } = this.props;
-    const { trade } = this.state;
 
     return (
 

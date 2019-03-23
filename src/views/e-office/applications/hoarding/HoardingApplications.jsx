@@ -1,133 +1,118 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import { Card, CardContent, CardHeader, IconButton, Tooltip } from "@material-ui/core";
-import GridContainer from "../../../../components/Grid/GridContainer";
-import GridItem from "../../../../components/Grid/GridItem";
-import KioskViewModel from "../../../model/KioskViewModel";
-import { HoardingListViewModel } from "../../../model/HoardingListViewModel";
+import MUIDataTable from "mui-datatables";
+import Grid from "@material-ui/core/Grid";
+import {Icon} from "@material-ui/core";
+import {withStyles} from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import ButtonBase from "@material-ui/core/ButtonBase";
 
-import FilterIcon from "@material-ui/icons/FilterList";
-import NewHoardingApplications from "./NewHoardingApplications";
-import RejectedHoardingApplications from "./RejectedHoardingApplications";
-import GrantedHoardingApplications from "./GrantedHoardingApplications";
-import ActiveHoarding from "./ActiveHoarding";
+import HoardingDetail from "./HoardingDetailDialog";
 
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
-  },
-  tabsRoot: {
-    borderBottom: "1px solid #black"
-  },
-  tabsIndicator: {
-    backgroundColor: "#1890ff"
-  },
-  tabRoot: {
-    textTransform: "initial",
-    minWidth: 72,
-    fontWeight: theme.typography.fontWeightRegular,
-    marginRight: theme.spacing.unit * 4,
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "\"Segoe UI\"",
-      "Roboto",
-      "\"Helvetica Neue\"",
-      "Arial",
-      "sans-serif",
-      "\"Apple Color Emoji\"",
-      "\"Segoe UI Emoji\"",
-      "\"Segoe UI Symbol\""
-    ].join(","),
-    "&:hover": {
-      color: "#40a9ff",
-      opacity: 1
-    },
-    "&$tabSelected": {
-      color: "#1890ff",
-      fontWeight: theme.typography.fontWeightMedium
-    },
-    "&:focus": {
-      color: "#40a9ff"
-    }
-  },
-  tabSelected: {},
-  typography: {
-    padding: theme.spacing.unit * 3
-  }
-});
+const styles = {
+    button: {},
+    actionIcon: {},
+};
 
 class HoardingApplications extends React.Component {
-  state = {
-    value: "active"
-  };
+    state = {
+        openDetail: false,
+        detailData: [],
+        openForward: false,
+        tableData: [
+            ["M.33023/5/2019-AMC", "Matter Relating to IT Cell", "IT Cell", "John Doe", "2nd Feb, 2019", 1],
+            ["Aiden Lloyd", "Business Consultant", "Dallas", 55, "$200,000", 2],
+            ["Jaden Collins", "Attorney", "Santa Ana", 27, "$500,000", 3],
+        ]
+    };
+    updateTable = (action, tableState) => {
+        console.log('Update table');
+        console.log(action);
+        console.log(tableState);
+    };
+    forwardApplication = (id) => {
+        this.setState({openForward: true});
+    };
+    cancelForward = () => {
+        this.setState({openForward: false});
+    };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
+    viewDetail = (id) => {
+        this.setState({openDetail: true});
+    };
+    closeDetail = () => {
+        this.setState({openDetail: false});
+    };
 
-  render() {
-    const { classes, history } = this.props;
-    const { value } = this.state;
+    render() {
+        const {classes} = this.props;
+        const {tableData} = this.state;
+        const tableOptions = {
+            filterType: "checkbox",
+            responsive: "scroll",
+            rowsPerPage: 8,
+            serverSide: false,
+            onTableChange: function (action, tableState) {
+                this.updateTable(action, tableState);
+            }.bind(this),
+        };
 
-    return (
-      <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card>
-            <CardHeader
-              title={HoardingListViewModel.TITLE}
-              action={
-                <Tooltip title={"Filter"}>
-                  <IconButton>
-                    <FilterIcon/>
-                  </IconButton>
-                </Tooltip>
-              }
-            >
-            </CardHeader>
-            <CardContent>
-              <Tabs
-                value={value}
-                onChange={this.handleChange}
-                classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-              >
-                <Tab disableRipple value={"active"}
-                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                     label={KioskViewModel.ACTIVE}/>
-                <Tab disableRipple value={"new"}
-                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                     label={KioskViewModel.NEW_APPLICATION}/>
-                <Tab value={"granted"}
-                     disableRipple
-                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                     label={KioskViewModel.GRANTED}/>
-                <Tab value={"reject"}
-                     disableRipple
-                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                     label={KioskViewModel.REJECTED}/>
+        const tableColumns = [
+            {
+                name: "applicationNo",
+                label: "Application No.",
+            },
+            {
+                name: "fileNo",
+                label: "File No.",
+            },
+            {
+                name: "name",
+                label: "Name of Applicant",
+            },
+            {
+                name: 'location',
+                label: "Location",
+            },
+            {
+                name: "date",
+                label: "Date of Application",
+            },
+            {
+                name: "Action",
+                options: {
+                    filter: true,
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        return (
+                            <ButtonBase>
+                                <IconButton className={classes.button} color="primary" size="small"
+                                            aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
+                                    <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
+                                </IconButton>
+                                <IconButton variant="contained" className={classes.button} color="secondary"
+                                            size="small" onClick={this.forwardApplication.bind(this, value)}>
+                                    <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
+                                </IconButton>
+                            </ButtonBase>
+                        );
+                    }
+                }
+            }
+        ];
 
-              </Tabs>
-            </CardContent>
-            <div style={{ marginTop: 20 }}>
-              {value === "active" && <ActiveHoarding/>}
-              {value === "new" && <NewHoardingApplications/>}
-              {value === "granted" && <GrantedHoardingApplications/>}
-              {value === "reject" && <RejectedHoardingApplications/>}
-            </div>
-          </Card>
-        </GridItem>
-      </GridContainer>
-    );
-  }
+        return (
+            <>
+                <Grid item xs={12}>
+                    <MUIDataTable
+                        title={"Hoarding: List of Pending Application"}
+                        data={tableData}
+                        columns={tableColumns}
+                        options={tableOptions}
+                    />
+                </Grid>
+                <HoardingDetail open={this.state.openDetail} close={this.closeDetail} data={this.state.detailData} props={this.props}/>
+            </>
+        );
+    }
 }
-
-HoardingApplications.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
 export default withStyles(styles)(HoardingApplications);
