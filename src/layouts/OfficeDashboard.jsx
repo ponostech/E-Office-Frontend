@@ -30,7 +30,7 @@ class OfficeDashboard extends Component {
                 <Grid item xs={12} sm={12} md={12}>
                     <OfficePageHeader color={"primary"}/>
                 </Grid>
-                <Grid item style={{marginTop: 70, background: 'white'}} xs={12} sm={12} md={12}>
+                <Grid item style={{marginTop: 70,height:'100vh', background: 'white'}} xs={12} sm={12} md={12}>
                     <Route exact path={OfficeRoutes.DESK} component={DeskView}/>
 
                     <Route exact path={OfficeRoutes.NEW_RECEIPT} component={NewReceipt}/>

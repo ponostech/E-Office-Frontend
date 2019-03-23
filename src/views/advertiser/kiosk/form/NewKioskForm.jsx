@@ -27,8 +27,6 @@ import HoardingApplicationFormModel from "../../../model/HoardingApplicationForm
 import { LocalCouncilService } from "../../../../services/LocalCouncilService";
 import FileUpload from "../../../../components/FileUpload";
 import MapIcon from "@material-ui/icons/PinDrop";
-import axios from "axios";
-import { ApiRoutes } from "../../../../config/ApiRoutes";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { DocumentService } from "../../../../services/DocumentService";
 import { KioskFormModel } from "../../../model/KioskFormModel";
@@ -301,7 +299,7 @@ class NewKioskForm extends Component {
                     required={true}
                     helperText={this.state.localCouncilError}
                     error={Boolean(this.state.localCouncilError)}
-                    onBlur={this.handleSelectBlur.bind(this,"localCouncil")}
+                    onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
                     onChange={this.handleOfficeSelect.bind(this, "localCouncil")}
                     options={this.state.localCouncils}/>
                 </GridItem>
@@ -315,7 +313,7 @@ class NewKioskForm extends Component {
                                 required={true}
                                 error={Boolean(this.state.categoryError)}
                                 helperText={this.state.categoryError}
-                                onBlur={this.handleSelectBlur.bind(this,"category")}
+                                onBlur={this.handleSelectBlur.bind(this, "category")}
                                 onChange={this.handleOfficeSelect.bind(this, "category")}
                                 options={this.state.categories}/>
                 </GridItem>
@@ -420,7 +418,7 @@ class NewKioskForm extends Component {
                     value={this.state.displayType}
                     error={Boolean(this.state.displayTypeError)}
                     helperText={this.state.displayTypeError}
-                    onBlur={this.handleSelectBlur.bind(this,"displayType")}
+                    onBlur={this.handleSelectBlur.bind(this, "displayType")}
                     variant={"outlined"}
                     placeHolder={"Display type"}
                     margin={"dense"}
@@ -537,9 +535,9 @@ class NewKioskForm extends Component {
                         onClose={(e) => {
                           this.setState({ success: "" });
                         }}/>
-        <GMapDialog open={this.state.openMap} onClose={(lat,lng) => {
-          let msg=`Latitude ${lat} Longitude ${lng}`;
-          this.setState({ openMap: false,latitude:lat,longitude:lng,coordinate:msg })
+        <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
+          let msg = `Latitude ${lat} Longitude ${lng}`;
+          this.setState({ openMap: false, latitude: lat, longitude: lng, coordinate: msg });
 
         }} fullScreen={true}
                     isMarkerShown={true}/>
