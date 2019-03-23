@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { Card, CardHeader, IconButton, Tooltip } from "@material-ui/core";
-import FilterIcon from "@material-ui/icons/FilterList";
+import { Card, Typography } from "@material-ui/core";
 import { HoardingListViewModel } from "../../model/HoardingListViewModel";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
@@ -15,6 +14,9 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper
+  },
+  gridItem: {
+    padding: "20px 15px !important"
   },
   tabsRoot: {
     borderBottom: "1px solid #black"
@@ -74,32 +76,29 @@ class HoardingList extends React.Component {
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader title={HoardingListViewModel.TITLE} action={
-              <Tooltip title={"Filter"}>
-                <IconButton>
-                  <FilterIcon/>
-                </IconButton>
-              </Tooltip>
-            }/>
-            <Tabs
-              variant={"scrollable"}
-              value={value}
-              onChange={this.handleChange}
-              classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-            >
-              <Tab disableRipple value={"available"}
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={HoardingListViewModel.AVAILABLE}/>
-              <Tab value={"pending"}
-                   disableRipple
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={HoardingListViewModel.PENDING}/>
+            <GridItem className={classes.gridItem} xs={12} sm={12} md={12}>
+              <Typography variant={"headline"}>List of kiosk advertisement</Typography>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
+              <Tabs
+                value={value}
+                onChange={this.handleChange}
+                classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
+              >
+                <Tab disableRipple value={"available"}
+                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                     label={HoardingListViewModel.AVAILABLE}/>
+                <Tab value={"pending"}
+                     disableRipple
+                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                     label={HoardingListViewModel.PENDING}/>
 
-            </Tabs>
-            <div style={{ marginTop: 20, padding: 10 }}>
+              </Tabs>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
               {value === "available" && <AvailableHoardingList/>}
               {value === "pending" && <PendingHoardingList/>}
-            </div>
+            </GridItem>
           </Card>
         </GridItem>
       </GridContainer>

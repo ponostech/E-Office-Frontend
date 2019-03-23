@@ -20,7 +20,7 @@ class AdvertiserDashboard extends Component {
           <AdvertiserHeader color={"primary"}/>
         </GridItem>
         <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
-          <GridContainer justify={"center"} style={{height:"100vh"}}>
+          <GridContainer justify={"center"} style={{height:"95vh"}}>
 
             <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>
             <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>

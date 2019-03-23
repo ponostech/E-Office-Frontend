@@ -6,6 +6,6 @@ export class HoardingListViewModel {
   static  REJECTED = "Rejected Applications";
   static  FILTER = "Filter";
   static  AVAILABLE = "Available";
-  static  PENDING = "Pending";
+  static  PENDING = "Under process";
 
 }

@@ -3,18 +3,20 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { Card, CardHeader, IconButton, Tooltip } from "@material-ui/core";
+import { Card, Typography } from "@material-ui/core";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import GridItem from "../../../../components/Grid/GridItem";
 import AvailableKiosks from "./AvailableKiosks";
 import PendingKiosks from "./PendingKiosks";
 import KioskViewModel from "../../../model/KioskViewModel";
-import FilterIcon from "@material-ui/icons/FilterList";
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper
+  },
+  gridItem: {
+    padding: "20px 15px !important"
   },
   tabsRoot: {
     borderBottom: "1px solid #black"
@@ -74,34 +76,33 @@ class KioskLists extends React.Component {
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader title={KioskViewModel.TITLE} action={
-              <Tooltip title={"Filter"}>
-                <IconButton>
-                  <FilterIcon/>
-                </IconButton>
-              </Tooltip>
-            }/>
-            <Tabs
-              variant={"scrollable"}
-              value={value}
-              onChange={this.handleChange}
-              classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-            >
-              <Tab disableRipple value={"available"}
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={KioskViewModel.AVAILABLE}/>
-              <Tab value={"pending"}
-                   disableRipple
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={KioskViewModel.PENDING}/>
+            <GridItem className={classes.gridItem} xs={12} sm={12} md={12}>
+              <Typography variant={"headline"}>List of kiosk advertisement</Typography>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
+              <Tabs
+                variant={"standard"}
+                value={value}
+                onChange={this.handleChange}
+                classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
+              >
+                <Tab disableRipple value={"available"}
+                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                     label={KioskViewModel.AVAILABLE}/>
+                <Tab value={"pending"}
+                     disableRipple
+                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                     label={KioskViewModel.PENDING}/>
 
-            </Tabs>
-            <div style={{ marginTop: 20, padding: 10 }}>
+              </Tabs>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
               {value === "available" && <AvailableKiosks/>}
               {value === "pending" && <PendingKiosks/>}
-            </div>
+            </GridItem>
           </Card>
         </GridItem>
+
       </GridContainer>
     );
   }
