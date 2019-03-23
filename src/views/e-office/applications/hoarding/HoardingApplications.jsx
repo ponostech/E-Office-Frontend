@@ -7,6 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ButtonBase from "@material-ui/core/ButtonBase";
 
 import HoardingDetail from "./HoardingDetailDialog";
+import Assignment from "../ApplicationAssignmentDialog";
 
 const styles = {
     button: {},
@@ -15,9 +16,9 @@ const styles = {
 
 class HoardingApplications extends React.Component {
     state = {
+        openAssignment: false,
         openDetail: false,
         detailData: [],
-        openForward: false,
         tableData: [
             ["M.33023/5/2019-AMC", "Matter Relating to IT Cell", "IT Cell", "John Doe", "2nd Feb, 2019", 1],
             ["Aiden Lloyd", "Business Consultant", "Dallas", 55, "$200,000", 2],
@@ -29,11 +30,11 @@ class HoardingApplications extends React.Component {
         console.log(action);
         console.log(tableState);
     };
-    forwardApplication = (id) => {
-        this.setState({openForward: true});
+    openAssignment = (id) => {
+        this.setState({openAssignment: true});
     };
-    cancelForward = () => {
-        this.setState({openForward: false});
+    closeAssignment = () => {
+        this.setState({openAssignment: false});
     };
 
     viewDetail = (id) => {
@@ -89,7 +90,7 @@ class HoardingApplications extends React.Component {
                                     <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                                 </IconButton>
                                 <IconButton variant="contained" className={classes.button} color="secondary"
-                                            size="small" onClick={this.forwardApplication.bind(this, value)}>
+                                            size="small" onClick={this.openAssignment.bind(this, value)}>
                                     <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
                                 </IconButton>
                             </ButtonBase>
@@ -110,6 +111,7 @@ class HoardingApplications extends React.Component {
                     />
                 </Grid>
                 <HoardingDetail open={this.state.openDetail} close={this.closeDetail} data={this.state.detailData} props={this.props}/>
+                <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData} props={this.props}/>
             </>
         );
     }
