@@ -34,6 +34,10 @@ function Transition(props) {
 }
 
 class CreateNoteDialog extends React.Component {
+    state = {
+        note: "this is test note from state",
+    };
+
     modules = {
         toolbar: [
             [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
@@ -55,6 +59,7 @@ class CreateNoteDialog extends React.Component {
 
     render () {
         const {classes} = this.props;
+        const {note} = this.state;
         return (
             <Dialog
                 fullScreen
@@ -81,7 +86,7 @@ class CreateNoteDialog extends React.Component {
                     </ListItem>
                 </List>
                 <DialogContent>
-                    <ReactQuill className={classes.editor} value="" theme="snow"
+                    <ReactQuill className={classes.editor} value={note} theme="snow"
                                 modules={this.modules}
                                 formats={this.formats}
                                 placeholder="Write Note..."/>
