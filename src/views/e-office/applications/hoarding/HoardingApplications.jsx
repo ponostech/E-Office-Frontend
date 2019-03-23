@@ -20,10 +20,19 @@ class HoardingApplications extends React.Component {
         openDetail: false,
         detailData: [],
         tableData: [
-            ["M.33023/5/2019-AMC", "Matter Relating to IT Cell", "IT Cell", "John Doe", "2nd Feb, 2019", 1],
-            ["Aiden Lloyd", "Business Consultant", "Dallas", 55, "$200,000", 2],
-            ["Jaden Collins", "Attorney", "Santa Ana", 27, "$500,000", 3],
-        ]
+            [1, "M.33023/5/2019-AMC", "Matter Relating to IT Cell", "IT Cell", "John Doe", "2nd Feb, 2019"],
+            [2, "Aiden Lloyd", "Business Consultant", "Dallas", 55, "$200,000"],
+            [3, "Jaden Collins", "Attorney", "Santa Ana", 27, "$500,000"],
+        ],
+        staffs: [
+            {value: "1", label: "Lala"},
+            {value: "1", label: "Lala"},
+            {value: "1", label: "Lala"},
+            {value: "1", label: "Lala"},
+            {value: "1", label: "Lala"},
+            {value: "1", label: "Lala"},
+            {value: "1", label: "Lala"},
+        ],
     };
     updateTable = (action, tableState) => {
         console.log('Update table');
@@ -59,6 +68,28 @@ class HoardingApplications extends React.Component {
 
         const tableColumns = [
             {
+                name: "action",
+                label: "Action",
+                options: {
+                    filter: false,
+                    sort: false,
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        return (
+                            <ButtonBase>
+                                <IconButton className={classes.button} color="primary" size="small"
+                                            aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
+                                    <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
+                                </IconButton>
+                                <IconButton variant="contained" className={classes.button} color="secondary"
+                                            size="small" onClick={this.openAssignment.bind(this, value)}>
+                                    <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
+                                </IconButton>
+                            </ButtonBase>
+                        );
+                    }
+                }
+            },
+            {
                 name: "applicationNo",
                 label: "Application No.",
             },
@@ -78,26 +109,6 @@ class HoardingApplications extends React.Component {
                 name: "date",
                 label: "Date of Application",
             },
-            {
-                name: "Action",
-                options: {
-                    filter: true,
-                    customBodyRender: (value, tableMeta, updateValue) => {
-                        return (
-                            <ButtonBase>
-                                <IconButton className={classes.button} color="primary" size="small"
-                                            aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
-                                    <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
-                                </IconButton>
-                                <IconButton variant="contained" className={classes.button} color="secondary"
-                                            size="small" onClick={this.openAssignment.bind(this, value)}>
-                                    <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
-                                </IconButton>
-                            </ButtonBase>
-                        );
-                    }
-                }
-            }
         ];
 
         return (
@@ -110,8 +121,8 @@ class HoardingApplications extends React.Component {
                         options={tableOptions}
                     />
                 </Grid>
-                <HoardingDetail open={this.state.openDetail} close={this.closeDetail} data={this.state.detailData} props={this.props}/>
-                <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData} props={this.props}/>
+                <HoardingDetail open={this.state.openDetail} close={this.closeDetail} data={this.state.detailData} props={this.props} staffs={this.state.staffs}/>
+                <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData} props={this.props} staffs={this.state.staffs}/>
             </>
         );
     }

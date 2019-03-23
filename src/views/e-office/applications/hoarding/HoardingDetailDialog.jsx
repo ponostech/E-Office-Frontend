@@ -1,6 +1,6 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import {Button} from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,6 +12,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
+import TableRow from "@material-ui/core/TableRow";
+import {TableCell} from "@material-ui/core";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import Paper from "@material-ui/core/Paper";
 
 const styles = {
     appBar: {
@@ -20,6 +25,9 @@ const styles = {
     flex: {
         flex: 1,
     },
+    firstCell: {
+        fontWeight: 'bold',
+    }
 };
 
 function Transition(props) {
@@ -54,9 +62,35 @@ const HoardingDetailDialog = (props) => {
                 </ListItem>
                 <Divider/>
                 <ListItem button>
-                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
+                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram"/>
                 </ListItem>
             </List>
+            <Paper>
+                <Table>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell className={classes.firstCell} align="right">Name of Applicant:</TableCell>
+                            <TableCell>Lalhmingthanga</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className={classes.firstCell} align="right">Address:</TableCell>
+                            <TableCell>Lalhmingthanga</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className={classes.firstCell} align="right">Location:</TableCell>
+                            <TableCell>Lalhmingthanga</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className={classes.firstCell} align="right">Name of Applicant:</TableCell>
+                            <TableCell>Lalhmingthanga</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className={classes.firstCell} align="right">Name of Applicant:</TableCell>
+                            <TableCell>Lalhmingthanga</TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </Paper>
         </Dialog>
     );
 };

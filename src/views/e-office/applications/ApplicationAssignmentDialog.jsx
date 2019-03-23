@@ -12,8 +12,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
+import OfficeSelect from "../../../components/OfficeSelect";
+import Grid from "@material-ui/core/Grid";
 
 const styles = {
     appBar: {
@@ -55,17 +56,40 @@ const ApplicationAssignmentDialog = (props) => {
                     <ListItemText primary="Select user below to assign the application. Select carefully!" secondary="Details of application shown below."/>
                 </ListItem>
                 <ListItem button>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="userId"
-                        label="Name of Staff"
-                        type="input"
-                        fullWidth
-                    />
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <OfficeSelect
+                                value={""}
+                                label={"Name of Staff"}
+                                name={"userId"}
+                                variant={"outlined"}
+                                margin={"dense"}
+                                fullWidth={true}
+                                required={true}
+                                error={""}
+                                helperText={""}
+                                options={props.staffs}/>
+                        </Grid>
+                    </Grid>
                 </ListItem>
-                <ListItem>
-
+                <ListItem button>
+                    <ListItemText primary="Name of Applicant" secondary="Lalhriatreng"/>
+                </ListItem>
+                <Divider/>
+                <ListItem button>
+                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
+                </ListItem>
+                <ListItem button>
+                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
+                </ListItem>
+                <ListItem button>
+                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
+                </ListItem>
+                <ListItem button>
+                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
+                </ListItem>
+                <ListItem button>
+                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
                 </ListItem>
                 <Divider/>
             </List>
