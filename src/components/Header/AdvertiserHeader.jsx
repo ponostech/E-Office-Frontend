@@ -49,15 +49,15 @@ class AdvertiserHeader extends React.Component {
     // }
   }
 
-  handleHoarding = (e) => {
+  handleHoarding = (path) => {
     const { history } = this.props;
-    history.push(OfficeRoutes.ADVERTISER_NEW_HOARDING);
+    history.push(path);
 
   };
 
-  handleKiosk = (e) => {
+  handleKiosk = (path) => {
     const { history } = this.props;
-    history.push(OfficeRoutes.PROPOSED_KIOSK);
+    history.push(path);
   };
 
   handleUser = (e) => {
@@ -79,10 +79,7 @@ class AdvertiserHeader extends React.Component {
           <CustomDropdown
             dropdownList={[
               { title: "New hoarding", link: OfficeRoutes.ADVERTISER_NEW_HOARDING },
-              { title: "List Created", link: OfficeRoutes.CREATED_FILES },
-              { title: "List Sent", link: OfficeRoutes.SENT_FILE },
-              { title: "List Closed", link: OfficeRoutes.CLOSE_FILE },
-              { title: "Single File", link: OfficeRoutes.FILE_DETAIL }
+              { title: "List of hoarding", link: OfficeRoutes.ADVERTISER_HOARDING },
             ]}
             linkClick={this.handleHoarding.bind(this)}
             buttonText={"Hoarding"}
@@ -90,10 +87,7 @@ class AdvertiserHeader extends React.Component {
           <CustomDropdown
             dropdownList={[
               { title: "New Kiosk", link: OfficeRoutes.ADVERTISER_NEW_KIOSK },
-              { title: "List Created", link: OfficeRoutes.CREATED_FILES },
-              { title: "List Sent", link: OfficeRoutes.SENT_FILE },
-              { title: "List Closed", link: OfficeRoutes.CLOSE_FILE },
-              { title: "Single File", link: OfficeRoutes.FILE_DETAIL }
+              { title: "List of kiosks", link: OfficeRoutes.ADVERTISER_KIOSK }
             ]}
             linkClick={this.handleKiosk.bind(this)}
             buttonText={"Kiosk"}

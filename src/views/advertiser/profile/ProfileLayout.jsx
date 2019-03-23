@@ -15,7 +15,7 @@ class ProfileLayout extends Component {
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={12} md={6}>
          <Card>
-           <CardHeader title={"Update Profile"}/>
+           <CardHeader style={{textAlign:"center"}} title={"Update Profile"}/>
            <CardContent>
              <NavPills
                horizontal={{

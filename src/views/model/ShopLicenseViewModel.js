@@ -30,5 +30,8 @@ export class ShopLicenseViewModel {
   static PHONE_REQUIRED="Mobile Number is required";
   static TYPE_REQUIRED="Type of applicant is required";
   static SHOP_NAME_REQUIRED="Name of shop is required";
+  static DISPLAY_TYPE_REQUIRED="Display type is required";
+  static VALID_PHONE="Phone number must be 10 digit number";
+  static TRADE_REQUIRED="Name of trade is required";
 
 }
