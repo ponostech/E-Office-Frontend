@@ -30,8 +30,6 @@ class BannerDetail extends Component {
     this.setState({
       [name]: value
     });
-
-    this.setValidity();
   };
 
   getBannerDetails = () => {
@@ -60,6 +58,7 @@ class BannerDetail extends Component {
 
   handleAdd = (e) => {
 
+    this.clear();
     const { length, height, locations, from, to } = this.state;
     let temp = {
       length, height, locations, from, to
@@ -81,12 +80,6 @@ class BannerDetail extends Component {
     });
     this.setState({ detailList: result });
 
-  };
-
-  setValidity = () => {
-    let valid = this.state.length!==0 && this.state.height.length!==0 && this.state.locations.length!==0 && this.state.from.length!==0 && this.state.to.length!==0;
-
-    this.setState({ valid });
   };
   clear = () => {
     this.setState({
@@ -191,7 +184,7 @@ class BannerDetail extends Component {
             />
           </GridItem>
           <GridItem style={{ padding: 4 }} sm={12} md={1}>
-            <IconButton disabled={!this.state.valid
+            <IconButton disabled={this.state.length.length===0 || this.state.height.length===0 || this.state.locations.length===0 || this.state.from.length===0 || this.state.to.length===0
             } onClick={this.handleAdd.bind(this)} color={"primary"}>
               <AddIcon fontSize={"large"} color={"inherit"}/>
             </IconButton>

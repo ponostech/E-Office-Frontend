@@ -1,5 +1,5 @@
 export class BannerViewModel {
-  static TITLE = "List of Banner Applications";
+  static TITLE = "Application form of banner advertisement";
   static PRIMARY_TEXT = "Submit";
   static SECONDARY_TEXT = "Reset";
   static NAME = "Name";
