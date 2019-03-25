@@ -7,10 +7,6 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Divider from "@material-ui/core/Divider";
-import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
-import FileMenu from "./FileMenu";
-import CreateNoteDialog from "../CreateNoteDialog";
 
 const styles = theme => ({
     root: {
@@ -22,34 +18,14 @@ const styles = theme => ({
     },
     button: {
         margin: theme.spacing.unit,
-    },
-    leftIcon: {
-        marginRight: theme.spacing.unit,
-    },
-    rightIcon: {
-        marginLeft: theme.spacing.unit,
-    },
+    }
 });
 
 class ApplicationReport extends Component {
-    state= {
-        openNote: false,
-    };
-    openNoteDialog = () => {
-        this.setState({openNote: true});
-    };
-    closeNoteDialog = () => {
-        this.setState({openNote: false});
-    };
     render() {
         const { classes } = this.props;
         return (
             <>
-                <Button variant="contained" size="small"  color="primary" className={classes.button} onClick={this.openNoteDialog}>
-                    Create Note
-                    <Icon className={classes.rightIcon}>add</Icon>
-                </Button>
-                <FileMenu/>
                 <List className={classes.root}>
                     <ListItem alignItems="flex-start">
                         <ListItemAvatar>
@@ -70,114 +46,8 @@ class ApplicationReport extends Component {
                             }
                         />
                     </ListItem>
-                    <Divider />
-                    <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                            <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg"/>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary="Summer BBQ"
-                            secondary={
-                                <React.Fragment>
-                                    <Typography component="span" className={classes.inline} color="textPrimary">
-                                        to Scott, Alex, Jennifer
-                                    </Typography>
-                                    {" — Wish I could come, but I'm out of town this…"}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
-                    <Divider />
-                    <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                            <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg"/>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary="Oui Oui"
-                            secondary={
-                                <React.Fragment>
-                                    <Typography component="span" className={classes.inline} color="textPrimary">
-                                        Sandra Adams
-                                    </Typography>
-                                    {' — Do you have Paris recommendations? Have you ever…'}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
-                    <Divider />
-                    <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                            <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg"/>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary="Oui Oui"
-                            secondary={
-                                <React.Fragment>
-                                    <Typography component="span" className={classes.inline} color="textPrimary">
-                                        Sandra Adams
-                                    </Typography>
-                                    {' — Do you have Paris recommendations? Have you ever…'}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
-                    <Divider />
-                    <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                            <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg"/>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary="Oui Oui"
-                            secondary={
-                                <React.Fragment>
-                                    <Typography component="span" className={classes.inline} color="textPrimary">
-                                        Sandra Adams
-                                    </Typography>
-                                    {' — Do you have Paris recommendations? Have you ever…'}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
-                    <Divider />
-                    <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                            <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg"/>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary="Oui Oui"
-                            secondary={
-                                <React.Fragment>
-                                    <Typography component="span" className={classes.inline} color="textPrimary">
-                                        Sandra Adams
-                                    </Typography>
-                                    {' — Do you have Paris recommendations? Have you ever…'}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
-                    <Divider />
-                    <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                            <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg"/>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary="Oui Oui"
-                            secondary={
-                                <React.Fragment>
-                                    <Typography component="span" className={classes.inline} color="textPrimary">
-                                        Sandra Adams
-                                    </Typography>
-                                    {' — Do you have Paris recommendations? Have you ever…'}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
+                    <Divider/>
                 </List>
-                <Button variant="contained" size="small" color="primary" className={classes.button} onClick={this.openNoteDialog}>
-                    Create Note
-                    <Icon className={classes.rightIcon}>add</Icon>
-                </Button>
-                <CreateNoteDialog open={this.state.openNote} close={this.closeNoteDialog}/>
             </>
         )
     }
