@@ -2,10 +2,7 @@ import React from 'react';
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
-import Airplay from "@material-ui/icons/Airplay";
-import HelpOutline from "@material-ui/icons/HelpOutline";
-import Person from "@material-ui/icons/Person"
-import StoreMallDirectory from "@material-ui/icons/StoreMallDirectory";
+import {Airplay, HelpOutline, Person, StoreMallDirectory, Dock, Gradient} from "@material-ui/icons";
 
 // core components
 import GridItem from "../../../components/Grid/GridItem.jsx";
@@ -109,14 +106,14 @@ const services = (props) => {
                             },
                             {
                                 tabButton: "Banner/Poster",
-                                tabIcon: Airplay,
+                                tabIcon: Gradient,
                                 tabContent: (
                                     <BannerNavPillContent classes={classes} click={props.click}/>
                                 )
                             },
                             {
                                 tabButton: "Kiosk",
-                                tabIcon: Airplay,
+                                tabIcon: Dock,
                                 tabContent: (
                                     <KioskNavPillContent classes={classes} click={props.click}/>
                                 )

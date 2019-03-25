@@ -7,7 +7,7 @@ import CardBody from "../../../../components/Card/CardBody.jsx";
 import Button from "../../../../components/CustomButtons/Button.jsx";
 import {OfficeRoutes} from "../../../../config/routes-constant/OfficeRoutes";
 import Typography from "@material-ui/core/Typography";
-import {Airplay} from "@material-ui/icons";
+import {Dock} from "@material-ui/icons";
 
 const kiosk = (props) => (
     <Card>
@@ -23,7 +23,7 @@ const kiosk = (props) => (
                         <CardBody pricing>
                             <h6 className={props.classes.cardCategory}>Apply for New Hoarding</h6>
                             <div className={props.classes.icon}>
-                                <Airplay color="primary"/>
+                                <Dock color="primary"/>
                             </div>
                             <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
                                 Click button Below
