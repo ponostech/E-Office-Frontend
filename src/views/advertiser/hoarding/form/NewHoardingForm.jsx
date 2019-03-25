@@ -253,10 +253,6 @@ class NewHoardingForm extends Component {
     handleBlur = (e) => {
         const {name, value} = e.target;
         switch (name) {
-            case "localCouncil":
-                !Boolean(value) ? this.setState({localCouncilError: HoardingApplicationFormModel.LOCAL_COUNCIL_REQUIRED})
-                    : this.setState({localCouncilError: ""});
-                break;
             case "address":
                 !Boolean(value) ? this.setState({addressError: HoardingApplicationFormModel.ADDRESS_REQUIRED})
                     : this.setState({addressError: ""});

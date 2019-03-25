@@ -19,6 +19,7 @@ import AdvertiserLogin from "../views/advertiser/auth/AdvertiserLogin";
 import AdvertiserForm from "../views/advertiser/AdvertiserForm";
 import AdvertiserRegistrationSuccess from "../views/advertiser/AdvertiserRegistrationSuccess";
 import BannerApplicationSuccess from "../views/banner/BannerApplicationSuccess";
+import ShopLicenseRenewalForm from "../views/shop/ShopLicenseRenewalForm";
 
 class LandingPage extends Component {
 
@@ -41,6 +42,7 @@ class LandingPage extends Component {
                                 <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
 
                                 <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
+                                <Route exact={true} path={OfficeRoutes.RENEW_SHOP_LICENSE} component={ShopLicenseRenewalForm}/>
 
                                 <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
                                 <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserForm}/>
