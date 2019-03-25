@@ -1,3 +1,4 @@
+/*
 import React, {Component} from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@material-ui/core";
 import PropTypes from "prop-types";
@@ -23,4 +24,4 @@ NotesheetTimelineView.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
 };
-export default NotesheetTimelineView;
+export default NotesheetTimelineView;*/
