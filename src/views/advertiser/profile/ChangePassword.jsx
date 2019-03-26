@@ -55,7 +55,34 @@ class ChangePassword extends Component {
                       </InputAdornment>
                     )
                   }}
-                  label={AdvertiserViewModel.PASSWORD}
+                  label={"Old Password"}
+                  onBlur={this.handleRequired.bind(this)}
+                  onChange={this.handleChange.bind(this)}
+                  placeholder={"Password"}
+                />
+                <TextField
+                  value={this.state.password}
+                  error={Boolean(this.state.passwordError)}
+                  helperText={this.state.passwordError}
+                  type={this.state.showPassword ? "text" : "password"}
+                  name={"password"}
+                  margin={"dense"}
+                  required={true}
+                  fullWidth={true}
+                  variant={"outlined"}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="Toggle password visibility"
+                          onClick={this.handleClickShowPassword.bind(this)}
+                        >
+                          {this.state.showPassword ? <VisibilityOn/> : <VisibilityOff/>}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
+                  label={"New Password"}
                   onBlur={this.handleRequired.bind(this)}
                   onChange={this.handleChange.bind(this)}
                   placeholder={"Password"}
@@ -82,7 +109,7 @@ class ChangePassword extends Component {
                   required={true}
                   fullWidth={true}
                   variant={"outlined"}
-                  label={AdvertiserViewModel.CONFIRM_PASSWORD}
+                  label={"Confirm password"}
                   onBlur={this.handleRequired.bind(this)}
                   onChange={this.handleChange.bind(this)}
                   placeholder={"Confirm password"}

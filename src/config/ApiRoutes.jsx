@@ -12,5 +12,6 @@ export class ApiRoutes {
   static DOCUMENTS="/documents";
   static CREATE_SHOP_LICENSE="shop-license";
   static CREATE_BANNER="/banners";
+  static TRADES="/trades";
 
 }
