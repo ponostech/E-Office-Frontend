@@ -1,18 +1,9 @@
 import React, {Component} from "react";
-import {Button, Drawer, Icon, Tab, Tabs} from "@material-ui/core";
-import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
-import List from "@material-ui/core/List";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import DraftList from "../draft/DraftList";
-import NotesheetList from "../notesheet/NotesheetList";
-import FileMovementList from "../movements/FileMovement";
 import {withStyles} from '@material-ui/core/styles';
-import IconButton from "@material-ui/core/IconButton";
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
+import FileActions from "./Actions/FileActions";
+import LeftDrawer from "./Drawers/LeftDrawer";
+import RightDrawer from "./Drawers/RightDrawer";
 
 const styles = theme => ({
     root: {
@@ -33,6 +24,12 @@ const styles = theme => ({
         verticalAlign: 'bottom',
         height: 20,
         width: 20,
+    },
+    leftIcon: {
+        marginRight: theme.spacing.unit,
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
     },
     details: {
         alignItems: 'center',
@@ -84,7 +81,7 @@ class FileMenu extends Component {
         draftTabValue: 'draft'
     };
 
-    toggleDrawer = (side, open) => () => {
+    toggleDrawer = (side, open) => {
         this.setState({
             [side]: open,
         });
@@ -99,123 +96,20 @@ class FileMenu extends Component {
     };
 
     render() {
-
         const {applicationTabValue, draftTabValue} = this.state;
         const {classes} = this.props;
 
-        const leftList = (
-            <>
-                {/*<FileAttribute classes={classes}/>*/}
-                <Tabs
-                    variant="scrollable"
-                    value={this.state.applicationTabValue}
-                    fullWidth={true}
-                    style={{background: "white", paddingTop: 20}}
-                    indicatorColor={"primary"}
-                    textColor={"primary"}
-                    onChange={this.handleApplicationTabChange.bind(this)}>
-                    <Tab value={"application"}
-                         classes={{labelContainer: classes.tabLabelContainer}} label={"Applications"}/>
-                    <Tab value={"proposal"}
-                         classes={{labelContainer: classes.tabLabelContainer}}
-                         label={"Proposals"}/>
-                    <Tab value={"report"}
-                         classes={{labelContainer: classes.tabLabelContainer}}
-                         label={"Reports"}/>
-                </Tabs>
-                <div>
-                    {applicationTabValue === "application" && <DraftList/>}
-                    {applicationTabValue === "proposal" && <NotesheetList/>}
-                    {applicationTabValue === "report" && <FileMovementList/>}
-                </div>
-                <Divider/>
-                <Tabs
-                    variant="scrollable"
-                    value={this.state.draftTabValue}
-                    fullWidth={true}
-                    style={{background: "white", paddingTop: 20}}
-                    indicatorColor={"primary"}
-                    textColor={"primary"}
-                    onChange={this.handleDraftTabChange.bind(this)}>
-                    <Tab classes={{labelContainer: classes.tabLabelContainer}} value={"draft"} label={"Draft"}/>
-                    <Tab classes={{labelContainer: classes.tabLabelContainer}} value={"notesheet"} label={"NoteSheet"}/>
-                    <Tab classes={{labelContainer: classes.tabLabelContainer}} value={"movement"} label={"Movement"}/>
-                </Tabs>
-                <div>
-                    {draftTabValue === "draft" && <DraftList/>}
-                    {draftTabValue === "notesheet" && <NotesheetList/>}
-                    {draftTabValue === "movement" && <FileMovementList/>}
-                </div>
-            </>
-        );
-        const sideList = (
-            <div className={classes.list}>
-                <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <Icon>inbox</Icon> : <Icon>mail</Icon>}</ListItemIcon>
-                            <ListItemText primary={text}/>
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider/>
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <Icon>inbox</Icon> : <Icon>mail</Icon>}</ListItemIcon>
-                            <ListItemText primary={text}/>
-                        </ListItem>
-                    ))}
-                </List>
-            </div>
-        );
-
         return (
             <div style={{flex: 1}}>
-                <Button variant="contained" size="small" color="primary" onClick={this.toggleDrawer('left', true)}
-                        style={{float: "left", margin: 8}}>
-                    Open File Info
-                </Button>
-                <Button variant="contained" size="small" color="primary" onClick={this.toggleDrawer('right', true)}
-                        style={{float: "right", margin: 8}}>
-                    Open File Action
-                </Button>
-
-                <Drawer
-                    className={classes.drawer}
-                    variant="persistent"
-                    anchor="left"
-                    open={this.state.left}
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                >
-                    <div className={classes.drawerLeftHeader}>
-                        <IconButton onClick={this.toggleDrawer('left', false)}>
-                            <ChevronLeftIcon/>
-                        </IconButton>
-                    </div>
-                    <Divider/>
-                    {leftList}
-                </Drawer>
-
-                <Drawer
-                    className={classes.drawer}
-                    variant="persistent"
-                    anchor="right"
-                    open={this.state.right}
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                >
-                    <div className={classes.drawerHeader}>
-                        <IconButton onClick={this.toggleDrawer('right', false)}>
-                            <ChevronRightIcon/>
-                        </IconButton>
-                    </div>
-                    <Divider/>
-                    {sideList}
-                </Drawer>
+                <FileActions drawer={this.toggleDrawer} classes={classes}/>
+                <LeftDrawer open={this.state.left}
+                            drawer={this.toggleDrawer}
+                            draftChange={this.handleDraftTabChange}
+                            applicationChange={this.handleApplicationTabChange}
+                            classes={classes}
+                            applicationTabValue={applicationTabValue}
+                            draftTabValue={draftTabValue}/>
+                <RightDrawer drawer={this.toggleDrawer} open={this.state.right} classes={classes} />
             </div>
         );
     }

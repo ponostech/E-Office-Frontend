@@ -19,8 +19,7 @@ const createNoteButton = (props) => {
     const {classes} = props;
     return (
         <Button variant="contained" size="small" color="primary" className={classes.button} onClick={props.click}>
-            Create Note
-            <Icon className={classes.rightIcon}>add</Icon>
+            Create Note <Icon className={classes.rightIcon}>add</Icon>
         </Button>
     );
 };
