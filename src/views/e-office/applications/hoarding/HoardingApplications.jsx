@@ -20,7 +20,7 @@ class HoardingApplications extends React.Component {
         openDetail: false,
         detailData: [],
         tableData: [
-            [1, "M.33023/5/2019-AMC", "Matter Relating to IT Cell", "IT Cell", "John Doe", "2nd Feb, 2019"],
+            [1, "M.33023/5/2019-AMC", "Matter Relating to IT Cell", "IT Cell", "John Does", "2nd Feb, 2019"],
             [2, "Aiden Lloyd", "Business Consultant", "Dallas", 55, "$200,000"],
             [3, "Jaden Collins", "Attorney", "Santa Ana", 27, "$500,000"],
         ],
