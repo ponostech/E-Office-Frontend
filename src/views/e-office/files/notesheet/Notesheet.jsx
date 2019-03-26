@@ -1,5 +1,5 @@
 import React from "react";
-import {CardTravel, Extension, Fingerprint} from "@material-ui/icons";
+import {AttachFile, EventNote, Fingerprint} from "@material-ui/icons";
 import Grid from "@material-ui/core/Grid";
 
 import Timeline from "../../../../components/Timeline/Timeline.jsx";
@@ -8,10 +8,10 @@ const widgetStories = [
     {
         // First story
         inverted: true,
-        badgeColor: "danger",
-        badgeIcon: CardTravel,
+        badgeColor: "success",
+        badgeIcon: EventNote,
         title: "Written By: Lala, Town Planner",
-        titleColor: "danger",
+        titleColor: "info",
         body: (
             <p>
                 Wifey made the best Father's Day meal ever. So thankful so happy so
@@ -21,15 +21,21 @@ const widgetStories = [
                 downtown.
             </p>
         ),
-        footerTitle: "11 hours ago via Twitter"
+        footerTitle: "Written On: 3rd February, 2019 (Tuesday)",
+        footer: (
+            <div>
+                <AttachFile />
+                Attachment, Draft, Etc.
+            </div>
+        )
     },
     {
         // Second story
         inverted: true,
         badgeColor: "success",
-        badgeIcon: Extension,
+        badgeIcon: EventNote,
         title: "Another One",
-        titleColor: "success",
+        titleColor: "info",
         body: (
             <p>
                 Thank God for the support of my wife and real friends. I also wanted to
@@ -42,8 +48,33 @@ const widgetStories = [
     {
         // Third story
         inverted: true,
-        badgeColor: "info",
-        badgeIcon: Fingerprint,
+        badgeColor: "success",
+        badgeIcon: EventNote,
+        title: "Another Title",
+        titleColor: "info",
+        body: (
+            <div>
+                <p>
+                    Called I Miss the Old Kanye That’s all it was Kanye And I love you
+                    like Kanye loves Kanye Famous viewing @ Figueroa and 12th in downtown
+                    LA 11:10PM
+                </p>
+                <p>
+                    What if Kanye made a song about Kanye Royère doesn't make a Polar bear
+                    bed but the Polar bear couch is my favorite piece of furniture we own
+                    It wasn’t any Kanyes Set on his goals Kanye
+                </p>
+            </div>
+        ),
+        footer: (
+            <div>Custom Footer</div>
+        )
+    },
+    {
+        // Third story
+        inverted: true,
+        badgeColor: "success",
+        badgeIcon: EventNote,
         title: "Another Title",
         titleColor: "info",
         body: (
@@ -66,7 +97,7 @@ const widgetStories = [
     }
 ];
 
-const notesheet = (props) => (
+const notesheet = () => (
     <Grid item xs={12} sm={12} md={12}>
         <Timeline simple stories={widgetStories} />
     </Grid>
