@@ -3,14 +3,14 @@ import { CircularProgress, Dialog, DialogContent, DialogTitle } from "@material-
 import PropTypes from "prop-types";
 class SubmitDialog extends Component {
   render() {
-    const { open,text } = this.props;
+    const { open,text,title } = this.props;
     return (
-      <Dialog fullWidth={true} maxWidth={"sm"} open={open}>
+      <Dialog fullWidth={true} maxWidth={"xs"} open={open}>
         <DialogTitle title={"Submit"}>
-          Submit
+         {title}
         </DialogTitle>
         <DialogContent>
-          <div style={{margin:10,display:'flex',justify:'center'}}>
+          <div style={{margin:10,display:'flex',justify:'center',alignItems:"center"}}>
           <CircularProgress style={{margin:20}} variant={"indeterminate"} color={"primary"}/>
             {text}
           </div>
@@ -19,10 +19,15 @@ class SubmitDialog extends Component {
     );
   }
 }
+SubmitDialog.defaultProps={
+  title:"Submit Application",
+  text:"Please wait ... ",
+}
 
 SubmitDialog.propTypes={
   open:PropTypes.bool.isRequired,
-  text:PropTypes.string
+  text:PropTypes.string,
+  title:PropTypes.string,
 }
 
 export default SubmitDialog;

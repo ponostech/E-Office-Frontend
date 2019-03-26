@@ -39,7 +39,7 @@ const style = {
   }
 };
 
-class ShopLicenseApplicationForm extends Component {
+class HotelLicenseApplicationForm extends Component {
   documentService = new DocumentService();
   shopService = new ShopService();
   state = {
@@ -54,6 +54,9 @@ class ShopLicenseApplicationForm extends Component {
     coordinate: "",
     businessDetail: "",
     estd: undefined,
+    acRoomNo: "",
+    nonAcRoomNo: "",
+    otherFacilities: "",
     tinNo: "",
     cstNo: "",
     gstNo: "",
@@ -72,7 +75,9 @@ class ShopLicenseApplicationForm extends Component {
     coordinateError: "",
     phoneError: "",
     shopNameError: "",
-    displayTypeError:'',
+    displayTypeError: "",
+    acRoomNoError: "",
+    nonAcRoomNoError: "",
     estdError: "",
 
     display_types: [
@@ -106,7 +111,7 @@ class ShopLicenseApplicationForm extends Component {
   };
 
   componentDidMount() {
-    document.title = "e-AMC | Shop License Application Form";
+    document.title = "e-AMC | Hotel and lodging License Application Form";
     // this.state.ownership = this.state.ownerships[0];
     // this.state.display_type = this.state.display_types[0];
     // this.state.trade = this.state.trades[0];
@@ -132,7 +137,7 @@ class ShopLicenseApplicationForm extends Component {
 
     switch (name) {
       case "phone":
-        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: ShopLicenseViewModel.VALID_PHONE }) : this.setState({ phoneError: "" });
+        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: "Mobile No must be 10 digit number" }) : this.setState({ phoneError: "" });
         break;
     }
 
@@ -230,13 +235,15 @@ class ShopLicenseApplicationForm extends Component {
 
     switch (identifier) {
       case "type":
-        this.state.type ? this.setState({ typeError: "" }) : this.setState({ typeError: ShopLicenseViewModel.TYPE_REQUIRED });
+        this.state.type ? this.setState({ typeError: "" }) : this.setState({ typeError: "Type of applicant is required" });
         break;
-        case "tradeName":
-        this.state.tradeName===undefined ? this.setState({ tradeNameError:  ShopLicenseViewModel.TRADE_REQUIRED }) : this.setState({ tradeNameError:"" });
+
+      case "tradeName":
+        this.state.tradeName === undefined ? this.setState({ tradeNameError: "Trade is required" }) : this.setState({ tradeNameError: "" });
         break;
       case "displayType":
-        this.state.displayType === undefined ? this.setState({ displayTypeError: ShopLicenseViewModel.DISPLAY_TYPE_REQUIRED }) : this.setState({ displayTypeError: "" });
+        this.state.displayType === undefined ? this.setState({ displayTypeError:"Type of display is required" }) : this.setState({ displayTypeError: "" });
+        break;
       default:
         break;
     }
@@ -246,22 +253,28 @@ class ShopLicenseApplicationForm extends Component {
 
     switch (name) {
       case "name":
-        value.length === 0 ? this.setState({ nameError: ShopLicenseViewModel.OWNER_REQUIRED }) : this.setState({ nameError: "" });
+        value.length === 0 ? this.setState({ nameError: "Name of applicant is required" }) : this.setState({ nameError: "" });
         break;
       case "shopName":
-        value.length === 0 ? this.setState({ shopNameError: ShopLicenseViewModel.SHOP_NAME_REQUIRED }) : this.setState({ shopNameError: "" });
+        value.length === 0 ? this.setState({ shopNameError: "Name of hotel is required" }) : this.setState({ shopNameError: "" });
         break;
       case "address":
-        value.length === 0 ? this.setState({ addressError: ShopLicenseViewModel.ADDRESS_REQUIRED }) : this.setState({ addressError: "" });
+        value.length === 0 ? this.setState({ addressError: "Address is required" }) : this.setState({ addressError: "" });
         break;
       case "phone":
-        value.length === 0 ? this.setState({ phoneError: ShopLicenseViewModel.PHONE_REQUIRED }) : this.setState({ phoneError: "" });
+        value.length === 0 ? this.setState({ phoneError: "Mobile no is required" }) : this.setState({ phoneError: "" });
         break;
       case "estd":
-        value.length === 0 ? this.setState({ estdError: ShopLicenseViewModel.ESTD_REQUIRED }) : this.setState({ estdError: "" });
+        value.length === 0 ? this.setState({ estdError: "Date of establishment is required" }) : this.setState({ estdError: "" });
         break;
       case "details":
-        value.length === 0 ? this.setState({ detailsError: ShopLicenseViewModel.DETAILS_REQUIRED }) : this.setState({ detailsError: "" });
+        value.length === 0 ? this.setState({ detailsError: "Business Details is required" }) : this.setState({ detailsError: "" });
+        break;
+      case "nonAcRoomNo":
+        value.length === 0 ? this.setState({ nonAcRoomError: "" }) : this.setState({ nonAcRoomError: "No of Non Ac Room is required" });
+        break;
+      case "acRoomNo":
+        value.length === 0 ? this.setState({ acRoomNoError: "" }) : this.setState({ acRoomNoError: "No of ac room is required" });
         break;
       default:
         break;
@@ -350,26 +363,26 @@ class ShopLicenseApplicationForm extends Component {
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <AddressField
-                    textFieldProps={
-                    {
-                    value: this.state.address,
-                    name: "address",
-                    placeholder: "Address",
-                    onBlur: this.handleBlur.bind(this),
-                    required: true,
-                    variant: "outlined",
-                    margin: "dense",
-                    fullWidth: true,
-                    error: Boolean(this.state.addressError),
-                    helperText: this.state.addressError,
-                    onChange: this.handleChange.bind(this),
-                    label: ShopLicenseViewModel.OWNER_ADDRESS
-                    }
-                    }
+                      textFieldProps={
+                        {
+                          value: this.state.address,
+                          name: "address",
+                          placeholder: "Address",
+                          onBlur: this.handleBlur.bind(this),
+                          required: true,
+                          variant: "outlined",
+                          margin: "dense",
+                          fullWidth: true,
+                          error: Boolean(this.state.addressError),
+                          helperText: this.state.addressError,
+                          onChange: this.handleChange.bind(this),
+                          label: ShopLicenseViewModel.OWNER_ADDRESS
+                        }
+                      }
 
-                    onPlaceSelect={(place) => {
-                    this.setState({address:place.formatted_address})
-                    }}/>
+                      onPlaceSelect={(place) => {
+                        this.setState({ address: place.formatted_address });
+                      }}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
@@ -404,7 +417,7 @@ class ShopLicenseApplicationForm extends Component {
                       required={true}
                       error={Boolean(this.state.tradeNameError)}
                       helperText={this.state.tradeNameError}
-                      onBlur={this.handleSelectBlur.bind(this,"trade")}
+                      onBlur={this.handleSelectBlur.bind(this, "trade")}
                       onChange={this.handleSelect.bind(this, "trade")}
                       ClearAble={true}
                       label={ShopLicenseViewModel.TRADE_TYPE}
@@ -528,6 +541,47 @@ class ShopLicenseApplicationForm extends Component {
                     </FormControl>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.acRoomNo}
+                      type={"number"}
+                      name={"acRoomNo"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      required={true}
+                      rror={Boolean(this.state.acRoomNoError)}
+                      onBlur={this.handleBlur.bind(this)}
+                      onChange={this.handleChange.bind(this)}
+                      label={"No of Ac Room"}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.nonAcRoomNo}
+                      type={"number"}
+                      name={"nonAcRoomNo"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      required={true}
+                      fullWidth={true}
+                      error={Boolean(this.state.nonAcRoomNoError)}
+                      onBlur={this.handleBlur.bind(this)}
+                      onChange={this.handleChange.bind(this)}
+                      label={"No of Non Ac Room"}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.otherFacilities}
+                      name={"otherFacilities"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleChange.bind(this)}
+                      label={"Other Facilities"}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <FileUpload required={true} document={{ id: 1, name: "Signature", mime: "image/*" }}
                                 onUploadSuccess={(data) => {
                                   this.setState(state => {
@@ -544,7 +598,7 @@ class ShopLicenseApplicationForm extends Component {
                     <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                    <Typography  variant={"headline"}>Upload
+                    <Typography variant={"headline"}>Upload
                       Document</Typography>
                   </GridItem>
                   {
@@ -628,4 +682,4 @@ class ShopLicenseApplicationForm extends Component {
 
 }
 
-export default withStyles(style)(ShopLicenseApplicationForm);
+export default withStyles(style)(HotelLicenseApplicationForm);

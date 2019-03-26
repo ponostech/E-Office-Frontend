@@ -4,6 +4,12 @@ import { Divider, Grid, IconButton, List, ListItem, TextField } from "@material-
 import GridItem from "../../components/Grid/GridItem";
 import AddIcon from "@material-ui/icons/AddCircle";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
+import withStyles from "@material-ui/core/es/styles/withStyles"
+const style={
+  item:{
+    padding:"6px !important"
+  }
+}
 
 class BannerDetail extends Component {
 
@@ -97,17 +103,18 @@ class BannerDetail extends Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <>
-        <Grid container={true} spacing={0}>
-          <GridItem sm={12} md={2}>
+        <Grid container={true}>
+          <GridItem className={classes.item} sm={12} md={2}>
             <TextField name={"length"}
                        type={"number"}
                        fullWidth={true}
                        required={true}
                        error={!!this.state.lengthError}
                        helperText={this.state.lengthError}
-                       label={"Length"}
+                       label={"Length (Meter)"}
                        variant={"outlined"}
                        value={this.state.length}
                        onBlur={this.handleBlur.bind(this)}
@@ -116,14 +123,14 @@ class BannerDetail extends Component {
             />
           </GridItem>
 
-          <GridItem style={{ padding: "4px" }} sm={12} md={2}>
+          <GridItem className={classes.item} style={{ padding: "4px !important" }} sm={12} md={2}>
             <TextField name={"height"}
                        type={"number"}
                        fullWidth={true}
                        required={true}
                        error={!!this.state.heightError}
                        helperText={this.state.heightError}
-                       label={"Height"}
+                       label={"Height (Meter)"}
                        variant={"outlined"}
                        value={this.state.height}
                        onBlur={this.handleBlur.bind(this)}
@@ -132,7 +139,7 @@ class BannerDetail extends Component {
             />
           </GridItem>
 
-          <GridItem style={{ padding: 4 }} sm={12} md={3}>
+          <GridItem className={classes.item} sm={12} md={3}>
             <TextField name={"locations"}
                        fullWidth={true}
                        required={true}
@@ -147,7 +154,7 @@ class BannerDetail extends Component {
             />
           </GridItem>
 
-          <GridItem style={{ padding: 4 }} sm={12} md={2}>
+          <GridItem className={classes.item} sm={12} md={2}>
             <TextField name={"from"}
                        fullWidth={true}
                        type={"Date"}
@@ -165,7 +172,7 @@ class BannerDetail extends Component {
                        margin={"dense"}
             />
           </GridItem>
-          <GridItem style={{ padding: 4 }} sm={12} md={2}>
+          <GridItem className={classes.item} sm={12} md={2}>
             <TextField name={"to"}
                        fullWidth={true}
                        type={"date"}
@@ -183,7 +190,7 @@ class BannerDetail extends Component {
                        margin={"dense"}
             />
           </GridItem>
-          <GridItem style={{ padding: 4 }} sm={12} md={1}>
+          <GridItem className={classes.item} sm={12} md={1}>
             <IconButton disabled={this.state.length.length===0 || this.state.height.length===0 || this.state.locations.length===0 || this.state.from.length===0 || this.state.to.length===0
             } onClick={this.handleAdd.bind(this)} color={"primary"}>
               <AddIcon fontSize={"large"} color={"inherit"}/>
@@ -202,26 +209,26 @@ class BannerDetail extends Component {
                 return (
                   <ListItem key={index}>
                     <GridContainer>
-                      <GridItem xs={12} sm={12} md={2}>
-                        <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.length}
+                      <GridItem className={classes.item} xs={12} sm={12} md={2}>
+                        <TextField margin={"dense"} fullWidth={true} variant={"outlined"} disabled={true} value={item.length}
                                    label={"Length"}/>
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={2}>
-                        <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.height}
+                      <GridItem className={classes.item} xs={12} sm={12} md={2}>
+                        <TextField margin={"dense"} fullWidth={true} variant={"outlined"} disabled={true} value={item.height}
                                    label={"Height"}/>
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={3}>
-                        <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.locations}
+                      <GridItem className={classes.item} xs={12} sm={12} md={3}>
+                        <TextField margin={"dense"}  fullWidth={true} variant={"outlined"} disabled={true} value={item.locations}
                                    label={"Location"}/>
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={2}>
-                        <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.from}
+                      <GridItem className={classes.item} xs={12} sm={12} md={2}>
+                        <TextField margin={"dense"} fullWidth={true} variant={"outlined"} disabled={true} value={item.from}
                                    label={"From"}/>
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={2}>
-                        <TextField margin={"dense"} variant={"outlined"} disabled={true} value={item.to} label={"To"}/>
+                      <GridItem className={classes.item} xs={12} sm={12} md={2}>
+                        <TextField margin={"dense"} fullWidth={true} variant={"outlined"} disabled={true} value={item.to} label={"To"}/>
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={1}>
+                      <GridItem className={classes.item} xs={12} sm={12} md={1}>
                         <IconButton onClick={this.handleRemove.bind(this, index)}>
                           <DeleteIcon fontSize={"large"} color={"error"}/>
                         </IconButton>
@@ -239,4 +246,4 @@ class BannerDetail extends Component {
   }
 }
 
-export default BannerDetail;
+export default withStyles(style)(BannerDetail);

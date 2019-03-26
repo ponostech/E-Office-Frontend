@@ -22,6 +22,7 @@ import {
     hexToRgb,
     whiteColor
 } from "../../../assets/jss/material-dashboard-pro-react.jsx";
+import LicenseValidity from "./Service/LicenseValidity";
 
 const styles = {
     cardTitle,
@@ -135,9 +136,7 @@ const services = (props) => {
                                 tabButton: "Check License Validity",
                                 tabIcon: HelpOutline,
                                 tabContent: (
-                                    <Card>
-                                        Check Validity forms
-                                    </Card>
+                                    <LicenseValidity classes={classes}/>
                                 )
                             }
                         ]}
