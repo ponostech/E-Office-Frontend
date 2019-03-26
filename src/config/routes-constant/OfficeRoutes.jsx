@@ -12,6 +12,7 @@ export class OfficeRoutes {
   // static ADVERTISER_DETAIL = "/advertiser/:id/detail";
 
   static APPLY_SHOP_LICENSE = "/shop-license/new";
+  static APPLY_HOTEL_LICENSE = "/hotel/new";
   static RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
   static SHOP_LICENSE_DETAIL = "/shop-license/:id/detail";
 

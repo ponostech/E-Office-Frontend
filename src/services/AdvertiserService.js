@@ -13,7 +13,7 @@ export class AdvertiserService {
       registered:0,
       address:state.address,
       signature: [state.signature],
-      documents: state.files
+      documents: state.documentsUpload
     };
     try {
       let res=await axios.post(ApiRoutes.CREATE_ADVERTISER, data);

@@ -8,14 +8,9 @@ import {
   CardContent,
   Checkbox,
   Divider,
-  FormControl,
   FormControlLabel,
   IconButton,
   InputAdornment,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
   TextField,
   Typography
 } from "@material-ui/core";
@@ -32,6 +27,7 @@ import { DocumentService } from "../../services/DocumentService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import { ErrorToString } from "../../utils/ErrorUtil";
 import AddressField from "../../components/AddressField";
+import OfficeSelect from "../../components/OfficeSelect";
 
 const style = {
   root: {
@@ -44,7 +40,7 @@ class AdvertiserForm extends Component {
     super(props);
     this.state = {
       name: "",
-      type: "Individual",
+      type: undefined,
       email: "",
       phone: "",
       password: "",
@@ -57,13 +53,19 @@ class AdvertiserForm extends Component {
       agree: false,
 
       showPassword: false,
+
       nameError: "",
+      typeError: "",
       emailError: "",
       passwordError: "",
       phoneError: "",
       confirmPasswordError: "",
       addressError: "",
-      types: ["Individual", "Firm", "Group(NGO)"],
+      types: [
+        {value:"individual",label:"Individual"},
+        {value:"firm",label:"Firm"},
+        {value:"group",label:"Group(NGO)"},
+      ],
 
       success: false,
       error: false,
@@ -98,7 +100,7 @@ class AdvertiserForm extends Component {
 
   isInvalid = () => {
     return this.state.prestine || !!this.state.nameError || !!this.state.emailError || !!this.state.addressError || !!this.state.emailError
-      || !!this.state.emailError || !!this.state.passwordError
+      || !!this.state.emailError || !!this.state.passwordError;
   };
 
   submit = () => {
@@ -127,10 +129,10 @@ class AdvertiserForm extends Component {
           });
         } else {
           if (res.data.validation_error) {
-            const msg=ErrorToString(res.data.messages);
+            const msg = ErrorToString(res.data.messages);
             //TODO::parse validation error message
-            this.setState({ errorMessage: msg});
-          }else{
+            this.setState({ errorMessage: msg });
+          } else {
 
           }
         }
@@ -202,6 +204,17 @@ class AdvertiserForm extends Component {
         break;
     }
   };
+  handleSelectBlur = (id,e)=>{
+    if (id === "type") {
+      this.state.type===undefined?this.setState({typeError:"Type of applicant is required"}):this.setState({typeError:""})
+    }
+  }
+  handleOfficeSelect = (identifier, value) => {
+    this.setState({
+      [identifier]: value
+    });
+  };
+
 
   handleChange = e => {
     const { name, value } = e.target;
@@ -265,30 +278,19 @@ class AdvertiserForm extends Component {
                     placeholder={"Fullname"}
                   />
                 </GridItem>
-                <GridItem className={classes.root} spacing={32} xs={12} sm={12} md={6}>
-                  <FormControl
-                    required={true}
-                    margin={"dense"}
-                    fullWidth={true}
-                    variant={"outlined"}
-                  >
-                    <InputLabel htmlFor={"type"}>{AdvertiserViewModel.APPLICANT_TYPE}</InputLabel>
-                    <Select
-                      value={this.state.type}
-                      onChange={this.handleChange.bind(this)}
-                      input={
-                        <OutlinedInput required={true}
-                                       labelWidth={140} name={"type"} id={"type"}/>
-                      }
-
-                    >
-                      {this.state.types.map((val, i) => (
-                        <MenuItem key={i} value={val}>
-                          {val}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                <GridItem className={classes.root}  xs={12} sm={12} md={6}>
+                  <OfficeSelect value={this.state.type}
+                                label={"Type of applicant"}
+                                name={"type"}
+                                variant={"outlined"}
+                                margin={"dense"}
+                                required={true}
+                                fullWidth={true}
+                                helperText={this.state.typeError}
+                                error={Boolean(this.state.typeError)}
+                                onBlur={this.handleSelectBlur.bind(this, "type")}
+                                onChange={this.handleOfficeSelect.bind(this, "type")}
+                                options={this.state.types}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <TextField
@@ -386,20 +388,22 @@ class AdvertiserForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <AddressField
                     textFieldProps={{
-                      placeholder:"Address",
-                      value:this.state.address,
-                      onChange:this.handleChange.bind(this),
-                      onBlur:this.handleRequired.bind(this),
-                      error:Boolean(this.state.addressError),
-                      helperText:this.state.addressError,
-                      margin:"dense",
-                      variant:"outlined",
-                      fullWidth:true,
-                      name:"address",
-                      required:true,
-                      label:"Address"
+                      placeholder: "Address",
+                      value: this.state.address,
+                      onChange: this.handleChange.bind(this),
+                      onBlur: this.handleRequired.bind(this),
+                      error: Boolean(this.state.addressError),
+                      helperText: this.state.addressError,
+                      margin: "dense",
+                      variant: "outlined",
+                      fullWidth: true,
+                      name: "address",
+                      required: true,
+                      label: "Address"
                     }}
-                    onPlaceSelect={(place)=>{this.setState({address:place.formatted_address})}}/>
+                    onPlaceSelect={(place) => {
+                      this.setState({ address: place.formatted_address });
+                    }}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <FileUpload required={true} document={{ id: 40, name: "Signature", mime: "image/*" }}
@@ -422,7 +426,7 @@ class AdvertiserForm extends Component {
                 {this.state.documents.map((doc, index) =>
                   <GridItem key={index} className={classes.root} xs={12} sm={12} md={6}>
 
-                    <FileUpload  document={doc}
+                    <FileUpload document={doc}
                                 onUploadSuccess={(data) => {
                                   let temp = {
                                     name: doc.id,
