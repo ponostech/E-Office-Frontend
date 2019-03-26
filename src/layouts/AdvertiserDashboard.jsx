@@ -25,7 +25,7 @@ class AdvertiserDashboard extends Component {
             <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>
             <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
 
-            <Route exact path={OfficeRoutes.PROPOSED_KIOSK} component={NewKioskForm}/>
+            <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK} component={NewKioskForm}/>
             <Route exact path={OfficeRoutes.ADVERTISER_KIOSK} component={KioskLists}/>
 
 

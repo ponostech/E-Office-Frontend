@@ -8,7 +8,8 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { withRouter } from "react-router-dom";
 import Card from "../../../components/Card/Card";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-
+import EmailIcon from '@material-ui/icons/Mail'
+import LockIcon from '@material-ui/icons/Lock'
 const style = {
   root: {
     padding: "10px 15px !important"
@@ -19,7 +20,7 @@ class AdvertiserLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showPassword: false
+      showPassword: true
     };
   }
 
@@ -34,16 +35,34 @@ class AdvertiserLogin extends Component {
         <GridItem xs={12} sm={12} md={4}>
           <Card style={{ padding: 60 }} raised={true} blog={true}>
             <GridContainer justify={"center"}>
-              <Typography variant={"headline"}>Login as Advertiser</Typography>
+              <Typography variant={"headline"}>Advertiser Login</Typography>
               <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
               <GridItem className={classes.root} xs={12} sm={12} ms={12}>
-                <TextField label={"Email"} name={"email"} variant={"outlined"} margin={"dense"} fullWidth={true}/>
+                <TextField placeholder={"Email"}
+                           name={"email"}
+                           variant={"outlined"}
+                           margin={"dense"}
+                           fullWidth={true}
+                InputProps={{
+                  startAdornment:(
+                    <InputAdornment position={"start"}>
+                      <EmailIcon color={"action"}/>
+                    </InputAdornment>
+                  )
+                }}
+                />
               </GridItem>
               <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                <TextField label={"Password"}
+                <TextField
+                  placeholder={"Password"}
                            type={this.state.showPassword ? "password" : "text"}
                            name={"password"}
                            InputProps={{
+                             startAdornment: (
+                               <InputAdornment position={"start"}>
+                                <LockIcon color={"Action"}/>
+                               </InputAdornment>
+                             ),
                              endAdornment: (
                                <InputAdornment position={"end"}>
                                  <IconButton onClick={this.handleShowPassword.bind(this)}>

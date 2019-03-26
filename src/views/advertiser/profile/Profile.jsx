@@ -17,6 +17,7 @@ import AdvertiserViewModel from "../../model/AdvertiserViewModel";
 import { Validators } from "../../../utils/Validators";
 import GridItem from "../../../components/Grid/GridItem";
 import ImageUpload from "../../../components/CustomUpload/ImageUpload";
+import FileUpload from "../../../components/FileUpload";
 
 class Profile extends Component {
   constructor(props) {
@@ -28,8 +29,7 @@ class Profile extends Component {
       email: "",
       phone: "",
       address: "",
-      signature: null,
-      imagePreviewUrl: null,
+      signature: undefined,
       agree: false,
 
       nameError: "",
@@ -191,10 +191,17 @@ class Profile extends Component {
                 onChange={this.handleChange.bind(this)}
                 placeholder={" hno \n locality \n pincode"}
               />
-              <ImageUpload label={AdvertiserViewModel.SIGNATURE} file={this.state.signature}
-                           imagePreviewUrl={this.state.imagePreviewUrl} onRemove={this.removeSignature.bind(this)}
-                           onFileSelect={this.selectSignature.bind(this)}
-                           setImagePreviewUrl={this.setImagePreviewUrl.bind(this)}/>
+              <FileUpload document={{id: 0, name: "Signature"}}
+                          required={true}
+                          onUploadSuccess={(res) => {
+                            this.setState(state => {
+                                state.signature = {
+                                  name: "signature",
+                                  path: res.location
+                                };
+                              }
+                            );
+                          }} onUploadFailure={(err) => console.log(err)}/>
             </CardContent>
             <CardActions>
               <Button

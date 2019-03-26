@@ -20,6 +20,7 @@ import { Button, IconButton, Typography } from "@material-ui/core";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
 import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
+import Icon from "@material-ui/core/es/Icon";
 
 class AdvertiserHeader extends React.Component {
   constructor(props) {
@@ -72,6 +73,7 @@ class AdvertiserHeader extends React.Component {
       <GridContainer justify={"space-between"}>
         <div style={{ display: "flex", alignItems: "center" }}>
 
+
           <IconButton style={{ marginLeft: 20 }}>
             <HomeIcon/>
           </IconButton>
@@ -105,6 +107,8 @@ class AdvertiserHeader extends React.Component {
           }}>
             <SettingIcon/>
           </IconButton>
+          <NavLink to={OfficeRoutes.HOME}><IconButton color="alert"><Icon>apps</Icon></IconButton></NavLink>
+
         </div>
       </GridContainer>
     );

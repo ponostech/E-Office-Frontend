@@ -7,16 +7,17 @@ import { MAP_API_KEY } from "../Configuration";
 const RegularMap = withScriptjs(
   withGoogleMap(props => (
     <GoogleMap
-      defaultZoom={8}
+      defaultZoom={15}
       defaultCenter={{ lat: props.lat, lng: props.lng }}
       defaultOptions={{
         scrollwheel: true
       }}
-      onClick={(e) => {
-        props.onClick(e.latLng);
-      }}
+
     >
-      <Marker position={{ lat: props.lat, lng: props.lng }}/>
+      <Marker
+        draggable={true}
+        onDragEnd={data=>props.onDragEnd(data.latLng)}
+        position={{ lat: props.lat, lng: props.lng }}/>
     </GoogleMap>
   ))
 );
@@ -25,8 +26,8 @@ class GMapDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lat: 23.7,
-      lng: 93.7
+      lat: 23.728355734275432,
+      lng: 92.71896203968402
     };
   }
 
@@ -39,7 +40,7 @@ class GMapDialog extends Component {
         onClose(lat, lng);
         break;
       case "close":
-        onClose(null);
+        onClose(lat,lng);
         break;
       default:
         break;
@@ -57,11 +58,13 @@ class GMapDialog extends Component {
       <Dialog open={open} onClose={this.confirm.bind(this)} {...rest} fullScreen={true}>
         <DialogContent>
           <RegularMap
-            onClick={(latLng) => {
+
+            onDragEnd={latLng=>{
+              console.log(latLng)
               this.setState({
-                lat: latLng.lat(),
-                lng: latLng.lng()
-              });
+                lat:latLng.lat(),
+                lng:latLng.lng()
+              })
             }}
             isMarkerShown={isMarkerShown}
             googleMapURL={MAP_URL}
