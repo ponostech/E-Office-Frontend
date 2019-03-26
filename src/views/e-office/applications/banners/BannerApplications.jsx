@@ -1,124 +1,198 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import { Card, CardContent, CardHeader, IconButton, Tooltip } from "@material-ui/core";
-import GridContainer from "../../../../components/Grid/GridContainer";
-import GridItem from "../../../../components/Grid/GridItem";
-import { BannerViewModel } from "../../../model/BannerViewModel";
+import React, { Component } from "react";
+import Grid from "@material-ui/core/Grid";
+import { withRouter } from "react-router-dom";
 
-import FilterIcon from "@material-ui/icons/FilterList";
-import NewBannerApplications from "./NewBannerApplications";
-import GrantedBannersApplications from "./GrantedBannersApplications";
-import RejectedBannerApplications from "./RejectedBannerApplications";
+import MUIDataTable from "mui-datatables";
+import { Chip, IconButton, Tooltip } from "@material-ui/core";
+import EyeIcon from "@material-ui/icons/RemoveRedEyeSharp";
+import ActionIcon from "@material-ui/icons/CallToAction";
+import DownloadIcon from "@material-ui/icons/CloudDownload";
+import BannerDetailDialog from "./BannerDetailDialog";
+import ApplyBannerDialog from "../../form/ApplyBannerDialog";
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
+const data = [
+  {
+    id: 1,
+    application_no: "123",
+    file_no: "File-123",
+    subject: "Matter relating to",
+    applicant_name: "Kimi",
+    date: "12-12-2019",
+    status: "active"
   },
-  tabsRoot: {
-    borderBottom: "1px solid #black"
+  {
+    id: 1,
+    application_no: "123",
+    file_no: "File-123",
+    subject: "Matter relating to",
+    applicant_name: "Kimi",
+    date: "12-12-2019",
+    status: "granted"
   },
-  tabsIndicator: {
-    backgroundColor: "#1890ff"
-  },
-  tabRoot: {
-    textTransform: "initial",
-    minWidth: 72,
-    fontWeight: theme.typography.fontWeightRegular,
-    marginRight: theme.spacing.unit * 4,
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "\"Segoe UI\"",
-      "Roboto",
-      "\"Helvetica Neue\"",
-      "Arial",
-      "sans-serif",
-      "\"Apple Color Emoji\"",
-      "\"Segoe UI Emoji\"",
-      "\"Segoe UI Symbol\""
-    ].join(","),
-    "&:hover": {
-      color: "#40a9ff",
-      opacity: 1
-    },
-    "&$tabSelected": {
-      color: "#1890ff",
-      fontWeight: theme.typography.fontWeightMedium
-    },
-    "&:focus": {
-      color: "#40a9ff"
-    }
-  },
-  tabSelected: {},
-  typography: {
-    padding: theme.spacing.unit * 3
+  {
+    id: 1,
+    application_no: "123",
+    file_no: "File-123",
+    subject: "Matter relating to",
+    applicant_name: "Kimi",
+    date: "12-12-2019",
+    status: "pending"
   }
-});
+];
 
-class BannerApplications extends React.Component {
+
+class BannerApplications extends Component {
   state = {
-    value: "new"
+    openDetail: false,
+    openApply: false
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
 
   render() {
-    const { classes, history } = this.props;
-    const { value } = this.state;
+    const { history } = this.props;
+    const tableColumns = [
+      {
+        name: "id",
+        label: "File ID",
+        options: {
+          filter: false,
+          display: false
+        }
+      },
+      {
+        name: "application_no",
+        label: "File Number",
+        options: {
+          filter: false
+        }
+      }, {
+        name: "file_no",
+        label: "File Number",
+        options: {
+          filter: false
+        }
+      },
+      {
+        name: "applicant_name",
+        label: "Subject",
+        options: {
+          filter: false
+        }
+      },
+      {
+        name: "date",
+        label: "Date"
+      },
+      {
+        name: "status",
+        label: "Status",
+        options: {
+          customBodyRender: (value, tableMeta, updateVal) => {
+            let view = null;
+            switch (value) {
+              case "new":
+                view = <Chip label={value} title={value} color={"primary"}/>;
+                break;
+              case "active":
+                view = <Chip label={value} title={value} color={"primary"}/>;
+                break;
+              case "pending":
+                view = <Chip label={value} title={value} color={"secondary"}/>;
+                break;
+              default:
+                view = <Chip label={value} title={value} color={"inherit"}/>;
+                break;
+            }
+            return <>
+              {view}
+            </>;
+          }
+        }
+      },
+      {
+        name: "status",
+        label: "Action",
+        options: {
+          customBodyRender: (value, tableMeta, updateValue) => {
+            console.log(value)
+            let view = null;
+            switch (value) {
+              case "pending":
+                view = <Tooltip title={"Click here to view detail"}>
+                  <IconButton onClick={(e) => this.setState({ openDetail: true })}>
+                    <EyeIcon color={"action"}/>
+                  </IconButton>
+                </Tooltip>;
+                break;
+              case "granted":
+                view = <>
+                  <Tooltip title={"Click here to download permission"}>
+                    <IconButton>
+                      <DownloadIcon color={"primary"}/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={"Click here to apply"}>
+                    <IconButton onClick={(e)=>this.setState({openApply:true})}>
+                      <ActionIcon color={"secondary"}/>
+                    </IconButton>
+                  </Tooltip>
+                </>;
+                break;
+              case "active":
+                view=<>
+                  <Tooltip title={"Click here to view details "}>
+                    <IconButton onClick={e=>this.setState({openApply:true})}>
+                      <EyeIcon color={"action"}/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={"Click here to download permission"}>
+                    <IconButton>
+                      <DownloadIcon color={"primary"}/>
+                    </IconButton>
+                  </Tooltip>
+                </>
+                break;
+              default:
+                break;
+            }
+            return (
+              <>
+                {view}
+              </>
+            );
+          }
+        }
+
+      }
+    ];
+
+    const tableOptions = {
+      filterType: "checkbox",
+      rowsPerPage: 8,
+      serverSide: false,
+      customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
+        return false;
+      },
+      onRowClick: function(rowData, rowMeta) {
+      }
+    };
 
     return (
-      <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card style={{ padding: 20 }}>
-            <CardHeader title={BannerViewModel.TITLE}
-                        action={
-                          <Tooltip title={"Filter"}>
-                            <IconButton>
-                              <FilterIcon/>
-                            </IconButton>
-                          </Tooltip>
-                        }
-            />
-            <CardContent>
-              <Tabs
-                value={value}
-                onChange={this.handleChange}
-                classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-              >
-                <Tab disableRipple value={"new"}
-                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                     label={BannerViewModel.NEW}/>
-                <Tab value={"granted"}
-                     disableRipple
-                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                     label={BannerViewModel.GRANTED}/>
-                <Tab value={"reject"}
-                     disableRipple
-                     classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                     label={BannerViewModel.REJECTED}/>
+      <>
+        <Grid item sm={12} xs={12} md={12}>
+          <MUIDataTable
+            title={"Banner: List of applications"}
+            data={data}
+            columns={tableColumns}
+            options={tableOptions}
+          />
+          <ApplyBannerDialog open={this.state.openApply} onClose={(e) => this.setState({ openApply: false })}/>
+          <BannerDetailDialog open={this.state.openDetail} onClose={(e) => this.setState({ openDetail: false })}/>
+        </Grid>
 
-              </Tabs>
-            </CardContent>
-            <div style={{ marginTop: 20 }}>
-              {value === "new" && <NewBannerApplications/>}
-              {value === "granted" && <GrantedBannersApplications/>}
-              {value === "reject" && <RejectedBannerApplications/>}
-            </div>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      </>
     );
   }
 }
 
-BannerApplications.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(BannerApplications);
+export default withRouter(BannerApplications);
