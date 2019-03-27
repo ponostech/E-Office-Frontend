@@ -1,122 +1,167 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import { Card, CardHeader, IconButton } from "@material-ui/core";
-import GridContainer from "../../../../components/Grid/GridContainer";
-import GridItem from "../../../../components/Grid/GridItem";
-import KioskViewModel from "../../../model/KioskViewModel";
-import FilterIcon from "@material-ui/icons/FilterList";
-import PendingAdvertisementApplications from "./PendingAdvertisementApplications";
-import GrantedAdvertiserApplication from "./GrantedAdvertiserApplication";
-import RejectedAdvertiserApplication from "./RejectedAdvertiserApplication";
-import NewAdvertiserApplication from "./NewAdvertiserApplication";
+import React, { Component } from "react";
+import Grid from "@material-ui/core/Grid";
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
-  },
-  tabsRoot: {
-    borderBottom: "1px solid #black"
-  },
-  tabsIndicator: {
-    backgroundColor: "#1890ff"
-  },
-  tabRoot: {
-    textTransform: "initial",
-    minWidth: 72,
-    fontWeight: theme.typography.fontWeightRegular,
-    marginRight: theme.spacing.unit * 4,
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "\"Segoe UI\"",
-      "Roboto",
-      "\"Helvetica Neue\"",
-      "Arial",
-      "sans-serif",
-      "\"Apple Color Emoji\"",
-      "\"Segoe UI Emoji\"",
-      "\"Segoe UI Symbol\""
-    ].join(","),
-    "&:hover": {
-      color: "#40a9ff",
-      opacity: 1
-    },
-    "&$tabSelected": {
-      color: "#1890ff",
-      fontWeight: theme.typography.fontWeightMedium
-    },
-    "&:focus": {
-      color: "#40a9ff"
-    }
-  },
-  tabSelected: {},
-  typography: {
-    padding: theme.spacing.unit * 3
-  }
-});
+import { withRouter } from "react-router-dom";
 
-class AdvertiserApplications extends React.Component {
+import MUIDataTable from "mui-datatables";
+import IconButton from "@material-ui/core/IconButton";
+import { Button, Icon, Tooltip } from "@material-ui/core";
+import GetIcon from "@material-ui/icons/Work";
+import SentIcon from "@material-ui/icons/SendRounded";
+import Assignment from "../ApplicationAssignmentDialog";
+import ConfirmDialog from "../../../../components/ConfirmDialog";
+import { OfficeRoutes } from "../../../../config/routes-constant/OfficeRoutes";
+
+const staffs = [
+  { value: "1", label: "Lala" },
+  { value: "1", label: "Lala" },
+  { value: "1", label: "Lala" },
+  { value: "1", label: "Lala" },
+  { value: "1", label: "Lala" },
+  { value: "1", label: "Lala" },
+  { value: "1", label: "Lala" }
+];
+
+class AdvertiserApplications extends Component {
   state = {
-    value: "new"
+    openAssignment: false,
+    openConfirm: false,
+    selectedFiles: [],
+    tableData: [
+      {
+        id: 1,
+        fileNo: "FILE 123",
+        subject: "Matter relating to ... ",
+        applicationNo: "App-123",
+        applicant: "Kimi",
+        date: "12/12/2019"
+      },
+      {
+        id: 2,
+        fileNo: "FILE 34",
+        subject: "Matter relating to ... ",
+        applicationNo: "App-234",
+        applicant: "Kimi",
+        date: "12/12/2019"
+      },
+      {
+        id: 3,
+        fileNo: "FILE 545",
+        subject: "Matter relating to ... ",
+        applicationNo: "App-333",
+        applicant: "Kimi",
+        date: "12/12/2019"
+      },
+      {
+        id: 4,
+        fileNo: "FILE 24",
+        subject: "Matter relating to ... ",
+        applicationNo: "App-444",
+        applicant: "Kimi",
+        date: "12/12/2019"
+      }
+    ]
   };
-
-  handleChange = (event, value) => {
-    this.setState({ value });
+  updateTable = (action, tableState) => {
+    /*console.log('Update table');
+    console.log(action);
+    console.log(tableState);*/
+  };
+  viewDetail = (id) => {
+    const { history } = this.props;
+    history.push(OfficeRoutes.ADVERTISER_DETAIL);
   };
 
   render() {
-    const { classes, history } = this.props;
-    const { value } = this.state;
+    const { tableData } = this.state;
+    const tableOptions = {
+      filterType: "checkbox",
+      rowsPerPage: 8,
+      customToolbarSelect: (selectedRows, displayData, setSelectedRows) => {
+        console.log(selectedRows)
+        let view = (
+          <div>
+            <Tooltip title={"Click here to get this file's"}>
+              <Button variant={"contained"} color={"primary"} onClick={(e) => this.setState({ openConfirm: true })}>
+                <GetIcon fontSize={"small"}/> Get file
+              </Button>
+            </Tooltip>
+            {" "}
+            <Tooltip title={"Click here to endorse the files"}>
+              <Button variant={"contained"} color={"secondary"} onClick={(e) => this.setState({ openAssignment: true })}>
+                <SentIcon fontSize={"small"}/> Sent file
+              </Button>
+            </Tooltip>
+          </div>
+        );
+        return view;
+      }
+    };
+
+    const tableColumns = [
+      {
+        name: "id",
+        label: "Action",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return (
+              <>
+                <IconButton color="primary" size="small"
+                            aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
+                  <Icon fontSize="small">remove_red_eye</Icon>
+                </IconButton>
+              </>
+            );
+          }
+        }
+      },
+      {
+        name: "fileNo",
+        label: "File No."
+      },
+      {
+        name: "subject",
+        label: "Subject"
+      },
+      {
+        name: "applicationNo",
+        label: "Application No"
+      },
+      {
+        name: "applicant",
+        label: "Applicant"
+      },
+      {
+        name: "date",
+        label: "Date"
+      }
+
+    ];
 
     return (
-      <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card>
-            <CardHeader title={"List of advertiser applications"} action={
-              <IconButton>
-                <FilterIcon/>
-              </IconButton>
-            }/>
-            <Tabs
-              value={value}
-              onChange={this.handleChange}
-              classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-            >
-              <Tab disableRipple value={"new"}
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={"New Application"}/>
-              <Tab value={"process"}
-                   disableRipple
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={"On Process"}/>
-              <Tab value={"granted"}
-                   disableRipple
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={"Granted"}/>
-              <Tab value={"rejected"}
-                   disableRipple
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                   label={"Rejected"}/>
-            </Tabs>
-            <div style={{ marginTop: 20 }}>
-              {value === "new" && <NewAdvertiserApplication/>}
-              {value === "process" && <PendingAdvertisementApplications/>}
-              {value === "granted" && <GrantedAdvertiserApplication/>}
-              {value === "rejected" && <RejectedAdvertiserApplication/>}
-            </div>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      <>
+        <Grid item xs={12}>
+          <MUIDataTable
+            title={"Under Process: List of Advertiser Applications"}
+            data={tableData}
+            columns={tableColumns}
+            options={tableOptions}
+          />
+          <Assignment open={this.state.openAssignment} close={(e) => this.setState({ openAssignment: false })}
+                      data={this.state.selectedFiles} staffs={staffs}/>
+          <ConfirmDialog onCancel={() => this.setState({ openConfirm: false })}
+                         message={"Are you sure to get this file's"}
+                         open={this.state.openConfirm}
+                         onConfirm={(dat) => {
+                           console.log(dat);
+                           this.setState({openConfirm:false})
+                         }}/>
+        </Grid>
+      </>
     );
   }
 }
 
-AdvertiserApplications.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(AdvertiserApplications);
+export default withRouter(AdvertiserApplications);

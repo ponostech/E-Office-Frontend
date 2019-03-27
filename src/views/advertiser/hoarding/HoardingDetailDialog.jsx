@@ -1,90 +1,171 @@
 import React, { Component } from "react";
-import { Button, Dialog, DialogActions, Divider, IconButton, Typography } from "@material-ui/core";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader, Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  IconButton,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  Typography
+} from "@material-ui/core";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import CloseIcon from '@material-ui/icons/Close'
-const style={
-  item:{
+import EyeIcon from "@material-ui/icons/PanoramaFishEyeOutlined";
+import CloseIcon from "@material-ui/icons/Close";
+
+const style = {
+  item: {
     padding: "10px 10px !important"
   }
-}
+};
+
+const model = {
+  fileNo: "123",
+  subject: "Matter relating to ",
+  description: "description of file",
+  date: "12/12/2019",
+  applicationNo: "Hoarding",
+  status: "new",
+  documents: [
+    {
+      name: "NOC of something",
+      path: "https://ucaecemdp.edu.ar/wp-content/.../Short-stories-from-100-Selected-Stories.pdf"
+    },
+    { name: "Cert", path: "https://ucaecemdp.edu.ar/wp-content/.../Short-stories-from-100-Selected-Stories.pdf" }
+  ]
+};
+
 class HoardingDetailDialog extends Component {
 
+  getDocuments = (docs) => {
+    let view = undefined;
+    docs.map(function(doc, index) {
+      view += (
+        <>
+          <ListItem key={index}>
+            <ListItemText primary={doc.name}/>
+            <ListItemSecondaryAction>
+              <IconButton target={"_blank"} href={doc.path}>
+                <EyeIcon/>
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        </>
+      );
+    });
+  };
+  getField = (model) => {
+    let view = undefined;
+
+    for (const [key, value] of Object.entries(model)) {
+      console.log(value);
+      view +=
+        (
+          <>
+            <GridItem md={4}>
+              <Typography variant={"textPrimary"}>
+                {key}
+              </Typography>
+            </GridItem>
+            <GridItem md={8}>
+              <Typography variant={"textSecondary"}>
+                {value}
+              </Typography>
+            </GridItem>
+          </>
+        );
+    }
+    return view;
+
+  };
+
   render() {
-    const { open, onClose,classes } = this.props;
+    const { open, onClose, classes } = this.props;
     return (
       <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"md"}>
-      <GridContainer style={{padding:20}}>
-        <GridItem justify={"space-between"} className={classes.item} md={12}>
-          <GridContainer justify={"space-between"}>
-            <Typography variant={"title"}>Hoarding Application Detail</Typography>
-            <IconButton onClick={onClose}>
-              <CloseIcon/>
-            </IconButton>
-          </GridContainer>
-        </GridItem>
-        <GridItem className={classes.item} md={12}>
-          <Divider color={"action"}/>
-        </GridItem>
-        <GridItem className={classes.item} md={2}>
-          <Typography variant={"body2"}>Application No</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={10}>
-          <Typography variant={"body1"}>123-123-12</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={2}>
-          <Typography variant={"body2"}>File No:</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={10}>
-          <Typography variant={"body1"}>File-no-123-123</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={2}>
-          <Typography variant={"body2"}>Subject</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={10}>
-          <Typography variant={"body1"}>Matter relating to...</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={2}>
-          <Typography variant={"body2"}>local Council</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={10}>
-          <Typography variant={"body1"}>Chhinga veng</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={2}>
-          <Typography variant={"body2"}>Length</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={10}>
-          <Typography variant={"body1"}>12 meter</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={2}>
-          <Typography variant={"body2"}>Length</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={10}>
-          <Typography variant={"body1"}>12 meter</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={2}>
-          <Typography variant={"body2"}>Height</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={10}>
-          <Typography variant={"body1"}>12 meter</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={2}>
-          <Typography variant={"body2"}>Mizo</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={10}>
-          <Typography variant={"body1"}>12 meter</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={2}>
-          <Typography variant={"body2"}>Length</Typography>
-        </GridItem>
-        <GridItem className={classes.item} md={10}>
-          <Typography variant={"body1"}>12 meter</Typography>
-        </GridItem>
-
-      </GridContainer>
+        <DialogContent>
+          <Card>
+            <CardHeader title={`Application No : ${model.applicationNo}`} subheader={`Subject : ${model.subject}`}
+                        action={
+                          <IconButton onClick={onClose}>
+                            <CloseIcon/>
+                          </IconButton>
+                        }/>
+            <CardContent>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={6}>
+                  <GridContainer>
+                    <GridItem xs={4} sm={4} md={4}>
+                      <Typography variant={"textPrimary"}>
+                        File No :
+                      </Typography>
+                    </GridItem>
+                    <GridItem xs={8} sm={8} md={8}>
+                      <Typography variant={"textSecondary"}>
+                        {model.fileNo}
+                      </Typography>
+                    </GridItem>
+                    <GridItem xs={4} sm={4} md={4}>
+                      <Typography variant={"textPrimary"}>
+                        Date :
+                      </Typography>
+                    </GridItem>
+                    <GridItem xs={8} sm={8} md={8}>
+                      <Typography variant={"textSecondary"}>
+                        {model.date}
+                      </Typography>
+                    </GridItem>
+                    <GridItem xs={4} sm={4} md={4}>
+                      <Typography variant={"textPrimary"}>
+                        Status :
+                      </Typography>
+                    </GridItem>
+                    <GridItem xs={8} sm={8} md={8}>
+                      <Chip color={"primary"} label={model.status}/>
+                    </GridItem>
+                    <GridItem xs={4} sm={4} md={4}>
+                      <Typography variant={"textPrimary"}>
+                        Description :
+                      </Typography>
+                    </GridItem>
+                    <GridItem xs={8} sm={8} md={8}>
+                      <Typography variant={"textSecondary"}>
+                        {model.description}
+                      </Typography>
+                    </GridItem>
+                  </GridContainer>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <List>
+                    {
+                      model.documents.map(function(doc, index) {
+                        return (
+                          <ListItem key={index}>
+                            <ListItemText primary={doc.name}/>
+                            <ListItemSecondaryAction>
+                              <IconButton target={"_blank"} href={doc.path}>
+                                <EyeIcon/>
+                              </IconButton>
+                            </ListItemSecondaryAction>
+                          </ListItem>
+                        );
+                      })
+                    }
+                  </List>
+                </GridItem>
+              </GridContainer>
+            </CardContent>
+          </Card>
+        </DialogContent>
         <DialogActions>
-          <Button variant={"outlined"} color={"secondary"} onClick={e=>onClose()}>Close</Button>
+          <Button variant={"outlined"} color={"secondary"} onClick={e => onClose()}>Close</Button>
         </DialogActions>
       </Dialog>
     );
