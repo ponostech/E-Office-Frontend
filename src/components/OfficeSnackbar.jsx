@@ -52,7 +52,7 @@ function OfficeSnackbar(props) {
 
   return (
     <Snackbar open={open}
-              onChange={onClose}
+              onClose={onClose}
               autoHideDuration={duration}
               anchorOrigin={position}
     >
@@ -60,10 +60,10 @@ function OfficeSnackbar(props) {
         className={classNames(classes[variant], className)}
         aria-describedby="client-snackbar"
         message={
-          <span id="client-snackbar" className={classes.message}>
+          <p id="client-snackbar" className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)}/>
             {message}
-        </span>
+        </p>
         }
         action={[
           <IconButton
