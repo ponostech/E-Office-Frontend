@@ -46,9 +46,9 @@ const theme = createMuiTheme({
 });
 const hist = createBrowserHistory();
 axios.defaults.baseURL = ApiRoutes.BASE_URL;
-// axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8";
-axios.defaults.headers.get["Access-Control-Allow-Origin"] = "http://139.59.26.3/";
+axios.defaults.headers.get["Access-Control-Allow-Origin"] = "http://localhost:8000/";
 
 axios.defaults.timeout=20000;
 const token = localStorage.getItem("token");
