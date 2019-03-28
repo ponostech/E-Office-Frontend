@@ -25,9 +25,11 @@ import SubmitDialog from "../../components/SubmitDialog";
 import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import { ErrorToString } from "../../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
 import AddressField from "../../components/AddressField";
 import OfficeSelect from "../../components/OfficeSelect";
+import ApplicationAssignmentDialog from "../e-office/applications/ApplicationAssignmentDialog";
+import ApplicationSubmitSuccessDialog from "../../components/ApplicationSubmitSuccessDialog";
 
 const style = {
   root: {
@@ -67,11 +69,11 @@ class AdvertiserForm extends Component {
         { value: "group", label: "Group(NGO)" }
       ],
 
-      success: false,
       error: false,
       //dialog variable
       submit: false,
       errorMessage: "",
+      successMessage:"",
 
       prestine: true
     };
@@ -101,10 +103,15 @@ class AdvertiserForm extends Component {
 
   isInvalid = () => {
     return this.state.prestine || !!this.state.nameError || !!this.state.emailError || !!this.state.addressError || !!this.state.passwordError || !!this.state.confirmPasswordError
-      || !!this.state.phoneError || this.state.signature===undefined
+      || !!this.state.phoneError || this.state.signature === undefined || this.state.type === undefined;
   };
 
   submit = () => {
+
+    if (this.isInvalid()) {
+      this.setState({ errorMessage: "Please enter all the required fields" });
+      return;
+    }
     let data = {
       name: this.state.name,
       type: this.state.type.value,
@@ -116,21 +123,16 @@ class AdvertiserForm extends Component {
       signature: this.state.signature.path,
       documents: this.state.documentsUpload
     };
-    if (!this.isInvalid()) {
-      this.setState({ errorMessage: "Please enter all the required fields" });
-      return;
-    }
     this.setState({ submit: true });
     axios.post(ApiRoutes.CREATE_ADVERTISER, data)
       .then(res => {
         console.log(res);
         if (res.data.status) {
           this.setState({
-            success: true
+            successMessage: ArrayToString(res.data.messages)
           });
         } else {
           const msg = ErrorToString(res.data.messages);
-          //TODO::parse validation error message
           this.setState({ errorMessage: msg });
         }
 
@@ -151,22 +153,15 @@ class AdvertiserForm extends Component {
         this.submit();
         break;
       case "cancel":
-        this.setState({
-          name: "",
-          type: "Individual",
-          email: "",
-          phone: "",
-          password: "",
-          confirmPassword: "",
-          address: "",
-          agree: false,
-          showPassword: false
-        });
+        this.clear();
         break;
       default:
         break;
     }
   };
+  clear=()=>{
+    window.location.reload();
+  }
 
   handleRequired = (e) => {
     const { name, value } = e.target;
@@ -401,10 +396,12 @@ class AdvertiserForm extends Component {
                       label: "Address"
                     }}
                     onPlaceSelect={(place) => {
-                      let name = place.name;
-                      let address = place.formatted_address;
-                      let complete_address=address.includes(name) ? address : `${name} ${address}`;
-                      this.setState({ address: complete_address });
+                      if (place) {
+                        let name = place.name;
+                        let address = place.formatted_address;
+                        let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                        this.setState({ address: complete_address });
+                      }
                     }}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -468,8 +465,15 @@ class AdvertiserForm extends Component {
           </Card>
 
         </GridItem>
-        <OfficeSnackbar variant={"success"} open={this.state.success} onClose={(e) => this.setState({ success: "" })}
-                        message={"Your application is submitted"}/>;;
+        <ApplicationSubmitSuccessDialog
+          title={"Your application is submitted"}
+          open={Boolean(this.state.successMessage)}
+                                     message={this.state.successMessage}
+                                     onClose={(e)=>{
+                                       this.setState({successMessage:""})
+                                        this.clear()
+                                     }}/>
+
         <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
                         onClose={(e) => this.setState({ errorMessage: "" })}
                         message={this.state.errorMessage}/>
