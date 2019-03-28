@@ -30,16 +30,15 @@ const pagesStyle = theme => ({
   container: {
     ...container,
     zIndex: "4",
-    marginBottom:50,
     [theme.breakpoints.down("sm")]: {
-      paddingBottom: "100px"
+      paddingBottom: "40px"
     }
   },
 
   fullPage: {
     background:'white',
     position: "relative",
-    minHeight: "100vh",
+    minHeight: "70vh",
     display: "flex!important",
     margin: "0",
     border: "0",
@@ -52,6 +51,7 @@ const pagesStyle = theme => ({
       minHeight: "fit-content!important"
     },
     "& footer": {
+      color:"#26b99a",
       position: "absolute",
       bottom: "0",
       width: "100%",

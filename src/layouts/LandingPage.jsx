@@ -63,7 +63,7 @@ class LandingPage extends Component {
                             </Switch>
                         </div>
                     </div>
-                    <Footer white/>
+                    <Footer/>
                 </div>
             </div>
 
