@@ -86,11 +86,11 @@ class AdvertiserLogin extends Component {
 
         if (status) {
           localStorage.setItem("access_token",access_token);
-          history.push(redirect_url)
+          history.replace(redirect_url)
+          AuthManager.login(res.data.data);
         }else{
           this.setState({errorMessage:messages})
         }
-        AuthManager.login(res.data.data);
         console.log(res)
       })
       .catch(err=>{

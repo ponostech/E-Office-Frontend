@@ -24,7 +24,6 @@ export class HoardingService {
       land_owner_name:state.landLord,
       land_owner_type:state.landlordType,
       status:0,
-      signature:state.signature.value.path,
       documents:[]
     };
     console.log(data);
