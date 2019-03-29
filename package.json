@@ -35,7 +35,8 @@
     "react-tagsinput": "3.19.0",
     "react-virtualized": "^9.21.0",
     "typescript": "^3.3.3333",
-    "uniqid": "^5.0.3"
+    "uniqid": "^5.0.3",
+    "universal-cookie": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

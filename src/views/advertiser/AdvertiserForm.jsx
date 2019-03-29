@@ -28,7 +28,6 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
 import AddressField from "../../components/AddressField";
 import OfficeSelect from "../../components/OfficeSelect";
-import ApplicationAssignmentDialog from "../e-office/applications/ApplicationAssignmentDialog";
 import ApplicationSubmitSuccessDialog from "../../components/ApplicationSubmitSuccessDialog";
 
 const style = {
