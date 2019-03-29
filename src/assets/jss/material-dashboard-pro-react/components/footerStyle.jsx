@@ -21,6 +21,11 @@ const footerStyle = {
     padding: "15px"
   },
   footer: {
+    background:"#26b99a",
+    width:"100%",
+    height:"70px",
+    position:'absolute',
+    color:"white",
     bottom: "0",
     borderTop: "1px solid " + grayColor[15],
     padding: "15px 0",
@@ -38,7 +43,7 @@ const footerStyle = {
     position: "relative"
   },
   a: {
-    color: primaryColor[0],
+    color: "white",
     textDecoration: "none",
     backgroundColor: "transparent"
   },

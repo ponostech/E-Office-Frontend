@@ -33,9 +33,8 @@ class LandingPage extends Component {
     render() {
         const {classes, ...rest} = this.props;
         return (
-            <div>
+            <div className={classes.wrapper}>
                 <AuthNavbar color={"primary"} brandText="AIZAWL MUNICIPAL CORP0RATION" OfficeRoutes={OfficeRoutes} {...rest} />
-                <div className={classes.wrapper} ref="wrapper">
                     <div
                         className={classes.fullPage}
                     >
@@ -65,9 +64,7 @@ class LandingPage extends Component {
                         </div>
                     </div>
                     <Footer/>
-                </div>
             </div>
-
 
         );
     }
