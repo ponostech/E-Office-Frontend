@@ -161,7 +161,7 @@ class NewHoardingForm extends Component {
   };
 
   invalid = () => {
-    return !this.state.prestine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
+    return this.state.prestine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
       || !!this.state.displayTypeError || this.state.signature === undefined || !!this.state.coordinateError
   };
 
@@ -170,24 +170,16 @@ class NewHoardingForm extends Component {
       [identifier]: value
     });
   };
+  doClear=(e)=>{
+    const { history } = this.props;
+    history.reload()
+  }
 
-  handleClick = (e) => {
-    const { name } = e.target;
-    switch (name) {
-      case "submit":
-        this.doSubmit();
-        break;
-      case "reset":
-        break;
-      default:
-        break;
-    }
-  };
   doSubmit = () => {
-    if (!this.invalid()) {
-      this.setState({ errorMessage: "Please fill the required fields" });
-      return;
-    }
+    // if (this.invalid()) {
+    //   this.setState({ errorMessage: "Please fill the required fields" });
+    //   return;
+    // }
     this.setState({ submit: true });
     this.hoardingService.create(this.state)
       .then(res => {
@@ -431,7 +423,6 @@ class NewHoardingForm extends Component {
                     fullWidth={true}
                     variant={"outlined"}
                     required={true}
-                    onBlur={this.handleBlur.bind(this)}
                     onChange={e => {
                       console.log(e);
                     }}
@@ -524,10 +515,12 @@ class NewHoardingForm extends Component {
             </CardContent>
             <CardActions style={{ justifyContent: "flex-end" }}>
               <Button disabled={!this.state.agree} name={"submit"} variant={"outlined"} color={"primary"}
-                      onClick={this.handleClick.bind(this)}>Submit</Button>
-              {" "}
+                      onClick={this.doSubmit.bind(this)}>Submit</Button>
+              {"\u00A0 "}
+              {"\u00A0 "}
+              {"\u00A0 "}
               <Button name={"reset"} variant={"outlined"} color={"secondary"}
-                      onClick={this.handleClick.bind(this)}>Reset</Button>
+                      onClick={this.doClear.bind(this)}>Reset</Button>
 
             </CardActions>
           </Card>
@@ -543,10 +536,12 @@ class NewHoardingForm extends Component {
         <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
           this.setState({
             openMap: false,
-            coordinate: `Latitude: ${lat} , Longitude: ${lng}`,
             latitude: lat,
             longitude: lng
           });
+          this.setState({
+            coordinate: `Latitude: ${lat} , Longitude: ${lng}`,
+          })
         }} fullScreen={true}
                     isMarkerShown={true}/>
 

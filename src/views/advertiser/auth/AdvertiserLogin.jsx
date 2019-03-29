@@ -14,6 +14,7 @@ import axios from "axios";
 import { ApiRoutes } from "../../../config/ApiRoutes";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { Validators } from "../../../utils/Validators";
+import AuthManager from "../../../utils/AuthManager";
 const style = {
   root: {
     padding: "10px 15px !important"
@@ -89,6 +90,7 @@ class AdvertiserLogin extends Component {
         }else{
           this.setState({errorMessage:messages})
         }
+        AuthManager.login(res.data.data);
         console.log(res)
       })
       .catch(err=>{
