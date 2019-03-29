@@ -93,7 +93,7 @@ class AuthNavbar extends React.Component {
                     </NavLink>
                 </ListItem>
 
-                <Button onClick={(e) => history.push(OfficeRoutes.LOGIN)}
+                <Button onClick={(e) => history.push(OfficeRoutes.ADVERTISER_LOGIN)}
                         style={{marginleft: 10, paddingLeft: 20, paddingRight: 20}} size={"small"} color={"primary"}
                         variant={"extendedFab"}>
                     Login <LoginIcon fontSize={"small"}/>

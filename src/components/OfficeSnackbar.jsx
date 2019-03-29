@@ -60,10 +60,10 @@ function OfficeSnackbar(props) {
         className={classNames(classes[variant], className)}
         aria-describedby="client-snackbar"
         message={
-          <p id="client-snackbar" className={classes.message}>
+          <span id="client-snackbar" className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)}/>
             {message}
-        </p>
+        </span>
         }
         action={[
           <IconButton

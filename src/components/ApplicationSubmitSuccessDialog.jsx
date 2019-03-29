@@ -70,7 +70,7 @@ const ApplicationSubmitSuccessDialog = (props) => {
 };
 ApplicationSubmitSuccessDialog.propTypes = {
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
   message: PropTypes.string,
   title: PropTypes.string
 };

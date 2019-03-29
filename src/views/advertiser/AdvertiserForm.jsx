@@ -106,7 +106,7 @@ class AdvertiserForm extends Component {
       || !!this.state.phoneError || this.state.signature === undefined || this.state.type === undefined;
   };
 
-  submit = () => {
+  submit = (e) => {
 
     if (this.isInvalid()) {
       this.setState({ errorMessage: "Please enter all the required fields" });
@@ -146,19 +146,6 @@ class AdvertiserForm extends Component {
       });
   };
 
-  handleClick = (e) => {
-    const { name } = e.target;
-    switch (name) {
-      case "submit":
-        this.submit();
-        break;
-      case "cancel":
-        this.clear();
-        break;
-      default:
-        break;
-    }
-  };
   clear=()=>{
     window.location.reload();
   }
@@ -454,10 +441,12 @@ class AdvertiserForm extends Component {
             <CardActions>
               <GridContainer justify={"flex-end"}>
                 <GridItem>
-                  <Button name={"submit"} disabled={!this.state.agree} onClick={this.handleClick.bind(this)}
+                  <Button name={"submit"} disabled={!this.state.agree} onClick={this.submit.bind(this)}
                           variant={"outlined"} color={"primary"}> Submit</Button>
-                  {" "}
-                  <Button name={"cancel"} onClick={this.handleClick.bind(this)} variant={"outlined"}
+                  {"\u00A0 "}
+                  {"\u00A0 "}
+                  {"\u00A0 "}
+                  <Button name={"cancel"} onClick={this.clear.bind(this)} variant={"outlined"}
                           color={"secondary"}> Reset</Button>
                 </GridItem>
               </GridContainer>
