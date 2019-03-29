@@ -35,6 +35,7 @@ import SubmitDialog from "../../../../components/SubmitDialog";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../../../components/AddressField";
 import { ErrorToString } from "../../../../utils/ErrorUtil";
+import AuthManager from "../../../../utils/AuthManager";
 
 const style = {
   root: {
@@ -63,6 +64,7 @@ class NewHoardingForm extends Component {
 
       landLord: "",
       landlordType: "0",
+      signature:undefined,
       uploadDocuments: [],
 
       localCouncilError: "",
@@ -176,6 +178,7 @@ class NewHoardingForm extends Component {
   }
 
   doSubmit = () => {
+    console.log(AuthManager.getUser())
     // if (this.invalid()) {
     //   this.setState({ errorMessage: "Please fill the required fields" });
     //   return;
@@ -344,7 +347,14 @@ class NewHoardingForm extends Component {
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <AddressField
-                    onPlaceSelect={(data) => this.setState({ address: data.formatted_address })}
+                    onPlaceSelect={(place) => {
+                      if (place) {
+                        let name = place.name;
+                        let address = place.formatted_address;
+                        let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                        this.setState({ address: complete_address });
+                      }
+                    }}
                     textFieldProps={{
                       required: true,
                       error: Boolean(this.state.addressError),
@@ -376,7 +386,6 @@ class NewHoardingForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"roadDetail"}
                              value={this.state.roadDetail}
-                             type={"number"}
                              margin={"dense"}
                              fullWidth={true}
                              variant={"outlined"}
@@ -424,8 +433,8 @@ class NewHoardingForm extends Component {
                     variant={"outlined"}
                     required={true}
                     onChange={e => {
-                      console.log(e);
                     }}
+                    onClick={()=>this.setState({openMap:true})}
                     helperText={this.state.coordinateError}
                     error={Boolean(this.state.coordinateError)}
                     label={"Coordinate"}
@@ -470,19 +479,6 @@ class NewHoardingForm extends Component {
                                         label={"Public"}/>
                     </RadioGroup>
                   </FormControl>
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <FileUpload document={{ id: 0, name: "Signature" }}
-                              required={true}
-                              onUploadSuccess={(res) => {
-                                this.setState(state => {
-                                    state.signature = {
-                                      name: "signature",
-                                      path: res.location
-                                    };
-                                  }
-                                );
-                              }} onUploadFailure={(err) => console.log(err)}/>
                 </GridItem>
                 {/*//Document upload*/}
                 <GridItem xs={12} sm={12} md={12}>
