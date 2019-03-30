@@ -134,6 +134,8 @@ class ShopLicenseApplicationForm extends Component {
       case "phone":
         !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: ShopLicenseViewModel.VALID_PHONE }) : this.setState({ phoneError: "" });
         break;
+      default:
+        break;
     }
 
     this.setState({

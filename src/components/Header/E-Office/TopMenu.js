@@ -11,7 +11,7 @@ const menu = (props) => {
     return (
         <>
             <div style={{display: "flex", alignItems: "center"}}>
-                <NavLink to={routes.HOME}><IconButton color="alert"><Icon>apps</Icon></IconButton></NavLink>
+                <NavLink to={routes.HOME}><IconButton color="primary"><Icon>apps</Icon></IconButton></NavLink>
                 <NavLink to={routes.E_OFFICE}><IconButton color="secondary"><Icon>home</Icon></IconButton></NavLink>
                 <NavLink to={routes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
                 <CustomDropdown

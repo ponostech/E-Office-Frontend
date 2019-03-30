@@ -57,12 +57,10 @@ class DeskFiles extends Component {
                     sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
-                            <ButtonBase>
                                 <IconButton color="primary" size="small"
                                             aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
                                     <Icon fontSize="small">remove_red_eye</Icon>
                                 </IconButton>
-                            </ButtonBase>
                         );
                     }
                 }
