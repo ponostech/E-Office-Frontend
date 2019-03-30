@@ -55,7 +55,7 @@ class NewHoardingForm extends Component {
       latitude: undefined,
       longitude: undefined,
 
-      coordinate: undefined,
+      coordinate: "",
       length: undefined,
       height: undefined,
       clearance: undefined,
@@ -65,7 +65,6 @@ class NewHoardingForm extends Component {
 
       landLord: "",
       landlordType: "0",
-      signature:undefined,
       uploadDocuments: [],
 
       localCouncilError: "",
@@ -167,7 +166,7 @@ class NewHoardingForm extends Component {
 
   invalid = () => {
     return this.state.prestine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
-      || !!this.state.displayTypeError || this.state.signature === undefined || !!this.state.coordinateError
+      || !!this.state.displayTypeError || !!this.state.coordinateError
   };
 
   handleOfficeSelect = (identifier, value) => {
@@ -386,16 +385,6 @@ class NewHoardingForm extends Component {
                   />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
-                  <TextField name={"roadDetail"}
-                             value={this.state.roadDetail}
-                             margin={"dense"}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             label={HoardingApplicationFormModel.ROAD_DETAIL}
-                             onChange={this.handleChange.bind(this)}
-                  />
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <FormControl margin={"dense"}>
                     <FormControlLabel onChange={this.handleSwitch.bind(this)}
                                       name={"bothSide"}
@@ -408,6 +397,16 @@ class NewHoardingForm extends Component {
                                       }
                                       label={"Both side?"}/>
                   </FormControl>
+                </GridItem>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                  <TextField name={"roadDetail"}
+                             value={this.state.roadDetail}
+                             margin={"dense"}
+                             fullWidth={true}
+                             variant={"outlined"}
+                             label={HoardingApplicationFormModel.ROAD_DETAIL}
+                             onChange={this.handleChange.bind(this)}
+                  />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <OfficeSelect
