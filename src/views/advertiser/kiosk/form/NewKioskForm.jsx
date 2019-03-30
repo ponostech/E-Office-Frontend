@@ -236,6 +236,8 @@ class NewKioskForm extends Component {
       case "displayType":
         this.state.displayType === undefined ? this.setState({ displayTypeError: "Display type is required" }) : this.setState({ displayTypeError: "" });
         break;
+      default:
+        break;
     }
   };
 
@@ -282,7 +284,7 @@ class NewKioskForm extends Component {
             <CardContent>
               <GridContainer>
                 <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                  <Typography variant={"headline"}>{KioskFormModel.TITLE}</Typography>
+                  <Typography variant="h5">{KioskFormModel.TITLE}</Typography>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <Divider style={{ marginBottom: 10, marginTop: 10 }}/>

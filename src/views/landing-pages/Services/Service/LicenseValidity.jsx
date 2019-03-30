@@ -37,7 +37,7 @@ class LicenseValidity extends React.Component {
                   <div className={props.classes.icon}>
                     <CheckIcon color="primary"/>
                   </div>
-                  <p className={props.classes.cardDescription}>
+                  <div className={props.classes.cardDescription}>
                     <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                     <TextField fullWidth={true}
                                name={"license"}
@@ -50,8 +50,9 @@ class LicenseValidity extends React.Component {
                                  this.setState({ license: e.target.value });
                                }}
                     />
-                  </p>
-                  <Button fullWidth={true} color="primary" round
+                  </div>
+                  <Button disable={!Boolean(this.state.license)} fullWidth={true} color="primary" round
+
                           onClick={this.handleClick.bind(this)}>
                     Check validity
                   </Button>

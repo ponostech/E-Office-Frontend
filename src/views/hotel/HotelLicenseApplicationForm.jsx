@@ -139,6 +139,8 @@ class HotelLicenseApplicationForm extends Component {
       case "phone":
         !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: "Mobile No must be 10 digit number" }) : this.setState({ phoneError: "" });
         break;
+      default:
+        break;
     }
 
     this.setState({
@@ -294,7 +296,7 @@ class HotelLicenseApplicationForm extends Component {
               <CardContent>
                 <GridContainer>
                   <GridItem md={12} sm={12} xs={12}>
-                    <Typography variant={"headline"}>
+                    <Typography variant="h5">
                       {ShopLicenseViewModel.TITLE}
                     </Typography>
                   </GridItem>
