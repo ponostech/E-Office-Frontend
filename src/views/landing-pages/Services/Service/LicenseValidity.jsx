@@ -52,6 +52,7 @@ class LicenseValidity extends React.Component {
                     />
                   </div>
                   <Button disable={!Boolean(this.state.license)} fullWidth={true} color="primary" round
+
                           onClick={this.handleClick.bind(this)}>
                     Check validity
                   </Button>

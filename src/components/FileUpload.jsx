@@ -86,7 +86,9 @@ class FileUpload extends Component {
                   type={"file"}
                   onChange={(e) => {
                     let item = e.target.files[0];
-
+                    // if (item.type !== file.mime) {
+                    //   return;
+                    // }
                     let temp = file;
                     temp.file = item;
                     temp.status = "progress";

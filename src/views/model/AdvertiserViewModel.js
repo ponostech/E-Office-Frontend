@@ -20,7 +20,7 @@ export default class AdvertiserViewModel {
   static INVALID_EMAIL = "Please enter a valid email";
   static MIN_PASSWORD = "Minimum character of password must be 6";
   static MATCH_PASSWORD = "Confirm password must match password";
-  static PHONE_ERROR = "Phone number must be 10 digit no";
+  static PHONE_ERROR = "Phone number must be 10 digit number";
   static REQUIRED_ADDRESS = "Address is required";
 
 };

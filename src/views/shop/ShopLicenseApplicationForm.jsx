@@ -60,6 +60,7 @@ class ShopLicenseApplicationForm extends Component {
     panNo: "",
     premised: "Owned",
     displayType: undefined,
+    signature: undefined,
 
     latitude: undefined,
     longitude: undefined,
@@ -117,6 +118,7 @@ class ShopLicenseApplicationForm extends Component {
   fetchDocuments = () => {
     this.documentService.get("shop_license")
       .then(res => {
+        console.log(res)
         if (res.status) {
           this.setState({
             documents: res.data.documents
@@ -163,10 +165,10 @@ class ShopLicenseApplicationForm extends Component {
   onSubmit = (e) => {
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
       || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine);
+      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature===undefined;
 
-    this.setState({ submit: true });
-    if (invalid) {
+    if (!invalid) {
+      this.setState({ submit: true });
       this.shopService.create(this.state)
         .then(data => {
           if (data.status) {
@@ -539,7 +541,7 @@ class ShopLicenseApplicationForm extends Component {
                                     };
                                   });
                                 }} onUploadFailure={(err) => {
-                      console.log(err);
+                                    console.log(err);
                     }}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
@@ -551,7 +553,7 @@ class ShopLicenseApplicationForm extends Component {
                   </GridItem>
                   {
                     this.state.documents.map((doc, index) => {
-                      return <GridItem className={classes.root} sm={12} xs={12} md={6}>
+                      return <GridItem key={index} className={classes.root} sm={12} xs={12} md={6}>
 
                         <FileUpload key={index} document={doc} onUploadSuccess={(data) => {
                           let temp = {

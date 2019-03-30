@@ -3,15 +3,15 @@ const container = {
   marginRight: "auto",
   marginLeft: "auto",
   width:'100%',
-  // "@media (min-width: 768px)": {
-  //   width: "750px"
-  // },
-  // "@media (min-width: 992px)": {
-  //   width: "970px"
-  // },
-  // "@media (min-width: 1200px)": {
-  //   width: "100%"
-  // },
+  "@media (min-width: 768px)": {
+    width: "750px"
+  },
+  "@media (min-width: 992px)": {
+    width: "970px"
+  },
+  "@media (min-width: 1200px)": {
+    width: "100%"
+  },
   "&:before,&:after": {
     display: "table",
     content: '" "'
@@ -25,21 +25,22 @@ const pagesStyle = theme => ({
     height: "auto",
     minHeight: "100vh",
     position: "relative",
-    top: "0"
+    background:"white",
+    top: "0",
   },
   container: {
     ...container,
+    paddingBottom: "70px",
     zIndex: "4",
-    marginBottom:50,
     [theme.breakpoints.down("sm")]: {
-      paddingBottom: "100px"
+      paddingBottom: "40px"
     }
   },
 
   fullPage: {
     background:'white',
     position: "relative",
-    minHeight: "100vh",
+    minHeight: "70vh",
     display: "flex!important",
     margin: "0",
     border: "0",
@@ -51,23 +52,7 @@ const pagesStyle = theme => ({
     [theme.breakpoints.down("sm")]: {
       minHeight: "fit-content!important"
     },
-    "& footer": {
-      position: "absolute",
-      bottom: "0",
-      width: "100%",
-      border: "none !important"
-    },
 
-    "&:before,&:after": {
-      display: "block",
-      content: '""',
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      top: "0",
-      left: "0",
-      zIndex: "2"
-    }
   }
 });
 

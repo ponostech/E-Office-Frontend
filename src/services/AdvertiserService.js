@@ -7,7 +7,7 @@ export class AdvertiserService {
     let data = {
       name: state.name,
       email: state.email,
-      type:state.type,
+      type:state.type.value,
       password: state.password,
       phone_no: state.phone,
       registered:0,

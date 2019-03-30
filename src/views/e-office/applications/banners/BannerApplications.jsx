@@ -1,198 +1,131 @@
-import React, { Component } from "react";
-import Grid from "@material-ui/core/Grid";
-import { withRouter } from "react-router-dom";
-
+import React from "react";
 import MUIDataTable from "mui-datatables";
-import { Chip, IconButton, Tooltip } from "@material-ui/core";
-import EyeIcon from "@material-ui/icons/RemoveRedEyeSharp";
-import ActionIcon from "@material-ui/icons/CallToAction";
-import DownloadIcon from "@material-ui/icons/CloudDownload";
-import BannerDetailDialog from "./BannerDetailDialog";
-import ApplyBannerDialog from "../../form/ApplyBannerDialog";
+import Grid from "@material-ui/core/Grid";
+import {Icon} from "@material-ui/core";
+import {withStyles} from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import ButtonBase from "@material-ui/core/ButtonBase";
 
-const data = [
-  {
-    id: 1,
-    application_no: "123",
-    file_no: "File-123",
-    subject: "Matter relating to",
-    applicant_name: "Kimi",
-    date: "12-12-2019",
-    status: "active"
-  },
-  {
-    id: 1,
-    application_no: "123",
-    file_no: "File-123",
-    subject: "Matter relating to",
-    applicant_name: "Kimi",
-    date: "12-12-2019",
-    status: "granted"
-  },
-  {
-    id: 1,
-    application_no: "123",
-    file_no: "File-123",
-    subject: "Matter relating to",
-    applicant_name: "Kimi",
-    date: "12-12-2019",
-    status: "pending"
-  }
-];
+import BannerDetail from "./BannerDetailDialog";
+import Assignment from "../ApplicationAssignmentDialog";
 
+const styles = {
+  button: {},
+  actionIcon: {},
+};
 
-class BannerApplications extends Component {
+class BannerApplications extends React.Component {
   state = {
+    openAssignment: false,
     openDetail: false,
-    openApply: false
+    detailData: [],
+    tableData: [
+      [1, "M.33023/5/2019-AMC", "Matter Relating to IT Cell", "IT Cell", "John Does", "2nd Feb, 2019"],
+      [2, "Aiden Lloyd", "Business Consultant", "Dallas", 55, "$200,000"],
+      [3, "Jaden Collins", "Attorney", "Santa Ana", 27, "$500,000"],
+    ],
+    staffs: [
+      {value: "1", label: "Lala"},
+      {value: "1", label: "Lala"},
+      {value: "1", label: "Lala"},
+      {value: "1", label: "Lala"},
+      {value: "1", label: "Lala"},
+      {value: "1", label: "Lala"},
+      {value: "1", label: "Lala"},
+    ],
+  };
+  updateTable = (action, tableState) => {
+    console.log('Update table');
+    console.log(action);
+    console.log(tableState);
+  };
+  openAssignment = (id) => {
+    this.setState({openAssignment: true});
+  };
+  closeAssignment = () => {
+    this.setState({openAssignment: false});
   };
 
+  viewDetail = (id) => {
+    this.setState({openDetail: true});
+  };
+  closeDetail = () => {
+    this.setState({openDetail: false});
+  };
 
   render() {
-    const { history } = this.props;
+    const {classes} = this.props;
+    const {tableData} = this.state;
+    const tableOptions = {
+      filterType: "checkbox",
+      responsive: "scroll",
+      rowsPerPage: 8,
+      serverSide: false,
+      onTableChange: function (action, tableState) {
+        this.updateTable(action, tableState);
+      }.bind(this),
+    };
+
     const tableColumns = [
       {
-        name: "id",
-        label: "File ID",
-        options: {
-          filter: false,
-          display: false
-        }
-      },
-      {
-        name: "application_no",
-        label: "File Number",
-        options: {
-          filter: false
-        }
-      }, {
-        name: "file_no",
-        label: "File Number",
-        options: {
-          filter: false
-        }
-      },
-      {
-        name: "applicant_name",
-        label: "Subject",
-        options: {
-          filter: false
-        }
-      },
-      {
-        name: "date",
-        label: "Date"
-      },
-      {
-        name: "status",
-        label: "Status",
-        options: {
-          customBodyRender: (value, tableMeta, updateVal) => {
-            let view = null;
-            switch (value) {
-              case "new":
-                view = <Chip label={value} title={value} color={"primary"}/>;
-                break;
-              case "active":
-                view = <Chip label={value} title={value} color={"primary"}/>;
-                break;
-              case "pending":
-                view = <Chip label={value} title={value} color={"secondary"}/>;
-                break;
-              default:
-                view = <Chip label={value} title={value} color={"inherit"}/>;
-                break;
-            }
-            return <>
-              {view}
-            </>;
-          }
-        }
-      },
-      {
-        name: "status",
+        name: "action",
         label: "Action",
         options: {
+          filter: false,
+          sort: false,
           customBodyRender: (value, tableMeta, updateValue) => {
-            console.log(value)
-            let view = null;
-            switch (value) {
-              case "pending":
-                view = <Tooltip title={"Click here to view detail"}>
-                  <IconButton onClick={(e) => this.setState({ openDetail: true })}>
-                    <EyeIcon color={"action"}/>
-                  </IconButton>
-                </Tooltip>;
-                break;
-              case "granted":
-                view = <>
-                  <Tooltip title={"Click here to download permission"}>
-                    <IconButton>
-                      <DownloadIcon color={"primary"}/>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Click here to apply"}>
-                    <IconButton onClick={(e)=>this.setState({openApply:true})}>
-                      <ActionIcon color={"secondary"}/>
-                    </IconButton>
-                  </Tooltip>
-                </>;
-                break;
-              case "active":
-                view=<>
-                  <Tooltip title={"Click here to view details "}>
-                    <IconButton onClick={e=>this.setState({openApply:true})}>
-                      <EyeIcon color={"action"}/>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Click here to download permission"}>
-                    <IconButton>
-                      <DownloadIcon color={"primary"}/>
-                    </IconButton>
-                  </Tooltip>
-                </>
-                break;
-              default:
-                break;
-            }
             return (
-              <>
-                {view}
-              </>
+              <ButtonBase>
+                <IconButton className={classes.button} color="primary" size="small"
+                            aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
+                  <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
+                </IconButton>
+                <IconButton variant="contained" className={classes.button} color="secondary"
+                            size="small" onClick={this.openAssignment.bind(this, value)}>
+                  <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
+                </IconButton>
+              </ButtonBase>
             );
           }
         }
-
-      }
-    ];
-
-    const tableOptions = {
-      filterType: "checkbox",
-      rowsPerPage: 8,
-      serverSide: false,
-      customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
-        return false;
       },
-      onRowClick: function(rowData, rowMeta) {
-      }
-    };
+      {
+        name: "applicationNo",
+        label: "Application No.",
+      },
+      {
+        name: "fileNo",
+        label: "File No.",
+      },
+      {
+        name: "name",
+        label: "Name of Applicant",
+      },
+      {
+        name: 'location',
+        label: "Location",
+      },
+      {
+        name: "date",
+        label: "Date of Application",
+      },
+    ];
 
     return (
       <>
-        <Grid item sm={12} xs={12} md={12}>
+        <Grid item xs={12}>
           <MUIDataTable
-            title={"Banner: List of applications"}
-            data={data}
+            title={"Banner: List of Pending Application"}
+            data={tableData}
             columns={tableColumns}
             options={tableOptions}
           />
-          <ApplyBannerDialog open={this.state.openApply} onClose={(e) => this.setState({ openApply: false })}/>
-          <BannerDetailDialog open={this.state.openDetail} onClose={(e) => this.setState({ openDetail: false })}/>
         </Grid>
-
+        <BannerDetail open={this.state.openDetail} close={this.closeDetail} data={this.state.detailData} props={this.props} staffs={this.state.staffs}/>
+        <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData} props={this.props} staffs={this.state.staffs}/>
       </>
     );
   }
 }
 
-export default withRouter(BannerApplications);
+export default withStyles(styles)(BannerApplications);

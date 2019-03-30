@@ -3,7 +3,6 @@ import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 import {Airplay, HelpOutline, Person, StoreMallDirectory, Dock, Gradient} from "@material-ui/icons";
-
 // core components
 import GridItem from "../../../components/Grid/GridItem.jsx";
 import NavPills from "../../../components/NavPills/NavPills.jsx";
@@ -100,7 +99,7 @@ const services = (props) => {
                         tabs={[
                             {
                                 tabButton: "Shop License",
-                                tabIcon: StoreMallDirectory,
+                                tabIcon:StoreMallDirectory,
                                 tabContent: (
                                     <ShopNavPillContent classes={classes} click={props.click}/>
                                 )

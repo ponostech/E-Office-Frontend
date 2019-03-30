@@ -4,7 +4,7 @@ import { ApiRoutes } from "../config/ApiRoutes";
 export class HoardingService {
 
   async create(state) {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     console.log(token)
     const config={ headers: {"Authorization" : `Bearer ${token}`} }
 
@@ -15,10 +15,12 @@ export class HoardingService {
       road_details:state.roadDetail,
       length:state.length,
       height:state.height,
-      ground_clearance:"not sure",
-      area_category_id:state.category,
-      display_type:state.displayType,
+      ground_clearance:state.clearance,
+      area_category_id:state.category.value,
+      display_type:state.displayType.value,
       coordinate:'',
+      longitude:state.longitude,
+      latitude:state.latitude,
       land_owner_name:state.landLord,
       land_owner_type:state.landlordType,
       status:0,

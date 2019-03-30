@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 class ConfirmDialog extends Component {
 
 
-  handleConfirm=(e) =>{
+  handleClick=(e) =>{
     const { onConfirm, onCancel } = this.props;
     if (e.target.name === "confirm") {
       onConfirm();
@@ -20,9 +20,7 @@ class ConfirmDialog extends Component {
       onCancel()
     }
   }
-  handleCancel=(e)=>{
 
-  }
   render() {
     const { title, message, primaryButtonText, secondaryButtonText, onConfirm, onCancel, data, open, ...rest } = this.props;
 
@@ -37,8 +35,8 @@ class ConfirmDialog extends Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant={"outlined"} color={"primary"} onClick={this.handleConfirm.bind(this)}> {primaryButtonText}</Button>
-          <Button variant={"outlined"} color={"secondary"} onClick={this.handleCancel.bind(this)}> {secondaryButtonText}</Button>
+          <Button name={"confirm"} variant={"outlined"} color={"primary"} onClick={this.handleClick.bind(this)}> {primaryButtonText}</Button>
+          <Button name={"cancel"} variant={"outlined"} color={"secondary"} onClick={this.handleClick.bind(this)}> {secondaryButtonText}</Button>
         </DialogActions>
       </Dialog>
     );
@@ -46,7 +44,7 @@ class ConfirmDialog extends Component {
 }
 
 ConfirmDialog.defaultProps = {
-  title: "Confirm Dialog",
+  title: "Confirmation",
   message: "Do you want to delete?",
   primaryButtonText: "Confirm",
   secondaryButtonText: "Cancel"

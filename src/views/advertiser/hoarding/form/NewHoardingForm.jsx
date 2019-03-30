@@ -35,6 +35,7 @@ import SubmitDialog from "../../../../components/SubmitDialog";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../../../components/AddressField";
 import { ErrorToString } from "../../../../utils/ErrorUtil";
+import AuthManager from "../../../../utils/AuthManager";
 
 const style = {
   root: {
@@ -63,6 +64,7 @@ class NewHoardingForm extends Component {
 
       landLord: "",
       landlordType: "0",
+      signature:undefined,
       uploadDocuments: [],
 
       localCouncilError: "",
@@ -161,7 +163,7 @@ class NewHoardingForm extends Component {
   };
 
   invalid = () => {
-    return !this.state.prestine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
+    return this.state.prestine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
       || !!this.state.displayTypeError || this.state.signature === undefined || !!this.state.coordinateError
   };
 
@@ -170,24 +172,17 @@ class NewHoardingForm extends Component {
       [identifier]: value
     });
   };
+  doClear=(e)=>{
+    const { history } = this.props;
+    history.reload()
+  }
 
-  handleClick = (e) => {
-    const { name } = e.target;
-    switch (name) {
-      case "submit":
-        this.doSubmit();
-        break;
-      case "reset":
-        break;
-      default:
-        break;
-    }
-  };
   doSubmit = () => {
-    if (!this.invalid()) {
-      this.setState({ errorMessage: "Please fill the required fields" });
-      return;
-    }
+    console.log(AuthManager.getUser())
+    // if (this.invalid()) {
+    //   this.setState({ errorMessage: "Please fill the required fields" });
+    //   return;
+    // }
     this.setState({ submit: true });
     this.hoardingService.create(this.state)
       .then(res => {
@@ -352,7 +347,14 @@ class NewHoardingForm extends Component {
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <AddressField
-                    onPlaceSelect={(data) => this.setState({ address: data.formatted_address })}
+                    onPlaceSelect={(place) => {
+                      if (place) {
+                        let name = place.name;
+                        let address = place.formatted_address;
+                        let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                        this.setState({ address: complete_address });
+                      }
+                    }}
                     textFieldProps={{
                       required: true,
                       error: Boolean(this.state.addressError),
@@ -384,7 +386,6 @@ class NewHoardingForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"roadDetail"}
                              value={this.state.roadDetail}
-                             type={"number"}
                              margin={"dense"}
                              fullWidth={true}
                              variant={"outlined"}
@@ -431,10 +432,9 @@ class NewHoardingForm extends Component {
                     fullWidth={true}
                     variant={"outlined"}
                     required={true}
-                    onBlur={this.handleBlur.bind(this)}
                     onChange={e => {
-                      console.log(e);
                     }}
+                    onClick={()=>this.setState({openMap:true})}
                     helperText={this.state.coordinateError}
                     error={Boolean(this.state.coordinateError)}
                     label={"Coordinate"}
@@ -480,19 +480,6 @@ class NewHoardingForm extends Component {
                     </RadioGroup>
                   </FormControl>
                 </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <FileUpload document={{ id: 0, name: "Signature" }}
-                              required={true}
-                              onUploadSuccess={(res) => {
-                                this.setState(state => {
-                                    state.signature = {
-                                      name: "signature",
-                                      path: res.location
-                                    };
-                                  }
-                                );
-                              }} onUploadFailure={(err) => console.log(err)}/>
-                </GridItem>
                 {/*//Document upload*/}
                 <GridItem xs={12} sm={12} md={12}>
                   <Typography variant={"headline"}>Upload Document</Typography>
@@ -524,10 +511,12 @@ class NewHoardingForm extends Component {
             </CardContent>
             <CardActions style={{ justifyContent: "flex-end" }}>
               <Button disabled={!this.state.agree} name={"submit"} variant={"outlined"} color={"primary"}
-                      onClick={this.handleClick.bind(this)}>Submit</Button>
-              {" "}
+                      onClick={this.doSubmit.bind(this)}>Submit</Button>
+              {"\u00A0 "}
+              {"\u00A0 "}
+              {"\u00A0 "}
               <Button name={"reset"} variant={"outlined"} color={"secondary"}
-                      onClick={this.handleClick.bind(this)}>Reset</Button>
+                      onClick={this.doClear.bind(this)}>Reset</Button>
 
             </CardActions>
           </Card>
@@ -543,10 +532,12 @@ class NewHoardingForm extends Component {
         <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
           this.setState({
             openMap: false,
-            coordinate: `Latitude: ${lat} , Longitude: ${lng}`,
             latitude: lat,
             longitude: lng
           });
+          this.setState({
+            coordinate: `Latitude: ${lat} , Longitude: ${lng}`,
+          })
         }} fullScreen={true}
                     isMarkerShown={true}/>
 
