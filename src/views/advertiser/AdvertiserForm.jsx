@@ -86,6 +86,7 @@ class AdvertiserForm extends Component {
       .then(res => {
         if (res.status) {
           const { documents } = res.data;
+          console.log(documents)
           this.setState({ documents });
         }
       })

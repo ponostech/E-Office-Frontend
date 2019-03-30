@@ -9,6 +9,7 @@ import { ApiRoutes } from "./config/ApiRoutes";
 import axios from "axios";
 
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import AuthManager from "./utils/AuthManager";
 
 const theme = createMuiTheme({
   palette: {
@@ -56,14 +57,15 @@ if (token) {
   axios.defaults.headers.common["Authorization"] = token;
 }
 
+localStorage.setItem("userTest",JSON.stringify({username:"kimi"}));
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <Router history={hist}>
       <Switch>
         {indexRoutes.map((prop, key) => {
-          return <Route path={prop.path} component={prop.component} key={key}/>;
+          return <Route path={prop.path}  component={prop.component} key={key}/>;
         })}
-        <Route component={NoMatch}/>
+        <Route  component={NoMatch}/>
       </Switch>
     </Router>
   </MuiThemeProvider>,

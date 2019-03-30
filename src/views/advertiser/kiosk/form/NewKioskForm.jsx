@@ -21,7 +21,7 @@ import {
 import GridContainer from "../../../../components/Grid/GridContainer";
 import GridItem from "../../../../components/Grid/GridItem";
 import OfficeSelect from "../../../../components/OfficeSelect";
-import HoardingApplicationFormModel from "../../../model/HoardingApplicationFormModel";
+import * as HoardingApplicationFormModel from "../../../model/HoardingApplicationFormModel";
 import { LocalCouncilService } from "../../../../services/LocalCouncilService";
 import FileUpload from "../../../../components/FileUpload";
 import MapIcon from "@material-ui/icons/PinDrop";
@@ -373,7 +373,7 @@ class NewKioskForm extends Component {
                                           checked={this.state.bothSide}
                                           required={true}/>
                                       }
-                                      label={"Both side?"}/>
+                                      label={"Both Sided?"}/>
                   </FormControl>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>

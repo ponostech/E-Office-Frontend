@@ -6,11 +6,11 @@ import { OfficeRoutes } from "../config/routes-constant/OfficeRoutes";
 import AdvertiserHeader from "../components/Header/AdvertiserHeader";
 import HoardingList from "../views/advertiser/hoarding/HoardingList";
 import Dashboard from "../views/advertiser/Dashboard";
-import Redirect from "react-router-dom/es/Redirect";
 import KioskLists from "../views/advertiser/kiosk/lists/KioskLists";
 import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
 import NewHoardingForm from "../views/advertiser/hoarding/form/NewHoardingForm";
 import NewKioskForm from "../views/advertiser/kiosk/form/NewKioskForm";
+
 
 class AdvertiserDashboard extends Component {
   render() {
@@ -20,7 +20,7 @@ class AdvertiserDashboard extends Component {
           <AdvertiserHeader color={"primary"}/>
         </GridItem>
         <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
-          <GridContainer justify={"center"} style={{height:"95vh"}}>
+          <GridContainer justify={"center"} style={{ height: "95vh" }}>
 
             <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>
             <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
