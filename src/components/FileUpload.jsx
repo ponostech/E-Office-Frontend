@@ -72,8 +72,8 @@ class FileUpload extends Component {
             let imageUpload = document.getElementById(file.id);
             imageUpload.click();
           }}
+          required={file.mandatory !== 0}
 
-          required={required}
           name={file.name}
           variant={"outlined"}
           margin={"dense"}
@@ -97,9 +97,11 @@ class FileUpload extends Component {
                   type={"file"}
                   onChange={(e) => {
                     let item = e.target.files[0];
-                    // if (item.type !== file.mime) {
-                    //   return;
-                    // }
+                    console.log(file.mime)
+                    console.log(item.type)
+                    if (item.type !== file.mime) {
+                      return;
+                    }
                     let temp = file;
                     temp.file = item;
                     temp.status = "progress";

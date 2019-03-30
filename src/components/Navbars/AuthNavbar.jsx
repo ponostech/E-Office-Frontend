@@ -18,7 +18,7 @@ import LoginIcon from "@material-ui/icons/ArrowRight";
 
 import Home from "@material-ui/icons/Home";
 import authNavbarStyle from "assets/jss/material-dashboard-pro-react/components/authNavbarStyle.jsx";
-import {Button} from "@material-ui/core";
+import { Button, Fab } from "@material-ui/core";
 
 // core components
 
@@ -93,11 +93,11 @@ class AuthNavbar extends React.Component {
                     </NavLink>
                 </ListItem>
 
-                <Button onClick={(e) => history.push(OfficeRoutes.ADVERTISER_LOGIN)}
-                        style={{marginleft: 10, paddingLeft: 20, paddingRight: 20}} size={"small"} color={"primary"}
-                        variant={"extendedFab"}>
+                <Fab  onClick={(e) => history.push(OfficeRoutes.ADVERTISER_LOGIN)}
+                        style={{marginleft: 10, paddingLeft: 20, paddingRight: 20}} size={"large"} color={"primary"}
+                        variant={"extended"}>
                     Login <LoginIcon fontSize={"small"}/>
-                </Button>
+                </Fab>
 
             </List>
         );

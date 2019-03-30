@@ -21,12 +21,10 @@ import {
 import GridContainer from "../../../../components/Grid/GridContainer";
 import GridItem from "../../../../components/Grid/GridItem";
 import OfficeSelect from "../../../../components/OfficeSelect";
-import HoardingApplicationFormModel from "../../../model/HoardingApplicationFormModel";
+import * as HoardingApplicationFormModel from "../../../model/HoardingApplicationFormModel";
 import { LocalCouncilService } from "../../../../services/LocalCouncilService";
 import FileUpload from "../../../../components/FileUpload";
 import MapIcon from "@material-ui/icons/PinDrop";
-import axios from "axios";
-import { ApiRoutes } from "../../../../config/ApiRoutes";
 import { HoardingService } from "../../../../services/HoardingService";
 import { DocumentService } from "../../../../services/DocumentService";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
@@ -35,8 +33,9 @@ import SubmitDialog from "../../../../components/SubmitDialog";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../../../components/AddressField";
 import { ErrorToString } from "../../../../utils/ErrorUtil";
-import AuthManager from "../../../../utils/AuthManager";
 import { CategoryServices } from "../../../../services/CategoryServices";
+import AuthManager from "../../../../utils/AuthManager";
+
 
 const style = {
   root: {
@@ -135,7 +134,7 @@ class NewHoardingForm extends Component {
         const { messages, status } = res.data;
 
         if (status) {
-           res.data.data.area_categories.forEach(function(item) {
+          res.data.data.area_categories.forEach(function(item) {
             let lc = {
               value: item.id,
               label: item.name
@@ -166,7 +165,7 @@ class NewHoardingForm extends Component {
 
   invalid = () => {
     return this.state.prestine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
-      || !!this.state.displayTypeError || !!this.state.coordinateError
+      || !!this.state.displayTypeError || !!this.state.coordinateError;
   };
 
   handleOfficeSelect = (identifier, value) => {
@@ -174,10 +173,10 @@ class NewHoardingForm extends Component {
       [identifier]: value
     });
   };
-  doClear=(e)=>{
+  doClear = (e) => {
     const { history } = this.props;
-    history.reload()
-  }
+    history.reload();
+  };
 
   doSubmit = () => {
     if (this.invalid()) {
@@ -395,7 +394,7 @@ class NewHoardingForm extends Component {
                                           checked={this.state.bothSide}
                                           required={true}/>
                                       }
-                                      label={"Both side?"}/>
+                                      label={"Both Sided?"}/>
                   </FormControl>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -417,12 +416,12 @@ class NewHoardingForm extends Component {
                     helperText={this.state.displayTypeError}
                     onBlur={this.handleSelectBlur.bind(this, "displayType")}
                     variant={"outlined"}
-                    placeHolder={"Display type"}
+                    placeHolder={"Type of Display"}
                     margin={"dense"}
                     onChange={this.handleOfficeSelect.bind(this, "displayType")}
                     fullWidth={true}
                     options={this.state.displayTypes}
-                    label={HoardingApplicationFormModel.DISPLAY_TYPE}
+                    label={"Type of Display"}
                   />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -435,7 +434,7 @@ class NewHoardingForm extends Component {
                     required={true}
                     onChange={e => {
                     }}
-                    onClick={()=>this.setState({openMap:true})}
+                    onClick={() => this.setState({ openMap: true })}
                     helperText={this.state.coordinateError}
                     error={Boolean(this.state.coordinateError)}
                     label={"Coordinate"}
@@ -460,7 +459,7 @@ class NewHoardingForm extends Component {
                              value={this.state.landLord}
                              fullWidth={true}
                              variant={"outlined"}
-                             label={"Name of the landlord/land owner"}
+                             label={"Name of the Landlord/Land Owner"}
                              onChange={this.handleChange.bind(this)}
                   />
                 </GridItem>
@@ -537,8 +536,8 @@ class NewHoardingForm extends Component {
             longitude: lng
           });
           this.setState({
-            coordinate: `Latitude: ${lat} , Longitude: ${lng}`,
-          })
+            coordinate: `Latitude: ${lat} , Longitude: ${lng}`
+          });
         }} fullScreen={true}
                     isMarkerShown={true}/>
 
