@@ -19,7 +19,7 @@ const advertiser = (props) => (
         </CardHeader>
         <CardBody>
             <GridContainer justify="center">
-                <GridItem xs={12} sm={12} md={4} lg={3} lg={3}>
+                <GridItem xs={12} sm={12} md={4} lg={3}>
                     <Card pricing raised>
                         <CardBody pricing>
                             <h6 className={props.classes.cardCategory}>Advertiser Registration</h6>

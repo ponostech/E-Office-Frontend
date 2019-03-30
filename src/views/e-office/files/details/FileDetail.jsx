@@ -2,11 +2,14 @@ import React, {Component} from "react";
 import {withStyles} from '@material-ui/core/styles';
 
 import Notesheet from "../notesheet/Notesheet";
-import {Grid, Card, CardHeader, Divider} from "@material-ui/core";
+import {Card, CardHeader, Divider, Grid} from "@material-ui/core";
 import CreateNoteButton from "../notesheet/CreateNoteButton";
 import CreateNoteDialog from "../CreateNoteDialog";
 import FileMenu from "./FileMenu";
 import CardBody from "../../../../components/Card/CardBody";
+
+import SweetAlert from "../../../common/SweetAlert";
+import Heading from "../../../../components/Heading/Heading";
 
 const styles = theme => ({
     container: {
@@ -18,7 +21,7 @@ const styles = theme => ({
 });
 
 class FileDetail extends Component {
-    state= {
+    state = {
         openNote: false,
     };
     openNoteDialog = () => {
@@ -27,12 +30,20 @@ class FileDetail extends Component {
     closeNoteDialog = () => {
         this.setState({openNote: false});
     };
+
     render() {
         const {classes} = this.props;
         return (
             <Grid container className={classes.container}>
                 <Card>
-                    <CardHeader title="Subject: Matter relating to IT Cell" subheader="File No. AMC/ASF/ASD"/>
+                    <SweetAlert/>
+                    <Heading
+                        textAlign="center"
+                        title="Subject: Matter relating to IT Cell"
+                        category={
+                            <span>File No. AMC/ASF/ASD</span>
+                        }
+                    />
                     <CardBody>
                         <FileMenu/>
                         <CreateNoteButton click={this.openNoteDialog}/>
