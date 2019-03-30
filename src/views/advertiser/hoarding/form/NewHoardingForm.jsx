@@ -36,6 +36,7 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../../../components/AddressField";
 import { ErrorToString } from "../../../../utils/ErrorUtil";
 import AuthManager from "../../../../utils/AuthManager";
+import { CategoryServices } from "../../../../services/CategoryServices";
 
 const style = {
   root: {
@@ -96,6 +97,7 @@ class NewHoardingForm extends Component {
     this.localCouncilservice = new LocalCouncilService();
     this.hoardingService = new HoardingService();
     this.documentService = new DocumentService();
+    this.categoryService = new CategoryServices();
   }
 
 
@@ -128,12 +130,13 @@ class NewHoardingForm extends Component {
 
   fetchCategory = () => {
     let categories = [];
-    axios.get(ApiRoutes.WARDS)
+    this.categoryService.get()
       .then(res => {
-        const { data } = res;
         console.log(res);
-        if (data.status) {
-          data.data.wards.forEach(function(item) {
+        const { messages, status } = res.data;
+
+        if (status) {
+           res.data.data.area_categories.forEach(function(item) {
             let lc = {
               value: item.id,
               label: item.name
@@ -144,7 +147,7 @@ class NewHoardingForm extends Component {
             categories: categories
           });
         } else {
-          this.setState({ hasError: true });
+          this.setState({ errorMessage: messages });
         }
       })
       .catch(err => {
@@ -178,11 +181,10 @@ class NewHoardingForm extends Component {
   }
 
   doSubmit = () => {
-    console.log(AuthManager.getUser())
-    // if (this.invalid()) {
-    //   this.setState({ errorMessage: "Please fill the required fields" });
-    //   return;
-    // }
+    if (this.invalid()) {
+      this.setState({ errorMessage: "Please fill the required fields" });
+      return;
+    }
     this.setState({ submit: true });
     this.hoardingService.create(this.state)
       .then(res => {
