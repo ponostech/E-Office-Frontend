@@ -29,7 +29,7 @@ class AdvertiserDashboard extends Component {
             <Route exact path={OfficeRoutes.ADVERTISER_KIOSK} component={KioskLists}/>
 
 
-            <Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>
+            {/*<Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>*/}
             <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>
 
             <Route exact path={OfficeRoutes.ADVERTISER_DASHBOARD} component={Dashboard}/>

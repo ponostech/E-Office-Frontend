@@ -25,9 +25,10 @@ import SubmitDialog from "../../components/SubmitDialog";
 import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import { ErrorToString } from "../../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
 import AddressField from "../../components/AddressField";
 import OfficeSelect from "../../components/OfficeSelect";
+import ApplicationSubmitSuccessDialog from "../../components/ApplicationSubmitSuccessDialog";
 
 const style = {
   root: {
@@ -62,16 +63,16 @@ class AdvertiserForm extends Component {
       confirmPasswordError: "",
       addressError: "",
       types: [
-        {value:"individual",label:"Individual"},
-        {value:"firm",label:"Firm"},
-        {value:"group",label:"Group(NGO)"},
+        { value: "individual", label: "Individual" },
+        { value: "firm", label: "Firm" },
+        { value: "group", label: "Group(NGO)" }
       ],
 
-      success: false,
       error: false,
       //dialog variable
       submit: false,
       errorMessage: "",
+      successMessage:"",
 
       prestine: true
     };
@@ -89,6 +90,7 @@ class AdvertiserForm extends Component {
         }
       })
       .catch(err => {
+        console.log(err);
         this.setState({ errorMessage: err.toString() });
       });
 
@@ -99,42 +101,38 @@ class AdvertiserForm extends Component {
   };
 
   isInvalid = () => {
-    return this.state.prestine || !!this.state.nameError || !!this.state.emailError || !!this.state.addressError || !!this.state.emailError
-      || !!this.state.emailError || !!this.state.passwordError;
+    return this.state.prestine || !!this.state.nameError || !!this.state.emailError || !!this.state.addressError || !!this.state.passwordError || !!this.state.confirmPasswordError
+      || !!this.state.phoneError || this.state.signature === undefined || this.state.type === undefined;
   };
 
-  submit = () => {
+  submit = (e) => {
+
+    if (this.isInvalid()) {
+      this.setState({ errorMessage: "Please enter all the required fields" });
+      return;
+    }
     let data = {
       name: this.state.name,
-      type: this.state.type,
+      type: this.state.type.value,
       phone_no: this.state.phone,
       email: this.state.email,
       password: this.state.password,
       address: this.state.address,
       registered: 1,
-      signature: this.state.signature,
+      signature: this.state.signature.path,
       documents: this.state.documentsUpload
     };
-    if (this.isInvalid()) {
-      this.setState({ errorMessage: "Please enter all required fields" });
-      return;
-    }
     this.setState({ submit: true });
     axios.post(ApiRoutes.CREATE_ADVERTISER, data)
       .then(res => {
         console.log(res);
         if (res.data.status) {
           this.setState({
-            success: true
+            successMessage: ArrayToString(res.data.messages)
           });
         } else {
-          if (res.data.validation_error) {
-            const msg = ErrorToString(res.data.messages);
-            //TODO::parse validation error message
-            this.setState({ errorMessage: msg });
-          } else {
-
-          }
+          const msg = ErrorToString(res.data.messages);
+          this.setState({ errorMessage: msg });
         }
 
       })
@@ -147,29 +145,9 @@ class AdvertiserForm extends Component {
       });
   };
 
-  handleClick = (e) => {
-    const { name } = e.target;
-    switch (name) {
-      case "submit":
-        this.submit();
-        break;
-      case "cancel":
-        this.setState({
-          name: "",
-          type: "Individual",
-          email: "",
-          phone: "",
-          password: "",
-          confirmPassword: "",
-          address: "",
-          agree: false,
-          showPassword: false
-        });
-        break;
-      default:
-        break;
-    }
-  };
+  clear=()=>{
+    window.location.reload();
+  }
 
   handleRequired = (e) => {
     const { name, value } = e.target;
@@ -204,17 +182,16 @@ class AdvertiserForm extends Component {
         break;
     }
   };
-  handleSelectBlur = (id,e)=>{
+  handleSelectBlur = (id, e) => {
     if (id === "type") {
-      this.state.type===undefined?this.setState({typeError:"Type of applicant is required"}):this.setState({typeError:""})
+      this.state.type === undefined ? this.setState({ typeError: "Type of applicant is required" }) : this.setState({ typeError: "" });
     }
-  }
+  };
   handleOfficeSelect = (identifier, value) => {
     this.setState({
       [identifier]: value
     });
   };
-
 
   handleChange = e => {
     const { name, value } = e.target;
@@ -232,7 +209,7 @@ class AdvertiserForm extends Component {
         value !== this.state.password ? this.setState({ confirmPasswordError: AdvertiserViewModel.MATCH_PASSWORD }) : this.setState({ confirmPasswordError: "" });
         break;
       case "phone":
-        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: AdvertiserViewModel.PHONE_ERROR }) : this.setState({ phoneError: "" });
+        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: "Phone number must be 10 digit number" }) : this.setState({ phoneError: "" });
         break;
       default:
         break;
@@ -257,7 +234,7 @@ class AdvertiserForm extends Component {
             <CardContent>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
-                  <Typography variant={"headline"}>Form of Application for registered Advertiser</Typography>
+                  <Typography variant={"h5"}>Form of Application for registered Advertiser</Typography>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <Divider style={{ marginBottom: 10, marginTop: 10 }}/>
@@ -278,7 +255,7 @@ class AdvertiserForm extends Component {
                     placeholder={"Fullname"}
                   />
                 </GridItem>
-                <GridItem className={classes.root}  xs={12} sm={12} md={6}>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <OfficeSelect value={this.state.type}
                                 label={"Type of applicant"}
                                 name={"type"}
@@ -332,6 +309,7 @@ class AdvertiserForm extends Component {
                     error={Boolean(this.state.passwordError)}
                     helperText={this.state.passwordError}
                     type={this.state.showPassword ? "text" : "password"}
+                    tabIndex={-1}
                     name={"password"}
                     margin={"dense"}
                     required={true}
@@ -341,6 +319,7 @@ class AdvertiserForm extends Component {
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
+                            tabIndex={-1}
                             aria-label="Toggle password visibility"
                             onClick={this.handleClickShowPassword.bind(this)}
                           >
@@ -366,6 +345,7 @@ class AdvertiserForm extends Component {
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
+                            tabIndex={-1}
                             aria-label="Toggle password visibility"
                             onClick={this.handleClickShowPassword.bind(this)}
                           >
@@ -402,7 +382,12 @@ class AdvertiserForm extends Component {
                       label: "Address"
                     }}
                     onPlaceSelect={(place) => {
-                      this.setState({ address: place.formatted_address });
+                      if (place) {
+                        let name = place.name;
+                        let address = place.formatted_address;
+                        let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                        this.setState({ address: complete_address });
+                      }
                     }}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -418,8 +403,8 @@ class AdvertiserForm extends Component {
                   }}/>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
-                  <Typography style={{ marginTop: 10, marginBottom: 10 }} variant={"headline"}>
-                    Upload Document
+                  <Typography style={{ marginTop: 10, marginBottom: 10 }} variant={"h5"}>
+                    Upload Document(s)
                   </Typography>
                 </GridItem>
 
@@ -455,10 +440,12 @@ class AdvertiserForm extends Component {
             <CardActions>
               <GridContainer justify={"flex-end"}>
                 <GridItem>
-                  <Button name={"submit"} disabled={!this.state.agree} onClick={this.handleClick.bind(this)}
+                  <Button name={"submit"} disabled={!this.state.agree} onClick={this.submit.bind(this)}
                           variant={"outlined"} color={"primary"}> Submit</Button>
-                  {" "}
-                  <Button name={"cancel"} onClick={this.handleClick.bind(this)} variant={"outlined"}
+                  {"\u00A0 "}
+                  {"\u00A0 "}
+                  {"\u00A0 "}
+                  <Button name={"cancel"} onClick={this.clear.bind(this)} variant={"outlined"}
                           color={"secondary"}> Reset</Button>
                 </GridItem>
               </GridContainer>
@@ -466,8 +453,15 @@ class AdvertiserForm extends Component {
           </Card>
 
         </GridItem>
-        <OfficeSnackbar variant={"success"} open={this.state.success} onClose={(e) => this.setState({ success: "" })}
-                        message={"Your application is submitted"}/>;;
+        <ApplicationSubmitSuccessDialog
+          title={"Your application is submitted"}
+          open={Boolean(this.state.successMessage)}
+                                     message={this.state.successMessage}
+                                     onClose={(e)=>{
+                                       this.setState({successMessage:""})
+                                        this.clear()
+                                     }}/>
+
         <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
                         onClose={(e) => this.setState({ errorMessage: "" })}
                         message={this.state.errorMessage}/>

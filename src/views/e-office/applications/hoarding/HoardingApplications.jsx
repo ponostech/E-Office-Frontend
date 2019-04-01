@@ -75,7 +75,7 @@ class HoardingApplications extends React.Component {
                     sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
-                            <ButtonBase>
+                            <div>
                                 <IconButton className={classes.button} color="primary" size="small"
                                             aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
                                     <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
@@ -84,7 +84,7 @@ class HoardingApplications extends React.Component {
                                             size="small" onClick={this.openAssignment.bind(this, value)}>
                                     <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
                                 </IconButton>
-                            </ButtonBase>
+                            </div>
                         );
                     }
                 }

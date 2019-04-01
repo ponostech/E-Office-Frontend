@@ -61,21 +61,21 @@ class AuthNavbar extends React.Component {
                     </NavLink>
                 </ListItem>
 
-                <ListItem className={classes.listItem}>
-                    <NavLink
-                        to={OfficeRoutes.APPLY_ADVERTISER}
-                        className={cx(classes.navLink, {
-                            [classes.navLinkActive]: this.activeRoute(OfficeRoutes.APPLY_ADVERTISER)
-                        })}
-                    >
-                        <PersonAdd className={classes.listItemIcon}/>
-                        <ListItemText
-                            primary={"Register Advertiser"}
-                            disableTypography={true}
-                            className={classes.listItemText}
-                        />
-                    </NavLink>
-                </ListItem>
+                {/*<ListItem className={classes.listItem}>*/}
+                {/*    <NavLink*/}
+                {/*        to={OfficeRoutes.APPLY_ADVERTISER}*/}
+                {/*        className={cx(classes.navLink, {*/}
+                {/*            [classes.navLinkActive]: this.activeRoute(OfficeRoutes.APPLY_ADVERTISER)*/}
+                {/*        })}*/}
+                {/*    >*/}
+                {/*        <PersonAdd className={classes.listItemIcon}/>*/}
+                {/*        <ListItemText*/}
+                {/*            primary={"Register Advertiser"}*/}
+                {/*            disableTypography={true}*/}
+                {/*            className={classes.listItemText}*/}
+                {/*        />*/}
+                {/*    </NavLink>*/}
+                {/*</ListItem>*/}
 
                 <ListItem className={classes.listItem}>
                     <NavLink
@@ -93,7 +93,7 @@ class AuthNavbar extends React.Component {
                     </NavLink>
                 </ListItem>
 
-                <Button onClick={(e) => history.push(OfficeRoutes.LOGIN)}
+                <Button onClick={(e) => history.push(OfficeRoutes.ADVERTISER_LOGIN)}
                         style={{marginleft: 10, paddingLeft: 20, paddingRight: 20}} size={"small"} color={"primary"}
                         variant={"extendedFab"}>
                     Login <LoginIcon fontSize={"small"}/>
@@ -114,7 +114,7 @@ class AuthNavbar extends React.Component {
                     <Hidden mdUp>
                         <div className={classes.flex}>
                             <Button href="#" className={classes.title} color="inherit">
-                                AMC
+                                AIZAWL MUNICIPAL CORP0RATION
                             </Button>
                         </div>
                     </Hidden>

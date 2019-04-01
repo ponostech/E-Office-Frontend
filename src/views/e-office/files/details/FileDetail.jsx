@@ -36,7 +36,7 @@ class FileDetail extends Component {
         return (
             <Grid container className={classes.container}>
                 <Card>
-                    <SweetAlert/>
+                    {/*<SweetAlert/>*/}
                     <Heading
                         textAlign="center"
                         title="Subject: Matter relating to IT Cell"

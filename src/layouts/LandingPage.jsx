@@ -21,6 +21,7 @@ import AdvertiserRegistrationSuccess from "../views/advertiser/AdvertiserRegistr
 import BannerApplicationSuccess from "../views/banner/BannerApplicationSuccess";
 import ShopLicenseRenewalForm from "../views/shop/ShopLicenseRenewalForm";
 import HotelLicenseApplicationForm from "../views/hotel/HotelLicenseApplicationForm";
+import { Button } from "@material-ui/core";
 
 class LandingPage extends Component {
 
@@ -32,9 +33,8 @@ class LandingPage extends Component {
     render() {
         const {classes, ...rest} = this.props;
         return (
-            <div>
-                <AuthNavbar color={"primary"} brandText="E-AMC" OfficeRoutes={OfficeRoutes} {...rest} />
-                <div className={classes.wrapper} ref="wrapper">
+            <div className={classes.wrapper}>
+                <AuthNavbar color={"primary"} brandText="AIZAWL MUNICIPAL CORP0RATION" OfficeRoutes={OfficeRoutes} {...rest} />
                     <div
                         className={classes.fullPage}
                     >
@@ -63,10 +63,8 @@ class LandingPage extends Component {
                             </Switch>
                         </div>
                     </div>
-                    <Footer white/>
-                </div>
+                    <Footer/>
             </div>
-
 
         );
     }

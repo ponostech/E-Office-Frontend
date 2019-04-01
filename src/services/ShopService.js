@@ -23,7 +23,7 @@ export class ShopService {
       pan_no: state.panNo,
       premised: state.premised,
       display_type: state.displayType,
-      signature: [state.applicantData.signature],
+      signature: [state.signature],
       documents: state.uploadDocuments
     };
     try {

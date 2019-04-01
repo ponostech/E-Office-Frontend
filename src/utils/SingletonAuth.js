@@ -1,5 +1,6 @@
 
-let instance = null;
+var instance = null;
+var user=null;
 
 export default class SingletonAuth {
   constructor() {
@@ -8,12 +9,13 @@ export default class SingletonAuth {
       instance = this;
     }
 
-    this.currentUser = null;
+    this.currentUser = user;
     return instance;
   }
 
   setCurrentUser(currentUser){
-    this.currentUser=currentUser
+    this.currentUser=currentUser;
+    user=currentUser
   }
   getCurrentUser() {
     return this.currentUser
