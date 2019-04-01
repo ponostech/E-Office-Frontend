@@ -1,5 +1,5 @@
-  export const TITLE = "Hoarding Application form";
-  export const SUBHEADER = "Hoarding Application form";
+  export const TITLE = "APPLICATION FOR ERECTION OF NEW HOARDING/ADVERTISEMENT";
+  export const SUBTITLE = "[Regulation 25 of the AMC Display of Advertisement and Hoardings Regulations 2013]";
 
   export const CATEGORY = "Area's category";
   export const LOCAL_COUNCILS = "Local councils";

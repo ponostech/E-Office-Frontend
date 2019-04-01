@@ -35,6 +35,7 @@ import AddressField from "../../../../components/AddressField";
 import { ErrorToString } from "../../../../utils/ErrorUtil";
 import { CategoryServices } from "../../../../services/CategoryServices";
 import AuthManager from "../../../../utils/AuthManager";
+import SingletonAuth from "../../../../utils/SingletonAuth";
 
 
 const style = {
@@ -100,6 +101,8 @@ class NewHoardingForm extends Component {
 
 
   componentDidMount() {
+    let currentUser =  new SingletonAuth().getCurrentUser();
+    console.log(currentUser)
     this.fetchLocalCouncil();
     this.fetchCategory();
     this.fetchDocument();
@@ -137,7 +140,7 @@ class NewHoardingForm extends Component {
           res.data.data.area_categories.forEach(function(item) {
             let lc = {
               value: item.id,
-              label: item.name
+              label: `(${item.roads})`
             };
             categories.push(lc);
           });
@@ -279,7 +282,8 @@ class NewHoardingForm extends Component {
             <CardContent>
               <GridContainer>
                 <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                  <Typography variant={"headline"}>{"Application form for new hoarding advertisement"}</Typography>
+                  <Typography variant={"h5"}>{HoardingApplicationFormModel.TITLE}</Typography>
+                  <Typography variant={"subtitle1"}>{HoardingApplicationFormModel.SUBTITLE}</Typography>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
@@ -482,7 +486,7 @@ class NewHoardingForm extends Component {
                 </GridItem>
                 {/*//Document upload*/}
                 <GridItem xs={12} sm={12} md={12}>
-                  <Typography variant={"headline"}>Upload Document</Typography>
+                  <Typography variant={"headline"}>Upload Documents</Typography>
                 </GridItem>
                 {this.state.documents.map((doc, index) => {
                   return <GridItem className={classes.root} key={index} xs={12} sm={12} md={6}>
@@ -522,7 +526,6 @@ class NewHoardingForm extends Component {
           </Card>
         </GridItem>
         <Divider/>
-
 
         <OfficeSnackbar variant={"success"} open={!!this.state.success}
                         message={this.state.success}

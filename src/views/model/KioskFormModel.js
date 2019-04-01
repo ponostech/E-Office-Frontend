@@ -1,7 +1,6 @@
 export class KioskFormModel {
-  static TITLE = "Application form of new kiosk advertisement";
-  static SUBHEADER = "";
-
+  static TITLE = "APPLICATION FOR ERECTION OF NEW HOARDING/ADVERTISEMENT";
+  static SUBTITLE = "[Regulation 25 of the AMC Display of Advertisement and Hoardings Regulations 2013]";
   static CATEGORY = "Area's category";
   static LOCAL_COUNCILS = "Local councils";
   static ROAD_DETAIL = "Road Details";
