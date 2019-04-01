@@ -1,149 +1,173 @@
-import React from 'react';
-// @material-ui/core components
-import withStyles from "@material-ui/core/styles/withStyles";
-// @material-ui/icons
-import {Airplay, HelpOutline, Person, StoreMallDirectory, Dock, Gradient} from "@material-ui/icons";
-// core components
-import GridItem from "../../../components/Grid/GridItem.jsx";
-import NavPills from "../../../components/NavPills/NavPills.jsx";
-import Card from "../../../components/Card/Card.jsx";
+import Card from "../../../components/Card/Card";
+import CardBody from "../../../components/Card/CardBody";
+import Icon from "@material-ui/core/Icon";
+import Button from "../../../components/CustomButtons/Button";
+import { OfficeRoutes } from "../../../config/routes-constant/OfficeRoutes";
+import React from "react";
+import StoreMallDirectory from "@material-ui/icons/StoreMallDirectory";
 
-import ShopNavPillContent from "./Service/Shop";
-import BannerNavPillContent from "./Service/Banner";
-import KioskNavPillContent from "./Service/Kiosk";
-import HoardingNavPillContent from "./Service/Hoarding";
-import AdvertiserNavPillContent from "./Service/Advertiser";
+import { Airplay, Gradient } from "@material-ui/icons";
+import CheckIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import Divider from "@material-ui/core/es/Divider";
+import { TextField } from "@material-ui/core";
 
-import {
-    cardTitle,
-    defaultFont,
-    grayColor,
-    hexToRgb,
-    whiteColor
-} from "../../../assets/jss/material-dashboard-pro-react.jsx";
-import LicenseValidity from "./Service/LicenseValidity";
 
-const styles = {
-    cardTitle,
-    pageSubcategoriesTitle: {
-        color: "#3C4858",
-        textDecoration: "none",
-        textAlign: "center"
-    },
-    noTopMargin: {
-        margin: "0",
-        zDepthShadows: "none"
-    },
-    title: {
-        ...defaultFont,
-        color: whiteColor,
-        marginTop: "5vh",
-        marginBottom: "30px",
-        textAlign: "center"
-    },
-    description: {
-        fontSize: "18px",
-        color: whiteColor,
-        textAlign: "center"
-    },
-    cardTitleWhite: {
-        ...cardTitle,
-        color: whiteColor + " !important"
-    },
-    cardCategory: {
-        color: grayColor[0],
-        marginTop: "10px"
-    },
-    cardCategoryWhite: {
-        color: whiteColor,
-        marginTop: "10px"
-    },
-    icon: {
-        color: "rgba(" + hexToRgb(whiteColor) + ", 0.76)",
-        margin: "10px auto 0",
-        width: "130px",
-        height: "130px",
-        border: "1px solid " + grayColor[11],
-        borderRadius: "50%",
-        lineHeight: "174px",
-        "& svg": {
-            width: "55px",
-            height: "55px"
-        },
-        "& .fab,& .fas,& .far,& .fal,& .material-icons": {
-            width: "55px",
-            fontSize: "55px"
-        }
-    },
-    iconWhite: {
-        color: whiteColor
-    },
-    marginTop30: {
-        marginTop: "30px"
-    }
+const handleCheck = (e) => {
+
 };
 
-const services = (props) => {
-    const {classes} = props;
-    return (
-        <GridItem xs={10} sm={10} md={10}>
-            <Card style={styles.noTopMargin}>
-                <h3 className={classes.pageSubcategoriesTitle}>
-                    Services Provided by Aizawl Municipal Corporation
-                </h3>
-                <div className={classes.container}>
-                    <NavPills
-                        xs={10} sm={6} md={6}
-                        color="primary"
-                        alignCenter
-                        tabs={[
-                            {
-                                tabButton: "Shop License",
-                                tabIcon:StoreMallDirectory,
-                                tabContent: (
-                                    <ShopNavPillContent classes={classes} click={props.click}/>
-                                )
-                            },
-                            {
-                                tabButton: "Banner/Poster",
-                                tabIcon: Gradient,
-                                tabContent: (
-                                    <BannerNavPillContent classes={classes} click={props.click}/>
-                                )
-                            },
-                            {
-                                tabButton: "Kiosk",
-                                tabIcon: Dock,
-                                tabContent: (
-                                    <KioskNavPillContent classes={classes} click={props.click}/>
-                                )
-                            }, {
-                                tabButton: "Hoarding",
-                                tabIcon: Airplay,
-                                tabContent: (
-                                    <HoardingNavPillContent classes={classes} click={props.click}/>
-                                )
-                            },
-                            {
-                                tabButton: "Advertiser",
-                                tabIcon: Person,
-                                tabContent: (
-                                    <AdvertiserNavPillContent classes={classes} click={props.click}/>
-                                )
-                            },
-                            {
-                                tabButton: "Check License Validity",
-                                tabIcon: HelpOutline,
-                                tabContent: (
-                                    <LicenseValidity classes={classes}/>
-                                )
-                            }
-                        ]}
-                    />
-                </div>
-            </Card>
-        </GridItem>
-    )
+export const AdvertiserRegistration = (props) => {
+
+  return (
+    <div className={props.classes.card}>
+
+      <Card pricing raised>
+        <CardBody pricing>
+          <h3 className={props.classes.cardCategory}>Advertiser Registration</h3>
+          <div className={props.classes.icon}>
+            <Icon color="primary">person</Icon>
+          </div>
+          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+            Advertiser License
+          </h3>
+          <p className={props.classes.cardDescription}>
+            Click the button below to get the license of advertiser
+          </p>
+          <Button color="primary" round
+                  onClick={props.click(OfficeRoutes.APPLY_ADVERTISER)}>
+            New Registration
+          </Button>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};
+export const ApplyBanner = (props) => {
+  return (
+    <div className={props.classes.card}>
+
+      <Card pricing raised >
+        <CardBody pricing>
+          <h3 className={props.classes.cardCategory}>Banner and Poster</h3>
+          <div className={props.classes.icon}>
+            <Gradient color="primary"/>
+          </div>
+          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+            Click button Below
+          </h3>
+          <p className={props.classes.cardDescription}>
+
+          </p>
+          <Button color="primary" round
+                  onClick={props.click(OfficeRoutes.APPLY_BANNER)}>
+            Apply for Banner
+          </Button>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};
+export const ShopLicensing = (props) => {
+  return (
+    <div className={props.classes.card}>
+
+      <Card pricing raised >
+        <CardBody pricing>
+          <h3 className={props.classes.cardCategory}> Shop Licensing</h3>
+          <div className={props.classes.icon}>
+            <StoreMallDirectory color="primary"/>
+          </div>
+          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+            Application for Shop Licensing
+          </h3>
+          <p className={props.classes.cardDescription}>
+            Click the button below to get a shop License
+          </p>
+          <Button color="primary"
+                  round
+                  onClick={props.click(OfficeRoutes.APPLY_SHOP_LICENSE)}>
+            Apply for Shop Licensing
+          </Button>
+        </CardBody>
+      </Card>
+    </div>
+  );
 };
 
-export default withStyles(styles)(services);
+export const ApplyHoarding = (props) => {
+  return (
+    <div className={props.classes.card}>
+
+      <Card pricing raised >
+
+        <CardBody pricing>
+          <h3 className={props.classes.cardCategory}>Hoarding</h3>
+          <div className={props.classes.icon}>
+            <Airplay color="primary"/>
+          </div>
+          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+            Click button Below
+          </h3>
+          <p className={props.classes.cardDescription}>
+          </p>
+          <Button color="primary" round
+                  onClick={props.click(OfficeRoutes.ADVERTISER_LOGIN)}>
+            Apply for New Hoarding
+          </Button>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};
+export const ApplyKiosk = (props) => {
+  return (
+    <div className={props.classes.card}>
+
+      <Card pricing raised >
+
+        <CardBody pricing>
+          <h3 className={props.classes.cardCategory}> Kiosk</h3>
+          <div className={props.classes.icon}>
+            <Airplay color="primary"/>
+          </div>
+          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+            Click button Below
+          </h3>
+          <p className={props.classes.cardDescription}>
+          </p>
+          <Button color="primary" round
+                  onClick={props.click(OfficeRoutes.ADVERTISER_LOGIN)}>
+            Apply for New Hoarding
+          </Button>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};
+
+export const ApplyAdvertiser = (props) => {
+  return (
+    <div className={props.classes.card}>
+
+      <Card pricing raised >
+
+        <CardBody pricing>
+          <h3 className={props.classes.cardCategory}>Advertiser Registration</h3>
+          <div className={props.classes.icon}>
+            <Icon color="primary">person</Icon>
+          </div>
+          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+            Advertiser License
+          </h3>
+          <p className={props.classes.cardDescription}>
+            Click the button below to get the license of advertiser
+          </p>
+          <Button color="primary" round
+                  onClick={props.click(OfficeRoutes.APPLY_ADVERTISER)}>
+            New Registration
+          </Button>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};

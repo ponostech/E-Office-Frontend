@@ -15,7 +15,7 @@ import NewKioskForm from "../views/advertiser/kiosk/form/NewKioskForm";
 class AdvertiserDashboard extends Component {
   render() {
     return (
-      <GridContainer justify={"center"} style={{ background: "#fff" }}>
+      <GridContainer justify={"center"} >
         <GridItem xs={12} sm={12} md={12}>
           <AdvertiserHeader color={"primary"}/>
         </GridItem>
