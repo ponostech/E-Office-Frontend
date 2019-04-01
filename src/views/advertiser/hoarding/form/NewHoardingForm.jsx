@@ -34,7 +34,6 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../../../components/AddressField";
 import { ErrorToString } from "../../../../utils/ErrorUtil";
 import { CategoryServices } from "../../../../services/CategoryServices";
-import AuthManager from "../../../../utils/AuthManager";
 import SingletonAuth from "../../../../utils/SingletonAuth";
 
 
@@ -77,7 +76,7 @@ class NewHoardingForm extends Component {
 
       localCouncils: [],
       categories: [],
-      displayTypes: [
+      displayTypes:[
         { value: "ILLUMINATED", label: "ILLUMINATED" },
         { value: "NON-ILLUMINATED", label: "NON ILLUMINATED" },
         { value: "FLICKERING_LIGHT", label: "FLICKERING LIGHT" }
@@ -101,8 +100,8 @@ class NewHoardingForm extends Component {
 
 
   componentDidMount() {
-    let currentUser =  new SingletonAuth().getCurrentUser();
-    console.log(currentUser)
+    let currentUser = new SingletonAuth().getCurrentUser();
+    console.log(currentUser);
     this.fetchLocalCouncil();
     this.fetchCategory();
     this.fetchDocument();
@@ -133,16 +132,23 @@ class NewHoardingForm extends Component {
     let categories = [];
     this.categoryService.get()
       .then(res => {
-        console.log(res);
         const { messages, status } = res.data;
-
         if (status) {
-          res.data.data.area_categories.forEach(function(item) {
-            let lc = {
-              value: item.id,
-              label: `(${item.roads})`
+          res.data.data.area_categories.forEach(function(cat) {
+            const roads=cat.roads;
+            let roadOptions = [];
+            roads.forEach((road)=> {
+              let item={
+                label:road,
+                value:cat.id
+              }
+              roadOptions.push(item)
+            });
+            let c = {
+              label: `(${cat.name})`,
+              options:roadOptions
             };
-            categories.push(lc);
+            categories.push(c);
           });
           this.setState({
             categories: categories
@@ -486,7 +492,7 @@ class NewHoardingForm extends Component {
                 </GridItem>
                 {/*//Document upload*/}
                 <GridItem xs={12} sm={12} md={12}>
-                  <Typography variant={"headline"}>Upload Documents</Typography>
+                  <Typography variant={"headline"}>Upload Document(s)</Typography>
                 </GridItem>
                 {this.state.documents.map((doc, index) => {
                   return <GridItem className={classes.root} key={index} xs={12} sm={12} md={6}>

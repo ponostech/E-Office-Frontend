@@ -6,7 +6,16 @@ import { cardTitle, defaultFont, grayColor, hexToRgb, whiteColor } from "../../a
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Card from "../../components/Card/Card";
 import GridItem from "../../components/Grid/GridItem";
-import { AdvertiserRegistration, ApplyAdvertiser, ApplyBanner, ApplyHoarding, ApplyKiosk } from "./Services/Services";
+import {
+  ApplyAdvertiser,
+  ApplyBanner,
+  ApplyHoarding,
+  ApplyKiosk,
+  BuildingPermission,
+  CheckLicense,
+  Grievance,
+  ShopLicensing
+} from "./Services/Services";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import PrevIcon from "@material-ui/icons/ArrowLeft";
@@ -122,24 +131,22 @@ class HomePage extends Component {
     const { classes } = this.props;
     return (
       <GridContainer justify="center">
-        <GridItem xs={10} sm={10} md={12}>
+        <GridItem xs={12} sm={12} md={10}>
           <Card style={styles.noTopMargin}>
             <h3 className={classes.pageSubcategoriesTitle}>
               Services Provided by Aizawl Municipal Corporation
             </h3>
             <Slider {...settings}>
-              <AdvertiserRegistration classes={classes} click={this.handleLink}/>
-              <ApplyBanner classes={classes} click={this.handleLink}/>
+              <BuildingPermission classes={classes} click={this.handleLink}/>
               <ApplyHoarding classes={classes} click={this.handleLink}/>
               <ApplyKiosk classes={classes} click={this.handleLink}/>
+              <ApplyBanner classes={classes} click={this.handleLink}/>
+              <ShopLicensing classes={classes} click={this.handleLink}/>
               <ApplyAdvertiser classes={classes} click={this.handleLink}/>
-
+              <Grievance classes={classes} click={this.handleLink}/>
+              <CheckLicense classes={classes} click={this.handleLink}/>
             </Slider>
           </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={12}>
-          <p>Another item</p>
-          <p>Another item</p>
         </GridItem>
 
       </GridContainer>
