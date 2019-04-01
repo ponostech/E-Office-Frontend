@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import GridContainer from "../advertiser/AdvertiserRegistrationSuccess";
 import { Button, Divider, Typography } from "@material-ui/core";
-import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
+import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import GridItem from "../../components/Grid/GridItem";
 import Card from "../../components/Card/Card";
 import CardBody from "../../components/Card/CardBody";

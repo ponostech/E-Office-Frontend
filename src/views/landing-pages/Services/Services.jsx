@@ -2,7 +2,7 @@ import Card from "../../../components/Card/Card";
 import CardBody from "../../../components/Card/CardBody";
 import Icon from "@material-ui/core/Icon";
 import Button from "../../../components/CustomButtons/Button";
-import { OfficeRoutes } from "../../../config/routes-constant/OfficeRoutes";
+import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
 import React from "react";
 import StoreMallDirectory from "@material-ui/icons/StoreMallDirectory";
 

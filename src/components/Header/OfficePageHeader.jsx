@@ -16,7 +16,7 @@ import {Grid} from "@material-ui/core";
 import {IconButton} from "@material-ui/core";
 import Button from "../CustomButtons/Button";
 
-import {OfficeRoutes} from "../../config/routes-constant/OfficeRoutes";
+import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import TopMenu from "./E-Office/TopMenu";
 import MobileTopMenu from "./E-Office/MobileTopMenu";
 
