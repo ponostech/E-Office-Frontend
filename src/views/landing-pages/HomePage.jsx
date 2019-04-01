@@ -4,9 +4,13 @@ import GridContainer from "../../components/Grid/GridContainer.jsx";
 import Slider from "react-slick";
 import { cardTitle, defaultFont, grayColor, hexToRgb, whiteColor } from "../../assets/jss/material-dashboard-pro-react";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import ShopNavPillContent from './Services/Service/Shop';
 import Card from "../../components/Card/Card";
 import GridItem from "../../components/Grid/GridItem";
+import { AdvertiserRegistration, ApplyAdvertiser, ApplyBanner, ApplyHoarding, ApplyKiosk } from "./Services/Services";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import PrevIcon from "@material-ui/icons/ArrowLeft";
+import NextIcon from "@material-ui/icons/ArrowRight";
 
 const styles = {
   pageSubcategoriesTitle: {
@@ -17,6 +21,9 @@ const styles = {
   noTopMargin: {
     margin: "0",
     zDepthShadows: "none"
+  },
+  card: {
+    padding: 40
   },
   title: {
     ...defaultFont,
@@ -74,6 +81,8 @@ var settings = {
   slidesToShow: 4,
   slidesToScroll: 4,
   initialSlide: 0,
+  prevArrow: <PrevIcon fontSize={"large"} color={"primary"}/>,
+  nextArrow: <NextIcon fontSize={"large"} color={"primary"}/>,
   responsive: [
     {
       breakpoint: 1024,
@@ -113,25 +122,24 @@ class HomePage extends Component {
     const { classes } = this.props;
     return (
       <GridContainer justify="center">
-        <GridItem xs={10} sm={10} md={10}>
+        <GridItem xs={10} sm={10} md={12}>
           <Card style={styles.noTopMargin}>
             <h3 className={classes.pageSubcategoriesTitle}>
               Services Provided by Aizawl Municipal Corporation
             </h3>
-            <div className={classes.container}>
-              <Slider {...settings}>
-                <div>
-                  <ShopNavPillContent classes={classes} click={this.handleLink.bind(this)}/>
-                </div>
-                <div>
-                  <ShopNavPillContent classes={classes} click={this.handleLink.bind(this)}/>
-                </div>
-                <div>
-                  <ShopNavPillContent classes={classes} click={this.handleLink.bind(this)}/>
-                </div>
-              </Slider>
-            </div>
+            <Slider {...settings}>
+              <AdvertiserRegistration classes={classes} click={this.handleLink}/>
+              <ApplyBanner classes={classes} click={this.handleLink}/>
+              <ApplyHoarding classes={classes} click={this.handleLink}/>
+              <ApplyKiosk classes={classes} click={this.handleLink}/>
+              <ApplyAdvertiser classes={classes} click={this.handleLink}/>
+
+            </Slider>
           </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={12}>
+          <p>Another item</p>
+          <p>Another item</p>
         </GridItem>
 
       </GridContainer>
