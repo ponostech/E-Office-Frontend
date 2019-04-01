@@ -15,7 +15,7 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 const style={
   container:{
     background:"white",
-    paddingBottom:"30px"
+    paddingBottom:"30px",
   }
 }
 
@@ -28,7 +28,7 @@ class AdvertiserDashboard extends Component {
           <AdvertiserHeader color={"primary"}/>
         </GridItem>
         <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
-          <GridContainer justify={"center"} style={{ height: "95vh" }}>
+          <GridContainer justify={"center"} >
 
             <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>
             <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>

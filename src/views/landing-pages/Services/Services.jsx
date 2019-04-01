@@ -25,14 +25,14 @@ export const BuildingPermission = (props) => {
             <Icon color="primary">person</Icon>
           </div>
           <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
-            Advertiser License
+            Building Permission
           </h3>
-          <p className={props.classes.cardDescription}>
-            Click the button below to get the license of advertiser
-          </p>
+          {/*<p className={props.classes.cardDescription}>*/}
+          {/*  Click the button below to get the license of advertiser*/}
+          {/*</p>*/}
           <Button color="primary" round
                   onClick={props.click(OfficeRoutes.APPLY_ADVERTISER)}>
-            New Registration
+            Click here to apply
           </Button>
         </CardBody>
       </Card>

@@ -32,9 +32,10 @@ import GMapDialog from "../../../../components/GmapDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../../../components/AddressField";
-import { ErrorToString } from "../../../../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../../../../utils/ErrorUtil";
 import { CategoryServices } from "../../../../services/CategoryServices";
-import SingletonAuth from "../../../../utils/SingletonAuth";
+import ApplicationSubmitSuccessDialog from "../../../../components/ApplicationSubmitSuccessDialog";
+import LoadingDialog from "../../../common/LoadingDialog";
 
 
 const style = {
@@ -42,6 +43,8 @@ const style = {
     padding: "10px 15px !important"
   }
 };
+
+var timeout=undefined;
 
 class NewHoardingForm extends Component {
   constructor(props) {
@@ -76,7 +79,7 @@ class NewHoardingForm extends Component {
 
       localCouncils: [],
       categories: [],
-      displayTypes:[
+      displayTypes: [
         { value: "ILLUMINATED", label: "ILLUMINATED" },
         { value: "NON-ILLUMINATED", label: "NON ILLUMINATED" },
         { value: "FLICKERING_LIGHT", label: "FLICKERING LIGHT" }
@@ -89,7 +92,8 @@ class NewHoardingForm extends Component {
       agree: false,
 
       success: "",
-      submit: false
+      submit: false,
+      loading: true
     };
 
     this.localCouncilservice = new LocalCouncilService();
@@ -100,11 +104,20 @@ class NewHoardingForm extends Component {
 
 
   componentDidMount() {
-    let currentUser = new SingletonAuth().getCurrentUser();
-    console.log(currentUser);
-    this.fetchLocalCouncil();
-    this.fetchCategory();
-    this.fetchDocument();
+
+    var self = this;
+    timeout=setTimeout(function(handler) {
+      Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
+        .then(function([cats, locs, docs]) {
+          // self.setState({ loading: false });
+        });
+      self.setState({loading:false})
+    },6000)
+    //
+  }
+
+  componentWillUnmount() {
+    clearTimeout(timeout)
   }
 
   fetchLocalCouncil = () => {
@@ -135,18 +148,18 @@ class NewHoardingForm extends Component {
         const { messages, status } = res.data;
         if (status) {
           res.data.data.area_categories.forEach(function(cat) {
-            const roads=cat.roads;
+            const roads = cat.roads;
             let roadOptions = [];
-            roads.forEach((road)=> {
-              let item={
-                label:road,
-                value:cat.id
-              }
-              roadOptions.push(item)
+            roads.forEach((road) => {
+              let item = {
+                label: road,
+                value: cat.id
+              };
+              roadOptions.push(item);
             });
             let c = {
               label: `(${cat.name})`,
-              options:roadOptions
+              options: roadOptions
             };
             categories.push(c);
           });
@@ -197,7 +210,7 @@ class NewHoardingForm extends Component {
       .then(res => {
         console.log(res);
         if (res.data.status) {
-          this.setState({ success: true });
+          this.setState({ success: ArrayToString(res.data.messages) });
         } else {
           let msg = ErrorToString(res.data.messages);
           this.setState({ errorMessage: msg });
@@ -533,11 +546,6 @@ class NewHoardingForm extends Component {
         </GridItem>
         <Divider/>
 
-        <OfficeSnackbar variant={"success"} open={!!this.state.success}
-                        message={this.state.success}
-                        onClose={(e) => {
-                          this.setState({ success: "" });
-                        }}/>
         <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
           this.setState({
             openMap: false,
@@ -556,6 +564,15 @@ class NewHoardingForm extends Component {
                           this.setState({ errorMessage: "" });
                         }}/>
         <SubmitDialog open={this.state.submit} text={"Your application is submitting ..."}/>
+        <ApplicationSubmitSuccessDialog
+          title={"Your application is submitted"}
+          open={Boolean(this.state.success)}
+          message={this.state.success}
+          onClose={(e) => {
+            this.setState({ success: "" });
+            this.clear();
+          }}/>
+        <LoadingDialog open={this.state.loading} title={"Loading"} message={"Please wait ..."}/>
       </GridContainer>
     );
   }
