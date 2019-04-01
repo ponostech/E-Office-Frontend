@@ -10,12 +10,20 @@ import KioskLists from "../views/advertiser/kiosk/lists/KioskLists";
 import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
 import NewHoardingForm from "../views/advertiser/hoarding/form/NewHoardingForm";
 import NewKioskForm from "../views/advertiser/kiosk/form/NewKioskForm";
+import withStyles from "@material-ui/core/es/styles/withStyles";
 
+const style={
+  container:{
+    background:"white",
+    paddingBottom:"30px"
+  }
+}
 
 class AdvertiserDashboard extends Component {
   render() {
+    const{classes}=this.props;
     return (
-      <GridContainer justify={"center"} >
+      <GridContainer justify={"center"}  className={classes.container}>
         <GridItem xs={12} sm={12} md={12}>
           <AdvertiserHeader color={"primary"}/>
         </GridItem>
@@ -41,4 +49,4 @@ class AdvertiserDashboard extends Component {
   }
 }
 
-export default AdvertiserDashboard;
+export default withStyles(style)(AdvertiserDashboard);

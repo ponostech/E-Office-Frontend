@@ -69,6 +69,11 @@ class AdvertiserLogin extends Component {
         break;
     }
   };
+  handleKey=(e)=>{
+    if (e.key==="Enter"){
+        this.doLogin(e)
+    }
+  }
   doLogin = (e) => {
     const invalid = Boolean(this.state.emailError) || Boolean(this.state.passwordError);
     const { email, password } = this.state;
@@ -140,6 +145,7 @@ class AdvertiserLogin extends Component {
                   placeholder={"Password"}
                   value={this.state.password}
                   onChange={this.handleChange.bind(this)}
+                  onKeyPress={this.handleKey.bind(this)}
                   onBlur={this.handleRequired.bind(this)}
                   error={Boolean(this.state.passwordError)}
                   helperText={this.state.passwordError}
@@ -153,7 +159,7 @@ class AdvertiserLogin extends Component {
                     ),
                     endAdornment: (
                       <InputAdornment position={"end"}>
-                        <IconButton onClick={this.handleShowPassword.bind(this)}>
+                        <IconButton tabIndex={-1} onClick={this.handleShowPassword.bind(this)}>
                           {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
                         </IconButton>
                       </InputAdornment>

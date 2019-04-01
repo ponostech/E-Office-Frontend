@@ -7,23 +7,20 @@ import React from "react";
 import StoreMallDirectory from "@material-ui/icons/StoreMallDirectory";
 
 import { Airplay, Gradient } from "@material-ui/icons";
-import CheckIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import Divider from "@material-ui/core/es/Divider";
-import { TextField } from "@material-ui/core";
 
 
 const handleCheck = (e) => {
 
 };
 
-export const AdvertiserRegistration = (props) => {
+export const BuildingPermission = (props) => {
 
   return (
     <div className={props.classes.card}>
 
       <Card pricing raised>
         <CardBody pricing>
-          <h3 className={props.classes.cardCategory}>Advertiser Registration</h3>
+          <h3 className={props.classes.cardCategory}>Building Permission</h3>
           <div className={props.classes.icon}>
             <Icon color="primary">person</Icon>
           </div>
@@ -42,13 +39,14 @@ export const AdvertiserRegistration = (props) => {
     </div>
   );
 };
+
 export const ApplyBanner = (props) => {
   return (
     <div className={props.classes.card}>
 
-      <Card pricing raised >
+      <Card pricing raised>
         <CardBody pricing>
-          <h3 className={props.classes.cardCategory}>Banner and Poster</h3>
+          <h3 className={props.classes.cardCategory}>Banner/Poster</h3>
           <div className={props.classes.icon}>
             <Gradient color="primary"/>
           </div>
@@ -71,7 +69,7 @@ export const ShopLicensing = (props) => {
   return (
     <div className={props.classes.card}>
 
-      <Card pricing raised >
+      <Card pricing raised>
         <CardBody pricing>
           <h3 className={props.classes.cardCategory}> Shop Licensing</h3>
           <div className={props.classes.icon}>
@@ -98,7 +96,7 @@ export const ApplyHoarding = (props) => {
   return (
     <div className={props.classes.card}>
 
-      <Card pricing raised >
+      <Card pricing raised>
 
         <CardBody pricing>
           <h3 className={props.classes.cardCategory}>Hoarding</h3>
@@ -123,7 +121,7 @@ export const ApplyKiosk = (props) => {
   return (
     <div className={props.classes.card}>
 
-      <Card pricing raised >
+      <Card pricing raised>
 
         <CardBody pricing>
           <h3 className={props.classes.cardCategory}> Kiosk</h3>
@@ -149,10 +147,62 @@ export const ApplyAdvertiser = (props) => {
   return (
     <div className={props.classes.card}>
 
-      <Card pricing raised >
+      <Card pricing raised>
 
         <CardBody pricing>
           <h3 className={props.classes.cardCategory}>Advertiser Registration</h3>
+          <div className={props.classes.icon}>
+            <Icon color="primary">person</Icon>
+          </div>
+          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+            Advertiser License
+          </h3>
+          <p className={props.classes.cardDescription}>
+            Click the button below to get the license of advertiser
+          </p>
+          <Button color="primary" round
+                  onClick={props.click(OfficeRoutes.APPLY_ADVERTISER)}>
+            New Registration
+          </Button>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};
+export const Grievance = (props) => {
+  return (
+    <div className={props.classes.card}>
+
+      <Card pricing raised>
+
+        <CardBody pricing>
+          <h3 className={props.classes.cardCategory}>Grievance</h3>
+          <div className={props.classes.icon}>
+            <Icon color="primary">person</Icon>
+          </div>
+          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+            Advertiser License
+          </h3>
+          <p className={props.classes.cardDescription}>
+            Click the button below to get the license of advertiser
+          </p>
+          <Button color="primary" round
+                  onClick={props.click(OfficeRoutes.APPLY_ADVERTISER)}>
+            New Registration
+          </Button>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};
+export const CheckLicense = (props) => {
+  return (
+    <div className={props.classes.card}>
+
+      <Card pricing raised>
+
+        <CardBody pricing>
+          <h3 className={props.classes.cardCategory}>Check License</h3>
           <div className={props.classes.icon}>
             <Icon color="primary">person</Icon>
           </div>

@@ -43,6 +43,7 @@ const pagesStyle = theme => ({
     minHeight: "70vh",
     display: "flex!important",
     margin: "0",
+    paddingBottom:"30px",
     border: "0",
     // color: "#fff",
     // alignItems: "center",
