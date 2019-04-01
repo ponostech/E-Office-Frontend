@@ -7,8 +7,10 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 // core components
 import Badge from "../Badge/Badge.jsx";
+import FormatQuote from "@material-ui/icons/FormatQuote";
 
 import timelineStyle from "../../assets/jss/material-dashboard-pro-react/components/timelineStyle.jsx";
+import Avatar from "@material-ui/core/Avatar";
 
 function Timeline({ ...props }) {
   const { classes, stories, simple } = props;
@@ -44,16 +46,28 @@ function Timeline({ ...props }) {
               </div>
             ) : null}
             <div className={panelClasses}>
-              {prop.title ? (
+              {/*{prop.title ? (
                 <div className={classes.timelineHeading}>
-                  <Badge color={prop.titleColor}>{prop.title}</Badge>
+                  <Badge color={prop.titleColor} classes={{ badge: classes.timelineTitle }}>{prop.title}</Badge>
                 </div>
-              ) : null}
-              <div className={classes.timelineBody}>{prop.body}</div>
+              ) : null}*/}
+              <div className={classes.testimonialIcon}>
+                <FormatQuote />
+              </div>
+                <div className={classes.timelineBody}>{prop.body}</div>
               {prop.footerTitle ? (
                 <h6 className={classes.footerTitle}>{prop.footerTitle}</h6>
               ) : null}
               {prop.footer ? <hr className={classes.footerLine} /> : null}
+              {prop.avatar ? (
+                    <Avatar alt="" src={prop.avatar} className={classes.avatar} />
+              ) : null}
+              {prop.footerName ? (
+                <h6 className={classes.timelineFooterText}>{prop.footerName}</h6>
+              ) : null}
+              {prop.footerDesignation ? (
+                <h6 className={classes.timelineFooterText}>{prop.footerDesignation}</h6>
+              ) : null}
               {prop.footer ? (
                 <div className={classes.timelineFooter}>{prop.footer}</div>
               ) : null}

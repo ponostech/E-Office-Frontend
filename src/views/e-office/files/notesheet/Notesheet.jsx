@@ -1,8 +1,8 @@
 import React from "react";
-import {AttachFile, EventNote, Fingerprint} from "@material-ui/icons";
-import Grid from "@material-ui/core/Grid";
+import {EventNote} from "@material-ui/icons";
 
 import Timeline from "../../../../components/Timeline/Timeline.jsx";
+import image from "../../../../assets/img/faces/card-profile1-square.jpg";
 
 const widgetStories = [
     {
@@ -13,21 +13,23 @@ const widgetStories = [
         title: "Written By: Lala, Town Planner",
         titleColor: "info",
         body: (
-            <p>
-                Wifey made the best Father's Day meal ever. So thankful so happy so
-                blessed. Thank you for making my family We just had fun with the
-                “future” theme !!! It was a fun night all together ... The always rude
-                Kanye Show at 2am Sold Out Famous viewing @ Figueroa and 12th in
-                downtown.
-            </p>
+            <>
+                <p>
+                    Your products, all the kits that I have downloaded from your site and worked with are sooo cool! I love the color mixtures, cards... everything. Keep up the great work!
+                </p>
+                <p>
+                    Your products, all the kits that I have downloaded from your site and worked with are sooo cool! I love the color mixtures, cards... everything. Keep up the great work!
+                </p>
+            </>
         ),
-        footerTitle: "Written On: 3rd February, 2019 (Tuesday)",
-        footer: (
+        footerTitle: (
             <div>
-                <AttachFile />
-                Attachment, Draft, Etc.
+                File Moved to : John Doe, Asst Town Planner on 3rd February, 2019 (Tuesday)
             </div>
-        )
+        ),
+        footerName: "Alec Thompson",
+        footerDesignation: "Town Planner",
+        avatar: image
     },
     {
         // Second story
@@ -43,7 +45,15 @@ const widgetStories = [
                 love you Ellen and also my number one design rule of anything I do from
                 shoes to music to homes is that Kim has to like it....
             </p>
-        )
+        ),
+        footerTitle: (
+            <div>
+                File Moved to : John Doe, Asst Town Planner on 3rd February, 2019 (Tuesday)
+            </div>
+        ),
+        footerName: "Alec Thompson",
+        footerDesignation: "Town Planner",
+        avatar: image
     },
     {
         // Third story
@@ -66,9 +76,14 @@ const widgetStories = [
                 </p>
             </div>
         ),
-        footer: (
-            <div>Custom Footer</div>
-        )
+        footerTitle: (
+            <div>
+                File Moved to : John Doe, Asst Town Planner on 3rd February, 2019 (Tuesday)
+            </div>
+        ),
+        footerName: "Alec Thompson",
+        footerDesignation: "Town Planner",
+        avatar: image
     },
     {
         // Third story
@@ -91,16 +106,19 @@ const widgetStories = [
                 </p>
             </div>
         ),
-        footer: (
-            <div>Custom Footer</div>
-        )
+        footerTitle: (
+            <div>
+                File Moved to : John Doe, Asst Town Planner on 3rd February, 2019 (Tuesday)
+            </div>
+        ),
+        footerName: "Alec Thompson",
+        footerDesignation: "Town Planner",
+        avatar: image
     }
 ];
 
 const notesheet = () => (
-    <Grid item xs={12} sm={12} md={12}>
-        <Timeline simple stories={widgetStories} />
-    </Grid>
+    <Timeline simple stories={widgetStories} />
 );
 
 export default notesheet;
