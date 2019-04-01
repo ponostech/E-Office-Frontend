@@ -74,7 +74,8 @@ class AdvertiserForm extends Component {
       errorMessage: "",
       successMessage:"",
 
-      prestine: true
+      prestine: true,
+      loading:false
     };
 
     this.documentService = new DocumentService();
@@ -82,17 +83,22 @@ class AdvertiserForm extends Component {
 
   componentDidMount() {
 
+    this.setState({loading:true})
     this.documentService.get("advertiser")
       .then(res => {
         if (res.status) {
           const { documents } = res.data;
+          console.log(documents)
           this.setState({ documents });
         }
       })
       .catch(err => {
         console.log(err);
         this.setState({ errorMessage: err.toString() });
-      });
+      })
+      .then(()=>{
+        this.setState({loading:false})
+      })
 
   }
 
@@ -227,7 +233,7 @@ class AdvertiserForm extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <GridContainer
+      <GridContainer visbility={false}
         justify="flex-start">
         <GridItem xs={12} sm={12} md={10}>
           <Card>
@@ -391,7 +397,7 @@ class AdvertiserForm extends Component {
                     }}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <FileUpload required={true} document={{ id: 40, name: "Signature", mime: "image/*" }}
+                  <FileUpload document={{ id: 40, name: "Signature", mime: "image/*" ,mandatory:1}}
                               onUploadSuccess={(data) => {
                                 let temp = {
                                   name: "signature",

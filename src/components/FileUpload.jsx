@@ -13,7 +13,7 @@ const config = {
   dirName: "office", /* optional */
   region: REGION,
   accessKeyId: S3_ACCESS_KEY,
-  secretAccessKey:S3_SECRET_ACCESS_KEY
+  secretAccessKey: S3_SECRET_ACCESS_KEY
 };
 
 class FileUpload extends Component {
@@ -25,6 +25,7 @@ class FileUpload extends Component {
       file: data
     };
   }
+
   getFilename = (file) => {
     if (file.file) {
       return file.file.name;
@@ -54,7 +55,7 @@ class FileUpload extends Component {
   };
 
   render() {
-    const { onUploadSuccess, onUploadFailure,required,...rest } = this.props;
+    const { onUploadSuccess, onUploadFailure, required, ...rest } = this.props;
     const { file } = this.state;
     var self = this;
 
@@ -62,7 +63,17 @@ class FileUpload extends Component {
       <>
         <TextField
           {...rest}
-          required={required}
+
+          onClick={() => {
+            let imageUpload = document.getElementById(file.id);
+            imageUpload.click();
+          }}
+          onChange={() => {
+            let imageUpload = document.getElementById(file.id);
+            imageUpload.click();
+          }}
+          required={file.mandatory !== 0}
+
           name={file.name}
           variant={"outlined"}
           margin={"dense"}
@@ -86,9 +97,6 @@ class FileUpload extends Component {
                   type={"file"}
                   onChange={(e) => {
                     let item = e.target.files[0];
-                    // if (item.type !== file.mime) {
-                    //   return;
-                    // }
                     let temp = file;
                     temp.file = item;
                     temp.status = "progress";
@@ -102,14 +110,14 @@ class FileUpload extends Component {
                         self.setState({
                           file: temp
                         });
-                        onUploadSuccess(data)
+                        onUploadSuccess(data);
                       })
                       .catch(err => {
                         temp.status = "fail";
                         self.setState({
                           file: temp
                         });
-                        onUploadFailure(err)
+                        onUploadFailure(err);
                       });
                   }}
                 />
@@ -130,14 +138,14 @@ class FileUpload extends Component {
 
 FileUpload.defaultProps = {
   title: "Document Attachment",
-  required:false
+  required: false
 };
 FileUpload.propTypes = {
   document: PropTypes.object.isRequired,
   onUploadSuccess: PropTypes.func.isRequired,
   onUploadFailure: PropTypes.func.isRequired,
   title: PropTypes.string,
-  required:PropTypes.bool
+  required: PropTypes.bool
 };
 
 export default FileUpload;

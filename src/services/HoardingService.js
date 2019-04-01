@@ -12,7 +12,7 @@ export class HoardingService {
       local_council_id: state.localCouncil.value,
       address:state.address,
       both_side:state.bothSide?1:0,
-      road_details:state.roadDetail,
+      road_detail:state.roadDetail,
       length:state.length,
       height:state.height,
       ground_clearance:state.clearance,

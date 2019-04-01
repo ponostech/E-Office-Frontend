@@ -1,27 +1,25 @@
-export default class HoardingApplicationFormModel {
-  static TITLE = "Hoarding Application form";
-  static SUBHEADER = "Hoarding Application form";
+  export const TITLE = "APPLICATION FOR ERECTION OF NEW HOARDING/ADVERTISEMENT";
+  export const SUBTITLE = "[Regulation 25 of the AMC Display of Advertisement and Hoardings Regulations 2013]";
 
-  static CATEGORY = "Area's category";
-  static LOCAL_COUNCILS = "Local councils";
-  static ROAD_DETAIL = "Road";
+  export const CATEGORY = "Area's category";
+  export const LOCAL_COUNCILS = "Local councils";
+  export const ROAD_DETAIL = "Road Details";
 
-  static APPLICATN_INFO = "Applicant info";
-  static ATTACHMENT = "Document attachment";
-  static DISPLAY_TYPE = "Display type";
-  static LONG="Longitude";
-  static LAT="Latitude";
-  static DISPLAY_TYPE_REQUIRED="Display type is required";
-  static LOCAL_COUNCIL_REQUIRED="Select local council";
-  static CATEGORY_REQUIRED="Category is required";
-  static HOARDING_INFO="Hoarding Info";
-  static LENGTH_REQUIRED="Length is required";
-  static HEIGHT_REQUIRED="Height is required";
-  static REQUIRED_CATEGORY="Category is required";
-  static REQUIRED_DISPLAYTYPE="Display type is required";
-  static ADDRESS_REQUIRED="Address is required";
-  static CLEARANCE="Clearance";
-  static COORDINATE="Coordinate(Latitude & Longitude)";
-  static REQUIRED_COORDINATE=" Latitude and longitude of an area is required";
+  export const APPLICATN_INFO = "Applicant info";
+  export const ATTACHMENT = "Document attachment";
+  export const DISPLAY_TYPE = "Display type";
+  export const  LONG="Longitude";
+  export const  LAT="Latitude";
+  export const  DISPLAY_TYPE_REQUIRED="Display type is required";
+  export const  LOCAL_COUNCIL_REQUIRED="Select local council";
+  export const  CATEGORY_REQUIRED="Category is required";
+  export const  HOARDING_INFO="Hoarding Info";
+  export const  LENGTH_REQUIRED="Length is required";
+  export const  HEIGHT_REQUIRED="Height is required";
+  export const  REQUIRED_CATEGORY="Category is required";
+  export const  REQUIRED_DISPLAYTYPE="Display type is required";
+  export const  ADDRESS_REQUIRED="Address is required";
+  export const  CLEARANCE="Clearance";
+  export const  COORDINATE="Coordinate(Latitude & Longitude)";
+  export const  REQUIRED_COORDINATE=" Latitude and longitude of an area is required";
 
-};

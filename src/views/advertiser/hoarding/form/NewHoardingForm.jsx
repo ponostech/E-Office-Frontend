@@ -21,12 +21,10 @@ import {
 import GridContainer from "../../../../components/Grid/GridContainer";
 import GridItem from "../../../../components/Grid/GridItem";
 import OfficeSelect from "../../../../components/OfficeSelect";
-import HoardingApplicationFormModel from "../../../model/HoardingApplicationFormModel";
+import * as HoardingApplicationFormModel from "../../../model/HoardingApplicationFormModel";
 import { LocalCouncilService } from "../../../../services/LocalCouncilService";
 import FileUpload from "../../../../components/FileUpload";
 import MapIcon from "@material-ui/icons/PinDrop";
-import axios from "axios";
-import { ApiRoutes } from "../../../../config/ApiRoutes";
 import { HoardingService } from "../../../../services/HoardingService";
 import { DocumentService } from "../../../../services/DocumentService";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
@@ -34,14 +32,19 @@ import GMapDialog from "../../../../components/GmapDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../../../components/AddressField";
-import { ErrorToString } from "../../../../utils/ErrorUtil";
-import AuthManager from "../../../../utils/AuthManager";
+import { ArrayToString, ErrorToString } from "../../../../utils/ErrorUtil";
+import { CategoryServices } from "../../../../services/CategoryServices";
+import ApplicationSubmitSuccessDialog from "../../../../components/ApplicationSubmitSuccessDialog";
+import LoadingDialog from "../../../common/LoadingDialog";
+
 
 const style = {
   root: {
     padding: "10px 15px !important"
   }
 };
+
+var timeout=undefined;
 
 class NewHoardingForm extends Component {
   constructor(props) {
@@ -54,7 +57,7 @@ class NewHoardingForm extends Component {
       latitude: undefined,
       longitude: undefined,
 
-      coordinate: undefined,
+      coordinate: "",
       length: undefined,
       height: undefined,
       clearance: undefined,
@@ -64,7 +67,6 @@ class NewHoardingForm extends Component {
 
       landLord: "",
       landlordType: "0",
-      signature:undefined,
       uploadDocuments: [],
 
       localCouncilError: "",
@@ -90,19 +92,32 @@ class NewHoardingForm extends Component {
       agree: false,
 
       success: "",
-      submit: false
+      submit: false,
+      loading: true
     };
 
     this.localCouncilservice = new LocalCouncilService();
     this.hoardingService = new HoardingService();
     this.documentService = new DocumentService();
+    this.categoryService = new CategoryServices();
   }
 
 
   componentDidMount() {
-    this.fetchLocalCouncil();
-    this.fetchCategory();
-    this.fetchDocument();
+
+    var self = this;
+    timeout=setTimeout(function(handler) {
+      Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
+        .then(function([cats, locs, docs]) {
+          // self.setState({ loading: false });
+        });
+      self.setState({loading:false})
+    },6000)
+    //
+  }
+
+  componentWillUnmount() {
+    clearTimeout(timeout)
   }
 
   fetchLocalCouncil = () => {
@@ -128,23 +143,31 @@ class NewHoardingForm extends Component {
 
   fetchCategory = () => {
     let categories = [];
-    axios.get(ApiRoutes.WARDS)
+    this.categoryService.get()
       .then(res => {
-        const { data } = res;
-        console.log(res);
-        if (data.status) {
-          data.data.wards.forEach(function(item) {
-            let lc = {
-              value: item.id,
-              label: item.name
+        const { messages, status } = res.data;
+        if (status) {
+          res.data.data.area_categories.forEach(function(cat) {
+            const roads = cat.roads;
+            let roadOptions = [];
+            roads.forEach((road) => {
+              let item = {
+                label: road,
+                value: cat.id
+              };
+              roadOptions.push(item);
+            });
+            let c = {
+              label: `(${cat.name})`,
+              options: roadOptions
             };
-            categories.push(lc);
+            categories.push(c);
           });
           this.setState({
             categories: categories
           });
         } else {
-          this.setState({ hasError: true });
+          this.setState({ errorMessage: messages });
         }
       })
       .catch(err => {
@@ -164,7 +187,7 @@ class NewHoardingForm extends Component {
 
   invalid = () => {
     return this.state.prestine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
-      || !!this.state.displayTypeError || this.state.signature === undefined || !!this.state.coordinateError
+      || !!this.state.displayTypeError || !!this.state.coordinateError;
   };
 
   handleOfficeSelect = (identifier, value) => {
@@ -172,23 +195,22 @@ class NewHoardingForm extends Component {
       [identifier]: value
     });
   };
-  doClear=(e)=>{
+  doClear = (e) => {
     const { history } = this.props;
-    history.reload()
-  }
+    history.reload();
+  };
 
   doSubmit = () => {
-    console.log(AuthManager.getUser())
-    // if (this.invalid()) {
-    //   this.setState({ errorMessage: "Please fill the required fields" });
-    //   return;
-    // }
+    if (this.invalid()) {
+      this.setState({ errorMessage: "Please fill the required fields" });
+      return;
+    }
     this.setState({ submit: true });
     this.hoardingService.create(this.state)
       .then(res => {
         console.log(res);
         if (res.data.status) {
-          this.setState({ success: true });
+          this.setState({ success: ArrayToString(res.data.messages) });
         } else {
           let msg = ErrorToString(res.data.messages);
           this.setState({ errorMessage: msg });
@@ -279,7 +301,8 @@ class NewHoardingForm extends Component {
             <CardContent>
               <GridContainer>
                 <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                  <Typography variant={"headline"}>{"Application form for new hoarding advertisement"}</Typography>
+                  <Typography variant={"h5"}>{HoardingApplicationFormModel.TITLE}</Typography>
+                  <Typography variant={"subtitle1"}>{HoardingApplicationFormModel.SUBTITLE}</Typography>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
@@ -384,16 +407,6 @@ class NewHoardingForm extends Component {
                   />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
-                  <TextField name={"roadDetail"}
-                             value={this.state.roadDetail}
-                             margin={"dense"}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             label={HoardingApplicationFormModel.ROAD_DETAIL}
-                             onChange={this.handleChange.bind(this)}
-                  />
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <FormControl margin={"dense"}>
                     <FormControlLabel onChange={this.handleSwitch.bind(this)}
                                       name={"bothSide"}
@@ -404,8 +417,18 @@ class NewHoardingForm extends Component {
                                           checked={this.state.bothSide}
                                           required={true}/>
                                       }
-                                      label={"Both side?"}/>
+                                      label={"Both Sided?"}/>
                   </FormControl>
+                </GridItem>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                  <TextField name={"roadDetail"}
+                             value={this.state.roadDetail}
+                             margin={"dense"}
+                             fullWidth={true}
+                             variant={"outlined"}
+                             label={HoardingApplicationFormModel.ROAD_DETAIL}
+                             onChange={this.handleChange.bind(this)}
+                  />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <OfficeSelect
@@ -416,12 +439,12 @@ class NewHoardingForm extends Component {
                     helperText={this.state.displayTypeError}
                     onBlur={this.handleSelectBlur.bind(this, "displayType")}
                     variant={"outlined"}
-                    placeHolder={"Display type"}
+                    placeHolder={"Type of Display"}
                     margin={"dense"}
                     onChange={this.handleOfficeSelect.bind(this, "displayType")}
                     fullWidth={true}
                     options={this.state.displayTypes}
-                    label={HoardingApplicationFormModel.DISPLAY_TYPE}
+                    label={"Type of Display"}
                   />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -434,7 +457,7 @@ class NewHoardingForm extends Component {
                     required={true}
                     onChange={e => {
                     }}
-                    onClick={()=>this.setState({openMap:true})}
+                    onClick={() => this.setState({ openMap: true })}
                     helperText={this.state.coordinateError}
                     error={Boolean(this.state.coordinateError)}
                     label={"Coordinate"}
@@ -459,7 +482,7 @@ class NewHoardingForm extends Component {
                              value={this.state.landLord}
                              fullWidth={true}
                              variant={"outlined"}
-                             label={"Name of the landlord/land owner"}
+                             label={"Name of the Landlord/Land Owner"}
                              onChange={this.handleChange.bind(this)}
                   />
                 </GridItem>
@@ -482,7 +505,7 @@ class NewHoardingForm extends Component {
                 </GridItem>
                 {/*//Document upload*/}
                 <GridItem xs={12} sm={12} md={12}>
-                  <Typography variant={"headline"}>Upload Document</Typography>
+                  <Typography variant={"headline"}>Upload Document(s)</Typography>
                 </GridItem>
                 {this.state.documents.map((doc, index) => {
                   return <GridItem className={classes.root} key={index} xs={12} sm={12} md={6}>
@@ -523,12 +546,6 @@ class NewHoardingForm extends Component {
         </GridItem>
         <Divider/>
 
-
-        <OfficeSnackbar variant={"success"} open={!!this.state.success}
-                        message={this.state.success}
-                        onClose={(e) => {
-                          this.setState({ success: "" });
-                        }}/>
         <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
           this.setState({
             openMap: false,
@@ -536,8 +553,8 @@ class NewHoardingForm extends Component {
             longitude: lng
           });
           this.setState({
-            coordinate: `Latitude: ${lat} , Longitude: ${lng}`,
-          })
+            coordinate: `Latitude: ${lat} , Longitude: ${lng}`
+          });
         }} fullScreen={true}
                     isMarkerShown={true}/>
 
@@ -547,6 +564,15 @@ class NewHoardingForm extends Component {
                           this.setState({ errorMessage: "" });
                         }}/>
         <SubmitDialog open={this.state.submit} text={"Your application is submitting ..."}/>
+        <ApplicationSubmitSuccessDialog
+          title={"Your application is submitted"}
+          open={Boolean(this.state.success)}
+          message={this.state.success}
+          onClose={(e) => {
+            this.setState({ success: "" });
+            this.clear();
+          }}/>
+        <LoadingDialog open={this.state.loading} title={"Loading"} message={"Please wait ..."}/>
       </GridContainer>
     );
   }

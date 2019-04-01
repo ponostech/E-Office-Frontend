@@ -39,28 +39,7 @@ const advertiser = (props) => (
                         </CardBody>
                     </Card>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4} lg={3}>
-                    <Card pricing raised>
-                        <CardBody pricing>
-                            <h6 className={props.classes.cardCategory}>Advertiser login
-                                </h6>
-                            <div className={props.classes.icon}>
-                                <LockIcon color="primary"/>
-                            </div>
-                            <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
-                                Login as advertiser
-                            </h3>
-                            <p className={props.classes.cardDescription}>
-                               Click the button below
-                            </p>
-                            <Button color="primary"
-                                    onClick={props.click(OfficeRoutes.ADVERTISER_LOGIN)}
-                                    round>
-                                Login
-                            </Button>
-                        </CardBody>
-                    </Card>
-                </GridItem>
+
             </GridContainer>
         </CardBody>
     </Card>

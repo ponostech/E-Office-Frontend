@@ -3,6 +3,7 @@ export class ApiRoutes {
   static BASE_URL = "http://localhost:8000/api/v1";
   static LOCAL_COUNCIL = "/local-councils";
   static WARDS = "/wards";
+  static CATEGORY = "/area-categories";
   static CREATE_STAFF = "/register/staff";
   static CREATE_ADVERTISER="/register/advertiser";
   static GET_ADVERTISER_HOARDING="/advertiser/hoardings";

@@ -6,6 +6,7 @@ import { NewFileViewModel } from "../../model/NewFileViewModel";
 import OfficeSelect from "../../../components/OfficeSelect";
 import { OfficeRoutes } from "../../../config/routes-constant/OfficeRoutes";
 import Grid from "@material-ui/core/Grid";
+import SingletonAuth from "../../../utils/SingletonAuth";
 
 class NewFile extends Component {
   constructor(props) {
@@ -98,6 +99,12 @@ class NewFile extends Component {
     const { history } = this.props;
     history.push(OfficeRoutes.FILE_DETAIL);
   };
+
+  componentDidMount() {
+    let user=new SingletonAuth().getCurrentUser();
+
+    console.log(user)
+  }
 
   render() {
     return (
