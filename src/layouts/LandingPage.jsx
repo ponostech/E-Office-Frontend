@@ -10,7 +10,7 @@ import HomePage from "../views/landing-pages/HomePage";
 import ShopLicenseForm from "../views/shop/ShopLicenseApplicationForm";
 import Form from "../views/Form";
 
-import {OfficeRoutes} from "../config/routes-constant/OfficeRoutes";
+import * as  OfficeRoutes from "../config/routes-constant/OfficeRoutes";
 import LoginView from "../views/auth/LoginView";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import pagesStyle from "../assets/jss/material-dashboard-pro-react/layouts/pagesStyle";

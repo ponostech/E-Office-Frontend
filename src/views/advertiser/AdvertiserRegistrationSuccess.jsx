@@ -4,7 +4,7 @@ import GridItem from "../../components/Grid/GridItem";
 import { Button, Divider, Typography } from "@material-ui/core";
 import Card from "../../components/Card/Card";
 import CardBody from "../../components/Card/CardBody";
-import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
+import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 
 class AdvertiserRegistrationSuccess extends Component {
   render() {

@@ -8,7 +8,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
 
 import LoginViewModel from "../model/LoginViewModel";
-import {OfficeRoutes} from "../../config/routes-constant/OfficeRoutes";
+import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import {Validators} from "../../utils/Validators";
 
 import loginPageStyle from "../../assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";

@@ -1,68 +1,63 @@
-export class OfficeRoutes {
-  static ROOT = "/";
-  static LOGIN = "/login";
-  static HOME = "/home";
-  static FORM = "/form";
-  static E_OFFICE = "/e-office";
+export const ROOT = "/";
+export const LOGIN = "/login";
+export const HOME = "/home";
+export const FORM = "/form";
+export const E_OFFICE = "/e-office";
 
-  static ADVERTISER_LOGIN = "/auth/login";
-  static APPLY_ADVERTISER = "/register/advertiser";
-  static ADVERTISER_REGISTRATION_SUCCESS="/register/advertiser/success";
-  static RENEW_ADVERTISER = "/advertiser/:id/renew";
-  // static ADVERTISER_DETAIL = "/advertiser/:id/detail";
+export const ADVERTISER_LOGIN = "/auth/login";
+export const APPLY_ADVERTISER = "/register/advertiser";
+export const ADVERTISER_REGISTRATION_SUCCESS = "/register/advertiser/success";
+export const RENEW_ADVERTISER = "/advertiser/:id/renew";
+// export const ADVERTISER_DETAIL = "/advertiser/:id/detail";
 
-  static APPLY_SHOP_LICENSE = "/shop-license/new";
-  static APPLY_HOTEL_LICENSE = "/hotel/new";
-  static RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
-  static SHOP_LICENSE_DETAIL = "/shop-license/:id/detail";
-
+export const APPLY_SHOP_LICENSE = "/shop-license/new";
+export const APPLY_HOTEL_LICENSE = "/hotel/new";
+export const RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
+export const SHOP_LICENSE_DETAIL = "/shop-license/:id/detail";
 
 
-  static APPLY_BANNER = "/banner/new";
-  static APPLY_BANNER_SUCCESS="/banner/:id/success";
+export const APPLY_BANNER = "/banner/new";
+export const APPLY_BANNER_SUCCESS = "/banner/:id/success";
 
 
-  static LOGIN = "/login";
-  static RESET_PASSWORD = "/reset-password";
-  static NEW_STAFF = "/staff/new";
-  static LIST_STAFF = "/staff";
+export const RESET_PASSWORD = "/reset-password";
+export const NEW_STAFF = "/staff/new";
+export const LIST_STAFF = "/staff";
 
-  static PROPOSED_KIOSK = "/dadvertiser/kiosk/propose";
-  static RENEW_KIOSK = "/advertiser/kiosk/:id/renew";
-  static KIOSK_DETAIL = "/advertiser/kiosk/:id/details";
+export const PROPOSED_KIOSK = "/dadvertiser/kiosk/propose";
+export const RENEW_KIOSK = "/advertiser/kiosk/:id/renew";
+export const KIOSK_DETAIL = "/advertiser/kiosk/:id/details";
 
-  static ADVERTISER_DASHBOARD = "/dashboard/advertiser";
-  static ADVERTISER_HOARDING = "/dashboard/advertiser/hoarding/list";
-  static ADVERTISER_NEW_HOARDING = "/dashboard/advertiser/hoarding/new";
-  static ADVERTISER_KIOSK = "/dashboard/advertiser/kiosk";
-  static ADVERTISER_NEW_KIOSK = "/dashboard/advertiser/kiosk/new";
-  static ADVERTISER_PROFILE = "/dashboard/advertiser/profile";
-  static ADVERTISER_SETTING = "/dashboard/advertiser/setting";
+export const ADVERTISER_DASHBOARD = "/dashboard/advertiser";
+export const ADVERTISER_HOARDING = "/dashboard/advertiser/hoarding/list";
+export const ADVERTISER_NEW_HOARDING = "/dashboard/advertiser/hoarding/new";
+export const ADVERTISER_KIOSK = "/dashboard/advertiser/kiosk";
+export const ADVERTISER_NEW_KIOSK = "/dashboard/advertiser/kiosk/new";
+export const ADVERTISER_PROFILE = "/dashboard/advertiser/profile";
+export const ADVERTISER_SETTING = "/dashboard/advertiser/setting";
 
-  /*E-Office routes*/
-  static DESK = "/e-office/desk";
-  static NEW_FILE = "/e-office/file/new";
-  static CREATED_FILES = "/e-office/created";
-  static SENT_FILE = "/e-office/sent";
-  static CLOSE_FILE = "/e-office/sent";
-  static FILE_DETAIL = "/e-office/file/:id/detail";
+/*E-Office routes*/
+export const DESK = "/e-office/desk";
+export const NEW_FILE = "/e-office/file/new";
+export const CREATED_FILES = "/e-office/created";
+export const SENT_FILE = "/e-office/sent";
+export const CLOSE_FILE = "/e-office/sent";
+export const FILE_DETAIL = "/e-office/file/:id/detail";
 
-  static NEW_RECEIPT = "/e-office/receipt/new";
-  static CREATED_RECEIPT = "/e-office/receipt/created";
-  static SENT_RECEIPT = "/e-office/receipt/sent";
-  static CLOSE_RECEIPT = "/e-office/receipt/close";
-  static RECEIPT_DETAIL = "/e-office/receipt/:id/details";
+export const NEW_RECEIPT = "/e-office/receipt/new";
+export const CREATED_RECEIPT = "/e-office/receipt/created";
+export const SENT_RECEIPT = "/e-office/receipt/sent";
+export const CLOSE_RECEIPT = "/e-office/receipt/close";
+export const RECEIPT_DETAIL = "/e-office/receipt/:id/details";
 
-  static SHOP_LICENSES = "/e-office/applications/shop-license";
-  static HOARDINGS = "/e-office/applications/hoardings";
-  static HOARDING_DETAILS = "/e-office/applications/hoardings/:id/detail";
-  static BANNERS = "/e-office/applications/banners";
-  static KIOSKS = "/e-office/applications/kiosks";
-  static OBPAS = "/e-office/applications/obpas";
+export const SHOP_LICENSES = "/e-office/applications/shop-license";
+export const HOARDINGS = "/e-office/applications/hoardings";
+export const HOARDING_DETAILS = "/e-office/applications/hoardings/:id/detail";
+export const BANNERS = "/e-office/applications/banners";
+export const KIOSKS = "/e-office/applications/kiosks";
+export const OBPAS = "/e-office/applications/obpas";
 
-  static SETTING = "/e-office/setting";
-  static ADVERTISERS = "/e-office/advertisers";
+export const SETTING = "/e-office/setting";
+export const ADVERTISERS = "/e-office/advertisers";
 
-  static ADVERTISER_DETAIL = `/e-office/advertisers/:id/details`;
-
-}
+export const ADVERTISER_DETAIL = `/e-office/advertisers/:id/details`;

@@ -19,7 +19,7 @@ import SettingIcon from "@material-ui/icons/Settings";
 import { Button, IconButton, Typography } from "@material-ui/core";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
-import { OfficeRoutes } from "../../config/routes-constant/OfficeRoutes";
+import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import Icon from "@material-ui/core/es/Icon";
 
 class AdvertiserHeader extends React.Component {

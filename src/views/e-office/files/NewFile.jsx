@@ -4,7 +4,7 @@ import GridItem from "../../../components/Grid/GridItem";
 import { Button, Card, CardActions, CardContent, CardHeader, TextField } from "@material-ui/core";
 import { NewFileViewModel } from "../../model/NewFileViewModel";
 import OfficeSelect from "../../../components/OfficeSelect";
-import { OfficeRoutes } from "../../../config/routes-constant/OfficeRoutes";
+import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
 import Grid from "@material-ui/core/Grid";
 import SingletonAuth from "../../../utils/SingletonAuth";
 

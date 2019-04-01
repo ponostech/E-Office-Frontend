@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import Grid from "@material-ui/core/Grid";
 import OfficePageHeader from "../components/Header/OfficePageHeader";
 import {Route} from "react-router-dom";
-import {OfficeRoutes} from "../config/routes-constant/OfficeRoutes";
+import * as OfficeRoutes from "../config/routes-constant/OfficeRoutes";
 import NewReceipt from "../views/e-office/receipt/NewReceipt";
 import NewFile from "../views/e-office/files/NewFile";
 import officeStyle from "../assets/jss/material-dashboard-pro-react/layouts/officeStyle.jsx";
