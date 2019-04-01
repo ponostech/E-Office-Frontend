@@ -9,9 +9,11 @@ import { ApiRoutes } from "./config/ApiRoutes";
 import axios from "axios";
 
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import AuthManager from "./utils/AuthManager";
 
 const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true
+  },
   palette: {
     primary: {
       main: "#26B99A",
@@ -23,7 +25,7 @@ const theme = createMuiTheme({
     }
 
   },
-  spacing:[4,8,12,16,20],
+  spacing: [4, 8, 12, 16, 20],
   // shadows:["none"],
   props: {
     MuiAppBar: {
@@ -41,31 +43,29 @@ const theme = createMuiTheme({
       // The properties to apply
       disableRipple: true, // No more ripple, on the whole application 💣!
       color: "#fff"
-    },
+    }
 
   }
 });
 const hist = createBrowserHistory();
 axios.defaults.baseURL = ApiRoutes.BASE_URL;
-axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8";
 axios.defaults.headers.get["Access-Control-Allow-Origin"] = "http://localhost:8000/";
 
-axios.defaults.timeout=20000;
+axios.defaults.timeout = 20000;
 const token = localStorage.getItem("token");
 if (token) {
   axios.defaults.headers.common["Authorization"] = token;
 }
-
-localStorage.setItem("userTest",JSON.stringify({username:"kimi"}));
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <Router history={hist}>
       <Switch>
         {indexRoutes.map((prop, key) => {
-          return <Route path={prop.path}  component={prop.component} key={key}/>;
+          return <Route path={prop.path} component={prop.component} key={key}/>;
         })}
-        <Route  component={NoMatch}/>
+        <Route component={NoMatch}/>
       </Switch>
     </Router>
   </MuiThemeProvider>,

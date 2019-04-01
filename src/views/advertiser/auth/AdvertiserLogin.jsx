@@ -13,7 +13,7 @@ import axios from "axios";
 import { ApiRoutes } from "../../../config/ApiRoutes";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { Validators } from "../../../utils/Validators";
-import AuthManager from "../../../utils/AuthManager";
+import SingletonAuth from "../../../utils/SingletonAuth";
 
 const style = {
   root: {
@@ -85,7 +85,9 @@ class AdvertiserLogin extends Component {
         const { messages, status, access_token, redirect_url } = res.data;
         if (status) {
           localStorage.setItem("access_token", access_token);
-          AuthManager.login(res.data.data);
+          console.log("User");
+          console.log(res.data.data.user);
+          new SingletonAuth().setCurrentUser(res.data.data.user);
           window.location.replace(redirect_url);
         } else {
           this.setState({ errorMessage: messages });
@@ -175,6 +177,7 @@ class AdvertiserLogin extends Component {
           this.setState({ errorMessage: "" });
         }} message={this.state.errorMessage} open={Boolean(this.state.errorMessage)}/>
       </GridContainer>
+
     );
   }
 }

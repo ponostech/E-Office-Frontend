@@ -29,10 +29,11 @@ import { DocumentService } from "../../../../services/DocumentService";
 import { KioskFormModel } from "../../../model/KioskFormModel";
 import { KioskService } from "../../../../services/KioskService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import { WardServices } from "../../../../services/WardServices";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import GMapDialog from "../../../../components/GmapDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
+import { CategoryServices } from "../../../../services/CategoryServices";
+import AddressField from "../../../../components/AddressField";
 
 
 const style = {
@@ -51,6 +52,8 @@ class NewKioskForm extends Component {
       coordinate: "",
       length: undefined,
       height: undefined,
+      latitude: "",
+      longitude: "",
       clearance: undefined,
       address: "",
       bothSide: false,
@@ -59,6 +62,7 @@ class NewKioskForm extends Component {
 
       landLord: "",
       landlordType: "0",
+      uploadDocuments: [],
 
       localCouncilError: "",
       addressError: "",
@@ -87,10 +91,9 @@ class NewKioskForm extends Component {
 
     this.localCouncilservice = new LocalCouncilService();
     this.kioskService = new KioskService();
-    this.wardServices = new WardServices();
+    this.categoryService = new CategoryServices();
     this.documentService = new DocumentService();
   }
-
 
   componentDidMount() {
     this.fetchLocalCouncil();
@@ -116,21 +119,20 @@ class NewKioskForm extends Component {
         } else {
           this.setState({ hasError: true });
         }
-      }).then(() => {
-      this.setState({ localCouncil: this.state.localCouncils[0] });
-    });
+      });
   };
-
   fetchCategory = () => {
     let categories = [];
-    this.wardServices.get()
+    this.categoryService.get()
       .then(res => {
-        const { data } = res;
-        if (data.status) {
-          data.data.wards.forEach(function(item) {
+        console.log(res);
+        const { messages, status } = res.data;
+
+        if (status) {
+          res.data.data.area_categories.forEach(function(item) {
             let lc = {
               value: item.id,
-              label: item.name
+              label: `${item.name} (${item.roads})`
             };
             categories.push(lc);
           });
@@ -138,14 +140,11 @@ class NewKioskForm extends Component {
             categories: categories
           });
         } else {
-          this.setState({ hasError: true });
+          this.setState({ errorMessage: messages });
         }
       })
       .catch(err => {
-
-      })
-      .then(() => {
-        this.setState({ category: this.state.categories[0] });
+        console.log(err);
       });
   };
 
@@ -285,6 +284,7 @@ class NewKioskForm extends Component {
               <GridContainer>
                 <GridItem className={classes.root} xs={12} sm={12} md={12}>
                   <Typography variant="h5">{KioskFormModel.TITLE}</Typography>
+                  <Typography variant="subtitle1">{KioskFormModel.SUBTITLE}</Typography>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <Divider style={{ marginBottom: 10, marginTop: 10 }}/>
@@ -320,17 +320,30 @@ class NewKioskForm extends Component {
                                 options={this.state.categories}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <TextField name={"address"}
-                             value={this.state.address}
-                             margin={"dense"}
-                             required={true}
-                             error={Boolean(this.state.addressError)}
-                             helperText={this.state.addressError}
-                             onBlur={this.handleBlur.bind(this)}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             onChange={this.handleChange.bind(this)}
-                             label={"Address"}/>
+                  <AddressField
+                    onPlaceSelect={(place) => {
+                      if (place) {
+                        let name = place.name;
+                        let address = place.formatted_address;
+                        let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                        this.setState({ address: complete_address });
+                      }
+                    }}
+                    textFieldProps={{
+                      required: true,
+                      error: Boolean(this.state.addressError),
+                      helperText: this.state.addressError,
+                      onBlur: this.handleBlur.bind(this),
+                      name: "address",
+                      placeholder: "Address",
+                      value: this.state.address,
+                      margin: "dense",
+                      fullWidth: true,
+                      variant: "outlined",
+                      onChange: this.handleChange.bind(this),
+                      label: "Address"
+                    }}
+                  />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"length"}
@@ -405,7 +418,6 @@ class NewKioskForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"roadDetail"}
                              value={this.state.roadDetail}
-                             type={"number"}
                              margin={"dense"}
                              fullWidth={true}
                              variant={"outlined"}
@@ -432,26 +444,32 @@ class NewKioskForm extends Component {
                   />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <TextField name={"coordinate"}
-                             value={this.state.coordinate}
-                             margin={"dense"}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             required={true}
-                             label={HoardingApplicationFormModel.COORDINATE}
-                             InputProps={{
-                               endAdornment: (
-                                 <InputAdornment position={"end"}>
-                                   <Tooltip title={"Click here to see the map"}>
-                                     <IconButton onClick={(e) => {
-                                       this.setState({ openMap: true });
-                                     }}>
-                                       <MapIcon color={"action"}/>
-                                     </IconButton>
-                                   </Tooltip>
-                                 </InputAdornment>
-                               )
-                             }}
+                  <TextField
+                    value={this.state.coordinate}
+                    name={"coordinate"}
+                    margin={"dense"}
+                    fullWidth={true}
+                    variant={"outlined"}
+                    required={true}
+                    onChange={e => {
+                    }}
+                    onClick={() => this.setState({ openMap: true })}
+                    helperText={this.state.coordinateError}
+                    error={Boolean(this.state.coordinateError)}
+                    label={"Coordinate"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position={"end"}>
+                          <Tooltip title={"Click here to see the map"}>
+                            <IconButton onClick={(e) => {
+                              this.setState({ openMap: true });
+                            }}>
+                              <MapIcon color={"action"}/>
+                            </IconButton>
+                          </Tooltip>
+                        </InputAdornment>
+                      )
+                    }}
                   />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -479,25 +497,19 @@ class NewKioskForm extends Component {
                     </RadioGroup>
                   </FormControl>
                 </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <FileUpload document={{ id: 0, name: "Signature" }}
-                              onUploadSuccess={(data) => {
-                                this.setState(state => {
-                                  state.signature = {
-                                    name: data.name,
-                                    path: data.location
-                                  };
-                                });
-                              }}
-                              onUploadFailure={err => console.log(err)}/>
-                </GridItem>
                 <GridItem sm={12} xs={12} md={12}>
                   <Typography variant={"headline"}>Upload Document</Typography>
                 </GridItem>
                 {this.state.documents.map((doc, index) => {
                   return <GridItem className={classes.root} sm={12} xs={12} md={12}>
                     <FileUpload key={index} onUploadSuccess={(data) => {
-                      console.log(data);
+                      this.setState(state => {
+                        let temp = {
+                          name: doc.id,
+                          path: doc.location
+                        };
+                        state.uploadDocuments.push(temp);
+                      });
                     }} onUploadFailure={(e) => {
                       console.log(e);
                     }} document={doc}/>
@@ -520,7 +532,9 @@ class NewKioskForm extends Component {
                   <Button disabled={!this.state.agree} name={"submit"} variant={"outlined"}
                           color={"primary"}
                           onClick={this.handleClick.bind(this)}>Submit</Button>
-                  {" "}
+                  {"\u00A0 "}
+                  {"\u00A0 "}
+                  {"\u00A0 "}
                   <Button name={"reset"} variant={"outlined"} color={"secondary"}
                           onClick={this.handleClick.bind(this)}>Reset</Button>
                 </GridItem>
@@ -534,13 +548,17 @@ class NewKioskForm extends Component {
           open={!!this.state.success}
           message={this.state.success}
           onClose={(e) => this.setState({ success: "" })}
-        />;
+        />
         <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
-          let msg = `Latitude ${lat} Longitude ${lng}`;
-          this.setState({ openMap: false, latitude: lat, longitude: lng, coordinate: msg });
-
-        }} fullScreen={true}
-                    isMarkerShown={true}/>;;
+          this.setState({
+            openMap: false,
+            latitude: lat,
+            longitude: lng
+          });
+          this.setState({
+            coordinate: `Latitude: ${lat} , Longitude: ${lng}`
+          });
+        }} fullScreen={true} isMarkerShown={true}/>
 
         <OfficeSnackbar
           open={Boolean(this.state.errorMessage)}
@@ -549,8 +567,8 @@ class NewKioskForm extends Component {
           onClose={() => {
             this.setState({ errorMessage: "" });
           }
-          }/>;
-        <SubmitDialog open={this.state.submit} text={"Your application is submitting ..."}/>;;
+          }/>
+        <SubmitDialog open={this.state.submit} text={"Your application is submitting ..."}/>
       </GridContainer>
     );
   }
