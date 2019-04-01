@@ -47,6 +47,12 @@ const theme = createMuiTheme({
 
   }
 });
+
+var currentUser={
+  name:"kimi",
+  password:"password"
+}
+
 const hist = createBrowserHistory();
 axios.defaults.baseURL = ApiRoutes.BASE_URL;
 axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";

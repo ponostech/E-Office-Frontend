@@ -3,7 +3,7 @@
 
   export const CATEGORY = "Area's category";
   export const LOCAL_COUNCILS = "Local councils";
-  export const ROAD_DETAIL = "Road";
+  export const ROAD_DETAIL = "Road Details";
 
   export const APPLICATN_INFO = "Applicant info";
   export const ATTACHMENT = "Document attachment";
