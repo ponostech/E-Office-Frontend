@@ -91,6 +91,32 @@ export const ShopLicensing = (props) => {
     </div>
   );
 };
+export const ApplyHotel = (props) => {
+  return (
+    <div className={props.classes.card}>
+
+      <Card pricing raised>
+        <CardBody pricing>
+          <h3 className={props.classes.cardCategory}> Hotel/Lodging</h3>
+          <div className={props.classes.icon}>
+            <StoreMallDirectory color="primary"/>
+          </div>
+          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+            Application for Shop Licensing
+          </h3>
+          <p className={props.classes.cardDescription}>
+            Click the button below to get a Hotel/Lodging License
+          </p>
+          <Button color="primary"
+                  round
+                  onClick={props.click(OfficeRoutes.APPLY_HOTEL_LICENSE)}>
+            Apply
+          </Button>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};
 
 export const ApplyHoarding = (props) => {
   return (

@@ -28,7 +28,8 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
 import AddressField from "../../components/AddressField";
 import OfficeSelect from "../../components/OfficeSelect";
-import ApplicationSubmitSuccessDialog from "../../components/ApplicationSubmitSuccessDialog";
+import SweetAlert from "react-bootstrap-sweetalert";
+import LoadingDialog from "../common/LoadingDialog";
 
 const style = {
   root: {
@@ -72,23 +73,22 @@ class AdvertiserForm extends Component {
       //dialog variable
       submit: false,
       errorMessage: "",
-      successMessage:"",
+      successMessage: null,
 
       prestine: true,
-      loading:false
+      loading: false
     };
 
     this.documentService = new DocumentService();
   }
 
   componentDidMount() {
-
-    this.setState({loading:true})
+    this.setState({ loading: true });
     this.documentService.get("advertiser")
       .then(res => {
         if (res.status) {
           const { documents } = res.data;
-          console.log(documents)
+          console.log(documents);
           this.setState({ documents });
         }
       })
@@ -96,10 +96,9 @@ class AdvertiserForm extends Component {
         console.log(err);
         this.setState({ errorMessage: err.toString() });
       })
-      .then(()=>{
-        this.setState({loading:false})
-      })
-
+      .then(() => {
+        this.setState({ loading: false });
+      });
   }
 
   handleClickShowPassword = (e) => {
@@ -134,7 +133,25 @@ class AdvertiserForm extends Component {
         console.log(res);
         if (res.data.status) {
           this.setState({
-            successMessage: ArrayToString(res.data.messages)
+            successMessage: (
+              <SweetAlert
+                success
+                style={{ display: "block", marginTop: "-100px" }}
+                title={"Success"}
+                onConfirm={() => this.setState({ successMessage: null })}
+                confirmBtnCssClass={
+                  "MuiButton-outlinedPrimary"
+                }
+              >
+                {
+                  res.data.messages.map(function(msg, index) {
+                    return <p>
+                      {`${msg}.`}
+                    </p>
+                  })
+                }
+              </SweetAlert>
+            )
           });
         } else {
           const msg = ErrorToString(res.data.messages);
@@ -151,9 +168,9 @@ class AdvertiserForm extends Component {
       });
   };
 
-  clear=()=>{
+  clear = () => {
     window.location.reload();
-  }
+  };
 
   handleRequired = (e) => {
     const { name, value } = e.target;
@@ -234,7 +251,7 @@ class AdvertiserForm extends Component {
     const { classes } = this.props;
     return (
       <GridContainer visbility={false}
-        justify="flex-start">
+                     justify="flex-start">
         <GridItem xs={12} sm={12} md={10}>
           <Card>
             <CardContent>
@@ -397,7 +414,7 @@ class AdvertiserForm extends Component {
                     }}/>
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <FileUpload document={{ id: 40, name: "Signature", mime: "image/*" ,mandatory:1}}
+                  <FileUpload document={{ id: 40, name: "Signature", mime: "image/*", mandatory: 1 }}
                               onUploadSuccess={(data) => {
                                 let temp = {
                                   name: "signature",
@@ -459,19 +476,14 @@ class AdvertiserForm extends Component {
           </Card>
 
         </GridItem>
-        <ApplicationSubmitSuccessDialog
-          title={"Your application is submitted"}
-          open={Boolean(this.state.successMessage)}
-                                     message={this.state.successMessage}
-                                     onClose={(e)=>{
-                                       this.setState({successMessage:""})
-                                        this.clear()
-                                     }}/>
+        {this.state.successMessage}
 
         <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
                         onClose={(e) => this.setState({ errorMessage: "" })}
                         message={this.state.errorMessage}/>
         <SubmitDialog open={this.state.submit} text={"Your application is submitting ... "}/>
+        <LoadingDialog open={this.state.loading} title={"Loading"} message={"Please wait ..."}/>
+
       </GridContainer>
     );
   }

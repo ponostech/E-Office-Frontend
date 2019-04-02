@@ -1,7 +1,7 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import GridContainer from "../components/Grid/GridContainer";
 import GridItem from "../components/Grid/GridItem";
-import {Route} from "react-router-dom";
+import { Route } from "react-router-dom";
 import * as OfficeRoutes from "../config/routes-constant/OfficeRoutes";
 
 import AdvertiserHeader from "../components/Header/AdvertiserHeader";
@@ -13,7 +13,6 @@ import NewHoardingForm from "../views/advertiser/hoarding/form/NewHoardingForm";
 import NewKioskForm from "../views/advertiser/kiosk/form/NewKioskForm";
 
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import IdleTimer from "react-idle-timer";
 
 const style = {
   container: {
@@ -23,8 +22,9 @@ const style = {
 };
 
 class AdvertiserDashboard extends Component {
-    render() {
-      
+  render() {
+    const { classes } = this.props;
+
     return (
       <div>
 

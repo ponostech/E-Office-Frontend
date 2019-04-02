@@ -25,6 +25,8 @@ import { ErrorToString } from "../../utils/ErrorUtil";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../components/AddressField";
 import { Validators } from "../../utils/Validators";
+import { DocumentService } from "../../services/DocumentService";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 const style = {
   root: {
@@ -35,6 +37,8 @@ const style = {
 class BannerApplicationForm extends Component {
   localCouncilservice = new LocalCouncilService();
   bannerService = new BannerService();
+  documentService = new DocumentService();
+
   bannerRef = React.createRef();
 
   state = {
@@ -46,8 +50,10 @@ class BannerApplicationForm extends Component {
     details: "",
     displayType: undefined,
     signature: undefined,
+    uploadDocuments: [],
 
     localCouncils: [],
+    documents: [],
     agree: false,
     display_types: [
       { value: "vehicle", label: "Vehicle" },
@@ -81,8 +87,20 @@ class BannerApplicationForm extends Component {
   componentDidMount() {
     document.title = "e-AMC | Banners/Posters Application Form";
     this.fetchLocalCouncil();
+    this.fetchDocument();
   }
 
+  fetchDocument = () => {
+    this.documentService.get("banner")
+      .then(data => {
+        if (data.status) {
+          this.setState({ documents: data.data.documents });
+        }
+      })
+      .then(() => {
+        console.log();
+      });
+  };
   fetchLocalCouncil = () => {
     let newLocalCouncils = [];
     this.localCouncilservice.get()
@@ -150,14 +168,35 @@ class BannerApplicationForm extends Component {
     }
     this.setState({ submit: true });
     this.bannerService.create(this.state)
-      .then(data => {
-        if (data.status) {
-          this.setState({ success: true });
-        } else {
-          let msg = ErrorToString(data.messages);
-          this.setState({ errorMessage: msg });
-        }
-        console.log(data);
+      .then(res => {
+          if (res.data.status) {
+            this.setState({
+              success: (
+                <SweetAlert
+                  success
+                  style={{ display: "block", marginTop: "-100px" }}
+                  title={"Success"}
+                  onConfirm={() => this.setState({ success: null })}
+                  confirmBtnCssClass={
+                    "MuiButton-outlinedPrimary-301"
+                  }
+                >
+                  {
+                    res.data.messages.map(function(msg, index) {
+                      return <p>
+                        {`${msg}.`}
+                      </p>
+                    })
+                  }
+                </SweetAlert>
+              )
+            });
+          } else {
+            const msg = ErrorToString(res.data.messages);
+            this.setState({ errorMessage: msg });
+          }
+
+        console.log(res);
       })
       .catch(err => {
         console.log(err);
@@ -304,21 +343,29 @@ class BannerApplicationForm extends Component {
 
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <AddressField onPlaceSelect={(data) => console.log(data)}
-                                  textFieldProps={{
-                                    placeholder: "Address",
-                                    value: this.state.address,
-                                    name: "address",
-                                    required: true,
-                                    variant: "outlined",
-                                    margin: "dense",
-                                    fullWidth: true,
-                                    error: Boolean(this.state.addressError),
-                                    helperText: this.state.addressError,
-                                    onBlur: this.handleBlur.bind(this),
-                                    onChange: this.handleChange.bind(this),
-                                    label: BannerViewModel.ADDRESS
-                                  }}
+                    <AddressField
+                      textFieldProps={{
+                        placeholder: "Address",
+                        value: this.state.address,
+                        name: "address",
+                        required: true,
+                        variant: "outlined",
+                        margin: "dense",
+                        fullWidth: true,
+                        error: Boolean(this.state.addressError),
+                        helperText: this.state.addressError,
+                        onBlur: this.handleBlur.bind(this),
+                        onChange: this.handleChange.bind(this),
+                        label: BannerViewModel.ADDRESS
+                      }}
+                      onPlaceSelect={(place) => {
+                      if (place) {
+                        let name = place.name;
+                        let address = place.formatted_address;
+                        let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                        this.setState({ address: complete_address });
+                      }
+                    }}
                     />
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -336,7 +383,7 @@ class BannerApplicationForm extends Component {
 
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload required={true} document={{ id: 1, name: "Signature of applicant" }}
+                    <FileUpload  document={{ id: 1, name: "Signature of applicant" ,mandatory:1,mime:"image/*" }}
                                 onUploadSuccess={(data) => {
                                   let temp = {
                                     name: "signature",
@@ -354,6 +401,28 @@ class BannerApplicationForm extends Component {
                     <Typography style={{ marginTop: 20 }} variant={"headline"}> Banner details</Typography>
                     <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                     <BannerDetail ref={this.bannerRef}/>
+                  </GridItem>
+
+                  <GridItem sm={12} xs={12} md={12}>
+                    <Typography variant={"headline"}>Upload Document(s)</Typography>
+                  </GridItem>
+
+                  <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                    {this.state.documents.map((doc, index) => {
+                      return <GridItem className={classes.root} sm={12} xs={12} md={12}>
+                        <FileUpload key={index} onUploadSuccess={(data) => {
+                          this.setState(state => {
+                            let temp = {
+                              name: doc.id,
+                              path: doc.location
+                            };
+                            state.uploadDocuments.push(temp);
+                          });
+                        }} onUploadFailure={(e) => {
+                          console.log(e);
+                        }} document={doc}/>
+                      </GridItem>;
+                    })}
                   </GridItem>
 
                   {/*<GridContainer justify={"center"}>*/}
@@ -397,9 +466,7 @@ class BannerApplicationForm extends Component {
         </GridItem>
 
         <SubmitDialog open={this.state.submit} text={BannerViewModel.SUBMIT}/>
-        <OfficeSnackbar variant={"success"} open={this.state.success}
-                        message={"Your Application is submitted successfully"}
-                        onClose={(e) => this.setState({ success: false })}/>
+
         <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
                         message={this.state.errorMessage}
                         onClose={(e) => this.setState({ errorMessage: "" })}/>
