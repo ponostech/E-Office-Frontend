@@ -12,6 +12,9 @@ const Searchbox = withScriptjs(props => (
     onPlacesChanged={props.onPlacesChanged}
   >
     <TextField
+      InputProps={{
+        autoComplete:"off"
+      }}
       {...props.textFieldProps}
     />
   </StandaloneSearchBox>

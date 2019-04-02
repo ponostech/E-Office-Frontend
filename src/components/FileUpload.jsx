@@ -64,13 +64,13 @@ class FileUpload extends Component {
         <TextField
           {...rest}
 
-          onClick={() => {
-            let imageUpload = document.getElementById(file.id);
-            imageUpload.click();
-          }}
+          // onClick={() => {
+          //   let imageUpload = document.getElementById(file.id);
+          //   imageUpload.click();
+          // }}
           onChange={() => {
-            let imageUpload = document.getElementById(file.id);
-            imageUpload.click();
+            // let imageUpload = document.getElementById(file.id);
+            // imageUpload.click();
           }}
           required={file.mandatory !== 0}
 
@@ -82,6 +82,7 @@ class FileUpload extends Component {
           value={self.getFilename(file)}
           fullWidth={true}
           InputProps={{
+            readOnly:true,
             startAdornment: (
               <InputAdornment position={"start"}>
                 {self.getStatusIcon(file)}

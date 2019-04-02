@@ -7,7 +7,6 @@ import NoMatch from "./views/NoMatch";
 import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
 import { ApiRoutes } from "./config/ApiRoutes";
 import axios from "axios";
-
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
@@ -64,6 +63,7 @@ const token = localStorage.getItem("token");
 if (token) {
   axios.defaults.headers.common["Authorization"] = token;
 }
+
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <Router history={hist}>

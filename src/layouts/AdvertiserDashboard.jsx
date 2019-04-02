@@ -11,24 +11,48 @@ import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
 import NewHoardingForm from "../views/advertiser/hoarding/form/NewHoardingForm";
 import NewKioskForm from "../views/advertiser/kiosk/form/NewKioskForm";
 import withStyles from "@material-ui/core/es/styles/withStyles";
+import IdleTimer from "react-idle-timer";
 
-const style={
-  container:{
-    background:"white",
-    paddingBottom:"30px",
+const style = {
+  container: {
+    background: "white",
+    paddingBottom: "30px"
   }
-}
+};
 
 class AdvertiserDashboard extends Component {
+  constructor(props) {
+    super(props);
+
+    this.idleTimer = null;
+    this.onAction = this._onAction.bind(this);
+    this.onActive = this._onActive.bind(this);
+    this.onIdle = this._onIdle.bind(this);
+  }
+
+  _onAction(e) {
+    console.log("user did something", e);
+  }
+
+  _onActive(e) {
+    console.log("user is active", e);
+    console.log("time remaining", this.idleTimer.getRemainingTime());
+  }
+
+  _onIdle(e) {
+    console.log("user is idle", e);
+    console.log("last active", this.idleTimer.getLastActiveTime());
+  }
+
   render() {
-    const{classes}=this.props;
-    return (
-      <GridContainer justify={"center"}  className={classes.container}>
+    const { classes } = this.props;
+    let docs =
+      (<GridContainer justify={"center"} className={classes.container}>
         <GridItem xs={12} sm={12} md={12}>
           <AdvertiserHeader color={"primary"}/>
         </GridItem>
         <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
-          <GridContainer justify={"center"} >
+          <GridContainer justify={"center"}>
 
             <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>
             <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
@@ -44,8 +68,47 @@ class AdvertiserDashboard extends Component {
           </GridContainer>
 
         </GridItem>
-      </GridContainer>
+      </GridContainer>);
+    return (
+      <div>
+
+        {/*<IdleTimer*/}
+        {/*  ref={ref => {*/}
+        {/*    this.idleTimer = ref;*/}
+        {/*  }}*/}
+        {/*  element={<p>idle</p>}*/}
+        {/*  onActive={this.onActive}*/}
+        {/*  onIdle={this.onIdle}*/}
+        {/*  onAction={this.onAction}*/}
+        {/*  debounce={250}*/}
+        {/*  timeout={2000}/>*/}
+
+        <GridContainer justify={"center"} className={classes.container}>
+          <GridItem xs={12} sm={12} md={12}>
+            <AdvertiserHeader color={"primary"}/>
+          </GridItem>
+          <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
+            <GridContainer justify={"center"}>
+
+              <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
+
+              <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK} component={NewKioskForm}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_KIOSK} component={KioskLists}/>
+
+              {/*<Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>*/}
+              <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>
+
+              <Route exact path={OfficeRoutes.ADVERTISER_DASHBOARD} component={Dashboard}/>
+
+            </GridContainer>
+
+          </GridItem>
+        </GridContainer>
+
+      </div>
     );
+
   }
 }
 
