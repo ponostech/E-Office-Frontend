@@ -10,7 +10,7 @@ import GetIcon from "@material-ui/icons/Work";
 import SentIcon from "@material-ui/icons/SendRounded";
 import Assignment from "../ApplicationAssignmentDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import { OfficeRoutes } from "../../../../config/routes-constant/OfficeRoutes";
+import * as OfficeRoutes from "../../../../config/routes-constant/OfficeRoutes";
 
 const staffs = [
   { value: "1", label: "Lala" },

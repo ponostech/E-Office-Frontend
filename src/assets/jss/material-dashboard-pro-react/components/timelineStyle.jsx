@@ -57,7 +57,7 @@ const timelineStyle = theme => ({
     width: "50px",
     height: "50px",
     lineHeight: "51px",
-    fontSize: "1.4em",
+    fontSize: "1.6em",
     textAlign: "center",
     position: "absolute",
     top: "16px",
@@ -192,25 +192,48 @@ const timelineStyle = theme => ({
     }
   },
   timelineHeading: {
-    marginBottom: "15px"
+    marginBottom: "15px",
+  },
+  timelineTitle: {
+    fontSize: "12px"
   },
   timelineBody: {
-    fontSize: "14px",
-    lineHeight: "21px"
+    fontSize: "17px",
+    lineHeight: "28px",
+    color: "#666666",
+    paddingBottom: "10px"
   },
   timelineFooter: {
     zIndex: "1000",
     position: "relative",
-    float: "left"
+    float: "left",
   },
   footerTitle: {
-    color: grayColor[7],
+    color: blackColor,
     fontWeight: "400",
-    margin: "10px 0px 0px"
+    margin: "10px 0px 0px",
+    fontStyle: "italic",
+    fontSize: "0.9em"
   },
   footerLine: {
     marginTop: "10px",
     marginBottom: "5px"
+  },
+  testimonialIcon: {
+    marginTop: "0",
+    "& svg": {
+      width: "40px",
+      height: "40px"
+    },
+    color: successColor[0]
+  },
+  avatar: {
+    clear: "block",
+    marginTop: "20px"
+  },
+  timelineFooterText: {
+    lineHeight: 1,
+    margin: "4px 0"
   }
 });
 

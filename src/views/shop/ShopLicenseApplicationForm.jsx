@@ -61,6 +61,7 @@ class ShopLicenseApplicationForm extends Component {
     premised: "Owned",
     displayType: undefined,
     signature: undefined,
+    passport: undefined,
 
     latitude: undefined,
     longitude: undefined,
@@ -504,18 +505,17 @@ class ShopLicenseApplicationForm extends Component {
                     />
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <OfficeSelect value={this.state.displayType}
-                                  label={"Type of display"}
-                                  name={"displayType"}
-                                  variant={"outlined"}
-                                  margin={"dense"}
-                                  fullWidth={true}
-                                  required={true}
-                                  error={Boolean(this.state.displayTypeError)}
-                                  helperText={this.state.displayTypeError}
-                                  onBlur={this.handleSelectBlur.bind(this, "displayType")}
-                                  onChange={this.handleSelect.bind(this, "displayType")}
-                                  options={this.state.display_types}/>
+                    <FileUpload required={true} document={{ id: 1, name: "Passport", mime: "image/*" }}
+                                onUploadSuccess={(data) => {
+                                  this.setState(state => {
+                                    state.passport = {
+                                      name: "passport",
+                                      path: data.location
+                                    };
+                                  });
+                                }} onUploadFailure={(err) => {
+                      console.log(err);
+                    }}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <FormControl fullWidth={true} margin={"dense"}>
@@ -575,8 +575,10 @@ class ShopLicenseApplicationForm extends Component {
                     <FormControlLabel control={
                       <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
                     }
-                                      label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoarding Regulations 2013," +
-                                      " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
+                                      label={"1.I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
+                                      "no unauthorized construction;" +
+                                      "2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations; 3. I shall follow all rules and regulations of AMC;" +
+                                      "4. It is certified that the above information is correct to the best of my knowledge"}/>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
                     <Divider/>
