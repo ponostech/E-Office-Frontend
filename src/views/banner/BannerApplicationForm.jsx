@@ -75,7 +75,7 @@ class BannerApplicationForm extends Component {
 
     submit: false,
     complete: false,
-    prestine:true
+    prestine: true
   };
 
   componentDidMount() {
@@ -118,7 +118,7 @@ class BannerApplicationForm extends Component {
     this.setState({
       [name]: value
     });
-    this.setState({prestine:false})
+    this.setState({ prestine: false });
   };
 
   handleSelect = (identifier, value) => {
@@ -135,14 +135,14 @@ class BannerApplicationForm extends Component {
       default:
         break;
     }
-    this.setState({prestine:false})
+    this.setState({ prestine: false });
   };
 
 
   onSubmit = (e) => {
     let details = this.bannerRef.current.getBannerDetails();
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.phoneError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
-      || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine) || details.length === 0 || this.state.signature===undefined;
+      || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine) || details.length === 0 || this.state.signature === undefined;
 
     if (invalid) {
       this.setState({ errorMessage: "Please fill all the required fields" });
@@ -167,26 +167,15 @@ class BannerApplicationForm extends Component {
       });
 
   };
-
-  handleClick = (e) => {
-    const name = e.target.name;
-    switch (name) {
-      case "primary":
-        this.onSubmit();
-        break;
-      case "secondary":
-        this.setState({
-          name: "",
-          address: "",
-          phone_no: "",
-          blood: "",
-          signature: undefined
-        });
-        this.bannerRef.current.doReset();
-        break;
-      default:
-        break;
-    }
+  onClear = () => {
+    this.setState({
+      name: "",
+      address: "",
+      phone_no: "",
+      blood: "",
+      signature: undefined
+    });
+    this.bannerRef.current.doReset();
   };
 
 
@@ -202,7 +191,7 @@ class BannerApplicationForm extends Component {
         this.state.displayType === undefined ? this.setState({ displayTypeError: BannerViewModel.DISPLAY_TYPE_REQUIRED }) : this.setState({ displayTypeError: "" });
         break;
       default:
-            break
+        break;
     }
   };
   handleBlur = (e) => {
@@ -225,7 +214,7 @@ class BannerApplicationForm extends Component {
 
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
 
       <GridContainer justify="flex-start">
@@ -388,14 +377,16 @@ class BannerApplicationForm extends Component {
                 <div>
                   <Button name={"primary"} disabled={!this.state.agree}
                           color={"primary"} variant={"outlined"}
-                          onClick={this.handleClick.bind(this)}>
+                          onClick={this.onSubmit.bind(this)}>
                     {BannerViewModel.PRIMARY_TEXT}
                   </Button>
-                  {" "}
+                  {"\u00A0 "}
+                  {"\u00A0 "}
+                  {"\u00A0 "}
                   <Button name={"secondary"}
                           color={"secondary"}
                           variant={"outlined"}
-                          onClick={this.handleClick.bind(this)}>
+                          onClick={this.onClear.bind(this)}>
                     {BannerViewModel.SECONDARY_TEXT}
                   </Button>
                 </div>
@@ -407,7 +398,8 @@ class BannerApplicationForm extends Component {
 
         <SubmitDialog open={this.state.submit} text={BannerViewModel.SUBMIT}/>
         <OfficeSnackbar variant={"success"} open={this.state.success}
-                        message={"Your Application is submitted successfully"} onClose={(e) => this.setState({ success: false })}/>
+                        message={"Your Application is submitted successfully"}
+                        onClose={(e) => this.setState({ success: false })}/>
         <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
                         message={this.state.errorMessage}
                         onClose={(e) => this.setState({ errorMessage: "" })}/>

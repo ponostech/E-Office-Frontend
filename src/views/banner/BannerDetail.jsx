@@ -109,6 +109,11 @@ class BannerDetail extends Component {
         <Grid container={true}>
           <GridItem className={classes.item} sm={12} md={2}>
             <TextField name={"length"}
+                       InputProps={{
+                         inputProps:{
+                           min:0
+                         }
+                       }}
                        type={"number"}
                        fullWidth={true}
                        required={true}
@@ -125,6 +130,11 @@ class BannerDetail extends Component {
 
           <GridItem className={classes.item} style={{ padding: "4px !important" }} sm={12} md={2}>
             <TextField name={"height"}
+                       InputProps={{
+                         inputProps:{
+                           min:0
+                         }
+                       }}
                        type={"number"}
                        fullWidth={true}
                        required={true}

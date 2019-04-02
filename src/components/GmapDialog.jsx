@@ -16,7 +16,7 @@ const RegularMap = withScriptjs(
     >
       <Marker
         draggable={true}
-        onDragEnd={data=>props.onDragEnd(data.latLng)}
+        onDragEnd={data => props.onDragEnd(data.latLng)}
         position={{ lat: props.lat, lng: props.lng }}/>
     </GoogleMap>
   ))
@@ -31,24 +31,17 @@ class GMapDialog extends Component {
     };
   }
 
-  handleClick = (e) => {
-    const { lat, lng } = this.state;
-    const { onClose } = this.props;
-    const { name } = e.target;
-    switch (name) {
-      case "confirm":
-        onClose(lat, lng);
-        break;
-      case "close":
-        onClose(lat,lng);
-        break;
-      default:
-        break;
-    }
-  };
-
   confirm = (e) => {
     console.log(e);
+  };
+  handleCancel = (e) => {
+    const { onClose } = this.props;
+    onClose(null, null);
+  };
+  handleConfirm = (e) => {
+    const { lat, lng } = this.state;
+    const { onClose } = this.props;
+    onClose(lat, lng);
   };
 
   render() {
@@ -59,12 +52,12 @@ class GMapDialog extends Component {
         <DialogContent>
           <RegularMap
 
-            onDragEnd={latLng=>{
-              console.log(latLng)
+            onDragEnd={latLng => {
+              console.log(latLng);
               this.setState({
-                lat:latLng.lat(),
-                lng:latLng.lng()
-              })
+                lat: latLng.lat(),
+                lng: latLng.lng()
+              });
             }}
             isMarkerShown={isMarkerShown}
             googleMapURL={MAP_URL}
@@ -91,9 +84,9 @@ class GMapDialog extends Component {
         </DialogContent>
         <DialogActions>
           <Button name={"confirm"} variant={"contained"} color={"primary"}
-                  onClick={this.handleClick.bind(this)}>Confirm</Button>
+                  onClick={this.handleConfirm.bind(this)}>Confirm</Button>
           <Button name={"close"} variant={"contained"} color={"secondary"}
-                  onClick={this.handleClick.bind(this)}>Close</Button>
+                  onClick={this.handleCancel.bind(this)}>Close</Button>
         </DialogActions>
       </Dialog>
     );

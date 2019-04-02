@@ -13,42 +13,60 @@ import NewHoardingForm from "../views/advertiser/hoarding/form/NewHoardingForm";
 import NewKioskForm from "../views/advertiser/kiosk/form/NewKioskForm";
 
 import withStyles from "@material-ui/core/es/styles/withStyles";
+import IdleTimer from "react-idle-timer";
 
 const style = {
-    container: {
-        background: "white",
-        paddingBottom: "30px",
-    }
+  container: {
+    background: "white",
+    paddingBottom: "30px"
+  }
 };
 
 class AdvertiserDashboard extends Component {
     render() {
-        const {classes} = this.props;
-        return (
-            <GridContainer justify={"center"} className={classes.container}>
-                <GridItem xs={12} sm={12} md={12}>
-                    <AdvertiserHeader color={"primary"}/>
-                </GridItem>
-                <GridItem style={{marginTop: 70}} xs={12} sm={12} md={12}>
-                    <GridContainer justify={"center"}>
+      
+    return (
+      <div>
 
-                        <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>
-                        <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
+        {/*<IdleTimer*/}
+        {/*  ref={ref => {*/}
+        {/*    this.idleTimer = ref;*/}
+        {/*  }}*/}
+        {/*  element={<p>idle</p>}*/}
+        {/*  onActive={this.onActive}*/}
+        {/*  onIdle={this.onIdle}*/}
+        {/*  onAction={this.onAction}*/}
+        {/*  debounce={250}*/}
+        {/*  timeout={2000}/>*/}
 
-                        <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK} component={NewKioskForm}/>
-                        <Route exact path={OfficeRoutes.ADVERTISER_KIOSK} component={KioskLists}/>
+        <GridContainer justify={"center"} className={classes.container}>
+          <GridItem xs={12} sm={12} md={12}>
+            <AdvertiserHeader color={"primary"}/>
+          </GridItem>
+          <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
+            <GridContainer justify={"center"}>
 
-                        {/*<Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>*/}
-                        <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
 
-                        <Route exact path={OfficeRoutes.ADVERTISER_DASHBOARD} component={Dashboard}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK} component={NewKioskForm}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_KIOSK} component={KioskLists}/>
 
-                    </GridContainer>
+              {/*<Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>*/}
+              <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>
 
-                </GridItem>
+              <Route exact path={OfficeRoutes.ADVERTISER_DASHBOARD} component={Dashboard}/>
+
             </GridContainer>
-        );
-    }
+
+          </GridItem>
+        </GridContainer>
+
+      </div>
+    );
+
+  }
+
 }
 
 export default withStyles(style)(AdvertiserDashboard);

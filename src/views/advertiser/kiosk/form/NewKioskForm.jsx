@@ -34,6 +34,7 @@ import GMapDialog from "../../../../components/GmapDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { CategoryServices } from "../../../../services/CategoryServices";
 import AddressField from "../../../../components/AddressField";
+import { ArrayToString, ErrorToString } from "../../../../utils/ErrorUtil";
 
 
 const style = {
@@ -125,16 +126,23 @@ class NewKioskForm extends Component {
     let categories = [];
     this.categoryService.get()
       .then(res => {
-        console.log(res);
         const { messages, status } = res.data;
-
         if (status) {
-          res.data.data.area_categories.forEach(function(item) {
-            let lc = {
-              value: item.id,
-              label: `${item.name} (${item.roads})`
+          res.data.data.area_categories.forEach(function(cat) {
+            const roads = cat.roads;
+            let roadOptions = [];
+            roads.forEach((road) => {
+              let item = {
+                label: road,
+                value: cat.id
+              };
+              roadOptions.push(item);
+            });
+            let c = {
+              label: `(${cat.name})`,
+              options: roadOptions
             };
-            categories.push(lc);
+            categories.push(c);
           });
           this.setState({
             categories: categories
@@ -149,7 +157,7 @@ class NewKioskForm extends Component {
   };
 
   fetchDocument = () => {
-    this.documentService.get("kiosk")
+    this.documentService.get("hoarding_kiosk")
       .then(data => {
         if (data.status) {
           this.setState({ documents: data.data.documents });
@@ -161,7 +169,7 @@ class NewKioskForm extends Component {
   };
 
   isInvalid = () => {
-    return !this.state.pretine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
+    return this.state.pretine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
       || !!this.categoryError || !!this.state.displayTypeError;
   };
 
@@ -173,6 +181,8 @@ class NewKioskForm extends Component {
   setCoordinate = (data) => {
     this.setState({ coordinate: data, openMap: false });
   };
+
+
   handleClick = (e) => {
     const { name } = e.target;
     switch (name) {
@@ -186,14 +196,20 @@ class NewKioskForm extends Component {
     }
   };
   doSubmit = () => {
-    // if (this.isInvalid()) {
-    //   this.setState({ errorMessage: "There is an error" });
-    //   return;
-    // }
+    if (this.isInvalid()) {
+      this.setState({ errorMessage: "Please fill all the required fields" });
+      return;
+    }
     this.setState({ submit: true });
-    this.hoardingService.create(this.state)
-      .then(data => {
-        console.log(data);
+    this.kioskService.create(this.state)
+      .then(res => {
+        if (res.data.status) {
+          this.setState({success:ArrayToString(res.data.messages)})
+        }else{
+          let msg = ErrorToString(res.data.messages);
+          this.setState({ errorMessage: msg });
+        }
+        console.log(res);
       })
       .catch(err => {
         this.setState({ errorMessage: err.toString() });
@@ -348,6 +364,11 @@ class NewKioskForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"length"}
                              type={"number"}
+                             InputProps={{
+                               inputProps:{
+                                 min:0
+                               }
+                             }}
                              value={this.state.length}
                              margin={"dense"}
                              fullWidth={true}
@@ -362,6 +383,11 @@ class NewKioskForm extends Component {
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"height"}
+                             InputProps={{
+                               inputProps:{
+                                 min:0
+                               }
+                             }}
                              value={this.state.height}
                              type={"number"}
                              margin={"dense"}
@@ -407,6 +433,11 @@ class NewKioskForm extends Component {
                   <TextField name={"clearance"}
                              value={this.state.clearance}
                              type={"number"}
+                             InputProps={{
+                               inputProps:{
+                                 min:0
+                               }
+                             }}
                              margin={"dense"}
                              fullWidth={true}
                              variant={"outlined"}
@@ -531,7 +562,7 @@ class NewKioskForm extends Component {
                 <GridItem>
                   <Button disabled={!this.state.agree} name={"submit"} variant={"outlined"}
                           color={"primary"}
-                          onClick={this.handleClick.bind(this)}>Submit</Button>
+                          onClick={this.doSubmit.bind(this)}>Submit</Button>
                   {"\u00A0 "}
                   {"\u00A0 "}
                   {"\u00A0 "}

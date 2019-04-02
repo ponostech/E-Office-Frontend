@@ -3,24 +3,25 @@ import { ApiRoutes } from "../config/ApiRoutes";
 
 export class KioskService {
   async create(state) {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     console.log(token);
     const config = { headers: { "Authorization": `Bearer ${token}` } };
 
     let data = {
       local_council_id: state.localCouncil.value,
+      area_category_id:state.category.value,
       address: state.address,
       both_side: state.bothSide ? 1 : 0,
       collapsible: state.collapsible ? 1 : 0,
       road_detail: state.roadDetail,
       length: state.length,
       height: state.height,
-      area_category_id: state.category,
-      display_type: state.displayType,
+      clearance: state.clearance,
+      display_type: state.displayType.value,
       land_owner_name: state.landLord,
+      land_owner_type: state.landlordType,
       latitude:state.latitude,
       longitude:state.longitude,
-      land_owner_type: state.landlordType,
       status: 0,
       documents: []
     };

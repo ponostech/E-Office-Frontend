@@ -9,6 +9,7 @@ import {ApiRoutes} from "./config/ApiRoutes";
 import {MuiThemeProvider} from "@material-ui/core/styles";
 import theme from "./assets/office/theme";
 import axios from "axios";
+
 const hist = createBrowserHistory();
 
 axios.defaults.baseURL = ApiRoutes.BASE_URL;
@@ -18,7 +19,9 @@ axios.defaults.headers.get["Access-Control-Allow-Origin"] = "http://localhost:80
 axios.defaults.timeout = 20000;
 
 const token = localStorage.getItem("token");
-if (token) axios.defaults.headers.common["Authorization"] = token;
+if (token) {
+  axios.defaults.headers.common["Authorization"] = token;
+}
 
 ReactDOM.render(
     <MuiThemeProvider theme={theme}>

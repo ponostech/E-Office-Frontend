@@ -176,7 +176,7 @@ class NewHoardingForm extends Component {
   };
 
   fetchDocument = () => {
-    this.documentService.get("hoarding")
+    this.documentService.get("hoarding_kiosk")
       .then(data => {
         if (data.status) {
           this.setState({ documents: data.data.documents });
@@ -340,6 +340,11 @@ class NewHoardingForm extends Component {
 
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"length"}
+                             InputProps={{
+                               inputProps:{
+                                 min:0
+                               }
+                             }}
                              type={"number"}
                              value={this.state.length}
                              margin={"dense"}
@@ -355,6 +360,11 @@ class NewHoardingForm extends Component {
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"height"}
+                             InputProps={{
+                               inputProps:{
+                                 min:0
+                               }
+                             }}
                              value={this.state.height}
                              type={"number"}
                              margin={"dense"}
@@ -397,6 +407,11 @@ class NewHoardingForm extends Component {
 
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"clearance"}
+                             InputProps={{
+                               inputProps:{
+                                 min:0
+                               }
+                             }}
                              value={this.state.clearance}
                              type={"number"}
                              margin={"dense"}
@@ -508,19 +523,19 @@ class NewHoardingForm extends Component {
                   <Typography variant={"headline"}>Upload Document(s)</Typography>
                 </GridItem>
                 {this.state.documents.map((doc, index) => {
-                  return <GridItem className={classes.root} key={index} xs={12} sm={12} md={6}>
+                  return <GridItem className={classes.root} key={index} xs={12} sm={12} md={12}>
                     <FileUpload key={index} onUploadSuccess={(data) => {
                       this.setState(state => {
                         let temp = {
                           name: doc.id,
                           path: doc.location
                         };
-                        state.uploadDocuments.push(temp);
+                        state.uploadDocuments.push(temp)
                       });
                     }} onUploadFailure={(e) => {
                       console.log(e);
-                    }} document={doc}/>;
-                  </GridItem>;
+                    }} document={doc}/>
+                  </GridItem>
                 })}
                 <GridItem className={classes.root} xs={12} sm={12} md={12}>
                   <FormControlLabel control={
