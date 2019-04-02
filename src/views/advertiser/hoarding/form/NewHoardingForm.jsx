@@ -32,10 +32,10 @@ import GMapDialog from "../../../../components/GmapDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../../../components/AddressField";
-import { ArrayToString, ErrorToString } from "../../../../utils/ErrorUtil";
+import { ErrorToString } from "../../../../utils/ErrorUtil";
 import { CategoryServices } from "../../../../services/CategoryServices";
-import ApplicationSubmitSuccessDialog from "../../../../components/ApplicationSubmitSuccessDialog";
 import LoadingDialog from "../../../common/LoadingDialog";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 
 const style = {
@@ -44,7 +44,7 @@ const style = {
   }
 };
 
-var timeout=undefined;
+var timeout = undefined;
 
 class NewHoardingForm extends Component {
   constructor(props) {
@@ -91,7 +91,7 @@ class NewHoardingForm extends Component {
 
       agree: false,
 
-      success: "",
+      success: null,
       submit: false,
       loading: true
     };
@@ -106,18 +106,18 @@ class NewHoardingForm extends Component {
   componentDidMount() {
 
     var self = this;
-    timeout=setTimeout(function(handler) {
+    timeout = setTimeout(function(handler) {
       Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
         .then(function([cats, locs, docs]) {
           // self.setState({ loading: false });
         });
-      self.setState({loading:false})
-    },6000)
+      self.setState({ loading: false });
+    }, 6000);
     //
   }
 
   componentWillUnmount() {
-    clearTimeout(timeout)
+    clearTimeout(timeout);
   }
 
   fetchLocalCouncil = () => {
@@ -202,7 +202,7 @@ class NewHoardingForm extends Component {
 
   doSubmit = () => {
     if (this.invalid()) {
-      this.setState({ errorMessage: "Please fill the required fields" });
+      this.setState({ errorMessage: "Please fill all the required \nfields" });
       return;
     }
     this.setState({ submit: true });
@@ -210,7 +210,27 @@ class NewHoardingForm extends Component {
       .then(res => {
         console.log(res);
         if (res.data.status) {
-          this.setState({ success: ArrayToString(res.data.messages) });
+          this.setState({
+            success: (
+              <SweetAlert
+                success
+                style={{ display: "block", marginTop: "-100px" }}
+                title={"Success"}
+                onConfirm={() => this.setState({ success: null })}
+                confirmBtnCssClass={
+                  "MuiButton-outlinedPrimary-301"
+                }
+              >
+                {
+                  res.data.messages.map(function(msg, index) {
+                    return <p>
+                      {`${msg}.`}
+                    </p>
+                  })
+                }
+              </SweetAlert>
+            )
+          });
         } else {
           let msg = ErrorToString(res.data.messages);
           this.setState({ errorMessage: msg });
@@ -341,8 +361,8 @@ class NewHoardingForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"length"}
                              InputProps={{
-                               inputProps:{
-                                 min:0
+                               inputProps: {
+                                 min: 0
                                }
                              }}
                              type={"number"}
@@ -361,8 +381,8 @@ class NewHoardingForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"height"}
                              InputProps={{
-                               inputProps:{
-                                 min:0
+                               inputProps: {
+                                 min: 0
                                }
                              }}
                              value={this.state.height}
@@ -408,8 +428,8 @@ class NewHoardingForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"clearance"}
                              InputProps={{
-                               inputProps:{
-                                 min:0
+                               inputProps: {
+                                 min: 0
                                }
                              }}
                              value={this.state.clearance}
@@ -530,12 +550,12 @@ class NewHoardingForm extends Component {
                           name: doc.id,
                           path: doc.location
                         };
-                        state.uploadDocuments.push(temp)
+                        state.uploadDocuments.push(temp);
                       });
                     }} onUploadFailure={(e) => {
                       console.log(e);
                     }} document={doc}/>
-                  </GridItem>
+                  </GridItem>;
                 })}
                 <GridItem className={classes.root} xs={12} sm={12} md={12}>
                   <FormControlLabel control={
@@ -579,14 +599,7 @@ class NewHoardingForm extends Component {
                           this.setState({ errorMessage: "" });
                         }}/>
         <SubmitDialog open={this.state.submit} text={"Your application is submitting ..."}/>
-        <ApplicationSubmitSuccessDialog
-          title={"Your application is submitted"}
-          open={Boolean(this.state.success)}
-          message={this.state.success}
-          onClose={(e) => {
-            this.setState({ success: "" });
-            this.clear();
-          }}/>
+        {this.state.success}
         <LoadingDialog open={this.state.loading} title={"Loading"} message={"Please wait ..."}/>
       </GridContainer>
     );

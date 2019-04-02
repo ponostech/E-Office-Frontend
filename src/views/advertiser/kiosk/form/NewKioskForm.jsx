@@ -34,7 +34,9 @@ import GMapDialog from "../../../../components/GmapDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { CategoryServices } from "../../../../services/CategoryServices";
 import AddressField from "../../../../components/AddressField";
-import { ArrayToString, ErrorToString } from "../../../../utils/ErrorUtil";
+import { ErrorToString } from "../../../../utils/ErrorUtil";
+import SweetAlert from "react-bootstrap-sweetalert";
+import LoadingDialog from "../../../common/LoadingDialog";
 
 
 const style = {
@@ -42,6 +44,7 @@ const style = {
     padding: "10px 15px !important"
   }
 };
+var timeout = undefined;
 
 class NewKioskForm extends Component {
   constructor(props) {
@@ -97,9 +100,20 @@ class NewKioskForm extends Component {
   }
 
   componentDidMount() {
-    this.fetchLocalCouncil();
-    this.fetchCategory();
-    this.fetchDocument();
+
+    var self = this;
+    timeout = setTimeout(function(handler) {
+      Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
+        .then(function([cats, locs, docs]) {
+          // self.setState({ loading: false });
+        });
+      self.setState({ loading: false });
+    }, 6000);
+    //
+  }
+
+  componentWillUnmount() {
+    clearTimeout(timeout);
   }
 
   fetchLocalCouncil = () => {
@@ -204,8 +218,28 @@ class NewKioskForm extends Component {
     this.kioskService.create(this.state)
       .then(res => {
         if (res.data.status) {
-          this.setState({success:ArrayToString(res.data.messages)})
-        }else{
+          this.setState({
+            success: (
+              <SweetAlert
+                success
+                style={{ display: "block", marginTop: "-100px" }}
+                title={"Success"}
+                onConfirm={() => this.setState({ success: null })}
+                confirmBtnCssClass={
+                  "MuiButton-outlinedPrimary-301"
+                }
+              >
+                {
+                  res.data.messages.map(function(msg, index) {
+                    return <p>
+                      {`${msg}.`}
+                    </p>;
+                  })
+                }
+              </SweetAlert>
+            )
+          });
+        } else {
           let msg = ErrorToString(res.data.messages);
           this.setState({ errorMessage: msg });
         }
@@ -365,8 +399,8 @@ class NewKioskForm extends Component {
                   <TextField name={"length"}
                              type={"number"}
                              InputProps={{
-                               inputProps:{
-                                 min:0
+                               inputProps: {
+                                 min: 0
                                }
                              }}
                              value={this.state.length}
@@ -384,8 +418,8 @@ class NewKioskForm extends Component {
                 <GridItem className={classes.root} xs={12} sm={12} md={3}>
                   <TextField name={"height"}
                              InputProps={{
-                               inputProps:{
-                                 min:0
+                               inputProps: {
+                                 min: 0
                                }
                              }}
                              value={this.state.height}
@@ -434,8 +468,8 @@ class NewKioskForm extends Component {
                              value={this.state.clearance}
                              type={"number"}
                              InputProps={{
-                               inputProps:{
-                                 min:0
+                               inputProps: {
+                                 min: 0
                                }
                              }}
                              margin={"dense"}
@@ -529,11 +563,11 @@ class NewKioskForm extends Component {
                   </FormControl>
                 </GridItem>
                 <GridItem sm={12} xs={12} md={12}>
-                  <Typography variant={"headline"}>Upload Document</Typography>
+                  <Typography variant={"headline"}>Upload Document(s)</Typography>
                 </GridItem>
                 {this.state.documents.map((doc, index) => {
-                  return <GridItem className={classes.root} sm={12} xs={12} md={12}>
-                    <FileUpload key={index} onUploadSuccess={(data) => {
+                  return <GridItem key={index} className={classes.root} sm={12} xs={12} md={12}>
+                    <FileUpload onUploadSuccess={(data) => {
                       this.setState(state => {
                         let temp = {
                           name: doc.id,
@@ -574,12 +608,7 @@ class NewKioskForm extends Component {
             </CardActions>
           </Card>
         </GridItem>
-        < OfficeSnackbar
-          variant={"success"}
-          open={!!this.state.success}
-          message={this.state.success}
-          onClose={(e) => this.setState({ success: "" })}
-        />
+        {this.state.success}
         <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
           this.setState({
             openMap: false,
@@ -600,6 +629,8 @@ class NewKioskForm extends Component {
           }
           }/>
         <SubmitDialog open={this.state.submit} text={"Your application is submitting ..."}/>
+        <LoadingDialog open={this.state.loading} title={"Loading"} message={"Please wait ..."}/>
+
       </GridContainer>
     );
   }

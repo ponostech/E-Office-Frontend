@@ -6,14 +6,14 @@ export class BannerService {
   async create(state) {
     let data = {
       name: state.name,
-      email: state.email,
       type:state.type,
-      password: state.password,
       phone_no: state.phone,
-      registered:0,
+      local_council_id:state.localCouncil.value,
+      display_type: state.display_type,
       address:state.address,
+      detail:state.details,
       signature: [state.signature],
-      documents: state.files
+      documents: state.uploadDocuments
     };
     try {
       let res=await axios.post(ApiRoutes.CREATE_BANNER, data);

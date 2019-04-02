@@ -10,6 +10,7 @@ import {
   ApplyAdvertiser,
   ApplyBanner,
   ApplyHoarding,
+  ApplyHotel,
   ApplyKiosk,
   BuildingPermission,
   CheckLicense,
@@ -20,6 +21,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import PrevIcon from "@material-ui/icons/ArrowLeft";
 import NextIcon from "@material-ui/icons/ArrowRight";
+import { IconButton } from "@material-ui/core";
 
 const styles = {
   pageSubcategoriesTitle: {
@@ -88,8 +90,9 @@ var settings = {
   infinite: false,
   speed: 500,
   slidesToShow: 3,
-  slidesToScroll: 4,
+  slidesToScroll: 3,
   initialSlide: 0,
+
   prevArrow: <PrevIcon fontSize={"large"} color={"primary"}/>,
   nextArrow: <NextIcon fontSize={"large"} color={"primary"}/>,
   responsive: [
@@ -98,16 +101,15 @@ var settings = {
       settings: {
         slidesToShow: 3,
         slidesToScroll: 3,
-        infinite: true,
         dots: true
       }
     },
     {
       breakpoint: 600,
       settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2,
-        initialSlide: 2
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        initialSlide: 1
       }
     },
     {
@@ -142,6 +144,7 @@ class HomePage extends Component {
               <ApplyKiosk classes={classes} click={this.handleLink}/>
               <ApplyBanner classes={classes} click={this.handleLink}/>
               <ShopLicensing classes={classes} click={this.handleLink}/>
+              <ApplyHotel classes={classes} click={this.handleLink}/>
               <ApplyAdvertiser classes={classes} click={this.handleLink}/>
               <Grievance classes={classes} click={this.handleLink}/>
               <CheckLicense classes={classes} click={this.handleLink}/>

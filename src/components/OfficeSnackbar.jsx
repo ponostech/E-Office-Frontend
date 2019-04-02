@@ -41,10 +41,19 @@ const styles1 = theme => ({
     marginRight: theme.spacing.unit
   },
   message: {
-    display: "flex",
-    alignItems: "center"
+    display:'flex',
+    justify:"center"
   }
 });
+
+function convertMessage(messages) {
+  let arr = [];
+  messages.forEach(function(msg, index) {
+    let para=<p>{msg}</p>
+    arr.push(para)
+  });
+  return arr;
+}
 
 function OfficeSnackbar(props) {
   const { classes, duration, position, open, className, message, onClose, variant, ...other } = props;
@@ -55,15 +64,19 @@ function OfficeSnackbar(props) {
               onClose={onClose}
               autoHideDuration={duration}
               anchorOrigin={position}
+              bodyStyle={{ height: 'auto', lineHeight: '28px', padding: 24, whiteSpace: 'pre-line' }}
     >
       <SnackbarContent
         className={classNames(classes[variant], className)}
         aria-describedby="client-snackbar"
         message={
-          <span id="client-snackbar" className={classes.message}>
+          <div id="client-snackbar"  className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)}/>
-            {message}
-        </span>
+            {
+              Array.isArray(message)?convertMessage(message):<p>{message}</p>
+            }
+
+        </div>
         }
         action={[
           <IconButton
