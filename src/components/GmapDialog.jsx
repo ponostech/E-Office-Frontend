@@ -3,6 +3,8 @@ import { Button, Dialog, DialogActions, DialogContent } from "@material-ui/core"
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from "react-google-maps";
 import * as PropTypes from "prop-types";
 import { MAP_API_KEY } from "../Configuration";
+import SearchBox from "react-google-maps/lib/components/places/SearchBox";
+import "./mapStyle.css";
 
 const RegularMap = withScriptjs(
   withGoogleMap(props => (
@@ -12,8 +14,32 @@ const RegularMap = withScriptjs(
       defaultOptions={{
         scrollwheel: true
       }}
-
     >
+      <SearchBox
+        ref={props.onSearchBoxMounted}
+        bounds={props.bounds}
+        controlPosition={window.google.maps.ControlPosition.TOP_CENTER}
+        onPlacesChanged={props.onPlacesChanged}
+      >
+        <input
+          type="text"
+          placeholder="Search places"
+          style={{
+            zIndex: 10,
+            boxSizing: `border-box`,
+            border: `1px solid transparent`,
+            width: `340px`,
+            height: `42px`,
+            marginTop: `27px`,
+            padding: `0 12px`,
+            borderRadius: `3px`,
+            boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+            fontSize: `14px`,
+            outline: `none`,
+            textOverflow: `ellipses`
+          }}
+        />
+      </SearchBox>
       <Marker
         draggable={true}
         onDragEnd={data => props.onDragEnd(data.latLng)}
@@ -22,10 +48,13 @@ const RegularMap = withScriptjs(
   ))
 );
 
+const refs = {};
+
 class GMapDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      bounds: null,
       lat: 23.728355734275432,
       lng: 92.71896203968402
     };
@@ -43,24 +72,45 @@ class GMapDialog extends Component {
     const { onClose } = this.props;
     onClose(lat, lng);
   };
+  onPlacesChanged = (data) => {
+    const places = refs.searchBox.getPlaces();
+
+    const bounds = new window.google.maps.LatLngBounds();
+
+    places.forEach(place => {
+      if (place.geometry.viewport) {
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+    });
+    const nextMarkers = places.map(place => ({
+      position: place.geometry.location
+    }));
+
+  };
+
+  onSearchBoxMounted = ref => {
+    refs.searchBox = ref;
+  };
 
   render() {
     const { open, onClose, isMarkerShown, ...rest } = this.props;
-    const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${MAP_API_KEY}`;
     return (
       <Dialog open={open} onClose={this.confirm.bind(this)} {...rest} fullScreen={true}>
         <DialogContent>
           <RegularMap
-
+            bounds={this.state.bounds}
+            onPlacesChanged={this.onPlacesChanged.bind(this)}
+            onSearchBoxMounted={this.onSearchBoxMounted.bind(this)}
             onDragEnd={latLng => {
-              console.log(latLng);
               this.setState({
                 lat: latLng.lat(),
                 lng: latLng.lng()
               });
             }}
             isMarkerShown={isMarkerShown}
-            googleMapURL={MAP_URL}
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${MAP_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
             loadingElement={<div style={{ height: `100%` }}/>}
             containerElement={<div style={{ width: "100%", height: "100%" }}> helll </div>}
             mapElement={<div style={{ height: `100%` }}/>}

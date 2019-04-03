@@ -5,6 +5,7 @@ import GridItem from "../../components/Grid/GridItem";
 import AddIcon from "@material-ui/icons/AddCircle";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import withStyles from "@material-ui/core/es/styles/withStyles"
+import PropTypes from "prop-types";
 const style={
   item:{
     padding:"6px !important"
@@ -63,6 +64,7 @@ class BannerDetail extends Component {
   };
 
   handleAdd = (e) => {
+    const { onDetailAdd } = this.props;
 
     this.clear();
     const { length, height, locations, from, to } = this.state;
@@ -73,19 +75,20 @@ class BannerDetail extends Component {
     list.push(temp);
     this.setState({ detailList: list });
 
+    onDetailAdd(temp)
   };
 
   handleRemove = (index, e) => {
+    const { onRemoveDetail } = this.props;
+
     let list = this.state.detailList;
     let result = list.filter((item, i) => {
-      console.log(index);
-      console.log("i val " + i);
       if (index !== i) {
         return item;
       }
     });
     this.setState({ detailList: result });
-
+    onRemoveDetail(index)
   };
   clear = () => {
     this.setState({
@@ -254,6 +257,10 @@ class BannerDetail extends Component {
       </>
     );
   }
+}
+BannerDetail.propTypes={
+  onRemoveDetail:PropTypes.func.isRequired,
+  onDetailAdd:PropTypes.func.isRequired,
 }
 
 export default withStyles(style)(BannerDetail);
