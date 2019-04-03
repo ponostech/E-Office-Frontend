@@ -51,6 +51,7 @@ class BannerApplicationForm extends Component {
     displayType: undefined,
     signature: undefined,
     uploadDocuments: [],
+    bannerDetails: [],
 
     localCouncils: [],
     documents: [],
@@ -158,9 +159,9 @@ class BannerApplicationForm extends Component {
 
 
   onSubmit = (e) => {
-    let details = this.bannerRef.current.getBannerDetails();
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.phoneError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
-      || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine) || details.length === 0 || this.state.signature === undefined;
+      || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine) ||
+      this.state.bannerDetails.length === 0 || this.state.signature === undefined;
 
     if (invalid) {
       this.setState({ errorMessage: "Please fill all the required fields" });
@@ -169,32 +170,32 @@ class BannerApplicationForm extends Component {
     this.setState({ submit: true });
     this.bannerService.create(this.state)
       .then(res => {
-          if (res.data.status) {
-            this.setState({
-              success: (
-                <SweetAlert
-                  success
-                  style={{ display: "block", marginTop: "-100px" }}
-                  title={"Success"}
-                  onConfirm={() => this.setState({ success: null })}
-                  confirmBtnCssClass={
-                    "MuiButton-outlinedPrimary-301"
-                  }
-                >
-                  {
-                    res.data.messages.map(function(msg, index) {
-                      return <p>
-                        {`${msg}.`}
-                      </p>
-                    })
-                  }
-                </SweetAlert>
-              )
-            });
-          } else {
-            const msg = ErrorToString(res.data.messages);
-            this.setState({ errorMessage: msg });
-          }
+        if (res.data.status) {
+          this.setState({
+            success: (
+              <SweetAlert
+                success
+                style={{ display: "block", marginTop: "-100px" }}
+                title={"Success"}
+                onConfirm={() => this.setState({ success: null })}
+                confirmBtnCssClass={
+                  "MuiButton-outlinedPrimary-301"
+                }
+              >
+                {
+                  res.data.messages.map(function(msg, index) {
+                    return <p>
+                      {`${msg}.`}
+                    </p>;
+                  })
+                }
+              </SweetAlert>
+            )
+          });
+        } else {
+          const msg = ErrorToString(res.data.messages);
+          this.setState({ errorMessage: msg });
+        }
 
         console.log(res);
       })
@@ -359,13 +360,13 @@ class BannerApplicationForm extends Component {
                         label: BannerViewModel.ADDRESS
                       }}
                       onPlaceSelect={(place) => {
-                      if (place) {
-                        let name = place.name;
-                        let address = place.formatted_address;
-                        let complete_address = address.includes(name) ? address : `${name} ${address}`;
-                        this.setState({ address: complete_address });
-                      }
-                    }}
+                        if (place) {
+                          let name = place.name;
+                          let address = place.formatted_address;
+                          let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                          this.setState({ address: complete_address });
+                        }
+                      }}
                     />
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -383,7 +384,7 @@ class BannerApplicationForm extends Component {
 
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload  document={{ id: 1, name: "Signature of applicant" ,mandatory:1,mime:"image/*" }}
+                    <FileUpload document={{ id: 1, name: "Signature of applicant", mandatory: 1, mime: "image/*" }}
                                 onUploadSuccess={(data) => {
                                   let temp = {
                                     name: "signature",
@@ -400,7 +401,23 @@ class BannerApplicationForm extends Component {
 
                     <Typography style={{ marginTop: 20 }} variant={"headline"}> Banner details</Typography>
                     <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-                    <BannerDetail ref={this.bannerRef}/>
+                    <BannerDetail ref={this.bannerRef}
+                                  onRemoveDetail={(index) => {
+                                    console.log("item is removed " + index);
+                                    let list = this.state.bannerDetails;
+                                    let result = list.filter((item, i) => {
+                                      if (index !== i) {
+                                        return item;
+                                      }
+                                    });
+                                    this.setState(state => {
+                                      state.bannerDetails = result;
+                                    });
+                                  }}
+                                  onDetailAdd={(item) => {
+                                    console.log("Item is added");
+                                    this.state.bannerDetails.push(item);
+                                  }}/>
                   </GridItem>
 
                   <GridItem sm={12} xs={12} md={12}>
