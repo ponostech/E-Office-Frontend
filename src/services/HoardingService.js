@@ -5,7 +5,6 @@ export class HoardingService {
 
   async create(state) {
     const token = localStorage.getItem("access_token");
-    console.log(token)
     const config={ headers: {"Authorization" : `Bearer ${token}`} }
 
     let data = {

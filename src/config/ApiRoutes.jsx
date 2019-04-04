@@ -14,5 +14,7 @@ export class ApiRoutes {
   static CREATE_SHOP_LICENSE="shop-license";
   static CREATE_BANNER="/banners";
   static TRADES="/trades";
+  static VERIFY_OTP="/otp/verify";
+  static REQUEST_OTP="/otp/request";
 
 }

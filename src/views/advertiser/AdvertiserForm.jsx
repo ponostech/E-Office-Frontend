@@ -76,28 +76,29 @@ class AdvertiserForm extends Component {
       successMessage: null,
 
       prestine: true,
-      loading: false
     };
 
     this.documentService = new DocumentService();
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
+    const { doLoad, doLoadFinish } = this.props;
+    doLoad();
     this.documentService.get("advertiser")
       .then(res => {
         if (res.status) {
           const { documents } = res.data;
-          console.log(documents);
           this.setState({ documents });
         }
       })
       .catch(err => {
+        let msg = "Unable to load resources, Please try again";
+        this.setState({ errorMessage: msg });
         console.log(err);
-        this.setState({ errorMessage: err.toString() });
+
       })
       .then(() => {
-        this.setState({ loading: false });
+        doLoadFinish()
       });
   }
 
@@ -482,8 +483,6 @@ class AdvertiserForm extends Component {
                         onClose={(e) => this.setState({ errorMessage: "" })}
                         message={this.state.errorMessage}/>
         <SubmitDialog open={this.state.submit} text={"Your application is submitting ... "}/>
-        <LoadingDialog open={this.state.loading} title={"Loading"} message={"Please wait ..."}/>
-
       </GridContainer>
     );
   }

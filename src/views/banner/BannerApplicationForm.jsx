@@ -21,13 +21,13 @@ import BannerDetail from "./BannerDetail";
 import { LocalCouncilService } from "../../services/LocalCouncilService";
 import FileUpload from "../../components/FileUpload";
 import { BannerService } from "../../services/BannerService";
-import { ErrorToString } from "../../utils/ErrorUtil";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../components/AddressField";
 import { Validators } from "../../utils/Validators";
 import { DocumentService } from "../../services/DocumentService";
-import SweetAlert from "react-bootstrap-sweetalert";
-import LoadingDialog from "../common/LoadingDialog";
+import OtpDialog from "../../components/OtpDialog";
+import { RequestOtp } from "../../services/OtpService";
+import { ArrayToString } from "../../utils/ErrorUtil";
 
 const style = {
   root: {
@@ -35,7 +35,7 @@ const style = {
   }
 };
 
-var timeout=null;
+var timeout = null;
 
 class BannerApplicationForm extends Component {
   localCouncilservice = new LocalCouncilService();
@@ -86,26 +86,46 @@ class BannerApplicationForm extends Component {
     submit: false,
     complete: false,
     prestine: true,
-    loading:false,
+    loading: false,
+    openOtp: false,
+    otpMessage:""
   };
 
   componentWillUnmount() {
-    clearTimeout(timeout)
+    clearTimeout(timeout);
   }
 
   componentDidMount() {
     document.title = "e-AMC | Banners/Posters Application Form";
 
+    const { doLoad, doLoadFinish } = this.props;
+
+    doLoad();
     var self = this;
-    this.setState({loading:true})
-    timeout = setTimeout(function(handler) {
+    timeout = setTimeout(function(resolve, reject) {
       Promise.all([self.fetchLocalCouncil(), self.fetchDocument()])
-        .then(function([ locs, docs]) {
+        .then(function([locs, docs]) {
           // self.setState({ loading: false });
+          doLoadFinish();
+          resolve();
         });
-      self.setState({ loading: false });
     }, 6000);
   }
+
+  sendOtp = () => {
+    var self=this;
+    RequestOtp(this.state.phone)
+      .then(res => {
+        if (res.status) {
+          let str=ArrayToString(res.data.messages);
+          self.setState({otpMessage:str})
+          self.setState({ openOtp: true });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   fetchDocument = () => {
     this.documentService.get("banner")
@@ -114,8 +134,10 @@ class BannerApplicationForm extends Component {
           this.setState({ documents: data.data.documents });
         }
       })
-      .then(() => {
-        console.log();
+      .catch(err => {
+        let msg = "Unable to load resources, Please try again";
+        this.setState({ errorMessage: msg });
+        console.log(err);
       });
   };
   fetchLocalCouncil = () => {
@@ -136,7 +158,10 @@ class BannerApplicationForm extends Component {
         } else {
           this.setState({ hasError: true });
         }
-      }).then(() => {
+      }).catch(err => {
+      let msg = "Unable to load resources, Please try again";
+      this.setState({ errorMessage: msg });
+      console.log(err);
     });
   };
 
@@ -175,52 +200,54 @@ class BannerApplicationForm extends Component {
 
 
   onSubmit = (e) => {
-    const invalid = Boolean(this.state.nameError) || Boolean(this.state.phoneError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
-      || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine) ||
-      this.state.bannerDetails.length === 0 || this.state.signature === undefined;
+    this.sendOtp();
 
-    if (invalid) {
-      this.setState({ errorMessage: "Please fill all the required fields" });
-      return;
-    }
-    this.setState({ submit: true });
-    this.bannerService.create(this.state)
-      .then(res => {
-        if (res.data.status) {
-          this.setState({
-            success: (
-              <SweetAlert
-                success
-                style={{ display: "block", marginTop: "-100px" }}
-                title={"Success"}
-                onConfirm={() => this.setState({ success: null })}
-                confirmBtnCssClass={
-                  "MuiButton-outlinedPrimary-301"
-                }
-              >
-                {
-                  res.data.messages.map(function(msg, index) {
-                    return <p>
-                      {`${msg}.`}
-                    </p>;
-                  })
-                }
-              </SweetAlert>
-            )
-          });
-        } else {
-          const msg = ErrorToString(res.data.messages);
-          this.setState({ errorMessage: msg });
-        }
-
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .then(() => {
-        this.setState({ submit: false });
-      });
+    // const invalid = Boolean(this.state.nameError) || Boolean(this.state.phoneError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
+    //   || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine) ||
+    //   this.state.bannerDetails.length === 0 || this.state.signature === undefined;
+    //
+    // if (invalid) {
+    //   this.setState({ errorMessage: "Please fill all the required fields" });
+    //   return;
+    // }
+    // this.setState({ submit: true });
+    // this.bannerService.create(this.state)
+    //   .then(res => {
+    //     if (res.data.status) {
+    //       this.setState({
+    //         success: (
+    //           <SweetAlert
+    //             success
+    //             style={{ display: "block", marginTop: "-100px" }}
+    //             title={"Success"}
+    //             onConfirm={() => this.setState({ success: null })}
+    //             confirmBtnCssClass={
+    //               "MuiButton-outlinedPrimary-301"
+    //             }
+    //           >
+    //             {
+    //               res.data.messages.map(function(msg, index) {
+    //                 return <p>
+    //                   {`${msg}.`}
+    //                 </p>;
+    //               })
+    //             }
+    //           </SweetAlert>
+    //         )
+    //       });
+    //     } else {
+    //       const msg = ErrorToString(res.data.messages);
+    //       this.setState({ errorMessage: msg });
+    //     }
+    //
+    //     console.log(res);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   })
+    //   .then(() => {
+    //     this.setState({ submit: false });
+    //   });
 
   };
   onClear = () => {
@@ -280,8 +307,11 @@ class BannerApplicationForm extends Component {
               <CardContent>
                 <GridContainer>
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                    <Typography variant={"headline"}>
+                    <Typography variant={"h5"}>
                       {BannerViewModel.TITLE}
+                    </Typography>
+                    <Typography variant={"subtitle1"}>
+                      {BannerViewModel.SUB_TITLE}
                     </Typography>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -415,7 +445,7 @@ class BannerApplicationForm extends Component {
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
 
-                    <Typography style={{ marginTop: 20 }} variant={"headline"}> Banner details</Typography>
+                    <Typography style={{ marginTop: 20 }} variant={"headline"}> Details of Advertisement</Typography>
                     <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                     <BannerDetail ref={this.bannerRef}
                                   onRemoveDetail={(index) => {
@@ -469,8 +499,7 @@ class BannerApplicationForm extends Component {
                     <FormControlLabel control={
                       <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
                     }
-                                      label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoarding Regulations 2013," +
-                                      " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
+                                      label={BannerViewModel.ACKNOWLEDGEMENT}/>
                   </GridItem>
 
                 </GridContainer>
@@ -503,7 +532,9 @@ class BannerApplicationForm extends Component {
         <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
                         message={this.state.errorMessage}
                         onClose={(e) => this.setState({ errorMessage: "" })}/>
-        <LoadingDialog open={this.state.loading} title={"Loading"} message={"Please wait ..."}/>
+        <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp} onClose={() => {
+          this.setState({ openOtp: false });
+        }}/>
 
       </GridContainer>
 

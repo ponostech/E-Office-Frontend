@@ -4,20 +4,25 @@ import { ApiRoutes } from "../config/ApiRoutes";
 export class BannerService {
 
   async create(state) {
+    const token = localStorage.getItem("access_token");
+    const config={ headers: {"Authorization" : `Bearer ${token}`} }
     let data = {
       name: state.name,
-      type:state.type,
-      phone_no: state.phone,
+      applicant_type:state.type.value,
+      phone: state.phone,
       local_council_id:state.localCouncil.value,
-      display_type: state.display_type,
+      advertisement_type: state.displayType.value,
+      advertisements:state.bannerDetails,
+      advertisement_count:state.bannerDetails.length,
       address:state.address,
-      detail:state.details,
-      signature: [state.signature],
+      details:state.details,
+      status:0,
+      signature: state.signature.path,
       documents: state.uploadDocuments
     };
     try {
-      let res=await axios.post(ApiRoutes.CREATE_BANNER, data);
-      return res.data;
+      let res=await axios.post(ApiRoutes.CREATE_BANNER, data,config);
+      return res;
     } catch (e) {
       console.log("Error "+e);
     }
