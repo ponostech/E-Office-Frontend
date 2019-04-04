@@ -75,18 +75,19 @@ class GMapDialog extends Component {
   onPlacesChanged = (data) => {
     const places = refs.searchBox.getPlaces();
 
-    const bounds = new window.google.maps.LatLngBounds();
-
-    places.forEach(place => {
-      if (place.geometry.viewport) {
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
-    });
-    const nextMarkers = places.map(place => ({
-      position: place.geometry.location
-    }));
+    console.log(places)
+    // const bounds = new window.google.maps.LatLngBounds();
+    //
+    // places.forEach(place => {
+    //   if (place.geometry.viewport) {
+    //     bounds.union(place.geometry.viewport);
+    //   } else {
+    //     bounds.extend(place.geometry.location);
+    //   }
+    // });
+    // const nextMarkers = places.map(place => ({
+    //   position: place.geometry.location
+    // }));
 
   };
 
@@ -112,7 +113,7 @@ class GMapDialog extends Component {
             isMarkerShown={isMarkerShown}
             googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${MAP_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
             loadingElement={<div style={{ height: `100%` }}/>}
-            containerElement={<div style={{ width: "100%", height: "100%" }}> helll </div>}
+            containerElement={<div style={{ width: "100%", height: "100%",marginBottom:"100px" }}>  </div>}
             mapElement={<div style={{ height: `100%` }}/>}
             lat={this.state.lat}
             lng={this.state.lng}
@@ -136,7 +137,7 @@ class GMapDialog extends Component {
           <Button name={"confirm"} variant={"contained"} color={"primary"}
                   onClick={this.handleConfirm.bind(this)}>Confirm</Button>
           <Button name={"close"} variant={"contained"} color={"secondary"}
-                  onClick={this.handleCancel.bind(this)}>Close</Button>
+                  onClick={this.handleConfirm.bind(this)}>Close</Button>
         </DialogActions>
       </Dialog>
     );

@@ -23,7 +23,7 @@ export class KioskService {
       latitude:state.latitude,
       longitude:state.longitude,
       status: 0,
-      documents: []
+      documents: state.uploadDocuments
     };
     console.log(data);
     let res = await axios.post(ApiRoutes.NEW_HOARDING, data, config);

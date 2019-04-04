@@ -16,7 +16,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingIcon from "@material-ui/icons/Settings";
 // core components
-import { Button, IconButton, Typography } from "@material-ui/core";
+import { Button, IconButton, LinearProgress, Typography } from "@material-ui/core";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
 import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
@@ -67,7 +67,7 @@ class AdvertiserHeader extends React.Component {
   };
 
   render() {
-    const { history } = this.props;
+    const { history,loading } = this.props;
     const { anchorEl } = this.state;
     var menuItems = (
       <GridContainer justify={"space-between"}>
@@ -196,6 +196,10 @@ class AdvertiserHeader extends React.Component {
             </Hidden>
           </Hidden>
         </Toolbar>
+        {
+          loading? <LinearProgress color={"primary"} variant={"indeterminate"} />: undefined
+        }
+
       </AppBar>
     );
   }

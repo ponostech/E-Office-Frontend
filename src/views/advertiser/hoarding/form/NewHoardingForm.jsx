@@ -93,7 +93,7 @@ class NewHoardingForm extends Component {
 
       success: null,
       submit: false,
-      loading: true
+      loading: false
     };
 
     this.localCouncilservice = new LocalCouncilService();
@@ -106,14 +106,25 @@ class NewHoardingForm extends Component {
   componentDidMount() {
 
     var self = this;
+    const { doLoad, doLoadFinish } = this.props;
+
+    doLoad();
     timeout = setTimeout(function(handler) {
       Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
         .then(function([cats, locs, docs]) {
           // self.setState({ loading: false });
         });
-      self.setState({ loading: false });
+          doLoadFinish()
+      // self.setState({ loading: false });
     }, 6000);
-    //
+
+    // const { doLoad, doLoadFinish } = this.props;
+    // doLoad();
+    // this.fetchLocalCouncil();
+    // this.fetchDocument();
+    // this.fetchCategory();
+    // doLoadFinish();
+    // this.fetchLocalCouncil();
   }
 
   componentWillUnmount() {
@@ -138,7 +149,12 @@ class NewHoardingForm extends Component {
         } else {
           this.setState({ hasError: true });
         }
-      });
+      })
+      .catch(err=>{
+        let msg = "Unable to load resources, Please try again";
+        this.setState({ errorMessage: msg });
+        console.log(err);
+      })
   };
 
   fetchCategory = () => {
@@ -171,6 +187,8 @@ class NewHoardingForm extends Component {
         }
       })
       .catch(err => {
+        let msg = "Unable to load resources, Please try again";
+        this.setState({ errorMessage: msg });
         console.log(err);
       });
   };
@@ -181,6 +199,11 @@ class NewHoardingForm extends Component {
         if (data.status) {
           this.setState({ documents: data.data.documents });
         }
+      })
+      .catch(err=>{
+        let msg = "Unable to load resources, Please try again";
+        this.setState({ errorMessage: msg });
+        console.log(err)
       });
 
   };
@@ -225,7 +248,7 @@ class NewHoardingForm extends Component {
                   res.data.messages.map(function(msg, index) {
                     return <p>
                       {`${msg}.`}
-                    </p>
+                    </p>;
                   })
                 }
               </SweetAlert>
@@ -420,51 +443,11 @@ class NewHoardingForm extends Component {
                       fullWidth: true,
                       variant: "outlined",
                       onChange: this.handleChange.bind(this),
-                      label: "Address"
+                      label: HoardingApplicationFormModel.ADDRESS
                     }}
                   />
                 </GridItem>
 
-                <GridItem className={classes.root} xs={12} sm={12} md={3}>
-                  <TextField name={"clearance"}
-                             InputProps={{
-                               inputProps: {
-                                 min: 0
-                               }
-                             }}
-                             value={this.state.clearance}
-                             type={"number"}
-                             margin={"dense"}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             label={HoardingApplicationFormModel.CLEARANCE}
-                             onChange={this.handleChange.bind(this)}
-                  />
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={3}>
-                  <FormControl margin={"dense"}>
-                    <FormControlLabel onChange={this.handleSwitch.bind(this)}
-                                      name={"bothSide"}
-                                      control={
-                                        <Switch
-                                          color={"primary"}
-                                          value={this.state.bothSide}
-                                          checked={this.state.bothSide}
-                                          required={true}/>
-                                      }
-                                      label={"Both Sided?"}/>
-                  </FormControl>
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <TextField name={"roadDetail"}
-                             value={this.state.roadDetail}
-                             margin={"dense"}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             label={HoardingApplicationFormModel.ROAD_DETAIL}
-                             onChange={this.handleChange.bind(this)}
-                  />
-                </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <OfficeSelect
                     required={true}
@@ -495,7 +478,7 @@ class NewHoardingForm extends Component {
                     onClick={() => this.setState({ openMap: true })}
                     helperText={this.state.coordinateError}
                     error={Boolean(this.state.coordinateError)}
-                    label={"Coordinate"}
+                    label={HoardingApplicationFormModel.COORDINATE}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position={"end"}>
@@ -511,6 +494,43 @@ class NewHoardingForm extends Component {
                     }}
                   />
                 </GridItem>
+
+
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                  <TextField name={"roadDetail"}
+                             value={this.state.roadDetail}
+                             margin={"dense"}
+                             fullWidth={true}
+                             variant={"outlined"}
+                             label={HoardingApplicationFormModel.ROAD_DETAIL}
+                             onChange={this.handleChange.bind(this)}
+                  />
+                </GridItem>
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                  <FormControl margin={"dense"}>
+                    <FormControlLabel onChange={this.handleSwitch.bind(this)}
+                                      name={"bothSide"}
+                                      control={
+                                        <Switch
+                                          color={"primary"}
+                                          value={this.state.bothSide}
+                                          checked={this.state.bothSide}
+                                          required={true}/>
+                                      }
+                                      label={"Both Sided?"}/>
+                  </FormControl>
+                </GridItem>
+
+                <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                  <TextField name={"clearance"}
+                             value={this.state.clearance}
+                             margin={"dense"}
+                             fullWidth={true}
+                             variant={"outlined"}
+                             label={HoardingApplicationFormModel.CLEARANCE}
+                             onChange={this.handleChange.bind(this)}
+                  />
+                </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <TextField name={"landLord"}
                              margin={"dense"}
@@ -521,6 +541,7 @@ class NewHoardingForm extends Component {
                              onChange={this.handleChange.bind(this)}
                   />
                 </GridItem>
+
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <FormControl fullWidth={true} margin={"dense"}>
                     <FormLabel>Type of Landlord/ Land owner</FormLabel>
