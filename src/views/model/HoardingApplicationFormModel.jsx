@@ -1,9 +1,11 @@
   export const TITLE = "APPLICATION FOR ERECTION OF NEW HOARDING/ADVERTISEMENT";
+  export const KIOSK_TITLE = "APPLICATION FOR ERECTION OF NEW KIOSK/ADVERTISEMENT";
   export const SUBTITLE = "[Regulation 25 of the AMC Display of Advertisement and Hoardings Regulations 2013]";
 
-  export const CATEGORY = "Area's category";
-  export const LOCAL_COUNCILS = "Local councils";
-  export const ROAD_DETAIL = "Road Details";
+  export const CATEGORY = "Select Road Category";
+  export const LOCAL_COUNCILS = "Select Local Council";
+  export const ROAD_DETAIL = "Details of road (width in feet)";
+  export const ADDRESS = "Address of Applicant";
 
   export const APPLICATN_INFO = "Applicant info";
   export const ATTACHMENT = "Document attachment";
@@ -19,7 +21,7 @@
   export const  REQUIRED_CATEGORY="Category is required";
   export const  REQUIRED_DISPLAYTYPE="Display type is required";
   export const  ADDRESS_REQUIRED="Address is required";
-  export const  CLEARANCE="Clearance";
-  export const  COORDINATE="Coordinate(Latitude & Longitude)";
+  export const  CLEARANCE="Height from the surface of lower bottom of hoarding to top of hoarding and height of lower bottom from the ground/ roof/road";
+  export const  COORDINATE="Select Location (Coordinate) ";
   export const  REQUIRED_COORDINATE=" Latitude and longitude of an area is required";
 

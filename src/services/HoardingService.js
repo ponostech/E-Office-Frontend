@@ -24,7 +24,7 @@ export class HoardingService {
       land_owner_name:state.landLord,
       land_owner_type:state.landlordType,
       status:0,
-      documents:[]
+      documents:state.uploadDocuments
     };
     console.log(data);
       let res= await axios.post(ApiRoutes.NEW_HOARDING, data,config);

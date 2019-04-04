@@ -16,12 +16,31 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 
 const style = {
   container: {
+    position:'relative',
+    height:"100%",
     background: "white",
     paddingBottom: "30px"
   }
 };
 
 class AdvertiserDashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false
+    };
+
+    this.doLoad = this.doLoad.bind(this);
+
+  }
+
+  doLoad = () => {
+    this.setState({ loading: true });
+  };
+  doLoadFinish = () => {
+    this.setState({ loading: false });
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -41,15 +60,19 @@ class AdvertiserDashboard extends Component {
 
         <GridContainer justify={"center"} className={classes.container}>
           <GridItem xs={12} sm={12} md={12}>
-            <AdvertiserHeader color={"primary"}/>
+            <AdvertiserHeader color={"primary"} loading={this.state.loading}/>
           </GridItem>
           <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
             <GridContainer justify={"center"}>
 
-              <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={NewHoardingForm}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} render={(e) => {
+                return <NewHoardingForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
+              }}/>
               <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
 
-              <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK} component={NewKioskForm}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK} render={(e) => {
+                return <NewKioskForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
+              }}/>
               <Route exact path={OfficeRoutes.ADVERTISER_KIOSK} component={KioskLists}/>
 
               {/*<Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>*/}

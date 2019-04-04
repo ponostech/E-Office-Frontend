@@ -21,7 +21,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import PrevIcon from "@material-ui/icons/ArrowLeft";
 import NextIcon from "@material-ui/icons/ArrowRight";
-import { IconButton } from "@material-ui/core";
 
 const styles = {
   pageSubcategoriesTitle: {

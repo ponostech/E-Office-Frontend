@@ -27,12 +27,15 @@ import AddressField from "../../components/AddressField";
 import { Validators } from "../../utils/Validators";
 import { DocumentService } from "../../services/DocumentService";
 import SweetAlert from "react-bootstrap-sweetalert";
+import LoadingDialog from "../common/LoadingDialog";
 
 const style = {
   root: {
     padding: "10px 15px !important"
   }
 };
+
+var timeout=null;
 
 class BannerApplicationForm extends Component {
   localCouncilservice = new LocalCouncilService();
@@ -82,13 +85,26 @@ class BannerApplicationForm extends Component {
 
     submit: false,
     complete: false,
-    prestine: true
+    prestine: true,
+    loading:false,
   };
+
+  componentWillUnmount() {
+    clearTimeout(timeout)
+  }
 
   componentDidMount() {
     document.title = "e-AMC | Banners/Posters Application Form";
-    this.fetchLocalCouncil();
-    this.fetchDocument();
+
+    var self = this;
+    this.setState({loading:true})
+    timeout = setTimeout(function(handler) {
+      Promise.all([self.fetchLocalCouncil(), self.fetchDocument()])
+        .then(function([ locs, docs]) {
+          // self.setState({ loading: false });
+        });
+      self.setState({ loading: false });
+    }, 6000);
   }
 
   fetchDocument = () => {
@@ -487,6 +503,8 @@ class BannerApplicationForm extends Component {
         <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
                         message={this.state.errorMessage}
                         onClose={(e) => this.setState({ errorMessage: "" })}/>
+        <LoadingDialog open={this.state.loading} title={"Loading"} message={"Please wait ..."}/>
+
       </GridContainer>
 
     );

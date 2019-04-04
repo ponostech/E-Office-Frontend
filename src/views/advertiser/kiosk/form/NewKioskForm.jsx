@@ -26,7 +26,6 @@ import { LocalCouncilService } from "../../../../services/LocalCouncilService";
 import FileUpload from "../../../../components/FileUpload";
 import MapIcon from "@material-ui/icons/PinDrop";
 import { DocumentService } from "../../../../services/DocumentService";
-import { KioskFormModel } from "../../../model/KioskFormModel";
 import { KioskService } from "../../../../services/KioskService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
@@ -36,7 +35,6 @@ import { CategoryServices } from "../../../../services/CategoryServices";
 import AddressField from "../../../../components/AddressField";
 import { ErrorToString } from "../../../../utils/ErrorUtil";
 import SweetAlert from "react-bootstrap-sweetalert";
-import LoadingDialog from "../../../common/LoadingDialog";
 
 
 const style = {
@@ -45,6 +43,7 @@ const style = {
   }
 };
 var timeout = undefined;
+
 
 class NewKioskForm extends Component {
   constructor(props) {
@@ -101,13 +100,15 @@ class NewKioskForm extends Component {
 
   componentDidMount() {
 
+    const { doLoad, doLoadFinish } = this.props;
     var self = this;
+    doLoad();
     timeout = setTimeout(function(handler) {
       Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
         .then(function([cats, locs, docs]) {
           // self.setState({ loading: false });
         });
-      self.setState({ loading: false });
+      doLoadFinish();
     }, 6000);
     //
   }
@@ -134,6 +135,11 @@ class NewKioskForm extends Component {
         } else {
           this.setState({ hasError: true });
         }
+      })
+      .catch(err => {
+        let msg = "Unable to load resources, Please try again";
+        this.setState({ errorMessage: msg });
+        console.log(err);
       });
   };
   fetchCategory = () => {
@@ -166,6 +172,8 @@ class NewKioskForm extends Component {
         }
       })
       .catch(err => {
+        let msg = "Unable to load resources, Please try again";
+        this.setState({ errorMessage: msg });
         console.log(err);
       });
   };
@@ -177,9 +185,12 @@ class NewKioskForm extends Component {
           this.setState({ documents: data.data.documents });
         }
       })
-      .then(() => {
-        console.log();
+      .catch(err => {
+        let msg = "Unable to load resources, Please try again";
+        this.setState({ errorMessage: msg });
+        console.log(err);
       });
+
   };
 
   isInvalid = () => {
@@ -333,8 +344,8 @@ class NewKioskForm extends Component {
             <CardContent>
               <GridContainer>
                 <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                  <Typography variant="h5">{KioskFormModel.TITLE}</Typography>
-                  <Typography variant="subtitle1">{KioskFormModel.SUBTITLE}</Typography>
+                  <Typography variant="h5">{HoardingApplicationFormModel.KIOSK_TITLE}</Typography>
+                  <Typography variant="subtitle1">{HoardingApplicationFormModel.SUBTITLE}</Typography>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <Divider style={{ marginBottom: 10, marginTop: 10 }}/>
@@ -391,7 +402,7 @@ class NewKioskForm extends Component {
                       fullWidth: true,
                       variant: "outlined",
                       onChange: this.handleChange.bind(this),
-                      label: "Address"
+                      label: HoardingApplicationFormModel.ADDRESS
                     }}
                   />
                 </GridItem>
@@ -463,30 +474,43 @@ class NewKioskForm extends Component {
                                       label={"Is collapsible?"}/>
                   </FormControl>
                 </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={3}>
+
+                <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                  <TextField
+                    value={this.state.coordinate}
+                    name={"coordinate"}
+                    margin={"dense"}
+                    fullWidth={true}
+                    variant={"outlined"}
+                    required={true}
+                    onChange={e => {
+                    }}
+                    onClick={() => this.setState({ openMap: true })}
+                    helperText={this.state.coordinateError}
+                    error={Boolean(this.state.coordinateError)}
+                    label={HoardingApplicationFormModel.COORDINATE}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position={"end"}>
+                          <Tooltip title={"Click here to see the map"}>
+                            <IconButton onClick={(e) => {
+                              this.setState({ openMap: true });
+                            }}>
+                              <MapIcon color={"action"}/>
+                            </IconButton>
+                          </Tooltip>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                </GridItem>
+                <GridItem className={classes.root} xs={12} sm={12} md={12}>
                   <TextField name={"clearance"}
                              value={this.state.clearance}
-                             type={"number"}
-                             InputProps={{
-                               inputProps: {
-                                 min: 0
-                               }
-                             }}
                              margin={"dense"}
                              fullWidth={true}
                              variant={"outlined"}
                              label={HoardingApplicationFormModel.CLEARANCE}
-                             onChange={this.handleChange.bind(this)}
-                  />
-
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={3}>
-                  <TextField name={"roadDetail"}
-                             value={this.state.roadDetail}
-                             margin={"dense"}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             label={HoardingApplicationFormModel.ROAD_DETAIL}
                              onChange={this.handleChange.bind(this)}
                   />
 
@@ -509,34 +533,17 @@ class NewKioskForm extends Component {
                   />
                 </GridItem>
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <TextField
-                    value={this.state.coordinate}
-                    name={"coordinate"}
-                    margin={"dense"}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    required={true}
-                    onChange={e => {
-                    }}
-                    onClick={() => this.setState({ openMap: true })}
-                    helperText={this.state.coordinateError}
-                    error={Boolean(this.state.coordinateError)}
-                    label={"Coordinate"}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position={"end"}>
-                          <Tooltip title={"Click here to see the map"}>
-                            <IconButton onClick={(e) => {
-                              this.setState({ openMap: true });
-                            }}>
-                              <MapIcon color={"action"}/>
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      )
-                    }}
+                  <TextField name={"roadDetail"}
+                             value={this.state.roadDetail}
+                             margin={"dense"}
+                             fullWidth={true}
+                             variant={"outlined"}
+                             label={HoardingApplicationFormModel.ROAD_DETAIL}
+                             onChange={this.handleChange.bind(this)}
                   />
+
                 </GridItem>
+
                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
                   <TextField name={"landLord"}
                              margin={"dense"}
@@ -629,7 +636,6 @@ class NewKioskForm extends Component {
           }
           }/>
         <SubmitDialog open={this.state.submit} text={"Your application is submitting ..."}/>
-        <LoadingDialog open={this.state.loading} title={"Loading"} message={"Please wait ..."}/>
 
       </GridContainer>
     );
