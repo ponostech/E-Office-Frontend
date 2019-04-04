@@ -19,7 +19,7 @@ export function ErrorToString(messages) {
 export function ArrayToString(messages) {
   let msg = "";
   messages.forEach(function(message, index) {
-    msg+=message +". <br/>"
+    msg+=message +". \n"
   });
 
   return msg;
