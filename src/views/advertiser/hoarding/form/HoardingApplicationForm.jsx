@@ -36,6 +36,7 @@ import { ErrorToString } from "../../../../utils/ErrorUtil";
 import { CategoryServices } from "../../../../services/CategoryServices";
 import LoadingDialog from "../../../common/LoadingDialog";
 import SweetAlert from "react-bootstrap-sweetalert";
+import OtpDialog from "../../../../components/OtpDialog";
 
 
 const style = {
@@ -93,7 +94,7 @@ class HoardingApplicationForm extends Component {
 
       success: null,
       submit: false,
-      loading: false
+      loading: false,
     };
 
     this.localCouncilservice = new LocalCouncilService();
@@ -218,11 +219,6 @@ class HoardingApplicationForm extends Component {
       [identifier]: value
     });
   };
-  doClear = (e) => {
-    const { history } = this.props;
-    history.reload();
-  };
-
   doSubmit = () => {
     if (this.invalid()) {
       this.setState({ errorMessage: "Please fill all the required \nfields" });
@@ -239,7 +235,7 @@ class HoardingApplicationForm extends Component {
                 success
                 style={{ display: "block", marginTop: "-100px" }}
                 title={"Success"}
-                onConfirm={() => this.setState({ success: null })}
+                onConfirm={() => window.location.reload()}
                 confirmBtnCssClass={
                   "MuiButton-outlinedPrimary-301"
                 }
@@ -594,8 +590,9 @@ class HoardingApplicationForm extends Component {
               {"\u00A0 "}
               {"\u00A0 "}
               {"\u00A0 "}
+              {"\u00A0 "}
               <Button name={"reset"} variant={"outlined"} color={"secondary"}
-                      onClick={this.doClear.bind(this)}>Reset</Button>
+                      onClick={(e)=>window.location.reload()}>Reset</Button>
 
             </CardActions>
           </Card>
@@ -621,7 +618,7 @@ class HoardingApplicationForm extends Component {
                         }}/>
         <SubmitDialog open={this.state.submit} text={"Your application is submitting ..."}/>
         {this.state.success}
-        <LoadingDialog open={this.state.loading} title={"Loading"} message={"Please wait ..."}/>
+
       </GridContainer>
     );
   }

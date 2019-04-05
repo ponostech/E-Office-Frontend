@@ -212,11 +212,7 @@ class BannerApplicationForm extends Component {
                   success
                   style={{ display: "block", marginTop: "-100px" }}
                   title={"Success"}
-                  onConfirm={() => this.setState({ success: null })}
-                  confirmBtnCssClass={
-                    "MuiButton-outlinedPrimary-301"
-                  }
-                >
+                  onConfirm={() => window.location.reload()}>
                   {
                     res.data.messages.map(function(msg, index) {
                       return <p>
@@ -545,6 +541,7 @@ class BannerApplicationForm extends Component {
                      this.onVerifiedOtp(value);
                    }}/>
 
+        {this.state.success}
       </GridContainer>
 
     );

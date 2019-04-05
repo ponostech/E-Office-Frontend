@@ -64,7 +64,6 @@ function OfficeSnackbar(props) {
               onClose={onClose}
               autoHideDuration={duration}
               anchorOrigin={position}
-              bodyStyle={{ height: 'auto', lineHeight: '28px', padding: 24, whiteSpace: 'pre-line' }}
     >
       <SnackbarContent
         className={classNames(classes[variant], className)}
