@@ -1,5 +1,6 @@
 export class ShopLicenseViewModel {
-  static TITLE = "Shop License Application Form";
+  static TITLE = "APPLICATION FOR LICENSE (Except Hotels & Lodging)";
+  static SUBTITLE = "[See Section 4(a) of the AMC Licensing Regulation 2012]";
 
   static  NEW = "New Applications";
   static  GRANTED = "Granted Applications";

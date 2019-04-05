@@ -59,17 +59,9 @@ class LandingPage extends React.Component {
                                      return <AdvertiserForm doLoad={this.doLoad.bind(this)} doLoadFinish={this.doLoadFinish.bind(this)}/>
                                  }}
                                  />
-                          <Route exact={true} path={OfficeRoutes.ADVERTISER_REGISTRATION_SUCCESS}
-                                 component={AdvertiserRegistrationSuccess}/>
-
                           <Route exact={true} path={OfficeRoutes.APPLY_BANNER}  render={(e)=>{
                               return <BannerApplicationForm doLoad={this.doLoad.bind(this)} doLoadFinish={this.doLoadFinish.bind(this)}/>
                           }}/>
-                          <Route exact={true} path={OfficeRoutes.APPLY_BANNER_SUCCESS}
-                                 component={BannerApplicationSuccess}/>
-
-                          <Route exact={true} path={OfficeRoutes.FORM} component={Form}/>
-                          <Route exact={true} path={OfficeRoutes.LOGIN} component={LoginView}/>
 
                           <Redirect from={OfficeRoutes.ROOT} to={OfficeRoutes.HOME}/>
                       </Switch>

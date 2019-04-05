@@ -139,10 +139,7 @@ class AdvertiserForm extends Component {
                 success
                 style={{ display: "block", marginTop: "-100px" }}
                 title={"Success"}
-                onConfirm={() => this.setState({ successMessage: null })}
-                confirmBtnCssClass={
-                  "MuiButton-outlinedPrimary"
-                }
+                onConfirm={() => window.location.reload()}
               >
                 {
                   res.data.messages.map(function(msg, index) {
@@ -452,8 +449,7 @@ class AdvertiserForm extends Component {
                   <FormControlLabel control={
                     <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
                   }
-                                    label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoarding Regulations 2013," +
-                                    " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
+                                    label={AdvertiserViewModel.ACKNOWLEDGEMENT}/>
                 </GridItem>
 
                 <GridItem xs={12} sm={12} md={12}>
@@ -466,6 +462,7 @@ class AdvertiserForm extends Component {
                 <GridItem>
                   <Button name={"submit"} disabled={!this.state.agree} onClick={this.submit.bind(this)}
                           variant={"outlined"} color={"primary"}> Submit</Button>
+                  {"\u00A0 "}
                   {"\u00A0 "}
                   {"\u00A0 "}
                   {"\u00A0 "}

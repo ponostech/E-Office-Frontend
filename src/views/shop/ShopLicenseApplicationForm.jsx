@@ -36,6 +36,11 @@ import AddressField from "../../components/AddressField";
 const style = {
   root: {
     padding: "10px 15px !important"
+  },
+  formControl:{
+      label:{
+        whiteSpace:'pre-line',
+      }
   }
 };
 
@@ -286,8 +291,11 @@ class ShopLicenseApplicationForm extends Component {
               <CardContent>
                 <GridContainer>
                   <GridItem md={12} sm={12} xs={12}>
-                    <Typography variant={"headline"}>
+                    <Typography variant={"h5"}>
                       {ShopLicenseViewModel.TITLE}
+                    </Typography>
+                    <Typography variant={"subtitle1"}>
+                      {ShopLicenseViewModel.SUBTITLE}
                     </Typography>
                   </GridItem>
 
@@ -572,13 +580,16 @@ class ShopLicenseApplicationForm extends Component {
                   }
 
                   <GridItem xs={12} sm={12} md={12}>
-                    <FormControlLabel control={
+                    <FormControlLabel
+                       style={{whiteSpace:"pre-line"}}
+                      control={
                       <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
                     }
                                       label={"1.I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
-                                      "no unauthorized construction;" +
-                                      "2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations; 3. I shall follow all rules and regulations of AMC;" +
-                                      "4. It is certified that the above information is correct to the best of my knowledge"}/>
+                                      "no unauthorized construction." +
+                                      "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations. " +
+                                      "\n3. I shall follow all rules and regulations of AMC;" +
+                                      "\n4. It is certified that the above information is correct to the best of my knowledge"}/>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
                     <Divider/>
