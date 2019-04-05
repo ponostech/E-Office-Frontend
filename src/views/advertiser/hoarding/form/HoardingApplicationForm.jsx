@@ -46,7 +46,7 @@ const style = {
 
 var timeout = undefined;
 
-class NewHoardingForm extends Component {
+class HoardingApplicationForm extends Component {
   constructor(props) {
     super(props);
 
@@ -565,11 +565,11 @@ class NewHoardingForm extends Component {
                 </GridItem>
                 {this.state.documents.map((doc, index) => {
                   return <GridItem className={classes.root} key={index} xs={12} sm={12} md={12}>
-                    <FileUpload key={index} onUploadSuccess={(data) => {
+                    <FileUpload  onUploadSuccess={(data) => {
                       this.setState(state => {
                         let temp = {
                           name: doc.id,
-                          path: doc.location
+                          path: data.location
                         };
                         state.uploadDocuments.push(temp);
                       });
@@ -627,4 +627,4 @@ class NewHoardingForm extends Component {
   }
 }
 
-export default withStyles(style)(NewHoardingForm);
+export default withStyles(style)(HoardingApplicationForm);

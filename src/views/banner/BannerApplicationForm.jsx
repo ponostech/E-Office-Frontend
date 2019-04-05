@@ -27,8 +27,8 @@ import { Validators } from "../../utils/Validators";
 import { DocumentService } from "../../services/DocumentService";
 import OtpDialog from "../../components/OtpDialog";
 import { RequestOtp } from "../../services/OtpService";
-import { ArrayToString } from "../../utils/ErrorUtil";
-
+import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
+import SweetAlert from 'react-bootstrap-sweetalert'
 const style = {
   root: {
     padding: "10px 15px !important"
@@ -88,7 +88,7 @@ class BannerApplicationForm extends Component {
     prestine: true,
     loading: false,
     openOtp: false,
-    otpMessage:""
+    otpMessage: ""
   };
 
   componentWillUnmount() {
@@ -107,19 +107,21 @@ class BannerApplicationForm extends Component {
         .then(function([locs, docs]) {
           // self.setState({ loading: false });
           doLoadFinish();
-          resolve();
         });
     }, 6000);
   }
 
   sendOtp = () => {
-    var self=this;
+    var self = this;
     RequestOtp(this.state.phone)
       .then(res => {
-        if (res.status) {
-          let str=ArrayToString(res.data.messages);
-          self.setState({otpMessage:str})
+        console.log(res);
+        if (res.data.status) {
+          let str = ArrayToString(res.data.messages);
+          self.setState({ otpMessage: str });
           self.setState({ openOtp: true });
+        } else {
+          this.setState({ errorMessage: ErrorToString(res.data.messages) });
         }
       })
       .catch(err => {
@@ -198,56 +200,61 @@ class BannerApplicationForm extends Component {
     this.setState({ prestine: false });
   };
 
+  onVerifiedOtp = (verified) => {
+    if (verified) {
+      this.setState({ submit: true });
+      this.bannerService.create(this.state)
+        .then(res => {
+          if (res.data.status) {
+            this.setState({
+              success: (
+                <SweetAlert
+                  success
+                  style={{ display: "block", marginTop: "-100px" }}
+                  title={"Success"}
+                  onConfirm={() => this.setState({ success: null })}
+                  confirmBtnCssClass={
+                    "MuiButton-outlinedPrimary-301"
+                  }
+                >
+                  {
+                    res.data.messages.map(function(msg, index) {
+                      return <p>
+                        {`${msg}.`}
+                      </p>;
+                    })
+                  }
+                </SweetAlert>
+              )
+            });
+          } else {
+            const msg = ErrorToString(res.data.messages);
+            this.setState({ errorMessage: msg });
+          }
+
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .then(() => {
+          this.setState({ submit: false });
+        });
+    }
+  };
 
   onSubmit = (e) => {
-    this.sendOtp();
 
-    // const invalid = Boolean(this.state.nameError) || Boolean(this.state.phoneError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
-    //   || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine) ||
-    //   this.state.bannerDetails.length === 0 || this.state.signature === undefined;
-    //
-    // if (invalid) {
-    //   this.setState({ errorMessage: "Please fill all the required fields" });
-    //   return;
-    // }
-    // this.setState({ submit: true });
-    // this.bannerService.create(this.state)
-    //   .then(res => {
-    //     if (res.data.status) {
-    //       this.setState({
-    //         success: (
-    //           <SweetAlert
-    //             success
-    //             style={{ display: "block", marginTop: "-100px" }}
-    //             title={"Success"}
-    //             onConfirm={() => this.setState({ success: null })}
-    //             confirmBtnCssClass={
-    //               "MuiButton-outlinedPrimary-301"
-    //             }
-    //           >
-    //             {
-    //               res.data.messages.map(function(msg, index) {
-    //                 return <p>
-    //                   {`${msg}.`}
-    //                 </p>;
-    //               })
-    //             }
-    //           </SweetAlert>
-    //         )
-    //       });
-    //     } else {
-    //       const msg = ErrorToString(res.data.messages);
-    //       this.setState({ errorMessage: msg });
-    //     }
-    //
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   })
-    //   .then(() => {
-    //     this.setState({ submit: false });
-    //   });
+    const invalid = Boolean(this.state.nameError) || Boolean(this.state.phoneError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
+      || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine) ||
+      this.state.bannerDetails.length === 0 || this.state.signature === undefined;
+
+    if (invalid) {
+      this.setState({ errorMessage: "Please fill all the required fields" });
+      return;
+    }
+
+    this.sendOtp();
 
   };
   onClear = () => {
@@ -445,7 +452,7 @@ class BannerApplicationForm extends Component {
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
 
-                    <Typography style={{ marginTop: 20 }} variant={"headline"}> Details of Advertisement</Typography>
+                    <Typography style={{ marginTop: 20 }} variant={"h5"}> Details of Advertisement</Typography>
                     <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                     <BannerDetail ref={this.bannerRef}
                                   onRemoveDetail={(index) => {
@@ -467,7 +474,7 @@ class BannerApplicationForm extends Component {
                   </GridItem>
 
                   <GridItem sm={12} xs={12} md={12}>
-                    <Typography variant={"headline"}>Upload Document(s)</Typography>
+                    <Typography variant={"h5"}>Upload Document(s)</Typography>
                   </GridItem>
 
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
@@ -477,7 +484,7 @@ class BannerApplicationForm extends Component {
                           this.setState(state => {
                             let temp = {
                               name: doc.id,
-                              path: doc.location
+                              path: data.location
                             };
                             state.uploadDocuments.push(temp);
                           });
@@ -532,9 +539,11 @@ class BannerApplicationForm extends Component {
         <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
                         message={this.state.errorMessage}
                         onClose={(e) => this.setState({ errorMessage: "" })}/>
-        <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp} onClose={() => {
-          this.setState({ openOtp: false });
-        }}/>
+        <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
+                   onClose={(value) => {
+                     this.setState({ openOtp: false });
+                     this.onVerifiedOtp(value);
+                   }}/>
 
       </GridContainer>
 
