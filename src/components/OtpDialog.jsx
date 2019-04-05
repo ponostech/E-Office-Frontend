@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Dialog, DialogContent, TextField, Typography } from "@material-ui/core";
+import { Button, Dialog, DialogContent, Divider, TextField, Typography } from "@material-ui/core";
 import GridContainer from "./Grid/GridContainer";
 import { RequestOtp, VerifyOtp } from "../services/OtpService";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
@@ -22,9 +22,6 @@ class OtpDialog extends Component {
     // this.props.onClose();
   };
 
-  componentWillUnmount() {
-    clearTimeout(timeout);
-  }
 
   handleResend = () => {
     const { phone } = this.props;
@@ -69,9 +66,7 @@ class OtpDialog extends Component {
         console.log(res);
         if (res.data.status) {
           this.setState({ successMessage: ArrayToString(res.data.messages), errorMessage: "" });
-          timeout = setTimeout(function() {
             onClose(true);
-          }, 3000);
         } else {
           let msg = res.data.messages;
           this.setState({ errorMessage: ArrayToString(msg), successMessage: "" });
@@ -93,13 +88,18 @@ class OtpDialog extends Component {
       <Dialog fullWidth={true} maxWidth={"sm"} open={open}>
         <DialogContent>
 
-          <GridContainer spacing={16}>
-            <GridItem xs={12}>
-              <Typography variant={"h5"}>Please Enter One Time Password</Typography>
+          <GridContainer justify={"space-between"} spacing={16}>
+            <GridItem xs={12} md={12}>
+              <Typography variant={"h5"}>ENTER OTP</Typography>
+            </GridItem>
+            <GridItem md={12}>
+            <Divider style={{marginTop:10,marginBottom:10}}/>
             </GridItem>
 
-            <GridItem xs={12}>
+            <GridItem xs={12} md={12}>
               <TextField variant={"outlined"}
+                         margin={"dense"}
+                         placeholder={"Enter OTP"}
                          error={Boolean(this.state.errorMessage)}
                          helperText={this.state.errorMessage}
                          value={this.state.otp}
@@ -111,19 +111,24 @@ class OtpDialog extends Component {
                          }}/>
             </GridItem>
 
-            <GridItem xs={12}>
-              <Button disabled={this.state.submit} onClick={this.handleResend.bind(this)} variant={"text"}
+            <GridItem sm={12} md={12}>
+              <Divider style={{marginBottom:10,marginTop:10}}/>
+            </GridItem>
+            <GridItem xs={12} md={6}>
+              <Button fullWidth={true} disabled={this.state.submit} onClick={this.handleResend.bind(this)} variant={"outlined"}
                       color={"primary"}>
-                Resent OTP
+                Resend OTP
               </Button>
-              <Button disabled={this.state.submit} onClick={this.handleVerify.bind(this)}
+            </GridItem>
+            <GridItem  xs={12} md={6}>
+              <Button fullWidth={true} disabled={this.state.submit} onClick={this.handleVerify.bind(this)}
                       variant={"outlined"} color={"primary"}>
                 verify OTP
               </Button>
             </GridItem>
             <GridItem xs={12}>
               {
-                Boolean(successMessage) ? <p style={{ color: "green" }}>{successMessage}</p> : undefined
+                Boolean(successMessage) ? <p style={{ color: "green",marginTop:20 }}>{successMessage}</p> : undefined
               }
             </GridItem>
 

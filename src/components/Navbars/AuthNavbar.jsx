@@ -146,7 +146,7 @@ class AuthNavbar extends React.Component {
           </Hidden>
         </Toolbar>
         {
-          loading ? <LinearProgress variant={"indeterminate"} color={"primary"}/> : undefined
+          loading ? <LinearProgress  variant={"indeterminate"} color={"secondary"}/> : undefined
         }
       </AppBar>
     );

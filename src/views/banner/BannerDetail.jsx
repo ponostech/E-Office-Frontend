@@ -6,6 +6,8 @@ import AddIcon from "@material-ui/icons/AddCircle";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
 import withStyles from "@material-ui/core/es/styles/withStyles"
 import PropTypes from "prop-types";
+import moment from "moment";
+import OfficeSnackbar from "../../components/OfficeSnackbar";
 const style={
   item:{
     padding:"6px !important"
@@ -29,7 +31,8 @@ class BannerDetail extends Component {
 
     detailList: [],
 
-    valid: false
+    valid: false,
+    errorMessage:""
   };
 
   handleChange = (e) => {
@@ -65,9 +68,20 @@ class BannerDetail extends Component {
 
   handleAdd = (e) => {
     const { onDetailAdd } = this.props;
+    const { length, height, locations, from, to } = this.state;
+
+    const fromDate = moment(from);
+    const toDate = moment(to);
+
+    console.log(fromDate);
+    console.log(toDate);
+
+    if (fromDate > toDate) {
+      this.setState({errorMessage:"From date can't be greater than To date"})
+      return
+    }
 
     this.clear();
-    const { length, height, locations, from, to } = this.state;
     let temp = {
       length, height, locations, from, to
     };
@@ -253,6 +267,7 @@ class BannerDetail extends Component {
               })}
             </List>
           </GridItem>
+          <OfficeSnackbar message={this.state.errorMessage} variant={"error"} open={Boolean(this.state.errorMessage)} onClose={(e)=>this.setState({errorMessage:""})}/>
         </GridContainer>
       </>
     );

@@ -207,19 +207,6 @@ class KioskApplicationForm extends Component {
     this.setState({ coordinate: data, openMap: false });
   };
 
-
-  handleClick = (e) => {
-    const { name } = e.target;
-    switch (name) {
-      case "submit":
-        this.doSubmit();
-        break;
-      case "reset":
-        break;
-      default:
-        break;
-    }
-  };
   doSubmit = () => {
     if (this.isInvalid()) {
       this.setState({ errorMessage: "Please fill all the required fields" });
@@ -235,7 +222,7 @@ class KioskApplicationForm extends Component {
                 success
                 style={{ display: "block", marginTop: "-100px" }}
                 title={"Success"}
-                onConfirm={() => this.setState({ success: null })}
+                onConfirm={() => window.location.reload()}
                 confirmBtnCssClass={
                   "MuiButton-outlinedPrimary-301"
                 }
@@ -607,8 +594,9 @@ class KioskApplicationForm extends Component {
                   {"\u00A0 "}
                   {"\u00A0 "}
                   {"\u00A0 "}
+                  {"\u00A0 "}
                   <Button name={"reset"} variant={"outlined"} color={"secondary"}
-                          onClick={this.handleClick.bind(this)}>Reset</Button>
+                          onClick={(e)=>window.location.reload()}>Reset</Button>
                 </GridItem>
               </GridContainer>
 
