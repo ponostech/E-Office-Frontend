@@ -11,6 +11,7 @@ const RegularMap = withScriptjs(
     <GoogleMap
       defaultZoom={15}
       defaultCenter={{ lat: props.lat, lng: props.lng }}
+      center={props.center}
       defaultOptions={{
         scrollwheel: true
       }}
@@ -56,7 +57,11 @@ class GMapDialog extends Component {
     this.state = {
       bounds: null,
       lat: 23.728355734275432,
-      lng: 92.71896203968402
+      lng: 92.71896203968402,
+      center:{
+        lat:23.728355734275432,
+        lng: 92.71896203968402
+      }
     };
   }
 
@@ -75,7 +80,16 @@ class GMapDialog extends Component {
   onPlacesChanged = (data) => {
     const places = refs.searchBox.getPlaces();
 
-    console.log(places)
+    const place = places[0];
+    const lat=place.geometry.location.lat();
+    const lng=place.geometry.location.lng();
+    const center=new window.google.maps.LatLng(lat, lng);
+    this.setState({
+      lat,
+      lng,
+      center
+    });
+
     // const bounds = new window.google.maps.LatLngBounds();
     //
     // places.forEach(place => {
@@ -101,6 +115,7 @@ class GMapDialog extends Component {
       <Dialog open={open} onClose={this.confirm.bind(this)} {...rest} fullScreen={true}>
         <DialogContent>
           <RegularMap
+            center={this.state.center}
             bounds={this.state.bounds}
             onPlacesChanged={this.onPlacesChanged.bind(this)}
             onSearchBoxMounted={this.onSearchBoxMounted.bind(this)}
