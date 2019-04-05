@@ -9,10 +9,9 @@ import HoardingList from "../views/advertiser/hoarding/HoardingList";
 import Dashboard from "../views/advertiser/Dashboard";
 import KioskLists from "../views/advertiser/kiosk/lists/KioskLists";
 import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
-import NewHoardingForm from "../views/advertiser/hoarding/form/NewHoardingForm";
-import NewKioskForm from "../views/advertiser/kiosk/form/NewKioskForm";
-
 import withStyles from "@material-ui/core/es/styles/withStyles";
+import HoardingApplicationForm from "../views/advertiser/hoarding/form/HoardingApplicationForm";
+import KioskApplicationForm from "../views/advertiser/kiosk/form/KioskApplicationForm";
 
 const style = {
   container: {
@@ -66,12 +65,12 @@ class AdvertiserDashboard extends Component {
             <GridContainer justify={"center"}>
 
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} render={(e) => {
-                return <NewHoardingForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
+                return <HoardingApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
               }}/>
               <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
 
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK} render={(e) => {
-                return <NewKioskForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
+                return <KioskApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
               }}/>
               <Route exact path={OfficeRoutes.ADVERTISER_KIOSK} component={KioskLists}/>
 

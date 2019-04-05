@@ -45,7 +45,7 @@ const style = {
 var timeout = undefined;
 
 
-class NewKioskForm extends Component {
+class KioskApplicationForm extends Component {
   constructor(props) {
     super(props);
 
@@ -578,7 +578,7 @@ class NewKioskForm extends Component {
                       this.setState(state => {
                         let temp = {
                           name: doc.id,
-                          path: doc.location
+                          path: data.location
                         };
                         state.uploadDocuments.push(temp);
                       });
@@ -642,4 +642,4 @@ class NewKioskForm extends Component {
   }
 }
 
-export default withStyles(style)(NewKioskForm);
+export default withStyles(style)(KioskApplicationForm);
