@@ -27,42 +27,59 @@ import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import { ShopService } from "../../services/ShopService";
-import { ErrorToString } from "../../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
 import PlaceIcon from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../components/GmapDialog";
 import { Validators } from "../../utils/Validators";
 import AddressField from "../../components/AddressField";
+import { fetchTrades } from "../../services/TradeService";
+import { LocalCouncilService } from "../../services/LocalCouncilService";
+import SweetAlert from "react-bootstrap-sweetalert";
+import { RequestOtp } from "../../services/OtpService";
+import OtpDialog from "../../components/OtpDialog";
 
 const style = {
   root: {
     padding: "10px 15px !important"
+  },
+  formControl: {
+    label: {
+      whiteSpace: "pre-line"
+    }
   }
 };
+
+var timeout = null;
 
 class HotelLicenseApplicationForm extends Component {
   documentService = new DocumentService();
   shopService = new ShopService();
+  localCouncilService = new LocalCouncilService();
   state = {
     name: "",
     phone: "",
     type: "",
     email: "",
     address: "",
+    ownerAddress: "",
+    localCouncil: undefined,
     places: "",
     tradeName: undefined,
     shopName: "",
     coordinate: "",
     businessDetail: "",
     estd: undefined,
-    acRoomNo: "",
-    nonAcRoomNo: "",
-    otherFacilities: "",
+    noAcRoom: undefined,
+    acRoom: undefined,
+    facilities:"",
     tinNo: "",
     cstNo: "",
     gstNo: "",
     panNo: "",
     premised: "Owned",
     displayType: undefined,
+    signature: undefined,
+    passport: undefined,
 
     latitude: undefined,
     longitude: undefined,
@@ -76,9 +93,9 @@ class HotelLicenseApplicationForm extends Component {
     phoneError: "",
     shopNameError: "",
     displayTypeError: "",
-    acRoomNoError: "",
-    nonAcRoomNoError: "",
     estdError: "",
+    localCouncilError: "",
+    ownerAddressError:"",
 
     display_types: [
       { value: "vehicle", label: "Vehicle" },
@@ -93,39 +110,159 @@ class HotelLicenseApplicationForm extends Component {
       { value: "partnership", label: "Partnership" },
       { value: "private limited", label: "Private Limited" }
     ],
-    trades: [
-      { value: "1", label: "1" },
-      { value: "2", label: "2" },
-      { value: "3", label: "3" }
-    ],
+    trades: [],
+    localCouncils: [],
 
     agree: false,
     submit: false,
-    success: false,
+    success: undefined,
     documents: [],
+    flaDocuments: [],
+    noFlaDocuments: [],
 
     openMap: false,
     prestine: true,
-    errorMessage: ""
+
+    errorMessage: "",
+
+    openOtp: false,
+    otpMessage: ""
 
   };
 
   componentDidMount() {
-    document.title = "e-AMC | Hotel and lodging License Application Form";
-    // this.state.ownership = this.state.ownerships[0];
-    // this.state.display_type = this.state.display_types[0];
-    // this.state.trade = this.state.trades[0];
-    console.log(this.state.estd);
-    this.fetchDocuments();
+    document.title = "e-AMC | Shop License Application Form";
+    var self = this;
+    const { doLoad, doLoadFinish } = this.props;
+
+    doLoad();
+    timeout = setTimeout(function(handler) {
+      Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
+        .then(function([cats, docs, lcs]) {
+          console.log(lcs);
+          // self.setState({ loading: false });
+        });
+      doLoadFinish();
+      // self.setState({ loading: false });
+    }, 4000);
   }
 
-  fetchDocuments = () => {
-    this.documentService.get("shop_license")
+  sendOtp = () => {
+    var self = this;
+    RequestOtp(this.state.phone)
       .then(res => {
-        if (res.status) {
-          this.setState({
-            documents: res.data.documents
+        console.log(res);
+        if (res.data.status) {
+          let str = ArrayToString(res.data.messages);
+          self.setState({ otpMessage: str });
+          self.setState({ openOtp: true });
+        } else {
+          this.setState({ errorMessage: ErrorToString(res.data.messages) });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({errorMessage:err.toString()})
+      });
+  };
+  onVerifiedOtp = (verified) => {
+    if (verified) {
+      this.setState({ submit: true });
+      this.shopService.create(this.state)
+        .then(data => {
+          if (data.status) {
+            this.setState({
+              success: (
+                <SweetAlert
+                  success
+                  style={{ display: "block", marginTop: "-100px" }}
+                  title={"Success"}
+                  onConfirm={() => window.location.reload()}>
+                  {
+                    data.messages.map(function(msg, index) {
+                      return <p>
+                        {`${msg}.`}
+                      </p>;
+                    })
+                  }
+                </SweetAlert>
+              )
+            });
+          } else {
+            const msg = ErrorToString(data.messages);
+            this.setState({ errorMessage: msg });
+          }
+          console.log(data);
+        })
+        .catch(err => {
+          console.error(err);
+          this.setState({ errorMessage: err.toString() });
+        })
+        .then(() => {
+          this.setState({ submit: false });
+        });
+    }
+  };
+  fetchLocalCouncil = () => {
+    let newLocalCouncils = [];
+    this.localCouncilService.get()
+      .then(data => {
+        if (data.status) {
+          data.data.local_councils.forEach(function(item) {
+            let lc = {
+              value: item.id,
+              label: item.name
+            };
+            newLocalCouncils.push(lc);
           });
+          this.setState({
+            localCouncils: newLocalCouncils
+          });
+        } else {
+        }
+      })
+      .catch(err => {
+        let msg = "Unable to load resources, Please try again";
+        this.setState({ errorMessage: msg });
+        console.log(err);
+      });
+  };
+  fetchDocuments = () => {
+    this.documentService.get("shop")
+      .then(res => {
+        console.log(res);
+        if (res.status) {
+          const docs = res.data.documents;
+          this.setState({
+            flaDocuments: docs,
+            noFlaDocuments: docs.filter((item, index) => index !== docs.length - 1),
+            documents: docs.filter((item, index) => index !== docs.length - 1)
+          });
+        }
+      })
+      .catch(err => {
+        this.setState({ errorMessage: err.toString() });
+      });
+  };
+  fetchTrades = () => {
+    fetchTrades()
+      .then(res => {
+        const { messages, status } = res.data;
+        if (status) {
+          let trades = [];
+          res.data.data.trades.forEach((item, i) => {
+            let trade = {
+              value: item.id,
+              label: item.fla ? item.name + " (required Food License Authority Certificate)" : item.name,
+              fla: item.fla
+            };
+            trades.push(trade);
+          });
+          this.setState(state => {
+            state.trades = trades;
+          });
+        } else {
+          this.setState({ errorMessage: messages });
         }
       })
       .catch(err => {
@@ -137,7 +274,7 @@ class HotelLicenseApplicationForm extends Component {
 
     switch (name) {
       case "phone":
-        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: "Mobile No must be 10 digit number" }) : this.setState({ phoneError: "" });
+        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: ShopLicenseViewModel.VALID_PHONE }) : this.setState({ phoneError: "" });
         break;
       default:
         break;
@@ -152,7 +289,13 @@ class HotelLicenseApplicationForm extends Component {
   handleSelect = (identifier, value) => {
     switch (identifier) {
       case "trade":
+        const { fla } = value;
         this.setState({ tradeName: value });
+        if (fla) {
+          this.setState({ documents: this.state.flaDocuments });
+        } else {
+          this.setState({ documents: this.state.noFlaDocuments });
+        }
         break;
       case "type":
         this.setState({ type: value });
@@ -160,6 +303,8 @@ class HotelLicenseApplicationForm extends Component {
       case "displayType":
         this.setState({ displayType: value });
         break;
+      case "localCouncil":
+        this.setState({ localCouncil: value });
       default:
         break;
     }
@@ -168,27 +313,10 @@ class HotelLicenseApplicationForm extends Component {
   onSubmit = (e) => {
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
       || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine);
+      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined;
 
-    this.setState({ submit: true });
-    if (invalid) {
-      this.shopService.create(this.state)
-        .then(data => {
-          if (data.status) {
-            this.setState({ success: true });
-          } else {
-            const msg = ErrorToString(data.data.messages);
-            this.setState({ errorMessage: msg });
-          }
-          console.log(data);
-        })
-        .catch(err => {
-          console.error(err);
-          this.setState({ errorMessage: err.toString() });
-        })
-        .then(() => {
-          this.setState({ submit: false });
-        });
+    if (!invalid) {
+      this.sendOtp();
     } else {
       this.setState({ errorMessage: "Please fill out the required fields" });
     }
@@ -198,6 +326,7 @@ class HotelLicenseApplicationForm extends Component {
       premised: e.target.value
     });
   };
+
 
   handleClick = (e) => {
     const name = e.target.name;
@@ -236,16 +365,17 @@ class HotelLicenseApplicationForm extends Component {
   handleSelectBlur = (identifier, e) => {
 
     switch (identifier) {
-      case "type":
-        this.state.type ? this.setState({ typeError: "" }) : this.setState({ typeError: "Type of applicant is required" });
+      case "localCouncil":
+        this.state.localCouncil === undefined ? this.setState({ localCouncilError: "Local Council is required" }) : this.setState({ localCouncilError: "" });
         break;
-
+      case "type":
+        this.state.type ? this.setState({ typeError: "" }) : this.setState({ typeError: ShopLicenseViewModel.TYPE_REQUIRED });
+        break;
       case "tradeName":
-        this.state.tradeName === undefined ? this.setState({ tradeNameError: "Trade is required" }) : this.setState({ tradeNameError: "" });
+        this.state.tradeName === undefined ? this.setState({ tradeNameError: ShopLicenseViewModel.TRADE_REQUIRED }) : this.setState({ tradeNameError: "" });
         break;
       case "displayType":
-        this.state.displayType === undefined ? this.setState({ displayTypeError:"Type of display is required" }) : this.setState({ displayTypeError: "" });
-        break;
+        this.state.displayType === undefined ? this.setState({ displayTypeError: ShopLicenseViewModel.DISPLAY_TYPE_REQUIRED }) : this.setState({ displayTypeError: "" });
       default:
         break;
     }
@@ -255,28 +385,22 @@ class HotelLicenseApplicationForm extends Component {
 
     switch (name) {
       case "name":
-        value.length === 0 ? this.setState({ nameError: "Name of applicant is required" }) : this.setState({ nameError: "" });
+        value.length === 0 ? this.setState({ nameError: ShopLicenseViewModel.OWNER_REQUIRED }) : this.setState({ nameError: "" });
         break;
       case "shopName":
-        value.length === 0 ? this.setState({ shopNameError: "Name of hotel is required" }) : this.setState({ shopNameError: "" });
+        value.length === 0 ? this.setState({ shopNameError: ShopLicenseViewModel.SHOP_NAME_REQUIRED }) : this.setState({ shopNameError: "" });
         break;
       case "address":
-        value.length === 0 ? this.setState({ addressError: "Address is required" }) : this.setState({ addressError: "" });
+        value.length === 0 ? this.setState({ addressError: ShopLicenseViewModel.ADDRESS_REQUIRED }) : this.setState({ addressError: "" });
         break;
       case "phone":
-        value.length === 0 ? this.setState({ phoneError: "Mobile no is required" }) : this.setState({ phoneError: "" });
+        value.length === 0 ? this.setState({ phoneError: ShopLicenseViewModel.PHONE_REQUIRED }) : this.setState({ phoneError: "" });
         break;
       case "estd":
-        value.length === 0 ? this.setState({ estdError: "Date of establishment is required" }) : this.setState({ estdError: "" });
+        value.length === 0 ? this.setState({ estdError: ShopLicenseViewModel.ESTD_REQUIRED }) : this.setState({ estdError: "" });
         break;
       case "details":
-        value.length === 0 ? this.setState({ detailsError: "Business Details is required" }) : this.setState({ detailsError: "" });
-        break;
-      case "nonAcRoomNo":
-        value.length === 0 ? this.setState({ nonAcRoomError: "" }) : this.setState({ nonAcRoomError: "No of Non Ac Room is required" });
-        break;
-      case "acRoomNo":
-        value.length === 0 ? this.setState({ acRoomNoError: "" }) : this.setState({ acRoomNoError: "No of ac room is required" });
+        value.length === 0 ? this.setState({ detailsError: ShopLicenseViewModel.DETAILS_REQUIRED }) : this.setState({ detailsError: "" });
         break;
       default:
         break;
@@ -296,8 +420,11 @@ class HotelLicenseApplicationForm extends Component {
               <CardContent>
                 <GridContainer>
                   <GridItem md={12} sm={12} xs={12}>
-                    <Typography variant="h5">
+                    <Typography variant={"h5"}>
                       {ShopLicenseViewModel.TITLE}
+                    </Typography>
+                    <Typography variant={"subtitle1"}>
+                      {ShopLicenseViewModel.SUBTITLE}
                     </Typography>
                   </GridItem>
 
@@ -367,6 +494,49 @@ class HotelLicenseApplicationForm extends Component {
                     <AddressField
                       textFieldProps={
                         {
+                          value: this.state.ownerAddress,
+                          name: "ownerAddress",
+                          placeholder: "Owner Address",
+                          onBlur: this.handleBlur.bind(this),
+                          required: true,
+                          variant: "outlined",
+                          margin: "dense",
+                          fullWidth: true,
+                          error: Boolean(this.state.ownerAddressError),
+                          helperText: this.state.ownerAddressError,
+                          onChange: this.handleChange.bind(this),
+                          label: ShopLicenseViewModel.OWNER_ADDRESS
+                        }
+                      }
+
+                      onPlaceSelect={(place) => {
+                        if (place) {
+                          let name = place.name;
+                          let address = place.formatted_address;
+                          let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                          this.setState({ ownerAddress: complete_address });
+                        }
+                      }}/>
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <OfficeSelect
+                      value={this.state.localCouncil}
+                      label={"Select Local Council"}
+                      name={"localCouncil"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      required={true}
+                      helperText={this.state.localCouncilError}
+                      error={Boolean(this.state.localCouncilError)}
+                      onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
+                      onChange={this.handleSelect.bind(this, "localCouncil")}
+                      options={this.state.localCouncils}/>
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <AddressField
+                      textFieldProps={
+                        {
                           value: this.state.address,
                           name: "address",
                           placeholder: "Address",
@@ -378,16 +548,23 @@ class HotelLicenseApplicationForm extends Component {
                           error: Boolean(this.state.addressError),
                           helperText: this.state.addressError,
                           onChange: this.handleChange.bind(this),
-                          label: ShopLicenseViewModel.OWNER_ADDRESS
+                          label: ShopLicenseViewModel.ADDRESS
                         }
                       }
 
                       onPlaceSelect={(place) => {
-                        this.setState({ address: place.formatted_address });
+                        if (place) {
+                          let name = place.name;
+                          let address = place.formatted_address;
+                          let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                          this.setState({ address: complete_address });
+                        }
                       }}/>
                   </GridItem>
+
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
+                      onClick={(e) => this.setState({ openMap: true })}
                       value={this.state.coordinate}
                       name={"coordinate"}
                       onBlur={this.handleBlur.bind(this)}
@@ -453,6 +630,45 @@ class HotelLicenseApplicationForm extends Component {
                     />
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.acRoom}
+                      type={"number"}
+                      name={"acRoom"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleChange.bind(this)}
+                      label={"No of Room (AC)"}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <TextField
+                      InputProps={{
+                        min:0
+                      }}
+                      type={"number"}
+                      value={this.state.noAcRoom}
+                      name={"noAcRoom"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleChange.bind(this)}
+                      label={"No of Room (No AC)"}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <TextField
+                      type={"number"}
+                      value={this.state.facilities}
+                      name={"facilities"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleChange.bind(this)}
+                      label={"Any Other Facilities"}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField name={"estd"}
                                value={this.state.estd}
                                variant={"outlined"}
@@ -515,18 +731,17 @@ class HotelLicenseApplicationForm extends Component {
                     />
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <OfficeSelect value={this.state.displayType}
-                                  label={"Type of display"}
-                                  name={"displayType"}
-                                  variant={"outlined"}
-                                  margin={"dense"}
-                                  fullWidth={true}
-                                  required={true}
-                                  error={Boolean(this.state.displayTypeError)}
-                                  helperText={this.state.displayTypeError}
-                                  onBlur={this.handleSelectBlur.bind(this, "displayType")}
-                                  onChange={this.handleSelect.bind(this, "displayType")}
-                                  options={this.state.display_types}/>
+                    <FileUpload required={true} document={{ id: 122, name: "Passport", mime: "image/*" }}
+                                onUploadSuccess={(data) => {
+                                  this.setState(state => {
+                                    state.passport = {
+                                      name: "passport",
+                                      path: data.location
+                                    };
+                                  });
+                                }} onUploadFailure={(err) => {
+                      console.log(err);
+                    }}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <FormControl fullWidth={true} margin={"dense"}>
@@ -543,48 +758,7 @@ class HotelLicenseApplicationForm extends Component {
                     </FormControl>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <TextField
-                      value={this.state.acRoomNo}
-                      type={"number"}
-                      name={"acRoomNo"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      required={true}
-                      rror={Boolean(this.state.acRoomNoError)}
-                      onBlur={this.handleBlur.bind(this)}
-                      onChange={this.handleChange.bind(this)}
-                      label={"No of Ac Room"}
-                    />
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <TextField
-                      value={this.state.nonAcRoomNo}
-                      type={"number"}
-                      name={"nonAcRoomNo"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      required={true}
-                      fullWidth={true}
-                      error={Boolean(this.state.nonAcRoomNoError)}
-                      onBlur={this.handleBlur.bind(this)}
-                      onChange={this.handleChange.bind(this)}
-                      label={"No of Non Ac Room"}
-                    />
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <TextField
-                      value={this.state.otherFacilities}
-                      name={"otherFacilities"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={"Other Facilities"}
-                    />
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload required={true} document={{ id: 1, name: "Signature", mime: "image/*" }}
+                    <FileUpload required={true} document={{ id: 344, name: "Signature", mime: "image/*" }}
                                 onUploadSuccess={(data) => {
                                   this.setState(state => {
                                     state.signature = {
@@ -601,14 +775,15 @@ class HotelLicenseApplicationForm extends Component {
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
                     <Typography variant={"headline"}>Upload
-                      Document</Typography>
+                      Document(s)</Typography>
                   </GridItem>
                   {
                     this.state.documents.map((doc, index) => {
-                      return <GridItem className={classes.root} sm={12} xs={12} md={6}>
+                      return <GridItem key={index} className={classes.root} sm={12} xs={12} md={12}>
 
                         <FileUpload key={index} document={doc} onUploadSuccess={(data) => {
                           let temp = {
+                            id: doc.id,
                             name: doc.name,
                             path: data.location
                           };
@@ -624,11 +799,16 @@ class HotelLicenseApplicationForm extends Component {
                   }
 
                   <GridItem xs={12} sm={12} md={12}>
-                    <FormControlLabel control={
-                      <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
-                    }
-                                      label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoarding Regulations 2013," +
-                                      " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
+                    <FormControlLabel
+                      style={{ whiteSpace: "pre-line" }}
+                      control={
+                        <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
+                      }
+                      label={"1.I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
+                      "no unauthorized construction." +
+                      "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations. " +
+                      "\n3. I shall follow all rules and regulations of AMC;" +
+                      "\n4. It is certified that the above information is correct to the best of my knowledge"}/>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
                     <Divider/>
@@ -640,7 +820,7 @@ class HotelLicenseApplicationForm extends Component {
                   <GridItem>
                     <Button name={"primary"} disabled={!this.state.agree}
                             color={"primary"} variant={"outlined"}
-                            onClick={this.handleClick.bind(this)}>
+                            onClick={this.onSubmit.bind(this)}>
                       {ShopLicenseViewModel.PRIMARY_TEXT}
                     </Button>
                     {"\u00A0 "}
@@ -665,9 +845,6 @@ class HotelLicenseApplicationForm extends Component {
         <OfficeSnackbar open={!!this.state.errorMessage} variant={"error"} message={this.state.errorMessage}
                         onClose={() => this.setState({ errorMessage: "" })}/>
 
-        <OfficeSnackbar open={this.state.success} variant={"info"}
-                        message={"Your application is submitted successfully"}
-                        onClose={() => this.setState({ success: true })}/>
         <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
           let msg = `Latitude: ${lat} , Longitude: ${lng}`;
           this.setState({ coordinate: msg });
@@ -677,6 +854,14 @@ class HotelLicenseApplicationForm extends Component {
           });
           this.setState({ openMap: false });
         }} isMarkerShown={true}/>
+
+        <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
+                   onClose={(value) => {
+                     this.setState({ openOtp: false });
+                     this.onVerifiedOtp(value);
+                   }}/>
+
+        {this.state.success}
       </GridContainer>
 
     );
