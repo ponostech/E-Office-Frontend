@@ -55,7 +55,7 @@ class FileDetail extends Component {
                     <main className={classes.content}>
                         <Notesheet show={this.state.sideMenu.notesheet}/>
                         {this.state.sideMenu.draft ? (
-                            <p>Deaft permit </p>
+                            <p>Draft permit </p>
                         ): null}
                     </main>
                 </div>
