@@ -435,7 +435,8 @@ class AdvertiserForm extends Component {
                     <FileUpload document={doc}
                                 onUploadSuccess={(data) => {
                                   let temp = {
-                                    name: doc.id,
+                                    id:doc.id,
+                                    name: doc.name,
                                     path: data.location
                                   };
                                   this.setState(state => {
