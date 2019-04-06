@@ -255,7 +255,7 @@ class AdvertiserForm extends Component {
             <CardContent>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
-                  <Typography variant={"h5"}>Form of Application for registered Advertiser</Typography>
+                  <Typography variant={"h5"}>{AdvertiserViewModel.TITLE}</Typography>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <Divider style={{ marginBottom: 10, marginTop: 10 }}/>

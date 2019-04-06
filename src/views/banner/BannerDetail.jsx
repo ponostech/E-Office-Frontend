@@ -8,6 +8,7 @@ import withStyles from "@material-ui/core/es/styles/withStyles"
 import PropTypes from "prop-types";
 import moment from "moment";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
+import AddressField from "../../components/AddressField";
 const style={
   item:{
     padding:"6px !important"
@@ -167,18 +168,30 @@ class BannerDetail extends Component {
           </GridItem>
 
           <GridItem className={classes.item} sm={12} md={3}>
-            <TextField name={"locations"}
-                       fullWidth={true}
-                       required={true}
-                       error={!!this.state.locationsError}
-                       helperText={this.state.locationsError}
-                       label={"Location"}
-                       variant={"outlined"}
-                       value={this.state.locations}
-                       onBlur={this.handleBlur.bind(this)}
-                       onChange={this.handleChange.bind(this)}
-                       margin={"dense"}
-            />
+            <AddressField
+              name={"locations"}
+              textFieldProps={{
+                name:"locations",
+                fullWidth:true,
+                required:true,
+                placeholder:"Locations",
+                error:!!this.state.locationsError,
+                helperText:this.state.locationsError,
+                label:"Location",
+                variant:"outlined",
+                value:this.state.locations,
+                onBlur:this.handleBlur.bind(this),
+                onChange:this.handleChange.bind(this),
+                margin:"dense",
+              }}
+              onPlaceSelect={(place) => {
+                if (place) {
+                  let name = place.name;
+                  let address = place.formatted_address;
+                  let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                  this.setState({ locations: complete_address });
+                }
+              }}/>
           </GridItem>
 
           <GridItem className={classes.item} sm={12} md={2}>

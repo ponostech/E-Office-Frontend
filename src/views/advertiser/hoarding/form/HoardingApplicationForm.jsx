@@ -34,23 +34,19 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../../../components/AddressField";
 import { ErrorToString } from "../../../../utils/ErrorUtil";
 import { CategoryServices } from "../../../../services/CategoryServices";
-import LoadingDialog from "../../../common/LoadingDialog";
 import SweetAlert from "react-bootstrap-sweetalert";
-import OtpDialog from "../../../../components/OtpDialog";
-
+import { ADVERTISER_HOARDING } from "../../../../config/routes-constant/OfficeRoutes";
+import { withRouter } from "react-router-dom";
 
 const style = {
   root: {
     padding: "10px 15px !important"
   }
 };
-
-var timeout = undefined;
-
+var timeout=null;
 class HoardingApplicationForm extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       localCouncil: undefined,
       category: undefined,
@@ -94,7 +90,7 @@ class HoardingApplicationForm extends Component {
 
       success: null,
       submit: false,
-      loading: false,
+      loading: false
     };
 
     this.localCouncilservice = new LocalCouncilService();
@@ -115,7 +111,7 @@ class HoardingApplicationForm extends Component {
         .then(function([cats, locs, docs]) {
           // self.setState({ loading: false });
         });
-          doLoadFinish()
+      doLoadFinish();
       // self.setState({ loading: false });
     }, 6000);
 
@@ -151,11 +147,11 @@ class HoardingApplicationForm extends Component {
           this.setState({ hasError: true });
         }
       })
-      .catch(err=>{
+      .catch(err => {
         let msg = "Unable to load resources, Please try again";
         this.setState({ errorMessage: msg });
         console.log(err);
-      })
+      });
   };
 
   fetchCategory = () => {
@@ -201,10 +197,10 @@ class HoardingApplicationForm extends Component {
           this.setState({ documents: data.data.documents });
         }
       })
-      .catch(err=>{
+      .catch(err => {
         let msg = "Unable to load resources, Please try again";
         this.setState({ errorMessage: msg });
-        console.log(err)
+        console.log(err);
       });
 
   };
@@ -220,6 +216,8 @@ class HoardingApplicationForm extends Component {
     });
   };
   doSubmit = () => {
+    const { history } = this.props;
+
     if (this.invalid()) {
       this.setState({ errorMessage: "Please fill all the required \nfields" });
       return;
@@ -235,7 +233,7 @@ class HoardingApplicationForm extends Component {
                 success
                 style={{ display: "block", marginTop: "-100px" }}
                 title={"Success"}
-                onConfirm={() => window.location.reload()}
+                onConfirm={() => history.push(ADVERTISER_HOARDING)}
                 confirmBtnCssClass={
                   "MuiButton-outlinedPrimary-301"
                 }
@@ -561,7 +559,7 @@ class HoardingApplicationForm extends Component {
                 </GridItem>
                 {this.state.documents.map((doc, index) => {
                   return <GridItem className={classes.root} key={index} xs={12} sm={12} md={12}>
-                    <FileUpload  onUploadSuccess={(data) => {
+                    <FileUpload onUploadSuccess={(data) => {
                       this.setState(state => {
                         let temp = {
                           name: doc.id,
@@ -592,7 +590,7 @@ class HoardingApplicationForm extends Component {
               {"\u00A0 "}
               {"\u00A0 "}
               <Button name={"reset"} variant={"outlined"} color={"secondary"}
-                      onClick={(e)=>window.location.reload()}>Reset</Button>
+                      onClick={(e) => window.location.reload()}>Reset</Button>
 
             </CardActions>
           </Card>
@@ -624,4 +622,4 @@ class HoardingApplicationForm extends Component {
   }
 }
 
-export default withStyles(style)(HoardingApplicationForm);
+export default withRouter(withStyles(style)(HoardingApplicationForm));

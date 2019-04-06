@@ -57,7 +57,6 @@ class BannerApplicationForm extends Component {
     bannerDetails: [],
 
     localCouncils: [],
-    documents: [],
     agree: false,
     display_types: [
       { value: "vehicle", label: "Vehicle" },
@@ -103,7 +102,7 @@ class BannerApplicationForm extends Component {
     doLoad();
     var self = this;
     timeout = setTimeout(function(resolve, reject) {
-      Promise.all([self.fetchLocalCouncil(), self.fetchDocument()])
+      Promise.all([self.fetchLocalCouncil()])
         .then(function([locs, docs]) {
           // self.setState({ loading: false });
           doLoadFinish();
@@ -129,19 +128,6 @@ class BannerApplicationForm extends Component {
       });
   };
 
-  fetchDocument = () => {
-    this.documentService.get("banner")
-      .then(data => {
-        if (data.status) {
-          this.setState({ documents: data.data.documents });
-        }
-      })
-      .catch(err => {
-        let msg = "Unable to load resources, Please try again";
-        this.setState({ errorMessage: msg });
-        console.log(err);
-      });
-  };
   fetchLocalCouncil = () => {
     let newLocalCouncils = [];
     this.localCouncilservice.get()
@@ -469,35 +455,6 @@ class BannerApplicationForm extends Component {
                                   }}/>
                   </GridItem>
 
-                  <GridItem sm={12} xs={12} md={12}>
-                    <Typography variant={"h5"}>Upload Document(s)</Typography>
-                  </GridItem>
-
-                  <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                    {this.state.documents.map((doc, index) => {
-                      return <GridItem className={classes.root} sm={12} xs={12} md={12}>
-                        <FileUpload key={index} onUploadSuccess={(data) => {
-                          this.setState(state => {
-                            let temp = {
-                              name: doc.id,
-                              path: data.location
-                            };
-                            state.uploadDocuments.push(temp);
-                          });
-                        }} onUploadFailure={(e) => {
-                          console.log(e);
-                        }} document={doc}/>
-                      </GridItem>;
-                    })}
-                  </GridItem>
-
-                  {/*<GridContainer justify={"center"}>*/}
-                  {/*<GridItem xs={12} sm={12} md={12}>*/}
-                  {/*<Typography variant={"headline"}>Add Banner details</Typography>*/}
-                  {/*<Divider style={{marginBottom:10,marginTop:10}}/>*/}
-                  {/*<BannerDetail/>*/}
-                  {/*</GridItem>*/}
-                  {/*</GridContainer>*/}
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
                     <FormControlLabel control={
                       <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
