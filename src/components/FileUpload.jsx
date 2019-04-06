@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, CircularProgress, InputAdornment, TextField } from "@material-ui/core";
+import { CircularProgress, InputAdornment, TextField,Button } from "@material-ui/core";
 import PropTypes from "prop-types";
 import S3FileUpload from "react-s3";
 import TickIcon from "@material-ui/icons/Check";
@@ -8,6 +8,7 @@ import DocumentIcon from "@material-ui/icons/Book";
 import ImageIcon from "@material-ui/icons/Image";
 import { BUCKET_NAME, REGION, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY } from "../Configuration";
 
+var uniqid = require('uniqid');
 const config = {
   bucketName: BUCKET_NAME,
   dirName: "office", /* optional */
@@ -82,7 +83,7 @@ class FileUpload extends Component {
           value={self.getFilename(file)}
           fullWidth={true}
           InputProps={{
-            readOnly:true,
+            readOnly: true,
             startAdornment: (
               <InputAdornment position={"start"}>
                 {self.getStatusIcon(file)}
@@ -98,6 +99,11 @@ class FileUpload extends Component {
                   type={"file"}
                   onChange={(e) => {
                     let item = e.target.files[0];
+
+                    // let blob = item.slice(0, item.size, item.type);
+                    // let newName = file.name.toLowerCase()+"-"+uniqid()+ item.name;
+                    // let newFile = new File([blob], newName, { type: item.type });
+
                     let temp = file;
                     temp.file = item;
                     temp.status = "progress";
