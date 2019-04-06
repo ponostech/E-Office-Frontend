@@ -27,13 +27,16 @@ import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import { ShopService } from "../../services/ShopService";
-import { ErrorToString } from "../../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
 import PlaceIcon from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../components/GmapDialog";
 import { Validators } from "../../utils/Validators";
 import AddressField from "../../components/AddressField";
 import { fetchTrades } from "../../services/TradeService";
 import { LocalCouncilService } from "../../services/LocalCouncilService";
+import SweetAlert from "react-bootstrap-sweetalert";
+import { RequestOtp } from "../../services/OtpService";
+import OtpDialog from "../../components/OtpDialog";
 
 const style = {
   root: {
@@ -58,6 +61,7 @@ class ShopLicenseApplicationForm extends Component {
     type: "",
     email: "",
     address: "",
+    ownerAddress: "",
     localCouncil: undefined,
     places: "",
     tradeName: undefined,
@@ -88,6 +92,7 @@ class ShopLicenseApplicationForm extends Component {
     displayTypeError: "",
     estdError: "",
     localCouncilError: "",
+    ownerAddressError:"",
 
     display_types: [
       { value: "vehicle", label: "Vehicle" },
@@ -107,14 +112,18 @@ class ShopLicenseApplicationForm extends Component {
 
     agree: false,
     submit: false,
-    success: false,
+    success: undefined,
     documents: [],
     flaDocuments: [],
     noFlaDocuments: [],
 
     openMap: false,
     prestine: true,
-    errorMessage: ""
+
+    errorMessage: "",
+
+    openOtp: false,
+    otpMessage: ""
 
   };
 
@@ -125,9 +134,9 @@ class ShopLicenseApplicationForm extends Component {
 
     doLoad();
     timeout = setTimeout(function(handler) {
-      Promise.all([self.fetchTrades(), self.fetchDocuments(),self.fetchLocalCouncil()])
-        .then(function([cats, docs,lcs]) {
-          console.log(lcs)
+      Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
+        .then(function([cats, docs, lcs]) {
+          console.log(lcs);
           // self.setState({ loading: false });
         });
       doLoadFinish();
@@ -135,6 +144,62 @@ class ShopLicenseApplicationForm extends Component {
     }, 4000);
   }
 
+  sendOtp = () => {
+    var self = this;
+    RequestOtp(this.state.phone)
+      .then(res => {
+        console.log(res);
+        if (res.data.status) {
+          let str = ArrayToString(res.data.messages);
+          self.setState({ otpMessage: str });
+          self.setState({ openOtp: true });
+        } else {
+          this.setState({ errorMessage: ErrorToString(res.data.messages) });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({errorMessage:err.toString()})
+      });
+  };
+  onVerifiedOtp = (verified) => {
+    if (verified) {
+      this.setState({ submit: true });
+      this.shopService.create(this.state)
+        .then(data => {
+          if (data.status) {
+            this.setState({
+              success: (
+                <SweetAlert
+                  success
+                  style={{ display: "block", marginTop: "-100px" }}
+                  title={"Success"}
+                  onConfirm={() => window.location.reload()}>
+                  {
+                    data.messages.map(function(msg, index) {
+                      return <p>
+                        {`${msg}.`}
+                      </p>;
+                    })
+                  }
+                </SweetAlert>
+              )
+            });
+          } else {
+            const msg = ErrorToString(data.messages);
+            this.setState({ errorMessage: msg });
+          }
+          console.log(data);
+        })
+        .catch(err => {
+          console.error(err);
+          this.setState({ errorMessage: err.toString() });
+        })
+        .then(() => {
+          this.setState({ submit: false });
+        });
+    }
+  };
   fetchLocalCouncil = () => {
     let newLocalCouncils = [];
     this.localCouncilService.get()
@@ -248,24 +313,7 @@ class ShopLicenseApplicationForm extends Component {
       || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined;
 
     if (!invalid) {
-      this.setState({ submit: true });
-      this.shopService.create(this.state)
-        .then(data => {
-          if (data.status) {
-            this.setState({ success: true });
-          } else {
-            const msg = ErrorToString(data.data.messages);
-            this.setState({ errorMessage: msg });
-          }
-          console.log(data);
-        })
-        .catch(err => {
-          console.error(err);
-          this.setState({ errorMessage: err.toString() });
-        })
-        .then(() => {
-          this.setState({ submit: false });
-        });
+      this.sendOtp();
     } else {
       this.setState({ errorMessage: "Please fill out the required fields" });
     }
@@ -275,6 +323,7 @@ class ShopLicenseApplicationForm extends Component {
       premised: e.target.value
     });
   };
+
 
   handleClick = (e) => {
     const name = e.target.name;
@@ -442,16 +491,16 @@ class ShopLicenseApplicationForm extends Component {
                     <AddressField
                       textFieldProps={
                         {
-                          value: this.state.address,
-                          name: "address",
-                          placeholder: "Address",
+                          value: this.state.ownerAddress,
+                          name: "ownerAddress",
+                          placeholder: "Owner Address",
                           onBlur: this.handleBlur.bind(this),
                           required: true,
                           variant: "outlined",
                           margin: "dense",
                           fullWidth: true,
-                          error: Boolean(this.state.addressError),
-                          helperText: this.state.addressError,
+                          error: Boolean(this.state.ownerAddressError),
+                          helperText: this.state.ownerAddressError,
                           onChange: this.handleChange.bind(this),
                           label: ShopLicenseViewModel.OWNER_ADDRESS
                         }
@@ -462,7 +511,7 @@ class ShopLicenseApplicationForm extends Component {
                           let name = place.name;
                           let address = place.formatted_address;
                           let complete_address = address.includes(name) ? address : `${name} ${address}`;
-                          this.setState({ address: complete_address });
+                          this.setState({ ownerAddress: complete_address });
                         }
                       }}/>
                   </GridItem>
@@ -480,6 +529,34 @@ class ShopLicenseApplicationForm extends Component {
                       onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
                       onChange={this.handleSelect.bind(this, "localCouncil")}
                       options={this.state.localCouncils}/>
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <AddressField
+                      textFieldProps={
+                        {
+                          value: this.state.address,
+                          name: "address",
+                          placeholder: "Address",
+                          onBlur: this.handleBlur.bind(this),
+                          required: true,
+                          variant: "outlined",
+                          margin: "dense",
+                          fullWidth: true,
+                          error: Boolean(this.state.addressError),
+                          helperText: this.state.addressError,
+                          onChange: this.handleChange.bind(this),
+                          label: ShopLicenseViewModel.ADDRESS
+                        }
+                      }
+
+                      onPlaceSelect={(place) => {
+                        if (place) {
+                          let name = place.name;
+                          let address = place.formatted_address;
+                          let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                          this.setState({ address: complete_address });
+                        }
+                      }}/>
                   </GridItem>
 
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -664,6 +741,7 @@ class ShopLicenseApplicationForm extends Component {
 
                         <FileUpload key={index} document={doc} onUploadSuccess={(data) => {
                           let temp = {
+                            id: doc.id,
                             name: doc.name,
                             path: data.location
                           };
@@ -700,7 +778,7 @@ class ShopLicenseApplicationForm extends Component {
                   <GridItem>
                     <Button name={"primary"} disabled={!this.state.agree}
                             color={"primary"} variant={"outlined"}
-                            onClick={this.handleClick.bind(this)}>
+                            onClick={this.onSubmit.bind(this)}>
                       {ShopLicenseViewModel.PRIMARY_TEXT}
                     </Button>
                     {"\u00A0 "}
@@ -725,9 +803,6 @@ class ShopLicenseApplicationForm extends Component {
         <OfficeSnackbar open={!!this.state.errorMessage} variant={"error"} message={this.state.errorMessage}
                         onClose={() => this.setState({ errorMessage: "" })}/>
 
-        <OfficeSnackbar open={this.state.success} variant={"info"}
-                        message={"Your application is submitted successfully"}
-                        onClose={() => this.setState({ success: true })}/>
         <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
           let msg = `Latitude: ${lat} , Longitude: ${lng}`;
           this.setState({ coordinate: msg });
@@ -737,6 +812,14 @@ class ShopLicenseApplicationForm extends Component {
           });
           this.setState({ openMap: false });
         }} isMarkerShown={true}/>
+
+        <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
+                   onClose={(value) => {
+                     this.setState({ openOtp: false });
+                     this.onVerifiedOtp(value);
+                   }}/>
+
+        {this.state.success}
       </GridContainer>
 
     );
