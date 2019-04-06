@@ -32,27 +32,33 @@ import PlaceIcon from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../components/GmapDialog";
 import { Validators } from "../../utils/Validators";
 import AddressField from "../../components/AddressField";
+import { fetchTrades } from "../../services/TradeService";
+import { LocalCouncilService } from "../../services/LocalCouncilService";
 
 const style = {
   root: {
     padding: "10px 15px !important"
   },
-  formControl:{
-      label:{
-        whiteSpace:'pre-line',
-      }
+  formControl: {
+    label: {
+      whiteSpace: "pre-line"
+    }
   }
 };
+
+var timeout = null;
 
 class ShopLicenseApplicationForm extends Component {
   documentService = new DocumentService();
   shopService = new ShopService();
+  localCouncilService = new LocalCouncilService();
   state = {
     name: "",
     phone: "",
     type: "",
     email: "",
     address: "",
+    localCouncil: undefined,
     places: "",
     tradeName: undefined,
     shopName: "",
@@ -79,8 +85,9 @@ class ShopLicenseApplicationForm extends Component {
     coordinateError: "",
     phoneError: "",
     shopNameError: "",
-    displayTypeError:'',
+    displayTypeError: "",
     estdError: "",
+    localCouncilError: "",
 
     display_types: [
       { value: "vehicle", label: "Vehicle" },
@@ -95,16 +102,15 @@ class ShopLicenseApplicationForm extends Component {
       { value: "partnership", label: "Partnership" },
       { value: "private limited", label: "Private Limited" }
     ],
-    trades: [
-      { value: "1", label: "1" },
-      { value: "2", label: "2" },
-      { value: "3", label: "3" }
-    ],
+    trades: [],
+    localCouncils: [],
 
     agree: false,
     submit: false,
     success: false,
     documents: [],
+    flaDocuments: [],
+    noFlaDocuments: [],
 
     openMap: false,
     prestine: true,
@@ -114,21 +120,81 @@ class ShopLicenseApplicationForm extends Component {
 
   componentDidMount() {
     document.title = "e-AMC | Shop License Application Form";
-    // this.state.ownership = this.state.ownerships[0];
-    // this.state.display_type = this.state.display_types[0];
-    // this.state.trade = this.state.trades[0];
-    console.log(this.state.estd);
-    this.fetchDocuments();
+    var self = this;
+    const { doLoad, doLoadFinish } = this.props;
+
+    doLoad();
+    timeout = setTimeout(function(handler) {
+      Promise.all([self.fetchTrades(), self.fetchDocuments(),self.fetchLocalCouncil()])
+        .then(function([cats, docs,lcs]) {
+          console.log(lcs)
+          // self.setState({ loading: false });
+        });
+      doLoadFinish();
+      // self.setState({ loading: false });
+    }, 4000);
   }
 
-  fetchDocuments = () => {
-    this.documentService.get("shop_license")
-      .then(res => {
-        console.log(res)
-        if (res.status) {
-          this.setState({
-            documents: res.data.documents
+  fetchLocalCouncil = () => {
+    let newLocalCouncils = [];
+    this.localCouncilService.get()
+      .then(data => {
+        if (data.status) {
+          data.data.local_councils.forEach(function(item) {
+            let lc = {
+              value: item.id,
+              label: item.name
+            };
+            newLocalCouncils.push(lc);
           });
+          this.setState({
+            localCouncils: newLocalCouncils
+          });
+        } else {
+        }
+      })
+      .catch(err => {
+        let msg = "Unable to load resources, Please try again";
+        this.setState({ errorMessage: msg });
+        console.log(err);
+      });
+  };
+  fetchDocuments = () => {
+    this.documentService.get("shop")
+      .then(res => {
+        console.log(res);
+        if (res.status) {
+          const docs = res.data.documents;
+          this.setState({
+            flaDocuments: docs,
+            noFlaDocuments: docs.filter((item, index) => index !== docs.length - 1),
+            documents: docs.filter((item, index) => index !== docs.length - 1)
+          });
+        }
+      })
+      .catch(err => {
+        this.setState({ errorMessage: err.toString() });
+      });
+  };
+  fetchTrades = () => {
+    fetchTrades()
+      .then(res => {
+        const { messages, status } = res.data;
+        if (status) {
+          let trades = [];
+          res.data.data.trades.forEach((item, i) => {
+            let trade = {
+              value: item.id,
+              label: item.fla ? item.name + " (required Food License Authority Certificate)" : item.name,
+              fla: item.fla
+            };
+            trades.push(trade);
+          });
+          this.setState(state => {
+            state.trades = trades;
+          });
+        } else {
+          this.setState({ errorMessage: messages });
         }
       })
       .catch(err => {
@@ -155,7 +221,13 @@ class ShopLicenseApplicationForm extends Component {
   handleSelect = (identifier, value) => {
     switch (identifier) {
       case "trade":
+        const { fla } = value;
         this.setState({ tradeName: value });
+        if (fla) {
+          this.setState({ documents: this.state.flaDocuments });
+        } else {
+          this.setState({ documents: this.state.noFlaDocuments });
+        }
         break;
       case "type":
         this.setState({ type: value });
@@ -163,6 +235,8 @@ class ShopLicenseApplicationForm extends Component {
       case "displayType":
         this.setState({ displayType: value });
         break;
+      case "localCouncil":
+        this.setState({ localCouncil: value });
       default:
         break;
     }
@@ -171,7 +245,7 @@ class ShopLicenseApplicationForm extends Component {
   onSubmit = (e) => {
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
       || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature===undefined;
+      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined;
 
     if (!invalid) {
       this.setState({ submit: true });
@@ -239,11 +313,14 @@ class ShopLicenseApplicationForm extends Component {
   handleSelectBlur = (identifier, e) => {
 
     switch (identifier) {
+      case "localCouncil":
+        this.state.localCouncil === undefined ? this.setState({ localCouncilError: "Local Council is required" }) : this.setState({ localCouncilError: "" });
+        break;
       case "type":
         this.state.type ? this.setState({ typeError: "" }) : this.setState({ typeError: ShopLicenseViewModel.TYPE_REQUIRED });
         break;
-        case "tradeName":
-        this.state.tradeName===undefined ? this.setState({ tradeNameError:  ShopLicenseViewModel.TRADE_REQUIRED }) : this.setState({ tradeNameError:"" });
+      case "tradeName":
+        this.state.tradeName === undefined ? this.setState({ tradeNameError: ShopLicenseViewModel.TRADE_REQUIRED }) : this.setState({ tradeNameError: "" });
         break;
       case "displayType":
         this.state.displayType === undefined ? this.setState({ displayTypeError: ShopLicenseViewModel.DISPLAY_TYPE_REQUIRED }) : this.setState({ displayTypeError: "" });
@@ -363,29 +440,51 @@ class ShopLicenseApplicationForm extends Component {
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <AddressField
-                    textFieldProps={
-                    {
-                    value: this.state.address,
-                    name: "address",
-                    placeholder: "Address",
-                    onBlur: this.handleBlur.bind(this),
-                    required: true,
-                    variant: "outlined",
-                    margin: "dense",
-                    fullWidth: true,
-                    error: Boolean(this.state.addressError),
-                    helperText: this.state.addressError,
-                    onChange: this.handleChange.bind(this),
-                    label: ShopLicenseViewModel.OWNER_ADDRESS
-                    }
-                    }
+                      textFieldProps={
+                        {
+                          value: this.state.address,
+                          name: "address",
+                          placeholder: "Address",
+                          onBlur: this.handleBlur.bind(this),
+                          required: true,
+                          variant: "outlined",
+                          margin: "dense",
+                          fullWidth: true,
+                          error: Boolean(this.state.addressError),
+                          helperText: this.state.addressError,
+                          onChange: this.handleChange.bind(this),
+                          label: ShopLicenseViewModel.OWNER_ADDRESS
+                        }
+                      }
 
-                    onPlaceSelect={(place) => {
-                    this.setState({address:place.formatted_address})
-                    }}/>
+                      onPlaceSelect={(place) => {
+                        if (place) {
+                          let name = place.name;
+                          let address = place.formatted_address;
+                          let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                          this.setState({ address: complete_address });
+                        }
+                      }}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <OfficeSelect
+                      value={this.state.localCouncil}
+                      label={"Select Local Council"}
+                      name={"localCouncil"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      required={true}
+                      helperText={this.state.localCouncilError}
+                      error={Boolean(this.state.localCouncilError)}
+                      onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
+                      onChange={this.handleSelect.bind(this, "localCouncil")}
+                      options={this.state.localCouncils}/>
+                  </GridItem>
+
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
+                      onClick={(e) => this.setState({ openMap: true })}
                       value={this.state.coordinate}
                       name={"coordinate"}
                       onBlur={this.handleBlur.bind(this)}
@@ -417,7 +516,7 @@ class ShopLicenseApplicationForm extends Component {
                       required={true}
                       error={Boolean(this.state.tradeNameError)}
                       helperText={this.state.tradeNameError}
-                      onBlur={this.handleSelectBlur.bind(this,"trade")}
+                      onBlur={this.handleSelectBlur.bind(this, "trade")}
                       onChange={this.handleSelect.bind(this, "trade")}
                       ClearAble={true}
                       label={ShopLicenseViewModel.TRADE_TYPE}
@@ -513,7 +612,7 @@ class ShopLicenseApplicationForm extends Component {
                     />
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload required={true} document={{ id: 1, name: "Passport", mime: "image/*" }}
+                    <FileUpload required={true} document={{ id: 122, name: "Passport", mime: "image/*" }}
                                 onUploadSuccess={(data) => {
                                   this.setState(state => {
                                     state.passport = {
@@ -540,7 +639,7 @@ class ShopLicenseApplicationForm extends Component {
                     </FormControl>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload required={true} document={{ id: 1, name: "Signature", mime: "image/*" }}
+                    <FileUpload required={true} document={{ id: 344, name: "Signature", mime: "image/*" }}
                                 onUploadSuccess={(data) => {
                                   this.setState(state => {
                                     state.signature = {
@@ -549,19 +648,19 @@ class ShopLicenseApplicationForm extends Component {
                                     };
                                   });
                                 }} onUploadFailure={(err) => {
-                                    console.log(err);
+                      console.log(err);
                     }}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
                     <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                    <Typography  variant={"headline"}>Upload
-                      Document</Typography>
+                    <Typography variant={"headline"}>Upload
+                      Document(s)</Typography>
                   </GridItem>
                   {
                     this.state.documents.map((doc, index) => {
-                      return <GridItem key={index} className={classes.root} sm={12} xs={12} md={6}>
+                      return <GridItem key={index} className={classes.root} sm={12} xs={12} md={12}>
 
                         <FileUpload key={index} document={doc} onUploadSuccess={(data) => {
                           let temp = {
@@ -581,15 +680,15 @@ class ShopLicenseApplicationForm extends Component {
 
                   <GridItem xs={12} sm={12} md={12}>
                     <FormControlLabel
-                       style={{whiteSpace:"pre-line"}}
+                      style={{ whiteSpace: "pre-line" }}
                       control={
-                      <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
-                    }
-                                      label={"1.I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
-                                      "no unauthorized construction." +
-                                      "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations. " +
-                                      "\n3. I shall follow all rules and regulations of AMC;" +
-                                      "\n4. It is certified that the above information is correct to the best of my knowledge"}/>
+                        <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
+                      }
+                      label={"1.I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
+                      "no unauthorized construction." +
+                      "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations. " +
+                      "\n3. I shall follow all rules and regulations of AMC;" +
+                      "\n4. It is certified that the above information is correct to the best of my knowledge"}/>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
                     <Divider/>

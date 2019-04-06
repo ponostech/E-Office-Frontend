@@ -8,3 +8,7 @@ export class TradeService {
   }
 
 }
+
+export const fetchTrades=async ()=>{
+  return  await axios.get(ApiRoutes.TRADES)
+}

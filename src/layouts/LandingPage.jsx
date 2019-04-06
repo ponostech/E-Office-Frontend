@@ -49,7 +49,8 @@ class LandingPage extends React.Component {
                           <Route exact={true} path={OfficeRoutes.APPLY_HOTEL_LICENSE}
                                  component={HotelLicenseApplicationForm}/>
 
-                          <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopLicenseForm}/>
+                          <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE}
+                                 render={()=><ShopLicenseForm doLoad={this.doLoad.bind(this)} doLoadFinish={this.doLoadFinish.bind(this)}/>}/>
                           <Route exact={true} path={OfficeRoutes.RENEW_SHOP_LICENSE}
                                  component={ShopLicenseRenewalForm}/>
 
