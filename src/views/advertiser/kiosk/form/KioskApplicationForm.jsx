@@ -35,6 +35,8 @@ import { CategoryServices } from "../../../../services/CategoryServices";
 import AddressField from "../../../../components/AddressField";
 import { ErrorToString } from "../../../../utils/ErrorUtil";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { ADVERTISER_KIOSK } from "../../../../config/routes-constant/OfficeRoutes";
+import { withRouter } from "react-router-dom";
 
 
 const style = {
@@ -208,6 +210,7 @@ class KioskApplicationForm extends Component {
   };
 
   doSubmit = () => {
+    const { history } = this.props;
     if (this.isInvalid()) {
       this.setState({ errorMessage: "Please fill all the required fields" });
       return;
@@ -222,9 +225,9 @@ class KioskApplicationForm extends Component {
                 success
                 style={{ display: "block", marginTop: "-100px" }}
                 title={"Success"}
-                onConfirm={() => window.location.reload()}
+                onConfirm={() => history.push(ADVERTISER_KIOSK)}
                 confirmBtnCssClass={
-                  "MuiButton-outlinedPrimary-301"
+                  "MuiButton-outlinedPrimary"
                 }
               >
                 {
@@ -630,4 +633,4 @@ class KioskApplicationForm extends Component {
   }
 }
 
-export default withStyles(style)(KioskApplicationForm);
+export default withRouter(withStyles(style)(KioskApplicationForm));

@@ -42,7 +42,8 @@ const styles1 = theme => ({
   },
   message: {
     display:'flex',
-    justify:"center"
+    justify:"center",
+    whiteSpace:'pre-line'
   }
 });
 
