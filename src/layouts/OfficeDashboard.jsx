@@ -39,7 +39,7 @@ const officeDashboard = (props) => (
             <Route exact path={OfficeRoutes.SENT_RECEIPT} component={SentReceipt}/>
 
             <Route exact path={OfficeRoutes.NEW_FILE} component={NewFile}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL} component={FileDetail}/>
+            <Route path={OfficeRoutes.FILE_DETAIL} component={FileDetail}/>
             <Route exact path={OfficeRoutes.CREATED_FILES} component={CreatedFiles}/>
             <Route exact path={OfficeRoutes.SENT_FILE} component={SentFiles}/>
 
