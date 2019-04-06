@@ -35,7 +35,7 @@ function Transition(props) {
 
 class CreateNoteDialog extends React.Component {
     state = {
-        note: "this is test note from state",
+        note: "",
     };
 
     modules = {
