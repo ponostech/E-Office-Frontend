@@ -1,8 +1,10 @@
-import React from "react";
+import React, {Component} from "react";
 import {EventNote} from "@material-ui/icons";
 
 import Timeline from "../../../../components/Timeline/Timeline.jsx";
 import image from "../../../../assets/img/faces/card-profile1-square.jpg";
+import CreateNoteButton from "./CreateNoteButton";
+import CreateNoteDialog from "../CreateNoteDialog";
 
 const widgetStories = [
     {
@@ -117,8 +119,31 @@ const widgetStories = [
     }
 ];
 
-const notesheet = () => (
-    <Timeline simple stories={widgetStories} />
-);
+class Notesheets extends Component {
+    state = {
+        openDialog: false
+    };
 
-export default notesheet;
+    handleOpenCreateNote = () => {
+        this.setState({openDialog: true});
+    };
+
+    handleCloseCreateNote = () => {
+        this.setState({openDialog: false});
+    };
+
+    render() {
+        return (
+            this.props.show ? (
+                <>
+                    <CreateNoteButton click={this.handleOpenCreateNote} />
+                    <Timeline simple stories={widgetStories} />
+
+                    <CreateNoteDialog open={this.state.openDialog} close={this.handleCloseCreateNote}/>
+                </>
+            ): null
+        )
+    };
+};
+
+export default Notesheets;
