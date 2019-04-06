@@ -24,9 +24,9 @@ export const BuildingPermission = (props) => {
           <div className={props.classes.icon}>
             <Icon color="primary">person</Icon>
           </div>
-          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+          <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
             Building Permission
-          </h3>
+          </h4>
           {/*<p className={props.classes.cardDescription}>*/}
           {/*  Click the button below to get the license of advertiser*/}
           {/*</p>*/}
@@ -50,9 +50,9 @@ export const ApplyBanner = (props) => {
           <div className={props.classes.icon}>
             <Gradient color="primary"/>
           </div>
-          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+          <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
             Click button Below
-          </h3>
+          </h4>
           <p className={props.classes.cardDescription}>
 
           </p>
@@ -75,9 +75,9 @@ export const ShopLicensing = (props) => {
           <div className={props.classes.icon}>
             <StoreMallDirectory color="primary"/>
           </div>
-          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+          <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
             Application for Shop Licensing
-          </h3>
+          </h4>
           <p className={props.classes.cardDescription}>
             Click the button below to get a shop License
           </p>
@@ -101,9 +101,9 @@ export const ApplyHotel = (props) => {
           <div className={props.classes.icon}>
             <StoreMallDirectory color="primary"/>
           </div>
-          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+          <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
             Application for Shop Licensing
-          </h3>
+          </h4>
           <p className={props.classes.cardDescription}>
             Click the button below to get a Hotel/Lodging License
           </p>
@@ -129,9 +129,9 @@ export const ApplyHoarding = (props) => {
           <div className={props.classes.icon}>
             <Airplay color="primary"/>
           </div>
-          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+          <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
             Click button Below
-          </h3>
+          </h4>
           <p className={props.classes.cardDescription}>
           </p>
           <Button color="primary" round
@@ -154,9 +154,9 @@ export const ApplyKiosk = (props) => {
           <div className={props.classes.icon}>
             <Airplay color="primary"/>
           </div>
-          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+          <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
             Click button Below
-          </h3>
+          </h4>
           <p className={props.classes.cardDescription}>
           </p>
           <Button color="primary" round
@@ -180,12 +180,12 @@ export const ApplyAdvertiser = (props) => {
           <div className={props.classes.icon}>
             <Icon color="primary">person</Icon>
           </div>
-          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+          <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
             Advertiser License
-          </h3>
-          <p className={props.classes.cardDescription}>
+          </h4>
+          <h4 className={props.classes.cardDescription}>
             Click the button below to get the license of advertiser
-          </p>
+          </h4>
           <Button color="primary" round
                   onClick={props.click(OfficeRoutes.APPLY_ADVERTISER)}>
             New Registration
@@ -206,12 +206,12 @@ export const Grievance = (props) => {
           <div className={props.classes.icon}>
             <Icon color="primary">person</Icon>
           </div>
-          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+          <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
             Advertiser License
-          </h3>
-          <p className={props.classes.cardDescription}>
+          </h4>
+          <h4 className={props.classes.cardDescription}>
             Click the button below to get the license of advertiser
-          </p>
+          </h4>
           <Button color="primary" round
                   onClick={props.click(OfficeRoutes.APPLY_ADVERTISER)}>
             New Registration
@@ -232,12 +232,12 @@ export const CheckLicense = (props) => {
           <div className={props.classes.icon}>
             <Icon color="primary">person</Icon>
           </div>
-          <h3 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+          <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
             Advertiser License
-          </h3>
-          <p className={props.classes.cardDescription}>
+          </h4>
+          <h4 className={props.classes.cardDescription}>
             Click the button below to get the license of advertiser
-          </p>
+          </h4>
           <Button color="primary" round
                   onClick={props.click(OfficeRoutes.APPLY_ADVERTISER)}>
             New Registration

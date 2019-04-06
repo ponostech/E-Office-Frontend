@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import GridContainer from "../../components/Grid/GridContainer.jsx";
-import Slider from "react-slick";
 import { cardTitle, defaultFont, grayColor, hexToRgb, whiteColor } from "../../assets/jss/material-dashboard-pro-react";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Card from "../../components/Card/Card";
@@ -27,13 +26,16 @@ const styles = {
     color: "#3C4858",
     textDecoration: "none",
     textAlign: "center"
+
   },
   noTopMargin: {
     margin: "0",
+    padding: "20px 180px",
     zDepthShadows: "none"
   },
   card: {
-    padding: 30
+    padding: "20px"
+
   },
   title: {
     ...defaultFont,
@@ -43,7 +45,7 @@ const styles = {
     textAlign: "center"
   },
   description: {
-    fontSize: "18px",
+    fontSize: "14px",
     color: whiteColor,
     textAlign: "center"
   },
@@ -62,11 +64,11 @@ const styles = {
   icon: {
     color: "rgba(" + hexToRgb(whiteColor) + ", 0.76)",
     margin: "10px auto 0",
-    width: "130px",
-    height: "130px",
+    width: "110px",
+    height: "110px",
     border: "1px solid " + grayColor[11],
     borderRadius: "50%",
-    lineHeight: "174px",
+    lineHeight: "164px",
     "& svg": {
       width: "55px",
       height: "55px"
@@ -80,7 +82,7 @@ const styles = {
     color: whiteColor
   },
   marginTop30: {
-    marginTop: "30px"
+    marginTop: "10px"
   }
 };
 
@@ -131,27 +133,45 @@ class HomePage extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <GridContainer justify="center">
-        <GridItem xs={12} sm={12} md={10}>
-          <Card style={styles.noTopMargin}>
+
+
+      <Card style={styles.noTopMargin}>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
             <h3 className={classes.pageSubcategoriesTitle}>
               Services Provided by Aizawl Municipal Corporation
             </h3>
-            <Slider {...settings}>
-              <BuildingPermission classes={classes} click={this.handleLink}/>
-              <ApplyHoarding classes={classes} click={this.handleLink}/>
-              <ApplyKiosk classes={classes} click={this.handleLink}/>
-              <ApplyBanner classes={classes} click={this.handleLink}/>
-              <ShopLicensing classes={classes} click={this.handleLink}/>
-              <ApplyHotel classes={classes} click={this.handleLink}/>
-              <ApplyAdvertiser classes={classes} click={this.handleLink}/>
-              <Grievance classes={classes} click={this.handleLink}/>
-              <CheckLicense classes={classes} click={this.handleLink}/>
-            </Slider>
-          </Card>
-        </GridItem>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={3}>
+            <BuildingPermission classes={classes} click={this.handleLink}/>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={3}>
+            <ApplyHoarding classes={classes} click={this.handleLink}/>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={3}>
+            <ApplyKiosk classes={classes} click={this.handleLink}/>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={3}>
+            <ApplyBanner classes={classes} click={this.handleLink}/>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={3}>
+            <ShopLicensing classes={classes} click={this.handleLink}/>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={3}>
+            <ApplyHotel classes={classes} click={this.handleLink}/>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={3}>
+            <ApplyAdvertiser classes={classes} click={this.handleLink}/>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={3}>
+            <Grievance classes={classes} click={this.handleLink}/>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={3}>
+            <CheckLicense classes={classes} click={this.handleLink}/>
+          </GridItem>
+        </GridContainer>
+      </Card>
 
-      </GridContainer>
     );
   }
 }
