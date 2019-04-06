@@ -8,6 +8,7 @@ import * as OfficeRoutes from "../../../../config/routes-constant/OfficeRoutes";
 
 import Notesheet from "../notesheet/Notesheet";
 import DraftPermit from "../draft/DraftPermit";
+import DraftLetter from "../draft/DraftLetter";
 
 const styles = theme => ({
     root: {
@@ -31,25 +32,11 @@ const styles = theme => ({
 
 class FileDetail extends Component {
     state = {
-        sideMenu: {
-            notesheet: true,
-            draft: false
-        }
+
     };
     toggleContent = (name) => {
         const {history} = this.props;
         history.push('/e-office/file/:id/detail/' + name);
-
-        /*let oldMenu = this.state.sideMenu;
-        let newMenu = {};
-        Object.keys(oldMenu).map(key => {newMenu[key] = false;});
-
-        this.setState({
-            sideMenu: {
-                ...newMenu,
-                [name]: true
-            }
-        });*/
     };
 
     render() {
@@ -65,6 +52,7 @@ class FileDetail extends Component {
 
                         <Route path={OfficeRoutes.FILE_DETAIL + '/notesheet'} component={Notesheet} />
                         <Route path={OfficeRoutes.FILE_DETAIL + '/draft'}  component={DraftPermit} />
+                        <Route path={OfficeRoutes.FILE_DETAIL + '/reject'}  component={DraftLetter} />
 
 
                         <Route path={OfficeRoutes.FILE_DETAIL} exact component={Notesheet} />
