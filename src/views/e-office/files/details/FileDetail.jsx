@@ -2,8 +2,12 @@ import React, {Component} from "react";
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import LeftMenu from "./Menu/Left";
-import Notesheet from "../notesheet/Notesheet";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import {Route} from "react-router-dom";
+import * as OfficeRoutes from "../../../../config/routes-constant/OfficeRoutes";
+
+import Notesheet from "../notesheet/Notesheet";
+import DraftPermit from "../draft/DraftPermit";
 
 const styles = theme => ({
     root: {
@@ -33,7 +37,10 @@ class FileDetail extends Component {
         }
     };
     toggleContent = (name) => {
-        let oldMenu = this.state.sideMenu;
+        const {history} = this.props;
+        history.push('/e-office/file/:id/detail/' + name);
+
+        /*let oldMenu = this.state.sideMenu;
         let newMenu = {};
         Object.keys(oldMenu).map(key => {newMenu[key] = false;});
 
@@ -42,7 +49,7 @@ class FileDetail extends Component {
                 ...newMenu,
                 [name]: true
             }
-        });
+        });*/
     };
 
     render() {
@@ -53,10 +60,11 @@ class FileDetail extends Component {
                     <CssBaseline/>
                     <LeftMenu click={this.toggleContent}/>
                     <main className={classes.content}>
-                        <Notesheet show={this.state.sideMenu.notesheet}/>
-                        {this.state.sideMenu.draft ? (
-                            <p>Deaft permit </p>
-                        ): null}
+                        <Route path={OfficeRoutes.FILE_DETAIL + '/notesheet'} component={Notesheet} />
+                        <Route path={OfficeRoutes.FILE_DETAIL + '/draft'}  component={DraftPermit} />
+
+
+                        <Route path={OfficeRoutes.FILE_DETAIL} exact component={Notesheet} />
                     </main>
                 </div>
             </Grid>

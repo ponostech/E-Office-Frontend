@@ -134,14 +134,13 @@ class Notesheets extends Component {
 
     render() {
         return (
-            this.props.show ? (
                 <>
                     <CreateNoteButton click={this.handleOpenCreateNote} />
                     <Timeline simple stories={widgetStories} />
+                    <CreateNoteButton click={this.handleOpenCreateNote} />
 
                     <CreateNoteDialog open={this.state.openDialog} close={this.handleCloseCreateNote}/>
                 </>
-            ): null
         )
     };
 };
