@@ -7,11 +7,12 @@ export class ShopService {
     let data = {
       name: state.name,
       phone: state.phone,
-      type: state.type,
+      type: state.type.value,
       email: state.email,
       address: state.address,
       places: state.places,
-      trade_name: state.tradeName,
+      local_council_id:state.localCouncil.value,
+      trade_id: state.tradeName.value,
       shop_name: state.shopName,
       latitude: state.latitude,
       longitude: state.longitude,
@@ -23,7 +24,8 @@ export class ShopService {
       pan_no: state.panNo,
       premised: state.premised,
       display_type: state.displayType,
-      signature: [state.signature],
+      signature: state.signature.path,
+      passport: state.passport.path,
       documents: state.uploadDocuments
     };
     try {
