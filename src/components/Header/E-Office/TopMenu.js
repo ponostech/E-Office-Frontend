@@ -12,7 +12,6 @@ const menu = (props) => {
         <>
             <div style={{display: "flex", alignItems: "center"}}>
                 <NavLink to={routes.HOME}><IconButton color="primary"><Icon>apps</Icon></IconButton></NavLink>
-                <NavLink to={routes.E_OFFICE}><IconButton color="secondary"><Icon>home</Icon></IconButton></NavLink>
                 <NavLink to={routes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
                 <CustomDropdown
                     buttonIcon={Folder}
@@ -26,7 +25,6 @@ const menu = (props) => {
                         {title: "List Created", link: routes.CREATED_FILES},
                         {title: "List Sent", link: routes.SENT_FILE},
                         {title: "Archived", link: routes.CLOSE_FILE},
-                        {title: "Single File", link: routes.FILE_DETAIL},
                     ]}
                     linkClick={props.linkClick}
                     buttonText={""}
