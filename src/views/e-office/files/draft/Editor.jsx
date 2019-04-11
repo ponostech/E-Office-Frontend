@@ -1,46 +1,41 @@
-import React from "react";
-import ReactQuill from "react-quill";
-import {withStyles} from "@material-ui/core";
+import React, { Component } from 'react';
+import ../../../../ReactSummernote from 'react-summernote';
+import '../../../../react-summernote/dist/react-summernote.css'; // import styles
+import '../../../../react-summernote/lang/summernote-ru-RU'; // you can import any other locale
 
-const styles = {
-    appBar: {
-        position: 'relative',
-    },
-    flex: {
-        flex: 1,
-    },
-    editor: {
-        minHeight: 200,
+//Import bootstrap(v3 or v4) dependencies
+import 'bootstrap/js/modal';
+import 'bootstrap/js/dropdown';
+import 'bootstrap/js/tooltip';
+import 'bootstrap/dist/css/bootstrap.css';
+
+class RichTextEditor extends Component {
+    onChange(content) {
+        console.log('onChange', content);
     }
-};
 
-const modules = {
-    toolbar: [
-        [{'header': '1'}, {'header': '2'}, {'font': []}],
-        [{size: []}],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [{'list': 'ordered'}, {'list': 'bullet'},
-            {'indent': '-1'}, {'indent': '+1'}],
-        ['link', 'image', 'video'],
-        ['clean']
-    ],
-};
+    render() {
+        return (
+          <ReactSummernote
+            value="Default value"
+            options={{
+                lang: 'ru-RU',
+                height: 350,
+                dialogsInBody: true,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview']]
+                ]
+            }}
+            onChange={this.onChange}
+          />
+        );
+    }
+}
 
-const formats = [
-    'header', 'font', 'size',
-    'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
-    'link', 'image', 'video'
-];
-
-const editor = (props) => {
-    const {classes} = props;
-    return (
-        <ReactQuill className={classes.editor} value={props.data} theme="snow"
-                    modules={modules}
-                    formats={formats}
-                    placeholder=""/>
-    )
-};
-
-export default withStyles(styles)(editor);
+export default withStyles(styles)(RichTextEditor);
