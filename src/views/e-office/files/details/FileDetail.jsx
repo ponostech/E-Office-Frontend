@@ -47,10 +47,12 @@ class FileDetail extends Component {
                     <CssBaseline/>
                     <LeftMenu click={this.toggleContent}/>
                     <main className={classes.content}>
-                        <Route path={OfficeRoutes.FILE_DETAIL + '/notesheet'} component={Notesheet} />
-                        <Route path={OfficeRoutes.FILE_DETAIL + '/draft'}  component={DraftPermit} />
-                        <Route path={OfficeRoutes.FILE_DETAIL + '/reject'}  component={DraftLetter} />
-                        <Route path={OfficeRoutes.FILE_DETAIL} exact component={Notesheet} />
+                        <Grid item xs={12} md={12} lg={12}>
+                            <Route path={OfficeRoutes.FILE_DETAIL + '/notesheet'} component={Notesheet} />
+                            <Route path={OfficeRoutes.FILE_DETAIL + '/draft'}  component={DraftPermit} />
+                            <Route path={OfficeRoutes.FILE_DETAIL + '/reject'}  component={DraftLetter} />
+                            <Route path={OfficeRoutes.FILE_DETAIL} exact component={Notesheet} />
+                        </Grid>
                     </main>
                 </div>
             </Grid>
