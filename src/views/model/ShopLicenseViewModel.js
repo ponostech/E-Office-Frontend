@@ -1,5 +1,9 @@
 export class ShopLicenseViewModel {
+  static TITLE1 = "FORM-I";
+  static TITLEb = "FORM-II";
+  static TITLE2 = "AIZAWL MUNICIPAL CORPORATION";
   static TITLE = "APPLICATION FOR LICENSE (Except Hotels & Lodging)";
+  static TITLEI = "APPLICATION FOR LICENSE (For Hotels & Lodging)";
   static SUBTITLE = "[See Section 4(a) of the AMC Licensing Regulation 2012]";
 
   static  NEW = "New Applications";
