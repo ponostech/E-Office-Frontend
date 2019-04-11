@@ -16,7 +16,7 @@ const styles = theme => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing.unit * 3
     },
     container: {
         display: "flex"
@@ -47,16 +47,10 @@ class FileDetail extends Component {
                     <CssBaseline/>
                     <LeftMenu click={this.toggleContent}/>
                     <main className={classes.content}>
-
-                       
-
                         <Route path={OfficeRoutes.FILE_DETAIL + '/notesheet'} component={Notesheet} />
                         <Route path={OfficeRoutes.FILE_DETAIL + '/draft'}  component={DraftPermit} />
                         <Route path={OfficeRoutes.FILE_DETAIL + '/reject'}  component={DraftLetter} />
-
-
                         <Route path={OfficeRoutes.FILE_DETAIL} exact component={Notesheet} />
-
                     </main>
                 </div>
             </Grid>
