@@ -420,10 +420,16 @@ class HotelLicenseApplicationForm extends Component {
               <CardContent>
                 <GridContainer>
                   <GridItem md={12} sm={12} xs={12}>
-                    <Typography variant={"h5"}>
-                      {ShopLicenseViewModel.TITLE}
+                    <Typography variant={"h5"} align="center">
+                      {ShopLicenseViewModel.TITLEb}
                     </Typography>
-                    <Typography variant={"subtitle1"}>
+                    <Typography variant={"h5"} align="center">
+                      {ShopLicenseViewModel.TITLE2}
+                    </Typography>
+                    <Typography variant={"h5"} align="center">
+                      {ShopLicenseViewModel.TITLEI}
+                    </Typography>
+                    <Typography variant={"subtitle1"} align="center">
                       {ShopLicenseViewModel.SUBTITLE}
                     </Typography>
                   </GridItem>

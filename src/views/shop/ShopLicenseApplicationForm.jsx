@@ -417,10 +417,17 @@ class ShopLicenseApplicationForm extends Component {
               <CardContent>
                 <GridContainer>
                   <GridItem md={12} sm={12} xs={12}>
-                    <Typography variant={"h5"}>
+                    <Typography variant={"h5"} align="center">
+                      {ShopLicenseViewModel.TITLE1}
+                    </Typography>
+                    <Typography variant={"h5"} align="center">
+                      {ShopLicenseViewModel.TITLE2}
+                    </Typography>
+                    <Typography variant={"h5"} align="center">
                       {ShopLicenseViewModel.TITLE}
                     </Typography>
-                    <Typography variant={"subtitle1"}>
+
+                    <Typography variant={"subtitle1"} align="center">
                       {ShopLicenseViewModel.SUBTITLE}
                     </Typography>
                   </GridItem>
