@@ -789,7 +789,7 @@ class HotelLicenseApplicationForm extends Component {
 
                         <FileUpload key={index} document={doc} onUploadSuccess={(data) => {
                           let temp = {
-                            id: doc.id,
+                            document_id: doc.id,
                             name: doc.name,
                             path: data.location
                           };

@@ -567,7 +567,7 @@ class KioskApplicationForm extends Component {
                     <FileUpload onUploadSuccess={(data) => {
                       this.setState(state => {
                         let temp = {
-                          id:doc.id,
+                          document_id: doc.id,
                           name: doc.name,
                           path: data.location
                         };
