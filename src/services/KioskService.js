@@ -26,7 +26,7 @@ export class KioskService {
       documents: state.uploadDocuments
     };
     console.log(data);
-    let res = await axios.post(ApiRoutes.NEW_HOARDING, data, config);
+    let res = await axios.post(ApiRoutes.NEW_KIOSK, data, config);
     return res;
   }
 
