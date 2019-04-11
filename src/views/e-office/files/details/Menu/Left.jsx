@@ -35,7 +35,9 @@ const styles = theme => ({
         left: 0,
         backgroundColor: 'white',
         color: "gray",
-        boxShadow: 'none'
+        boxShadow: "none",
+        borderRight: "1px solid rgba(0, 0, 0, 0.12)",
+        top: 66
     },
     appBarShift: {
         display: "none",
@@ -64,6 +66,7 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
+        top: 66
     },
     drawerClose: {
         transition: theme.transitions.create('width', {
@@ -75,6 +78,7 @@ const styles = theme => ({
         [theme.breakpoints.up('sm')]: {
             width: theme.spacing.unit * 9 + 1,
         },
+        top: 66
     },
     toolbar: {
         display: 'flex',
