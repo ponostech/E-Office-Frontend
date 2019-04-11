@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import ReactSummernote from 'react-summernote';
 import 'react-summernote/dist/react-summernote.css';
-import {withStyles} from "@material-ui/core";
 
 //Import bootstrap(v3 or v4) dependencies
-import 'bootstrap/js/modal';
-import 'bootstrap/js/dropdown';
-import 'bootstrap/js/tooltip';
+import 'bootstrap/js/dist/modal';
+import 'bootstrap/js/dist/dropdown';
+import 'bootstrap/js/dist/tooltip';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const styles = theme => {
@@ -19,7 +18,6 @@ class Editor extends Component {
     }
 
     render() {
-        const {classes} = this.props;
         return (
             <ReactSummernote
                 value="Default value"
@@ -42,4 +40,4 @@ class Editor extends Component {
     }
 }
 
-export default withStyles(styles)(Editor);
+export default Editor;
