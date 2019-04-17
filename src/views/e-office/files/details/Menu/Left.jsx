@@ -83,7 +83,7 @@ const styles = theme => ({
     toolbar: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-end',
         padding: '0 8px',
         ...theme.mixins.toolbar,
     },
@@ -103,7 +103,7 @@ class LeftMenu extends React.Component {
     };
 
     handleDrawerClose = () => {
-        this.setState({open: false});
+        this.setState({ open: !this.state.open})
     };
 
     render() {
@@ -118,25 +118,25 @@ class LeftMenu extends React.Component {
         ];
         return (
             <>
-                <AppBar
-                    position="fixed"
-                    className={classNames(classes.appBar, {
-                        [classes.appBarShift]: this.state.open,
-                    })}
-                >
-                    <Toolbar disableGutters={!this.state.open}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="Open drawer"
-                            onClick={this.handleDrawerOpen}
-                            className={classNames(classes.menuButton, {
-                                [classes.hide]: this.state.open,
-                            })}
-                        >
-                            <MenuIcon/>
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
+                {/*<AppBar*/}
+                {/*    position="fixed"*/}
+                {/*    className={classNames(classes.appBar, {*/}
+                {/*        [classes.appBarShift]: this.state.open,*/}
+                {/*    })}*/}
+                {/*>*/}
+                {/*    <Toolbar disableGutters={!this.state.open}>*/}
+                {/*        <IconButton*/}
+                {/*            color="inherit"*/}
+                {/*            aria-label="Open drawer"*/}
+                {/*            onClick={this.handleDrawerOpen}*/}
+                {/*            className={classNames(classes.menuButton, {*/}
+                {/*                [classes.hide]: this.state.open,*/}
+                {/*            })}*/}
+                {/*        >*/}
+                {/*            <MenuIcon/>*/}
+                {/*        </IconButton>*/}
+                {/*    </Toolbar>*/}
+                {/*</AppBar>*/}
                 <Drawer
                     variant="permanent"
                     className={classNames(classes.drawer, {
@@ -153,7 +153,8 @@ class LeftMenu extends React.Component {
                 >
                     <div className={classes.toolbar}>
                         <IconButton onClick={this.handleDrawerClose}>
-                            {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
+                            {!this.state.open ? <MenuIcon/> : <ChevronLeftIcon/>}
+                            {/*{theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}*/}
                         </IconButton>
                     </div>
                     <List>
