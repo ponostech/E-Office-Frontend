@@ -90,9 +90,9 @@ class AdvertiserLogin extends Component {
         const { messages, status, access_token, redirect_url } = res.data;
         if (status) {
           localStorage.setItem("access_token", access_token);
-          console.log("User");
-          console.log(res.data.data.user);
-          new SingletonAuth().setCurrentUser(res.data.data.user);
+
+          let currentUser = res.data.data.user;
+          this.props.setUser(currentUser);
           window.location.replace(redirect_url);
         } else {
           this.setState({ errorMessage: messages });

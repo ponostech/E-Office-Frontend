@@ -53,7 +53,7 @@ class LandingPage extends React.Component {
                           <Route exact={true} path={OfficeRoutes.RENEW_SHOP_LICENSE}
                                  component={ShopLicenseRenewalForm}/>
 
-                          <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
+                          <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} render={()=><AdvertiserLogin setUser={this.props.setUser} currentUser={this.props.currentUser}/>}/>
                           <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER}
                                  render={(e)=>{
                                      return <AdvertiserForm doLoad={this.doLoad.bind(this)} doLoadFinish={this.doLoadFinish.bind(this)}/>

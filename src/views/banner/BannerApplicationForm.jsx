@@ -338,7 +338,7 @@ class BannerApplicationForm extends Component {
                       helperText={this.state.phoneError}
                       label={BannerViewModel.PHONE_NO}/>
                   </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={3}>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <OfficeSelect
                         value={this.state.type}
                         label={BannerViewModel.APPLICANT_TYPE}
@@ -353,7 +353,7 @@ class BannerApplicationForm extends Component {
                         onChange={this.handleSelect.bind(this, "type")}
                         options={this.state.types}/>
                   </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={9}>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <AddressField
                         textFieldProps={{
                           placeholder: "Address",

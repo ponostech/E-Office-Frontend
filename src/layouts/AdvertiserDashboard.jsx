@@ -92,7 +92,7 @@ class AdvertiserDashboard extends Component {
 
         <GridContainer justify={"center"} className={classes.container}>
           <GridItem xs={12} sm={12} md={12}>
-            <AdvertiserHeader color={"primary"} loading={this.state.loading}/>
+            <AdvertiserHeader color={"primary"} loading={this.state.loading} setUser={this.props.setUser}/>
           </GridItem>
           <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
             <GridContainer justify={"center"}>

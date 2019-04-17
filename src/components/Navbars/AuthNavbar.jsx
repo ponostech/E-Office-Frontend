@@ -1,7 +1,7 @@
 import React from "react";
 import cx from "classnames";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import AppBar from "@material-ui/core/AppBar";
@@ -59,22 +59,6 @@ class AuthNavbar extends React.Component {
             />
           </NavLink>
         </ListItem>
-
-        {/*<ListItem className={classes.listItem}>*/}
-        {/*    <NavLink*/}
-        {/*        to={OfficeRoutes.APPLY_ADVERTISER}*/}
-        {/*        className={cx(classes.navLink, {*/}
-        {/*            [classes.navLinkActive]: this.activeRoute(OfficeRoutes.APPLY_ADVERTISER)*/}
-        {/*        })}*/}
-        {/*    >*/}
-        {/*        <PersonAdd className={classes.listItemIcon}/>*/}
-        {/*        <ListItemText*/}
-        {/*            primary={"Register Advertiser"}*/}
-        {/*            disableTypography={true}*/}
-        {/*            className={classes.listItemText}*/}
-        {/*        />*/}
-        {/*    </NavLink>*/}
-        {/*</ListItem>*/}
 
         <ListItem className={classes.listItem}>
           <NavLink
@@ -146,7 +130,7 @@ class AuthNavbar extends React.Component {
           </Hidden>
         </Toolbar>
         {
-          loading ? <LinearProgress  variant={"indeterminate"} color={"secondary"}/> : undefined
+          loading ? <LinearProgress variant={"indeterminate"} color={"secondary"}/> : undefined
         }
       </AppBar>
     );
@@ -159,4 +143,4 @@ AuthNavbar.propTypes = {
   brandText: PropTypes.string
 };
 
-export default withStyles(authNavbarStyle)(AuthNavbar);
+export default withRouter(withStyles(authNavbarStyle)(AuthNavbar));
