@@ -67,7 +67,7 @@ class AdvertiserHeader extends React.Component {
   };
 
   render() {
-    const { history,loading } = this.props;
+    const { history,loading,currentUser } = this.props;
     const { anchorEl } = this.state;
     var menuItems = (
       <GridContainer justify={"space-between"}>
@@ -116,7 +116,7 @@ class AdvertiserHeader extends React.Component {
 
     var list = (
       <div>
-        <Typography color={"primary"} variant={"title"}>Hello world</Typography>
+        <Typography color={"primary"} variant={"title"}>{currentUser.email}</Typography>
         <List>
           <ListItem>
             <NavLink to={"/apply"}>

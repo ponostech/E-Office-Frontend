@@ -10,6 +10,9 @@ import {MuiThemeProvider} from "@material-ui/core/styles";
 import theme from "./assets/office/theme";
 import axios from "axios";
 import AdvertiserDashboard from "./layouts/AdvertiserDashboard";
+import OfficeDashboard from "./layouts/OfficeDashboard";
+import LandingPage from "./layouts/LandingPage";
+import Home from "./home";
 
 const hist = createBrowserHistory();
 
@@ -23,17 +26,20 @@ const token = localStorage.getItem("token");
 if (token) {
   axios.defaults.headers.common["Authorization"] = token;
 }
+var currentUser = null;
 
 ReactDOM.render(
     <MuiThemeProvider theme={theme}>
-        <Router history={hist}>
-            <Switch>
-                {indexRoutes.map((prop, key) => {
-                    return <Route path={prop.path} component={prop.component} key={key}/>;
-                })}
-                <Route component={NoMatch}/>
-            </Switch>
-        </Router>
+        {/*<Router history={hist}>*/}
+        {/*    <Switch>*/}
+        {/*      /!*<Route path={"/dashboard/advertiser"} render={(e)=><AdvertiserDashboard currentUser={currentUser}/>}/>*!/*/}
+        {/*      /!*<Route path={"/"} render={(e)=><LandingPage currentUser={currentUser}/>}/>*!/*/}
+        {/*      /!*  <Route component={NoMatch}/>*!/*/}
+
+
+        {/*    </Switch>*/}
+        {/*</Router>*/}
+        <Home/>
     </MuiThemeProvider>,
     document.getElementById("root")
 );
