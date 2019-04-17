@@ -103,7 +103,7 @@ class BannerApplicationForm extends Component {
     var self = this;
     timeout = setTimeout(function(resolve, reject) {
       Promise.all([self.fetchLocalCouncil()])
-        .then(function([locs, docs]) {
+        .then(function([locs]) {
           // self.setState({ loading: false });
           doLoadFinish();
         });
@@ -112,7 +112,7 @@ class BannerApplicationForm extends Component {
 
   sendOtp = () => {
     var self = this;
-    RequestOtp(this.state.phone)
+    RequestOtp(this.state.phone,"OTP for Banner application")
       .then(res => {
         console.log(res);
         if (res.data.status) {
@@ -465,8 +465,23 @@ class BannerApplicationForm extends Component {
                 </GridContainer>
               </CardContent>
               <CardActions style={{ justifyContent: "flex-end" }}>
+                nameError: "",
+                phoneError: "",
+                typeError: "",
+                addressError: "",
+                localCouncilError: "",
+                displayTypeError: "",
                 <div>
-                  <Button name={"primary"} disabled={!this.state.agree}
+                  <Button name={"primary"}
+                          disabled={
+                    this.state.prestine ||
+                  Boolean(this.state.nameError) ||
+                  Boolean(this.state.phoneError) ||
+                  Boolean(this.state.addressError) ||
+                  Boolean(this.state.localCouncilError) ||
+                    Boolean(this.state.displayTypeError) ||
+                    !this.state.agree
+                  }
                           color={"primary"} variant={"outlined"}
                           onClick={this.onSubmit.bind(this)}>
                     {BannerViewModel.PRIMARY_TEXT}
@@ -493,6 +508,7 @@ class BannerApplicationForm extends Component {
                         message={this.state.errorMessage}
                         onClose={(e) => this.setState({ errorMessage: "" })}/>
         <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
+                   purposed={"Resend OTP for Banner Application"}
                    onClose={(value) => {
                      this.setState({ openOtp: false });
                      this.onVerifiedOtp(value);

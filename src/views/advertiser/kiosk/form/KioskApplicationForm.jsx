@@ -592,7 +592,16 @@ class KioskApplicationForm extends Component {
             <CardActions>
               <GridContainer justify={"flex-end"}>
                 <GridItem>
-                  <Button disabled={!this.state.agree} name={"submit"} variant={"outlined"}
+                  <Button disabled={
+                    !this.state.agree ||
+                    this.state.prestine ||
+                    Boolean(this.state.localCouncilError) ||
+                    Boolean(this.state.addressError) ||
+                    Boolean(this.state.lengthError) ||
+                    Boolean(this.state.heightError) ||
+                    Boolean(this.state.displayTypeError) ||
+                    Boolean(this.state.coordinateError)
+                  } name={"submit"} variant={"outlined"}
                           color={"primary"}
                           onClick={this.doSubmit.bind(this)}>Submit</Button>
                   {"\u00A0 "}

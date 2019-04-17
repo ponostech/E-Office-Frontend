@@ -106,26 +106,17 @@ class HoardingApplicationForm extends Component {
     const { doLoad, doLoadFinish } = this.props;
 
     doLoad();
-    timeout = setTimeout(function(handler) {
       Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
         .then(function([cats, locs, docs]) {
           // self.setState({ loading: false });
+          console.log(cats)
+            doLoadFinish();
         });
-      doLoadFinish();
       // self.setState({ loading: false });
-    }, 6000);
-
-    // const { doLoad, doLoadFinish } = this.props;
-    // doLoad();
-    // this.fetchLocalCouncil();
-    // this.fetchDocument();
-    // this.fetchCategory();
-    // doLoadFinish();
-    // this.fetchLocalCouncil();
   }
 
   componentWillUnmount() {
-    clearTimeout(timeout);
+    // clearTimeout(timeout);
   }
 
   fetchLocalCouncil = () => {
@@ -584,7 +575,16 @@ class HoardingApplicationForm extends Component {
               </GridContainer>
             </CardContent>
             <CardActions style={{ justifyContent: "flex-end" }}>
-              <Button disabled={!this.state.agree} name={"submit"} variant={"outlined"} color={"primary"}
+              <Button disabled={
+                !this.state.agree ||
+                this.state.prestine ||
+                Boolean(this.state.localCouncilError) ||
+                Boolean(this.state.addressError) ||
+                Boolean(this.state.lengthError) ||
+                Boolean(this.state.heightError) ||
+                Boolean(this.state.displayTypeError) ||
+                Boolean(this.state.coordinateError)
+              } name={"submit"} variant={"outlined"} color={"primary"}
                       onClick={this.doSubmit.bind(this)}>Submit</Button>
               {"\u00A0 "}
               {"\u00A0 "}

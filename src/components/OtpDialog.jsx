@@ -24,9 +24,10 @@ class OtpDialog extends Component {
 
 
   handleResend = () => {
-    const { phone } = this.props;
+    const { phone,purposed } = this.props;
+    this.setState({successMessage:""});
     this.setState({ submit: true });
-    RequestOtp(phone)
+    RequestOtp(phone,purposed)
       .then(res => {
         if (res.data.status) {
           let str = ArrayToString(res.data.messages);

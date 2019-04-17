@@ -146,7 +146,7 @@ class ShopLicenseApplicationForm extends Component {
 
   sendOtp = () => {
     var self = this;
-    RequestOtp(this.state.phone)
+    RequestOtp(this.state.phone,"OTP for shop license application")
       .then(res => {
         console.log(res);
         if (res.data.status) {
@@ -325,13 +325,8 @@ class ShopLicenseApplicationForm extends Component {
   };
 
 
-  handleClick = (e) => {
-    const name = e.target.name;
-    switch (name) {
-      case "primary":
-        this.onSubmit();
-        break;
-      case "secondary":
+  handleClear = (e) => {
+
         this.setState({
           name: "",
           phone: "",
@@ -353,10 +348,6 @@ class ShopLicenseApplicationForm extends Component {
 
           uploadDocuments: []
         });
-        break;
-      default:
-        break;
-    }
   };
 
   handleSelectBlur = (identifier, e) => {
@@ -783,7 +774,12 @@ class ShopLicenseApplicationForm extends Component {
               <CardActions disableActionSpacing={true}>
                 <GridContainer justify={"flex-end"}>
                   <GridItem>
-                    <Button name={"primary"} disabled={!this.state.agree}
+                    <Button name={"primary"} disabled={
+                      Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
+                      || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
+                      || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined ||
+                        !this.state.agree || this.state.passport===undefined
+                    }
                             color={"primary"} variant={"outlined"}
                             onClick={this.onSubmit.bind(this)}>
                       {ShopLicenseViewModel.PRIMARY_TEXT}
@@ -794,7 +790,7 @@ class ShopLicenseApplicationForm extends Component {
                     <Button name={"secondary"}
                             color={"secondary"}
                             variant={"outlined"}
-                            onClick={this.handleClick.bind(this)}>
+                            onClick={this.handleClear.bind(this)}>
                       {ShopLicenseViewModel.SECONDARY_TEXT}
                     </Button>
                   </GridItem>
@@ -821,6 +817,7 @@ class ShopLicenseApplicationForm extends Component {
         }} isMarkerShown={true}/>
 
         <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
+                   purposed={"Resend OTP for Shop License Application"}
                    onClose={(value) => {
                      this.setState({ openOtp: false });
                      this.onVerifiedOtp(value);
