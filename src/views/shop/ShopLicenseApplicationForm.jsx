@@ -154,7 +154,7 @@ class ShopLicenseApplicationForm extends Component {
           self.setState({ otpMessage: str });
           self.setState({ openOtp: true });
         } else {
-          this.setState({ errorMessage: ErrorToString(res.data.messages) });
+          this.setState({ errorMessage: ArrayToString(res.data.messages) });
         }
       })
       .catch(err => {

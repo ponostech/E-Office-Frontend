@@ -247,7 +247,7 @@ class BannerApplicationForm extends Component {
       blood: "",
       signature: undefined
     });
-    this.bannerRef.current.doReset();
+    // this.bannerRef.current.doReset();
   };
 
 
