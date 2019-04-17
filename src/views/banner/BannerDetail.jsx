@@ -89,7 +89,7 @@ class BannerDetail extends Component {
     this.setState({'from': fromDate});
   };
 
-  handleFromChange = toDate => {
+  handleToChange = toDate => {
     this.setState({'to': toDate});
   };
 
