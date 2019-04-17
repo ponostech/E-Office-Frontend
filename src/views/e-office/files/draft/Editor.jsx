@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactSummernote from 'react-summernote';
 import 'react-summernote/dist/react-summernote.css';
 
+
 //Import bootstrap(v3 or v4) dependencies
 import 'bootstrap/js/dist/modal';
 import 'bootstrap/js/dist/dropdown';

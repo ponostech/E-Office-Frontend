@@ -13,7 +13,7 @@ import ApplyShopDialog from "../../form/ApplyShopDialog";
 const data = [
   {
     id: 1,
-    application_no: "123",
+    application_no: "789",
     file_no: "File-123",
     subject: "Matter relating to",
     applicant_name: "Kimi",
