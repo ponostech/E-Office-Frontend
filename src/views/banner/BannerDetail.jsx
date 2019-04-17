@@ -1,3 +1,4 @@
+import 'date-fns';
 import React, { Component } from "react";
 import GridContainer from "../../components/Grid/GridContainer";
 import { Divider, Grid, IconButton, List, ListItem, TextField } from "@material-ui/core";
@@ -9,6 +10,12 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
 import AddressField from "../../components/AddressField";
+
+
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+
+
 const style={
   item:{
     padding:"6px !important"
@@ -21,7 +28,7 @@ class BannerDetail extends Component {
     length: "",
     height: "",
     locations: "",
-    from: "",
+    from: new Date(),
     to: "",
 
     lengthError: "",
@@ -195,7 +202,19 @@ class BannerDetail extends Component {
           </GridItem>
 
           <GridItem className={classes.item} sm={12} md={2}>
-            <TextField name={"from"}
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                  error={!!this.state.fromError}
+                  helperText={this.state.fromError}
+                  margin="dense"
+                  variant="outlined"
+                  label="From"
+                  value={this.state.from}
+                  onBlur={this.handleBlur.bind(this)}
+                  onChange={this.handleChange.bind(this)}
+              />
+            </MuiPickersUtilsProvider>
+            {/*<TextField name={"from"}
                        fullWidth={true}
                        type={"Date"}
                        required={true}
@@ -210,7 +229,7 @@ class BannerDetail extends Component {
                        onBlur={this.handleBlur.bind(this)}
                        onChange={this.handleChange.bind(this)}
                        margin={"dense"}
-            />
+            />*/}
           </GridItem>
           <GridItem className={classes.item} sm={12} md={2}>
             <TextField name={"to"}
