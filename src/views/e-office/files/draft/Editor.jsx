@@ -8,7 +8,7 @@ class TextEditor extends Component {
 
     render() {
         return (
-            <Editor />
+            <Editor onChange={this.onChange} />
         );
     }
 }

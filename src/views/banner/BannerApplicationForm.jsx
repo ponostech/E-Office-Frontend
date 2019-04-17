@@ -91,7 +91,7 @@ class BannerApplicationForm extends Component {
   };
 
   componentWillUnmount() {
-    clearTimeout(timeout);
+    //clearTimeout(timeout);
   }
 
   componentDidMount() {
