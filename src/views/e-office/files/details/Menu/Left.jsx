@@ -168,7 +168,6 @@ class LeftMenu extends React.Component {
                         ))}
                     </List>
                     <Divider/>
-
                 </Drawer>
             </>
         );

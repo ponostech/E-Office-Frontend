@@ -1,3 +1,4 @@
+import 'date-fns';
 import React, { Component } from "react";
 import GridContainer from "../../components/Grid/GridContainer";
 import {
@@ -22,9 +23,13 @@ import moment from "moment";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
 import AddressField from "../../components/AddressField";
 
-const style = {
-  item: {
-    padding: "6px !important"
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+
+
+const style={
+  item:{
+    padding:"6px !important"
   }
 };
 
@@ -34,8 +39,8 @@ class BannerDetail extends Component {
     length: "",
     height: "",
     locations: "",
-    from: "",
-    to: "",
+    from: new Date(),
+    to: new Date(),
 
     lengthError: "",
     heightError: "",
@@ -78,6 +83,14 @@ class BannerDetail extends Component {
         value.length === 0 ? this.setState({ toError: "To field is required" }) : this.setState({ toError: "" });
         break;
     }
+  };
+
+  handleFromChange = fromDate => {
+    this.setState({'from': fromDate});
+  };
+
+  handleFromChange = toDate => {
+    this.setState({'to': toDate});
   };
 
   handleAdd = (e) => {
@@ -132,7 +145,9 @@ class BannerDetail extends Component {
     this.clear();
     this.setState({ details: [] });
   };
-
+  formatDate(date){
+    return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -208,7 +223,19 @@ class BannerDetail extends Component {
           </GridItem>
 
           <GridItem className={classes.item} sm={12} md={2}>
-            <TextField name={"from"}
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                  error={!!this.state.fromError}
+                  helperText={this.state.fromError}
+                  margin="dense"
+                  variant="outlined"
+                  label="From"
+                  value={this.state.from}
+                  onChange={this.handleFromChange}
+                  format={"dd/MM/yyyy"}
+              />
+            </MuiPickersUtilsProvider>
+            {/*<TextField name={"from"}
                        fullWidth={true}
                        type={"Date"}
                        required={true}
@@ -223,10 +250,22 @@ class BannerDetail extends Component {
                        onBlur={this.handleBlur.bind(this)}
                        onChange={this.handleChange.bind(this)}
                        margin={"dense"}
-            />
+            />*/}
           </GridItem>
           <GridItem className={classes.item} sm={12} md={2}>
-            <TextField name={"to"}
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                  error={!!this.state.toError}
+                  helperText={this.state.toError}
+                  margin="dense"
+                  variant="outlined"
+                  label="To"
+                  value={this.state.to}
+                  onChange={this.handleToChange}
+                  format={"dd/MM/yyyy"}
+              />
+            </MuiPickersUtilsProvider>
+            {/*<TextField name={"to"}
                        fullWidth={true}
                        type={"date"}
                        required={true}
@@ -241,7 +280,7 @@ class BannerDetail extends Component {
                        onBlur={this.handleBlur.bind(this)}
                        onChange={this.handleChange.bind(this)}
                        margin={"dense"}
-            />
+            />*/}
           </GridItem>
           <GridItem className={classes.item} sm={12} md={1}>
             <IconButton

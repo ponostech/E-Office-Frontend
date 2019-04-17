@@ -15,7 +15,7 @@ export class BannerViewModel {
   static NAME_REQUIRED = "Name is required";
   static ADDRESS_REQUIRED = "Address is required";
   static PHONE_REQUIRED = "Mobile Number is required";
-  static LOCALCOUNCIL = "Select Local Council";
+  static LOCALCOUNCIL = "Banner Location (Local Council)";
   static DETAILS = "Details/Purposed of Advertisement";
   static LOCALCOUNCIL_REQUIRED = "Local council is required";
   static TYPE_REQUIRED = "Type of applicant is required";
