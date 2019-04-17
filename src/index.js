@@ -9,6 +9,7 @@ import {ApiRoutes} from "./config/ApiRoutes";
 import {MuiThemeProvider} from "@material-ui/core/styles";
 import theme from "./assets/office/theme";
 import axios from "axios";
+import AdvertiserDashboard from "./layouts/AdvertiserDashboard";
 
 const hist = createBrowserHistory();
 

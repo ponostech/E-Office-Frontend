@@ -824,7 +824,12 @@ class HotelLicenseApplicationForm extends Component {
               <CardActions disableActionSpacing={true}>
                 <GridContainer justify={"flex-end"}>
                   <GridItem>
-                    <Button name={"primary"} disabled={!this.state.agree}
+                    <Button name={"primary"} disabled={
+                      Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
+                      || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
+                      || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined ||
+                      !this.state.agree || this.state.passport===undefined
+                    }
                             color={"primary"} variant={"outlined"}
                             onClick={this.onSubmit.bind(this)}>
                       {ShopLicenseViewModel.PRIMARY_TEXT}

@@ -98,12 +98,14 @@ class LeftMenu extends React.Component {
         open: false,
     };
 
-    handleDrawerOpen = () => {
-        this.setState({open: true});
-    };
+    componentDidMount() {
+        let open = localStorage.getItem("open_drawer");
+        this.setState({open:open})
+    }
 
-    handleDrawerClose = () => {
+    toogleDrawer = () => {
         this.setState({ open: !this.state.open})
+        localStorage.setItem("open_drawer",this.state.open)
     };
 
     render() {
@@ -118,25 +120,6 @@ class LeftMenu extends React.Component {
         ];
         return (
             <>
-                {/*<AppBar*/}
-                {/*    position="fixed"*/}
-                {/*    className={classNames(classes.appBar, {*/}
-                {/*        [classes.appBarShift]: this.state.open,*/}
-                {/*    })}*/}
-                {/*>*/}
-                {/*    <Toolbar disableGutters={!this.state.open}>*/}
-                {/*        <IconButton*/}
-                {/*            color="inherit"*/}
-                {/*            aria-label="Open drawer"*/}
-                {/*            onClick={this.handleDrawerOpen}*/}
-                {/*            className={classNames(classes.menuButton, {*/}
-                {/*                [classes.hide]: this.state.open,*/}
-                {/*            })}*/}
-                {/*        >*/}
-                {/*            <MenuIcon/>*/}
-                {/*        </IconButton>*/}
-                {/*    </Toolbar>*/}
-                {/*</AppBar>*/}
                 <Drawer
                     variant="permanent"
                     className={classNames(classes.drawer, {
@@ -152,7 +135,7 @@ class LeftMenu extends React.Component {
                     open={this.state.open}
                 >
                     <div className={classes.toolbar}>
-                        <IconButton onClick={this.handleDrawerClose}>
+                        <IconButton onClick={this.toogleDrawer}>
                             {!this.state.open ? <MenuIcon/> : <ChevronLeftIcon/>}
                             {/*{theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}*/}
                         </IconButton>
