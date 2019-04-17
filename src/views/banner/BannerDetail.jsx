@@ -1,19 +1,37 @@
+import 'date-fns';
 import React, { Component } from "react";
 import GridContainer from "../../components/Grid/GridContainer";
-import { Divider, Grid, IconButton, List, ListItem, TextField } from "@material-ui/core";
+import {
+  Divider,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField
+} from "@material-ui/core";
 import GridItem from "../../components/Grid/GridItem";
 import AddIcon from "@material-ui/icons/AddCircle";
 import DeleteIcon from "@material-ui/icons/DeleteForever";
-import withStyles from "@material-ui/core/es/styles/withStyles"
+import withStyles from "@material-ui/core/es/styles/withStyles";
 import PropTypes from "prop-types";
 import moment from "moment";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
 import AddressField from "../../components/AddressField";
+
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+
+
 const style={
   item:{
     padding:"6px !important"
   }
-}
+};
 
 class BannerDetail extends Component {
 
@@ -21,8 +39,8 @@ class BannerDetail extends Component {
     length: "",
     height: "",
     locations: "",
-    from: "",
-    to: "",
+    from: new Date(),
+    to: new Date(),
 
     lengthError: "",
     heightError: "",
@@ -33,7 +51,7 @@ class BannerDetail extends Component {
     detailList: [],
 
     valid: false,
-    errorMessage:""
+    errorMessage: ""
   };
 
   handleChange = (e) => {
@@ -67,6 +85,14 @@ class BannerDetail extends Component {
     }
   };
 
+  handleFromChange = fromDate => {
+    this.setState({'from': fromDate});
+  };
+
+  handleFromChange = toDate => {
+    this.setState({'to': toDate});
+  };
+
   handleAdd = (e) => {
     const { onDetailAdd } = this.props;
     const { length, height, locations, from, to } = this.state;
@@ -78,8 +104,8 @@ class BannerDetail extends Component {
     console.log(toDate);
 
     if (fromDate > toDate) {
-      this.setState({errorMessage:"From date can't be greater than To date"})
-      return
+      this.setState({ errorMessage: "From date can't be greater than To date" });
+      return;
     }
 
     this.clear();
@@ -90,7 +116,7 @@ class BannerDetail extends Component {
     list.push(temp);
     this.setState({ detailList: list });
 
-    onDetailAdd(temp)
+    onDetailAdd(temp);
   };
 
   handleRemove = (index, e) => {
@@ -103,7 +129,7 @@ class BannerDetail extends Component {
       }
     });
     this.setState({ detailList: result });
-    onRemoveDetail(index)
+    onRemoveDetail(index);
   };
   clear = () => {
     this.setState({
@@ -119,7 +145,9 @@ class BannerDetail extends Component {
     this.clear();
     this.setState({ details: [] });
   };
-
+  formatDate(date){
+    return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -128,8 +156,8 @@ class BannerDetail extends Component {
           <GridItem className={classes.item} sm={12} md={2}>
             <TextField name={"length"}
                        InputProps={{
-                         inputProps:{
-                           min:0
+                         inputProps: {
+                           min: 0
                          }
                        }}
                        type={"number"}
@@ -149,8 +177,8 @@ class BannerDetail extends Component {
           <GridItem className={classes.item} style={{ padding: "4px !important" }} sm={12} md={2}>
             <TextField name={"height"}
                        InputProps={{
-                         inputProps:{
-                           min:0
+                         inputProps: {
+                           min: 0
                          }
                        }}
                        type={"number"}
@@ -171,18 +199,18 @@ class BannerDetail extends Component {
             <AddressField
               name={"locations"}
               textFieldProps={{
-                name:"locations",
-                fullWidth:true,
-                required:true,
-                placeholder:"Locations",
-                error:!!this.state.locationsError,
-                helperText:this.state.locationsError,
-                label:"Location",
-                variant:"outlined",
-                value:this.state.locations,
-                onBlur:this.handleBlur.bind(this),
-                onChange:this.handleChange.bind(this),
-                margin:"dense",
+                name: "locations",
+                fullWidth: true,
+                required: true,
+                placeholder: "Locations",
+                error: !!this.state.locationsError,
+                helperText: this.state.locationsError,
+                label: "Location",
+                variant: "outlined",
+                value: this.state.locations,
+                onBlur: this.handleBlur.bind(this),
+                onChange: this.handleChange.bind(this),
+                margin: "dense"
               }}
               onPlaceSelect={(place) => {
                 if (place) {
@@ -195,7 +223,19 @@ class BannerDetail extends Component {
           </GridItem>
 
           <GridItem className={classes.item} sm={12} md={2}>
-            <TextField name={"from"}
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                  error={!!this.state.fromError}
+                  helperText={this.state.fromError}
+                  margin="dense"
+                  variant="outlined"
+                  label="From"
+                  value={this.state.from}
+                  onChange={this.handleFromChange}
+                  format={"dd/MM/yyyy"}
+              />
+            </MuiPickersUtilsProvider>
+            {/*<TextField name={"from"}
                        fullWidth={true}
                        type={"Date"}
                        required={true}
@@ -210,10 +250,22 @@ class BannerDetail extends Component {
                        onBlur={this.handleBlur.bind(this)}
                        onChange={this.handleChange.bind(this)}
                        margin={"dense"}
-            />
+            />*/}
           </GridItem>
           <GridItem className={classes.item} sm={12} md={2}>
-            <TextField name={"to"}
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                  error={!!this.state.toError}
+                  helperText={this.state.toError}
+                  margin="dense"
+                  variant="outlined"
+                  label="To"
+                  value={this.state.to}
+                  onChange={this.handleToChange}
+                  format={"dd/MM/yyyy"}
+              />
+            </MuiPickersUtilsProvider>
+            {/*<TextField name={"to"}
                        fullWidth={true}
                        type={"date"}
                        required={true}
@@ -228,11 +280,12 @@ class BannerDetail extends Component {
                        onBlur={this.handleBlur.bind(this)}
                        onChange={this.handleChange.bind(this)}
                        margin={"dense"}
-            />
+            />*/}
           </GridItem>
           <GridItem className={classes.item} sm={12} md={1}>
-            <IconButton disabled={this.state.length.length===0 || this.state.height.length===0 || this.state.locations.length===0 || this.state.from.length===0 || this.state.to.length===0
-            } onClick={this.handleAdd.bind(this)} color={"primary"}>
+            <IconButton
+              disabled={this.state.length.length === 0 || this.state.height.length === 0 || this.state.locations.length === 0 || this.state.from.length === 0 || this.state.to.length === 0
+              } onClick={this.handleAdd.bind(this)} color={"primary"}>
               <AddIcon fontSize={"large"} color={"inherit"}/>
             </IconButton>
           </GridItem>
@@ -244,51 +297,53 @@ class BannerDetail extends Component {
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Divider style={{ marginTop: 10 }}/>
-            <List style={{ padding: "4px" }}>
-              {this.state.detailList.map((item, index) => {
-                return (
-                  <ListItem key={index}>
-                    <GridContainer>
-                      <GridItem className={classes.item} xs={12} sm={12} md={2}>
-                        <TextField margin={"dense"} fullWidth={true} variant={"outlined"} disabled={true} value={item.length}
-                                   label={"Length"}/>
-                      </GridItem>
-                      <GridItem className={classes.item} xs={12} sm={12} md={2}>
-                        <TextField margin={"dense"} fullWidth={true} variant={"outlined"} disabled={true} value={item.height}
-                                   label={"Height"}/>
-                      </GridItem>
-                      <GridItem className={classes.item} xs={12} sm={12} md={3}>
-                        <TextField margin={"dense"}  fullWidth={true} variant={"outlined"} disabled={true} value={item.locations}
-                                   label={"Location"}/>
-                      </GridItem>
-                      <GridItem className={classes.item} xs={12} sm={12} md={2}>
-                        <TextField margin={"dense"} fullWidth={true} variant={"outlined"} disabled={true} value={item.from}
-                                   label={"From"}/>
-                      </GridItem>
-                      <GridItem className={classes.item} xs={12} sm={12} md={2}>
-                        <TextField margin={"dense"} fullWidth={true} variant={"outlined"} disabled={true} value={item.to} label={"To"}/>
-                      </GridItem>
-                      <GridItem className={classes.item} xs={12} sm={12} md={1}>
-                        <IconButton onClick={this.handleRemove.bind(this, index)}>
-                          <DeleteIcon fontSize={"large"} color={"error"}/>
-                        </IconButton>
-                      </GridItem>
-                    </GridContainer>
 
-                  </ListItem>
-                );
-              })}
-            </List>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Length</TableCell>
+                    <TableCell>Height</TableCell>
+                    <TableCell>Locations</TableCell>
+                    <TableCell>From</TableCell>
+                    <TableCell>To</TableCell>
+                    <TableCell>Delete</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {
+                    this.state.detailList.map((item, index) => {
+                      return (
+                        <TableRow>
+                          <TableCell>{item.length}</TableCell>
+                          <TableCell>{item.height}</TableCell>
+                          <TableCell>{item.locations}</TableCell>
+                          <TableCell>{item.from}</TableCell>
+                          <TableCell>{item.to}</TableCell>
+                          <TableCell>
+                            <IconButton onClick={this.handleRemove.bind(this, index)}>
+                              <DeleteIcon color={"error"}/>
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  }
+
+                </TableBody>
+              </Table>
+
           </GridItem>
-          <OfficeSnackbar message={this.state.errorMessage} variant={"error"} open={Boolean(this.state.errorMessage)} onClose={(e)=>this.setState({errorMessage:""})}/>
+          <OfficeSnackbar message={this.state.errorMessage} variant={"error"} open={Boolean(this.state.errorMessage)}
+                          onClose={(e) => this.setState({ errorMessage: "" })}/>
         </GridContainer>
       </>
     );
   }
 }
-BannerDetail.propTypes={
-  onRemoveDetail:PropTypes.func.isRequired,
-  onDetailAdd:PropTypes.func.isRequired,
-}
+
+BannerDetail.propTypes = {
+  onRemoveDetail: PropTypes.func.isRequired,
+  onDetailAdd: PropTypes.func.isRequired
+};
 
 export default withStyles(style)(BannerDetail);

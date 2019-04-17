@@ -91,7 +91,7 @@ class BannerApplicationForm extends Component {
   };
 
   componentWillUnmount() {
-    clearTimeout(timeout);
+    //clearTimeout(timeout);
   }
 
   componentDidMount() {
@@ -101,13 +101,13 @@ class BannerApplicationForm extends Component {
 
     doLoad();
     var self = this;
-    timeout = setTimeout(function(resolve, reject) {
+    //timeout = setTimeout(function(resolve, reject) {
       Promise.all([self.fetchLocalCouncil()])
         .then(function([locs, docs]) {
           // self.setState({ loading: false });
           doLoadFinish();
         });
-    }, 6000);
+    //}, 6000);
   }
 
   sendOtp = () => {
@@ -247,7 +247,7 @@ class BannerApplicationForm extends Component {
       blood: "",
       signature: undefined
     });
-    this.bannerRef.current.doReset();
+    // this.bannerRef.current.doReset();
   };
 
 
@@ -303,6 +303,12 @@ class BannerApplicationForm extends Component {
                       {BannerViewModel.SUB_TITLE}
                     </Typography>
                   </GridItem>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <Typography variant="h7">
+                      Applicant Details
+                    </Typography>
+                    <Divider/>
+                  </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
                       value={this.state.name}
@@ -319,21 +325,6 @@ class BannerApplicationForm extends Component {
                     />
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <OfficeSelect
-                      value={this.state.type}
-                      label={BannerViewModel.APPLICANT_TYPE}
-                      name={"type"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      required={true}
-                      error={Boolean(this.state.typeError)}
-                      helperText={this.state.typeError}
-                      onBlur={this.handleSelectBlur.bind(this, "type")}
-                      onChange={this.handleSelect.bind(this, "type")}
-                      options={this.state.types}/>
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
                       value={this.state.phone}
                       onBlur={this.handleBlur.bind(this)}
@@ -346,6 +337,53 @@ class BannerApplicationForm extends Component {
                       error={Boolean(this.state.phoneError)}
                       helperText={this.state.phoneError}
                       label={BannerViewModel.PHONE_NO}/>
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={3}>
+                    <OfficeSelect
+                        value={this.state.type}
+                        label={BannerViewModel.APPLICANT_TYPE}
+                        name={"type"}
+                        variant={"outlined"}
+                        margin={"dense"}
+                        fullWidth={true}
+                        required={true}
+                        error={Boolean(this.state.typeError)}
+                        helperText={this.state.typeError}
+                        onBlur={this.handleSelectBlur.bind(this, "type")}
+                        onChange={this.handleSelect.bind(this, "type")}
+                        options={this.state.types}/>
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={9}>
+                    <AddressField
+                        textFieldProps={{
+                          placeholder: "Address",
+                          value: this.state.address,
+                          name: "address",
+                          required: true,
+                          variant: "outlined",
+                          margin: "dense",
+                          fullWidth: true,
+                          error: Boolean(this.state.addressError),
+                          helperText: this.state.addressError,
+                          onBlur: this.handleBlur.bind(this),
+                          onChange: this.handleChange.bind(this),
+                          label: BannerViewModel.ADDRESS
+                        }}
+                        onPlaceSelect={(place) => {
+                          if (place) {
+                            let name = place.name;
+                            let address = place.formatted_address;
+                            let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                            this.setState({ address: complete_address });
+                          }
+                        }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <Typography variant="h7">
+                      Banner/Poster Details
+                    </Typography>
+                    <Divider/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <OfficeSelect
@@ -376,35 +414,8 @@ class BannerApplicationForm extends Component {
                       ClearAble={true}
                       label={BannerViewModel.DISPLAY_TYPE}
                       options={this.state.display_types}/>
-
                   </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <AddressField
-                      textFieldProps={{
-                        placeholder: "Address",
-                        value: this.state.address,
-                        name: "address",
-                        required: true,
-                        variant: "outlined",
-                        margin: "dense",
-                        fullWidth: true,
-                        error: Boolean(this.state.addressError),
-                        helperText: this.state.addressError,
-                        onBlur: this.handleBlur.bind(this),
-                        onChange: this.handleChange.bind(this),
-                        label: BannerViewModel.ADDRESS
-                      }}
-                      onPlaceSelect={(place) => {
-                        if (place) {
-                          let name = place.name;
-                          let address = place.formatted_address;
-                          let complete_address = address.includes(name) ? address : `${name} ${address}`;
-                          this.setState({ address: complete_address });
-                        }
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                  <GridItem className={classes.root} xs={12} sm={12} md={12}>
                     <TextField
                       value={this.state.details}
                       name={"details"}
@@ -416,25 +427,9 @@ class BannerApplicationForm extends Component {
                       onBlur={this.handleBlur.bind(this)}
                       onChange={this.handleChange.bind(this)}
                       label={BannerViewModel.DETAILS}/>
-
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload document={{ id: 1, name: "Signature of applicant", mandatory: 1, mime: "image/*" }}
-                                onUploadSuccess={(data) => {
-                                  let temp = {
-                                    name: "signature",
-                                    path: data.location
-                                  };
-                                  this.setState({
-                                    signature: temp
-                                  });
-                                }} onUploadFailure={(err) => {
-                      console.log(err);
-                    }}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
-
-                    <Typography style={{ marginTop: 20 }} variant={"h5"}> Details of Advertisement</Typography>
+                    <Typography style={{ marginTop: 20 }} variant={"h7"}> Details of Advertisement</Typography>
                     <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                     <BannerDetail ref={this.bannerRef}
                                   onRemoveDetail={(index) => {
@@ -462,6 +457,20 @@ class BannerApplicationForm extends Component {
                                       label={BannerViewModel.ACKNOWLEDGEMENT}/>
                   </GridItem>
 
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <FileUpload document={{ id: 1, name: "Signature of applicant", mandatory: 1, mime: "image/*" }}
+                                onUploadSuccess={(data) => {
+                                  let temp = {
+                                    name: "signature",
+                                    path: data.location
+                                  };
+                                  this.setState({
+                                    signature: temp
+                                  });
+                                }} onUploadFailure={(err) => {
+                      console.log(err);
+                    }}/>
+                  </GridItem>
                 </GridContainer>
               </CardContent>
               <CardActions style={{ justifyContent: "flex-end" }}>
