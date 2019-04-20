@@ -26,7 +26,9 @@ const hist = createBrowserHistory();
 
 class App extends Component {
   state = {
-    currentUser: null,
+    currentUser: {
+      email:"kimi@mail.com"
+    },
     access_token: "",
     authenticate: false,
     setUser: ({ user }) => this.setState({ currentUser: user }),
@@ -38,7 +40,7 @@ class App extends Component {
       <Provider value={this.state}>
         <Router history={hist}>
           <Switch>
-            <AdvertiserRoute currentUser={this.state.currentUser} path={"/dashboard/advertiser"} component={AdvertiserDashboard}/>
+            <AdvertiserRoute path={"/dashboard/advertiser"} component={AdvertiserDashboard}/>
             <StaffRoute path={"/e-office"} currentUser={this.state.currentUser} component={OfficeDashboard}/>
 
             {/*<Route path={"/dashboard/advertiser"} render={(e) => <AdvertiserDashboard setUser={this.setUser.bind(this)}*/}

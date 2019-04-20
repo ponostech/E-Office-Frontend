@@ -65,6 +65,9 @@ class AdvertiserLogin extends Component {
           !value.match(Validators.EMAIL_REGEX) ? this.setState({ emailError: "Invalid email" }) : this.setState({ emailError: "" });
         }
         break;
+      case "password":
+        value.length === 0 ? this.setState({ passwordError: "Password is required" }) : this.setState({ passwordError: "" });
+        break;
       default:
         break;
     }
@@ -94,6 +97,9 @@ class AdvertiserLogin extends Component {
           let currentUser = res.data.data.user;
           this.context.currentUser = currentUser;
           this.context.access_token = access_token;
+          this.context.authenticate = true;
+
+          console.log(this.context);
           window.location.replace(redirect_url);
         } else {
           this.setState({ errorMessage: messages });

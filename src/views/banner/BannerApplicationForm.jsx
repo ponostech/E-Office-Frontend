@@ -239,6 +239,11 @@ class BannerApplicationForm extends Component {
     this.sendOtp();
 
   };
+
+  saveDraft=(e)=>{
+
+  }
+
   onClear = () => {
     this.setState({
       name: "",
@@ -496,6 +501,13 @@ class BannerApplicationForm extends Component {
                     {BannerViewModel.PRIMARY_TEXT}
                   </Button>
                   {"\u00A0 "}
+                  {"\u00A0 "}
+                  <Button name={"secondary"}
+                          color={"primary"}
+                          variant={"outlined"}
+                          onClick={this.saveDraft.bind(this)}>
+                    {BannerViewModel.DRAFT}
+                  </Button>
                   {"\u00A0 "}
                   {"\u00A0 "}
                   <Button name={"secondary"}
