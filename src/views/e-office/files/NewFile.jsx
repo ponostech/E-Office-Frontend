@@ -8,6 +8,8 @@ import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
 import Grid from "@material-ui/core/Grid";
 import SingletonAuth from "../../../utils/SingletonAuth";
 
+
+var timeout = null;
 class NewFile extends Component {
     constructor(props) {
         super(props);
@@ -46,6 +48,50 @@ class NewFile extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
     }
+    componentDidMount() {
+        document.title = "e-AMC | New File Form";
+        var self = this;
+        const { doLoad, doLoadFinish } = this.props;
+
+        doLoad();
+        timeout = setTimeout(function(handler) {
+            Promise.all([self.fetchGroupHead(), self.fetchDocuments(), self.fetchLocalCouncil()])
+              .then(function([cats, docs, lcs]) {
+                  console.log(lcs);
+                  // self.setState({ loading: false });
+              });
+            doLoadFinish();
+            // self.setState({ loading: false });
+        }, 4000);
+        let user = new SingletonAuth().getCurrentUser();
+
+        console.log(user)
+    }
+
+    fetchGroupHead = () => {
+        let newGroupHeads = [];
+        this.groupHeadService.get()
+          .then(data => {
+              if (data.status) {
+                  data.data.group_head.forEach(function(item) {
+                      let gh = {
+                          value: item.id,
+                          label: item.name
+                      };
+                      newGroupHeads.push(gh);
+                  });
+                  this.setState({
+                      groupHeads: newGroupHeads
+                  });
+              } else {
+              }
+          })
+          .catch(err => {
+              let msg = "Unable to load resources, Please try again";
+              this.setState({ errorMessage: msg });
+              console.log(err);
+          });
+    };
 
     handleChange = (e) => {
         const {name, value} = e.target;
