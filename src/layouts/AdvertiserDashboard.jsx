@@ -97,7 +97,7 @@ class AdvertiserDashboard extends Component {
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} render={(e) => {
                 return <HoardingApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
               }}/>
-              <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} component={HoardingList}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} render={p=><HoardingList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
 
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK} render={(e) => {
                 return <KioskApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;

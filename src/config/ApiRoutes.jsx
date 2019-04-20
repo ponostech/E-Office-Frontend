@@ -6,7 +6,9 @@ export class ApiRoutes {
   static CATEGORY = "/area-categories";
   static CREATE_STAFF = "/register/staff";
   static CREATE_ADVERTISER="/register/advertiser";
-  static GET_ADVERTISER_HOARDING="/advertiser/hoardings";
+  static GET_ADVERTISER_HOARDING="advertiser/hoardings/applications";
+  static HOARDINGS="/hoardings";
+
 
   static NEW_HOARDING="/advertiser/hoardings";
   static NEW_KIOSK="/advertiser/kiosks";

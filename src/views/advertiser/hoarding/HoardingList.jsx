@@ -9,42 +9,45 @@ import ActionIcon from "@material-ui/icons/CallToAction";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import HoardingDetailDialog from "./HoardingDetailDialog";
 import ApplyHoardingDialog from "./form/ApplyHoardingDialog";
-
-const data = [
-  {
-    id: 1,
-    application_no: "123",
-    file_no: "File-123",
-    subject: "Matter relating to",
-    applicant_name: "Kimi",
-    date: "12-12-2019",
-    status: "active"
-  },
-  {
-    id: 1,
-    application_no: "123",
-    file_no: "File-123",
-    subject: "Matter relating to",
-    applicant_name: "Kimi",
-    date: "12-12-2019",
-    status: "granted"
-  },
-  {
-    id: 1,
-    application_no: "123",
-    file_no: "File-123",
-    subject: "Matter relating to",
-    applicant_name: "Kimi",
-    date: "12-12-2019",
-    status: "pending"
-  }
-];
+import { HoardingService } from "../../../services/HoardingService";
+import OfficeSnackbar from "../../../components/OfficeSnackbar";
 
 
 class HoardingList extends Component {
+  hoardingService = new HoardingService();
+
   state = {
+    hoardings:[],
     openDetail: false,
-    openApply: false
+    openApply: false,
+    errorMessage:""
+  };
+
+
+  componentDidMount() {
+    document.title = "e-AMC | List of hoarding application";
+
+    const { doLoad, doLoadFinish } = this.props;
+
+    doLoad();
+    var self = this;
+    //timeout = setTimeout(function(resolve, reject) {
+    Promise.all([self.fetchHoarding()])
+      .then(function([locs]) {
+        // self.setState({ loading: false });
+        doLoadFinish();
+      });
+    //}, 6000);
+  }
+
+  fetchHoarding = () => {
+    try {
+      let hoardings = this.hoardingService.fetch();
+      this.setState({ hoardings: hoardings });
+      console.log(hoardings);
+    } catch (e) {
+      this.setState({ errorMessage: e });
+    }
   };
 
 
@@ -114,7 +117,7 @@ class HoardingList extends Component {
         label: "Action",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            console.log(value)
+            console.log(value);
             let view = null;
             switch (value) {
               case "pending":
@@ -132,16 +135,16 @@ class HoardingList extends Component {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title={"Click here to apply"}>
-                    <IconButton onClick={(e)=>this.setState({openApply:true})}>
+                    <IconButton onClick={(e) => this.setState({ openApply: true })}>
                       <ActionIcon color={"secondary"}/>
                     </IconButton>
                   </Tooltip>
                 </>;
                 break;
               case "active":
-                view=<>
+                view = <>
                   <Tooltip title={"Click here to view details "}>
-                    <IconButton onClick={e=>this.setState({openApply:true})}>
+                    <IconButton onClick={e => this.setState({ openApply: true })}>
                       <EyeIcon color={"action"}/>
                     </IconButton>
                   </Tooltip>
@@ -150,7 +153,7 @@ class HoardingList extends Component {
                       <DownloadIcon color={"primary"}/>
                     </IconButton>
                   </Tooltip>
-                </>
+                </>;
                 break;
               default:
                 break;
@@ -168,7 +171,7 @@ class HoardingList extends Component {
 
     const tableOptions = {
       filterType: "checkbox",
-      rowsPerPage: 8,
+      rowsPerPage: 15,
       serverSide: false,
       customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
         return false;
@@ -182,12 +185,13 @@ class HoardingList extends Component {
         <Grid item sm={12} xs={12} md={12}>
           <MUIDataTable
             title={"Hoarding: List of applications"}
-            data={data}
+            data={this.state.hoardings}
             columns={tableColumns}
             options={tableOptions}
           />
           <ApplyHoardingDialog open={this.state.openApply} onClose={(e) => this.setState({ openApply: false })}/>
           <HoardingDetailDialog open={this.state.openDetail} onClose={(e) => this.setState({ openDetail: false })}/>
+          <OfficeSnackbar open={Boolean(this.state.errorMessage)} onClose={()=>this.setState({errorMessage: ""})} variant={"error"} message={this.state.errorMessage}/>
         </Grid>
 
       </>
