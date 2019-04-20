@@ -77,7 +77,7 @@ class AdvertiserLogin extends Component {
       this.doLogin(e);
     }
   };
-  doLogin = (e) => {
+  doLogin = (setUser,e) => {
     const invalid = Boolean(this.state.emailError) || Boolean(this.state.passwordError);
     const { email, password } = this.state;
     const { history } = this.props;
@@ -96,10 +96,11 @@ class AdvertiserLogin extends Component {
 
           let currentUser = res.data.data.user;
           this.context.currentUser = currentUser;
+          setUser(currentUser);
+
           this.context.access_token = access_token;
           this.context.authenticate = true;
 
-          console.log(this.context);
           window.location.replace(redirect_url);
         } else {
           this.setState({ errorMessage: messages });
@@ -177,7 +178,7 @@ class AdvertiserLogin extends Component {
                   </GridItem>
                 </GridContainer>
                 <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                  <Button disabled={this.state.submit} onClick={this.doLogin.bind(this)} size={"large"}
+                  <Button disabled={this.state.submit} onClick={this.doLogin.bind(this,setUser)} size={"large"}
                           color={"primary"}
                           fullWidth={true} variant={"outlined"}>Login</Button>
                 </GridItem>

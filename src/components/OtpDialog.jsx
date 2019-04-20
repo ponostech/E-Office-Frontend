@@ -24,35 +24,42 @@ class OtpDialog extends Component {
 
 
   handleResend = () => {
-    const { phone,purposed } = this.props;
-    this.setState({successMessage:""});
+    const { phone, purposed } = this.props;
+    this.setState({ successMessage: "" });
     this.setState({ submit: true });
-    RequestOtp(phone,purposed)
-      .then(res => {
-        if (res.data.status) {
-          let str = ArrayToString(res.data.messages);
-          this.setState({
-            successMessage: str,
-            errorMessage: ""
-          });
+    timeout = setTimeout(function(resolve, reject) {
+      RequestOtp(phone, purposed)
+        .then(res => {
+          if (res.data.status) {
+            let str = ArrayToString(res.data.messages);
+            this.setState({
+              successMessage: str,
+              errorMessage: ""
+            });
 
-        } else {
-          let msg = ErrorToString(res.data.messages);
+          } else {
+            let msg = ErrorToString(res.data.messages);
+            this.setState({
+              errorMessage: msg,
+              successMessage: ""
+            });
+          }
+        })
+        .catch(err => {
           this.setState({
-            errorMessage: msg,
-            successMessage: ""
+            errorMessage: err
           });
-        }
-      })
-      .catch(err => {
-        this.setState({
-          errorMessage: err
+        })
+        .then(() => {
+          this.setState({ submit: false });
         });
-      })
-      .then(() => {
-        this.setState({ submit: false });
-      });
+    }, 3000);
+
   };
+
+  componentWillUnmount() {
+    clearTimeout(timeout);
+  }
 
   componentWillReceiveProps(nextProps, nextContext) {
     const { successMessage } = nextProps;
@@ -67,7 +74,7 @@ class OtpDialog extends Component {
         console.log(res);
         if (res.data.status) {
           this.setState({ successMessage: ArrayToString(res.data.messages), errorMessage: "" });
-            onClose(true);
+          onClose(true);
         } else {
           let msg = res.data.messages;
           this.setState({ errorMessage: ArrayToString(msg), successMessage: "" });
@@ -94,7 +101,7 @@ class OtpDialog extends Component {
               <Typography variant={"h5"}>ENTER OTP</Typography>
             </GridItem>
             <GridItem md={12}>
-            <Divider style={{marginTop:10,marginBottom:10}}/>
+              <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
             </GridItem>
 
             <GridItem xs={12} md={12}>
@@ -113,15 +120,16 @@ class OtpDialog extends Component {
             </GridItem>
 
             <GridItem sm={12} md={12}>
-              <Divider style={{marginBottom:10,marginTop:10}}/>
+              <Divider style={{ marginBottom: 10, marginTop: 10 }}/>
             </GridItem>
             <GridItem xs={12} md={6}>
-              <Button fullWidth={true} disabled={this.state.submit} onClick={this.handleResend.bind(this)} variant={"outlined"}
+              <Button fullWidth={true} disabled={this.state.submit} onClick={this.handleResend.bind(this)}
+                      variant={"outlined"}
                       color={"primary"}>
                 Resend OTP
               </Button>
             </GridItem>
-            <GridItem  xs={12} md={6}>
+            <GridItem xs={12} md={6}>
               <Button fullWidth={true} disabled={this.state.submit} onClick={this.handleVerify.bind(this)}
                       variant={"outlined"} color={"primary"}>
                 verify OTP
@@ -129,7 +137,7 @@ class OtpDialog extends Component {
             </GridItem>
             <GridItem xs={12}>
               {
-                Boolean(successMessage) ? <p style={{ color: "green",marginTop:20 }}>{successMessage}</p> : undefined
+                Boolean(successMessage) ? <p style={{ color: "green", marginTop: 20 }}>{successMessage}</p> : undefined
               }
             </GridItem>
 
