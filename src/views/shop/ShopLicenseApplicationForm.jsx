@@ -157,7 +157,11 @@ class ShopLicenseApplicationForm extends Component {
           self.setState({ otpMessage: str });
           self.setState({ openOtp: true });
         } else {
-          this.setState({ errorMessage: ArrayToString(res.data.messages) });
+          if (res.data.validation) {
+            this.setState({ errorMessage: ErrorToString(res.data.messages) });
+          }else{
+            this.setState({ errorMessage: ArrayToString(res.data.messages) });
+          }
         }
       })
       .catch(err => {
@@ -807,7 +811,7 @@ class ShopLicenseApplicationForm extends Component {
                       <Button name={"primary"} disabled={
                         Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
                         || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-                        || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined ||
+                         || Boolean(this.state.prestine) || this.state.signature === undefined ||
                         !this.state.agree || this.state.passport === undefined
                       }
                               color={"primary"} variant={"outlined"}

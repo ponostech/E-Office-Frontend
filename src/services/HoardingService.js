@@ -33,9 +33,23 @@ export class HoardingService {
   async get(advertiserId) {
     try {
       const res = await axios.get(ApiRoutes.GET_ADVERTISER_HOARDING, { advertiserId });
+      console.log(res)
       return res.data;
     } catch (error) {
-      console.log("error", error);
+      throw new Error(error)
+    }
+  }
+
+  async fetch() {
+    try {
+      const token = localStorage.getItem("access_token");
+      const config={ headers: {"Authorization" : `Bearer ${token}`} }
+      const res = await axios.get(ApiRoutes.GET_ADVERTISER_HOARDING,{},config );
+      console.log(res)
+      return res.data;
+    } catch (error) {
+      console.error(error)
+      throw new Error(error)
     }
   }
 
