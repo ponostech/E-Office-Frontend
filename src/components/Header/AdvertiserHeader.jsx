@@ -21,6 +21,7 @@ import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
 import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import Icon from "@material-ui/core/es/Icon";
+import { authContext, Consumer } from "../../context/AuthContext";
 
 class AdvertiserHeader extends React.Component {
   constructor(props) {
@@ -33,6 +34,10 @@ class AdvertiserHeader extends React.Component {
 
       anchorEl: null
     };
+  }
+
+  componentDidMount() {
+    console.log(this.context);
   }
 
   handleDrawerToggle = () => {
@@ -67,7 +72,7 @@ class AdvertiserHeader extends React.Component {
   };
 
   render() {
-    const { history,loading,currentUser } = this.props;
+    const { history,loading } = this.props;
     const { anchorEl } = this.state;
     var menuItems = (
       <GridContainer justify={"space-between"}>
@@ -116,7 +121,7 @@ class AdvertiserHeader extends React.Component {
 
     var list = (
       <div>
-        <Typography color={"primary"} variant={"title"}>{currentUser.email}</Typography>
+        <Typography color={"primary"} variant={"title"}>{this.context.currentUser.name}</Typography>
         <List>
           <ListItem>
             <NavLink to={"/apply"}>
@@ -158,6 +163,7 @@ class AdvertiserHeader extends React.Component {
       </div>
     );
     return (
+
       <AppBar position="fixed" color={"inherit"}>
         <Toolbar>{/*
           <Hidden smDown>
@@ -205,5 +211,5 @@ class AdvertiserHeader extends React.Component {
   }
 }
 
-
+AdvertiserHeader.contextType = authContext;
 export default withRouter(AdvertiserHeader);

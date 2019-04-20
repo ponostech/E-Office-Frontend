@@ -13,7 +13,7 @@ import axios from "axios";
 import { ApiRoutes } from "../../../config/ApiRoutes";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { Validators } from "../../../utils/Validators";
-import SingletonAuth from "../../../utils/SingletonAuth";
+import { authContext, Consumer } from "../../../context/AuthContext";
 
 const style = {
   root: {
@@ -69,11 +69,11 @@ class AdvertiserLogin extends Component {
         break;
     }
   };
-  handleKey=(e)=>{
-    if (e.key==="Enter"){
-        this.doLogin(e)
+  handleKey = (e) => {
+    if (e.key === "Enter") {
+      this.doLogin(e);
     }
-  }
+  };
   doLogin = (e) => {
     const invalid = Boolean(this.state.emailError) || Boolean(this.state.passwordError);
     const { email, password } = this.state;
@@ -92,12 +92,12 @@ class AdvertiserLogin extends Component {
           localStorage.setItem("access_token", access_token);
 
           let currentUser = res.data.data.user;
-          this.props.setUser(currentUser);
+          this.context.currentUser = currentUser;
+          this.context.access_token = access_token;
           window.location.replace(redirect_url);
         } else {
           this.setState({ errorMessage: messages });
         }
-        console.log(res);
       })
       .catch(err => {
         this.setState({ errorMessage: err.toString() });
@@ -114,78 +114,83 @@ class AdvertiserLogin extends Component {
   render() {
     const { history, classes } = this.props;
     return (
-      <GridContainer justify={"center"}>
-        <GridItem style={{ marginTop: 80 }} xs={12} sm={12} md={4}>
-          <Card style={{ padding: "40px 20px" }} raised={true} blog={true}>
-            <GridContainer justify={"center"}>
-              <Typography variant={"h5"}>Login</Typography>
-              <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-              <GridItem className={classes.root} xs={12} sm={12} ms={12}>
-                <TextField placeholder={"Email or Phone Number"}
-                           value={this.state.email}
-                           onChange={this.handleChange.bind(this)}
-                           name={"email"}
-                           variant={"outlined"}
-                           onBlur={this.handleRequired.bind(this)}
-                           error={Boolean(this.state.emailError)}
-                           helperText={this.state.emailError}
-                           margin={"dense"}
-                           fullWidth={true}
-                           InputProps={{
-                             startAdornment: (
-                               <InputAdornment position={"start"}>
-                                 <EmailIcon color={"action"}/>
-                               </InputAdornment>
-                             )
-                           }}
-                />
-              </GridItem>
-              <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                <TextField
-                  placeholder={"Password"}
-                  value={this.state.password}
-                  onChange={this.handleChange.bind(this)}
-                  onKeyPress={this.handleKey.bind(this)}
-                  onBlur={this.handleRequired.bind(this)}
-                  error={Boolean(this.state.passwordError)}
-                  helperText={this.state.passwordError}
-                  type={this.state.showPassword ? "password" : "text"}
-                  name={"password"}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position={"start"}>
-                        <LockIcon color={"Action"}/>
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position={"end"}>
-                        <IconButton tabIndex={-1} onClick={this.handleShowPassword.bind(this)}>
-                          {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
-                  variant={"outlined"} margin={"dense"} fullWidth={true}/>
-              </GridItem>
-            </GridContainer>
-            <GridItem className={classes.root} xs={12} sm={12} md={12}>
-              <Button disabled={this.state.submit} onClick={this.doLogin.bind(this)} size={"large"} color={"primary"}
-                      fullWidth={true} variant={"outlined"}>Login</Button>
+      <Consumer>
+        {({ setUser }) => (
+          <GridContainer justify={"center"}>
+            <GridItem style={{ marginTop: 80 }} xs={12} sm={12} md={4}>
+              <Card style={{ padding: "40px 20px" }} raised={true} blog={true}>
+                <GridContainer justify={"center"}>
+                  <Typography variant={"h5"}>Login</Typography>
+                  <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+                  <GridItem className={classes.root} xs={12} sm={12} ms={12}>
+                    <TextField placeholder={"Email or Phone Number"}
+                               value={this.state.email}
+                               onChange={this.handleChange.bind(this)}
+                               name={"email"}
+                               variant={"outlined"}
+                               onBlur={this.handleRequired.bind(this)}
+                               error={Boolean(this.state.emailError)}
+                               helperText={this.state.emailError}
+                               margin={"dense"}
+                               fullWidth={true}
+                               InputProps={{
+                                 startAdornment: (
+                                   <InputAdornment position={"start"}>
+                                     <EmailIcon color={"action"}/>
+                                   </InputAdornment>
+                                 )
+                               }}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                    <TextField
+                      placeholder={"Password"}
+                      value={this.state.password}
+                      onChange={this.handleChange.bind(this)}
+                      onKeyPress={this.handleKey.bind(this)}
+                      onBlur={this.handleRequired.bind(this)}
+                      error={Boolean(this.state.passwordError)}
+                      helperText={this.state.passwordError}
+                      type={this.state.showPassword ? "password" : "text"}
+                      name={"password"}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position={"start"}>
+                            <LockIcon color={"Action"}/>
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment position={"end"}>
+                            <IconButton tabIndex={-1} onClick={this.handleShowPassword.bind(this)}>
+                              {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                      variant={"outlined"} margin={"dense"} fullWidth={true}/>
+                  </GridItem>
+                </GridContainer>
+                <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                  <Button disabled={this.state.submit} onClick={this.doLogin.bind(this)} size={"large"}
+                          color={"primary"}
+                          fullWidth={true} variant={"outlined"}>Login</Button>
+                </GridItem>
+                <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+                <GridContainer justify={"center"}>
+                  <Button variant={"text"} color={"primary"}>Forgot password?</Button>
+                </GridContainer>
+              </Card>
+
             </GridItem>
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-            <GridContainer justify={"center"}>
-              <Button variant={"text"} color={"primary"}>Forgot password?</Button>
-            </GridContainer>
-          </Card>
-
-        </GridItem>
-        <OfficeSnackbar variant={"error"} onClose={() => {
-          this.setState({ errorMessage: "" });
-        }} message={this.state.errorMessage} open={Boolean(this.state.errorMessage)}/>
-      </GridContainer>
-
+            <OfficeSnackbar variant={"error"} onClose={() => {
+              this.setState({ errorMessage: "" });
+            }} message={this.state.errorMessage} open={Boolean(this.state.errorMessage)}/>
+          </GridContainer>
+        )}
+      </Consumer>
     );
   }
 }
 
+AdvertiserLogin.contextType = authContext;
 export default withStyles(style)(withRouter(AdvertiserLogin));

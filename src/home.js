@@ -30,8 +30,6 @@ class Home extends Component {
   };
 
   setUser = (user) => {
-    console.log(user)
-    console.log("helllllll")
     this.setState({ currentUser: user });
   };
 
