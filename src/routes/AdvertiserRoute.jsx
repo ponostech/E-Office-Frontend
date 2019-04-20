@@ -6,8 +6,8 @@ export  const AdvertiserRoute = ({ currentUser, component: Component, ...rest })
   <Route {...rest} render={(props) => {
     if (!currentUser)
       return <Redirect to='/auth/login'/>;
-    if (!currentUser.advertiser)
-      return <p>unauth</p>;
+    // if (!currentUser.advertiser)
+    //   return <p>unauth</p>;
     else
       return <Component {...props}/>;
 

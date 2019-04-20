@@ -13,6 +13,7 @@ import AdvertiserDashboard from "./layouts/AdvertiserDashboard";
 import OfficeDashboard from "./layouts/OfficeDashboard";
 import LandingPage from "./layouts/LandingPage";
 import Home from "./home";
+import App from "./App";
 
 const hist = createBrowserHistory();
 
@@ -39,7 +40,7 @@ ReactDOM.render(
 
         {/*    </Switch>*/}
         {/*</Router>*/}
-        <Home/>
+        <App/>
     </MuiThemeProvider>,
     document.getElementById("root")
 );
