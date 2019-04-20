@@ -37,7 +37,9 @@ import { LocalCouncilService } from "../../services/LocalCouncilService";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { RequestOtp } from "../../services/OtpService";
 import OtpDialog from "../../components/OtpDialog";
-
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+import 'date-fns';
 const style = {
   root: {
     padding: "10px 15px !important"
@@ -68,7 +70,7 @@ class ShopLicenseApplicationForm extends Component {
     shopName: "",
     coordinate: "",
     businessDetail: "",
-    estd: undefined,
+    estd: new Date(),
     tinNo: "",
     cstNo: "",
     gstNo: "",
@@ -394,7 +396,13 @@ class ShopLicenseApplicationForm extends Component {
         break;
     }
   };
+  handleEstdChange = estdDate => {
 
+    this.setState({'estd': estdDate});
+  };
+  formatDate(date){
+    return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+  }
 
   render() {
     const { classes } = this.props;
@@ -625,7 +633,24 @@ class ShopLicenseApplicationForm extends Component {
                     />
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <TextField name={"estd"}
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <DatePicker
+                        fullWidth={true}
+                        InputLabelProps={
+                          { shrink: true }
+                        }
+                        label={"Date of Establishment"}
+                        error={Boolean(this.state.estdError)}
+                        helperText={this.state.estdError}
+                        margin="dense"
+                        name={"estd"}
+                        variant="outlined"
+                        value={this.state.estd}
+                        onChange={this.handleEstdChange}
+                        format={"dd/MM/yyyy"}
+                      />
+                    </MuiPickersUtilsProvider>
+                    {/*  <TextField name={"estd"}
                                value={this.state.estd}
                                variant={"outlined"}
                                margin={"dense"}
@@ -640,7 +665,7 @@ class ShopLicenseApplicationForm extends Component {
                                label={"Date of Establishment"}
                                error={Boolean(this.state.estdError)}
                                helperText={this.state.estdError}
-                    />
+                    /> */}
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
