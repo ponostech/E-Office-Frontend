@@ -48,12 +48,9 @@ class AdvertiserDashboard extends Component {
   };
 
   onAction(e) {
-    console.log("user did something", e);
   }
 
   onActive(e) {
-    console.log("user is active", e);
-    console.log("time remaining", this.idleTimer.getRemainingTime());
   }
 
   onIdle(e) {

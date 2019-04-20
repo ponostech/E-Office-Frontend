@@ -27,13 +27,15 @@ const hist = createBrowserHistory();
 class App extends Component {
   state = {
     currentUser: {
-      email:"kimi@mail.com"
+      email: "kimi@mail.com"
     },
+
     access_token: "",
     authenticate: false,
-    setUser: ({ user }) => this.setState({ currentUser: user }),
-    setToken: ({ token }) => this.setState({ access_token: token })
+  setUser : ({ user }) => this.setState({ currentUser: user })
   };
+
+  setToken = ({ token }) => this.setState({ access_token: token });
 
   render() {
     return (

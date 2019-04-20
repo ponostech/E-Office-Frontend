@@ -10,7 +10,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 // @material-ui/icons
-import Assessment from "@material-ui/icons/Assessment";
 import UserIcon from "@material-ui/icons/AccountCircleRounded";
 import HomeIcon from "@material-ui/icons/Home";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -72,7 +71,7 @@ class AdvertiserHeader extends React.Component {
   };
 
   render() {
-    const { history,loading } = this.props;
+    const { history, loading } = this.props;
     const { anchorEl } = this.state;
     var menuItems = (
       <GridContainer justify={"space-between"}>
@@ -86,7 +85,7 @@ class AdvertiserHeader extends React.Component {
           <CustomDropdown
             dropdownList={[
               { title: "New hoarding", link: OfficeRoutes.ADVERTISER_NEW_HOARDING },
-              { title: "List of hoarding", link: OfficeRoutes.ADVERTISER_HOARDING },
+              { title: "List of hoarding", link: OfficeRoutes.ADVERTISER_HOARDING }
             ]}
             linkClick={this.handleHoarding.bind(this)}
             buttonText={"Hoarding"}
@@ -103,7 +102,7 @@ class AdvertiserHeader extends React.Component {
         </div>
 
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Typography variant={"caption"} color={"textSecondary"}>Hello Username</Typography>
+          <Typography variant={"caption"} color={"textSecondary"}>{this.context.currentUser.email}</Typography>
           <IconButton onClick={this.handleUser.bind(this)}>
             <UserIcon/>
           </IconButton>
@@ -118,95 +117,84 @@ class AdvertiserHeader extends React.Component {
       </GridContainer>
     );
 
-
+    const menuItem = [
+      { name: "notesheet", label: "Notesheet", icon: "chat" },
+      { name: "draft", label: "Draft", icon: "create" },
+      { name: "report", label: "Site Verification", icon: "report" },
+      { name: "permit", label: "Draft Permit", icon: "how_to_reg" },
+      { name: "reject", label: "Draft Reject Letter", icon: "block" },
+      { name: "send", label: "Forward File", icon: "send" }
+    ];
     var list = (
-      <div>
-        <Typography color={"primary"} variant={"title"}>{this.context.currentUser.name}</Typography>
-        <List>
-          <ListItem>
-            <NavLink to={"/apply"}>
-              <ListItemIcon>
-                <Assessment/>
-              </ListItemIcon>
-              <ListItemText
-                primary={"Apply"}
-                disableTypography={true}
-              />
-            </NavLink>
-          </ListItem>
-          <ListItem>
-            <NavLink to={"/apply"}>
-              <ListItemIcon>
-                <Assessment/>
-              </ListItemIcon>
-              <ListItemText
-                primary={"Apply"}
-                disableTypography={true}
-              />
-            </NavLink>
-          </ListItem>
-          <ListItem>
-            <NavLink to={"/apply"}>
-              <ListItemIcon>
-                <Assessment/>
-              </ListItemIcon>
-              <ListItemText
-                primary={"Apply"}
-                disableTypography={true}
-              />
-            </NavLink>
+      <GridContainer justify={"center"} direction={"column"} alignItems={"center"} style={{padding:20}}>
+        <div>
+          <Typography variant={"h5"} color={"primary"}>Menu</Typography>
+        </div>
+        <div>
+          <List>
+            {menuItem.map((item) => (
+              <>
+                <ListItem button key={item.name} onClick={() => this.props.click(item.name)}>
+                  <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
+                  <ListItemText primary={item.label}/>
+                </ListItem>
+              </>
+            ))}
+          </List>
+        </div>
 
-          </ListItem>
-
-        </List>
-
-      </div>
+      </GridContainer>
     );
     return (
-
-      <AppBar position="fixed" color={"inherit"}>
-        <Toolbar>{/*
+      <Consumer>
+        {(currentUser) => (
+          <AppBar position="fixed" color={"inherit"}>
+            <Toolbar>{/*
           <Hidden smDown>
             <Typography color={"textPrimary"} variant={"title"}>E-AMC</Typography>
           </Hidden>*/}
-          <Hidden mdUp>
-            <div>
-              <Button href="#" color="transparent">
-                AMC-OFFICE
-              </Button>
-            </div>
-          </Hidden>
-          <Hidden smDown>{menuItems} </Hidden>
-          <Hidden mdUp>
-            <IconButton
-              justIcon
-              aria-label="open drawer"
-              onClick={this.handleDrawerToggle}
-            >
-              <MenuIcon/>
-            </IconButton>
-          </Hidden>
-          <Hidden mdUp>
-            <Hidden mdUp>
-              <Drawer
-                variant="temporary"
-                anchor={"right"}
-                open={this.state.open}
-                onClose={this.handleDrawerToggle}
-                ModalProps={{
-                  keepMounted: true // Better open performance on mobile.
-                }}
-              >
-                {list}
-              </Drawer>
-            </Hidden>
-          </Hidden>
-        </Toolbar>
-        {
-          loading? <LinearProgress color={"primary"} variant={"indeterminate"} />: undefined
-        }
+              <Hidden mdUp>
+                <div style={{flex:1}}>
+                  <Button href="#" color="transparent">
+                    e-AMC-OFFICE
+                  </Button>
+                </div>
+              </Hidden>
+              <Hidden smDown>{menuItems} </Hidden>
+              <Hidden  mdUp>
+                <IconButton
+                  justIcon
+                  aria-label="open drawer"
+                  onClick={this.handleDrawerToggle}
+                >
+                  <MenuIcon/>
+                </IconButton>
+              </Hidden>
+              <Hidden mdUp>
+                <Hidden mdUp>
+                  <Drawer
+                    variant="temporary"
+                    anchor={"right"}
+                    open={this.state.open}
+                    onClose={this.handleDrawerToggle}
+                    ModalProps={{
+                      keepMounted: true // Better open performance on mobile.
+                    }}
+                  >
+                    {list}
+                  </Drawer>
+                </Hidden>
+              </Hidden>
+            </Toolbar>
+            {
+              loading ? <LinearProgress color={"primary"} variant={"indeterminate"}/> : undefined
+            }
 
-      </AppBar>
+          </AppBar>
+        )}
+      </Consumer>
+
+
     );
   }
 }

@@ -91,7 +91,6 @@ class BannerDetail extends Component {
 
   handleToChange = toDate => {
     this.setState({'to': toDate});
-
   };
 
   handleAdd = (e) => {
@@ -100,9 +99,6 @@ class BannerDetail extends Component {
 
     const fromDate = moment(from);
     const toDate = moment(to);
-
-    console.log(fromDate);
-    console.log(toDate);
 
     if (fromDate > toDate) {
       this.setState({ errorMessage: "From date can't be greater than To date" });
@@ -137,8 +133,8 @@ class BannerDetail extends Component {
       length: "",
       height: "",
       locations: "",
-      from: "",
-      to: ""
+      from: new Date(),
+      to: new Date()
     });
   };
 
@@ -319,8 +315,8 @@ class BannerDetail extends Component {
                           <TableCell>{item.length}</TableCell>
                           <TableCell>{item.height}</TableCell>
                           <TableCell>{item.locations}</TableCell>
-                          <TableCell>{item.from}</TableCell>
-                          <TableCell>{item.to}</TableCell>
+                          <TableCell>{moment(item.from).format("DD/MM/YYYY")}</TableCell>
+                          <TableCell>{moment(item.to).format("DD/MM/YYYY")}</TableCell>
                           <TableCell>
                             <IconButton onClick={this.handleRemove.bind(this, index)}>
                               <DeleteIcon color={"error"}/>
