@@ -89,8 +89,9 @@ class BannerDetail extends Component {
     this.setState({'from': fromDate});
   };
 
-  handleFromChange = toDate => {
+  handleToChange = toDate => {
     this.setState({'to': toDate});
+
   };
 
   handleAdd = (e) => {
@@ -228,6 +229,7 @@ class BannerDetail extends Component {
                   error={!!this.state.fromError}
                   helperText={this.state.fromError}
                   margin="dense"
+                  name={"from"}
                   variant="outlined"
                   label="From"
                   value={this.state.from}
