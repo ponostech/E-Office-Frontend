@@ -16,7 +16,6 @@ import {
   TextField,
   Typography
 } from "@material-ui/core";
-
 import { ShopLicenseViewModel } from "../model/ShopLicenseViewModel";
 import GridItem from "../../components/Grid/GridItem";
 import OfficeSelect from "../../components/OfficeSelect";
@@ -37,9 +36,11 @@ import { LocalCouncilService } from "../../services/LocalCouncilService";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { RequestOtp } from "../../services/OtpService";
 import OtpDialog from "../../components/OtpDialog";
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
-import 'date-fns';
+import DateFnsUtils from "@date-io/date-fns";
+import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
+import "date-fns";
+import { ButtonGroup } from "react-bootstrap";
+
 const style = {
   root: {
     padding: "10px 15px !important"
@@ -94,7 +95,7 @@ class ShopLicenseApplicationForm extends Component {
     displayTypeError: "",
     estdError: "",
     localCouncilError: "",
-    ownerAddressError:"",
+    ownerAddressError: "",
 
     display_types: [
       { value: "vehicle", label: "Vehicle" },
@@ -148,7 +149,7 @@ class ShopLicenseApplicationForm extends Component {
 
   sendOtp = () => {
     var self = this;
-    RequestOtp(this.state.phone,"OTP for shop license application")
+    RequestOtp(this.state.phone, "OTP for shop license application")
       .then(res => {
         console.log(res);
         if (res.data.status) {
@@ -161,7 +162,7 @@ class ShopLicenseApplicationForm extends Component {
       })
       .catch(err => {
         console.log(err);
-        this.setState({errorMessage:err.toString()})
+        this.setState({ errorMessage: err.toString() });
       });
   };
   onVerifiedOtp = (verified) => {
@@ -326,30 +327,33 @@ class ShopLicenseApplicationForm extends Component {
     });
   };
 
+  handleSaveDraft = (e) => {
+
+  };
 
   handleClear = (e) => {
 
-        this.setState({
-          name: "",
-          phone: "",
-          type: "",
-          email: "",
-          address: "",
-          places: "",
-          tradeName: "",
-          shopName: "",
-          coordinate: undefined,
-          businessDetail: "",
-          estd: undefined,
-          tinNo: "",
-          cstNo: "",
-          gstNo: "",
-          panNo: "",
-          premised: "Owned",
-          displayType: undefined,
+    this.setState({
+      name: "",
+      phone: "",
+      type: "",
+      email: "",
+      address: "",
+      places: "",
+      tradeName: "",
+      shopName: "",
+      coordinate: undefined,
+      businessDetail: "",
+      estd: undefined,
+      tinNo: "",
+      cstNo: "",
+      gstNo: "",
+      panNo: "",
+      premised: "Owned",
+      displayType: undefined,
 
-          uploadDocuments: []
-        });
+      uploadDocuments: []
+    });
   };
 
   handleSelectBlur = (identifier, e) => {
@@ -398,9 +402,10 @@ class ShopLicenseApplicationForm extends Component {
   };
   handleEstdChange = estdDate => {
 
-    this.setState({'estd': estdDate});
+    this.setState({ "estd": estdDate });
   };
-  formatDate(date){
+
+  formatDate(date) {
     return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
   }
 
@@ -799,16 +804,25 @@ class ShopLicenseApplicationForm extends Component {
               <CardActions disableActionSpacing={true}>
                 <GridContainer justify={"flex-end"}>
                   <GridItem>
-                    <Button name={"primary"} disabled={
-                      Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
-                      || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-                      || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined ||
-                        !this.state.agree || this.state.passport===undefined
-                    }
-                            color={"primary"} variant={"outlined"}
-                            onClick={this.onSubmit.bind(this)}>
-                      {ShopLicenseViewModel.PRIMARY_TEXT}
-                    </Button>
+                      <Button name={"primary"} disabled={
+                        Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
+                        || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
+                        || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined ||
+                        !this.state.agree || this.state.passport === undefined
+                      }
+                              color={"primary"} variant={"outlined"}
+                              onClick={this.onSubmit.bind(this)}>
+                        {ShopLicenseViewModel.PRIMARY_TEXT}
+                      </Button>
+                    {"\u00A0 "}
+                    {"\u00A0 "}
+
+                      <Button name={"draft"}
+                              color={"primary"}
+                              variant={"outlined"}
+                              onClick={this.handleSaveDraft.bind(this)}>
+                        {ShopLicenseViewModel.DRAFT}
+                      </Button>
                     {"\u00A0 "}
                     {"\u00A0 "}
                     {"\u00A0 "}

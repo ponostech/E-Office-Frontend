@@ -26,6 +26,7 @@ export class ShopLicenseViewModel {
   static GST_NO = "GST No";
   static ESTD = "Date of Establishment";
   static DISPLAY_TYPE = "Type of Display";
+  static DRAFT = "Save as draft";
 
 
   static OWNER_REQUIRED="Name is required";
@@ -38,5 +39,6 @@ export class ShopLicenseViewModel {
   static DISPLAY_TYPE_REQUIRED="Display type is required";
   static VALID_PHONE="Phone number must be 10 digit number";
   static TRADE_REQUIRED="Name of trade is required";
+  static DRAFT="Save as Draft";
 
 }

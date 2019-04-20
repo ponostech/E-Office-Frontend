@@ -167,6 +167,9 @@ class AdvertiserForm extends Component {
     clear = () => {
         window.location.reload();
     };
+    saveDraft = () => {
+        window.location.reload();
+    };
 
     handleRequired = (e) => {
         const {name, value} = e.target;
@@ -464,6 +467,8 @@ class AdvertiserForm extends Component {
                                             variant={"outlined"} color={"primary"}> Submit</Button>
                                     {"\u00A0 "}
                                     {"\u00A0 "}
+                                    <Button name={"draft"} onClick={this.saveDraft.bind(this)} variant={"outlined"}
+                                            color={"primary"}> Save as draft</Button>
                                     {"\u00A0 "}
                                     {"\u00A0 "}
                                     <Button name={"cancel"} onClick={this.clear.bind(this)} variant={"outlined"}

@@ -10,6 +10,7 @@ export class BannerViewModel {
   static DISPLAY_TYPE = "Type of Display";
 
   static SUBMIT = "Submit ...";
+  static DRAFT = "Save as draft";
   static CREATE_MESSAGE = "New Application is submitted";
 
   static NAME_REQUIRED = "Name is required";

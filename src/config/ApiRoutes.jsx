@@ -8,8 +8,8 @@ export class ApiRoutes {
   static CREATE_ADVERTISER="/register/advertiser";
   static GET_ADVERTISER_HOARDING="/advertiser/hoardings";
 
-  static NEW_HOARDING="/hoardings";
-  static NEW_KIOSK="/kiosks";
+  static NEW_HOARDING="/advertiser/hoardings";
+  static NEW_KIOSK="/advertiser/kiosks";
   static DOCUMENTS="/documents";
   static CREATE_SHOP_LICENSE="shops";
   static CREATE_BANNER="/banners";

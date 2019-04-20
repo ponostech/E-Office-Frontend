@@ -37,9 +37,10 @@ import { LocalCouncilService } from "../../services/LocalCouncilService";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { RequestOtp } from "../../services/OtpService";
 import OtpDialog from "../../components/OtpDialog";
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
-import 'date-fns';
+import DateFnsUtils from "@date-io/date-fns";
+import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
+import "date-fns";
+
 const style = {
   root: {
     padding: "10px 15px !important"
@@ -73,7 +74,7 @@ class HotelLicenseApplicationForm extends Component {
     estd: new Date(),
     noAcRoom: undefined,
     acRoom: undefined,
-    facilities:"",
+    facilities: "",
     tinNo: "",
     cstNo: "",
     gstNo: "",
@@ -97,7 +98,7 @@ class HotelLicenseApplicationForm extends Component {
     displayTypeError: "",
     estdError: "",
     localCouncilError: "",
-    ownerAddressError:"",
+    ownerAddressError: "",
 
     display_types: [
       { value: "vehicle", label: "Vehicle" },
@@ -164,7 +165,7 @@ class HotelLicenseApplicationForm extends Component {
       })
       .catch(err => {
         console.log(err);
-        this.setState({errorMessage:err.toString()})
+        this.setState({ errorMessage: err.toString() });
       });
   };
   onVerifiedOtp = (verified) => {
@@ -329,7 +330,9 @@ class HotelLicenseApplicationForm extends Component {
     });
   };
 
+  saveDraft = (e) => {
 
+  };
   handleClick = (e) => {
     const name = e.target.name;
     switch (name) {
@@ -411,11 +414,13 @@ class HotelLicenseApplicationForm extends Component {
 
   handleEstdChange = estdDate => {
 
-    this.setState({'estd': estdDate});
+    this.setState({ "estd": estdDate });
   };
-  formatDate(date){
+
+  formatDate(date) {
     return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
   }
+
   render() {
     const { classes } = this.props;
     return (
@@ -658,7 +663,7 @@ class HotelLicenseApplicationForm extends Component {
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
                       InputProps={{
-                        min:0
+                        min: 0
                       }}
                       type={"number"}
                       value={this.state.noAcRoom}
@@ -672,7 +677,6 @@ class HotelLicenseApplicationForm extends Component {
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
-                      type={"number"}
                       value={this.state.facilities}
                       name={"facilities"}
                       variant={"outlined"}
@@ -855,7 +859,7 @@ class HotelLicenseApplicationForm extends Component {
                       Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
                       || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
                       || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined ||
-                      !this.state.agree || this.state.passport===undefined
+                      !this.state.agree || this.state.passport === undefined
                     }
                             color={"primary"} variant={"outlined"}
                             onClick={this.onSubmit.bind(this)}>
@@ -863,12 +867,20 @@ class HotelLicenseApplicationForm extends Component {
                     </Button>
                     {"\u00A0 "}
                     {"\u00A0 "}
+                    <Button name={"secondary"}
+                            color={"primary"}
+                            variant={"outlined"}
+                            onClick={this.saveDraft.bind(this)}>
+                      {ShopLicenseViewModel.DRAFT}
+                    </Button>
+                    {"\u00A0 "}
                     {"\u00A0 "}
                     <Button name={"secondary"}
                             color={"secondary"}
                             variant={"outlined"}
                             onClick={this.handleClick.bind(this)}>
                       {ShopLicenseViewModel.SECONDARY_TEXT}
+
                     </Button>
                   </GridItem>
                 </GridContainer>
