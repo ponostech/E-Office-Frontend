@@ -75,6 +75,9 @@ class NewFile extends Component {
             case "dealingId":
                 this.setState({dealingId: value});
                 break;
+            case "groupHead":
+                this.setState({dealingId: value});
+                break;
             default:
                 break;
 
@@ -104,6 +107,7 @@ class NewFile extends Component {
         console.log(user)
     }
 
+
     render() {
         return (
             <GridContainer justify={"flex-start"}>
@@ -112,18 +116,54 @@ class NewFile extends Component {
                         <CardHeader title={NewFileViewModel.TITLE} subheader={NewFileViewModel.SUBTITLE}/>
                         <CardContent>
                             <Grid container xs={12} spacing={16}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        error={Boolean(this.state.fileNoError)}
-                                        helperText={this.state.fileNoError}
-                                        onBlur={this.validateBlur.bind(this)}
-                                        required={true}
-                                        margin={"dense"}
-                                        label={NewFileViewModel.FILE_NO_LABEL}
-                                        variant={"outlined"}
-                                        onChange={this.handleChange}
-                                        name={"fileNo"} fullWidth={true}/>
-                                </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <OfficeSelect
+                                  required={true}
+                                  variant={"outlined"}
+                                  margin={"dense"}
+                                  fullWidth={true}
+                                  value={this.state.groupHead}
+                                  label={"Group Head"}
+                                  isClearable={true}
+                                  name={"category"}
+                                  options={this.state.groupHead}
+                                  error={Boolean(this.state.groupHeadError)}
+                                  helperText={this.state.categoryError}
+                                  onBlur={this.handleSelectBlur.bind(this, "groupHead")}
+                                  onChange={this.handleSelect.bind(this, "groupHead")}/>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={6}>
+                                <OfficeSelect
+                                  required={true}
+                                  variant={"outlined"}
+                                  margin={"dense"}
+                                  fullWidth={true}
+                                  value={this.state.category}
+                                  label={"Main Head"}
+                                  isClearable={true}
+                                  name={"category"}
+                                  options={this.state.categories}
+                                  error={Boolean(this.state.categoryError)}
+                                  helperText={this.state.categoryError}
+                                  onBlur={this.handleSelectBlur.bind(this, "category")}
+                                  onChange={this.handleSelect}/>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={12}>
+                                <OfficeSelect
+                                  required={true}
+                                  variant={"outlined"}
+                                  margin={"dense"}
+                                  fullWidth={true}
+                                  value={this.state.category}
+                                  label={"Sub Head"}
+                                  isClearable={true}
+                                  name={"category"}
+                                  options={this.state.categories}
+                                  error={Boolean(this.state.categoryError)}
+                                  helperText={this.state.categoryError}
+                                  onBlur={this.handleSelectBlur.bind(this, "category")}
+                                  onChange={this.handleSelect}/>
+                            </Grid>
                                 <Grid item xs={12}>
                                     <TextField
                                         required={true}
