@@ -415,6 +415,7 @@ class AdvertiserForm extends Component {
                                     <FileUpload document={{id: 40, name: "Signature", mime: "image/*", mandatory: 1}}
                                                 onUploadSuccess={(data) => {
                                                     let temp = {
+                                                        document_id:1,
                                                         name: "signature",
                                                         path: data.location
                                                     };

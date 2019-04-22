@@ -24,6 +24,7 @@ import AdvertiserApplications from "../views/e-office/applications/advertisers/A
 
 import officeStyle from "../assets/jss/material-dashboard-pro-react/layouts/officeStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
+import StaffRegistrationForm from "../views/staff/StaffRegistrationForm";
 
 const officeDashboard = (props) => (
     <Grid container justify={"center"}>
@@ -53,6 +54,7 @@ const officeDashboard = (props) => (
             <Route exact path={OfficeRoutes.ADVERTISERS} component={AdvertiserApplications}/>
             <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
 
+            <Route exact path={OfficeRoutes.STAFF_REGISTRATION} component={StaffRegistrationForm}/>
             <Route path={OfficeRoutes.SETTING} component={Settings}/>
         </Grid>
     </Grid>
