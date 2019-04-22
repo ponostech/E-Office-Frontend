@@ -3,7 +3,8 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader, Chip,
+  CardHeader,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -87,7 +88,7 @@ class HoardingDetailDialog extends Component {
   };
 
   render() {
-    const { open, onClose, classes } = this.props;
+    const { open, onClose, classes,hoarding } = this.props;
     return (
       <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"md"}>
         <DialogContent>
@@ -100,6 +101,7 @@ class HoardingDetailDialog extends Component {
                         }/>
             <CardContent>
               <GridContainer>
+
                 <GridItem xs={12} sm={12} md={6}>
                   <GridContainer>
                     <GridItem xs={4} sm={4} md={4}>
@@ -109,7 +111,7 @@ class HoardingDetailDialog extends Component {
                     </GridItem>
                     <GridItem xs={8} sm={8} md={8}>
                       <Typography variant={"textSecondary"}>
-                        {model.fileNo}
+                        {hoarding.id}
                       </Typography>
                     </GridItem>
                     <GridItem xs={4} sm={4} md={4}>
