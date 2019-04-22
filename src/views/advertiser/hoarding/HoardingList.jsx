@@ -42,9 +42,10 @@ class HoardingList extends Component {
 
   fetchHoarding = () => {
     try {
+      console.log("they call me");
       let hoardings = this.hoardingService.fetch();
-      this.setState({ hoardings: hoardings });
       console.log(hoardings);
+      this.setState({ hoardings: hoardings });
     } catch (e) {
       this.setState({ errorMessage: e });
     }

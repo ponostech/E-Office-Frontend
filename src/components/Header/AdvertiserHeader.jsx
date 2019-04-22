@@ -111,7 +111,7 @@ class AdvertiserHeader extends React.Component {
           }}>
             <SettingIcon/>
           </IconButton>
-          <NavLink to={OfficeRoutes.HOME}><IconButton color="alert"><Icon>apps</Icon></IconButton></NavLink>
+          <NavLink to={OfficeRoutes.HOME}><IconButton color="default"><Icon>apps</Icon></IconButton></NavLink>
 
         </div>
       </GridContainer>
@@ -132,9 +132,9 @@ class AdvertiserHeader extends React.Component {
         </div>
         <div>
           <List>
-            {menuItem.map((item) => (
+            {menuItem.map((item,index) => (
               <>
-                <ListItem button key={item.name} onClick={() => this.props.click(item.name)}>
+                <ListItem button key={index} onClick={() => this.props.click(item.name)}>
                   <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
                   <ListItemText primary={item.label}/>
                 </ListItem>

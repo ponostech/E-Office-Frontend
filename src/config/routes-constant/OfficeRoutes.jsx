@@ -4,6 +4,8 @@ export const HOME = "/home";
 export const FORM = "/form";
 export const E_OFFICE = "/e-office/desk";
 
+export const STAFF_REGISTRATION = "/e-office/register/staff";
+
 export const ADVERTISER_LOGIN = "/auth/login";
 export const APPLY_ADVERTISER = "/register/advertiser";
 export const ADVERTISER_REGISTRATION_SUCCESS = "/register/advertiser/success";

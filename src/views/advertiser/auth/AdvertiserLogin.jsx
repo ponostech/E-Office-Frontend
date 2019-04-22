@@ -82,6 +82,7 @@ class AdvertiserLogin extends Component {
     const { email, password } = this.state;
     const { history } = this.props;
 
+    console.log(setUser)
     if (invalid) {
       this.setState({ errorMessage: "Email and Password fields are required" });
       return;
@@ -96,8 +97,6 @@ class AdvertiserLogin extends Component {
 
           let currentUser = res.data.data.user;
           this.context.currentUser = currentUser;
-          setUser(currentUser);
-
           this.context.access_token = access_token;
           this.context.authenticate = true;
 

@@ -44,7 +44,7 @@ export class HoardingService {
     try {
       const token = localStorage.getItem("access_token");
       const config={ headers: {"Authorization" : `Bearer ${token}`} }
-      const res = await axios.get(ApiRoutes.GET_ADVERTISER_HOARDING,{},config );
+      const res = await axios.get(ApiRoutes.GET_ADVERTISER_HOARDING,config );
       console.log(res)
       return res.data;
     } catch (error) {
