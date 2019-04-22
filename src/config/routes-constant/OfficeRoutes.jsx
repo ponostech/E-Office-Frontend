@@ -56,6 +56,7 @@ export const HOARDING_DETAILS = "/e-office/applications/hoardings/:id/detail";
 export const BANNERS = "/e-office/applications/banners";
 export const KIOSKS = "/e-office/applications/kiosks";
 export const OBPAS = "/e-office/applications/obpas";
+export const NEW_TRADE = "/e-office/admin/new-trade";
 
 export const SETTING = "/e-office/setting";
 export const ADVERTISERS = "/e-office/advertisers";

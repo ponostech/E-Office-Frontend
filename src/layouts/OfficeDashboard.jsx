@@ -21,6 +21,8 @@ import HoardingDetails from "../views/e-office/applications/hoarding/HoardingDet
 import AdvertiserDetails from "../views/e-office/applications/advertisers/AdvertiserDetails";
 import DeskView from "../views/e-office/desk/DeskView";
 import AdvertiserApplications from "../views/e-office/applications/advertisers/AdvertiserApplications";
+import CreateTrade from "../views/e-office/admin/NewTrade";
+
 
 import officeStyle from "../assets/jss/material-dashboard-pro-react/layouts/officeStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -44,6 +46,7 @@ const officeDashboard = (props) => (
             <Route exact path={OfficeRoutes.SENT_FILE} component={SentFiles}/>
 
             <Route exact path={OfficeRoutes.OBPAS} component={NewFile}/>
+            <Route exact path={OfficeRoutes.NEW_TRADE} component={CreateTrade}/>
             <Route exact path={OfficeRoutes.HOARDINGS} component={HoardingApplications}/>
             <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
             <Route exact path={OfficeRoutes.BANNERS} component={BannerApplications}/>

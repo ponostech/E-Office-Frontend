@@ -105,6 +105,15 @@ const menu = (props) => {
           linkClick={props.linkClick}
           buttonText={"Hotel & Lodging"}
           buttonProps={{ color: "transparent" }}/>
+        <CustomDropdown
+          dropdownList={[
+            { title: "New Trade", link: routes.NEW_TRADE },
+            { title: "List Trade", link: routes.HOARDINGS },
+
+          ]}
+          linkClick={props.linkClick}
+          buttonText={"Admin Control"}
+          buttonProps={{ color: "transparent" }}/>
 
         <CustomDropdown
           dropdownList={[
