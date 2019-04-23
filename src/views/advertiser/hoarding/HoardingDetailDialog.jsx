@@ -105,27 +105,27 @@ class HoardingDetailDialog extends Component {
                 <GridItem xs={12} sm={12} md={6}>
                   <GridContainer>
                     <GridItem xs={4} sm={4} md={4}>
-                      <Typography variant={"textPrimary"}>
+                      <Typography variant={"subtitle1"}>
                         File No :
                       </Typography>
                     </GridItem>
                     <GridItem xs={8} sm={8} md={8}>
-                      <Typography variant={"textSecondary"}>
+                      <Typography variant={"subtitle2"}>
                         {hoarding.id}
                       </Typography>
                     </GridItem>
                     <GridItem xs={4} sm={4} md={4}>
-                      <Typography variant={"textPrimary"}>
+                      <Typography variant={"subtitle1"}>
                         Date :
                       </Typography>
                     </GridItem>
                     <GridItem xs={8} sm={8} md={8}>
-                      <Typography variant={"textSecondary"}>
+                      <Typography variant={"subtitle2"}>
                         {model.date}
                       </Typography>
                     </GridItem>
                     <GridItem xs={4} sm={4} md={4}>
-                      <Typography variant={"textPrimary"}>
+                      <Typography variant={"subtitle1"}>
                         Status :
                       </Typography>
                     </GridItem>
@@ -133,12 +133,12 @@ class HoardingDetailDialog extends Component {
                       <Chip color={"primary"} label={model.status}/>
                     </GridItem>
                     <GridItem xs={4} sm={4} md={4}>
-                      <Typography variant={"textPrimary"}>
+                      <Typography variant={"subtitle1"}>
                         Description :
                       </Typography>
                     </GridItem>
                     <GridItem xs={8} sm={8} md={8}>
-                      <Typography variant={"textSecondary"}>
+                      <Typography variant={"subtitle2"}>
                         {model.description}
                       </Typography>
                     </GridItem>

@@ -33,7 +33,6 @@ export class HoardingService {
   async get(advertiserId) {
     try {
       const res = await axios.get(ApiRoutes.GET_ADVERTISER_HOARDING, { advertiserId });
-      console.log(res)
       return res.data;
     } catch (error) {
       throw new Error(error)
