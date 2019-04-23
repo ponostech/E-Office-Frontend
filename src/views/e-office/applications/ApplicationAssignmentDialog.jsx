@@ -15,6 +15,7 @@ import Slide from '@material-ui/core/Slide';
 import DialogActions from "@material-ui/core/DialogActions";
 import OfficeSelect from "../../../components/OfficeSelect";
 import Grid from "@material-ui/core/Grid";
+import { StaffService } from "../../../services/StaffService";
 
 const styles = {
     appBar: {
@@ -29,36 +30,56 @@ function Transition(props) {
     return <Slide direction="up" {...props} />;
 }
 
-const ApplicationAssignmentDialog = (props) => {
-    const {classes} = props;
-    return (
-        <Dialog
+class ApplicationAssignmentDialog extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state={
+            users: []
+        }
+        this.staffService =new StaffService();
+    }
 
-            open={props.open}
-            onClose={props.close}
+    componentDidMount() {
+        this.staffService.all()
+          .then(staff=>{
+              this.setState({users:staff})
+          })
+          .catch(err=>{
+              console.error(err)
+              this.setState({errorMessage:err.toString()})
+          })
+    }
+
+    render() {
+        const {classes} = this.props;
+        return (
+          <Dialog
+
+            open={this.props.open}
+            onClose={this.props.close}
             TransitionComponent={Transition}
-        >
-            <AppBar className={classes.appBar}>
-                <Toolbar>
-                    <IconButton color="inherit" onClick={props.close} aria-label="Close">
-                        <CloseIcon/>
-                    </IconButton>
-                    <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-                        Assign Application to Staff
-                    </Typography>
-                    <Button onClick={props.close} color="inherit">
-                        Close
-                    </Button>
-                </Toolbar>
-            </AppBar>
-            <List>
-                <ListItem button>
-                    <ListItemText primary="Select user below to assign the application. Select carefully!" secondary="Details of application shown below."/>
-                </ListItem>
-                <ListItem button>
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <OfficeSelect
+          >
+              <AppBar className={classes.appBar}>
+                  <Toolbar>
+                      <IconButton color="inherit" onClick={this.props.close} aria-label="Close">
+                          <CloseIcon/>
+                      </IconButton>
+                      <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+                          Assign Application to Staff
+                      </Typography>
+                      <Button onClick={this.props.close} color="inherit">
+                          Close
+                      </Button>
+                  </Toolbar>
+              </AppBar>
+              <List>
+                  <ListItem button>
+                      <ListItemText primary="Select user below to assign the application. Select carefully!" secondary="Details of application shown below."/>
+                  </ListItem>
+                  <ListItem button>
+                      <Grid container>
+                          <Grid item xs={12}>
+                              <OfficeSelect
                                 value={""}
                                 label={"Name of Staff"}
                                 name={"userId"}
@@ -68,37 +89,40 @@ const ApplicationAssignmentDialog = (props) => {
                                 required={true}
                                 error={""}
                                 helperText={""}
-                                options={props.staffs}/>
-                        </Grid>
-                    </Grid>
-                </ListItem>
-                <ListItem button>
-                    <ListItemText primary="Name of Applicant" secondary="Lalhriatreng"/>
-                </ListItem>
-                <Divider/>
-                <ListItem button>
-                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
-                </ListItem>
-                <ListItem button>
-                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
-                </ListItem>
-                <ListItem button>
-                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
-                </ListItem>
-                <ListItem button>
-                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
-                </ListItem>
-                <ListItem button>
-                    <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
-                </ListItem>
-                <Divider/>
-            </List>
-            <DialogActions>
-                <Button color="primary">Assign</Button>
-                <Button color="secondary" onClick={props.close}>Cancel</Button>
-            </DialogActions>
-        </Dialog>
-    );
+                                options={this.props.users}/>
+                          </Grid>
+                      </Grid>
+                  </ListItem>
+                  <ListItem button>
+                      <ListItemText primary="Name of Applicant" secondary="Lalhriatreng"/>
+                  </ListItem>
+                  <Divider/>
+                  <ListItem button>
+                      <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
+                  </ListItem>
+                  <ListItem button>
+                      <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
+                  </ListItem>
+                  <ListItem button>
+                      <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
+                  </ListItem>
+                  <ListItem button>
+                      <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
+                  </ListItem>
+                  <ListItem button>
+                      <ListItemText primary="Address" secondary="Mualpui, Aizawl, Mizoram <br/>"/>
+                  </ListItem>
+                  <Divider/>
+              </List>
+              <DialogActions>
+                  <Button color="primary">Assign</Button>
+                  <Button color="secondary" onClick={this.props.close}>Cancel</Button>
+              </DialogActions>
+          </Dialog>
+        );
+    }
+
+
 };
 
 export default withStyles(styles)(ApplicationAssignmentDialog);

@@ -27,40 +27,64 @@ import CreateTrade from "../views/e-office/admin/NewTrade";
 import officeStyle from "../assets/jss/material-dashboard-pro-react/layouts/officeStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import StaffRegistrationForm from "../views/staff/StaffRegistrationForm";
+import UnderProcessHoarding from "../views/e-office/applications/hoarding/UnderProcessHoarding";
+import RejectedHoardingApplications from "../views/e-office/applications/hoarding/RejectedHoardingApplications";
+import ApprovedHoarding from "../views/e-office/applications/hoarding/ApprovedHoarding";
 
-const officeDashboard = (props) => (
-    <Grid container justify={"center"}>
-        <Grid item xs={12} sm={12} md={12}>
-            <OfficePageHeader color={"primary"}/>
-        </Grid>
-        <Grid item style={{marginTop: 70,minHeight:'100vh', background: 'white'}} xs={12} sm={12} md={12}>
-            <Route exact path={OfficeRoutes.DESK} component={DeskView}/>
+class OfficeDashboard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state={
+            loading:false
+        }
+    }
+    doLoad=(val)=>{
+        this.setState({loading:val})
+    }
 
-            <Route exact path={OfficeRoutes.NEW_RECEIPT} component={NewReceipt}/>
-            <Route exact path={OfficeRoutes.RECEIPT_DETAIL} component={Detail}/>
-            <Route exact path={OfficeRoutes.CREATED_RECEIPT} component={CreatedReceipt}/>
-            <Route exact path={OfficeRoutes.SENT_RECEIPT} component={SentReceipt}/>
+    render() {
+        return (
+              <Grid container justify={"center"}>
+                  <Grid item xs={12} sm={12} md={12}>
+                      <OfficePageHeader loading={this.state.loading} color={"primary"}/>
+                  </Grid>
+                  <Grid item style={{marginTop: 70,minHeight:'100vh', background: 'white'}} xs={12} sm={12} md={12}>
+                      <Route exact path={OfficeRoutes.DESK} component={DeskView}/>
 
-            <Route exact path={OfficeRoutes.NEW_FILE} component={NewFile}/>
-            <Route path={OfficeRoutes.FILE_DETAIL} component={FileDetail}/>
-            <Route exact path={OfficeRoutes.CREATED_FILES} component={CreatedFiles}/>
-            <Route exact path={OfficeRoutes.SENT_FILE} component={SentFiles}/>
+                      <Route exact path={OfficeRoutes.NEW_RECEIPT} component={NewReceipt}/>
+                      <Route exact path={OfficeRoutes.RECEIPT_DETAIL} component={Detail}/>
+                      <Route exact path={OfficeRoutes.CREATED_RECEIPT} component={CreatedReceipt}/>
+                      <Route exact path={OfficeRoutes.SENT_RECEIPT} component={SentReceipt}/>
 
-            <Route exact path={OfficeRoutes.OBPAS} component={NewFile}/>
-            <Route exact path={OfficeRoutes.NEW_TRADE} component={CreateTrade}/>
-            <Route exact path={OfficeRoutes.HOARDINGS} component={HoardingApplications}/>
-            <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
-            <Route exact path={OfficeRoutes.BANNERS} component={BannerApplications}/>
-            <Route exact path={OfficeRoutes.KIOSKS} component={KioskApplications}/>
-            <Route exact path={OfficeRoutes.SHOP_LICENSES} component={ShopLicenseApplications}/>
+                      <Route exact path={OfficeRoutes.NEW_FILE} component={NewFile}/>
+                      <Route path={OfficeRoutes.FILE_DETAIL} component={FileDetail}/>
+                      <Route exact path={OfficeRoutes.CREATED_FILES} component={CreatedFiles}/>
+                      <Route exact path={OfficeRoutes.SENT_FILE} component={SentFiles}/>
 
-            <Route exact path={OfficeRoutes.ADVERTISERS} component={AdvertiserApplications}/>
-            <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
+                      <Route exact path={OfficeRoutes.OBPAS} component={NewFile}/>
+                      <Route exact path={OfficeRoutes.NEW_TRADE} component={CreateTrade}/>
 
-            <Route exact path={OfficeRoutes.STAFF_REGISTRATION} component={StaffRegistrationForm}/>
-            <Route path={OfficeRoutes.SETTING} component={Settings}/>
-        </Grid>
-    </Grid>
-);
+                      //office application routes
+                      <Route exact path={OfficeRoutes.HOARDINGS} render={e=><HoardingApplications doLoad={this.doLoad}/>}/>
+                      <Route exact path={OfficeRoutes.UNDER_PROCESS_HOARDINGS} render={e=><UnderProcessHoarding doLoad={this.doLoad}/>}/>
+                      <Route exact path={OfficeRoutes.REJECTED_HOARDINGS} render={e=><RejectedHoardingApplications doLoad={this.doLoad}/>}/>
+                      <Route exact path={OfficeRoutes.APPROVED_HOARDINGS} render={e=><ApprovedHoarding doLoad={this.doLoad}/>}/>
 
-export default withStyles(officeStyle)(officeDashboard);
+                      <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
+                      <Route exact path={OfficeRoutes.BANNERS} component={BannerApplications}/>
+                      <Route exact path={OfficeRoutes.KIOSKS} component={KioskApplications}/>
+                      <Route exact path={OfficeRoutes.SHOP_LICENSES} component={ShopLicenseApplications}/>
+
+                      <Route exact path={OfficeRoutes.ADVERTISERS} component={AdvertiserApplications}/>
+                      <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
+
+                      <Route exact path={OfficeRoutes.STAFF_REGISTRATION} component={StaffRegistrationForm}/>
+                      <Route path={OfficeRoutes.SETTING} component={Settings}/>
+                  </Grid>
+              </Grid>
+        );
+    }
+
+}
+
+export default withStyles(officeStyle)(OfficeDashboard);

@@ -23,12 +23,10 @@ axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8";
 axios.defaults.headers.get["Access-Control-Allow-Origin"] = "http://localhost:8000/";
 axios.defaults.timeout = 20000;
 
-const token = localStorage.getItem("token");
+const token = localStorage.getItem("access_token");
 if (token) {
   axios.defaults.headers.common["Authorization"] = token;
 }
-var currentUser = null;
-
 ReactDOM.render(
     <MuiThemeProvider theme={theme}>
         {/*<Router history={hist}>*/}

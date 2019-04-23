@@ -32,10 +32,9 @@ class App extends Component {
 
     access_token: "",
     authenticate: false,
-  setUser : ({ user }) => this.setState({ currentUser: user })
+    setUser: ({ user }) => this.setState({ currentUser: user }),
+    setToken: ({ token }) => this.setState({ access_token: token })
   };
-
-  setToken = ({ token }) => this.setState({ access_token: token });
 
   render() {
     return (

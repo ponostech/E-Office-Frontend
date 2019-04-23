@@ -65,6 +65,14 @@ class GMapDialog extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    const lat = nextProps.lat;
+    const lng = nextProps.lng;
+    if (lat && lng) {
+      this.setState({lat:lat,lng:lng})
+    }
+  }
+
   confirm = (e) => {
     console.log(e);
   };
@@ -162,7 +170,9 @@ class GMapDialog extends Component {
 GMapDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  isMarkerShown: PropTypes.bool.isRequired
+  isMarkerShown: PropTypes.bool.isRequired,
+  lat:PropTypes.number,
+  lng:PropTypes.number
 };
 export default GMapDialog;
 

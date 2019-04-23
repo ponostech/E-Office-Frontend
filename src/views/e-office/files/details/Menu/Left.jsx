@@ -100,7 +100,7 @@ class LeftMenu extends React.Component {
 
     componentDidMount() {
         let open = localStorage.getItem("open_drawer");
-        this.setState({open:open})
+        this.setState({open:JSON.parse(open)})
     }
 
     toogleDrawer = () => {

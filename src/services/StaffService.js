@@ -2,6 +2,13 @@ import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
 
 export class StaffService {
+  async all(){
+    const token = localStorage.getItem("access_token");
+    const config={ headers: {"Authorization" : `Bearer ${token}`} }
+
+    let res=await axios.get(ApiRoutes.STAFFS, config);
+    return res.data.data
+  }
   async create(state){
     const token = localStorage.getItem("access_token");
     const config={ headers: {"Authorization" : `Bearer ${token}`} }
@@ -14,13 +21,10 @@ export class StaffService {
       blood:state.blood,
       signature:state.signature.path
     };
-    try {
+
       let res= await axios.post(ApiRoutes.CREATE_STAFF, data,config);
       return res.data;
-    } catch (e) {
-      console.log("Staff Creation Error ",e);
-      throw new Error(e)
-    }
+
   }
 
 }

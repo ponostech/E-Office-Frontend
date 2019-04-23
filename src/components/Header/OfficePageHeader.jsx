@@ -10,7 +10,7 @@ import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
 import {withStyles} from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
-import {Grid} from "@material-ui/core";
+import { Grid, LinearProgress } from "@material-ui/core";
 
 // core components
 import {IconButton} from "@material-ui/core";
@@ -51,7 +51,7 @@ class OfficePageHeader extends React.Component {
     };
 
     render() {
-        const {classes, color} = this.props;
+        const {classes, color,loading} = this.props;
         const {anchorEl} = this.state;
         const appBarClasses = cx({
             [" " + classes[color]]: color
@@ -99,7 +99,11 @@ class OfficePageHeader extends React.Component {
                             </Drawer>
                         </Hidden>
                     </Hidden>
+
                 </Toolbar>
+                {
+                    loading ? <LinearProgress color={"primary"} variant={"indeterminate"}/> : undefined
+                }
             </AppBar>
         );
     }

@@ -11,13 +11,14 @@ import GMapDialog from "../../../../components/GmapDialog";
 import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
+import { FILE_DETAIL, FILE_DETAIL_ROUTE } from "../../../../config/routes-constant/OfficeRoutes";
 
 const styles = {
   button: {},
   actionIcon: {}
 };
 
-class HoardingApplications extends React.Component {
+class UnderProcessHoarding extends React.Component {
   hoardingService = new HoardingService();
   state = {
     openAssignment: false,
@@ -34,7 +35,6 @@ class HoardingApplications extends React.Component {
   componentDidMount() {
     const { doLoad } = this.props;
     doLoad(true)
-
     this.hoardingService.fetch()
       .then(hoardings => {
         this.setState({ hoardings: hoardings });
@@ -44,7 +44,7 @@ class HoardingApplications extends React.Component {
       })
       .then(()=>{
         doLoad(false)
-      });
+      })
   }
 
   updateTable = (action, tableState) => {
@@ -73,6 +73,11 @@ class HoardingApplications extends React.Component {
     this.setState({ openDetail: false });
   };
 
+  gotoDetails(data) {
+    const { history } = this.props;
+    history.push(`/e-office/file/${data.file.id}/detail`)
+  }
+
   render() {
     const { classes } = this.props;
     const { hoardings } = this.state;
@@ -100,17 +105,14 @@ class HoardingApplications extends React.Component {
               <div>
                 <IconButton className={classes.button} color="primary" size="small"
                             aria-label="View Details"
-                            onClick={e => this.setState({ hoarding: data.hoarding, openDetail: true })}>
+                            onClick={e => this.gotoDetails(data)}>
                   <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="secondary"
                             size="small" onClick={this.openAssignment.bind(this, value)}>
                   <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
                 </IconButton>
-                <IconButton variant="contained" className={classes.button} color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
-                </IconButton>
+
               </div>
             );
           }
@@ -175,7 +177,7 @@ class HoardingApplications extends React.Component {
       <>
         <Grid item xs={12}>
           <MUIDataTable
-            title={"Hoarding: List of New Application"}
+            title={"Hoarding: List of Under Process Application"}
             data={hoardings}
             columns={tableColumns}
             options={tableOptions}
@@ -199,6 +201,8 @@ class HoardingApplications extends React.Component {
       </>
     );
   }
+
+
 }
 
-export default withStyles(styles)(HoardingApplications);
+export default withStyles(styles)(UnderProcessHoarding);

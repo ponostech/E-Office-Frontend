@@ -8,25 +8,21 @@ export const STAFF_REGISTRATION = "/e-office/register/staff";
 
 export const ADVERTISER_LOGIN = "/auth/login";
 export const APPLY_ADVERTISER = "/register/advertiser";
-export const ADVERTISER_REGISTRATION_SUCCESS = "/register/advertiser/success";
-export const RENEW_ADVERTISER = "/advertiser/:id/renew";
 // export const ADVERTISER_DETAIL = "/advertiser/:id/detail";
 
 export const APPLY_SHOP_LICENSE = "/shop-license/new";
 export const APPLY_HOTEL_LICENSE = "/hotel/new";
 export const RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
-export const SHOP_LICENSE_DETAIL = "/shop-license/:id/detail";
 
 
 export const APPLY_BANNER = "/banner/new";
-export const APPLY_BANNER_SUCCESS = "/banner/:id/success";
 
 
 export const RESET_PASSWORD = "/reset-password";
 export const NEW_STAFF = "/staff/new";
 export const LIST_STAFF = "/staff";
 
-export const PROPOSED_KIOSK = "/dadvertiser/kiosk/propose";
+export const PROPOSED_KIOSK = "/advertiser/kiosk/propose";
 export const RENEW_KIOSK = "/advertiser/kiosk/:id/renew";
 export const KIOSK_DETAIL = "/advertiser/kiosk/:id/details";
 
@@ -46,6 +42,9 @@ export const SENT_FILE = "/e-office/sent";
 export const CLOSE_FILE = "/e-office/sent";
 export const FILE_DETAIL = "/e-office/file/:id/detail";
 
+export const FILE_DETAIL_ROUTE=(id)=>{
+  return `/e-office/file/${id}/detail`
+}
 export const NEW_RECEIPT = "/e-office/receipt/new";
 export const CREATED_RECEIPT = "/e-office/receipt/created";
 export const SENT_RECEIPT = "/e-office/receipt/sent";
@@ -53,7 +52,12 @@ export const CLOSE_RECEIPT = "/e-office/receipt/close";
 export const RECEIPT_DETAIL = "/e-office/receipt/:id/details";
 
 export const SHOP_LICENSES = "/e-office/applications/shop-license";
+
 export const HOARDINGS = "/e-office/applications/hoardings";
+export const UNDER_PROCESS_HOARDINGS = "/e-office/applications/hoardings/under-process";
+export const REJECTED_HOARDINGS = "/e-office/applications/hoardings/reject";
+export const APPROVED_HOARDINGS = "/e-office/applications/hoardings/approved";
+
 export const HOARDING_DETAILS = "/e-office/applications/hoardings/:id/detail";
 export const BANNERS = "/e-office/applications/banners";
 export const KIOSKS = "/e-office/applications/kiosks";
