@@ -24,7 +24,7 @@ class NewBannerApplications extends React.Component {
     openTakeFile: false,
     detailData: [],
     banners: [],
-    kiosk: {},
+    banner: {},
     takeMessage: "",
     errorMessage: "",
     lat: 93,
@@ -94,12 +94,12 @@ class NewBannerApplications extends React.Component {
           sort: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             const { rowIndex } = tableMeta;
-            const data = this.state.kiosks[rowIndex];
+            const data = this.state.banners[rowIndex];
             return (
               <div>
                 <IconButton className={classes.button} color="primary" size="small"
                             aria-label="View Details"
-                            onClick={e => this.setState({ kiosk: data.kiosk, openDetail: true })}>
+                            onClick={e => this.setState({ banner: data.banner, openDetail: true })}>
                   <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="secondary"

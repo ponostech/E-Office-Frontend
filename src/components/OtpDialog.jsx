@@ -19,6 +19,7 @@ class OtpDialog extends Component {
 
   handleVerify = () => {
     this.verifyOtp();
+    this.setState({otp:""})
     // this.props.onClose();
   };
 
@@ -98,7 +99,7 @@ class OtpDialog extends Component {
 
           <GridContainer justify={"space-between"} spacing={16}>
             <GridItem xs={12} md={12}>
-              <Typography variant={"h5"}>ENTER OTP</Typography>
+              <Typography variant={"h5"}>Enter One Time Password</Typography>
             </GridItem>
             <GridItem md={12}>
               <Divider style={{ marginTop: 10, marginBottom: 10 }}/>

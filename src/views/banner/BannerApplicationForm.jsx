@@ -29,6 +29,8 @@ import OtpDialog from "../../components/OtpDialog";
 import { RequestOtp } from "../../services/OtpService";
 import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
 import SweetAlert from 'react-bootstrap-sweetalert'
+import { HOME } from "../../config/routes-constant/OfficeRoutes";
+import { withRouter } from "react-router-dom";
 const style = {
   root: {
     padding: "10px 15px !important"
@@ -112,7 +114,7 @@ class BannerApplicationForm extends Component {
 
   sendOtp = () => {
     var self = this;
-    RequestOtp(this.state.phone,"OTP for Banner application")
+    RequestOtp(this.state.phone,"Banner Application")
       .then(res => {
         console.log(res);
         if (res.data.status) {
@@ -120,7 +122,7 @@ class BannerApplicationForm extends Component {
           self.setState({ otpMessage: str });
           self.setState({ openOtp: true });
         } else {
-          this.setState({ errorMessage: ErrorToString(res.data.messages) });
+          this.setState({ errorMessage: ArrayToString(res.data.messages) });
         }
       })
       .catch(err => {
@@ -187,6 +189,8 @@ class BannerApplicationForm extends Component {
   };
 
   onVerifiedOtp = (verified) => {
+    const { history } = this.props;
+
     if (verified) {
       this.setState({ submit: true });
       this.bannerService.create(this.state)
@@ -198,7 +202,7 @@ class BannerApplicationForm extends Component {
                   success
                   style={{ display: "block", marginTop: "-100px" }}
                   title={"Success"}
-                  onConfirm={() => window.location.reload()}>
+                  onConfirm={() => history.push(HOME)}>
                   {
                     res.data.messages.map(function(msg, index) {
                       return <p>
@@ -543,4 +547,4 @@ class BannerApplicationForm extends Component {
 
 }
 
-export default withStyles(style)(BannerApplicationForm);
+export default withStyles(style)(withRouter(BannerApplicationForm));
