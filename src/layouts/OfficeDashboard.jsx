@@ -64,7 +64,7 @@ class OfficeDashboard extends React.Component {
                       <Route exact path={OfficeRoutes.OBPAS} component={NewFile}/>
                       <Route exact path={OfficeRoutes.NEW_TRADE} component={CreateTrade}/>
 
-                      //office application routes
+                      {/*office application routes*/}
                       <Route exact path={OfficeRoutes.HOARDINGS} render={e=><HoardingApplications doLoad={this.doLoad}/>}/>
                       <Route exact path={OfficeRoutes.UNDER_PROCESS_HOARDINGS} render={e=><UnderProcessHoarding doLoad={this.doLoad}/>}/>
                       <Route exact path={OfficeRoutes.REJECTED_HOARDINGS} render={e=><RejectedHoardingApplications doLoad={this.doLoad}/>}/>

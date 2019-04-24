@@ -8,7 +8,6 @@ import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
 import Grid from "@material-ui/core/Grid";
 import SingletonAuth from "../../../utils/SingletonAuth";
 
-
 var timeout = null;
 class NewFile extends Component {
     constructor(props) {
@@ -139,6 +138,8 @@ class NewFile extends Component {
             case "subject":
                 value.length === 0 ? this.setState({subjectError: NewFileViewModel.REQUIRED_SUBJECT}) : this.setState({subjectError: ""});
                 break;
+            default:
+                break
         }
     };
 
@@ -146,13 +147,6 @@ class NewFile extends Component {
         const {history} = this.props;
         history.push(OfficeRoutes.FILE_DETAIL);
     };
-
-    componentDidMount() {
-        let user = new SingletonAuth().getCurrentUser();
-
-        console.log(user)
-    }
-
 
     render() {
         return (

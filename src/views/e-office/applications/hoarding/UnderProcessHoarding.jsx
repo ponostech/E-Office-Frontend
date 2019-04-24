@@ -11,7 +11,6 @@ import GMapDialog from "../../../../components/GmapDialog";
 import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
-import { FILE_DETAIL, FILE_DETAIL_ROUTE } from "../../../../config/routes-constant/OfficeRoutes";
 
 const styles = {
   button: {},

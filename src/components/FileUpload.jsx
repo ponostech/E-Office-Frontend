@@ -8,7 +8,7 @@ import DocumentIcon from "@material-ui/icons/Book";
 import ImageIcon from "@material-ui/icons/Image";
 import { BUCKET_NAME, REGION, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY } from "../Configuration";
 
-var uniqid = require('uniqid');
+// var uniqid = require('uniqid');
 const config = {
   bucketName: BUCKET_NAME,
   dirName: "office", /* optional */

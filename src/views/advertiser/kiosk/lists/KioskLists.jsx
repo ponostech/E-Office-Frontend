@@ -7,11 +7,6 @@ import KioskDetailDialog from "../KioskDetailDialog";
 import { ApiRoutes } from "../../../../config/ApiRoutes";
 import axios from "axios";
 
-const data = [
-
-];
-
-
 class KioskLists extends Component {
   state = {
     openDetail: false,
@@ -31,7 +26,6 @@ class KioskLists extends Component {
   }
 
   render() {
-    const { history } = this.props;
     const tableColumns = [
       {
         name: "id",

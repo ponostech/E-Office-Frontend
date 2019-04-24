@@ -14,7 +14,8 @@ const menu = (props) => {
         <NavLink to={routes.HOME}><IconButton color="primary"><Icon>apps</Icon></IconButton></NavLink>
         <NavLink to={routes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
         <CustomDropdown
-          buttonIcon={Folder}
+          // buttonIcon={Folder}
+            buttonText="File"
           buttonProps={{
             round: true,
             style: { marginBottom: "0" },
@@ -27,7 +28,6 @@ const menu = (props) => {
             { title: "Archived", link: routes.CLOSE_FILE }
           ]}
           linkClick={props.linkClick}
-          buttonText={""}
           buttonProps={{ color: "transparent" }}/>
 
         <CustomDropdown

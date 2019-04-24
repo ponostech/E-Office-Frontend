@@ -23,7 +23,6 @@ import CardFooter from "../../components/Card/CardFooter.jsx";
 import axios from "axios";
 import {ApiRoutes} from "../../config/ApiRoutes";
 import SingletonAuth from "../../utils/SingletonAuth";
-import Typography from "@material-ui/core/Typography";
 
 class LoginView extends React.Component {
     state = {
