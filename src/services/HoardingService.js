@@ -51,11 +51,7 @@ export class HoardingService {
     let hoardings = [];
     try {
       if (status) {
-        const res = await axios.get(ApiRoutes.STAFF_HOARDING, {
-          params: {
-            status
-          }
-        }, config);
+        const res = await axios.get(ApiRoutes.STAFF_HOARDING+`?status=${status}`, config);
         hoardings = res.data.data.hoarding_applications;
       } else {
         const defRes = await axios.get(ApiRoutes.STAFF_HOARDING, config);

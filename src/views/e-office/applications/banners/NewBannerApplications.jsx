@@ -9,6 +9,7 @@ import GMapDialog from "../../../../components/GmapDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import { BannerService } from "../../../../services/BannerService";
+import moment from "moment";
 
 const styles = {
   button: {},
@@ -114,8 +115,10 @@ class NewBannerApplications extends React.Component {
             );
           }
         }
-      },
-      {
+      }, {
+        name: "created_at",
+        label: "DATE"
+      },{
         name: "file",
         label: "FILE NO.",
         options: {
@@ -135,21 +138,13 @@ class NewBannerApplications extends React.Component {
             );
           }
         }
-      }, {
-        name: "created_at",
-        label: "DATE"
-      }, {
-        name: "applicant",
+      },{
+        name: "name",
         label: "APPLICANT",
-        options: {
-          customBodyRender: (applicant, tableMeta, updateValue) => {
-            return (
-              applicant.advertiser.name
-            );
-          }
-        }
+      }, {
+        name: "advertisement_type",
+        label: "ADVERTISEMENT TYPE"
       }
-
 
     ];
 
