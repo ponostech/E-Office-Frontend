@@ -6,23 +6,23 @@ export class BannerService {
   async create(state) {
     let data = {
       name: state.name,
-      applicant_type: state.type.value,
+      applicant_type:state.type.value,
       phone: state.phone,
-      local_council_id: state.localCouncil.value,
+      local_council_id:state.localCouncil.value,
       advertisement_type: state.displayType.value,
-      advertisements: state.bannerDetails,
-      advertisement_count: state.bannerDetails.length,
-      address: state.address,
-      details: state.details,
-      status: 0,
+      advertisements:state.bannerDetails,
+      advertisement_count:state.bannerDetails.length,
+      address:state.address,
+      details:state.details,
+      status:"new",
       signature: state.signature.path,
       documents: state.uploadDocuments
     };
     try {
-      let res = await axios.post(ApiRoutes.CREATE_BANNER, data);
+      let res=await axios.post(ApiRoutes.CREATE_BANNER, data);
       return res;
     } catch (e) {
-      console.log("Error " + e);
+      console.log("Error "+e);
     }
   }
 
@@ -42,8 +42,8 @@ export class BannerService {
         const defRes = await axios.get(ApiRoutes.STAFF_BANNER, config);
         banners = defRes.data.data.banners;
       }
-      console.log(banners);
       return banners;
+
     } catch (error) {
       console.error(error);
       throw new Error(error);
