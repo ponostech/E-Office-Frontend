@@ -14,7 +14,7 @@ export class BannerService {
       advertisement_count:state.bannerDetails.length,
       address:state.address,
       details:state.details,
-      status:0,
+      status:"new",
       signature: state.signature.path,
       documents: state.uploadDocuments
     };

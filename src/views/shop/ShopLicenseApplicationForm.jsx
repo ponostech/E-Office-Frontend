@@ -860,7 +860,7 @@ class ShopLicenseApplicationForm extends Component {
         }} isMarkerShown={true}/>
 
         <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
-                   purposed={"Resend OTP for Shop License Application"}
+                   purposed={"Shop License Application"}
                    onClose={(value) => {
                      this.setState({ openOtp: false });
                      this.onVerifiedOtp(value);
