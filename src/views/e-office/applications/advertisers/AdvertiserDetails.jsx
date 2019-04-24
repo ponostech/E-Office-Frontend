@@ -1,16 +1,7 @@
 import React, { Component } from "react";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import GridItem from "../../../../components/Grid/GridItem";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Chip,
-  Typography
-} from "@material-ui/core";
-import AdvertiserApplications from "./AdvertiserApplications";
+import { Button, Card, CardActions, CardContent, CardHeader, Chip, Typography } from "@material-ui/core";
 
 class AdvertiserDetails extends Component {
   render() {
@@ -35,7 +26,6 @@ class AdvertiserDetails extends Component {
           </Card>
         </GridItem>
         <GridItem xs={12} sm={12} md={9}>
-          {<AdvertiserApplications/>}
         </GridItem>
       </GridContainer>
     );
