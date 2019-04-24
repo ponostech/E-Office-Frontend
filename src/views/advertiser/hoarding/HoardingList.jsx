@@ -42,7 +42,7 @@ class HoardingList extends Component {
       .catch(err => {
         console.error(err);
       })
-      .then(()=>{
+      .finally(()=>{
         doLoadFinish()
       })
   }

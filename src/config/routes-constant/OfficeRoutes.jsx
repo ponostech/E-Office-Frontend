@@ -1,5 +1,6 @@
 export const ROOT = "/";
 export const LOGIN = "/auth/login";
+export const LOGOUT = "/auth/logout";
 export const HOME = "/home";
 export const FORM = "/form";
 export const E_OFFICE = "/e-office/desk";
@@ -53,14 +54,23 @@ export const RECEIPT_DETAIL = "/e-office/receipt/:id/details";
 
 export const SHOP_LICENSES = "/e-office/applications/shop-license";
 
-export const HOARDINGS = "/e-office/applications/hoardings";
+export const NEW_HOARDINGS = "/e-office/applications/hoardings";
 export const UNDER_PROCESS_HOARDINGS = "/e-office/applications/hoardings/under-process";
 export const REJECTED_HOARDINGS = "/e-office/applications/hoardings/reject";
 export const APPROVED_HOARDINGS = "/e-office/applications/hoardings/approved";
 
+export const NEW_KIOSKS = "/e-office/applications/kiosks/new";
+export const UNDER_PROCESS_KIOSKS = "/e-office/applications/kiosks/under-process";
+export const APPROVED_KIOSKS = "/e-office/applications/kiosks/approved";
+export const REJECTED_KIOSKS = "/e-office/applications/kiosks/rejected";
+
+export const NEW_BANNER = "/e-office/applications/banner/new";
+export const UNDER_PROCESS_BANNER = "/e-office/applications/banner/under-process";
+export const APPROVED_BANNER = "/e-office/applications/banner/approved";
+export const REJECTED_BANNER = "/e-office/applications/banner/rejected";
+
 export const HOARDING_DETAILS = "/e-office/applications/hoardings/:id/detail";
 export const BANNERS = "/e-office/applications/banners";
-export const KIOSKS = "/e-office/applications/kiosks";
 export const OBPAS = "/e-office/applications/obpas";
 export const NEW_TRADE = "/e-office/admin/new-trade";
 

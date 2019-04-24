@@ -21,6 +21,8 @@ import GridContainer from "../Grid/GridContainer";
 import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import Icon from "@material-ui/core/es/Icon";
 import { authContext, Consumer } from "../../context/AuthContext";
+import axios from "axios";
+import { ApiRoutes } from "../../config/ApiRoutes";
 
 class AdvertiserHeader extends React.Component {
   constructor(props) {
@@ -54,6 +56,20 @@ class AdvertiserHeader extends React.Component {
     // }
   }
 
+  logout=()=>{
+    const { history } = this.props;
+    const token = localStorage.getItem("access_token");
+    const config = { headers: { "Authorization": `Bearer ${token}` } };
+    axios.post(ApiRoutes.LOGOUT_ROUTE, {}, config)
+      .then(res => {
+        if (res.data.status) {
+          history.push(OfficeRoutes.LOGIN);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   handleHoarding = (path) => {
     const { history } = this.props;
     history.push(path);
@@ -111,6 +127,7 @@ class AdvertiserHeader extends React.Component {
           }}>
             <SettingIcon/>
           </IconButton>
+          <IconButton onClick={this.logout.bind(this)} color="error"><Icon>power_settings_new</Icon></IconButton>
           <NavLink to={OfficeRoutes.HOME}><IconButton color="default"><Icon>apps</Icon></IconButton></NavLink>
 
         </div>

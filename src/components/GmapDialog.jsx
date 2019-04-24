@@ -68,8 +68,12 @@ class GMapDialog extends Component {
   componentWillReceiveProps(nextProps, nextContext) {
     const lat = nextProps.lat;
     const lng = nextProps.lng;
+    const center = {
+      lat,
+      lng
+    };
     if (lat && lng) {
-      this.setState({lat:lat,lng:lng})
+      this.setState({lat,lng,center})
     }
   }
 
@@ -157,9 +161,9 @@ class GMapDialog extends Component {
 
         </DialogContent>
         <DialogActions>
-          <Button name={"confirm"} variant={"contained"} color={"primary"}
+          <Button name={"confirm"} variant={"outlined"} color={"primary"}
                   onClick={this.handleConfirm.bind(this)}>Confirm</Button>
-          <Button name={"close"} variant={"contained"} color={"secondary"}
+          <Button name={"close"} variant={"outlined"} color={"secondary"}
                   onClick={this.handleConfirm.bind(this)}>Close</Button>
         </DialogActions>
       </Dialog>
