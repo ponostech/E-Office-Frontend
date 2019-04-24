@@ -33,6 +33,7 @@ import UnderProcessKiosks from "../views/e-office/applications/kiosk/UnderProces
 import ApprovedKiosks from "../views/e-office/applications/kiosk/ApprovedKiosks";
 import RejectedKiosks from "../views/e-office/applications/kiosk/RejectedKiosks";
 import NewBannerApplications from "../views/e-office/applications/banners/NewBannerApplications";
+import UnderProcessBanner from "../views/e-office/applications/banners/UnderProcessBanner";
 
 class OfficeDashboard extends React.Component {
   constructor(props) {
@@ -90,7 +91,7 @@ class OfficeDashboard extends React.Component {
 
           {/*Banner applications route*/}
           <Route exact path={OfficeRoutes.NEW_BANNER} render={e => <NewBannerApplications doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.UNDER_PROCESS_BANNER} render={e => <NewKioskApplications doLoad={this.doLoad}/>}/>
+          <Route exact path={OfficeRoutes.UNDER_PROCESS_BANNER} render={e => <UnderProcessBanner doLoad={this.doLoad}/>}/>
           <Route exact path={OfficeRoutes.APPROVED_BANNER} render={e => <NewKioskApplications doLoad={this.doLoad}/>}/>
           <Route exact path={OfficeRoutes.REJECTED_BANNER} render={e => <NewKioskApplications doLoad={this.doLoad}/>}/>
           {/*end Banner applications route*/}

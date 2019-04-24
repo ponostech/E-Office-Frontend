@@ -32,11 +32,7 @@ export class BannerService {
     let banners = [];
     try {
       if (status) {
-        const res = await axios.get(ApiRoutes.STAFF_BANNER, {
-          params: {
-            status
-          }
-        }, config);
+        const res = await axios.get(ApiRoutes.STAFF_BANNER+`?status=${status}`,  config);
         banners = res.data.data.banners;
       } else {
         const defRes = await axios.get(ApiRoutes.STAFF_BANNER, config);

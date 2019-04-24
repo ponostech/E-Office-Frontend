@@ -1,48 +1,48 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
 import Grid from "@material-ui/core/Grid";
-import { Icon, Tooltip } from "@material-ui/core";
+import { Icon } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-import PinDrop from "@material-ui/icons/PinDrop";
 import Assignment from "../ApplicationAssignmentDialog";
-import { HoardingService } from "../../../../services/HoardingService";
 import GMapDialog from "../../../../components/GmapDialog";
-import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
-import { withRouter } from "react-router-dom";
+import { BannerService } from "../../../../services/BannerService";
 
 const styles = {
   button: {},
   actionIcon: {}
 };
 
-class UnderProcessHoarding extends React.Component {
-  hoardingService = new HoardingService();
+class UnderProcessBanner extends React.Component {
+  bannerService = new BannerService();
   state = {
     openAssignment: false,
     openDetail: false,
     openMap: false,
     openTakeFile: false,
     detailData: [],
-    hoardings: [],
-    hoarding: {},
+    banners: [],
+    banner: {},
     takeMessage: "",
-    errorMessage: ""
+    errorMessage: "",
+    lat: 93,
+    lng: 98
   };
 
   componentDidMount() {
     const { doLoad } = this.props;
     doLoad(true);
-    this.hoardingService.fetch("under-process")
-      .then(hoardings => {
-        this.setState({ hoardings: hoardings });
+
+    this.bannerService.fetch("under-process")
+      .then(banners => {
+        this.setState({ banners });
       })
       .catch(err => {
         this.setState({ errorMessage: err.toString() });
       })
-      .then(() => {
+      .finally(() => {
         doLoad(false);
       });
   }
@@ -58,7 +58,6 @@ class UnderProcessHoarding extends React.Component {
   };
   confirmTake = (e) => {
     const { fileDetail } = this.state;
-    console.log(fileDetail);
     this.setState({ openTakeFile: false });
     this.setState({ takeMessage: "You have taken the file" });
   };
@@ -73,14 +72,9 @@ class UnderProcessHoarding extends React.Component {
     this.setState({ openDetail: false });
   };
 
-  gotoDetails(data) {
-    const { history } = this.props;
-    history.push(`/e-office/file/${data.file.id}/detail`);
-  }
-
   render() {
     const { classes } = this.props;
-    const { hoardings } = this.state;
+    const { banners } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -100,25 +94,30 @@ class UnderProcessHoarding extends React.Component {
           sort: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             const { rowIndex } = tableMeta;
-            const data = this.state.hoardings[rowIndex];
+            const data = this.state.banners[rowIndex];
             return (
               <div>
                 <IconButton className={classes.button} color="primary" size="small"
                             aria-label="View Details"
-                            onClick={e => this.gotoDetails(data)}>
+                            onClick={e => this.setState({ banner: data.banner, openDetail: true })}>
                   <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="secondary"
                             size="small" onClick={this.openAssignment.bind(this, value)}>
                   <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
                 </IconButton>
-
+                <IconButton variant="contained" className={classes.button} color="primary"
+                            size="small" onClick={this.takeFile.bind(this, data)}>
+                  <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
+                </IconButton>
               </div>
             );
           }
         }
-      },
-      {
+      }, {
+        name: "created_at",
+        label: "DATE"
+      },{
         name: "file",
         label: "FILE NO.",
         options: {
@@ -138,37 +137,12 @@ class UnderProcessHoarding extends React.Component {
             );
           }
         }
-      }, {
-        name: "created_at",
-        label: "DATE"
-      }, {
-        name: "applicant",
+      },{
+        name: "name",
         label: "APPLICANT",
-        options: {
-          customBodyRender: (applicant, tableMeta, updateValue) => {
-            return (
-              applicant.advertiser.name
-            );
-          }
-        }
-      },
-      {
-        name: "hoarding",
-        label: "LOCATION",
-        options: {
-          customBodyRender: (hoarding, tableMeta, updateValue) => {
-            let view = (
-              <Tooltip title={"Click here to view location"}>
-                <IconButton onClick={e => this.setState({ openMap: true })}>
-                  <PinDrop/>
-                </IconButton>
-              </Tooltip>
-            );
-            return (
-              view
-            );
-          }
-        }
+      }, {
+        name: "advertisement_type",
+        label: "ADVERTISEMENT TYPE"
       }
 
     ];
@@ -177,22 +151,21 @@ class UnderProcessHoarding extends React.Component {
       <>
         <Grid item xs={12}>
           <MUIDataTable
-            title={"Hoarding: List of Under Process Application"}
-            data={hoardings}
+            title={"BANNER: List of Under Process Application"}
+            data={banners}
             columns={tableColumns}
             options={tableOptions}
           />
         </Grid>
-        <HoardingDetailDialog
-          hoarding={this.state.hoarding}
-          open={this.state.openDetail} onClose={(e) => this.setState({ openDetail: false })}/>
+
         <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
                     props={this.props} staffs={this.state.staffs}/>
-        <GMapDialog open={this.state.openMap} onClose={() => this.setState({ openMap: false })}
+        <GMapDialog open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
+                    onClose={() => this.setState({ openMap: false })}
                     isMarkerShown={true}
         />
         <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to take this file ?"}
-                       onCancel={() => this.setState({ openTaskFile: false })} open={this.state.openTakeFile}
+                       onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
                        onConfirm={this.confirmTake.bind(this)}/>
         <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
                         onClose={e => this.setState({ takeMessage: "" })} open={Boolean(this.state.takeMessage)}/>
@@ -201,8 +174,6 @@ class UnderProcessHoarding extends React.Component {
       </>
     );
   }
-
-
 }
 
-export default withStyles(styles)(withRouter(UnderProcessHoarding));
+export default withStyles(styles)(UnderProcessBanner);
