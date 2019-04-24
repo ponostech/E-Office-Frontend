@@ -1,12 +1,11 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
+import { ErrorToString } from "../utils/ErrorUtil";
 
 export class KioskService {
   async create(state) {
     const token = localStorage.getItem("access_token");
-    console.log(token);
     const config = { headers: { "Authorization": `Bearer ${token}` } };
-
     let data = {
       local_council_id: state.localCouncil.value,
       area_category_id:state.category.value,
@@ -30,12 +29,42 @@ export class KioskService {
     return res;
   }
 
-  async get(advertiserId) {
+  async get() {
+    const token = localStorage.getItem("access_token");
+    const config = { headers: { "Authorization": `Bearer ${token}` } };
     try {
-      const res = await axios.get(ApiRoutes.GET_ADVERTISER_HOARDING, { advertiserId });
-      return res.data;
+      const res = await axios.get(ApiRoutes.GET_ADVERTISER_KIOSKS, config );
+      if (res.status) {
+        return res.data.data.kiosk_applications;
+      }else{
+        throw new Error("Error:Server problem")
+      }
     } catch (error) {
-      console.log("error", error);
+      console.error("error", error);
+      throw new Error(error)
+    }
+  }
+  async fetch(status) {
+    const token = localStorage.getItem("access_token");
+    const config = { headers: { "Authorization": `Bearer ${token}` } };
+    let kiosks = [];
+    try {
+      if (status) {
+        const res = await axios.get(ApiRoutes.STAFF_KIOSK, {
+          params: {
+            status
+          }
+        }, config);
+        kiosks = res.data.data.kiosk_applications;
+      } else {
+        const defRes = await axios.get(ApiRoutes.STAFF_KIOSK, config);
+        kiosks = defRes.data.data.kiosk_applications;
+      }
+      console.log(kiosks)
+      return kiosks;
+    } catch (error) {
+      console.error(error);
+      throw new Error(error);
     }
   }
 }

@@ -22,13 +22,27 @@ export class AdvertiserService {
       console.log("Error "+e);
     }
   }
-
-  async getAdvertiser(id) {
+  async fetch(status) {
+    const token = localStorage.getItem("access_token");
+    const config = { headers: { "Authorization": `Bearer ${token}` } };
+    let advertisers = [];
     try {
-      const res = await axios.get(ApiRoutes.GET_ADVERTISER_DETAIL, { id });
-      return res.data;
+      if (status) {
+        const res = await axios.get(ApiRoutes.STAFF_ADVERTISER, {
+          params: {
+            status
+          }
+        }, config);
+        kiosks = res.data.data.kiosk_applications;
+      } else {
+        const defRes = await axios.get(ApiRoutes.STAFF_ADVERTISER, config);
+        kiosks = defRes.data.data.kiosk_applications;
+      }
+      console.log(kiosks)
+      return kiosks;
     } catch (error) {
-      console.log("error", error);
+      console.error(error);
+      throw new Error(error);
     }
   }
 }

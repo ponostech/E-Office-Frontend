@@ -14,13 +14,7 @@ const menu = (props) => {
         <NavLink to={routes.HOME}><IconButton color="primary"><Icon>apps</Icon></IconButton></NavLink>
         <NavLink to={routes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
         <CustomDropdown
-          // buttonIcon={Folder}
-            buttonText="File"
-          buttonProps={{
-            round: true,
-            style: { marginBottom: "0" },
-            color: "primary"
-          }}
+
           dropdownList={[
             { title: "Create New", link: routes.NEW_FILE },
             { title: "List Created", link: routes.CREATED_FILES },
@@ -28,6 +22,7 @@ const menu = (props) => {
             { title: "Archived", link: routes.CLOSE_FILE }
           ]}
           linkClick={props.linkClick}
+          buttonText={"File"}
           buttonProps={{ color: "transparent" }}/>
 
         <CustomDropdown
@@ -43,7 +38,7 @@ const menu = (props) => {
           buttonProps={{ color: "transparent" }}/>
        <CustomDropdown
           dropdownList={[
-            { title: "New Application", link: routes.HOARDINGS },
+            { title: "New Application", link: routes.NEW_HOARDINGS },
             { title: "Under Process", link: routes.UNDER_PROCESS_HOARDINGS },
             { title: "Approved List", link: routes.APPROVED_HOARDING },
             { title: "Reject List", link: routes.REJECTED_HOARDING }
@@ -53,10 +48,10 @@ const menu = (props) => {
           buttonProps={{ color: "transparent" }}/>
         <CustomDropdown
           dropdownList={[
-            { title: "New Application", link: routes.KIOSKS },
-            { title: "Under Process", link: routes.HOARDINGS },
-            { title: "Approved List", link: routes.SHOP_LICENSES },
-            { title: "Reject List", link: routes.KIOSKS }
+            { title: "New Application", link: routes.NEW_KIOSKS },
+            { title: "Under Process", link: routes.UNDER_PROCESS_KIOSKS },
+            { title: "Approved List", link: routes.APPROVED_KIOSKS },
+            { title: "Reject List", link: routes.REJECTED_KIOSKS }
 
           ]}
           linkClick={props.linkClick}
@@ -74,10 +69,10 @@ const menu = (props) => {
           buttonProps={{ color: "transparent" }}/>
         <CustomDropdown
           dropdownList={[
-            { title: "New Application", link: routes.BANNERS },
-            { title: "Under Process", link: routes.HOARDINGS },
-            { title: "Approved List", link: routes.SHOP_LICENSES },
-            { title: "Reject List", link: routes.KIOSKS }
+            { title: "New Application", link: routes.NEW_BANNER },
+            { title: "Under Process", link: routes.UNDER_PROCESS_BANNER },
+            { title: "Approved List", link: routes.APPROVED_BANNER },
+            { title: "Reject List", link: routes.REJECTED_BANNER }
 
           ]}
           linkClick={props.linkClick}

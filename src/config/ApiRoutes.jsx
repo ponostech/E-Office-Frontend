@@ -13,6 +13,12 @@ export class ApiRoutes {
 
   static HOARDINGS="/hoardings";
 
+  static STAFF_KIOSK="/kiosks/applications";
+  static STAFF_HOARDING="/hoardings/applications";
+
+  static STAFF_ADVERTISER="/hoardings/applications";
+  static STAFF_BANNER="/banners";
+
 
   static NEW_HOARDING="/advertiser/hoardings";
   static NEW_KIOSK="/advertiser/kiosks";

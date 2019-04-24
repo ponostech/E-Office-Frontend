@@ -28,7 +28,9 @@ class HoardingApplications extends React.Component {
     hoardings: [],
     hoarding: {},
     takeMessage: "",
-    errorMessage: ""
+    errorMessage: "",
+    lat: 93,
+    lng:98
   };
 
   componentDidMount() {
@@ -42,7 +44,7 @@ class HoardingApplications extends React.Component {
       .catch(err => {
         this.setState({ errorMessage: err.toString() });
       })
-      .then(()=>{
+      .finally(()=>{
         doLoad(false)
       });
   }
@@ -155,9 +157,12 @@ class HoardingApplications extends React.Component {
         label: "LOCATION",
         options: {
           customBodyRender: (hoarding, tableMeta, updateValue) => {
+            const lat = Number(hoarding.latitude);
+            const lng = Number(hoarding.longitude);
+
             let view = (
               <Tooltip title={"Click here to view location"}>
-                <IconButton onClick={e => this.setState({ openMap: true })}>
+                <IconButton onClick={e => this.setState({ openMap: true,lat:lat ,lng:lng})}>
                   <PinDrop/>
                 </IconButton>
               </Tooltip>
@@ -186,11 +191,11 @@ class HoardingApplications extends React.Component {
           open={this.state.openDetail} onClose={(e) => this.setState({ openDetail: false })}/>
         <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
                     props={this.props} staffs={this.state.staffs}/>
-        <GMapDialog open={this.state.openMap} onClose={() => this.setState({ openMap: false })}
+        <GMapDialog open={this.state.openMap} lat={this.state.lat} lng={this.state.lng} onClose={() => this.setState({ openMap: false })}
                     isMarkerShown={true}
         />
         <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to take this file ?"}
-                       onCancel={() => this.setState({ openTaskFile: false })} open={this.state.openTakeFile}
+                       onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
                        onConfirm={this.confirmTake.bind(this)}/>
         <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
                         onClose={e => this.setState({ takeMessage: "" })} open={Boolean(this.state.takeMessage)}/>

@@ -14,7 +14,7 @@ export class BannerService {
       advertisement_count:state.bannerDetails.length,
       address:state.address,
       details:state.details,
-      status:0,
+      status:"new",
       signature: state.signature.path,
       documents: state.uploadDocuments
     };
@@ -26,5 +26,28 @@ export class BannerService {
     }
   }
 
+  async fetch(status) {
+    const token = localStorage.getItem("access_token");
+    const config = { headers: { "Authorization": `Bearer ${token}` } };
+    let banners = [];
+    try {
+      if (status) {
+        const res = await axios.get(ApiRoutes.STAFF_BANNER, {
+          params: {
+            status
+          }
+        }, config);
+        banners = res.data.data.banners;
+      } else {
+        const defRes = await axios.get(ApiRoutes.STAFF_BANNER, config);
+        banners = defRes.data.data.banners;
+      }
+      return banners;
+
+    } catch (error) {
+      console.error(error);
+      throw new Error(error);
+    }
+  }
 
 }
