@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from 'axios';
-import {IconButton, Icon, Grid} from "@material-ui/core";
+import {Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 
@@ -24,7 +24,7 @@ class DeskFiles extends Component {
         axios.get('/files/desk')
             .then(response => {
                 this.setState({
-                    tableData: [{id: 1, number: "Aiden Lloyd",subject: "Business Consultant", branch: "Dallas"}]
+                    tableData: [{id: 1, number: "Aiden Lloyd", subject: "Business Consultant", branch: "Dallas"}]
                 })
             })
             .catch(error => {
@@ -73,15 +73,21 @@ class DeskFiles extends Component {
             }
         ];
 
-        return (
-            <>
-                <Grid item xs={12}>
-                    <MUIDataTable title={"Desk: List of Files"} data={tableData} columns={tableColumns}
-                                  options={tableOptions}
-                    />
-                </Grid>
-            </>
-        );
+        let files = <p style={{textAlign:'center', width: '100%', fontSize: 15}}>Something Went Wrong!</p>;
+
+        if (!this.state.error) {
+            files = (
+                <>
+                    <Grid item xs={12}>
+                        <MUIDataTable title={"Desk: List of Files"} data={tableData} columns={tableColumns}
+                                      options={tableOptions}
+                        />
+                    </Grid>
+                </>
+            );
+        }
+
+        return files;
     }
 }
 

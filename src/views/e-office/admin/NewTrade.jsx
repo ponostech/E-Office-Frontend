@@ -1,20 +1,5 @@
 import React, {Component} from "react";
-import {
-    Button,
-    Card,
-    CardActions,
-    CardHeader,
-    CardContent,
-    Checkbox,
-    Divider,
-    FormControl,
-    FormControlLabel,
-    InputLabel,
-    MenuItem,
-    OutlinedInput,
-    Select,
-    TextField
-} from "@material-ui/core";
+import {Button, Card, CardActions, CardHeader, Divider, TextField} from "@material-ui/core";
 import TradeViewModel from "../../model/TradeViewModel";
 import axios from "axios";
 import {ApiRoutes} from "../../../config/ApiRoutes";
@@ -36,15 +21,14 @@ class NewTrade extends Component {
             flas: ["No", "Yes"],
             success: false,
             error: false,
+
             //dialog variable
             submit: false,
             errorMessage: "",
-
             prestine: true,
             flas: [
-                { value: "No", label: "No" },
-                { value: "Yes", label: "Yes" },
-
+                {value: "No", label: "No"},
+                {value: "Yes", label: "Yes"},
             ],
         };
 
@@ -52,7 +36,6 @@ class NewTrade extends Component {
     }
 
     componentDidMount() {
-
         this.documentService.get("advertiser")
             .then(res => {
                 if (res.status) {
@@ -63,7 +46,6 @@ class NewTrade extends Component {
             .catch(err => {
                 this.setState({errorMessage: err.toString()});
             });
-
     }
 
     isInvalid = () => {
@@ -77,7 +59,8 @@ class NewTrade extends Component {
             name: this.state.name,
             rate: this.state.rate,
             fla: this.state.fla,
-                  };
+        };
+
         //check validity of data
         if (this.isInvalid()) {
             this.setState({errorMessage: "There is an error"});
@@ -112,7 +95,7 @@ class NewTrade extends Component {
                     name: "",
                     rate: "",
                     type: "",
-                    });
+                });
                 break;
             default:
                 break;
@@ -123,7 +106,7 @@ class NewTrade extends Component {
         const {name, value} = e.target;
         switch (name) {
             case "name":
-                value.length === 0 ? this.setState({nameError:TradeViewModel.REQUIRED_NAME}) : this.setState({nameError: ""});
+                value.length === 0 ? this.setState({nameError: TradeViewModel.REQUIRED_NAME}) : this.setState({nameError: ""});
                 break;
             case "rate":
                 value.length === 0 ? this.setState({rateError: TradeViewModel.REQUIRED_SUBJECT}) : this.setState({tradeError: ""});
@@ -169,12 +152,13 @@ class NewTrade extends Component {
     handleSelect = (identifier, value) => {
         switch (identifier) {
             case "fla":
-                this.setState({ type: value });
+                this.setState({type: value});
                 break;
             default:
                 break;
         }
     };
+
     render() {
         return (
             <Grid container direction="row-reverse" justify="center" alignItems="flex-start">
@@ -185,71 +169,72 @@ class NewTrade extends Component {
                         </CardHeader>
                     </Card>
                 </Grid>
-                            <Grid container spacing={16}>
-                                <Grid item xs={12} sm={12} md={12}>
-                                    <Divider style={{marginBottom: 10}}/>
-                                </Grid>
-                                <Grid item xs={12} sm={12} md={12}>
-                                    <TextField
-                                        value={this.state.name}
-                                        error={Boolean(this.state.nameError)}
-                                        helperText={this.state.nameError}
-                                        name={"name"}
-                                        margin={"dense"}
-                                        required={true}
-                                        fullWidth={true}
-                                        variant={"outlined"}
-                                        label={"Name of Trade"}
-                                        onBlur={this.handleRequired.bind(this)}
-                                        onChange={this.handleChange.bind(this)}
-                                        placeholder={"Name of Trade"}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={12} md={12}>
-                                    <TextField
-                                      value={this.state.rate}
-                                      error={Boolean(this.state.rateError)}
-                                      helperText={this.state.rateError}
-                                      name={"rate"}
-                                      margin={"dense"}
-                                      required={true}
-                                      fullWidth={true}
-                                      variant={"outlined"}
-                                      label={"Rate"}
-                                      onBlur={this.handleRequired.bind(this)}
-                                      onChange={this.handleChange.bind(this)}
-                                      placeholder={"Rate"}
-                                    />
-                                </Grid>
-                                <GridItem xs={12} sm={12} md={12}>
-                                    <OfficeSelect
-                                      variant={"outlined"}
-                                      margin={"dense"}
-                                      value={this.state.fla}
-                                      required={true}
-                                      fullWidth={true}
-                                      name={"fla"}
-                                      error={!!this.state.typeError}
-                                      onBlur={this.handleSelectBlur.bind(this, "fla")}
-                                      onChange={this.handleSelect.bind(this, "fla")}
-                                      ClearAble={true}
-                                      label={TradeViewModel.FLA_TYPE}
-                                      helperText={this.state.flaError}
-                                      options={this.state.fla}/>
-                                </GridItem>
-                        <CardActions>
-                            <Grid container justify={"flex-end"}>
-                                <Grid item>
-                                    <Button style={{margin:6}} name="submit" disabled={!this.state.agree}
-                                            onClick={this.handleClick.bind(this)}
-                                            variant="contained" color="primary">Submit</Button>
-                                    <Button style={{margin:6}} name="cancel" onClick={this.handleClick.bind(this)} variant="contained"
-                                            color="secondary">Reset</Button>
-                                    <br/>
-                                    <br/>
-                                </Grid>
+                <Grid container spacing={16}>
+                    <Grid item xs={12} sm={12} md={12}>
+                        <Divider style={{marginBottom: 10}}/>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12}>
+                        <TextField
+                            value={this.state.name}
+                            error={Boolean(this.state.nameError)}
+                            helperText={this.state.nameError}
+                            name={"name"}
+                            margin={"dense"}
+                            required={true}
+                            fullWidth={true}
+                            variant={"outlined"}
+                            label={"Name of Trade"}
+                            onBlur={this.handleRequired.bind(this)}
+                            onChange={this.handleChange.bind(this)}
+                            placeholder={"Name of Trade"}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12}>
+                        <TextField
+                            value={this.state.rate}
+                            error={Boolean(this.state.rateError)}
+                            helperText={this.state.rateError}
+                            name={"rate"}
+                            margin={"dense"}
+                            required={true}
+                            fullWidth={true}
+                            variant={"outlined"}
+                            label={"Rate"}
+                            onBlur={this.handleRequired.bind(this)}
+                            onChange={this.handleChange.bind(this)}
+                            placeholder={"Rate"}
+                        />
+                    </Grid>
+                    <GridItem xs={12} sm={12} md={12}>
+                        <OfficeSelect
+                            variant={"outlined"}
+                            margin={"dense"}
+                            value={this.state.fla}
+                            required={true}
+                            fullWidth={true}
+                            name={"fla"}
+                            error={!!this.state.typeError}
+                            onBlur={this.handleSelectBlur.bind(this, "fla")}
+                            onChange={this.handleSelect.bind(this, "fla")}
+                            ClearAble={true}
+                            label={TradeViewModel.FLA_TYPE}
+                            helperText={this.state.flaError}
+                            options={this.state.fla}/>
+                    </GridItem>
+                    <CardActions>
+                        <Grid container justify={"flex-end"}>
+                            <Grid item>
+                                <Button style={{margin: 6}} name="submit" disabled={!this.state.agree}
+                                        onClick={this.handleClick.bind(this)}
+                                        variant="contained" color="primary">Submit</Button>
+                                <Button style={{margin: 6}} name="cancel" onClick={this.handleClick.bind(this)}
+                                        variant="contained"
+                                        color="secondary">Reset</Button>
+                                <br/>
+                                <br/>
                             </Grid>
-                        </CardActions>
+                        </Grid>
+                    </CardActions>
                 </Grid>
                 <OfficeSnackbar variant={"success"} open={this.state.success}
                                 onClose={(e) => this.setState({success: ""})}
