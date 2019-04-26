@@ -61,7 +61,7 @@ class OfficeDashboard extends React.Component {
           <Route exact path={OfficeRoutes.CREATED_RECEIPT} component={CreatedReceipt}/>
           <Route exact path={OfficeRoutes.SENT_RECEIPT} component={SentReceipt}/>
 
-          <Route exact path={OfficeRoutes.NEW_FILE} component={NewFile}/>
+          <Route exact path={OfficeRoutes.NEW_FILE} render={e => <NewFile doLoad={this.doLoad}/>}/>
           <Route path={OfficeRoutes.FILE_DETAIL} component={FileDetail}/>
           <Route exact path={OfficeRoutes.CREATED_FILES} component={CreatedFiles}/>
           <Route exact path={OfficeRoutes.SENT_FILE} component={SentFiles}/>
