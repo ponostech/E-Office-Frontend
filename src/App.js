@@ -3,7 +3,7 @@ import { createBrowserHistory } from "history";
 import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
 import { ApiRoutes } from "./config/ApiRoutes";
 import axios from "axios";
-import { Provider } from "./context/AuthContext";
+import { authContext, Provider } from "./context/AuthContext";
 import { Route, Router, Switch } from "react-router-dom";
 import AdvertiserDashboard from "./layouts/AdvertiserDashboard";
 import { StaffRoute } from "./routes/StaffRoute";
@@ -25,16 +25,30 @@ const hist = createBrowserHistory();
 
 
 class App extends Component {
-  state = {
-    currentUser: {
-      email: "kimi@mail.com"
-    },
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentUser: {
+      },
 
-    access_token: "",
-    authenticate: false,
-    setUser: ({ user }) => this.setState({ currentUser: user }),
-    setToken: ({ token }) => this.setState({ access_token: token })
-  };
+      access_token: "",
+      authenticate: false,
+      setUser: this.setUser,
+      setToken: this.setToken,
+    };
+  }
+
+  setUser=(user)=>{
+    this.setState(state=>{
+      state.currentUser=user
+    })
+  }
+
+  setToken=(token)=>{
+    this.setState({
+      token:token
+    })
+  }
 
   render() {
     return (
@@ -55,6 +69,8 @@ class App extends Component {
     );
   }
 }
+
+App.contextType=authContext;
 
 export default App;
 
