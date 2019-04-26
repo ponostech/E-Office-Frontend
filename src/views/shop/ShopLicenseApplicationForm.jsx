@@ -149,7 +149,7 @@ class ShopLicenseApplicationForm extends Component {
 
   sendOtp = () => {
     var self = this;
-    RequestOtp(this.state.phone, "OTP for shop license application")
+    RequestOtp(this.state.phone, "Shop license application")
       .then(res => {
         console.log(res);
         if (res.data.status) {

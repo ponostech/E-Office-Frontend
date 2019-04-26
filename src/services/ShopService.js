@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
+import moment from "moment";
 
 export class ShopService {
 
@@ -17,7 +18,7 @@ export class ShopService {
       trade_id: state.tradeName.value,
       latitude: state.latitude,
       longitude: state.longitude,
-      estd: state.estd,
+      estd: moment(state.estd).format("Y/M/D"),
       tin_no: state.tinNo,
       cst_no: state.cstNo,
       gst_no: state.gstNo,
@@ -33,6 +34,28 @@ export class ShopService {
       return res.data;
     } catch (e) {
       console.log("Error "+e);
+    }
+  }
+
+
+  async fetch(status) {
+    const token = localStorage.getItem("access_token");
+    const config = { headers: { "Authorization": `Bearer ${token}` } };
+    let hoardings = [];
+    try {
+      if (status) {
+        const res = await axios.get(ApiRoutes.STAFF_SHOP+`?status=${status}`, config);
+        console.log(res)
+        hoardings = res.data.data.shops;
+      } else {
+        const defRes = await axios.get(ApiRoutes.STAFF_SHOP, config);
+        hoardings = defRes.data.data.shops;
+      }
+      return hoardings;
+
+    } catch (error) {
+      console.error(error);
+      throw new Error(error);
     }
   }
 

@@ -80,10 +80,10 @@ const menu = (props) => {
           buttonProps={{ color: "transparent" }}/>
         <CustomDropdown
           dropdownList={[
-            { title: "New Application", link: routes.SHOP_LICENSES },
-            { title: "Under Process", link: routes.HOARDINGS },
-            { title: "Approved List", link: routes.SHOP_LICENSES },
-            { title: "Reject List", link: routes.KIOSKS }
+            { title: "New Application", link: routes.NEW_SHOPLICENSE },
+            { title: "Under Process", link: routes.UNDER_PROCESS_SHOPLICENSE },
+            { title: "Approved List", link: routes.APPROVED_SHOPLICENSE },
+            { title: "Reject List", link: routes.REJECTED_SHOPLICENSE }
 
           ]}
           linkClick={props.linkClick}
@@ -91,10 +91,10 @@ const menu = (props) => {
           buttonProps={{ color: "transparent" }}/>
         <CustomDropdown
           dropdownList={[
-            { title: "New Application", link: routes.OBPAS },
-            { title: "Under Process", link: routes.HOARDINGS },
-            { title: "Approved List", link: routes.SHOP_LICENSES },
-            { title: "Reject List", link: routes.KIOSKS }
+            { title: "New Application", link: routes.NEW_SHOPLICENSE },
+            { title: "Under Process", link: routes.UNDER_PROCESS_SHOPLICENSE },
+            { title: "Approved List", link: routes.APPROVED_SHOPLICENSE },
+            { title: "Reject List", link: routes.REJECTED_SHOPLICENSE }
 
           ]}
           linkClick={props.linkClick}
@@ -104,6 +104,8 @@ const menu = (props) => {
           dropdownList={[
             { title: "New Trade", link: routes.NEW_TRADE },
             { title: "List Trade", link: routes.HOARDINGS },
+            { title: "New Staff", link: routes.STAFF_REGISTRATION },
+            { title: "List Staff", link: routes.STAFF_LIST },
 
           ]}
           linkClick={props.linkClick}
