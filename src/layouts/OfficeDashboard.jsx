@@ -34,6 +34,9 @@ import ApprovedKiosks from "../views/e-office/applications/kiosk/ApprovedKiosks"
 import RejectedKiosks from "../views/e-office/applications/kiosk/RejectedKiosks";
 import NewBannerApplications from "../views/e-office/applications/banners/NewBannerApplications";
 import UnderProcessBanner from "../views/e-office/applications/banners/UnderProcessBanner";
+import UnderProcessShopLicense from "../views/e-office/applications/shop-license/UnderProcessShopLicense";
+import ApprovedShopLicense from "../views/e-office/applications/shop-license/ApprovedShopLicense";
+import RejectedShopLicense from "../views/e-office/applications/shop-license/RejectedShopLicense";
 
 class OfficeDashboard extends React.Component {
   constructor(props) {
@@ -96,13 +99,21 @@ class OfficeDashboard extends React.Component {
           <Route exact path={OfficeRoutes.REJECTED_BANNER} render={e => <NewKioskApplications doLoad={this.doLoad}/>}/>
           {/*end Banner applications route*/}
 
+          {/*Shop license applications route*/}
+          <Route exact path={OfficeRoutes.NEW_SHOPLICENSE} render={e => <ShopLicenseApplications doLoad={this.doLoad}/>}/>
+          <Route exact path={OfficeRoutes.UNDER_PROCESS_SHOPLICENSE} render={e => <UnderProcessShopLicense doLoad={this.doLoad}/>}/>
+          <Route exact path={OfficeRoutes.APPROVED_SHOPLICENSE} render={e => <ApprovedShopLicense doLoad={this.doLoad}/>}/>
+          <Route exact path={OfficeRoutes.REJECTED_SHOPLICENSE} render={e => <RejectedShopLicense doLoad={this.doLoad}/>}/>
+          {/*end shop license applications route*/}
+
           <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
           <Route exact path={OfficeRoutes.BANNERS} component={BannerApplications}/>
-          <Route exact path={OfficeRoutes.SHOP_LICENSES} component={ShopLicenseApplications}/>
 
-          <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
-
+          {/*admin control route*/}
           <Route exact path={OfficeRoutes.STAFF_REGISTRATION} component={StaffRegistrationForm}/>
+          <Route exact path={OfficeRoutes.STAFF_LIST} component={StaffRegistrationForm}/>
+
+          {/*end admin control*/}
           <Route path={OfficeRoutes.SETTING} component={Settings}/>
         </Grid>
       </Grid>

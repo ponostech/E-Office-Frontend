@@ -18,6 +18,7 @@ export class ApiRoutes {
 
   static STAFF_ADVERTISER="/hoardings/applications";
   static STAFF_BANNER="/banners";
+  static STAFF_SHOP="/shops";
 
 
   static NEW_HOARDING="/advertiser/hoardings";
