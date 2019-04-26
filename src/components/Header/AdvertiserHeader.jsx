@@ -87,6 +87,7 @@ class AdvertiserHeader extends React.Component {
   };
 
   render() {
+    const{currentUser}=this.context;
     const { history, loading } = this.props;
     const { anchorEl } = this.state;
     var menuItems = (
@@ -118,7 +119,7 @@ class AdvertiserHeader extends React.Component {
         </div>
 
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Typography variant={"caption"} color={"textSecondary"}>{this.context.currentUser.email}</Typography>
+          <Typography variant={"caption"} color={"textSecondary"}>{currentUser.email}</Typography>
           <IconButton onClick={this.handleUser.bind(this)}>
             <UserIcon/>
           </IconButton>
@@ -163,8 +164,6 @@ class AdvertiserHeader extends React.Component {
       </GridContainer>
     );
     return (
-      <Consumer>
-        {(currentUser) => (
           <AppBar position="fixed" color={"inherit"}>
             <Toolbar>{/*
           <Hidden smDown>
@@ -208,9 +207,6 @@ class AdvertiserHeader extends React.Component {
             }
 
           </AppBar>
-        )}
-      </Consumer>
-
 
     );
   }
