@@ -21,10 +21,14 @@ export class StaffService {
       blood:state.blood,
       signature:state.signature.path
     };
-
       let res= await axios.post(ApiRoutes.CREATE_STAFF, data,config);
-      return res.data;
-
+      return res
   }
 
+  async fetch() {
+    const token = localStorage.getItem("access_token");
+    const config={ headers: {"Authorization" : `Bearer ${token}`} }
+    const res=await axios.get(ApiRoutes.GET_STAFF);
+    return res
+  }
 }
