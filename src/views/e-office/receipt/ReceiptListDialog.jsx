@@ -47,7 +47,7 @@ class ReceiptListDialog extends Component {
   }
 
   handleKeyDown = (e) => {
-    const { value } = e.target;
+    // const { value } = e.target;
     if (e.keyCode===13){
       //TODO::do search
     }

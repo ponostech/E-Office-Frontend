@@ -1,15 +1,12 @@
 import React, {Component} from "react";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
-import {Button, Card, CardContent, CardHeader, IconButton, InputAdornment, Tooltip} from "@material-ui/core";
-
-import ExportIcon from '@material-ui/icons/ImportExport'
-import PdfIcon from '@material-ui/icons/PictureAsPdf'
+import {Card, CardContent} from "@material-ui/core";
 import Grid from "../desk/DeskFiles";
 
 
-
 import MUIDataTable from "mui-datatables";
+
 const columns = ["Name", "Title", "Location", "Age", "Salary"];
 
 const data = [

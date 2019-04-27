@@ -21,15 +21,13 @@ class KioskLists extends Component {
         errorMessage: ""
     };
 
-
     componentDidMount() {
         document.title = "e-AMC | List of kiosk application";
-
         const {doLoad, doLoadFinish} = this.props;
 
         doLoad();
-        const token = localStorage.getItem("access_token");
-        const config = {headers: {"Authorization": `Bearer ${token}`}};
+        // const token = localStorage.getItem("access_token");
+        // const config = {headers: {"Authorization": `Bearer ${token}`}};
         this.kioskService.get()
             .then(kiosks => {
                 this.setState({kiosks});
@@ -58,7 +56,6 @@ class KioskLists extends Component {
 
 
     render() {
-        const {history} = this.props;
         const tableColumns = [
             {
                 name: "applicant",

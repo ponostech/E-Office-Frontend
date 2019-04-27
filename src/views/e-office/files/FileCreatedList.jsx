@@ -5,6 +5,7 @@ import FileMovementDialog from "./movements/FileMovementDialog";
 import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
+
 const columns = ["Name", "Title", "Location", "Age", "Salary"];
 
 const data = [
@@ -63,7 +64,6 @@ class FileCreatedList extends Component {
     };
 
     render() {
-        const {history} = this.props;
         return (
             <Grid container justify={"flex-start"}>
                 <Grid item xs={12} sm={12} md={12}>
@@ -113,7 +113,7 @@ class FileCreatedList extends Component {
                         }/>*/}
                         <CardContent>
                             <Grid container>
-                                <Grid item  xs={12}>
+                                <Grid item xs={12}>
                                     <MUIDataTable
                                         title={"List of File"}
                                         data={data}

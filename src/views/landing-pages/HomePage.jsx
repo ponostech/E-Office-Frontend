@@ -18,8 +18,6 @@ import {
 } from "./Services/Services";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import PrevIcon from "@material-ui/icons/ArrowLeft";
-import NextIcon from "@material-ui/icons/ArrowRight";
 import Typography from "@material-ui/core/Typography";
 
 const styles = {
@@ -105,7 +103,7 @@ const styles = {
     }*/
 };
 
-var settings = {
+/*var settings = {
     dots: true,
     infinite: false,
     speed: 500,
@@ -140,7 +138,7 @@ var settings = {
             }
         }
     ]
-};
+};*/
 
 class HomePage extends Component {
     handleLink = link => event => {
