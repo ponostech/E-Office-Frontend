@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {Route} from "react-router-dom";
 import axios from "axios";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-
 import GridContainer from "../components/Grid/GridContainer";
 import GridItem from "../components/Grid/GridItem";
 import * as OfficeRoutes from "../config/routes-constant/OfficeRoutes";
@@ -68,7 +67,6 @@ class LayoutAdvertiser extends Component {
 
     render() {
         const {classes} = this.props;
-
         return (
             <div>
                 <IdleTimer
@@ -82,7 +80,7 @@ class LayoutAdvertiser extends Component {
                     debounce={250}
                     timeout={1000 * 60 * 2}/>
                 {/* your app here */}
-                <GridContainer justify={"center"} className={classes.container}>
+                <GridContainer justify={"center"}>
                     <GridItem xs={12} sm={12} md={12}>
                         <AdvertiserHeader color={"primary"} loading={this.state.loading}/>
                     </GridItem>
