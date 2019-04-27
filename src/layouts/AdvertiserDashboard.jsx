@@ -6,7 +6,6 @@ import * as OfficeRoutes from "../config/routes-constant/OfficeRoutes";
 
 import AdvertiserHeader from "../components/Header/AdvertiserHeader";
 import HoardingList from "../views/advertiser/hoarding/HoardingList";
-import Dashboard from "../views/advertiser/Dashboard";
 import KioskLists from "../views/advertiser/kiosk/lists/KioskLists";
 import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
 import withStyles from "@material-ui/core/es/styles/withStyles";
@@ -107,7 +106,7 @@ class AdvertiserDashboard extends Component {
               {/*<Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>*/}
               <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>
 
-              <Route exact path={OfficeRoutes.ADVERTISER_DASHBOARD} component={Dashboard}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_DASHBOARD} component={AdvertiserDashboard}/>
 
             </GridContainer>
 
