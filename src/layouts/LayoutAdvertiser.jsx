@@ -14,6 +14,8 @@ import KioskApplicationForm from "../views/advertiser/kiosk/form/KioskApplicatio
 import IdleTimer from "react-idle-timer";
 import { ApiRoutes } from "../config/ApiRoutes";
 import axios from "axios";
+import withStyles from "@material-ui/core/es/styles/withStyles";
+
 
 const style = {
   container: {
@@ -93,6 +95,18 @@ class LayoutAdvertiser extends Component {
           <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
             <GridContainer justify={"center"}>
 
+              <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING}
+                     render={(e) => {
+                return <HoardingApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
+              }}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_HOARDING}
+                     render={p=><HoardingList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_KIOSK}
+                     render={p=><KioskLists doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+
+              <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK}
+                     render={(e) => <KioskApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} render={(e) => {
                 return <HoardingApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
               }}/>
@@ -106,7 +120,6 @@ class LayoutAdvertiser extends Component {
               {/*<Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>*/}
               <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>
 
-              <Route exact path={OfficeRoutes.ADVERTISER_DASHBOARD} component={LayoutAdvertiser}/>
 
             </GridContainer>
 

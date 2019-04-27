@@ -8,7 +8,7 @@ import DocumentIcon from "@material-ui/icons/Book";
 import ImageIcon from "@material-ui/icons/Image";
 import { BUCKET_NAME, REGION, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY } from "../Configuration";
 
-// var uniqid = require('uniqid');
+var uniqid = require('uniqid');
 const config = {
   bucketName: BUCKET_NAME,
   dirName: "office", /* optional */
@@ -100,9 +100,9 @@ class FileUpload extends Component {
                   onChange={(e) => {
                     let item = e.target.files[0];
 
-                    // let blob = item.slice(0, item.size, item.type);
-                    // let newName = file.name.toLowerCase()+"-"+uniqid()+ item.name;
-                    // let newFile = new File([blob], newName, { type: item.type });
+                    let blob = item.slice(0, item.size, item.type);
+                    let newName = file.name.toLowerCase()+"-"+uniqid()+ item.name;
+                    let newFile = new File([blob], newName, { type: item.type });
 
                     let temp = file;
                     temp.file = item;
@@ -111,7 +111,7 @@ class FileUpload extends Component {
                       file: temp
                     });
                     S3FileUpload
-                      .uploadFile(item, config)
+                      .uploadFile(newFile, config)
                       .then(data => {
                         temp.status = "success";
                         self.setState({
@@ -144,7 +144,7 @@ class FileUpload extends Component {
 }
 
 FileUpload.defaultProps = {
-  title: "Document Attachment",
+  title: "Document Upload",
   required: false
 };
 FileUpload.propTypes = {
