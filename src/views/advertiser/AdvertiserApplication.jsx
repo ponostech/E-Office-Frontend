@@ -80,10 +80,10 @@ class AdvertiserApplication extends Component {
     componentDidMount() {
         const {doLoad, doLoadFinish} = this.props;
         doLoad();
-        this.retrieveDocuments();
+        this.retrieveDocuments(doLoadFinish);
     }
 
-    retrieveDocuments = () => {
+    retrieveDocuments = (doLoadFinish) => {
         this.documentService.get("advertiser")
             .then(res => {
                 if (res.status) {
@@ -114,6 +114,11 @@ class AdvertiserApplication extends Component {
             this.setState({errorMessage: "Please enter all the required fields"});
             return;
         }
+        this.setState({submit: true});
+        this.insertData();
+    };
+
+    insertData() {
         let data = {
             name: this.state.name,
             type: this.state.type.value,
@@ -125,11 +130,6 @@ class AdvertiserApplication extends Component {
             signature: this.state.signature.path,
             documents: this.state.documentsUpload
         };
-        this.setState({submit: true});
-        this.insertData();
-    };
-
-    insertData() {
         axios.post(ApiRoutes.CREATE_ADVERTISER, data)
             .then(res => {
                 console.log(res);
