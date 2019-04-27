@@ -84,30 +84,25 @@ const styles = {
     marginTop30: {
         marginTop: "10px"
     },
-    responsive: {
+    /*responsive: {
         breakpoint: 1024,
         settings: {
             slidesToShow: 3,
             slidesToScroll: 3,
             dots: true
         },
-
-
         breakpoint: 600,
         settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
             initialSlide: 1
         },
-
-
         breakpoint: 480,
         settings: {
             slidesToShow: 1,
             slidesToScroll: 1
         }
-    }
-
+    }*/
 };
 
 var settings = {
@@ -148,7 +143,6 @@ var settings = {
 };
 
 class HomePage extends Component {
-
     handleLink = link => event => {
         const {history} = this.props;
         history.push(link);
