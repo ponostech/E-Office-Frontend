@@ -15,7 +15,7 @@ import AdvertiserStore from "../views/advertiser/AdvertiserStore";
 import ShopRenewal from "../views/shop/ShopRenewal";
 import HotelApplication from "../views/hotel/HotelApplication";
 
-class LandingPage extends React.Component {
+class LayoutLanding extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -43,21 +43,21 @@ class LandingPage extends React.Component {
                             <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
 
                             <Route exact={true} path={OfficeRoutes.APPLY_HOTEL_LICENSE}
-                                   render={() => <HotelApplication doLoad={this.doLoad.bind(this)}
+                                render={() => <HotelApplication doLoad={this.doLoad.bind(this)}
                                                                               doLoadFinish={this.doLoadFinish.bind(this)}/>}/>
-                            <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE}
-                                   render={() => <ShopApplication doLoad={this.doLoad.bind(this)}
-                                                                  doLoadFinish={this.doLoadFinish.bind(this)}/>}/>
                             <Route exact={true} path={OfficeRoutes.RENEW_SHOP_LICENSE}
                                    component={ShopRenewal}/>
-
-                            <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} render={() => <AdvertiserLogin/>}/>
+                            <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE}
+                                render={() => <ShopApplication doLoad={this.doLoad.bind(this)}
+                                                                  doLoadFinish={this.doLoadFinish.bind(this)}/>}/>
                             <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER}
                                    render={(e) => {
                                        return <AdvertiserStore doLoad={this.doLoad.bind(this)}
                                                                doLoadFinish={this.doLoadFinish.bind(this)}/>
                                    }}
                             />
+                            <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} render={() => <AdvertiserLogin/>}/>
+
                             <Route exact={true} path={OfficeRoutes.APPLY_BANNER} render={(e) => {
                                 return <BannerApplicationForm doLoad={this.doLoad.bind(this)}
                                                               doLoadFinish={this.doLoadFinish.bind(this)}/>
@@ -75,4 +75,4 @@ class LandingPage extends React.Component {
 }
 
 
-export default withStyles(pagesStyle)(LandingPage);
+export default withStyles(pagesStyle)(LayoutLanding);
