@@ -14,7 +14,6 @@ import KioskApplicationForm from "../views/advertiser/kiosk/form/KioskApplicatio
 import IdleTimer from "react-idle-timer";
 import { ApiRoutes } from "../config/ApiRoutes";
 import axios from "axios";
-import withStyles from "@material-ui/core/es/styles/withStyles";
 
 
 const style = {
@@ -97,12 +96,12 @@ class LayoutAdvertiser extends Component {
 
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING}
                      render={(e) => {
-                return <HoardingApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
-              }}/>
+                       return <HoardingApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
+                     }}/>
               <Route exact path={OfficeRoutes.ADVERTISER_HOARDING}
-                     render={p=><HoardingList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+                     render={p => <HoardingList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
               <Route exact path={OfficeRoutes.ADVERTISER_KIOSK}
-                     render={p=><KioskLists doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+                     render={p => <KioskLists doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
 
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK}
                      render={(e) => <KioskApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
@@ -110,8 +109,10 @@ class LayoutAdvertiser extends Component {
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} render={(e) => {
                 return <HoardingApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
               }}/>
-              <Route exact path={OfficeRoutes.ADVERTISER_HOARDING} render={p=><HoardingList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
-              <Route exact path={OfficeRoutes.ADVERTISER_KIOSK} render={p=><KioskLists doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_HOARDING}
+                     render={p => <HoardingList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_KIOSK}
+                     render={p => <KioskLists doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
 
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK} render={(e) => {
                 return <KioskApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
