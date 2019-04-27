@@ -12,8 +12,8 @@ import Typography from '@material-ui/core/Typography/index';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide/index';
 import DialogActions from "@material-ui/core/DialogActions/index";
-import ReactQuill from "react-quill/types";
-import 'react-quill/dist/quill.snow.css';
+// import ReactQuill from "react-quill/types";
+// import 'react-quill/dist/quill.snow.css';
 import Toolbar from "@material-ui/core/Toolbar";
 import DialogContent from "@material-ui/core/DialogContent";
 
@@ -86,10 +86,10 @@ class NoteCreateDialog extends React.Component {
                     </ListItem>
                 </List>
                 <DialogContent>
-                    <ReactQuill className={classes.editor} value={note} theme="snow"
-                                modules={this.modules}
-                                formats={this.formats}
-                                placeholder="Write Note..."/>
+                    {/*<ReactQuill className={classes.editor} value={note} theme="snow"*/}
+                    {/*            modules={this.modules}*/}
+                    {/*            formats={this.formats}*/}
+                    {/*            placeholder="Write Note..."/>*/}
                 </DialogContent>
                 <Divider/>
                 <DialogActions>

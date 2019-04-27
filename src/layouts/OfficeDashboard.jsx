@@ -10,7 +10,7 @@ import ReceiptShow from "../views/e-office/receipt/ReceiptShow";
 import ReceiptList from "../views/e-office/receipt/ReceiptList";
 import ReceiptSentList from "../views/e-office/receipt/ReceiptSentList";
 import BannerApplications from "../views/e-office/applications/banners/BannerApplications";
-import ShopLicenseApplications from "../views/e-office/applications/shop-license/ShopLicenseApplications";
+import ShopNewList from "../views/e-office/applications/shop-license/ShopNewList";
 import HoardingApplications from "../views/e-office/applications/hoarding/HoardingApplications";
 import Settings from "../views/e-office/settings/Setting";
 import FileDetail from "../views/e-office/files/details/FileDetail";
@@ -106,7 +106,7 @@ class OfficeDashboard extends React.Component {
 
                     <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
                     <Route exact path={OfficeRoutes.BANNERS} component={BannerApplications}/>
-                    <Route exact path={OfficeRoutes.SHOP_LICENSES} component={ShopLicenseApplications}/>
+                    <Route exact path={OfficeRoutes.BANNERS} component={ShopNewList}/>
 
                     <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
 
