@@ -120,7 +120,6 @@ const menu = (props) => {
           linkClick={props.linkClick}
           buttonText={"Report"}
           buttonProps={{ color: "transparent" }}/>
-      <NavLink to={routes.STAFF_REGISTRATION}>staff registration</NavLink>
       </div>
 
 

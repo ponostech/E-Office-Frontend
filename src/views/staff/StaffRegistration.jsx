@@ -28,7 +28,7 @@ class StaffRegistration extends Component {
     designation: null,
     address: "",
     branch: "",
-    dob: new Date("12/12/1991"),
+    dob: new Date("12/12/1995"),
     blood: "",
     signature: null,
 
@@ -80,19 +80,6 @@ class StaffRegistration extends Component {
   onSubmit = (e) => {
     // const invalid = this.state.name.length===0 || this.state.address.length === 0 || this.state.dob.length === 0 || this.state.signature === null
 
-    // if (!this.state.name) {
-    //   return
-    // }
-    // if (this.state.address) {
-    //   return
-    // }
-    // if (!this.state.dob) {
-    //   return ;
-    // }
-    // if (!this.state.signature) {
-    //   return
-    // }
-
     this.setState({ submit: true });
     this.staffService.create(this.state)
       .then(res => {
@@ -140,8 +127,8 @@ class StaffRegistration extends Component {
     const { classes } = this.props;
 
     return (
-      <GridContainer justify="center">
-        <GridItem xs={12} sm={12} md={10}>
+      <GridContainer justify="flex-start">
+        <GridItem xs={12} sm={12} md={6}>
           <GridContainer>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <Typography variant={"h5"}>Staff registration</Typography>
@@ -149,7 +136,7 @@ class StaffRegistration extends Component {
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <Divider/>
             </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <TextField
                 name={"name"}
                 value={this.state.name}
@@ -165,7 +152,7 @@ class StaffRegistration extends Component {
                 helperText={this.state.nameError}
               />
             </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <OfficeSelect
                 variant={"outlined"}
                 margin={"dense"}
@@ -177,7 +164,7 @@ class StaffRegistration extends Component {
                 label={StaffViewModel.DESIGNATION}
                 options={this.state.designations}/>
             </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <AddressField
                 textFieldProps={{
                   placeholder: "Address",
@@ -203,7 +190,7 @@ class StaffRegistration extends Component {
                 }}/>
             </GridItem>
 
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <OfficeSelect value={this.state.branch}
                             label={StaffViewModel.BRANCH}
                             name={"branch"}
@@ -213,7 +200,7 @@ class StaffRegistration extends Component {
                             onChange={this.handleSelect.bind(this, "branch")}
                             options={this.state.branches}/>
             </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
                   required={true}
@@ -230,7 +217,7 @@ class StaffRegistration extends Component {
                 />
               </MuiPickersUtilsProvider>
             </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <TextField
                 value={this.state.blood}
                 ref={"bloodRef"}
@@ -241,7 +228,7 @@ class StaffRegistration extends Component {
                 onChange={this.handleChange.bind(this)}
                 label={StaffViewModel.BLOOD}/>
             </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <FileUpload document={{ id: 0, name: "Signature", mime: "image/*", mandatory: 1 }}
                           onUploadSuccess={(data) => {
                             let temp = {
