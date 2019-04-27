@@ -6,6 +6,10 @@ export class StaffViewModel {
 
   static ADDRESS = "Address";
   static NAME = "Name";
+  static EMAIL = "Email";
+  static PHONE = "Phone";
+  static PASSWORD = "Password";
+  static CONFIRM_PASSWORD = "Confirm Password";
   static DESIGNATION ="Designation";
   static BRANCH="Branch";
   static DOB="Date of Birth";
@@ -19,5 +23,10 @@ export class StaffViewModel {
   static RESELECT_ATTACHMENT=" Reset";
   static SUBMIT="Submit ...";
   static CREATE_MESSAGE="New Staff is created";
+  static CONFIRM_REQUIRED="Confirm password is required";
+  static EMAIL_REQUIRED="Email is required";
+  static PHONE_REQUIRED="Phone No is required";
+  static PASSWORD_REQUIRED="Password is required";
+  static DESIGNATION_REQUIRED="Designation is required";
 
 }
