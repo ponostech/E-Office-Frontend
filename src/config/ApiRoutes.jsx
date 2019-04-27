@@ -31,5 +31,6 @@ export class ApiRoutes {
   static REQUEST_OTP="/otp/request";
   static LOGOUT_ROUTE="/auth/logout";
   static FILE_DETAIL="/files/";
+  static GET_STAFF="/staff";
 
 }

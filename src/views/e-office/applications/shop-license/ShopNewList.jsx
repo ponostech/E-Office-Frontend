@@ -36,7 +36,6 @@ class ShopNewList extends React.Component {
   componentDidMount() {
     const { doLoad } = this.props;
     doLoad(true)
-
     this.shopService.fetch()
       .then(shops => {
         this.setState({ shops: shops });
