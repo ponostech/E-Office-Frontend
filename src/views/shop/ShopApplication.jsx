@@ -791,11 +791,12 @@ class ShopApplication extends Component {
                                                 <Checkbox color={"primary"}
                                                           onChange={(val, checked) => this.setState({agree: checked})}/>
                                             }
-                                            label={"1.I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
+                                            label={"1. I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
                                             "no unauthorized construction." +
-                                            "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations. " +
-                                            "\n3. I shall follow all rules and regulations of AMC;" +
-                                            "\n4. It is certified that the above information is correct to the best of my knowledge"}/>
+                                            "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations." +
+                                            "\n3. I shall follow all rules and regulations of AMC." +
+                                            "\n4. It is certified that the above information is correct to the best of my knowledge." +
+                                            "\n"}/>
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={12}>
                                         <Divider/>

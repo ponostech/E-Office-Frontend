@@ -59,7 +59,6 @@ class NoteCreateDialog extends React.Component {
 
     render () {
         const {classes} = this.props;
-        const {note} = this.state;
         return (
             <Dialog
                 fullScreen

@@ -18,7 +18,6 @@ class TradeStore extends Component {
             name: "",
             rate: "",
             fla: "",
-            flas: ["No", "Yes"],
             success: false,
             error: false,
 
