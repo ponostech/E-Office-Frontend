@@ -17,7 +17,7 @@ const styles = {
   actionIcon: {}
 };
 
-class ShopLicenseApplications extends React.Component {
+class UnderProcessShopLicense extends React.Component {
   shopService = new ShopService();
   state = {
     openAssignment: false,
@@ -37,7 +37,7 @@ class ShopLicenseApplications extends React.Component {
     const { doLoad } = this.props;
     doLoad(true)
 
-    this.shopService.fetch()
+    this.shopService.fetch("under-process")
       .then(shops => {
         this.setState({ shops: shops });
       })
@@ -178,7 +178,7 @@ class ShopLicenseApplications extends React.Component {
       <>
         <Grid item xs={12}>
           <MUIDataTable
-            title={"SHOP LICENSE: List of New Application"}
+            title={"SHOP LICENSE: List of Under Process Application"}
             data={shops}
             columns={tableColumns}
             options={tableOptions}
@@ -204,4 +204,4 @@ class ShopLicenseApplications extends React.Component {
   }
 }
 
-export default withStyles(styles)(ShopLicenseApplications);
+export default withStyles(styles)(UnderProcessShopLicense);
