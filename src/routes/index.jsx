@@ -1,6 +1,6 @@
-import LandingPage from "../layouts/LandingPage";
-import OfficeDashboard from "../layouts/OfficeDashboard";
-import AdvertiserDashboard from "../layouts/AdvertiserDashboard";
+import LandingPage from "../layouts/LayoutLanding";
+import OfficeDashboard from "../layouts/LayoutOffice";
+import AdvertiserDashboard from "../layouts/LayoutAdvertiser";
 
 var indexRoutes = [
     {path: '/dashboard/advertiser', name: 'Advertiser Dashboard', component: AdvertiserDashboard},
