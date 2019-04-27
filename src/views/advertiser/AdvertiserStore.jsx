@@ -29,6 +29,7 @@ import {ErrorToString} from "../../utils/ErrorUtil";
 import AddressField from "../../components/AddressField";
 import OfficeSelect from "../../components/OfficeSelect";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { HOME } from "../../config/routes-constant/OfficeRoutes";
 
 const style = {
     root: {
@@ -110,7 +111,7 @@ class AdvertiserStore extends Component {
     };
 
     submit = (e) => {
-
+        const { history } = this.props;
         if (this.isInvalid()) {
             this.setState({errorMessage: "Please enter all the required fields"});
             return;
@@ -137,7 +138,7 @@ class AdvertiserStore extends Component {
                                 success
                                 style={{display: "block", marginTop: "-100px"}}
                                 title={"Success"}
-                                onConfirm={() => window.location.reload()}
+                                onConfirm={() => history.push(HOME)}
                             >
                                 {
                                     res.data.messages.map(function (msg, index) {
