@@ -5,7 +5,6 @@ import Timeline from "../../../../components/Timeline/Timeline.jsx";
 import image from "../../../../assets/img/faces/card-profile1-square.jpg";
 import CreateNoteButton from "./NotesheetCreateButton";
 import CreateNoteDialog from "./NoteCreateDialog";
-import Typography from "@material-ui/core/Typography";
 
 const widgetStories = [
     {
