@@ -5,7 +5,6 @@ import LeftMenu from "./Menu/Left";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Route } from "react-router-dom";
 import * as OfficeRoutes from "../../../../config/routes-constant/OfficeRoutes";
-import axios from "axios";
 import Notesheet from "../notesheet/Notesheet";
 import DraftPermit from "../draft/DraftPermit";
 import DraftLetter from "../draft/DraftLetter";
