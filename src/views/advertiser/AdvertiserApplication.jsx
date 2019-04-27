@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import axios from "axios";
+import withStyles from "@material-ui/core/es/styles/withStyles";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import {
@@ -18,18 +20,15 @@ import AdvertiserViewModel from "../model/AdvertiserViewModel";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import VisibilityOn from "@material-ui/icons/Visibility";
 import {Validators} from "../../utils/Validators";
-import axios from "axios";
 import {ApiRoutes} from "../../config/ApiRoutes";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
 import SubmitDialog from "../../components/SubmitDialog";
 import FileUpload from "../../components/FileUpload";
 import {DocumentService} from "../../services/DocumentService";
-import withStyles from "@material-ui/core/es/styles/withStyles";
 import {ErrorToString} from "../../utils/ErrorUtil";
 import AddressField from "../../components/AddressField";
 import OfficeSelect from "../../components/OfficeSelect";
 import SweetAlert from "react-bootstrap-sweetalert";
-import { HOME } from "../../config/routes-constant/OfficeRoutes";
 
 const style = {
     root: {
@@ -37,7 +36,7 @@ const style = {
     }
 };
 
-class AdvertiserStore extends Component {
+class AdvertiserApplication extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -53,7 +52,6 @@ class AdvertiserStore extends Component {
             documentsUpload: [],
 
             agree: false,
-
             showPassword: false,
 
             nameError: "",
@@ -63,18 +61,16 @@ class AdvertiserStore extends Component {
             phoneError: "",
             confirmPasswordError: "",
             addressError: "",
+            error: false,
+            errorMessage: "",
+            successMessage: null,
+
             types: [
                 {value: "individual", label: "Individual"},
                 {value: "firm", label: "Firm"},
                 {value: "group", label: "Group(NGO)"}
             ],
-
-            error: false,
-            //dialog variable
             submit: false,
-            errorMessage: "",
-            successMessage: null,
-
             prestine: true,
         };
 
@@ -84,6 +80,10 @@ class AdvertiserStore extends Component {
     componentDidMount() {
         const {doLoad, doLoadFinish} = this.props;
         doLoad();
+        this.retrieveDocuments(doLoadFinish);
+    }
+
+    retrieveDocuments = (doLoadFinish) => {
         this.documentService.get("advertiser")
             .then(res => {
                 if (res.status) {
@@ -94,12 +94,11 @@ class AdvertiserStore extends Component {
             .catch(err => {
                 let msg = "Unable to load resources, Please try again";
                 this.setState({errorMessage: msg});
-                console.log(err);
             })
             .then(() => {
                 doLoadFinish()
             });
-    }
+    };
 
     handleClickShowPassword = (e) => {
         this.setState(state => ({showPassword: !state.showPassword}));
@@ -111,11 +110,15 @@ class AdvertiserStore extends Component {
     };
 
     submit = (e) => {
-        const { history } = this.props;
         if (this.isInvalid()) {
             this.setState({errorMessage: "Please enter all the required fields"});
             return;
         }
+        this.setState({submit: true});
+        this.insertData();
+    };
+
+    insertData() {
         let data = {
             name: this.state.name,
             type: this.state.type.value,
@@ -127,7 +130,6 @@ class AdvertiserStore extends Component {
             signature: this.state.signature.path,
             documents: this.state.documentsUpload
         };
-        this.setState({submit: true});
         axios.post(ApiRoutes.CREATE_ADVERTISER, data)
             .then(res => {
                 console.log(res);
@@ -138,7 +140,7 @@ class AdvertiserStore extends Component {
                                 success
                                 style={{display: "block", marginTop: "-100px"}}
                                 title={"Success"}
-                                onConfirm={() => history.push(HOME)}
+                                onConfirm={() => window.location.reload()}
                             >
                                 {
                                     res.data.messages.map(function (msg, index) {
@@ -163,14 +165,13 @@ class AdvertiserStore extends Component {
             .then(() => {
                 this.setState({submit: false});
             });
-    };
+    }
 
     clear = () => {
         window.location.reload();
     };
-    saveDraft = () => {
-        window.location.reload();
-    };
+
+    saveDraft = () => {};
 
     handleRequired = (e) => {
         const {name, value} = e.target;
@@ -205,11 +206,13 @@ class AdvertiserStore extends Component {
                 break;
         }
     };
+
     handleSelectBlur = (id, e) => {
         if (id === "type") {
             this.state.type === undefined ? this.setState({typeError: "Type of applicant is required"}) : this.setState({typeError: ""});
         }
     };
+
     handleOfficeSelect = (identifier, value) => {
         this.setState({
             [identifier]: value
@@ -218,7 +221,6 @@ class AdvertiserStore extends Component {
 
     handleChange = e => {
         const {name, value} = e.target;
-
 
         switch (name) {
             case "email":
@@ -241,8 +243,8 @@ class AdvertiserStore extends Component {
             [e.target.name]: e.target.value
         });
         this.setState({prestine: false});
-
     };
+
     openDialog = () => {
         this.setState({openDialog: true});
     };
@@ -416,7 +418,7 @@ class AdvertiserStore extends Component {
                                     <FileUpload document={{id: 40, name: "Signature", mime: "image/*", mandatory: 1}}
                                                 onUploadSuccess={(data) => {
                                                     let temp = {
-                                                        document_id:1,
+                                                        document_id: 1,
                                                         name: "signature",
                                                         path: data.location
                                                     };
@@ -433,7 +435,6 @@ class AdvertiserStore extends Component {
 
                                 {this.state.documents.map((doc, index) =>
                                     <GridItem key={index} className={classes.root} xs={12} sm={12} md={6}>
-
                                         <FileUpload document={doc}
                                                     onUploadSuccess={(data) => {
                                                         let temp = {
@@ -455,7 +456,6 @@ class AdvertiserStore extends Component {
                                     }
                                                       label={AdvertiserViewModel.ACKNOWLEDGEMENT}/>
                                 </GridItem>
-
                                 <GridItem xs={12} sm={12} md={12}>
                                     <Divider style={{marginTop: 10}}/>
                                 </GridItem>
@@ -479,10 +479,8 @@ class AdvertiserStore extends Component {
                             </GridContainer>
                         </CardActions>
                     </Card>
-
                 </GridItem>
                 {this.state.successMessage}
-
                 <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
                                 onClose={(e) => this.setState({errorMessage: ""})}
                                 message={this.state.errorMessage}/>
@@ -492,4 +490,4 @@ class AdvertiserStore extends Component {
     }
 }
 
-export default withStyles(style)(AdvertiserStore);
+export default withStyles(style)(AdvertiserApplication);

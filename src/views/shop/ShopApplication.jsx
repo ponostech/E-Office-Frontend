@@ -16,15 +16,16 @@ import {
     TextField,
     Typography
 } from "@material-ui/core";
-import {ShopLicenseViewModel} from "../model/ShopLicenseViewModel";
-import GridItem from "../../components/Grid/GridItem";
-import OfficeSelect from "../../components/OfficeSelect";
 import GridContainer from "../../components/Grid/GridContainer";
+import GridItem from "../../components/Grid/GridItem";
+import withStyles from "@material-ui/core/es/styles/withStyles";
+
+import {ShopLicenseViewModel} from "../model/ShopLicenseViewModel";
+import OfficeSelect from "../../components/OfficeSelect";
 import SubmitDialog from "../../components/SubmitDialog";
 import OfficeSnackbar from "../../components/OfficeSnackbar";
 import FileUpload from "../../components/FileUpload";
 import {DocumentService} from "../../services/DocumentService";
-import withStyles from "@material-ui/core/es/styles/withStyles";
 import {ShopService} from "../../services/ShopService";
 import {ArrayToString, ErrorToString} from "../../utils/ErrorUtil";
 import PlaceIcon from "@material-ui/icons/PinDrop";
@@ -79,7 +80,6 @@ class ShopApplication extends Component {
         displayType: undefined,
         signature: undefined,
         passport: undefined,
-
         latitude: undefined,
         longitude: undefined,
         uploadDocuments: [],
@@ -111,22 +111,17 @@ class ShopApplication extends Component {
         ],
         trades: [],
         localCouncils: [],
-
         agree: false,
         submit: false,
         success: undefined,
         documents: [],
         flaDocuments: [],
         noFlaDocuments: [],
-
         openMap: false,
         prestine: true,
-
         errorMessage: "",
-
         openOtp: false,
         otpMessage: ""
-
     };
 
     componentDidMount() {
@@ -139,10 +134,8 @@ class ShopApplication extends Component {
             Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
                 .then(function ([cats, docs, lcs]) {
                     console.log(lcs);
-                    // self.setState({ loading: false });
                 });
             doLoadFinish();
-            // self.setState({ loading: false });
         }, 4000);
     }
 
@@ -233,7 +226,6 @@ class ShopApplication extends Component {
     fetchDocuments = () => {
         this.documentService.get("shop")
             .then(res => {
-                console.log(res);
                 if (res.status) {
                     const docs = res.data.documents;
                     this.setState({

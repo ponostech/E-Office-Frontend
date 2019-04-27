@@ -11,7 +11,7 @@ import HomePage from "../views/landing-pages/HomePage";
 import ShopApplication from "../views/shop/ShopApplication";
 import BannerApplicationForm from "../views/banner/BannerApplication";
 import AdvertiserLogin from "../views/advertiser/auth/AdvertiserLogin";
-import AdvertiserStore from "../views/advertiser/AdvertiserStore";
+import AdvertiserApplication from "../views/advertiser/AdvertiserApplication";
 import ShopRenewal from "../views/shop/ShopRenewal";
 import HotelApplication from "../views/hotel/HotelApplication";
 
@@ -52,7 +52,7 @@ class LayoutLanding extends React.Component {
                                                                   doLoadFinish={this.doLoadFinish.bind(this)}/>}/>
                             <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER}
                                    render={(e) => {
-                                       return <AdvertiserStore doLoad={this.doLoad.bind(this)}
+                                       return <AdvertiserApplication doLoad={this.doLoad.bind(this)}
                                                                doLoadFinish={this.doLoadFinish.bind(this)}/>
                                    }}
                             />

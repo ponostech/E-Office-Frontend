@@ -87,7 +87,6 @@ class AdvertiserHeader extends React.Component {
   };
 
   render() {
-    const{currentUser}=this.context;
     const { history, loading } = this.props;
     const { anchorEl } = this.state;
     var menuItems = (
@@ -119,7 +118,7 @@ class AdvertiserHeader extends React.Component {
         </div>
 
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Typography variant={"caption"} color={"textSecondary"}>{currentUser.email}</Typography>
+          <Typography variant={"caption"} color={"textSecondary"}>{"Welcome"}</Typography>
           <IconButton onClick={this.handleUser.bind(this)}>
             <UserIcon/>
           </IconButton>
@@ -151,12 +150,10 @@ class AdvertiserHeader extends React.Component {
         <div>
           <List>
             {menuItem.map((item,index) => (
-              <>
                 <ListItem button key={index} onClick={() => this.props.click(item.name)}>
                   <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
                   <ListItemText primary={item.label}/>
                 </ListItem>
-              </>
             ))}
           </List>
         </div>
