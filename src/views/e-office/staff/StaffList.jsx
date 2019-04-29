@@ -4,9 +4,9 @@ import Grid from "@material-ui/core/Grid";
 import { Icon } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-import { StaffService } from "../../services/StaffService";
-import OfficeSnackbar from "../../components/OfficeSnackbar";
-import ConfirmDialog from "../../components/ConfirmDialog";
+import ConfirmDialog from "../../../components/ConfirmDialog";
+import OfficeSnackbar from "../../../components/OfficeSnackbar";
+import { StaffService } from "../../../services/StaffService";
 
 const styles = {
   button: {},

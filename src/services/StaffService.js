@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
+import moment from "moment";
 
 export class StaffService {
   async all(){
@@ -13,16 +14,20 @@ export class StaffService {
     const token = localStorage.getItem("access_token");
     const config={ headers: {"Authorization" : `Bearer ${token}`} }
     let data = {
+      email:state.email,
+      phone_no:state.phone,
+      password:state.password,
       name:state.name,
-      designation:state.designation.value,
+      designation:state.designation,
       address:state.address,
-      dob:state.dob,
+      dob:moment(state.dob).format("Y-M-D"),
       branch:state.branch.value,
       blood:state.blood,
-      signature:state.signature.path
+      signature:state.signature.path,
+      photo:state.passport.path
     };
-      let res= await axios.post(ApiRoutes.CREATE_STAFF, data,config);
-      return res
+        let res= await axios.post(ApiRoutes.CREATE_STAFF, data);
+        return res
   }
 
   async fetch() {
@@ -30,5 +35,11 @@ export class StaffService {
     // const config={ headers: {"Authorization" : `Bearer ${token}`} }
     const res=await axios.get(ApiRoutes.GET_STAFF);
     return res
+  }
+
+  async getBranch() {
+        const res=await axios.get(ApiRoutes.BRANCHES)
+        return res.data.data.branches
+
   }
 }
