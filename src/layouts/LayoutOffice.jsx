@@ -38,6 +38,7 @@ import BannerRejectedList from "../views/e-office/applications/banners/BannerRej
 import UnderProcessShopLicense from "../views/e-office/applications/shop-license/UnderProcessShopLicense";
 import ApprovedShopLicense from "../views/e-office/applications/shop-license/ApprovedShopLicense";
 import RejectedShopLicense from "../views/e-office/applications/shop-license/RejectedShopLicense";
+import AdvertiserNewList from "../views/e-office/applications/advertisers/AdvertiserNewList";
 
 class LayoutOffice extends React.Component {
   constructor(props) {
@@ -77,6 +78,8 @@ class LayoutOffice extends React.Component {
 
           {/*Advertiser*/}
           <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
+          <Route exact path={OfficeRoutes.ADVERTISERS}
+                 render={e => <AdvertiserNewList doLoad={this.doLoad}/>}/>
 
           {/*Hoarding*/}
           <Route exact path={OfficeRoutes.NEW_HOARDINGS}

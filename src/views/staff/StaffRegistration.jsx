@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import axios from 'axios';
 import {Button, Divider, TextField, Typography} from "@material-ui/core";
 
 import {StaffViewModel} from "../model/StaffViewModel";
@@ -13,6 +14,7 @@ import FileUpload from "../../components/FileUpload";
 import AddressField from "../../components/AddressField";
 import DateFnsUtils from "@date-io/date-fns";
 import {DatePicker, MuiPickersUtilsProvider} from "material-ui-pickers";
+import {BRANCHES} from "../../config/routes-constant/OfficeRoutes";
 
 const style = {
     item: {
@@ -40,11 +42,7 @@ class StaffRegistration extends Component {
             {value: "udc", label: "UDC"},
             {value: "Assistant", label: "Assistant"}
         ],
-        branches: [
-            {value: "one", label: "one"},
-            {value: "two", label: "two"},
-            {value: "three", label: "three"}
-        ],
+        branches: [],
         submit: false,
         complete: false,
 
@@ -52,8 +50,13 @@ class StaffRegistration extends Component {
 
     componentDidMount() {
         document.title = "e-AMC | Staff Registration Form";
+        this.getBranches();
         this.setState({designation: this.state.designations[0]});
-        this.setState({branch: this.state.branches[0]});
+    }
+
+    getBranches () {
+        axios.get(BRANCHES)
+            .then(response => this.setState({branches: response.data.data.branches}))
     }
 
     handleChange = (e) => {
