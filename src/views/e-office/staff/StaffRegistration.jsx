@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Divider, TextField, Typography } from "@material-ui/core";
+import { Button, Divider, IconButton, InputAdornment, TextField, Typography } from "@material-ui/core";
 
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
@@ -13,6 +13,10 @@ import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import { StaffService } from "../../../services/StaffService";
 import { StaffViewModel } from "../../model/StaffViewModel";
+import LockIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import { Validators } from "../../../utils/Validators";
 
 const style = {
   item: {
@@ -41,13 +45,20 @@ class StaffRegistration extends Component {
     emailError: "",
     phoneError: "",
     passwordError: "",
+    branchError: "",
     confirmPasswordError: "",
     designationError: "",
     dobError: "",
-    branches: [],
-    submit: false,
-    complete: false
 
+
+    errorMessage: "",
+    successMessage:"",
+
+    branches: [],
+
+    prestine:true,
+    submit: false,
+    showPassword:true,
   };
 
   componentDidMount() {
@@ -55,27 +66,14 @@ class StaffRegistration extends Component {
     this.fetchBranches();
   }
 
+  handleShowPassword = (e) => {
+    this.setState({showPassword: !this.state.showPassword});
+  };
+
   fetchBranches = () => {
     this.props.doLoad(true);
-    this.staffService.getBranch()
-      .then(branches => {
-        let temp = [];
-        branches.forEach((branch, index) => {
-          let val = {
-            value: index,
-            label: branch
-          };
-          temp.push(val);
-        });
-        console.log(temp)
-        this.setState({ branches: temp });
-      })
-      .catch(err => {
-        this.setState({ errorMessage: err });
-      })
-      .finally(() => {
-        this.props.doLoad(false);
-      });
+    this.staffService.getBranch((errorMessage)=>this.setState({errorMessage}),(branches)=>this.setState({branches}))
+      .finally(()=>this.props.doLoad(false))
   };
 
   handleChange = (e) => {
@@ -83,6 +81,21 @@ class StaffRegistration extends Component {
     this.setState({
       [name]: value
     });
+    switch (name) {
+      case "password":
+        !Validators.PASSWORD_REGEX.test(value)?this.setState({passwordError:StaffViewModel.PASSWORD_ERROR}):this.setState({passwordError:""});
+        break;
+      case "confirmPassword":
+        value!==this.state.password?this.setState({confirmPasswordError:StaffViewModel.CONFIRM_PASSWORD_ERROR}):this.setState({confirmPasswordError:""});
+        break;
+      case "email":
+        !Validators.EMAIL_REGEX.test(value)?this.setState({emailError:StaffViewModel.EMAIL_ERROR}):this.setState({ emailError: ""});
+        break;
+      case "phone":
+        !Validators.PHONE_REGEX.test(value)?this.setState({phoneError:StaffViewModel.PHONE_ERROR}):this.setState({phoneError:""});
+        break;
+    }
+    this.setState({prestine:false})
   };
 
   handleSelect = (identifier, value) => {
@@ -95,26 +108,26 @@ class StaffRegistration extends Component {
         break;
       default:
         break;
-
     }
   };
 
   handleClear = () => {
+    window.location.reload()
   };
 
   handleSave = (e) => {
-    console.log("fasdfasdfasdfasdfasdfas")
+    const invalid=Boolean(this.state.nameError) || Boolean(this.state.emailError) || Boolean(this.state.designationError)
+     ||Boolean(this.state.branchError) || Boolean(this.state.dobError) || Boolean(this.state.phoneError)
+    ||Boolean(this.state.passwordError) || Boolean(this.state.confirmPasswordError) || this.state.signature===undefined || this.state.passport
+    || this.state.prestine
+
+    if (invalid) {
+      this.setState({errorMessage:"Please fill all the required field"})
+      return
+    }
     this.setState({ submit: true });
-    this.staffService.create(this.state)
-      .then(res => {
-        console.log(res);
-      })
-      .catch((err) => {
-        this.setState({ errorMessage: err.toString() });
-      })
-      .finally(()=>{
-        this.setState({submit:false})
-      });
+    this.staffService.create(this.state,  (errorMessage) => this.setState({errorMessage}),(successMessage)=> this.setState({successMessage}))
+      .finally(()=>this.setState({submit:false}))
   };
 
   handleBlur = (e) => {
@@ -165,7 +178,7 @@ class StaffRegistration extends Component {
         <GridItem xs={12} sm={12} md={10}>
           <GridContainer>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <Typography variant={"h5"}>Staff registration</Typography>
+              <Typography variant={"h5"}>{StaffViewModel.TILE}</Typography>
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <Divider/>
@@ -227,7 +240,7 @@ class StaffRegistration extends Component {
                 fullWidth={true}
                 onBlur={this.handleBlur.bind(this)}
                 onChange={this.handleChange.bind(this)}
-                ClearAble={true}
+                isClearable={true}
                 required={true}
                 error={Boolean(this.state.designationError)}
                 helperText={this.state.designationError}
@@ -235,35 +248,49 @@ class StaffRegistration extends Component {
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={6}>
               <TextField
-                name={"password"}
-                value={this.state.password}
-                ref={"nameRef"}
-                onBlur={this.handleBlur.bind(this)}
-                required={true}
-                variant={"outlined"}
-                margin={"dense"}
-                fullWidth={true}
-                onChange={this.handleChange.bind(this)}
                 label={StaffViewModel.PASSWORD}
+                placeholder={StaffViewModel.PASSWORD}
+                required={true}
+                value={this.state.password}
+                onChange={this.handleChange.bind(this)}
+                onBlur={this.handleBlur.bind(this)}
                 error={Boolean(this.state.passwordError)}
                 helperText={this.state.passwordError}
-              />
+                type={this.state.showPassword ? "password" : "text"}
+                name={"password"}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position={"end"}>
+                      <IconButton tabIndex={-1} onClick={this.handleShowPassword.bind(this)}>
+                        {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+                variant={"outlined"} margin={"dense"} fullWidth={true}/>
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={6}>
               <TextField
-                name={"confirmPassword"}
-                value={this.state.confirmPassword}
-                ref={"nameRef"}
-                onBlur={this.handleBlur.bind(this)}
-                required={true}
-                variant={"outlined"}
-                margin={"dense"}
-                fullWidth={true}
-                onChange={this.handleChange.bind(this)}
                 label={StaffViewModel.CONFIRM_PASSWORD}
+                placeholder={StaffViewModel.CONFIRM_PASSWORD}
+                value={this.state.confirmPassword}
+                required={true}
+                onChange={this.handleChange.bind(this)}
+                onBlur={this.handleBlur.bind(this)}
                 error={Boolean(this.state.confirmPasswordError)}
                 helperText={this.state.confirmPasswordError}
-              />
+                type={this.state.showPassword ? "password" : "text"}
+                name={"confirmPassword"}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position={"end"}>
+                      <IconButton tabIndex={-1} onClick={this.handleShowPassword.bind(this)}>
+                        {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+                variant={"outlined"} margin={"dense"} fullWidth={true}/>
             </GridItem>
 
             <GridItem className={classes.item} xs={12} sm={12} md={6}>
@@ -342,7 +369,7 @@ class StaffRegistration extends Component {
                               name: "passport photo",
                               path: data.location
                             };
-                            this.setState({ signature: temp });
+                            this.setState({ passport: temp });
                           }} onUploadFailure={(data) => {
                 console.error(data);
               }}/>
@@ -391,8 +418,9 @@ class StaffRegistration extends Component {
 
           </GridContainer>
         </GridItem>
-        <SubmitDialog open={this.state.submit} text={StaffViewModel.SUBMIT}/>
-        <OfficeSnackbar variant={"success"} open={this.state.complete} message={StaffViewModel.CREATE_MESSAGE}/>
+        <SubmitDialog open={this.state.submit} title={StaffViewModel.SUBMIT_TITLE} text={StaffViewModel.PLEASE_WAIT}/>
+        <OfficeSnackbar onClose={()=>this.setState({errorMessage:""})} variant={"error"} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
+        <OfficeSnackbar onClose={()=>this.setState({errorMessage:""})} variant={"success"} open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
       </GridContainer>
     );
   }
