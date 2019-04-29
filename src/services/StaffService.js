@@ -41,11 +41,19 @@ export class StaffService {
     }
   }
 
-  async fetch() {
+  async fetch(errorCallback,successCallback) {
     // const token = localStorage.getItem("access_token");
     // const config={ headers: {"Authorization" : `Bearer ${token}`} }
+    try{
     const res = await axios.get(ApiRoutes.GET_STAFF);
-    return res;
+      if (res.data.status) {
+         successCallback(res.data.data.staffs)
+      }else {
+        errorCallback("Something went wrong: Please try again")
+      }
+    }catch (e) {
+      errorCallback(e.toString())
+    }
   }
 
   async getBranch(errorCallback, successCallback) {
