@@ -106,7 +106,7 @@ class LeftMenu extends React.Component {
     };
 
     render() {
-        const {classes, theme} = this.props;
+        const {classes} = this.props;
         const menuItem = [
             {name: "notesheet", label: "Notesheet", icon: "chat"},
             {name: "draft", label: "Draft", icon: "create"},

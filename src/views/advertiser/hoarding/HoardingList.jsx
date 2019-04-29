@@ -49,7 +49,6 @@ class HoardingList extends Component {
 
 
   render() {
-    const { history } = this.props;
     const tableColumns = [
        {
         name: "applicant",
@@ -90,7 +89,8 @@ class HoardingList extends Component {
                 break;
               case "granted":
                 color="primary"
-
+              default:
+                break;
             }
             let chip=(
               <Chip label={value} title={value} color={color}/>

@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Button, Dialog, DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
+import React, {Component} from "react";
+import {Button, Dialog, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
 import PropTypes from "prop-types";
 
@@ -12,53 +12,55 @@ import PropTypes from "prop-types";
 class ConfirmDialog extends Component {
 
 
-  handleClick=(e) =>{
-    const { onConfirm, onCancel } = this.props;
-    if (e.target.name === "confirm") {
-      onConfirm();
-    }else {
-      onCancel()
+    handleClick = (e) => {
+        const {onConfirm, onCancel} = this.props;
+        if (e.target.name === "confirm") {
+            onConfirm();
+        } else {
+            onCancel()
+        }
+    };
+
+    render() {
+        const {title, message, primaryButtonText, secondaryButtonText, onConfirm, onCancel, data, open, ...rest} = this.props;
+
+        return (
+            <Dialog open={open} maxWidth={"sm"} fullWidth={true}>
+                <DialogTitle>
+                    {title}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        {message}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button name={"confirm"} variant={"outlined"} color={"primary"}
+                            onClick={this.handleClick.bind(this)}> {primaryButtonText}</Button>
+                    <Button name={"cancel"} variant={"outlined"} color={"secondary"}
+                            onClick={this.handleClick.bind(this)}> {secondaryButtonText}</Button>
+                </DialogActions>
+            </Dialog>
+        );
     }
-  }
-
-  render() {
-    const { title, message, primaryButtonText, secondaryButtonText, onConfirm, onCancel, data, open, ...rest } = this.props;
-
-    return (
-      <Dialog open={open}  maxWidth={"sm"} fullWidth={true}>
-        <DialogTitle>
-          {title}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {message}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button name={"confirm"} variant={"outlined"} color={"primary"} onClick={this.handleClick.bind(this)}> {primaryButtonText}</Button>
-          <Button name={"cancel"} variant={"outlined"} color={"secondary"} onClick={this.handleClick.bind(this)}> {secondaryButtonText}</Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
 }
 
 ConfirmDialog.defaultProps = {
-  title: "Confirmation",
-  message: "Do you want to delete?",
-  primaryButtonText: "Confirm",
-  secondaryButtonText: "Cancel"
+    title: "Confirmation",
+    message: "Do you want to delete?",
+    primaryButtonText: "Confirm",
+    secondaryButtonText: "Cancel"
 };
 
 ConfirmDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  title: PropTypes.string,
-  message: PropTypes.string,
-  primaryButtonText: PropTypes.string,
-  secondaryButtonText: PropTypes.string,
-  onConfirm: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  data: PropTypes.any
+    open: PropTypes.bool.isRequired,
+    title: PropTypes.string,
+    message: PropTypes.string,
+    primaryButtonText: PropTypes.string,
+    secondaryButtonText: PropTypes.string,
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    data: PropTypes.any
 };
 
 export default ConfirmDialog;

@@ -33,7 +33,7 @@ class FileDialog extends Component {
         this.setState({[name]: value});
     };
     handleClick = (e) => {
-        const {open, onClose, receipt} = this.props;
+        const {onClose} = this.props;
         const {name} = e.target;
         switch (name) {
             case "sent":
@@ -49,8 +49,7 @@ class FileDialog extends Component {
     };
 
     render() {
-        const {to, cc, toError} = this.state;
-        const {open, onClose, receipt} = this.props;
+        const {open, onClose} = this.props;
 
         return (
             <Dialog open={open} onClose={onClose} fullWidth={true}>

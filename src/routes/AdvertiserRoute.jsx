@@ -1,6 +1,5 @@
 import {Route} from "react-router-dom";
 import React from "react";
-import Redirect from "react-router-dom/es/Redirect";
 import {Consumer} from '../context/AuthContext'
 
 export  const AdvertiserRoute = ({ currentUser, component: Component, ...rest }) => (

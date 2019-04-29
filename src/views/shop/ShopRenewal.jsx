@@ -85,6 +85,8 @@ class ShopRenewal extends Component {
       case "address":
         value.length === 0 ? this.setState({ addressError: "Residential Address is required" }) : this.setState({ addressError: "" });
         break;
+      default:
+        break;
     }
   };
 
@@ -97,6 +99,8 @@ class ShopRenewal extends Component {
     switch (identifier) {
       case "tradeName":
         this.state.tradeName === undefined ? this.setState({ tradeNameError: "Name of trade is required" }) : this.setState({ tradeNameError: "" });
+        break;
+      default:
         break;
     }
   };

@@ -31,8 +31,8 @@ export class StaffService {
   }
 
   async fetch() {
-    const token = localStorage.getItem("access_token");
-    const config={ headers: {"Authorization" : `Bearer ${token}`} }
+    // const token = localStorage.getItem("access_token");
+    // const config={ headers: {"Authorization" : `Bearer ${token}`} }
     const res=await axios.get(ApiRoutes.GET_STAFF);
     return res
   }

@@ -57,7 +57,6 @@ class BannerUnderProcessList extends React.Component {
     this.setState({ openTakeFile: true, fileDetail: data.file });
   };
   confirmTake = (e) => {
-    const { fileDetail } = this.state;
     this.setState({ openTakeFile: false });
     this.setState({ takeMessage: "You have taken the file" });
   };

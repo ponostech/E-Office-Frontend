@@ -793,20 +793,6 @@ class HotelApplication extends Component {
                                             </RadioGroup>
                                         </FormControl>
                                     </GridItem>
-                                    <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                                        <FileUpload required={true}
-                                                    document={{id: 344, name: "Signature", mime: "image/*"}}
-                                                    onUploadSuccess={(data) => {
-                                                        this.setState(state => {
-                                                            state.signature = {
-                                                                name: "signature",
-                                                                path: data.location
-                                                            };
-                                                        });
-                                                    }} onUploadFailure={(err) => {
-                                            console.log(err);
-                                        }}/>
-                                    </GridItem>
                                     <GridItem className={classes.root} xs={12} sm={12} md={12}>
                                         <Divider style={{marginTop: 10, marginBottom: 10}}/>
                                     </GridItem>
@@ -848,6 +834,20 @@ class HotelApplication extends Component {
                                             "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations. " +
                                             "\n3. I shall follow all rules and regulations of AMC;" +
                                             "\n4. It is certified that the above information is correct to the best of my knowledge"}/>
+                                    </GridItem>
+                                    <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                                        <FileUpload required={true}
+                                                    document={{id: 344, name: "Signature", mime: "image/*"}}
+                                                    onUploadSuccess={(data) => {
+                                                        this.setState(state => {
+                                                            state.signature = {
+                                                                name: "signature",
+                                                                path: data.location
+                                                            };
+                                                        });
+                                                    }} onUploadFailure={(err) => {
+                                            console.log(err);
+                                        }}/>
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={12}>
                                         <Divider/>

@@ -123,7 +123,7 @@ class AdvertiserLogin extends Component {
     };
 
     render() {
-        const {history, classes} = this.props;
+        const {classes} = this.props;
         return (
             <GridContainer justify={"center"}>
                 <GridItem style={{marginTop: 80}} xs={12} sm={12} md={4}>
