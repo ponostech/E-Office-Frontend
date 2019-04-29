@@ -38,6 +38,7 @@ import BannerRejectedList from "../views/e-office/applications/banners/BannerRej
 import UnderProcessShopLicense from "../views/e-office/applications/shop-license/UnderProcessShopLicense";
 import ApprovedShopLicense from "../views/e-office/applications/shop-license/ApprovedShopLicense";
 import RejectedShopLicense from "../views/e-office/applications/shop-license/RejectedShopLicense";
+import AdvertiserNewList from "../views/e-office/applications/advertisers/AdvertiserNewList";
 
 class LayoutOffice extends React.Component {
   constructor(props) {
