@@ -126,7 +126,7 @@ class LayoutOffice extends React.Component {
                  component={TradeStore}/>
 
           <Route exact path={OfficeRoutes.STAFF_REGISTRATION}
-                 render={e=><StaffRegistration doLoad={this.doLoad}/>}/>
+                 render={e => <StaffRegistration doLoad={this.doLoad}/>}/>
           <Route exact path={OfficeRoutes.STAFF_LIST}
                  render={e => <StaffList doLoad={this.doLoad}/>}/>
           <Route path={OfficeRoutes.SETTING} component={Settings}/>

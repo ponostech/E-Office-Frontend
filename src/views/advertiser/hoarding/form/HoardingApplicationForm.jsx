@@ -43,7 +43,6 @@ const style = {
     padding: "10px 15px !important"
   }
 };
-var timeout=null;
 class HoardingApplicationForm extends Component {
   constructor(props) {
     super(props);
@@ -113,6 +112,7 @@ class HoardingApplicationForm extends Component {
             doLoadFinish();
         });
       // self.setState({ loading: false });
+
   }
 
   componentWillUnmount() {
