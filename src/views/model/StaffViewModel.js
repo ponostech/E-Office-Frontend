@@ -1,11 +1,14 @@
 export class StaffViewModel {
-  static TILE = "Staff Registration form";
-  static SUBHEADER = "Sub head";
+  static TILE = "Staff Registration";
   static PRIMARY_TEXT = "Save";
   static SECONDARY_TEXT = "Reset";
 
   static ADDRESS = "Address";
   static NAME = "Name";
+  static EMAIL = "Email";
+  static PHONE = "Phone";
+  static PASSWORD = "Password";
+  static CONFIRM_PASSWORD = "Confirm Password";
   static DESIGNATION ="Designation";
   static BRANCH="Branch";
   static DOB="Date of Birth";
@@ -19,5 +22,16 @@ export class StaffViewModel {
   static RESELECT_ATTACHMENT=" Reset";
   static SUBMIT="Submit ...";
   static CREATE_MESSAGE="New Staff is created";
+  static CONFIRM_REQUIRED="Confirm password is required";
+  static EMAIL_REQUIRED="Email is required";
+  static PHONE_REQUIRED="Phone No is required";
+  static PASSWORD_REQUIRED="Password is required";
+  static DESIGNATION_REQUIRED="Designation is required";
+  static CONFIRM_PASSWORD_ERROR="Confirm password must be the same as password";
+  static EMAIL_ERROR = "Invalid Email";
+  static PHONE_ERROR="Phone number must be 10 digit number";
+  static PASSWORD_ERROR="Password must be atleast 6 character length";
+  static SUBMIT_TITLE="Staff Creation";
+  static PLEASE_WAIT="Please Wait ...";
 
 }

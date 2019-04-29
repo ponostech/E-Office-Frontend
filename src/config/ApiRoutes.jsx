@@ -4,6 +4,7 @@ export class ApiRoutes {
   static LOCAL_COUNCIL = "/local-councils";
   static WARDS = "/wards";
   static CATEGORY = "/area-categories";
+
   static CREATE_STAFF = "/register/staff";
   static CREATE_ADVERTISER="/register/advertiser";
 
@@ -30,4 +31,5 @@ export class ApiRoutes {
   static LOGOUT_ROUTE="/auth/logout";
   static FILE_DETAIL="/files/";
   static GET_STAFF="/staff";
+  static BRANCHES="/setting/branches";
 }
