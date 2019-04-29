@@ -1,5 +1,5 @@
 export class ApiRoutes {
-  static BASE_URL = "http://http://139.59.26.3/api/v1";
+  static BASE_URL = "http://139.59.26.3/api/v1";
   static LOGIN_ROUTE = "/auth/login";
   static LOCAL_COUNCIL = "/local-councils";
   static WARDS = "/wards";
