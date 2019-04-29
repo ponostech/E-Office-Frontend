@@ -41,9 +41,9 @@ export const SENT_FILE = "/e-office/sent";
 export const CLOSE_FILE = "/e-office/sent";
 export const FILE_DETAIL = "/e-office/file/:id/detail";
 
-export const FILE_DETAIL_ROUTE=(id)=>{
-  return `/e-office/file/${id}/detail`
-}
+export const FILE_DETAIL_ROUTE = (id) => {
+    return `/e-office/file/${id}/detail`
+};
 export const NEW_RECEIPT = "/e-office/receipt/new";
 export const CREATED_RECEIPT = "/e-office/receipt/created";
 export const SENT_RECEIPT = "/e-office/receipt/sent";
@@ -79,6 +79,7 @@ export const STAFF_REGISTRATION = "/e-office/admin/new-staff";
 export const STAFF_LIST = "/e-office/admin/staffs";
 
 export const SETTING = "/e-office/setting";
+export const BRANCHES = "/setting/branches";
 export const ADVERTISERS = "/e-office/advertisers";
 
 export const ADVERTISER_DETAIL = `/e-office/advertisers/:id/details`;

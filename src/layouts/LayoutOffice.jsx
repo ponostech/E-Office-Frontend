@@ -22,6 +22,7 @@ import HoardingDetails from "../views/e-office/applications/hoarding/HoardingDet
 import AdvertiserDetails from "../views/e-office/applications/advertisers/AdvertiserDetails";
 import DeskView from "../views/e-office/desk/DeskView";
 import TradeStore from "../views/e-office/admin/TradeStore";
+import StaffRegistration from "../views/staff/StaffRegistration";
 import UnderProcessHoarding from "../views/e-office/applications/hoarding/HoardingUnderProcessList";
 import RejectedHoardingApplications from "../views/e-office/applications/hoarding/HoardingRejectedList";
 import ApprovedHoarding from "../views/e-office/applications/hoarding/HoardingApprovedList";
@@ -31,13 +32,13 @@ import ApprovedKiosks from "../views/e-office/applications/kiosk/KioskApprovedLi
 import RejectedKiosks from "../views/e-office/applications/kiosk/KioskRejectedList";
 import NewBannerApplications from "../views/e-office/applications/banners/BannerNewList";
 import UnderProcessBanner from "../views/e-office/applications/banners/BannerUnderProcessList";
+import StaffList from "../views/staff/StaffList";
 import BannerGrantedList from "../views/e-office/applications/banners/BannerGrantedList";
 import BannerRejectedList from "../views/e-office/applications/banners/BannerRejectedList";
 import UnderProcessShopLicense from "../views/e-office/applications/shop-license/UnderProcessShopLicense";
 import ApprovedShopLicense from "../views/e-office/applications/shop-license/ApprovedShopLicense";
 import RejectedShopLicense from "../views/e-office/applications/shop-license/RejectedShopLicense";
-import StaffList from "../views/e-office/staff/StaffList";
-import StaffRegistration from "../views/e-office/staff/StaffRegistration";
+import AdvertiserNewList from "../views/e-office/applications/advertisers/AdvertiserNewList";
 
 class LayoutOffice extends React.Component {
   constructor(props) {
@@ -77,6 +78,8 @@ class LayoutOffice extends React.Component {
 
           {/*Advertiser*/}
           <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
+          <Route exact path={OfficeRoutes.ADVERTISERS}
+                 render={e => <AdvertiserNewList doLoad={this.doLoad}/>}/>
 
           {/*Hoarding*/}
           <Route exact path={OfficeRoutes.NEW_HOARDINGS}
@@ -127,6 +130,7 @@ class LayoutOffice extends React.Component {
 
           <Route exact path={OfficeRoutes.STAFF_REGISTRATION}
                  render={e => <StaffRegistration doLoad={this.doLoad}/>}/>
+
           <Route exact path={OfficeRoutes.STAFF_LIST}
                  render={e => <StaffList doLoad={this.doLoad}/>}/>
           <Route path={OfficeRoutes.SETTING} component={Settings}/>
