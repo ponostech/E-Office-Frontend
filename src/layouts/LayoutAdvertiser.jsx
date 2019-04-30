@@ -106,7 +106,6 @@ class LayoutAdvertiser extends Component {
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK}
                      render={(e) => <KioskApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
 
-             }/>
 
               {/*<Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>*/}
               <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>

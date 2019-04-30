@@ -32,7 +32,7 @@ import ApprovedKiosks from "../views/e-office/applications/kiosk/KioskApprovedLi
 import RejectedKiosks from "../views/e-office/applications/kiosk/KioskRejectedList";
 import NewBannerApplications from "../views/e-office/applications/banners/BannerNewList";
 import UnderProcessBanner from "../views/e-office/applications/banners/BannerUnderProcessList";
-import StaffList from "../views/staff/StaffList";
+// import StaffList from "../views/staff/StaffList";
 import BannerGrantedList from "../views/e-office/applications/banners/BannerGrantedList";
 import BannerRejectedList from "../views/e-office/applications/banners/BannerRejectedList";
 import UnderProcessShopLicense from "../views/e-office/applications/shop-license/UnderProcessShopLicense";
@@ -131,8 +131,8 @@ class LayoutOffice extends React.Component {
           <Route exact path={OfficeRoutes.STAFF_REGISTRATION}
                  render={e => <StaffRegistration doLoad={this.doLoad}/>}/>
 
-          <Route exact path={OfficeRoutes.STAFF_LIST}
-                 render={e => <StaffList doLoad={this.doLoad}/>}/>
+          {/*<Route exact path={OfficeRoutes.STAFF_LIST}*/}
+          {/*       render={e => <StaffList doLoad={this.doLoad}/>}/>*/}
           <Route path={OfficeRoutes.SETTING} component={Settings}/>
         </Grid>
       </Grid>
