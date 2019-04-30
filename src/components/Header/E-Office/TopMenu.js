@@ -123,7 +123,7 @@ const menu = (props) => {
 
 
             <div style={{display: "flex", alignItems: "center"}}>
-                <Typography variant={"caption"} color={"textSecondary"}>Hello Username</Typography>
+                <Typography variant={"caption"} color={"textSecondary"}>Hello {localStorage.getItem('name')}</Typography>
                 <IconButton><Icon>account_circle_rounded</Icon></IconButton>
                 <NavLink to={routes.SETTING}><IconButton><Icon>settings</Icon></IconButton></NavLink>
             </div>

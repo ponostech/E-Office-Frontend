@@ -21,10 +21,11 @@ class DeskFiles extends Component {
     };
 
     componentDidMount() {
-        axios.get('/files/desk')
+        axios.get('/files/desk?token=' + localStorage.getItem('access_token'))
             .then(response => {
+                console.log(response);
                 this.setState({
-                    tableData: [{id: 1, number: "Aiden Lloyd", subject: "Business Consultant", branch: "Dallas"}]
+                    tableData: [response.data]
                 })
             })
             .catch(error => {
