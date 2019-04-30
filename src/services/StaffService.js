@@ -23,7 +23,7 @@ export class StaffService {
       designation: state.designation,
       address: state.address,
       dob: moment(state.dob).format("Y-M-D"),
-      branch: state.branch.val,
+      branch: state.branch.value,
       blood: state.blood,
       signature: state.signature.path,
       photo: state.passport.path
@@ -63,18 +63,11 @@ export class StaffService {
       console.log(res)
       if (res.status) {
       const branches = res.data.data.branches;
-      branches.forEach(function(item, index) {
-        let temp = {
-          val: item,
-          label: item
-        };
-        data.push(temp);
-      });
+      successCallback(branches);
       } else {
         const msg=ErrorToString(res.messages);
         errorCallback(msg);
       }
-      successCallback(data);
     } catch (e) {
       errorCallback(e.toString());
     }

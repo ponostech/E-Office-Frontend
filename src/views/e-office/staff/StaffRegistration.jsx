@@ -37,8 +37,8 @@ class StaffRegistration extends Component {
     branch: undefined,
     dob: new Date("12/12/1995"),
     blood: "",
-    signature: null,
-    passport: null,
+    signature: undefined,
+    passport: undefined,
 
     nameError: "",
     addressError: "",
@@ -118,7 +118,7 @@ class StaffRegistration extends Component {
   handleSave = (e) => {
     const invalid=Boolean(this.state.nameError) || Boolean(this.state.emailError) || Boolean(this.state.designationError)
      ||Boolean(this.state.branchError) || Boolean(this.state.dobError) || Boolean(this.state.phoneError)
-    ||Boolean(this.state.passwordError) || Boolean(this.state.confirmPasswordError) || this.state.signature===undefined || this.state.passport
+    ||Boolean(this.state.passwordError) || Boolean(this.state.confirmPasswordError) || this.state.signature===undefined || this.state.passport===undefined
     || this.state.prestine
 
     if (invalid) {
