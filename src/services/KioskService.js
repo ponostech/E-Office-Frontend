@@ -1,8 +1,10 @@
 import axios from "axios";
 import {ApiRoutes} from "../config/ApiRoutes";
+import { ErrorToString } from "../utils/ErrorUtil";
+import React from "react";
 
 export class KioskService {
-    async create(state) {
+    async create(state,errorCallback,successCallback) {
         const token = localStorage.getItem("access_token");
         const config = {headers: {"Authorization": `Bearer ${token}`}};
         let data = {
@@ -23,9 +25,22 @@ export class KioskService {
             status: 0,
             documents: state.uploadDocuments
         };
-        console.log(data);
-        let res = await axios.post(ApiRoutes.NEW_KIOSK, data, config);
-        return res;
+        try{
+            let res = await axios.post(ApiRoutes.NEW_KIOSK, data, config);
+            if (res.data.status) {
+                let msgs = [];
+                res.data.messages.forEach(function(msg) {
+                    let temp = <p>{`${msg}.`}</p>;
+                    msgs.push(temp);
+                });
+                successCallback(msgs);
+            }else{
+                errorCallback(ErrorToString(res.data.messages));
+            }
+        }catch (e) {
+            console.error(e)
+            errorCallback(e.toString())
+        }
     }
 
     async get() {

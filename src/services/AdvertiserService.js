@@ -8,15 +8,16 @@ export class AdvertiserService {
   async create(state, errorCallback, successCallback) {
     let data = {
       name: state.name,
-      email: state.email,
       type: state.type.value,
-      password: state.password,
       phone_no: state.phone,
-      registered: 0,
+      email: state.email,
+      password: state.password,
       address: state.address,
-      signature: [state.signature],
+      registered: 1,
+      signature: state.signature.path,
       documents: state.documentsUpload
     };
+
     try {
       let res = await axios.post(ApiRoutes.CREATE_ADVERTISER, data);
       if (res.data.status) {

@@ -1,9 +1,11 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
+import React from "react";
+import { ErrorToString } from "../utils/ErrorUtil";
 
 export class HoardingService {
 
-  async create(state) {
+  async create(state,errorCallback,successCallback) {
     const token = localStorage.getItem("access_token");
     const config = { headers: { "Authorization": `Bearer ${token}` } };
 
@@ -25,9 +27,22 @@ export class HoardingService {
       status: 0,
       documents: state.uploadDocuments
     };
-    console.log(data);
+    try{
     let res = await axios.post(ApiRoutes.NEW_HOARDING, data, config);
-    return res;
+      if (res.data.status) {
+        let msgs = [];
+        res.data.messages.forEach(function(msg) {
+          let temp = <p>{`${msg}.`}</p>;
+          msgs.push(temp);
+        });
+        successCallback(msgs);
+      }else{
+        errorCallback(ErrorToString(res.data.messages));
+      }
+    }catch (e) {
+       console.error(e)
+       errorCallback(e.toString())
+    }
   }
 
   async get() {

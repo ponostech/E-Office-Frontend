@@ -89,7 +89,6 @@ class HoardingApplicationForm extends Component {
 
       success: null,
       submit: false,
-      loading: false
     };
 
     this.localCouncilservice = new LocalCouncilService();
@@ -100,18 +99,14 @@ class HoardingApplicationForm extends Component {
 
 
   componentDidMount() {
-
     var self = this;
     const { doLoad, doLoadFinish } = this.props;
 
     doLoad();
       Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
         .then(function([cats, locs, docs]) {
-          // self.setState({ loading: false });
-          console.log(cats)
             doLoadFinish();
         });
-      // self.setState({ loading: false });
 
   }
 
@@ -120,80 +115,24 @@ class HoardingApplicationForm extends Component {
   }
 
   fetchLocalCouncil = () => {
-    let newLocalCouncils = [];
-    this.localCouncilservice.get()
-      .then(data => {
-        if (data.status) {
-          data.data.local_councils.forEach(function(item) {
-            let lc = {
-              value: item.id,
-              label: item.name
-            };
-            newLocalCouncils.push(lc);
-          });
-          this.setState({
-            localCouncils: newLocalCouncils
-          });
-        } else {
-          this.setState({ hasError: true });
-        }
-      })
-      .catch(err => {
-        let msg = "Unable to load resources, Please try again";
-        this.setState({ errorMessage: msg });
-        console.log(err);
-      });
+    this.localCouncilservice.fetch(
+      errorMessage=>this.setState({errorMessage}),
+      localCouncils=>this.setState({localCouncils}))
+      .finally(()=>console.info("Local council fetch successfully"))
   };
 
   fetchCategory = () => {
-    let categories = [];
-    this.categoryService.get()
-      .then(res => {
-        const { messages, status } = res.data;
-        if (status) {
-          res.data.data.area_categories.forEach(function(cat) {
-            const roads = cat.roads;
-            let roadOptions = [];
-            roads.forEach((road) => {
-              let item = {
-                label: road,
-                value: cat.id
-              };
-              roadOptions.push(item);
-            });
-            let c = {
-              label: `(${cat.name})`,
-              options: roadOptions
-            };
-            categories.push(c);
-          });
-          this.setState({
-            categories: categories
-          });
-        } else {
-          this.setState({ errorMessage: messages });
-        }
-      })
-      .catch(err => {
-        let msg = "Unable to load resources, Please try again";
-        this.setState({ errorMessage: msg });
-        console.log(err);
-      });
+    this.categoryService.fetch(
+      errorMessage=>this.setState({errorMessage}),
+      categories=>this.setState({categories}))
+      .finally(()=>console.info("Areas categories fetch successfully"))
   };
 
   fetchDocument = () => {
-    this.documentService.get("hoarding_kiosk")
-      .then(data => {
-        if (data.status) {
-          this.setState({ documents: data.data.documents });
-        }
-      })
-      .catch(err => {
-        let msg = "Unable to load resources, Please try again";
-        this.setState({ errorMessage: msg });
-        console.log(err);
-      });
-
+    this.documentService.fetch("hoarding_kiosk",
+        errorMessage=>this.setState({errorMessage}),
+        documents=>this.setState({documents}))
+      .finally(()=>console.info("Document attachment fetch successfully"))
   };
 
   invalid = () => {
@@ -214,40 +153,23 @@ class HoardingApplicationForm extends Component {
       return;
     }
     this.setState({ submit: true });
-    this.hoardingService.create(this.state)
-      .then(res => {
-        console.log(res);
-        if (res.data.status) {
-          this.setState({
-            success: (
-              <SweetAlert
-                success
-                style={{ display: "block", marginTop: "-100px" }}
-                title={"Success"}
-                onConfirm={() => history.push(ADVERTISER_HOARDING)}
-              >
-                {
-                  res.data.messages.map(function(msg, index) {
-                    return <p>
-                      {`${msg}.`}
-                    </p>;
-                  })
-                }
-              </SweetAlert>
-            )
-          });
-        } else {
-          let msg = ErrorToString(res.data.messages);
-          this.setState({ errorMessage: msg });
-        }
+    this.hoardingService.create(this.state,
+      errorMessage=>this.setState({errorMessage}),
+      successMessage=>{
+        this.setState({
+          success: (
+            <SweetAlert
+              success
+              style={{ display: "block", marginTop: "-100px" }}
+              title={"Success"}
+              onConfirm={() => history.push(ADVERTISER_HOARDING)}
+            >
+              {successMessage}
+            </SweetAlert>
+          )
+        });
       })
-      .catch(err => {
-        this.setState({ errorMessage: err.toString() });
-        console.log(err);
-      })
-      .then(() => {
-        this.setState({ submit: false });
-      });
+      .finally(()=>this.setState({submit:false}));
   };
   handleRadio = (e) => {
     this.setState({ landLordType: e.target.value });

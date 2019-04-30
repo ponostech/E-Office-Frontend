@@ -30,6 +30,7 @@ import AddressField from "../../components/AddressField";
 import OfficeSelect from "../../components/OfficeSelect";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { AdvertiserService } from "../../services/AdvertiserService";
+import { HOME } from "../../config/routes-constant/OfficeRoutes";
 
 const style = {
     root: {
@@ -109,52 +110,23 @@ class AdvertiserApplication extends Component {
     };
 
     insertData() {
-        let data = {
-            name: this.state.name,
-            type: this.state.type.value,
-            phone_no: this.state.phone,
-            email: this.state.email,
-            password: this.state.password,
-            address: this.state.address,
-            registered: 1,
-            signature: this.state.signature.path,
-            documents: this.state.documentsUpload
-        };
-        axios.post(ApiRoutes.CREATE_ADVERTISER, data)
-            .then(res => {
-                console.log(res);
-                if (res.data.status) {
-                    this.setState({
-                        successMessage: (
-                            <SweetAlert
-                                success
-                                style={{display: "block", marginTop: "-100px"}}
-                                title={"Success"}
-                                onConfirm={() => window.location.reload()}
-                            >
-                                {
-                                    res.data.messages.map(function (msg, index) {
-                                        return <p>
-                                            {`${msg}.`}
-                                        </p>
-                                    })
-                                }
-                            </SweetAlert>
-                        )
-                    });
-                } else {
-                    const msg = ErrorToString(res.data.messages);
-                    this.setState({errorMessage: msg});
-                }
-
+        const { history } = this.props;
+        this.advertiserService.create(this.state,errorMessage=>this.setState({errorMessage}),
+            successMessage=>{
+                this.setState({
+                    successMessage: (
+                      <SweetAlert
+                        success
+                        style={{display: "block", marginTop: "-100px"}}
+                        title={"Success"}
+                        onConfirm={() => history.push(HOME)}
+                      >
+                          {successMessage}
+                      </SweetAlert>
+                    )
+                });
             })
-            .catch(err => {
-                console.log(err);
-                this.setState({errorMessage: err.toString()});
-            })
-            .then(() => {
-                this.setState({submit: false});
-            });
+          .finally(()=>this.setState({submit:false}))
     }
 
     clear = () => {
