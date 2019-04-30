@@ -170,7 +170,6 @@ class StaffRegistration extends Component {
   };
 
   render() {
-    const { designation } = this.props;
     const { classes } = this.props;
 
     return (
