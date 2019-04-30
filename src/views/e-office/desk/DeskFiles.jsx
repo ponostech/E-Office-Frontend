@@ -5,16 +5,6 @@ import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {ApiRoutes} from "../../../config/ApiRoutes";
 
-const tableOptions = {
-    filterType: "checkbox",
-    responsive: "scroll",
-    rowsPerPage: 8,
-    serverSide: false,
-    onTableChange: function (action, tableState) {
-        this.updateTable(action, tableState);
-    }.bind(this),
-};
-
 class DeskFiles extends Component {
     state = {
         tableData: [],
@@ -29,15 +19,12 @@ class DeskFiles extends Component {
     getFiles() {
         const token = localStorage.getItem("access_token");
         const config = {headers: {"Authorization": `Bearer ${token}`}};
-        let files = null;
         axios.get(ApiRoutes.DESK, config)
             .then(res => {
-                files = res.data.data;
-                this.setState({tableData: files.files})
-            });
+                this.setState({tableData: res.data.data.files})
+            })
+            .catch(error => {this.setState({error: true})});
     }
-
-    updateTable = (action, tableState) => {};
 
     viewDetail = (id) => {
         const {history} = this.props;
@@ -47,6 +34,14 @@ class DeskFiles extends Component {
 
     render() {
         const {tableData} = this.state;
+
+        const tableOptions = {
+            filterType: "checkbox",
+            responsive: "scroll",
+            rowsPerPage: 8,
+            serverSide: false,
+        };
+
         const tableColumns = [
             {
                 name: "id",

@@ -58,10 +58,11 @@ const menu = (props) => {
                     buttonProps={{color: "transparent"}}/>
                 <CustomDropdown
                     dropdownList={[
-                        {title: "New Application", link: routes.ADVERTISERS},
-                        {title: "Under Process", link: routes.HOARDINGS},
-                        {title: "Approved List", link: routes.SHOP_LICENSES},
-                        {title: "Reject List", link: routes.SHOP_LICENSES}
+                        {title: "New Application", link: routes.ADVERTISER_NEW_LIST},
+                        {title: "Under Process", link: routes.ADVERTISER_IN_PROCESS_LIST},
+                        {title: "Approved List", link: routes.ADVERTISER_APPROVE_LIST},
+                        {title: "Rejected List", link: routes.ADVERTISER_REJECT_LIST},
+                        {title: "Cancelled List", link: routes.ADVERTISER_CANCEL_LIST},
                     ]}
                     linkClick={props.linkClick}
                     buttonText={"Advertiser"}
