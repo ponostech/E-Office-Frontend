@@ -14,6 +14,7 @@ import {ApiRoutes} from "../../../config/ApiRoutes";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import {Validators} from "../../../utils/Validators";
 import {authContext} from "../../../context/AuthContext";
+import AuthService from "../../../services/AuthService";
 
 const style = {
     root: {
@@ -22,6 +23,7 @@ const style = {
 };
 
 class AdvertiserLogin extends Component {
+    authService = new AuthService();
     constructor(props) {
         super(props);
         this.state = {
@@ -95,32 +97,20 @@ class AdvertiserLogin extends Component {
         }
 
         this.setState({submit: true});
-        axios.post(ApiRoutes.LOGIN_ROUTE, {email, password})
-            .then(res => {
-                console.log(res)
-                const {messages, status, access_token, redirect_url} = res.data;
-                if (status) {
-                    localStorage.setItem("access_token", access_token);
-                    localStorage.setItem("email", res.data.data.user.email);
-                    localStorage.setItem("name", res.data.data.user.advertiser.name);
+        this.authService.login(email,password,
+          errorMessage=>this.setState({errorMessage}),
+          res=>{
+              const {access_token, redirect_url} = res.data;
+              localStorage.setItem("access_token", access_token);
+              // localStorage.setItem("email", res.data.data.user.email);
+              // localStorage.setItem("name", res.data.data.user.advertiser.name);
 
-                    this.context.setUser(res.data.data.user);
-                    this.context.setToken(access_token);
+              this.context.setUser(res.data.data.user);
+              this.context.setToken(access_token);
 
-
-                    window.location.replace(redirect_url);
-                } else {
-                    this.setState({errorMessage: messages});
-                }
-            })
-            .catch(err => {
-                console.error(err)
-                this.setState({errorMessage: err.toString()});
-            })
-            .then(() => {
-                this.setState({submit: false});
-            });
-
+              window.location.replace(redirect_url);
+          })
+          .finally(()=>this.setState({submit:false}))
     };
     handleShowPassword = (e) => {
         this.setState({showPassword: !this.state.showPassword});
