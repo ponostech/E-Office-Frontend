@@ -17,13 +17,22 @@ class AdvertiserNewList extends React.Component {
     };
 
     componentDidMount() {
+        this.props.doLoad(true);
+        this.getData();
+    }
+
+    getData () {
         const token = localStorage.getItem("access_token");
         const config = {headers: {"Authorization": `Bearer ${token}`}};
         axios.get(ApiRoutes.ADVERTISER_LIST, config)
             .then(res => {
                 this.setState({advertisers: res.data.data.advertiser_applications});
+                this.props.doLoad(false);
             })
-            .catch(error => {this.setState({error: true})});
+            .catch(error => {
+                this.setState({error: true});
+                this.props.doLoad(false);
+            });
     }
 
     render() {

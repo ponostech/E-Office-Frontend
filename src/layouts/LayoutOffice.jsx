@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import officeStyle from "../assets/jss/material-dashboard-pro-react/layouts/officeStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import * as OfficeRoutes from "../config/routes-constant/OfficeRoutes";
@@ -137,6 +137,8 @@ class LayoutOffice extends React.Component {
           {/*<Route exact path={OfficeRoutes.STAFF_LIST}*/}
           {/*       render={e => <StaffList doLoad={this.doLoad}/>}/>*/}
           <Route path={OfficeRoutes.SETTING} component={Settings}/>
+
+          <Redirect to={OfficeRoutes.DESK} />
         </Grid>
       </Grid>
     );
