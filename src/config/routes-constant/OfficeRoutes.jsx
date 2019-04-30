@@ -3,7 +3,7 @@ export const LOGIN = "/auth/login";
 export const LOGOUT = "/auth/logout";
 export const HOME = "/home";
 export const FORM = "/form";
-export const E_OFFICE = "/e-office/desk";
+export const E_OFFICE = "/e-office";
 
 export const ADVERTISER_LOGIN = "/auth/login";
 export const APPLY_ADVERTISER = "/register/advertiser";
@@ -83,3 +83,9 @@ export const BRANCHES = "/setting/branches";
 export const ADVERTISERS = "/e-office/advertisers";
 
 export const ADVERTISER_DETAIL = `/e-office/advertisers/:id/details`;
+
+export const ADVERTISER_NEW_LIST = '/e-office/applications/advertiser/new';
+export const ADVERTISER_IN_PROCESS_LIST = '/e-office/applications/advertiser/in-process';
+export const ADVERTISER_REJECT_LIST = '/e-office/applications/advertiser/reject';
+export const ADVERTISER_CANCEL_LIST = '/e-office/applications/advertiser/cancel';
+export const ADVERTISER_APPROVE_LIST = '/e-office/applications/advertiser/cancel';

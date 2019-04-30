@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import officeStyle from "../assets/jss/material-dashboard-pro-react/layouts/officeStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import * as OfficeRoutes from "../config/routes-constant/OfficeRoutes";
@@ -37,6 +37,7 @@ import UnderProcessShopLicense from "../views/e-office/applications/shop-license
 import ApprovedShopLicense from "../views/e-office/applications/shop-license/ApprovedShopLicense";
 import RejectedShopLicense from "../views/e-office/applications/shop-license/RejectedShopLicense";
 import AdvertiserNewList from "../views/e-office/applications/advertisers/AdvertiserNewList";
+import AdvertiserInProcessList from "../views/e-office/applications/advertisers/AdvertiserInProcessList";
 import StaffList from "../views/e-office/staff/StaffList";
 import StaffRegistration from "../views/e-office/staff/StaffRegistration";
 
@@ -78,8 +79,10 @@ class LayoutOffice extends React.Component {
 
           {/*Advertiser*/}
           <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
-          <Route exact path={OfficeRoutes.ADVERTISERS}
+          <Route exact path={OfficeRoutes.ADVERTISER_NEW_LIST}
                  render={e => <AdvertiserNewList doLoad={this.doLoad}/>}/>
+          <Route exact path={OfficeRoutes.ADVERTISER_IN_PROCESS_LIST}
+                 render={e => <AdvertiserInProcessList doLoad={this.doLoad}/>}/>
 
           {/*Hoarding*/}
           <Route exact path={OfficeRoutes.NEW_HOARDINGS}
@@ -134,6 +137,8 @@ class LayoutOffice extends React.Component {
           {/*<Route exact path={OfficeRoutes.STAFF_LIST}*/}
           {/*       render={e => <StaffList doLoad={this.doLoad}/>}/>*/}
           <Route path={OfficeRoutes.SETTING} component={Settings}/>
+
+          <Redirect to={OfficeRoutes.DESK} />
         </Grid>
       </Grid>
     );
