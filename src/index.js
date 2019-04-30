@@ -25,7 +25,9 @@ axios.defaults.timeout = 20000;
 const token = localStorage.getItem("access_token");
 
 if (token) {
-    axios.defaults.headers.common["Authorization"] = token;
+    axios.defaults.headers.common = {
+        "Authorization": `Bearer ${token}`
+    };
 }
 
 ReactDOM.render(

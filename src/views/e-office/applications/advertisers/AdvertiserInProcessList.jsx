@@ -22,8 +22,7 @@ class AdvertiserNewList extends React.Component {
     }
 
     getData() {
-        const token = localStorage.getItem("access_token");
-        const config = {headers: {"Authorization": `Bearer ${token}`}, params: {status: 'in-process'}};
+        const config = {params: {status: 'in-process'}};
         axios.get(ApiRoutes.ADVERTISER_LIST, config)
             .then(res => {
                 this.setState({advertisers: res.data.data.advertiser_applications});
