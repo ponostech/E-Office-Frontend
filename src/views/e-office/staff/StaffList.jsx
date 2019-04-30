@@ -26,16 +26,8 @@ class StaffList extends React.Component {
     const { doLoad } = this.props;
     doLoad(true);
 
-    this.staffService.fetch()
-      .then(hoardings => {
-        this.setState({ hoardings: hoardings });
-      })
-      .catch(err => {
-        this.setState({ errorMessage: err.toString() });
-      })
-      .finally(() => {
-        doLoad(false);
-      });
+    this.staffService.fetch(errorMessage=>this.setState({errorMessage}),staffs=>this.setState({staffs}))
+      .finally(()=>doLoad(false))
   }
 
   openAssignment = (id) => {
