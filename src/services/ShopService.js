@@ -1,10 +1,12 @@
 import axios from "axios";
+import React from 'react';
 import { ApiRoutes } from "../config/ApiRoutes";
 import moment from "moment";
+import { ErrorToString } from "../utils/ErrorUtil";
 
 export class ShopService {
 
-  async create(state) {
+  async create(state,errorCallback,successCallback) {
     let data = {
       name: state.shopName,
       phone: state.phone,
@@ -31,9 +33,20 @@ export class ShopService {
     };
     try {
       let res=await axios.post(ApiRoutes.CREATE_SHOP_LICENSE, data);
-      return res.data;
+      if (res.data.status) {
+        let msgs = [];
+        res.data.messages.forEach(function(msg) {
+          let temp=<p>{`${msg}.`}</p>
+          msgs.push(temp)
+        });
+        successCallback(msgs)
+      }else{
+        let msg=ErrorToString(res.data.messages)
+        errorCallback(msg)
+      }
     } catch (e) {
-      console.log("Error "+e);
+      console.error(e)
+      errorCallback(e.toString())
     }
   }
 

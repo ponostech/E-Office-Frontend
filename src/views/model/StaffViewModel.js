@@ -33,5 +33,6 @@ export class StaffViewModel {
   static PASSWORD_ERROR="Password must be atleast 6 character length";
   static SUBMIT_TITLE="Staff Creation";
   static PLEASE_WAIT="Please Wait ...";
+  static ROLE="Staff Role";
 
 }

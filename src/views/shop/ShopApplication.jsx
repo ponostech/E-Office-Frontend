@@ -35,7 +35,7 @@ import AddressField from "../../components/AddressField";
 import { TradeService } from "../../services/TradeService";
 import { LocalCouncilService } from "../../services/LocalCouncilService";
 import SweetAlert from "react-bootstrap-sweetalert";
-import { RequestOtp } from "../../services/OtpService";
+import { OtpService, RequestOtp } from "../../services/OtpService";
 import OtpDialog from "../../components/OtpDialog";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
@@ -57,6 +57,7 @@ class ShopApplication extends Component {
   documentService = new DocumentService();
   shopService = new ShopService();
   localCouncilService = new LocalCouncilService();
+  otpService = new OtpService();
   state = {
     name: "",
     phone: "",
@@ -125,7 +126,7 @@ class ShopApplication extends Component {
 
   componentDidMount() {
     document.title = "e-AMC | Shop License Application Form";
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
     var self = this;
     const { doLoad, doLoadFinish } = this.props;
 
@@ -140,32 +141,28 @@ class ShopApplication extends Component {
 
   sendOtp = () => {
     var self = this;
-    RequestOtp(this.state.phone, "OTP for shop license application")
-      .then(res => {
-        console.log(res);
-        if (res.data.status) {
-          let str = ArrayToString(res.data.messages);
-          self.setState({ otpMessage: str });
-          self.setState({ openOtp: true });
-        } else {
-          if (res.data.validation) {
-            this.setState({ errorMessage: ErrorToString(res.data.messages) });
-          } else {
-            this.setState({ errorMessage: ArrayToString(res.data.messages) });
-          }
-        }
+    this.otpService.requestOtp(this.state.phone, "Shop License Application",
+      errorMessage => {
+      this.setState({errorMessage})
+      },
+      otpMessage => {
+        this.setState({ openOtp: true });
+        this.setState({ otpMessage });
       })
-      .catch(err => {
-        console.log(err);
-        this.setState({ errorMessage: err.toString() });
-      });
+      .finally(()=>console.log("Finish otp request"));
+
   };
   onVerifiedOtp = (verified) => {
+    // if (!verified) {
+    //   return
+    // }
+    //
+    const { history } = this.props;
     if (verified) {
       this.setState({ submit: true });
-      this.shopService.create(this.state)
-        .then(data => {
-          if (data.status) {
+      this.shopService.create(this.state,
+          errorMessage=>this.setState({errorMessage}),
+          msg=>{
             this.setState({
               success: (
                 <SweetAlert
@@ -173,29 +170,12 @@ class ShopApplication extends Component {
                   style={{ display: "block", marginTop: "-100px" }}
                   title={"Success"}
                   onConfirm={() => window.location.reload()}>
-                  {
-                    data.messages.map(function(msg, index) {
-                      return <p>
-                        {`${msg}.`}
-                      </p>;
-                    })
-                  }
+                  {msg}
                 </SweetAlert>
               )
             });
-          } else {
-            const msg = ErrorToString(data.messages);
-            this.setState({ errorMessage: msg });
-          }
-          console.log(data);
-        })
-        .catch(err => {
-          console.error(err);
-          this.setState({ errorMessage: err.toString() });
-        })
-        .then(() => {
-          this.setState({ submit: false });
-        });
+          })
+        .finally(()=>this.setState({submit:false}))
     }
   };
   fetchLocalCouncil = () => {
@@ -793,8 +773,7 @@ class ShopApplication extends Component {
         </GridItem>
 
         <SubmitDialog open={this.state.submit} text={"Your Application is submitting, Please wait"}/>
-        <OfficeSnackbar open={!!this.state.success} variant={"success"} message={this.state.success}
-                        onClose={() => this.setState({ success: "" })}/>
+
         <OfficeSnackbar open={!!this.state.errorMessage} variant={"error"} message={this.state.errorMessage}
                         onClose={() => this.setState({ errorMessage: "" })}/>
 

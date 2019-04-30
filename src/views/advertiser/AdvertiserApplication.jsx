@@ -29,6 +29,8 @@ import {ErrorToString} from "../../utils/ErrorUtil";
 import AddressField from "../../components/AddressField";
 import OfficeSelect from "../../components/OfficeSelect";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { AdvertiserService } from "../../services/AdvertiserService";
+import { HOME } from "../../config/routes-constant/OfficeRoutes";
 
 const style = {
     root: {
@@ -75,29 +77,18 @@ class AdvertiserApplication extends Component {
         };
 
         this.documentService = new DocumentService();
+        this.advertiserService=new AdvertiserService();
     }
 
     componentDidMount() {
-        const {doLoad, doLoadFinish} = this.props;
-        doLoad();
-        this.retrieveDocuments(doLoadFinish);
+        this.retrieveDocuments();
     }
 
-    retrieveDocuments = (doLoadFinish) => {
-        this.documentService.get("advertiser")
-            .then(res => {
-                if (res.status) {
-                    const {documents} = res.data;
-                    this.setState({documents});
-                }
-            })
-            .catch(err => {
-                let msg = "Unable to load resources, Please try again";
-                this.setState({errorMessage: msg});
-            })
-            .then(() => {
-                doLoadFinish()
-            });
+    retrieveDocuments = () => {
+        const {doLoad, doLoadFinish} = this.props;
+        doLoad();
+        this.documentService.fetch("advertiser",errorMessage=>this.setState({errorMessage}),documents=>this.setState({documents}))
+          .finally(()=>doLoadFinish())
     };
 
     handleClickShowPassword = (e) => {
@@ -119,52 +110,23 @@ class AdvertiserApplication extends Component {
     };
 
     insertData() {
-        let data = {
-            name: this.state.name,
-            type: this.state.type.value,
-            phone_no: this.state.phone,
-            email: this.state.email,
-            password: this.state.password,
-            address: this.state.address,
-            registered: 1,
-            signature: this.state.signature.path,
-            documents: this.state.documentsUpload
-        };
-        axios.post(ApiRoutes.CREATE_ADVERTISER, data)
-            .then(res => {
-                console.log(res);
-                if (res.data.status) {
-                    this.setState({
-                        successMessage: (
-                            <SweetAlert
-                                success
-                                style={{display: "block", marginTop: "-100px"}}
-                                title={"Success"}
-                                onConfirm={() => window.location.reload()}
-                            >
-                                {
-                                    res.data.messages.map(function (msg, index) {
-                                        return <p>
-                                            {`${msg}.`}
-                                        </p>
-                                    })
-                                }
-                            </SweetAlert>
-                        )
-                    });
-                } else {
-                    const msg = ErrorToString(res.data.messages);
-                    this.setState({errorMessage: msg});
-                }
-
+        const { history } = this.props;
+        this.advertiserService.create(this.state,errorMessage=>this.setState({errorMessage}),
+            successMessage=>{
+                this.setState({
+                    successMessage: (
+                      <SweetAlert
+                        success
+                        style={{display: "block", marginTop: "-100px"}}
+                        title={"Success"}
+                        onConfirm={() => history.push(HOME)}
+                      >
+                          {successMessage}
+                      </SweetAlert>
+                    )
+                });
             })
-            .catch(err => {
-                console.log(err);
-                this.setState({errorMessage: err.toString()});
-            })
-            .then(() => {
-                this.setState({submit: false});
-            });
+          .finally(()=>this.setState({submit:false}))
     }
 
     clear = () => {

@@ -1,12 +1,14 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
 import Grid from "@material-ui/core/Grid";
-import { Icon } from "@material-ui/core";
+import { Tooltip } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { StaffService } from "../../../services/StaffService";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const styles = {
   button: {},
@@ -26,8 +28,8 @@ class StaffList extends React.Component {
     const { doLoad } = this.props;
     doLoad(true);
 
-    this.staffService.fetch(errorMessage=>this.setState({errorMessage}),staffs=>this.setState({staffs}))
-      .finally(()=>doLoad(false))
+    this.staffService.fetch(errorMessage => this.setState({ errorMessage }), staffs => this.setState({ staffs }))
+      .finally(() => doLoad(false));
   }
 
   openAssignment = (id) => {
@@ -55,14 +57,13 @@ class StaffList extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { hoardings } = this.state;
+    const { staffs } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
       rowsPerPage: 15,
       serverSide: false,
       onTableChange: function(action, tableState) {
-        this.updateTable(action, tableState);
       }.bind(this)
     };
 
@@ -75,50 +76,60 @@ class StaffList extends React.Component {
           sort: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             const { rowIndex } = tableMeta;
-            const data = this.state.hoardings[rowIndex];
+            const data = this.state.staffs[rowIndex];
             return (
               <div>
-                <IconButton className={classes.button} color="primary" size="small"
-                            aria-label="View Details"
-                            onClick={e => this.setState({ hoarding: data.staff, openDetail: true })}>
-                  <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" className={classes.button} color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, value)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
-                </IconButton>
-                <IconButton variant="contained" className={classes.button} color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
-                </IconButton>
+                <Tooltip title={"Edit staff"}>
+                  <IconButton>
+                    <EditIcon color={"action"}/>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={"Delete User"}>
+                  <IconButton>
+                    <DeleteIcon color={"error"}/>
+                  </IconButton>
+                </Tooltip>
               </div>
             );
           }
         }
       },
       {
-        name: "name",
+        name: "staff",
         label: "NAME",
         options: {
-          customBodyRender: (file, tableMeta, updateValue) => {
+          customBodyRender: (staff, tableMeta, updateValue) => {
             return (
-              file.number
+              staff.name
             );
           }
         }
       }, {
-        name: "address",
-        label: "ADDRESS",
+        name: "email",
+        label: "EMAIL"
+      }, {
+        name: "phone_no",
+        label: "PHONE"
+      }, {
+        name: "staff",
+        label: "DESIGNATION",
         options: {
-          customBodyRender: (file, tableMeta, updateValue) => {
+          customBodyRender: (staff, tableMeta, updateValue) => {
             return (
-              file.subject
+              staff.designation
             );
           }
         }
-      }, {
-        name: "designation",
-        label: "DESIGNATION"
+      },{
+        name: "staff",
+        label: "BRANCH",
+        options: {
+          customBodyRender: (staff, tableMeta, updateValue) => {
+            return (
+              staff.branch
+            );
+          }
+        }
       }
 
     ];
@@ -128,7 +139,7 @@ class StaffList extends React.Component {
         <Grid item xs={12}>
           <MUIDataTable
             title={"STAFF: List of Staff"}
-            data={hoardings}
+            data={staffs}
             columns={tableColumns}
             options={tableOptions}
           />

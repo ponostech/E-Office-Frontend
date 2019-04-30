@@ -13,7 +13,6 @@ import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import { StaffService } from "../../../services/StaffService";
 import { StaffViewModel } from "../../model/StaffViewModel";
-import LockIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Validators } from "../../../utils/Validators";
@@ -35,10 +34,11 @@ class StaffRegistration extends Component {
     designation: "",
     address: "",
     branch: undefined,
+    role: undefined,
     dob: new Date("12/12/1995"),
     blood: "",
-    signature: null,
-    passport: null,
+    signature: undefined,
+    passport: undefined,
 
     nameError: "",
     addressError: "",
@@ -46,34 +46,41 @@ class StaffRegistration extends Component {
     phoneError: "",
     passwordError: "",
     branchError: "",
+    roleError: "",
     confirmPasswordError: "",
     designationError: "",
     dobError: "",
 
 
     errorMessage: "",
-    successMessage:"",
+    successMessage: "",
 
     branches: [],
+    roles: [],
 
-    prestine:true,
+    prestine: true,
     submit: false,
-    showPassword:true,
+    showPassword: true
   };
 
   componentDidMount() {
 
+    this.fetchRole();
     this.fetchBranches();
   }
 
   handleShowPassword = (e) => {
-    this.setState({showPassword: !this.state.showPassword});
+    this.setState({ showPassword: !this.state.showPassword });
   };
 
   fetchBranches = () => {
     this.props.doLoad(true);
-    this.staffService.getBranch((errorMessage)=>this.setState({errorMessage}),(branches)=>this.setState({branches}))
-      .finally(()=>this.props.doLoad(false))
+    this.staffService.getBranch((errorMessage) => this.setState({ errorMessage }), (branches) => this.setState({ branches }))
+      .finally(() => this.props.doLoad(false));
+  };
+
+  fetchRole = () => {
+    this.staffService.getRoles(errorMessage => this.setState({ errorMessage }), roles => this.setState({ roles }));
   };
 
   handleChange = (e) => {
@@ -83,19 +90,19 @@ class StaffRegistration extends Component {
     });
     switch (name) {
       case "password":
-        !Validators.PASSWORD_REGEX.test(value)?this.setState({passwordError:StaffViewModel.PASSWORD_ERROR}):this.setState({passwordError:""});
+        !Validators.PASSWORD_REGEX.test(value) ? this.setState({ passwordError: StaffViewModel.PASSWORD_ERROR }) : this.setState({ passwordError: "" });
         break;
       case "confirmPassword":
-        value!==this.state.password?this.setState({confirmPasswordError:StaffViewModel.CONFIRM_PASSWORD_ERROR}):this.setState({confirmPasswordError:""});
+        value !== this.state.password ? this.setState({ confirmPasswordError: StaffViewModel.CONFIRM_PASSWORD_ERROR }) : this.setState({ confirmPasswordError: "" });
         break;
       case "email":
-        !Validators.EMAIL_REGEX.test(value)?this.setState({emailError:StaffViewModel.EMAIL_ERROR}):this.setState({ emailError: ""});
+        !Validators.EMAIL_REGEX.test(value) ? this.setState({ emailError: StaffViewModel.EMAIL_ERROR }) : this.setState({ emailError: "" });
         break;
       case "phone":
-        !Validators.PHONE_REGEX.test(value)?this.setState({phoneError:StaffViewModel.PHONE_ERROR}):this.setState({phoneError:""});
+        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: StaffViewModel.PHONE_ERROR }) : this.setState({ phoneError: "" });
         break;
     }
-    this.setState({prestine:false})
+    this.setState({ prestine: false });
   };
 
   handleSelect = (identifier, value) => {
@@ -106,28 +113,31 @@ class StaffRegistration extends Component {
       case "branch":
         this.setState({ branch: value });
         break;
+      case "role":
+        this.setState({ role: value });
+        break;
       default:
         break;
     }
   };
 
   handleClear = () => {
-    window.location.reload()
+    window.location.reload();
   };
 
   handleSave = (e) => {
-    const invalid=Boolean(this.state.nameError) || Boolean(this.state.emailError) || Boolean(this.state.designationError)
-     ||Boolean(this.state.branchError) || Boolean(this.state.dobError) || Boolean(this.state.phoneError)
-    ||Boolean(this.state.passwordError) || Boolean(this.state.confirmPasswordError) || this.state.signature===undefined || this.state.passport
-    || this.state.prestine
+    const invalid = Boolean(this.state.nameError) || Boolean(this.state.emailError) || Boolean(this.state.designationError)
+      || Boolean(this.state.branchError) || Boolean(this.state.dobError) || Boolean(this.state.phoneError)
+      || Boolean(this.state.passwordError) || Boolean(this.state.confirmPasswordError) || this.state.signature === undefined || this.state.passport === undefined
+      || this.state.prestine;
 
     if (invalid) {
-      this.setState({errorMessage:"Please fill all the required field"})
-      return
+      this.setState({ errorMessage: "Please fill all the required field" });
+      return;
     }
     this.setState({ submit: true });
-    this.staffService.create(this.state,  (errorMessage) => this.setState({errorMessage}),(successMessage)=> this.setState({successMessage}))
-      .finally(()=>this.setState({submit:false}))
+    this.staffService.create(this.state, (errorMessage) => this.setState({ errorMessage }), (successMessage) => this.setState({ successMessage }))
+      .finally(() => this.setState({ submit: false }));
   };
 
   handleBlur = (e) => {
@@ -164,13 +174,15 @@ class StaffRegistration extends Component {
       case "branch":
         this.state.branch === undefined ? this.setState({ branchError: "Branch is required" }) : this.setState({ branchError: "" });
         break;
+      case "role":
+        this.state.role === undefined ? this.setState({ roleError: "Staff role is required" }) : this.setState({ roleError: "" });
+        break;
       default:
         break;
     }
   };
 
   render() {
-    const { designation } = this.props;
     const { classes } = this.props;
 
     return (
@@ -240,7 +252,6 @@ class StaffRegistration extends Component {
                 fullWidth={true}
                 onBlur={this.handleBlur.bind(this)}
                 onChange={this.handleChange.bind(this)}
-                isClearable={true}
                 required={true}
                 error={Boolean(this.state.designationError)}
                 helperText={this.state.designationError}
@@ -334,6 +345,20 @@ class StaffRegistration extends Component {
                             options={this.state.branches}/>
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={6}>
+              <OfficeSelect value={this.state.role}
+                            label={StaffViewModel.ROLE}
+                            name={"role"}
+                            required={true}
+                            variant={"outlined"}
+                            margin={"dense"}
+                            fullWidth={true}
+                            helperText={this.state.roleError}
+                            error={Boolean(this.state.roleError)}
+                            onBlur={this.handleSelectBlur.bind(this, "role")}
+                            onChange={this.handleSelect.bind(this, "role")}
+                            options={this.state.roles}/>
+            </GridItem>
+            <GridItem className={classes.item} xs={12} sm={12} md={6}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
                   required={true}
@@ -419,8 +444,10 @@ class StaffRegistration extends Component {
           </GridContainer>
         </GridItem>
         <SubmitDialog open={this.state.submit} title={StaffViewModel.SUBMIT_TITLE} text={StaffViewModel.PLEASE_WAIT}/>
-        <OfficeSnackbar onClose={()=>this.setState({errorMessage:""})} variant={"error"} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
-        <OfficeSnackbar onClose={()=>this.setState({errorMessage:""})} variant={"success"} open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
+        <OfficeSnackbar onClose={() => this.setState({ errorMessage: "" })} variant={"error"}
+                        open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
+        <OfficeSnackbar onClose={() => this.setState({ errorMessage: "" })} variant={"success"}
+                        open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
       </GridContainer>
     );
   }
