@@ -50,7 +50,7 @@ export class HoardingService {
     const config = { headers: { "Authorization": `Bearer ${token}` } };
     try {
       const res = await axios.get(ApiRoutes.GET_ADVERTISER_HOARDING, config );
-      if (res.status) {
+      if (res.data.status) {
         return res.data.data.hoarding_applications;
       }else{
         throw new Error("Error:Server problem")
