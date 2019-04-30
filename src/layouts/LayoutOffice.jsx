@@ -22,7 +22,6 @@ import HoardingDetails from "../views/e-office/applications/hoarding/HoardingDet
 import AdvertiserDetails from "../views/e-office/applications/advertisers/AdvertiserDetails";
 import DeskView from "../views/e-office/desk/DeskView";
 import TradeStore from "../views/e-office/admin/TradeStore";
-import StaffRegistration from "../views/staff/StaffRegistration";
 import UnderProcessHoarding from "../views/e-office/applications/hoarding/HoardingUnderProcessList";
 import RejectedHoardingApplications from "../views/e-office/applications/hoarding/HoardingRejectedList";
 import ApprovedHoarding from "../views/e-office/applications/hoarding/HoardingApprovedList";
@@ -39,6 +38,7 @@ import ApprovedShopLicense from "../views/e-office/applications/shop-license/App
 import RejectedShopLicense from "../views/e-office/applications/shop-license/RejectedShopLicense";
 import AdvertiserNewList from "../views/e-office/applications/advertisers/AdvertiserNewList";
 import StaffList from "../views/e-office/staff/StaffList";
+import StaffRegistration from "../views/e-office/staff/StaffRegistration";
 
 class LayoutOffice extends React.Component {
   constructor(props) {
