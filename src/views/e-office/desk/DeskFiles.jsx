@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
+import {ApiRoutes} from "../../../config/ApiRoutes";
 
 const tableOptions = {
     filterType: "checkbox",
@@ -21,16 +22,19 @@ class DeskFiles extends Component {
     };
 
     componentDidMount() {
-        axios.get('/files/desk?token=' + localStorage.getItem('access_token'))
-            .then(response => {
-                console.log(response);
-                this.setState({
-                    tableData: [response.data]
-                })
-            })
-            .catch(error => {
-                this.setState({error: true})
-            })
+        this.props.doLoad();
+        this.getFiles();
+    }
+
+    getFiles() {
+        const token = localStorage.getItem("access_token");
+        const config = {headers: {"Authorization": `Bearer ${token}`}};
+        let files = null;
+        axios.get(ApiRoutes.DESK, config)
+            .then(res => {
+                files = res.data.data;
+                this.setState({tableData: files.files})
+            });
     }
 
     updateTable = (action, tableState) => {};

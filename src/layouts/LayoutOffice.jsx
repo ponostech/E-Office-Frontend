@@ -59,7 +59,7 @@ class LayoutOffice extends React.Component {
           <OfficePageHeader loading={this.state.loading} color={"primary"}/>
         </Grid>
         <Grid item style={{ marginTop: 70, minHeight: "100vh", background: "white" }} xs={12} sm={12} md={12}>
-          <Route exact path={OfficeRoutes.DESK} component={DeskView}/>
+          <Route exact path={OfficeRoutes.DESK} render={e => <DeskView doLoad={this.doLoad}/>}/>
 
           {/*Receipt*/}
           <Route exact path={OfficeRoutes.NEW_RECEIPT} component={ReceiptStore}/>
