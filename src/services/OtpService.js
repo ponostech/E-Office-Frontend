@@ -38,7 +38,7 @@ export class OtpService {
 
       let res = await await axios.post(ApiRoutes.VERIFY_OTP, { otp, phone_no });
       if (res.data.status) {
-
+          successCallback("otp verified")
       } else {
         errorCallback("Something went wrong:Please try again later")
       }

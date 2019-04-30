@@ -97,6 +97,7 @@ class AdvertiserLogin extends Component {
         this.setState({submit: true});
         axios.post(ApiRoutes.LOGIN_ROUTE, {email, password})
             .then(res => {
+                console.log(res)
                 const {messages, status, access_token, redirect_url} = res.data;
                 if (status) {
                     localStorage.setItem("access_token", access_token);
@@ -113,6 +114,7 @@ class AdvertiserLogin extends Component {
                 }
             })
             .catch(err => {
+                console.error(err)
                 this.setState({errorMessage: err.toString()});
             })
             .then(() => {
