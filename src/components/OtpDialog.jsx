@@ -1,13 +1,14 @@
 import React, {Component} from "react";
 import {Button, Dialog, DialogContent, Divider, TextField, Typography} from "@material-ui/core";
 import GridContainer from "./Grid/GridContainer";
-import {RequestOtp, VerifyOtp} from "../services/OtpService";
+import { OtpService, RequestOtp, VerifyOtp } from "../services/OtpService";
 import {ArrayToString, ErrorToString} from "../utils/ErrorUtil";
 import GridItem from "./Grid/GridItem";
 
 var timeout = null;
 
 class OtpDialog extends Component {
+    otpService=new OtpService();
 
     state = {
         otp: "",

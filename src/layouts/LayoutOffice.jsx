@@ -32,13 +32,13 @@ import ApprovedKiosks from "../views/e-office/applications/kiosk/KioskApprovedLi
 import RejectedKiosks from "../views/e-office/applications/kiosk/KioskRejectedList";
 import NewBannerApplications from "../views/e-office/applications/banners/BannerNewList";
 import UnderProcessBanner from "../views/e-office/applications/banners/BannerUnderProcessList";
-import StaffList from "../views/staff/StaffList";
 import BannerGrantedList from "../views/e-office/applications/banners/BannerGrantedList";
 import BannerRejectedList from "../views/e-office/applications/banners/BannerRejectedList";
 import UnderProcessShopLicense from "../views/e-office/applications/shop-license/UnderProcessShopLicense";
 import ApprovedShopLicense from "../views/e-office/applications/shop-license/ApprovedShopLicense";
 import RejectedShopLicense from "../views/e-office/applications/shop-license/RejectedShopLicense";
 import AdvertiserNewList from "../views/e-office/applications/advertisers/AdvertiserNewList";
+import StaffList from "../views/e-office/staff/StaffList";
 
 class LayoutOffice extends React.Component {
   constructor(props) {
