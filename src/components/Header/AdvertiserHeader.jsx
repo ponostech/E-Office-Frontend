@@ -118,7 +118,7 @@ class AdvertiserHeader extends React.Component {
         </div>
 
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Typography variant={"caption"} color={"textSecondary"}>{"Welcome"}</Typography>
+          <Typography variant={"caption"} color={"textSecondary"}>{"Welcome"} {localStorage.getItem("name")}</Typography>
           <IconButton onClick={this.handleUser.bind(this)}>
             <UserIcon/>
           </IconButton>

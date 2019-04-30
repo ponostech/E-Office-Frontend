@@ -100,6 +100,8 @@ class AdvertiserLogin extends Component {
                 const {messages, status, access_token, redirect_url} = res.data;
                 if (status) {
                     localStorage.setItem("access_token", access_token);
+                    localStorage.setItem("email", res.data.data.user.email);
+                    localStorage.setItem("name", res.data.data.user.advertiser.name);
 
                     this.context.setUser(res.data.data.user);
                     this.context.setToken(access_token);
