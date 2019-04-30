@@ -92,7 +92,7 @@ class DeskView extends React.Component {
                         className={classes.cardContent}
                     >
                         <GridContainer spacing={16} justify={"space-between"}>
-                            <DeskFiles/>
+                            <DeskFiles doLoad={this.props.doLoad} />
                         </GridContainer>
                     </CardContent>
                 </Card>

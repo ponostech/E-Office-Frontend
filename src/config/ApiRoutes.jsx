@@ -5,6 +5,8 @@ export class ApiRoutes {
   static WARDS = "/wards";
   static CATEGORY = "/area-categories";
 
+  static DESK = "/files/desk";
+
   static CREATE_STAFF = "/register/staff";
   static CREATE_ADVERTISER="/register/advertiser";
 
