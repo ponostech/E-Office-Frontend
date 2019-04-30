@@ -533,7 +533,7 @@ class BannerApplication extends Component {
                         message={this.state.errorMessage}
                         onClose={(e) => this.setState({ errorMessage: "" })}/>
         <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
-                   purposed={"Resend OTP for Banner Application"}
+                   purposed={"Banner Application"}
                    onClose={(value) => {
                      this.setState({ openOtp: false });
                      this.onVerifiedOtp(value);

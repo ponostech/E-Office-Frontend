@@ -239,7 +239,6 @@ class StaffRegistration extends Component {
                 fullWidth={true}
                 onBlur={this.handleBlur.bind(this)}
                 onChange={this.handleChange.bind(this)}
-                isClearable={true}
                 required={true}
                 error={Boolean(this.state.designationError)}
                 helperText={this.state.designationError}

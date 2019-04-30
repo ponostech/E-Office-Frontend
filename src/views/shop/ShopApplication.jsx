@@ -157,11 +157,12 @@ class ShopApplication extends Component {
     //   return
     // }
     //
+    const { history } = this.props;
     if (verified) {
       this.setState({ submit: true });
-      this.shopService.create(this.state)
-        .then(data => {
-          if (data.status) {
+      this.shopService.create(this.state,
+          errorMessage=>this.setState({errorMessage}),
+          msg=>{
             this.setState({
               success: (
                 <SweetAlert
@@ -169,29 +170,12 @@ class ShopApplication extends Component {
                   style={{ display: "block", marginTop: "-100px" }}
                   title={"Success"}
                   onConfirm={() => window.location.reload()}>
-                  {
-                    data.messages.map(function(msg, index) {
-                      return <p>
-                        {`${msg}.`}
-                      </p>;
-                    })
-                  }
+                  {msg}
                 </SweetAlert>
               )
             });
-          } else {
-            const msg = ErrorToString(data.messages);
-            this.setState({ errorMessage: msg });
-          }
-          console.log(data);
-        })
-        .catch(err => {
-          console.error(err);
-          this.setState({ errorMessage: err.toString() });
-        })
-        .then(() => {
-          this.setState({ submit: false });
-        });
+          })
+        .finally(()=>this.setState({submit:false}))
     }
   };
   fetchLocalCouncil = () => {

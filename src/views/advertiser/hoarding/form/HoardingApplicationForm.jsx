@@ -225,9 +225,6 @@ class HoardingApplicationForm extends Component {
                 style={{ display: "block", marginTop: "-100px" }}
                 title={"Success"}
                 onConfirm={() => history.push(ADVERTISER_HOARDING)}
-                confirmBtnCssClass={
-                  "MuiButton-outlinedPrimary-301"
-                }
               >
                 {
                   res.data.messages.map(function(msg, index) {

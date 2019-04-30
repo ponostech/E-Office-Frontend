@@ -26,35 +26,15 @@ class OtpDialog extends Component {
 
 
     handleResend = () => {
+        const self=this;
         const {phone, purposed} = this.props;
         this.setState({successMessage: ""});
         this.setState({submit: true});
         timeout = setTimeout(function (resolve, reject) {
-            RequestOtp(phone, purposed)
-                .then(res => {
-                    if (res.data.status) {
-                        let str = ArrayToString(res.data.messages);
-                        this.setState({
-                            successMessage: str,
-                            errorMessage: ""
-                        });
-
-                    } else {
-                        let msg = ErrorToString(res.data.messages);
-                        this.setState({
-                            errorMessage: msg,
-                            successMessage: ""
-                        });
-                    }
-                })
-                .catch(err => {
-                    this.setState({
-                        errorMessage: err
-                    });
-                })
-                .then(() => {
-                    this.setState({submit: false});
-                });
+            self.otpService.requestOtp(phone,purposed,
+                errorMessage=>{self.setState({errorMessage,successMessage:""})},
+                successMessage=>self.setState({successMessage,errorMessage:""}))
+              .finally(()=>self.setState({submit:false}))
         }, 3000);
 
     };
@@ -71,23 +51,17 @@ class OtpDialog extends Component {
     verifyOtp = () => {
         const {phone, onClose} = this.props;
         this.setState({submit: true});
-        VerifyOtp(phone, this.state.otp)
-            .then(res => {
-                console.log(res);
-                if (res.data.status) {
-                    this.setState({successMessage: ArrayToString(res.data.messages), errorMessage: ""});
-                    onClose(true);
-                } else {
-                    let msg = res.data.messages;
-                    this.setState({errorMessage: ArrayToString(msg), successMessage: ""});
-                }
+
+        this.otpService.veriftOtp(phone,this.state.otp,
+            errorMessage=>{
+            this.setState({errorMessage})
+            },
+            successMessage=>{
+            this.setState({successMessage});
+            console.log("call me bitch")
+            onClose(true)
             })
-            .catch(err => {
-                this.setState({errorMessage: err});
-            })
-            .then(() => {
-                this.setState({submit: false});
-            });
+          .finally(()=>this.setState({submit:false}));
     };
 
     render() {

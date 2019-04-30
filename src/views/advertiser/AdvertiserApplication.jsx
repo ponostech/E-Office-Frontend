@@ -29,6 +29,7 @@ import {ErrorToString} from "../../utils/ErrorUtil";
 import AddressField from "../../components/AddressField";
 import OfficeSelect from "../../components/OfficeSelect";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { AdvertiserService } from "../../services/AdvertiserService";
 
 const style = {
     root: {
@@ -75,29 +76,18 @@ class AdvertiserApplication extends Component {
         };
 
         this.documentService = new DocumentService();
+        this.advertiserService=new AdvertiserService();
     }
 
     componentDidMount() {
-        const {doLoad, doLoadFinish} = this.props;
-        doLoad();
-        this.retrieveDocuments(doLoadFinish);
+        this.retrieveDocuments();
     }
 
-    retrieveDocuments = (doLoadFinish) => {
-        this.documentService.get("advertiser")
-            .then(res => {
-                if (res.status) {
-                    const {documents} = res.data;
-                    this.setState({documents});
-                }
-            })
-            .catch(err => {
-                let msg = "Unable to load resources, Please try again";
-                this.setState({errorMessage: msg});
-            })
-            .then(() => {
-                doLoadFinish()
-            });
+    retrieveDocuments = () => {
+        const {doLoad, doLoadFinish} = this.props;
+        doLoad();
+        this.documentService.fetch("advertiser",errorMessage=>this.setState({errorMessage}),documents=>this.setState({documents}))
+          .finally(()=>doLoadFinish())
     };
 
     handleClickShowPassword = (e) => {
