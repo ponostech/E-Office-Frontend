@@ -70,6 +70,11 @@ export const UNDER_PROCESS_SHOPLICENSE = "/e-office/applications/shop-license/un
 export const APPROVED_SHOPLICENSE = "/e-office/applications/shop-license/approved";
 export const REJECTED_SHOPLICENSE = "/e-office/applications/shop-license/rejected";
 
+export const NEW_HOTELLICENSE = "/e-office/applications/hotel-license/new";
+export const UNDER_PROCESS_HOTELLICENSE = "/e-office/applications/hotel-license/under-process";
+export const APPROVED_HOTELLICENSE = "/e-office/applications/hotel-license/approved";
+export const REJECTED_HOTELLICENSE = "/e-office/applications/hotel-license/rejected";
+
 export const HOARDING_DETAILS = "/e-office/applications/hoardings/:id/detail";
 export const BANNERS = "/e-office/applications/banners";
 export const OBPAS = "/e-office/applications/obpas";

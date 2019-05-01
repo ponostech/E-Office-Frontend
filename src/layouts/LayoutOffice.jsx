@@ -11,7 +11,6 @@ import FileStore from "../views/e-office/files/FileStore";
 import ReceiptShow from "../views/e-office/receipt/ReceiptShow";
 import ReceiptList from "../views/e-office/receipt/ReceiptList";
 import ReceiptSentList from "../views/e-office/receipt/ReceiptSentList";
-import BannerApplications from "../views/e-office/applications/banners/BannerApplications";
 import ShopNewList from "../views/e-office/applications/shop-license/ShopNewList";
 import HoardingApplications from "../views/e-office/applications/hoarding/HoardingApplications";
 import Settings from "../views/e-office/settings/Setting";
@@ -31,7 +30,7 @@ import ApprovedKiosks from "../views/e-office/applications/kiosk/KioskApprovedLi
 import RejectedKiosks from "../views/e-office/applications/kiosk/KioskRejectedList";
 import NewBannerApplications from "../views/e-office/applications/banners/BannerNewList";
 import UnderProcessBanner from "../views/e-office/applications/banners/BannerUnderProcessList";
-import BannerGrantedList from "../views/e-office/applications/banners/BannerGrantedList";
+import BannerGrantedList from "../views/e-office/applications/banners/BannerApprovedList";
 import BannerRejectedList from "../views/e-office/applications/banners/BannerRejectedList";
 import UnderProcessShopLicense from "../views/e-office/applications/shop-license/UnderProcessShopLicense";
 import ApprovedShopLicense from "../views/e-office/applications/shop-license/ApprovedShopLicense";
@@ -40,6 +39,10 @@ import AdvertiserNewList from "../views/e-office/applications/advertisers/Advert
 import AdvertiserInProcessList from "../views/e-office/applications/advertisers/AdvertiserInProcessList";
 import StaffList from "../views/e-office/staff/StaffList";
 import StaffRegistration from "../views/e-office/staff/StaffRegistration";
+import HotelUnderProcessList from "../views/e-office/applications/hotel/HotelUnderProcessList";
+import HotelApprovedList from "../views/e-office/applications/hotel/HotelApprovedList";
+import HotelRejectedList from "../views/e-office/applications/hotel/HotelRejectedList";
+import HotelNewList from "../views/e-office/applications/hotel/HotelNewList";
 
 class LayoutOffice extends React.Component {
   constructor(props) {
@@ -114,7 +117,6 @@ class LayoutOffice extends React.Component {
                  render={e => <BannerGrantedList doLoad={this.doLoad}/>}/>
           <Route exact path={OfficeRoutes.REJECTED_BANNER}
                  render={e => <BannerRejectedList doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.BANNERS} component={BannerApplications}/>
 
 
           {/*Shop Licensing*/}
@@ -127,6 +129,15 @@ class LayoutOffice extends React.Component {
           <Route exact path={OfficeRoutes.REJECTED_SHOPLICENSE}
                  render={e => <RejectedShopLicense doLoad={this.doLoad}/>}/>
 
+          {/*Shop Licensing*/}
+          <Route exact path={OfficeRoutes.NEW_HOTELLICENSE}
+                 render={e => <HotelNewList doLoad={this.doLoad}/>}/>
+          <Route exact path={OfficeRoutes.UNDER_PROCESS_HOTELLICENSE}
+                 render={e => <HotelUnderProcessList doLoad={this.doLoad}/>}/>
+          <Route exact path={OfficeRoutes.APPROVED_HOTELLICENSE}
+                 render={e => <HotelApprovedList doLoad={this.doLoad}/>}/>
+          <Route exact path={OfficeRoutes.REJECTED_HOTELLICENSE}
+                 render={e => <HotelRejectedList doLoad={this.doLoad}/>}/>
           {/*Admin*/}
           <Route exact path={OfficeRoutes.NEW_TRADE}
                  component={TradeStore}/>
