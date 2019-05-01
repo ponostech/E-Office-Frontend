@@ -35,7 +35,11 @@ function Transition(props) {
 
 class NoteCreateDialog extends React.Component {
     state = {
-        note: "",
+        fileId: null,
+        content: "",
+        action: null,
+        priority: null,
+        fixedDate: "",
     };
 
     render () {
@@ -64,7 +68,14 @@ class NoteCreateDialog extends React.Component {
                     <Card>
                         <CardHeader title={"File No.: " + this.props.file.number} subheader={"Subject: " + this.props.file.subject}/>
                         <CardContent>
+                            {/*Content*/}
                             <Editor/>
+                            {/*Action*/}
+
+                            {/*Priority*/}
+
+                            {/*Fixed Date*/}
+
                         </CardContent>
                     </Card>
                 </List>
