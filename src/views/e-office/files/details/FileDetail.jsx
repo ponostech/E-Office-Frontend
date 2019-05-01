@@ -1,96 +1,97 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import React, {Component} from "react";
+import axios from 'axios';
+import {withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import LeftMenu from "./Menu/Left";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { Route } from "react-router-dom";
+import {Route} from "react-router-dom";
 import * as OfficeRoutes from "../../../../config/routes-constant/OfficeRoutes";
-import Notesheet from "../notesheet/Notesheet";
+import NoteSheet from "../notesheet/Notesheet";
 import DraftPermit from "../draft/DraftPermit";
 import DraftLetter from "../draft/DraftLetter";
-import { CircularProgress } from "@material-ui/core";
-import { FileService } from "../../../../services/FileService";
-import OfficeSnackbar from "../../../../components/OfficeSnackbar";
+import {ApiRoutes} from '../../../../config/ApiRoutes';
 
 const styles = theme => ({
-  root: {
-    display: "flex"
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3
-  },
-  container: {
-    display: "flex"
-  },
-  toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar
-  }
+    root: {
+        display: "flex"
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing.unit * 3
+    },
+    container: {
+        display: "flex"
+    },
+    toolbar: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        padding: "0 8px",
+        ...theme.mixins.toolbar
+    }
 });
 
 class FileDetail extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      errorMessage: ""
+    state = {
+        file: [],
+        loading: true,
+        error: false,
     };
-    this.fileService = new FileService();
-  }
 
-  componentDidMount() {
-    const { match } = this.props;
-    const id = match.params.id;
-    this.fileService.get(id)
-      .then(file => {
-        console.log("whar the fuchhhh");
-        console.log(file);
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({ errorMessage: err.toString() });
-      });
+    componentDidMount() {
+        this.props.doLoad(true);
+        const {id} = this.props.match.params;
+        this.getData(id);
+    }
 
-  }
+    getData(id) {
+        axios.get(ApiRoutes.FILE_DETAIL + id)
+            .then(res => {
+                this.setState({file: res.data.data.files});
+                this.props.doLoad(false);
+                this.setState({loading: false});
+            })
+            .catch(error => {
+                this.props.doLoad(false);
+                this.setState({error: true});
+                this.setState({loading: false});
+            });
+    }
 
-  toggleContent = (name) => {
-    const { history } = this.props;
-    history.push("/e-office/file/:id/detail/" + name);
-  };
+    toggleContent = (name) => {
+        const {history} = this.props;
+        if (this.state.file.id)
+            history.push("/e-office/file/" + this.state.file.id + "/detail/" + name);
+    };
 
-  render() {
-    const { classes } = this.props;
-    const view = (
-      <>
-        <CssBaseline/>
-        <LeftMenu click={this.toggleContent}/>
-        <main className={classes.content}>
-          <Grid item xs={12} md={12} lg={12}>
-            <Route path={OfficeRoutes.FILE_DETAIL + "/notesheet"} component={Notesheet}/>
-            <Route path={OfficeRoutes.FILE_DETAIL + "/draft"} component={DraftPermit}/>
-            <Route path={OfficeRoutes.FILE_DETAIL + "/reject"} component={DraftLetter}/>
-            <Route path={OfficeRoutes.FILE_DETAIL} exact component={Notesheet}/>
-          </Grid>
-        </main>
-      </>
-    );
-    return (
-      <Grid container className={classes.container}>
-        <div className={classes.root}>
-          {
-            this.state.loading ? <CircularProgress variant={"indeterminate"} color={"primary"}/>
-              : view
-          }
-        </div>
-        <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)}
-                        onClose={(e) => this.setState({ errorMessage: "" })} message={this.state.errorMessage}/>
-      </Grid>
-    );
-  }
+    render() {
+        const {classes} = this.props;
+        const view = (
+            <>
+                <CssBaseline/>
+                <LeftMenu click={this.toggleContent}/>
+                <main className={classes.content}>
+                    <Grid item xs={12} md={12} lg={12}>
+                        <Route path={OfficeRoutes.FILE_DETAIL + "/notesheet"}
+                               render={(props) => <NoteSheet {...props} file={this.state.file}/>}/>
+                        <Route path={OfficeRoutes.FILE_DETAIL + "/draft"}
+                               render={(props) => <DraftPermit {...props} file={this.state.file}/>}/>
+                        <Route path={OfficeRoutes.FILE_DETAIL + "/reject"}
+                               render={(props) => <DraftLetter {...props} file={this.state.file}/>}/>
+                        <Route path={OfficeRoutes.FILE_DETAIL} exact
+                               render={(props) => <NoteSheet {...props} file={this.state.file}/>}/>
+                    </Grid>
+                </main>
+            </>
+        );
+        return (
+            <Grid container className={classes.container}>
+                <div className={classes.root}>
+                    {this.state.loading ? "Loading" : view}
+                </div>
+            </Grid>
+        );
+    }
 }
 
 export default withStyles(styles)(FileDetail);

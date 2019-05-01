@@ -5,6 +5,8 @@ import Timeline from "../../../../components/Timeline/Timeline.jsx";
 import image from "../../../../assets/img/faces/card-profile1-square.jpg";
 import CreateNoteButton from "./NotesheetCreateButton";
 import CreateNoteDialog from "./NoteCreateDialog";
+import {Card, CardHeader} from "@material-ui/core";
+import {NewFileViewModel} from "../../../model/NewFileViewModel";
 
 const widgetStories = [
     {
@@ -133,12 +135,13 @@ class Notesheets extends Component {
     };
 
     render() {
+        console.log(this.props);
         return (
                 <>
+                    <CardHeader title={"File No.: " + this.props.file.number} subheader={"Subject: " + this.props.file.subject}/>
                     <CreateNoteButton click={this.handleOpenCreateNote} />
                     <Timeline simple stories={widgetStories} />
                     <CreateNoteButton click={this.handleOpenCreateNote} />
-
                     <CreateNoteDialog open={this.state.openDialog} close={this.handleCloseCreateNote}/>
                 </>
         )

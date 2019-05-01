@@ -73,7 +73,7 @@ class LayoutOffice extends React.Component {
 
           {/*File*/}
           <Route exact path={OfficeRoutes.NEW_FILE} render={e => <FileStore doLoad={this.doLoad}/>}/>
-          <Route path={OfficeRoutes.FILE_DETAIL} component={FileDetail}/>
+          <Route path={OfficeRoutes.FILE_DETAIL} render={(props) => <FileDetail {...props} doLoad={this.doLoad}/>} />
           <Route exact path={OfficeRoutes.CREATED_FILES} component={FileCreatedList}/>
           <Route exact path={OfficeRoutes.SENT_FILE} component={FileSentList}/>
 
@@ -146,8 +146,6 @@ class LayoutOffice extends React.Component {
           <Route exact path={OfficeRoutes.STAFF_LIST}
                  render={e => <StaffList doLoad={this.doLoad}/>}/>
           <Route path={OfficeRoutes.SETTING} component={Settings}/>
-
-          <Redirect to={OfficeRoutes.DESK} />
         </Grid>
       </Grid>
     );

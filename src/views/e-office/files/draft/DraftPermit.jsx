@@ -1,7 +1,7 @@
 import React from 'react';
 import 'react-quill/dist/quill.snow.css';
 import Editor from "./Editor";
-import {Button} from "@material-ui/core";
+import {Button, CardHeader} from "@material-ui/core";
 
 const data = `
 <p><b>This text is bold</b></p>
@@ -27,6 +27,7 @@ type it...
 const draftPermit = (props) => {
   return (
     <>
+        <CardHeader title={"File No.: " + props.file.number} subheader={"Subject: " + props.file.subject}/>
       <Editor data={data}/>
       <Button variant="outlined" color="primary">Save</Button>
       <Button variant="outlined" color="secondary">Cancel</Button>
