@@ -19,6 +19,7 @@ import {
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Typography from "@material-ui/core/Typography";
+import { authContext } from "../../context/AuthContext";
 
 const styles = {
     pageSubcategoriesTitle: {
@@ -200,5 +201,7 @@ class HomePage extends Component {
         );
     }
 }
+
+HomePage.contextType = authContext;
 
 export default withStyles(styles)(HomePage);

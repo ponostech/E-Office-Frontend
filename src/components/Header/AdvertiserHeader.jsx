@@ -20,11 +20,12 @@ import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
 import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import Icon from "@material-ui/core/es/Icon";
-import { authContext, Consumer } from "../../context/AuthContext";
-import axios from "axios";
-import { ApiRoutes } from "../../config/ApiRoutes";
+import { authContext } from "../../context/AuthContext";
+import { LoginService } from "../../services/LoginService";
 
 class AdvertiserHeader extends React.Component {
+  loginService = new LoginService();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -56,24 +57,15 @@ class AdvertiserHeader extends React.Component {
     // }
   }
 
-  logout=()=>{
+  logout = () => {
     const { history } = this.props;
-    const token = localStorage.getItem("access_token");
-    const config = { headers: { "Authorization": `Bearer ${token}` } };
-    axios.post(ApiRoutes.LOGOUT_ROUTE, {}, config)
-      .then(res => {
-        if (res.data.status) {
-          history.push(OfficeRoutes.LOGIN);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+    this.loginService.logout(errorMessage => console.log(errorMessage), msg => {
+      history.push(OfficeRoutes.LOGIN);
+    }).finally(() => console.info("log out request has been made"));
+  };
   handleHoarding = (path) => {
     const { history } = this.props;
     history.push(path);
-
   };
 
   handleKiosk = (path) => {
@@ -118,7 +110,8 @@ class AdvertiserHeader extends React.Component {
         </div>
 
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Typography variant={"caption"} color={"textSecondary"}>{"Welcome"} {localStorage.getItem("name")}</Typography>
+          <Typography variant={"caption"}
+                      color={"textSecondary"}>{"Welcome"} {localStorage.getItem("name")}</Typography>
           <IconButton onClick={this.handleUser.bind(this)}>
             <UserIcon/>
           </IconButton>
@@ -143,17 +136,17 @@ class AdvertiserHeader extends React.Component {
       { name: "send", label: "Forward File", icon: "send" }
     ];
     var list = (
-      <GridContainer justify={"center"} direction={"column"} alignItems={"center"} style={{padding:20}}>
+      <GridContainer justify={"center"} direction={"column"} alignItems={"center"} style={{ padding: 20 }}>
         <div>
           <Typography variant={"h5"} color={"primary"}>Menu</Typography>
         </div>
         <div>
           <List>
-            {menuItem.map((item,index) => (
-                <ListItem button key={index} onClick={() => this.props.click(item.name)}>
-                  <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
-                  <ListItemText primary={item.label}/>
-                </ListItem>
+            {menuItem.map((item, index) => (
+              <ListItem button key={index} onClick={() => this.props.click(item.name)}>
+                <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
+                <ListItemText primary={item.label}/>
+              </ListItem>
             ))}
           </List>
         </div>
@@ -161,49 +154,49 @@ class AdvertiserHeader extends React.Component {
       </GridContainer>
     );
     return (
-          <AppBar position="fixed" color={"inherit"}>
-            <Toolbar>{/*
+      <AppBar position="fixed" color={"inherit"}>
+        <Toolbar>{/*
           <Hidden smDown>
             <Typography color={"textPrimary"} variant={"title"}>E-AMC</Typography>
           </Hidden>*/}
-              <Hidden mdUp>
-                <div style={{flex:1}}>
-                  <Button href="#" color="transparent">
-                    e-AMC-OFFICE
-                  </Button>
-                </div>
-              </Hidden>
-              <Hidden smDown>{menuItems} </Hidden>
-              <Hidden  mdUp>
-                <IconButton
-                  justIcon
-                  aria-label="open drawer"
-                  onClick={this.handleDrawerToggle}
-                >
-                  <MenuIcon/>
-                </IconButton>
-              </Hidden>
-              <Hidden mdUp>
-                <Hidden mdUp>
-                  <Drawer
-                    variant="temporary"
-                    anchor={"right"}
-                    open={this.state.open}
-                    onClose={this.handleDrawerToggle}
-                    ModalProps={{
-                      keepMounted: true // Better open performance on mobile.
-                    }}
-                  >
-                    {list}
-                  </Drawer>
-                </Hidden>
-              </Hidden>
-            </Toolbar>
-            {
-              loading ? <LinearProgress color={"primary"} variant={"indeterminate"}/> : undefined
-            }
+          <Hidden mdUp>
+            <div style={{ flex: 1 }}>
+              <Button href="#" color="transparent">
+                e-AMC-OFFICE
+              </Button>
+            </div>
+          </Hidden>
+          <Hidden smDown>{menuItems} </Hidden>
+          <Hidden mdUp>
+            <IconButton
+              justIcon
+              aria-label="open drawer"
+              onClick={this.handleDrawerToggle}
+            >
+              <MenuIcon/>
+            </IconButton>
+          </Hidden>
+          <Hidden mdUp>
+            <Hidden mdUp>
+              <Drawer
+                variant="temporary"
+                anchor={"right"}
+                open={this.state.open}
+                onClose={this.handleDrawerToggle}
+                ModalProps={{
+                  keepMounted: true // Better open performance on mobile.
+                }}
+              >
+                {list}
+              </Drawer>
+            </Hidden>
+          </Hidden>
+        </Toolbar>
+        {
+          loading ? <LinearProgress color={"primary"} variant={"indeterminate"}/> : undefined
+        }
 
-          </AppBar>
+      </AppBar>
 
     );
   }

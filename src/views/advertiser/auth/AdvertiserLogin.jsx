@@ -102,6 +102,7 @@ class AdvertiserLogin extends Component {
           res=>{
               const {access_token, redirect_url} = res.data;
               localStorage.setItem("access_token", access_token);
+              localStorage.setItem("current_user",res.data.data.user)
               // localStorage.setItem("email", res.data.data.user.email);
               // localStorage.setItem("name", res.data.data.user.advertiser.name);
 
