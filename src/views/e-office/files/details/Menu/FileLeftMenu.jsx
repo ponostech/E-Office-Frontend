@@ -101,8 +101,11 @@ class LeftMenu extends React.Component {
     }
 
     toogleDrawer = () => {
-        this.setState({open: !this.state.open});
-        localStorage.setItem("open_drawer", this.state.open)
+        this.setState(
+            state => {
+                localStorage.setItem("open_drawer", !state.open);
+                return  {open: !state.open}
+            });
     };
 
     render() {

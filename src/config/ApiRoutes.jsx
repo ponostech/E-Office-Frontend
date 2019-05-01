@@ -34,12 +34,12 @@ export class ApiRoutes {
   static VERIFY_OTP="/otp/verify";
   static REQUEST_OTP="/otp/request";
   static LOGOUT_ROUTE="/auth/logout";
-  static FILE_DETAIL="/files/";
   static GET_STAFF="/staffs";
   static BRANCHES="/setting/branches";
   static STAFF_ROLE="/setting/roles";
-
   static ADVERTISER_LIST = '/staff/advertiser/applications';
 
   static NOTESHEET = '/notesheets';
+  static FILE_SEND = '/file/send';
+  static FILE_DETAIL="/files/";
 }

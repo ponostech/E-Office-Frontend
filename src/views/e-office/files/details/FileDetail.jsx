@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import axios from 'axios';
 import {withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import LeftMenu from "./Menu/Left";
+import LeftMenu from "./Menu/FileLeftMenu";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {Route} from "react-router-dom";
 import * as OfficeRoutes from "../../../../config/routes-constant/OfficeRoutes";
