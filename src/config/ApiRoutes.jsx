@@ -37,8 +37,4 @@ export class ApiRoutes {
   static STAFF_ROLE="/setting/roles";
 
   static ADVERTISER_LIST = '/staff/advertiser/applications';
-  // static ADVERTISER_IN_PROCESS_LIST = '/staff/advertiser/applications/in-process';
-  // static ADVERTISER_CANCEL_LIST = '/staff/advertiser/applications/cancelled';
-  // static ADVERTISER_REJECT_LIST = '/staff/advertiser/applications/rejected';
-  // static ADVERTISER_APPROVE_LIST = '/staff/advertiser/applications/approved';
 }

@@ -12,7 +12,7 @@ class DeskFiles extends Component {
     };
 
     componentDidMount() {
-        this.props.doLoad();
+        this.props.doLoad(true);
         this.getFiles();
     }
 
@@ -21,9 +21,13 @@ class DeskFiles extends Component {
         const config = {headers: {"Authorization": `Bearer ${token}`}};
         axios.get(ApiRoutes.DESK, config)
             .then(res => {
-                this.setState({tableData: res.data.data.files})
+                this.setState({tableData: res.data.data.files});
+                this.props.doLoad(false);
             })
-            .catch(error => {this.setState({error: true})});
+            .catch(error => {
+                this.setState({error: true});
+                this.props.doLoad(false);
+            });
     }
 
     viewDetail = (id) => {
