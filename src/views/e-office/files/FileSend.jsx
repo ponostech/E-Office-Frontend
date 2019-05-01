@@ -67,8 +67,7 @@ class FileSend extends Component {
                 </CardContent>
                 <Divider/>
                 <DialogActions>
-                    <Button color="primary">Save Draft</Button>
-                    <Button color="primary">Save</Button>
+                    <Button color="primary">Send File</Button>
                     <Button color="secondary">Cancel</Button>
                 </DialogActions>
             </>
