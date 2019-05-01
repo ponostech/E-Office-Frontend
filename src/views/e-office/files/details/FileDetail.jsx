@@ -9,11 +9,13 @@ import * as OfficeRoutes from "../../../../config/routes-constant/OfficeRoutes";
 import NoteSheet from "../notesheet/Notesheet";
 import DraftPermit from "../draft/DraftPermit";
 import DraftLetter from "../draft/DraftLetter";
+import FileSend from "../FileSend";
 import {ApiRoutes} from '../../../../config/ApiRoutes';
 
 const styles = theme => ({
     root: {
-        display: "flex"
+        display: "flex",
+        width: "100%",
     },
     content: {
         flexGrow: 1,
@@ -47,14 +49,12 @@ class FileDetail extends Component {
     getData(id) {
         axios.get(ApiRoutes.FILE_DETAIL + id)
             .then(res => {
-                this.setState({file: res.data.data.files});
+                this.setState({file: res.data.data.files, loading: false});
                 this.props.doLoad(false);
-                this.setState({loading: false});
             })
             .catch(error => {
                 this.props.doLoad(false);
-                this.setState({error: true});
-                this.setState({loading: false});
+                this.setState({error: true, loading: false});
             });
     }
 
@@ -66,6 +66,7 @@ class FileDetail extends Component {
 
     render() {
         const {classes} = this.props;
+        const {loading} = this.state;
         const view = (
             <>
                 <CssBaseline/>
@@ -78,6 +79,8 @@ class FileDetail extends Component {
                                render={(props) => <DraftPermit {...props} file={this.state.file}/>}/>
                         <Route path={OfficeRoutes.FILE_DETAIL + "/reject"}
                                render={(props) => <DraftLetter {...props} file={this.state.file}/>}/>
+                        <Route path={OfficeRoutes.FILE_DETAIL + "/send"}
+                               render={(props) => <FileSend {...props} doLoad={this.props.doLoad} file={this.state.file}/>}/>
                         <Route path={OfficeRoutes.FILE_DETAIL} exact
                                render={(props) => <NoteSheet {...props} file={this.state.file}/>}/>
                     </Grid>
@@ -87,7 +90,7 @@ class FileDetail extends Component {
         return (
             <Grid container className={classes.container}>
                 <div className={classes.root}>
-                    {this.state.loading ? "Loading" : view}
+                    {loading ? "Loading" : view}
                 </div>
             </Grid>
         );
