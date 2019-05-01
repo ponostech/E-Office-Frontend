@@ -23,6 +23,8 @@ export class HotelService {
       estd: moment(state.estd).format("Y/M/D"),
       ac_rooms: state.acRoom,
       non_ac_rooms: state.noAcRoom,
+      conference_halls:state.noConferenceHall,
+      banquet_halls:state.noBanquet,
       other_facilities:state.facilities,
       tin_no: state.tinNo,
       cst_no: state.cstNo,
@@ -35,7 +37,7 @@ export class HotelService {
       documents: state.uploadDocuments
     };
     try {
-      let res=await axios.post(ApiRoutes.CREATE_SHOP_LICENSE, data);
+      let res=await axios.post(ApiRoutes.CREATE_HOTEL_LICENSE, data);
       if (res.data.status) {
         let msgs = [];
         res.data.messages.forEach(function(msg) {
@@ -62,9 +64,9 @@ export class HotelService {
       if (status) {
         const res = await axios.get(ApiRoutes.STAFF_HOTEL+`?status=${status}`, config);
         console.log(res)
-        hoardings = res.data.data.shops;
+        hoardings = res.data.data.hotels;
       } else {
-        const defRes = await axios.get(ApiRoutes.STAFF_SHOP, config);
+        const defRes = await axios.get(ApiRoutes.STAFF_HOTEL, config);
         hoardings = defRes.data.data.shops;
       }
       return hoardings;

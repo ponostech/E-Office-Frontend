@@ -10,7 +10,7 @@ import GMapDialog from "../../../../components/GmapDialog";
 import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
-import { ShopService } from "../../../../services/ShopService";
+import { HotelService } from "../../../../services/HotelService";
 
 const styles = {
   button: {},
@@ -18,15 +18,15 @@ const styles = {
 };
 
 class HotelNewList extends React.Component {
-  shopService = new ShopService();
+  hotelService=new HotelService();
   state = {
     openAssignment: false,
     openDetail: false,
     openMap: false,
     openTakeFile: false,
     detailData: [],
-    shops: [],
-    shop: {},
+    hotels: [],
+    hotel: {},
     takeMessage: "",
     errorMessage: "",
     lat: 93,
@@ -36,9 +36,9 @@ class HotelNewList extends React.Component {
   componentDidMount() {
     const { doLoad } = this.props;
     doLoad(true)
-    this.shopService.fetch()
-      .then(shops => {
-        this.setState({ shops: shops });
+    this.hotelService.fetch()
+      .then(hotels => {
+        this.setState({ hotels });
       })
       .catch(err => {
         this.setState({ errorMessage: err.toString() });
@@ -76,14 +76,13 @@ class HotelNewList extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { shops } = this.state;
+    const { hotels } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
       rowsPerPage: 15,
       serverSide: false,
       onTableChange: function(action, tableState) {
-        this.updateTable(action, tableState);
       }.bind(this)
     };
 
@@ -96,7 +95,7 @@ class HotelNewList extends React.Component {
           sort: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             const { rowIndex } = tableMeta;
-            const data = this.state.shops[rowIndex];
+            const data = this.state.hotels[rowIndex];
             return (
               <div>
                 <IconButton className={classes.button} color="primary" size="small"
@@ -148,12 +147,12 @@ class HotelNewList extends React.Component {
         label: "OWNER",
       },
       {
-        name: "shop",
+        name: "hotel",
         label: "LOCATION",
         options: {
-          customBodyRender: (shop, tableMeta, updateValue) => {
+          customBodyRender: (hotel, tableMeta, updateValue) => {
             const { rowIndex } = tableMeta;
-            const data = this.state.shops[rowIndex];
+            const data = this.state.hotels[rowIndex];
             const lat = Number(data.latitude);
             const lng = Number(data.longitude);
 
@@ -178,17 +177,17 @@ class HotelNewList extends React.Component {
         <Grid item xs={12}>
           <MUIDataTable
             title={"HOTEL & LODGING LICENSE: List of New Application"}
-            data={shops}
+            data={hotels}
             columns={tableColumns}
             options={tableOptions}
           />
         </Grid>
         <HoardingDetailDialog
-          hoarding={this.state.shop}
+          hoarding={this.state.hotel}
           open={this.state.openDetail} onClose={(e) => this.setState({ openDetail: false })}/>
         <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
                     props={this.props} staffs={this.state.staffs}/>
-        <GMapDialog open={this.state.openMap} lat={this.state.lat} lng={this.state.lng} onClose={() => this.setState({ openMap: false })}
+        <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng} onClose={() => this.setState({ openMap: false })}
                     isMarkerShown={true}
         />
         <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to take this file ?"}

@@ -189,7 +189,7 @@ class KioskNewList extends React.Component {
                     open={this.state.openDetail} onClose={(e) => this.setState({openDetail: false})}/>
                 <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
                             props={this.props} staffs={this.state.staffs}/>
-                <GMapDialog open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
+                <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                             onClose={() => this.setState({openMap: false})}
                             isMarkerShown={true}
                 />

@@ -27,6 +27,8 @@ export class ApiRoutes {
   static NEW_KIOSK="/advertiser/kiosks";
   static DOCUMENTS="/documents";
   static CREATE_SHOP_LICENSE="shops";
+  static CREATE_HOTEL_LICENSE="hotels";
+
   static CREATE_BANNER="/banners";
   static TRADES="/trades";
   static VERIFY_OTP="/otp/verify";
