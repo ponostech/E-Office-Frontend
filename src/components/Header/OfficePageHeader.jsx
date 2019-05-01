@@ -58,9 +58,9 @@ class OfficePageHeader extends React.Component {
             <AppBar position="fixed" color={"inherit"}>
                 <Toolbar>
                     <Hidden mdUp>
-                        <div className={classes.flex}>
-                            <Button href="#" className={classes.title} color="transparent">
-                                AMC-OFFICE
+                        <div style={{flex:1}}>
+                            <Button href="#" color="transparent">
+                                E-AMC-OFFICE
                             </Button>
                         </div>
                     </Hidden>

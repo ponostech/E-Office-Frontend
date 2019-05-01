@@ -5,6 +5,7 @@ import {withStyles} from "@material-ui/core/styles";
 import axios from "axios";
 import {ApiRoutes} from "../../../../config/ApiRoutes";
 import {Icon, IconButton} from "@material-ui/core";
+import { AdvertiserService } from "../../../../services/AdvertiserService";
 
 const styles = {
     button: {},
@@ -15,6 +16,7 @@ class AdvertiserNewList extends React.Component {
     state = {
         advertisers: [],
     };
+    advertiserService=new AdvertiserService();
 
     componentDidMount() {
         this.props.doLoad(true);
@@ -22,15 +24,10 @@ class AdvertiserNewList extends React.Component {
     }
 
     getData () {
-        axios.get(ApiRoutes.ADVERTISER_LIST)
-            .then(res => {
-                this.setState({advertisers: res.data.data.advertiser_applications});
-                this.props.doLoad(false);
-            })
-            .catch(error => {
-                this.setState({error: true});
-                this.props.doLoad(false);
-            });
+        this.advertiserService.fetch("new",errorMessage=>this.setState({errorMessage}),advertisers=>this.setState({advertisers}))
+          .finally(()=>{
+              this.props.doLoad(false)
+          })
     }
 
     render() {

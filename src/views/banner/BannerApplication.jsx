@@ -26,7 +26,7 @@ import AddressField from "../../components/AddressField";
 import { Validators } from "../../utils/Validators";
 import { DocumentService } from "../../services/DocumentService";
 import OtpDialog from "../../components/OtpDialog";
-import { RequestOtp } from "../../services/OtpService";
+import { OtpService, RequestOtp } from "../../services/OtpService";
 import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
 import SweetAlert from 'react-bootstrap-sweetalert'
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
@@ -42,7 +42,7 @@ var timeout = null;
 class BannerApplication extends Component {
   localCouncilservice = new LocalCouncilService();
   bannerService = new BannerService();
-  documentService = new DocumentService();
+  otpService=new OtpService();
 
   bannerRef = React.createRef();
 
@@ -102,58 +102,24 @@ class BannerApplication extends Component {
     const { doLoad, doLoadFinish } = this.props;
 
     doLoad();
-    var self = this;
-    //timeout = setTimeout(function(resolve, reject) {
-      Promise.all([self.fetchLocalCouncil()])
-        .then(function([locs]) {
-          // self.setState({ loading: false });
-          doLoadFinish();
-        });
-    //}, 6000);
+    this.fetchLocalCouncil()
   }
 
   sendOtp = () => {
-    var self = this;
-    RequestOtp(this.state.phone,"Banner Application")
-      .then(res => {
-        console.log(res);
-        if (res.data.status) {
-          let str = ArrayToString(res.data.messages);
-          self.setState({ otpMessage: str });
-          self.setState({ openOtp: true });
-        } else {
-          this.setState({ errorMessage: ArrayToString(res.data.messages) });
-        }
+    this.otpService.requestOtp(this.state.phone,"Banner Advertisement Application",
+      errorMessage=>this.setState({errorMessage}),
+      otpMessage=>{
+      this.setState({otpMessage,openOtp:true})
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .finally(()=>console.log("Otp send successfully"))
   };
 
-  fetchLocalCouncil = () => {
-    let newLocalCouncils = [];
-    this.localCouncilservice.get()
-      .then(data => {
-        if (data.status) {
-          data.data.local_councils.forEach(function(item) {
-            let lc = {
-              value: item.id,
-              label: item.name
-            };
-            newLocalCouncils.push(lc);
-          });
-          this.setState({
-            localCouncils: newLocalCouncils
-          });
-        } else {
-          this.setState({ hasError: true });
-        }
-      }).catch(err => {
-      let msg = "Unable to load resources, Please try again";
-      this.setState({ errorMessage: msg });
-      console.log(err);
-    });
-  };
+    fetchLocalCouncil = () => {
+      this.localCouncilservice.fetch(
+        errorMessage=>this.setState({errorMessage}),
+        localCouncils=>this.setState({localCouncils}))
+        .finally(()=>this.props.doLoadFinish())
+    };
 
 
   handleChange = (e) => {
@@ -193,39 +159,19 @@ class BannerApplication extends Component {
 
     if (verified) {
       this.setState({ submit: true });
-      this.bannerService.create(this.state)
-        .then(res => {
-          if (res.data.status) {
-            this.setState({
-              success: (
-                <SweetAlert
-                  success
-                  style={{ display: "block", marginTop: "-100px" }}
-                  title={"Success"}
-                  onConfirm={() => history.push(HOME)}>
-                  {
-                    res.data.messages.map(function(msg, index) {
-                      return <p>
-                        {`${msg}.`}
-                      </p>;
-                    })
-                  }
-                </SweetAlert>
-              )
-            });
-          } else {
-            const msg = ErrorToString(res.data.messages);
-            this.setState({ errorMessage: msg });
-          }
-
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .then(() => {
-          this.setState({ submit: false });
-        });
+      this.bannerService.create(this.state,errorMessage=>this.setState(errorMessage),
+        successMessage=>this.setState({
+          success: (
+            <SweetAlert
+              success
+              style={{ display: "block", marginTop: "-100px" }}
+              title={"Success"}
+              onConfirm={() => history.push(HOME)}>
+              {successMessage}
+            </SweetAlert>
+          )
+        }))
+        .finally(()=>this.setState({submit:false}))
     }
   };
 

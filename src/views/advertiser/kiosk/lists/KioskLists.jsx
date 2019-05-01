@@ -24,34 +24,11 @@ class KioskLists extends Component {
     componentDidMount() {
         document.title = "e-AMC | List of kiosk application";
         const {doLoad, doLoadFinish} = this.props;
-
         doLoad();
-        // const token = localStorage.getItem("access_token");
-        // const config = {headers: {"Authorization": `Bearer ${token}`}};
-        this.kioskService.get()
-            .then(kiosks => {
-                this.setState({kiosks});
-            })
-            .catch(err => {
-                this.setState({errorMessage: err.toString()});
-            })
-            .finally(() => {
-                doLoadFinish()
-            })
-
-        // axios.get(ApiRoutes.GET_ADVERTISER_HOARDING, config)
-        //   .then(res => {
-        //     console.log(res.data.data.hoarding_applications)
-        //     this.setState({
-        //       hoardings: res.data.data.hoarding_applications
-        //     });
-        //   })
-        //   .catch(err => {
-        //     console.error(err);
-        //   })
-        //   .then(()=>{
-        //     doLoadFinish()
-        //   })
+        this.kioskService.fetchAdvertiserKiosk(
+            errorMessage=>this.setState({errorMessage}),
+            kiosks=>this.setState({kiosks}))
+            .finally(() => doLoadFinish())
     }
 
 

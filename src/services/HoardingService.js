@@ -60,6 +60,23 @@ export class HoardingService {
     }
   }
 
+  async fetchAdvertiserHoarding(errorCallback,successCallback) {
+    const token = localStorage.getItem("access_token");
+    const config = { headers: { "Authorization": `Bearer ${token}` } };
+    let hoardings = [];
+    try {
+        const res = await axios.get(ApiRoutes.GET_ADVERTISER_HOARDING, config);
+      if (res.data.status) {
+        hoardings=res.data.data.hoarding_applications;
+        successCallback(hoardings)
+      }else{
+        errorCallback("Something went wrong: Please try again later")
+      }
+    } catch (error) {
+      console.error(error);
+      errorCallback(error.toString())
+    }
+  }
   async fetch(status) {
     const token = localStorage.getItem("access_token");
     const config = { headers: { "Authorization": `Bearer ${token}` } };

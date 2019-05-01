@@ -43,19 +43,19 @@ export class KioskService {
         }
     }
 
-    async get() {
+    async fetchAdvertiserKiosk(errorCallback,successCallback) {
         const token = localStorage.getItem("access_token");
         const config = {headers: {"Authorization": `Bearer ${token}`}};
         try {
             const res = await axios.get(ApiRoutes.GET_ADVERTISER_KIOSKS, config);
-            if (res.status) {
-                return res.data.data.kiosk_applications;
+            if (res.data.status) {
+                successCallback(res.data.data.kiosk_applications);
             } else {
-                throw new Error("Error:Server problem")
+                errorCallback("Something went wrong: Please try again later")
             }
         } catch (error) {
             console.error("error", error);
-            throw new Error(error)
+            errorCallback(error.toString())
         }
     }
 

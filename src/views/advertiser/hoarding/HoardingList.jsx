@@ -26,25 +26,11 @@ class HoardingList extends Component {
 
   componentDidMount() {
     document.title = "e-AMC | List of hoarding application";
-
     const { doLoad, doLoadFinish } = this.props;
-
     doLoad();
-    const token = localStorage.getItem("access_token");
-    const config = { headers: { "Authorization": `Bearer ${token}` } };
-    axios.get(ApiRoutes.GET_ADVERTISER_HOARDING, config)
-      .then(res => {
-        console.log(res.data.data.hoarding_applications)
-        this.setState({
-          hoardings: res.data.data.hoarding_applications
-        });
-      })
-      .catch(err => {
-        console.error(err);
-      })
-      .finally(()=>{
-        doLoadFinish()
-      })
+    this.hoardingService.fetchAdvertiserHoarding(errorMessage=>this.setState({errorMessage}),
+        hoardings=>this.setState({hoardings}))
+      .finally(()=>doLoadFinish())
   }
 
 

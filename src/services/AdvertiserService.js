@@ -36,11 +36,10 @@ export class AdvertiserService {
     }
   }
 
-  async fetch(status) {
+  async fetch(status,errorCallback,successCallback) {
     const token = localStorage.getItem("access_token");
     const config = { headers: { "Authorization": `Bearer ${token}` } };
     let advertisers = [];
-    let kiosks = null;
     try {
       if (status) {
         const res = await axios.get(ApiRoutes.STAFF_ADVERTISER, {
@@ -48,16 +47,24 @@ export class AdvertiserService {
             status
           }
         }, config);
-        kiosks = res.data.data.kiosk_applications;
+        if (res.data.status) {
+        advertisers = res.data.data.advertiser_applications;
+          successCallback(advertisers)
+        }else{
+          errorCallback("Something went wrong: Please try again later")
+        }
       } else {
         const defRes = await axios.get(ApiRoutes.STAFF_ADVERTISER, config);
-        kiosks = defRes.data.data.kiosk_applications;
+        if (defRes.data.status) {
+          advertisers = defRes.data.data.advertiser_applications;
+          successCallback(advertisers)
+        }else{
+          errorCallback("Something went wrong: Please try again later")
+        }
       }
-      console.log(kiosks);
-      return kiosks;
     } catch (error) {
       console.error(error);
-      throw new Error(error);
+      errorCallback(error.toString())
     }
   }
 }

@@ -130,12 +130,10 @@ class LayoutOffice extends React.Component {
           {/*Admin*/}
           <Route exact path={OfficeRoutes.NEW_TRADE}
                  component={TradeStore}/>
-
           <Route exact path={OfficeRoutes.STAFF_REGISTRATION}
                  render={e => <StaffRegistration doLoad={this.doLoad}/>}/>
-
-          {/*<Route exact path={OfficeRoutes.STAFF_LIST}*/}
-          {/*       render={e => <StaffList doLoad={this.doLoad}/>}/>*/}
+          <Route exact path={OfficeRoutes.STAFF_LIST}
+                 render={e => <StaffList doLoad={this.doLoad}/>}/>
           <Route path={OfficeRoutes.SETTING} component={Settings}/>
 
           <Redirect to={OfficeRoutes.DESK} />
