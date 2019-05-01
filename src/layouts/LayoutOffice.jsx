@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import { Route, Redirect } from "react-router-dom";
+import {Redirect, Route} from "react-router-dom";
 import officeStyle from "../assets/jss/material-dashboard-pro-react/layouts/officeStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import * as OfficeRoutes from "../config/routes-constant/OfficeRoutes";
@@ -45,111 +45,116 @@ import HotelRejectedList from "../views/e-office/applications/hotel/HotelRejecte
 import HotelNewList from "../views/e-office/applications/hotel/HotelNewList";
 
 class LayoutOffice extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false
+        };
+    }
+
+    doLoad = (val) => {
+        this.setState({loading: val});
     };
-  }
 
-  doLoad = (val) => {
-    this.setState({ loading: val });
-  };
+    render() {
+        const currentUser = JSON.parse(localStorage.getItem('current_user'));
+        let test = <Redirect to={OfficeRoutes.ADVERTISER_LOGIN}/>;
+        console.log(currentUser);
+        return (
+            <Grid container justify={"center"}>
+                {!(currentUser && currentUser.staff != null) ? test : null}
+                <Grid item xs={12} sm={12} md={12}>
+                    <OfficePageHeader loading={this.state.loading} color={"primary"}/>
+                </Grid>
+                <Grid item style={{marginTop: 70, minHeight: "100vh", background: "white"}} xs={12} sm={12} md={12}>
+                    <Route exact path={OfficeRoutes.DESK} render={e => <DeskView doLoad={this.doLoad}/>}/>
 
-  render() {
-    return (
-      <Grid container justify={"center"}>
-        <Grid item xs={12} sm={12} md={12}>
-          <OfficePageHeader loading={this.state.loading} color={"primary"}/>
-        </Grid>
-        <Grid item style={{ marginTop: 70, minHeight: "100vh", background: "white" }} xs={12} sm={12} md={12}>
-          <Route exact path={OfficeRoutes.DESK} render={e => <DeskView doLoad={this.doLoad}/>}/>
+                    {/*Receipt*/}
+                    <Route exact path={OfficeRoutes.NEW_RECEIPT} component={ReceiptStore}/>
+                    <Route exact path={OfficeRoutes.RECEIPT_DETAIL} component={ReceiptShow}/>
+                    <Route exact path={OfficeRoutes.CREATED_RECEIPT} component={ReceiptList}/>
+                    <Route exact path={OfficeRoutes.SENT_RECEIPT} component={ReceiptSentList}/>
 
-          {/*Receipt*/}
-          <Route exact path={OfficeRoutes.NEW_RECEIPT} component={ReceiptStore}/>
-          <Route exact path={OfficeRoutes.RECEIPT_DETAIL} component={ReceiptShow}/>
-          <Route exact path={OfficeRoutes.CREATED_RECEIPT} component={ReceiptList}/>
-          <Route exact path={OfficeRoutes.SENT_RECEIPT} component={ReceiptSentList}/>
+                    {/*File*/}
+                    <Route exact path={OfficeRoutes.NEW_FILE} render={e => <FileStore doLoad={this.doLoad}/>}/>
+                    <Route path={OfficeRoutes.FILE_DETAIL}
+                           render={(props) => <FileDetail {...props} doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.CREATED_FILES} component={FileCreatedList}/>
+                    <Route exact path={OfficeRoutes.SENT_FILE} component={FileSentList}/>
 
-          {/*File*/}
-          <Route exact path={OfficeRoutes.NEW_FILE} render={e => <FileStore doLoad={this.doLoad}/>}/>
-          <Route path={OfficeRoutes.FILE_DETAIL} render={(props) => <FileDetail {...props} doLoad={this.doLoad}/>} />
-          <Route exact path={OfficeRoutes.CREATED_FILES} component={FileCreatedList}/>
-          <Route exact path={OfficeRoutes.SENT_FILE} component={FileSentList}/>
+                    {/*OBPAS*/}
+                    <Route exact path={OfficeRoutes.OBPAS} component={FileStore}/>
 
-          {/*OBPAS*/}
-          <Route exact path={OfficeRoutes.OBPAS} component={FileStore}/>
+                    {/*Advertiser*/}
+                    <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
+                    <Route exact path={OfficeRoutes.ADVERTISER_NEW_LIST}
+                           render={e => <AdvertiserNewList doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.ADVERTISER_IN_PROCESS_LIST}
+                           render={e => <AdvertiserInProcessList doLoad={this.doLoad}/>}/>
 
-          {/*Advertiser*/}
-          <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
-          <Route exact path={OfficeRoutes.ADVERTISER_NEW_LIST}
-                 render={e => <AdvertiserNewList doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.ADVERTISER_IN_PROCESS_LIST}
-                 render={e => <AdvertiserInProcessList doLoad={this.doLoad}/>}/>
+                    {/*Hoarding*/}
+                    <Route exact path={OfficeRoutes.NEW_HOARDINGS}
+                           render={e => <HoardingApplications doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.UNDER_PROCESS_HOARDINGS}
+                           render={e => <UnderProcessHoarding doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.REJECTED_HOARDINGS}
+                           render={e => <RejectedHoardingApplications doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.APPROVED_HOARDINGS}
+                           render={e => <ApprovedHoarding doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
 
-          {/*Hoarding*/}
-          <Route exact path={OfficeRoutes.NEW_HOARDINGS}
-                 render={e => <HoardingApplications doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.UNDER_PROCESS_HOARDINGS}
-                 render={e => <UnderProcessHoarding doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.REJECTED_HOARDINGS}
-                 render={e => <RejectedHoardingApplications doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.APPROVED_HOARDINGS}
-                 render={e => <ApprovedHoarding doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
+                    {/*Kiosk*/}
+                    <Route exact path={OfficeRoutes.NEW_KIOSKS}
+                           render={e => <NewKioskApplications doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.UNDER_PROCESS_KIOSKS}
+                           render={e => <UnderProcessKiosks doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.APPROVED_KIOSKS}
+                           render={e => <ApprovedKiosks doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.REJECTED_KIOSKS}
+                           render={e => <RejectedKiosks doLoad={this.doLoad}/>}/>
 
-          {/*Kiosk*/}
-          <Route exact path={OfficeRoutes.NEW_KIOSKS}
-                 render={e => <NewKioskApplications doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.UNDER_PROCESS_KIOSKS}
-                 render={e => <UnderProcessKiosks doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.APPROVED_KIOSKS}
-                 render={e => <ApprovedKiosks doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.REJECTED_KIOSKS}
-                 render={e => <RejectedKiosks doLoad={this.doLoad}/>}/>
-
-          {/*Banner*/}
-          <Route exact path={OfficeRoutes.NEW_BANNER}
-                 render={e => <NewBannerApplications doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.UNDER_PROCESS_BANNER}
-                 render={e => <UnderProcessBanner doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.APPROVED_BANNER}
-                 render={e => <BannerGrantedList doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.REJECTED_BANNER}
-                 render={e => <BannerRejectedList doLoad={this.doLoad}/>}/>
+                    {/*Banner*/}
+                    <Route exact path={OfficeRoutes.NEW_BANNER}
+                           render={e => <NewBannerApplications doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.UNDER_PROCESS_BANNER}
+                           render={e => <UnderProcessBanner doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.APPROVED_BANNER}
+                           render={e => <BannerGrantedList doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.REJECTED_BANNER}
+                           render={e => <BannerRejectedList doLoad={this.doLoad}/>}/>
 
 
-          {/*Shop Licensing*/}
-          <Route exact path={OfficeRoutes.NEW_SHOPLICENSE}
-                 render={e => <ShopNewList doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.UNDER_PROCESS_SHOPLICENSE}
-                 render={e => <UnderProcessShopLicense doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.APPROVED_SHOPLICENSE}
-                 render={e => <ApprovedShopLicense doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.REJECTED_SHOPLICENSE}
-                 render={e => <RejectedShopLicense doLoad={this.doLoad}/>}/>
+                    {/*Shop Licensing*/}
+                    <Route exact path={OfficeRoutes.NEW_SHOPLICENSE}
+                           render={e => <ShopNewList doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.UNDER_PROCESS_SHOPLICENSE}
+                           render={e => <UnderProcessShopLicense doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.APPROVED_SHOPLICENSE}
+                           render={e => <ApprovedShopLicense doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.REJECTED_SHOPLICENSE}
+                           render={e => <RejectedShopLicense doLoad={this.doLoad}/>}/>
 
-          {/*Shop Licensing*/}
-          <Route exact path={OfficeRoutes.NEW_HOTELLICENSE}
-                 render={e => <HotelNewList doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.UNDER_PROCESS_HOTELLICENSE}
-                 render={e => <HotelUnderProcessList doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.APPROVED_HOTELLICENSE}
-                 render={e => <HotelApprovedList doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.REJECTED_HOTELLICENSE}
-                 render={e => <HotelRejectedList doLoad={this.doLoad}/>}/>
-          {/*Admin*/}
-          <Route exact path={OfficeRoutes.NEW_TRADE}
-                 component={TradeStore}/>
-          <Route exact path={OfficeRoutes.STAFF_REGISTRATION}
-                 render={e => <StaffRegistration doLoad={this.doLoad}/>}/>
-          <Route exact path={OfficeRoutes.STAFF_LIST}
-                 render={e => <StaffList doLoad={this.doLoad}/>}/>
-          <Route path={OfficeRoutes.SETTING} component={Settings}/>
-        </Grid>
-      </Grid>
-    );
-  }
+                    {/*Shop Licensing*/}
+                    <Route exact path={OfficeRoutes.NEW_HOTELLICENSE}
+                           render={e => <HotelNewList doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.UNDER_PROCESS_HOTELLICENSE}
+                           render={e => <HotelUnderProcessList doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.APPROVED_HOTELLICENSE}
+                           render={e => <HotelApprovedList doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.REJECTED_HOTELLICENSE}
+                           render={e => <HotelRejectedList doLoad={this.doLoad}/>}/>
+                    {/*Admin*/}
+                    <Route exact path={OfficeRoutes.NEW_TRADE}
+                           component={TradeStore}/>
+                    <Route exact path={OfficeRoutes.STAFF_REGISTRATION}
+                           render={e => <StaffRegistration doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.STAFF_LIST}
+                           render={e => <StaffList doLoad={this.doLoad}/>}/>
+                    <Route path={OfficeRoutes.SETTING} component={Settings}/>
+                </Grid>
+            </Grid>
+        );
+    }
 }
 
 export default withStyles(officeStyle)(LayoutOffice);

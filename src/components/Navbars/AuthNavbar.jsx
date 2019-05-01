@@ -46,8 +46,40 @@ class AuthNavbar extends React.Component {
 
     render() {
         const {classes, brandText, OfficeRoutes, history, loading} = this.props;
+        const currentUser = JSON.parse(localStorage.getItem('current_user'));
+        const linkLogin = (
+            <Fab onClick={(e) => history.push(OfficeRoutes.ADVERTISER_LOGIN)}
+                 style={{marginleft: 10, paddingLeft: 20, paddingRight: 20}} size={"large"} color={"primary"}
+                 variant={"extended"}>
+                Login <LoginIcon fontSize={"small"}/>
+            </Fab>
+        );
+        const linkLogout = (
+            <Fab onClick={(e) => history.push(OfficeRoutes.LOGOUT_ROUTE)}
+                 style={{marginleft: 10, paddingLeft: 20, paddingRight: 20}} size={"large"} color={"primary"}
+                 variant={"extended"}>
+                Logout <LoginIcon fontSize={"small"}/>
+            </Fab>
+        );
+        const linkEOffice = (
+            <ListItem className={classes.listItem}>
+                <NavLink
+                    to={OfficeRoutes.E_OFFICE}
+                    className={cx(classes.navLink, {
+                        [classes.navLinkActive]: this.activeRoute(OfficeRoutes.E_OFFICE)
+                    })}
+                >
+                    <Home className={classes.listItemIcon}/>
+                    <ListItemText
+                        primary={"E-Office"}
+                        disableTypography={true}
+                        className={classes.listItemText}
+                    />
+                </NavLink>
+            </ListItem>
+        );
 
-        var list = (
+        let list = (
             <List className={classes.list}>
                 <ListItem className={classes.listItem}>
                     <NavLink to={"/home"} className={classes.navLink}>
@@ -59,29 +91,8 @@ class AuthNavbar extends React.Component {
                         />
                     </NavLink>
                 </ListItem>
-
-                <ListItem className={classes.listItem}>
-                    <NavLink
-                        to={OfficeRoutes.E_OFFICE}
-                        className={cx(classes.navLink, {
-                            [classes.navLinkActive]: this.activeRoute(OfficeRoutes.E_OFFICE)
-                        })}
-                    >
-                        <Home className={classes.listItemIcon}/>
-                        <ListItemText
-                            primary={"E-Office"}
-                            disableTypography={true}
-                            className={classes.listItemText}
-                        />
-                    </NavLink>
-                </ListItem>
-
-                <Fab onClick={(e) => history.push(OfficeRoutes.ADVERTISER_LOGIN)}
-                     style={{marginleft: 10, paddingLeft: 20, paddingRight: 20}} size={"large"} color={"primary"}
-                     variant={"extended"}>
-                    Login <LoginIcon fontSize={"small"}/>
-                </Fab>
-
+                {currentUser ? linkEOffice: ""}
+                {currentUser ? linkLogout: linkLogin}
             </List>
         );
         return (
