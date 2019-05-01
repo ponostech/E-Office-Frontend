@@ -135,14 +135,13 @@ class Notesheets extends Component {
     };
 
     render() {
-        console.log(this.props);
         return (
                 <>
                     <CardHeader title={"File No.: " + this.props.file.number} subheader={"Subject: " + this.props.file.subject}/>
                     <CreateNoteButton click={this.handleOpenCreateNote} />
                     <Timeline simple stories={widgetStories} />
                     <CreateNoteButton click={this.handleOpenCreateNote} />
-                    <CreateNoteDialog open={this.state.openDialog} close={this.handleCloseCreateNote}/>
+                    <CreateNoteDialog {...this.props} open={this.state.openDialog} close={this.handleCloseCreateNote}/>
                 </>
         )
     };
