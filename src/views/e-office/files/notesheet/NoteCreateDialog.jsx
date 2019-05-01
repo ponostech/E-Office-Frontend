@@ -12,10 +12,10 @@ import Typography from '@material-ui/core/Typography/index';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide/index';
 import DialogActions from "@material-ui/core/DialogActions/index";
-// import ReactQuill from "react-quill/types";
-// import 'react-quill/dist/quill.snow.css';
 import Toolbar from "@material-ui/core/Toolbar";
-import DialogContent from "@material-ui/core/DialogContent";
+import {Card, CardContent, CardHeader} from "@material-ui/core";
+
+import Editor from "../draft/Editor";
 
 const styles = {
     appBar: {
@@ -37,25 +37,6 @@ class NoteCreateDialog extends React.Component {
     state = {
         note: "",
     };
-
-    modules = {
-        toolbar: [
-            [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-            [{size: []}],
-            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{'list': 'ordered'}, {'list': 'bullet'},
-                {'indent': '-1'}, {'indent': '+1'}],
-            ['link', 'image', 'video'],
-            ['clean']
-        ],
-    };
-
-    formats = [
-        'header', 'font', 'size',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'list', 'bullet', 'indent',
-        'link', 'image', 'video'
-    ];
 
     render () {
         const {classes} = this.props;
@@ -80,16 +61,13 @@ class NoteCreateDialog extends React.Component {
                     </Toolbar>
                 </AppBar>
                 <List>
-                    <ListItem button>
-                        <ListItemText primary="Write your note below. Html elements could be included in the field." secondary=""/>
-                    </ListItem>
+                    <Card>
+                        <CardHeader title={"File No.: " + this.props.file.number} subheader={"Subject: " + this.props.file.subject}/>
+                        <CardContent>
+                            <Editor/>
+                        </CardContent>
+                    </Card>
                 </List>
-                <DialogContent>
-                    {/*<ReactQuill className={classes.editor} value={note} theme="snow"*/}
-                    {/*            modules={this.modules}*/}
-                    {/*            formats={this.formats}*/}
-                    {/*            placeholder="Write Note..."/>*/}
-                </DialogContent>
                 <Divider/>
                 <DialogActions>
                     <Button color="primary">Save Draft</Button>

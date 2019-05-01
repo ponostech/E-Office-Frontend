@@ -134,7 +134,6 @@ class LeftMenu extends React.Component {
                     <div className={classes.toolbar}>
                         <IconButton onClick={this.toogleDrawer}>
                             {!this.state.open ? <MenuIcon/> : <ChevronLeftIcon/>}
-                            {/*{theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}*/}
                         </IconButton>
                     </div>
                     <List>

@@ -40,4 +40,6 @@ export class ApiRoutes {
   static STAFF_ROLE="/setting/roles";
 
   static ADVERTISER_LIST = '/staff/advertiser/applications';
+
+  static NOTESHEET = '/notesheets';
 }
