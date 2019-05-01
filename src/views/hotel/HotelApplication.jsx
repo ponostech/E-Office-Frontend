@@ -26,7 +26,6 @@ import OfficeSnackbar from "../../components/OfficeSnackbar";
 import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import { ErrorToString } from "../../utils/ErrorUtil";
 import PlaceIcon from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../components/GmapDialog";
 import { Validators } from "../../utils/Validators";
@@ -40,6 +39,7 @@ import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import "date-fns";
 import { HotelService } from "../../services/HotelService";
 import { TradeService } from "../../services/TradeService";
+import { HOME } from "../../config/routes-constant/OfficeRoutes";
 
 const style = {
   root: {
@@ -74,8 +74,10 @@ class HotelApplication extends Component {
     coordinate: "",
     businessDetail: "",
     estd: new Date(),
-    noAcRoom: undefined,
-    acRoom: undefined,
+    noAcRoom: 0,
+    acRoom: 0,
+    noConferenceHall: 0,
+    noBanquet: 0,
     facilities: "",
     tinNo: "",
     cstNo: "",
@@ -151,6 +153,7 @@ class HotelApplication extends Component {
       .finally(() => console.info("otp request has been made"));
   };
   onVerifiedOtp = (verified) => {
+    const { history } = this.props;
     if (verified) {
       this.setState({ submit: true });
       this.hotelService.create(this.state,errorMessage=>this.setState({errorMessage}),
@@ -160,7 +163,7 @@ class HotelApplication extends Component {
               success
               style={{ display: "block", marginTop: "-100px" }}
               title={"Success"}
-              onConfirm={() => window.location.reload()}>
+              onConfirm={() => history.push(HOME)}>
               {successMessage}
             </SweetAlert>
           )
@@ -188,7 +191,9 @@ class HotelApplication extends Component {
   };
   handleChange = (e) => {
     const { name, value } = e.target;
-
+    this.setState({
+      [name]: value
+    });
     switch (name) {
       case "phone":
         !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: ShopLicenseViewModel.VALID_PHONE }) : this.setState({ phoneError: "" });
@@ -197,9 +202,7 @@ class HotelApplication extends Component {
         break;
     }
 
-    this.setState({
-      [name]: value
-    });
+
 
     this.setState({ prestine: false });
   };
@@ -585,6 +588,36 @@ class HotelApplication extends Component {
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
+                      InputProps={{
+                        min: 0
+                      }}
+                      type={"number"}
+                      value={this.state.noConferenceHall}
+                      name={"noConferenceHall"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleChange.bind(this)}
+                      label={"No of Conference Hall"}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <TextField
+                      InputProps={{
+                        min: 0
+                      }}
+                      type={"number"}
+                      value={this.state.noBanquet}
+                      name={"noBanquet"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleChange.bind(this)}
+                      label={"No of Banquet Hall"}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <TextField
                       value={this.state.facilities}
                       name={"facilities"}
                       variant={"outlined"}
@@ -658,20 +691,6 @@ class HotelApplication extends Component {
                     />
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload required={true}
-                                document={{ id: 122, name: "Passport", mime: "image/*" }}
-                                onUploadSuccess={(data) => {
-                                  this.setState(state => {
-                                    state.passport = {
-                                      name: "passport",
-                                      path: data.location
-                                    };
-                                  });
-                                }} onUploadFailure={(err) => {
-                      console.log(err);
-                    }}/>
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <FormControl fullWidth={true} margin={"dense"}>
                       <FormLabel>Whether Premises owned or leased?</FormLabel>
                       <RadioGroup
@@ -687,6 +706,35 @@ class HotelApplication extends Component {
                       </RadioGroup>
                     </FormControl>
                   </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <FileUpload required={true}
+                                document={{ id: 122, name: "Passport", mime: "image/*" }}
+                                onUploadSuccess={(data) => {
+                                  this.setState(state => {
+                                    state.passport = {
+                                      name: "passport",
+                                      path: data.location
+                                    };
+                                  });
+                                }} onUploadFailure={(err) => {
+                      console.log(err);
+                    }}/>
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <FileUpload required={true}
+                                document={{ id: 344, name: "Signature", mime: "image/*" }}
+                                onUploadSuccess={(data) => {
+                                  this.setState(state => {
+                                    state.signature = {
+                                      name: "signature",
+                                      path: data.location
+                                    };
+                                  });
+                                }} onUploadFailure={(err) => {
+                      console.log(err);
+                    }}/>
+                  </GridItem>
+
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
                     <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                   </GridItem>
@@ -729,20 +777,7 @@ class HotelApplication extends Component {
                       "\n3. I shall follow all rules and regulations of AMC;" +
                       "\n4. It is certified that the above information is correct to the best of my knowledge"}/>
                   </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload required={true}
-                                document={{ id: 344, name: "Signature", mime: "image/*" }}
-                                onUploadSuccess={(data) => {
-                                  this.setState(state => {
-                                    state.signature = {
-                                      name: "signature",
-                                      path: data.location
-                                    };
-                                  });
-                                }} onUploadFailure={(err) => {
-                      console.log(err);
-                    }}/>
-                  </GridItem>
+
                   <GridItem xs={12} sm={12} md={12}>
                     <Divider/>
                   </GridItem>
@@ -786,8 +821,6 @@ class HotelApplication extends Component {
         </GridItem>
 
         <SubmitDialog open={this.state.submit} text={"Your Application is submitting, Please wait"}/>
-        <OfficeSnackbar open={!!this.state.success} variant={"success"} message={this.state.success}
-                        onClose={() => this.setState({ success: "" })}/>
         <OfficeSnackbar open={!!this.state.errorMessage} variant={"error"} message={this.state.errorMessage}
                         onClose={() => this.setState({ errorMessage: "" })}/>
 
