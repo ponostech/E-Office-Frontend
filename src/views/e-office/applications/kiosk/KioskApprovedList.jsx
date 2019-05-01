@@ -11,6 +11,7 @@ import GMapDialog from "../../../../components/GmapDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import KioskDetailDialog from "../../../advertiser/kiosk/KioskDetailDialog";
+import ApplicationState from "../../../../utils/ApplicationState";
 
 const styles = {
     button: {},
@@ -37,7 +38,7 @@ class KioskApprovedList extends React.Component {
         const {doLoad} = this.props;
         doLoad(true);
 
-        this.hoardingService.fetch()
+        this.hoardingService.fetch(ApplicationState.APPROVED_APPLICATION)
             .then(hoardings => {
                 this.setState({hoardings: hoardings});
             })

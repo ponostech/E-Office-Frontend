@@ -12,6 +12,7 @@ import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDia
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import { withRouter } from "react-router-dom";
+import ApplicationState from "../../../../utils/ApplicationState";
 
 const styles = {
   button: {},
@@ -35,7 +36,7 @@ class HoardingUnderProcessList extends React.Component {
   componentDidMount() {
     const { doLoad } = this.props;
     doLoad(true);
-    this.hoardingService.fetch("under-process")
+    this.hoardingService.fetch(ApplicationState.UNDER_PROCESS_APPLICATION)
       .then(hoardings => {
         this.setState({ hoardings: hoardings });
       })

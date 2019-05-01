@@ -9,6 +9,7 @@ import GMapDialog from "../../../../components/GmapDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import { BannerService } from "../../../../services/BannerService";
+import ApplicationState from "../../../../utils/ApplicationState";
 
 const styles = {
   button: {},
@@ -35,7 +36,7 @@ class BannerUnderProcessList extends React.Component {
     const { doLoad } = this.props;
     doLoad(true);
 
-    this.bannerService.fetch("under-process")
+    this.bannerService.fetch(ApplicationState.UNDER_PROCESS_APPLICATION)
       .then(banners => {
         this.setState({ banners });
       })

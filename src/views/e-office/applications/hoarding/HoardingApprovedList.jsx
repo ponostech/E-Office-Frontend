@@ -10,6 +10,7 @@ import { HoardingService } from "../../../../services/HoardingService";
 import GMapDialog from "../../../../components/GmapDialog";
 import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
+import ApplicationState from "../../../../utils/ApplicationState";
 
 const styles = {
   button: {},
@@ -32,7 +33,7 @@ class HoardingApprovedList extends React.Component {
   componentDidMount() {
     const { doLoad } = this.props;
     doLoad(true)
-    this.hoardingService.fetch()
+    this.hoardingService.fetch(ApplicationState.APPROVED_APPLICATION)
       .then(hoardings => {
         this.setState({ hoardings: hoardings });
       })

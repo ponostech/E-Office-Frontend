@@ -11,13 +11,14 @@ import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDia
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import { ShopService } from "../../../../services/ShopService";
+import ApplicationState from "../../../../utils/ApplicationState";
 
 const styles = {
   button: {},
   actionIcon: {}
 };
 
-class HotelNewList extends React.Component {
+class HotelRejectedList extends React.Component {
   shopService = new ShopService();
   state = {
     openAssignment: false,
@@ -36,7 +37,7 @@ class HotelNewList extends React.Component {
   componentDidMount() {
     const { doLoad } = this.props;
     doLoad(true)
-    this.shopService.fetch()
+    this.shopService.fetch(ApplicationState.REJECTED_APPLICATION)
       .then(shops => {
         this.setState({ shops: shops });
       })
@@ -177,7 +178,7 @@ class HotelNewList extends React.Component {
       <>
         <Grid item xs={12}>
           <MUIDataTable
-            title={"HOTEL & LODGING LICENSE: List of New Application"}
+            title={"HOTEL & LODGING LICENSE: List of Rejected Application"}
             data={shops}
             columns={tableColumns}
             options={tableOptions}
@@ -203,4 +204,4 @@ class HotelNewList extends React.Component {
   }
 }
 
-export default withStyles(styles)(HotelNewList);
+export default withStyles(styles)(HotelRejectedList);

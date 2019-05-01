@@ -39,8 +39,8 @@ const menu = (props) => {
                     dropdownList={[
                         {title: "New Application", link: routes.NEW_HOARDINGS},
                         {title: "Under Process", link: routes.UNDER_PROCESS_HOARDINGS},
-                        {title: "Approved List", link: routes.APPROVED_HOARDING},
-                        {title: "Reject List", link: routes.REJECTED_HOARDING}
+                        {title: "Approved List", link: routes.APPROVED_HOARDINGS},
+                        {title: "Reject List", link: routes.REJECTED_HOARDINGS}
                     ]}
                     linkClick={props.linkClick}
                     buttonText={"Hoarding"}
@@ -91,10 +91,10 @@ const menu = (props) => {
                     buttonProps={{color: "transparent"}}/>
                 <CustomDropdown
                     dropdownList={[
-                        {title: "New Application", link: routes.NEW_SHOPLICENSE},
-                        {title: "Under Process", link: routes.UNDER_PROCESS_SHOPLICENSE},
-                        {title: "Approved List", link: routes.APPROVED_SHOPLICENSE},
-                        {title: "Reject List", link: routes.REJECTED_SHOPLICENSE}
+                        {title: "New Application", link: routes.NEW_HOTELLICENSE},
+                        {title: "Under Process", link: routes.UNDER_PROCESS_HOTELLICENSE},
+                        {title: "Approved List", link: routes.APPROVED_HOTELLICENSE},
+                        {title: "Reject List", link: routes.REJECTED_HOTELLICENSE}
 
                     ]}
                     linkClick={props.linkClick}
