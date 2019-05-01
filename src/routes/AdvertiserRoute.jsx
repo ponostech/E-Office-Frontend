@@ -1,22 +1,18 @@
-import {Route} from "react-router-dom";
+import {Route,Redirect} from "react-router-dom";
 import React from "react";
-import {Consumer} from '../context/AuthContext'
+import { LoginService } from "../services/LoginService";
 
-export  const AdvertiserRoute = ({ currentUser, component: Component, ...rest }) => (
-  <Consumer>
-    {({authenticate,currentUser,setUser})=>(
+export  const AdvertiserRoute = ({  component: Component, ...rest }) => (
       <Route {...rest} render={(props) => {
-        // if (!authenticate)
-        //   return <Redirect to='/auth/login'/>;
-        // // if (!currentUser.advertiser)
-        // //   return <p>unauth</p>;
-        // else
+        let user=LoginService.getCurrentUser();
+        if (user)
+          return <Redirect to='/auth/login'/>;
+        if (!user.advertiser)
+          return <p>unauth</p>;
+        else
           return <Component {...props}/>;
 
       }}/>
-    )
 
-    }
-  </Consumer>
 
 );
