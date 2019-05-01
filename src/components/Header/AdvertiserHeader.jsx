@@ -39,7 +39,6 @@ class AdvertiserHeader extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.context);
   }
 
   handleDrawerToggle = () => {
@@ -111,7 +110,7 @@ class AdvertiserHeader extends React.Component {
 
         <div style={{ display: "flex", alignItems: "center" }}>
           <Typography variant={"caption"}
-                      color={"textSecondary"}>{"Welcome"} {localStorage.getItem("name")}</Typography>
+                      color={"textSecondary"}>{"Welcome"} {LoginService.getCurrentUser().email}</Typography>
           <IconButton onClick={this.handleUser.bind(this)}>
             <UserIcon/>
           </IconButton>
