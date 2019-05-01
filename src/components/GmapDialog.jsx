@@ -9,6 +9,7 @@ import "./mapStyle.css";
 const RegularMap = withScriptjs(
   withGoogleMap(props => (
     <GoogleMap
+
       defaultZoom={15}
       defaultCenter={{ lat: props.lat, lng: props.lng }}
       center={props.center}
@@ -42,7 +43,7 @@ const RegularMap = withScriptjs(
         />
       </SearchBox>
       <Marker
-        draggable={true}
+        draggable={!props.viewMode}
         onDragEnd={data => props.onDragEnd(data.latLng)}
         position={{ lat: props.lat, lng: props.lng }}/>
     </GoogleMap>
@@ -122,11 +123,12 @@ class GMapDialog extends Component {
   };
 
   render() {
-    const { open, onClose, isMarkerShown, ...rest } = this.props;
+    const { open, onClose, isMarkerShown,viewMode, ...rest } = this.props;
     return (
       <Dialog open={open} onClose={this.confirm.bind(this)} {...rest} fullScreen={true}>
         <DialogContent>
           <RegularMap
+            viewMode={viewMode}
             center={this.state.center}
             bounds={this.state.bounds}
             onPlacesChanged={this.onPlacesChanged.bind(this)}
@@ -161,8 +163,8 @@ class GMapDialog extends Component {
 
         </DialogContent>
         <DialogActions>
-          <Button name={"confirm"} variant={"outlined"} color={"primary"}
-                  onClick={this.handleConfirm.bind(this)}>Confirm</Button>
+          {viewMode?undefined:<Button name={"confirm"} variant={"outlined"} color={"primary"}
+                                      onClick={this.handleConfirm.bind(this)}>Confirm</Button>}
           <Button name={"close"} variant={"outlined"} color={"secondary"}
                   onClick={this.handleConfirm.bind(this)}>Close</Button>
         </DialogActions>
@@ -170,13 +172,16 @@ class GMapDialog extends Component {
     );
   }
 }
-
+GMapDialog.defaultProps={
+  viewMode:false
+}
 GMapDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   isMarkerShown: PropTypes.bool.isRequired,
   lat:PropTypes.number,
-  lng:PropTypes.number
+  lng:PropTypes.number,
+  viewMode:PropTypes.bool
 };
 export default GMapDialog;
 
