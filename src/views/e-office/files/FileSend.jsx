@@ -55,6 +55,7 @@ class FileSend extends Component {
     });
   };
 
+
   handleSubmit = () => {
     const { history } = this.props;
     if (!this.state.recipient_id) {
