@@ -133,7 +133,7 @@ class FileInActiveList extends Component {
                 files = (
                     <>
                         <Grid item xs={12}>
-                            <MUIDataTable title={"File: List of In-Active"} data={tableData} columns={tableColumns}
+                            <MUIDataTable title={"File: List of New Files"} data={tableData} columns={tableColumns}
                                           options={tableOptions}
                             />
                         </Grid>

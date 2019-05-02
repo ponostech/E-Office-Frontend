@@ -12,11 +12,11 @@ import Slide from '@material-ui/core/Slide/index';
 import DialogActions from "@material-ui/core/DialogActions/index";
 import Toolbar from "@material-ui/core/Toolbar";
 import {Card, CardContent, CardHeader} from "@material-ui/core";
-import GridItem from "../../../../components/Grid/GridItem";
 import OfficeSelect from "../../../../components/OfficeSelect";
 import Editor from "../draft/Editor";
-import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
+import {DatePicker, MuiPickersUtilsProvider} from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import Grid from "@material-ui/core/Grid";
 
 const styles = {
     appBar: {
@@ -40,40 +40,40 @@ class NoteCreateDialog extends React.Component {
         content: "",
         action: null,
         priority: null,
-        fixedDate: "",
+        fixedDate: new Date(),
     };
     handleDateChange = dateDate => {
 
-        this.setState({ "date": dateDate });
+        this.setState({"date": dateDate});
     };
-  handleSelect = (identifier, value) => {
-    switch (identifier) {
-      case "actionType":
-        this.setState({ actionType: value });
-        break;
-      case "priorityType":
-        this.setState({ priorityType: value });
-        break;
-        default:
-        break;
-    }
-  };
+    handleSelect = (identifier, value) => {
+        switch (identifier) {
+            case "actionType":
+                this.setState({actionType: value});
+                break;
+            case "priorityType":
+                this.setState({priorityType: value});
+                break;
+            default:
+                break;
+        }
+    };
 
-  handleSelectBlur = (identifier, e) => {
+    handleSelectBlur = (identifier, e) => {
 
-    switch (identifier) {
-      case "priorityType":
-        this.state.priorityType ? this.setState({ priorityError: "" }) : this.setState({ priorityError: "Priority Type is required"});
-        break;
-      case "actionType":
-        this.state.actionType === undefined ? this.setState({ actionError: ""}) : this.setState({ actionError: "Select Type of action" });
-        break;
-      default:
-        break;
-    }
-  };
+        switch (identifier) {
+            case "priorityType":
+                this.state.priorityType ? this.setState({priorityError: ""}) : this.setState({priorityError: "Priority Type is required"});
+                break;
+            case "actionType":
+                this.state.actionType === undefined ? this.setState({actionError: ""}) : this.setState({actionError: "Select Type of action"});
+                break;
+            default:
+                break;
+        }
+    };
 
-  render () {
+    render() {
         const {classes} = this.props;
         return (
             <Dialog
@@ -97,71 +97,65 @@ class NoteCreateDialog extends React.Component {
                 </AppBar>
                 <List>
                     <Card>
-                        <CardHeader title={"File No.: " + this.props.file.number} subheader={"Subject: " + this.props.file.subject}/>
+                        <CardHeader title={"File No.: " + this.props.file.number}
+                                    subheader={"Subject: " + this.props.file.subject}/>
                         <CardContent>
-                            {/*Content*/}
-
-
-                             <GridItem xs={12} sm={12} md={6}>
-                                <Editor/>
-                             </GridItem>
-                            {/*Action*/}
-                          <GridItem xs={12} sm={12} md={6}>
-                            <OfficeSelect
-                              variant={"outlined"}
-                              margin={"dense"}
-                              value={this.state.actionType}
-                              required={true}
-                              fullWidth={true}
-                              name={"actionType"}
-                              error={!!this.state.actionError}
-                              onBlur={this.handleSelectBlur.bind(this, "actionType")}
-                              onChange={this.handleSelect.bind(this, "actionType")}
-                              ClearAble={true}
-                              label={"Select Action"}
-                              helperText={this.state.actionError}
-                              options={this.state.actionTypes}/>
-                          </GridItem>
-
-                            {/*Priority*/}
-                          <GridItem xs={12} sm={12} md={6}>
-                            <OfficeSelect
-                              variant={"outlined"}
-                              margin={"dense"}
-                              value={this.state.priorityType}
-                              required={true}
-                              fullWidth={true}
-                              name={"priorityType"}
-                              error={!!this.state.priorityError}
-                              onBlur={this.handleSelectBlur.bind(this, "priorityType")}
-                              onChange={this.handleSelect.bind(this, "priorityType")}
-                              ClearAble={true}
-                              label={"Set Priority"}
-                              helperText={this.state.priorityError}
-                              options={this.state.priorityTypes}/>
-                          </GridItem>
-
-                          {/*Fixed Date*/}
-                            <GridItem xs={12} sm={12} md={6}>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <DatePicker
-                                      fullWidth={true}
-                                      InputLabelProps={
-                                          { shrink: true }
-                                      }
-                                      label={"Fix Date"}
-                                      error={Boolean(this.state.dateError)}
-                                      helperText={this.state.dateError}
-                                      margin="dense"
-                                      name={"fixedDate"}
-                                      variant="outlined"
-                                      value={this.state.fixedDate}
-                                      onChange={this.handleDateChange}
-                                      format={"dd/MM/yyyy"}
-                                    />
-                                </MuiPickersUtilsProvider>
-                            </GridItem>
-                           
+                            <Grid container spacing={16}>
+                                <Grid item lg={12}>
+                                    <Editor/>
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <OfficeSelect
+                                        variant={"outlined"}
+                                        margin={"dense"}
+                                        value={this.state.actionType}
+                                        required={true}
+                                        fullWidth={true}
+                                        name={"actionType"}
+                                        error={!!this.state.actionError}
+                                        onBlur={this.handleSelectBlur.bind(this, "actionType")}
+                                        onChange={this.handleSelect.bind(this, "actionType")}
+                                        ClearAble={true}
+                                        label={"Select Action"}
+                                        helperText={this.state.actionError}
+                                        options={this.state.actionTypes}/>
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <OfficeSelect
+                                        variant={"outlined"}
+                                        margin={"dense"}
+                                        value={this.state.priorityType}
+                                        required={true}
+                                        fullWidth={true}
+                                        name={"priorityType"}
+                                        error={!!this.state.priorityError}
+                                        onBlur={this.handleSelectBlur.bind(this, "priorityType")}
+                                        onChange={this.handleSelect.bind(this, "priorityType")}
+                                        ClearAble={true}
+                                        label={"Set Priority"}
+                                        helperText={this.state.priorityError}
+                                        options={this.state.priorityTypes}/>
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <DatePicker
+                                            fullWidth={true}
+                                            InputLabelProps={
+                                                {shrink: true}
+                                            }
+                                            label={"Fix Date"}
+                                            error={Boolean(this.state.dateError)}
+                                            helperText={this.state.dateError}
+                                            margin="dense"
+                                            name={"fixedDate"}
+                                            variant="outlined"
+                                            value={this.state.fixedDate}
+                                            onChange={this.handleDateChange}
+                                            format={"dd/MM/yyyy"}
+                                        />
+                                    </MuiPickersUtilsProvider>
+                                </Grid>
+                            </Grid>
                         </CardContent>
                     </Card>
                 </List>
@@ -174,7 +168,7 @@ class NoteCreateDialog extends React.Component {
             </Dialog>
         )
     };
-};
+}
 
 export default withStyles(styles)(NoteCreateDialog);
 
