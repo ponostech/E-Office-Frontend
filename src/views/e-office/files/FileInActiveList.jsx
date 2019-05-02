@@ -44,7 +44,6 @@ class FileInActiveList extends Component {
 
     openAssignment = (id) => {
         this.getFile(id);
-        console.log(this.state);
     };
 
     closeAssignment = () => {
