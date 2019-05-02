@@ -108,8 +108,9 @@ class AdvertiserLogin extends Component {
         // localStorage.setItem("name", res.data.data.user.advertiser.name);
         // this.context.setUser(res.data.data.user);
         // this.context.setToken(access_token);
-
-        window.location.replace(redirect_url);
+        if(res.data.data.user.advertiser)
+          window.location.replace('/dashboard/advertiser/');
+        window.location.replace('/e-office/desk');
       })
       .finally(() => this.setState({ submit: false }));
   };

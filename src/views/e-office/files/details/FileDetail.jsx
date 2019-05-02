@@ -47,7 +47,7 @@ class FileDetail extends Component {
     }
 
     getData(id) {
-        axios.get(ApiRoutes.FILE_DETAIL + id)
+        axios.get(ApiRoutes.FILE_DETAIL + "/" + id)
             .then(res => {
                 this.setState({file: res.data.data.files, loading: false});
                 this.props.doLoad(false);

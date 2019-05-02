@@ -3,7 +3,7 @@ export const LOGIN = "/auth/login";
 export const LOGOUT = "/auth/logout";
 export const HOME = "/home";
 export const FORM = "/form";
-export const E_OFFICE = "/e-office";
+export const E_OFFICE = "/e-office/desk";
 
 export const ADVERTISER_LOGIN = "/auth/login";
 export const APPLY_ADVERTISER = "/register/advertiser";
@@ -40,6 +40,10 @@ export const CREATED_FILES = "/e-office/created";
 export const SENT_FILE = "/e-office/sent";
 export const CLOSE_FILE = "/e-office/sent";
 export const FILE_DETAIL = "/e-office/file/:id/detail";
+export const FILE_ACTIVE_LIST = "/e-office/files/active";
+export const FILE_CLOSED_LIST = "/e-office/files/closed";
+export const FILE_ARCHIVED_LIST = "/e-office/files/archived";
+export const FILE_IN_ACTIVE_LIST = "/e-office/files/in-active";
 
 export const FILE_DETAIL_ROUTE = (id) => {
     return `/e-office/file/${id}/detail`
