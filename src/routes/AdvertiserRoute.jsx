@@ -9,9 +9,11 @@ export const AdvertiserRoute = ({ component: Component, ...rest }) => (
     console.log(user);
     console.log(!!user.advertiser);
     if (!user) {
+      console.info("User is not set")
       return <Redirect to='/auth/login'/>;
     }
-    if (LoginService.checkRole("advertiser")) {
+    if (LoginService.hasRole("advertiser")) {
+      console.info("Advertiser role is found")
       return <Component {...props}/>;
     }
     return <p>Access denied</p>;

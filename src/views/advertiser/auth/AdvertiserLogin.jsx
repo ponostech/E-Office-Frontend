@@ -12,7 +12,7 @@ import LockIcon from "@material-ui/icons/Lock";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { Validators } from "../../../utils/Validators";
 import { authContext } from "../../../context/AuthContext";
-import AuthService from "../../../services/AuthService";
+import { LoginService } from "../../../services/LoginService";
 
 const style = {
   root: {
@@ -21,7 +21,7 @@ const style = {
 };
 
 class AdvertiserLogin extends Component {
-  authService = new AuthService();
+  loginService = new LoginService();
 
   constructor(props) {
     super(props);
@@ -96,23 +96,16 @@ class AdvertiserLogin extends Component {
     }
 
     this.setState({ submit: true });
-    this.authService.login(email, password,
-      errorMessage => this.setState({ errorMessage }),
+    this.loginService.login({ email, password }, errorMessage => this.setState({ errorMessage }),
       res => {
         const { access_token, redirect_url } = res.data;
 
         localStorage.setItem("access_token", access_token);
         localStorage.setItem("current_user", JSON.stringify(res.data.data.user));
-
-        // localStorage.setItem("email", res.data.data.user.email);
-        // localStorage.setItem("name", res.data.data.user.advertiser.name);
-        // this.context.setUser(res.data.data.user);
-        // this.context.setToken(access_token);
-        if(res.data.data.user.advertiser)
-          window.location.replace('/dashboard/advertiser/');
-        window.location.replace('/e-office/desk');
+        window.location.replace(redirect_url);
       })
       .finally(() => this.setState({ submit: false }));
+
   };
   handleShowPassword = (e) => {
     this.setState({ showPassword: !this.state.showPassword });
