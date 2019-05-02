@@ -60,6 +60,7 @@ class FileSend extends Component {
             axios.post(FILE_SEND(this.props.file.id), data)
                 .then(res => {
                     this.props.doLoad(false);
+                    console.log('send file');
                     history.push(DESK);
                 })
         } else {

@@ -9,13 +9,12 @@ import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
 class DeskFiles extends Component {
     state = {
         tableData: [],
-        loading: false,
+        loading: true,
         error: false,
     };
 
     componentDidMount() {
         this.props.doLoad(true);
-        this.setState({loading: true});
         this.getFiles();
     }
 
