@@ -9,13 +9,12 @@ import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
 class FileClosedList extends Component {
     state = {
         tableData: [],
-        loading: false,
+        loading: true,
         error: false,
     };
 
     componentDidMount() {
         this.props.doLoad(true);
-        this.setState({loading: true})
         this.getFiles();
     }
 
@@ -53,10 +52,16 @@ class FileClosedList extends Component {
             {
                 name: "number",
                 label: "FILE NUMBER",
+                options: {
+                    filter: false
+                },
             },
             {
                 name: "subject",
                 label: "SUBJECT",
+                options: {
+                    filter: false
+                },
             },
             {
                 name: "branch",
