@@ -4,12 +4,23 @@ import moment from "moment";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
 export class StaffService {
-  async all() {
+  async all(errorCallback,successCallback) {
     const token = localStorage.getItem("access_token");
     const config = { headers: { "Authorization": `Bearer ${token}` } };
 
-    let res = await axios.get(ApiRoutes.STAFFS, config);
-    return res.data.data;
+    try{
+      let res = await axios.get(ApiRoutes.GET_STAFF, config);
+
+      if (res.data.status) {
+        successCallback(res.data.data.staffs)
+      }else{
+        errorCallback("Something went wrong: Please try again later")
+      }
+    }catch (e) {
+       console.error(e);
+      errorCallback(e.toString())
+    }
+
   }
 
   async create(state, errorCallback, successCallback) {

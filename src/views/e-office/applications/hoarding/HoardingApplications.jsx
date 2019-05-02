@@ -11,6 +11,13 @@ import GMapDialog from "../../../../components/GmapDialog";
 import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
+import { FileService } from "../../../../services/FileService";
+import Login from "../../../auth/Login";
+import { LoginService } from "../../../../services/LoginService";
+import SubmitDialog from "../../../../components/SubmitDialog";
+import { NEW_HOARDINGS } from "../../../../config/routes-constant/OfficeRoutes";
+import { withRouter } from "react-router-dom";
+import ApplicationState from "../../../../utils/ApplicationState";
 
 const styles = {
   button: {},
@@ -19,6 +26,7 @@ const styles = {
 
 class HoardingApplications extends React.Component {
   hoardingService = new HoardingService();
+  fileService=new FileService();
   state = {
     openAssignment: false,
     openDetail: false,
@@ -37,7 +45,7 @@ class HoardingApplications extends React.Component {
     const { doLoad } = this.props;
     doLoad(true)
 
-    this.hoardingService.fetch()
+    this.hoardingService.fetch(ApplicationState.NEW_APPLICATION)
       .then(hoardings => {
         this.setState({ hoardings: hoardings });
       })
@@ -59,10 +67,18 @@ class HoardingApplications extends React.Component {
     this.setState({ openTakeFile: true, fileDetail: data.file });
   };
   confirmTake = (e) => {
+    const{history}=this.props;
     const { fileDetail } = this.state;
-    console.log(fileDetail)
+    const recipient_id=LoginService.getCurrentUser().id
+
+    this.setState({submit:true})
+    this.fileService.sendFile(fileDetail.id,recipient_id,errorMessage=>this.setState({errorMessage}),
+      takeMessage=>{
+      this.setState({takeMessage:"You have taken the file"})
+        history.push(NEW_HOARDINGS)
+      })
+      .finally(()=>this.setState({submit:false}))
     this.setState({ openTakeFile: false });
-    this.setState({ takeMessage: "You have taken the file" });
   };
   closeAssignment = () => {
     this.setState({ openAssignment: false });
@@ -194,6 +210,7 @@ class HoardingApplications extends React.Component {
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng} onClose={() => this.setState({ openMap: false })}
                     isMarkerShown={true}
         />
+        <SubmitDialog open={this.state.submit} text={"File is taking ..."} title={"File Endorsement"}/>
         <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to take this file ?"}
                        onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
                        onConfirm={this.confirmTake.bind(this)}/>
@@ -206,4 +223,4 @@ class HoardingApplications extends React.Component {
   }
 }
 
-export default withStyles(styles)(HoardingApplications);
+export default withRouter(withStyles(styles)(HoardingApplications));
