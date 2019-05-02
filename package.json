@@ -17,6 +17,7 @@
     "material-ui-pickers": "^2.2.4",
     "moment": "2.24.0",
     "mui-datatables": "^2.0.0-beta.58",
+    "nib-converter": "^0.1.1",
     "nib-core": "^0.3.0",
     "node-sass": "4.11.0",
     "nouislider": "13.1.0",
