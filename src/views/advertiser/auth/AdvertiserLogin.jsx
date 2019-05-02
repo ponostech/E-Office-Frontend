@@ -102,7 +102,8 @@ class AdvertiserLogin extends Component {
 
         localStorage.setItem("access_token", access_token);
         localStorage.setItem("current_user", JSON.stringify(res.data.data.user));
-        window.location.replace(redirect_url);
+        console.log(res.data.data.user.staff);
+        res.data.data.user.staff ? window.location.replace("/e-office/desk") : window.location.replace(redirect_url);
       })
       .finally(() => this.setState({ submit: false }));
 
