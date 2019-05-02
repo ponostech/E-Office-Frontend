@@ -9,11 +9,13 @@ import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
 class FileArchivedList extends Component {
     state = {
         tableData: [],
+        loading: false,
         error: false,
     };
 
     componentDidMount() {
         this.props.doLoad(true);
+        this.setState({loading: true});
         this.getFiles();
     }
 
@@ -23,11 +25,11 @@ class FileArchivedList extends Component {
         };
         axios.get(ApiRoutes.FILE, config)
             .then(res => {
-                this.setState({tableData: res.data.data.files});
+                this.setState({tableData: res.data.data.files, loading: false});
                 this.props.doLoad(false);
             })
             .catch(error => {
-                this.setState({error: true});
+                this.setState({error: true, loading:false});
                 this.props.doLoad(false);
             });
     }
@@ -78,18 +80,23 @@ class FileArchivedList extends Component {
             },
         ];
 
-        let files = <p style={{textAlign:'center', width: '100%', fontSize: 15}}>Something Went Wrong!</p>;
 
-        if (!this.state.error) {
-            files = (
-                <>
-                    <Grid item xs={12}>
-                        <MUIDataTable title={"Desk: List of Archived Files"} data={tableData} columns={tableColumns}
-                                      options={tableOptions}
-                        />
-                    </Grid>
-                </>
-            );
+        let files = '';
+
+        if (!this.state.loading) {
+            if (!this.state.error) {
+                files = (
+                    <>
+                        <Grid item xs={12}>
+                            <MUIDataTable title={"File: List of Archived"} data={tableData} columns={tableColumns}
+                                          options={tableOptions}
+                            />
+                        </Grid>
+                    </>
+                );
+            } else {
+                files = <p style={{textAlign:'center', width: '100%', fontSize: 15}}>Something Went Wrong!</p>;
+            }
         }
 
         return files;

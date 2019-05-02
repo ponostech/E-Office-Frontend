@@ -67,6 +67,7 @@ class FileDetail extends Component {
     render() {
         const {classes} = this.props;
         const {loading} = this.state;
+
         const view = (
             <>
                 <CssBaseline/>
@@ -90,7 +91,7 @@ class FileDetail extends Component {
         return (
             <Grid container className={classes.container}>
                 <div className={classes.root}>
-                    {loading ? "Loading" : view}
+                    {loading ? "" : view}
                 </div>
             </Grid>
         );
