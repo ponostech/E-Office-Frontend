@@ -17,6 +17,8 @@ import Settings from "../views/e-office/settings/Setting";
 import FileDetail from "../views/e-office/files/details/FileDetail";
 import FileCreatedList from "../views/e-office/files/FileCreatedList";
 import FileSentList from "../views/e-office/files/FileSentList";
+import FileActiveList from "../views/e-office/files/FileActiveList";
+import FileInActiveList from "../views/e-office/files/FileInActiveList";
 import HoardingDetails from "../views/e-office/applications/hoarding/HoardingDetails";
 import AdvertiserDetails from "../views/e-office/applications/advertisers/AdvertiserDetails";
 import DeskView from "../views/e-office/desk/DeskView";
@@ -81,6 +83,8 @@ class LayoutOffice extends React.Component {
                            render={(props) => <FileDetail {...props} doLoad={this.doLoad}/>}/>
                     <Route exact path={OfficeRoutes.CREATED_FILES} component={FileCreatedList}/>
                     <Route exact path={OfficeRoutes.SENT_FILE} component={FileSentList}/>
+                    <Route exact path={OfficeRoutes.FILE_ACTIVE_LIST} render={props => <FileActiveList {...props} doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.FILE_IN_ACTIVE_LIST} render={props => <FileInActiveList {...props} doLoad={this.doLoad}/>}/>
 
                     {/*OBPAS*/}
                     <Route exact path={OfficeRoutes.OBPAS} component={FileStore}/>

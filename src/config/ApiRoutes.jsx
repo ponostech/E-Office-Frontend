@@ -40,6 +40,7 @@ export class ApiRoutes {
   static ADVERTISER_LIST = '/staff/advertiser/applications';
 
   static NOTESHEET = '/notesheets';
+  static FILE="/files";
   static FILE_SEND = '/file/send';
-  static FILE_DETAIL="/files/";
+  static FILE_DETAIL="/files";
 }

@@ -18,7 +18,10 @@ class DeskFiles extends Component {
     }
 
     getFiles() {
-        axios.get(ApiRoutes.DESK)
+        let config = {
+            params: {status: 'in-active'}
+        };
+        axios.get(ApiRoutes.FILE, config)
             .then(res => {
                 this.setState({tableData: res.data.data.files});
                 this.props.doLoad(false);
