@@ -35,7 +35,7 @@ class ApplicationAssignmentDialog extends React.Component{
         super(props);
         this.state={
             users: []
-        }
+        };
         this.staffService =new StaffService();
     }
 

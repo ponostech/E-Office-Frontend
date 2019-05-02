@@ -5,11 +5,15 @@ import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {ApiRoutes} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
+import FileSendDialog from '../../common/SendDialog';
 
 class FileInActiveList extends Component {
     state = {
         tableData: [],
+        openAssignment: false,
+        id: '',
         loading: true,
+        file: [],
         error: false,
     };
 
@@ -28,7 +32,7 @@ class FileInActiveList extends Component {
                 this.props.doLoad(false);
             })
             .catch(error => {
-                this.setState({error: true, loading:false});
+                this.setState({error: true, loading: false});
                 this.props.doLoad(false);
             });
     }
@@ -36,6 +40,27 @@ class FileInActiveList extends Component {
     viewDetail = (id) => {
         const {history} = this.props;
         history.push(FILE_DETAIL_ROUTE(id));
+    };
+
+    openAssignment = (id) => {
+        this.getFile(id);
+        console.log(this.state);
+    };
+
+    closeAssignment = () => {
+        this.setState({currentFile: null, openAssignment: false});
+    };
+
+    takeFile = () => {
+
+    };
+
+    getFile = (id) => {
+        axios.get(ApiRoutes.FILE + "/" + id)
+            .then(res => {
+                this.setState({file: res.data.data.files, openAssignment: true});
+            })
+            .catch(err => {})
     };
 
     render() {
@@ -64,6 +89,10 @@ class FileInActiveList extends Component {
                 },
             },
             {
+                name: "created_at",
+                label: "CREATED ON",
+            },
+            {
                 name: "branch",
                 label: "BRANCH",
             },
@@ -75,10 +104,21 @@ class FileInActiveList extends Component {
                     sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
-                            <IconButton color="primary" size="small"
-                                        aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
-                                <Icon fontSize="small">remove_red_eye</Icon>
-                            </IconButton>
+                            <>
+                                <IconButton color="primary" size="small"
+                                            aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
+                                    <Icon fontSize="small">remove_red_eye</Icon>
+                                </IconButton>
+
+                                <IconButton variant="contained" color="secondary"
+                                            size="small" onClick={this.openAssignment.bind(this, value)}>
+                                    <Icon fontSize="small">send</Icon>
+                                </IconButton>
+                                <IconButton variant="contained" color="primary"
+                                            size="small" onClick={this.takeFile.bind(this, 1)}>
+                                    <Icon fontSize="small">drag_indicator</Icon>
+                                </IconButton>
+                            </>
                         );
                     }
                 }
@@ -100,11 +140,17 @@ class FileInActiveList extends Component {
                     </>
                 );
             } else {
-                files = <p style={{textAlign:'center', width: '100%', fontSize: 15}}>Something Went Wrong!</p>;
+                files = <p style={{textAlign: 'center', width: '100%', fontSize: 15}}>Something Went Wrong!</p>;
             }
         }
 
-        return files;
+        return (
+            <>
+                {files}
+                <FileSendDialog open={this.state.openAssignment} close={this.closeAssignment} file={this.state.file}
+                                props={this.props}/>
+            </>
+        )
     }
 }
 

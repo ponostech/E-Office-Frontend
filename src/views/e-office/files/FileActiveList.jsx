@@ -64,6 +64,10 @@ class FileActiveList extends Component {
                 },
             },
             {
+                name: "created_at",
+                label: "CREATED ON",
+            },
+            {
                 name: "branch",
                 label: "BRANCH",
             },
