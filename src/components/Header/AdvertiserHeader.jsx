@@ -146,7 +146,10 @@ class AdvertiserHeader extends React.Component {
         <div style={{flex:1}}>
           <List>
             {menuItem.map((item, index) => (
-              <ListItem button key={index} onClick={() => history.push(item.route)}>
+              <ListItem button key={index} onClick={() =>{
+                this.handleDrawerToggle()
+                history.push(item.route)
+              } }>
                 <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
                 <ListItemText primary={item.label}/>
               </ListItem>
@@ -214,5 +217,4 @@ class AdvertiserHeader extends React.Component {
   }
 }
 
-AdvertiserHeader.contextType = authContext;
 export default withRouter(AdvertiserHeader);

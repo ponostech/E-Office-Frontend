@@ -17,8 +17,11 @@ import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import TopMenu from "./E-Office/TopMenu";
 import MobileTopMenu from "./E-Office/MobileTopMenu";
 
-const styles = theme => {
+const styles =  {
 
+    drawerPaper: {
+          width: "60%",
+    },
 };
 
 class OfficePageHeader extends React.Component {
@@ -92,7 +95,7 @@ class OfficePageHeader extends React.Component {
                                     keepMounted: true // Better open performance on mobile.
                                 }}
                             >
-                                <MobileTopMenu classes={classes}/>
+                                <MobileTopMenu closeDrawer={()=>this.setState({open:false})} classes={classes}/>
                             </Drawer>
                         </Hidden>
                     </Hidden>
