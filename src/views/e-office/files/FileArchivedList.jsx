@@ -64,6 +64,14 @@ class FileArchivedList extends Component {
                 },
             },
             {
+                name: "created_at",
+                label: "CREATED ON",
+            },
+            {
+                name: "updated_at",
+                label: "ARCHIVED ON",
+            },
+            {
                 name: "branch",
                 label: "BRANCH",
             },

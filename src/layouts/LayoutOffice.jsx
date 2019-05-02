@@ -87,7 +87,7 @@ class LayoutOffice extends React.Component {
                     <Route exact path={OfficeRoutes.FILE_ACTIVE_LIST} render={props => <FileActiveList {...props} doLoad={this.doLoad}/>}/>
                     <Route exact path={OfficeRoutes.FILE_IN_ACTIVE_LIST} render={props => <FileInActiveList {...props} doLoad={this.doLoad}/>}/>
                     <Route exact path={OfficeRoutes.FILE_CLOSED_LIST} render={props => <FileClosedList {...props} doLoad={this.doLoad}/>}/>
-                    <Route exact path={OfficeRoutes.FILE_ARCHIVED_LIST} render={props => <FileActiveList {...props} doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.FILE_ARCHIVED_LIST} render={props => <FileArchivedList {...props} doLoad={this.doLoad}/>}/>
 
                     {/*OBPAS*/}
                     <Route exact path={OfficeRoutes.OBPAS} component={FileStore}/>

@@ -55,6 +55,10 @@ class DeskFiles extends Component {
                 label: "SUBJECT",
             },
             {
+                name: "updated_at",
+                label: "RECEIVED ON",
+            },
+            {
                 name: "branch",
                 label: "BRANCH",
             },

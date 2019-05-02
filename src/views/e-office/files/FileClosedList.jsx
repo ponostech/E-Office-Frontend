@@ -64,6 +64,14 @@ class FileClosedList extends Component {
                 },
             },
             {
+                name: "created_at",
+                label: "CREATED ON",
+            },
+            {
+                name: "updated_at",
+                label: "CLOSED ON",
+            },
+            {
                 name: "branch",
                 label: "BRANCH",
             },
