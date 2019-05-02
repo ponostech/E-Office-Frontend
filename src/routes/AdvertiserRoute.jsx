@@ -1,18 +1,22 @@
-import {Route,Redirect} from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import React from "react";
 import { LoginService } from "../services/LoginService";
 
-export  const AdvertiserRoute = ({  component: Component, ...rest }) => (
-      <Route {...rest} render={(props) => {
-        let user=LoginService.getCurrentUser();
-        if (user)
-          return <Redirect to='/auth/login'/>;
-        if (!user.advertiser)
-          return <p>unauth</p>;
-        else
-          return <Component {...props}/>;
+export const AdvertiserRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => {
+    console.log("what the fuck");
+    let user = LoginService.getCurrentUser();
+    console.log(user);
+    console.log(!!user.advertiser);
+    if (!user) {
+      return <Redirect to='/auth/login'/>;
+    }
+    if (LoginService.checkRole("advertiser")) {
+      return <Component {...props}/>;
+    }
+    return <p>Access denied</p>;
 
-      }}/>
+  }}/>
 
 
 );

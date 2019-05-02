@@ -15,13 +15,18 @@ import HomeIcon from "@material-ui/icons/Home";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingIcon from "@material-ui/icons/Settings";
 // core components
-import { Button, IconButton, LinearProgress, Typography } from "@material-ui/core";
+import { Button, Grid, IconButton, LinearProgress, Typography } from "@material-ui/core";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
 import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import Icon from "@material-ui/core/es/Icon";
 import { authContext } from "../../context/AuthContext";
 import { LoginService } from "../../services/LoginService";
+import { ADVERTISER_NEW_HOARDING } from "../../config/routes-constant/OfficeRoutes";
+import { ADVERTISER_HOARDING } from "../../config/routes-constant/OfficeRoutes";
+import { ADVERTISER_NEW_KIOSK } from "../../config/routes-constant/OfficeRoutes";
+import { ADVERTISER_KIOSK } from "../../config/routes-constant/OfficeRoutes";
+import { HOME } from "../../config/routes-constant/OfficeRoutes";
 
 class AdvertiserHeader extends React.Component {
   loginService = new LoginService();
@@ -127,27 +132,35 @@ class AdvertiserHeader extends React.Component {
     );
 
     const menuItem = [
-      { name: "notesheet", label: "Notesheet", icon: "chat" },
-      { name: "draft", label: "Draft", icon: "create" },
-      { name: "report", label: "Site Verification", icon: "report" },
-      { name: "permit", label: "Draft Permit", icon: "how_to_reg" },
-      { name: "reject", label: "Draft Reject Letter", icon: "block" },
-      { name: "send", label: "Forward File", icon: "send" }
+      { name: "dashboard", label: "Dashboard", icon: "dashboard",route:ADVERTISER_NEW_HOARDING },
+      { name: "new_hoarding", label: "New Hoarding", icon: "tab",route:ADVERTISER_NEW_HOARDING },
+      { name: "hoarding_list", label: "List of Hoarding", icon: "view_list",route:ADVERTISER_HOARDING },
+      { name: "new_kiosk", label: "New Kiosk", icon: "smartphone",route:ADVERTISER_NEW_KIOSK },
+      { name: "kiosk_list", label: "list of Kiosks", icon: "view_list",route:ADVERTISER_KIOSK },
     ];
     var list = (
-      <GridContainer justify={"center"} direction={"column"} alignItems={"center"} style={{ padding: 20 }}>
+      <GridContainer justify={"center"} direction={"column"} alignItems={"flex-start"} style={{ padding: 20 }}>
         <div>
           <Typography variant={"h5"} color={"primary"}>Menu</Typography>
         </div>
-        <div>
+        <div style={{flex:1}}>
           <List>
             {menuItem.map((item, index) => (
-              <ListItem button key={index} onClick={() => this.props.click(item.name)}>
+              <ListItem button key={index} onClick={() => history.push(item.route)}>
                 <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
                 <ListItemText primary={item.label}/>
               </ListItem>
             ))}
           </List>
+        </div>
+        <div style={{flex:1}}>
+
+        </div>
+        <div>
+          <ListItem button onClick={() => new LoginService().logout((e)=>{console.error(e)},suc=>history.push(HOME))}>
+            <ListItemIcon><Icon>power</Icon></ListItemIcon>
+            <ListItemText primary={"Log out"}/>
+          </ListItem>
         </div>
 
       </GridContainer>
