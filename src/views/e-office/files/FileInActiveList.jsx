@@ -6,7 +6,7 @@ import MUIDataTable from "mui-datatables";
 import {ApiRoutes} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
 
-class DeskFiles extends Component {
+class FileInActiveList extends Component {
     state = {
         tableData: [],
         error: false,
@@ -84,7 +84,7 @@ class DeskFiles extends Component {
             files = (
                 <>
                     <Grid item xs={12}>
-                        <MUIDataTable title={"Desk: List of Files"} data={tableData} columns={tableColumns}
+                        <MUIDataTable title={"Desk: List of In-Active Files"} data={tableData} columns={tableColumns}
                                       options={tableOptions}
                         />
                     </Grid>
@@ -96,4 +96,4 @@ class DeskFiles extends Component {
     }
 }
 
-export default withRouter(DeskFiles);
+export default withRouter(FileInActiveList);

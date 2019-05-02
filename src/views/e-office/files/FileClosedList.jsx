@@ -6,7 +6,7 @@ import MUIDataTable from "mui-datatables";
 import {ApiRoutes} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
 
-class FileActiveList extends Component {
+class FileClosedList extends Component {
     state = {
         tableData: [],
         error: false,
@@ -19,7 +19,7 @@ class FileActiveList extends Component {
 
     getFiles() {
         let config = {
-            params: {status: 'active'}
+            params: {status: 'closed'}
         };
         axios.get(ApiRoutes.FILE, config)
             .then(res => {
@@ -84,7 +84,7 @@ class FileActiveList extends Component {
             files = (
                 <>
                     <Grid item xs={12}>
-                        <MUIDataTable title={"Desk: List of Files"} data={tableData} columns={tableColumns}
+                        <MUIDataTable title={"Desk: List of Closed Files"} data={tableData} columns={tableColumns}
                                       options={tableOptions}
                         />
                     </Grid>
@@ -96,4 +96,4 @@ class FileActiveList extends Component {
     }
 }
 
-export default withRouter(FileActiveList);
+export default withRouter(FileClosedList);
