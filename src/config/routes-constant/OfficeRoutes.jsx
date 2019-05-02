@@ -44,9 +44,11 @@ export const FILE_ACTIVE_LIST = "/e-office/files/active";
 export const FILE_CLOSED_LIST = "/e-office/files/closed";
 export const FILE_ARCHIVED_LIST = "/e-office/files/archived";
 export const FILE_IN_ACTIVE_LIST = "/e-office/files/in-active";
-
 export const FILE_DETAIL_ROUTE = (id) => {
-    return `/e-office/file/${id}/detail`
+    return `/e-office/file/${id}/detail`;
+};
+export const FILE_SEND = (id) => {
+    return `/file/${id}/send`;
 };
 export const NEW_RECEIPT = "/e-office/receipt/new";
 export const CREATED_RECEIPT = "/e-office/receipt/created";
