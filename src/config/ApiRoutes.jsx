@@ -1,3 +1,7 @@
+export const FILE_TAKE = (id) => {
+  return `/file/${id}/take`;
+};
+
 export class ApiRoutes {
   static BASE_URL = "http://139.59.26.3/api/v1";
   static LOGIN_ROUTE = "/auth/login";
@@ -43,4 +47,5 @@ export class ApiRoutes {
   static FILE="/files";
   static FILE_SEND = '/file/send';
   static FILE_DETAIL="/files";
+
 }
