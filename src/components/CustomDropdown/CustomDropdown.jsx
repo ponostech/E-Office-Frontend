@@ -126,7 +126,7 @@ class CustomDropdown extends React.Component {
       <div className={innerDropDown ? classes.innerManager : classes.manager}>
         <div className={buttonText !== undefined ? "" : classes.target}>
           <Button
-            style={{padding:10}}
+            style={{padding:10, textTransform: "capitalize", fontSize: 14}}
             aria-label="Notifications"
             aria-owns={open ? "menu-list" : null}
             aria-haspopup="true"

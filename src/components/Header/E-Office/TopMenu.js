@@ -17,11 +17,10 @@ const menu = (props) => {
                 <NavLink to={routes.HOME}><IconButton color="primary"><Icon>apps</Icon></IconButton></NavLink>
                 <NavLink to={routes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
                 <CustomDropdown
-
                     dropdownList={[
                         {title: "Create New", link: routes.NEW_FILE},
-                        {title: "List Created By You", link: routes.CREATED_FILES},
-                        {title: "List Sent by You", link: routes.SENT_FILE},
+                        // {title: "List Created By You", link: routes.CREATED_FILES},
+                        // {title: "List Sent by You", link: routes.SENT_FILE},
                         {title: "List New", link: routes.FILE_IN_ACTIVE_LIST},
                         {title: "List Closed", link: routes.FILE_CLOSED_LIST},
                         {title: "List Archived", link: routes.FILE_ARCHIVED_LIST},
@@ -107,6 +106,7 @@ const menu = (props) => {
                     linkClick={props.linkClick}
                     buttonText={"Hotel & Lodging"}
                     buttonProps={{color: "transparent"}}/>
+
                 <CustomDropdown
                     dropdownList={[
                         {title: "New Trade", link: routes.NEW_TRADE},
