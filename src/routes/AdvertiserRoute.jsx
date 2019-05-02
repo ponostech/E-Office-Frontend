@@ -4,10 +4,7 @@ import { LoginService } from "../services/LoginService";
 
 export const AdvertiserRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => {
-    console.log("what the fuck");
     let user = LoginService.getCurrentUser();
-    console.log(user);
-    console.log(!!user.advertiser);
     if (!user) {
       console.info("User is not set")
       return <Redirect to='/auth/login'/>;
