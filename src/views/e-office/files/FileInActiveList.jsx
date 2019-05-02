@@ -3,8 +3,8 @@ import axios from 'axios';
 import {Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import {ApiRoutes} from "../../../config/ApiRoutes";
-import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
+import {ApiRoutes, FILE_TAKE} from "../../../config/ApiRoutes";
+import {FILE_DETAIL_ROUTE, DESK} from "../../../config/routes-constant/OfficeRoutes";
 import FileSendDialog from '../../common/SendDialog';
 
 class FileInActiveList extends Component {
@@ -50,8 +50,12 @@ class FileInActiveList extends Component {
         this.setState({currentFile: null, openAssignment: false});
     };
 
-    takeFile = () => {
-
+    takeFile = (id) => {
+        axios.post(FILE_TAKE(id))
+            .then(res => {
+                window.location.replace(DESK);
+            })
+            .catch(err => {})
     };
 
     getFile = (id) => {
@@ -114,8 +118,8 @@ class FileInActiveList extends Component {
                                     <Icon fontSize="small">send</Icon>
                                 </IconButton>
                                 <IconButton variant="contained" color="primary"
-                                            size="small" onClick={this.takeFile.bind(this, 1)}>
-                                    <Icon fontSize="small">drag_indicator</Icon>
+                                            size="small" onClick={this.takeFile.bind(this, value)}>
+                                    <Icon fontSize="small">desktop_mac</Icon>
                                 </IconButton>
                             </>
                         );
