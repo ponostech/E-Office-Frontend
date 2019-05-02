@@ -1,14 +1,20 @@
-import {Route} from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import React from "react";
+import { LoginService } from "../services/LoginService";
 
-export  const StaffRoute = ({ currentUser, component: Component, ...rest }) => (
+export const StaffRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => {
-    // if (!currentUser)
-    //   return <Redirect to='/auth/login'/>;
-    // if (!currentUser.staff)
-    //   return <p>unauth</p>;
-    // else
+    let user = LoginService.getCurrentUser();
+    if (!user) {
+      console.info("User is not set");
+      return <Redirect to='/auth/login'/>;
+    }
+    if (LoginService.hasRole("staff")) {
+      console.info("staff role is found");
       return <Component {...props}/>;
+    }
+    return <p>Access denied</p>;
 
   }}/>
+
 );

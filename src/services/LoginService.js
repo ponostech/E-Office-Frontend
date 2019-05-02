@@ -1,8 +1,9 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
+import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
 export class LoginService {
-  static checkRole(roleName) {
+  static hasRole(roleName) {
     let userData=localStorage.getItem("current_user");
     let user=JSON.parse(userData)
     let found=false;
@@ -44,12 +45,15 @@ export class LoginService {
     const token = localStorage.getItem("access_token");
     const config = { headers: { "Authorization": `Bearer ${token}` } };
     try {
-      let res = await axios.post(ApiRoutes.LOGOUT_ROUTE, credential);
+      let res = await axios.post(ApiRoutes.LOGIN_ROUTE, credential);
+      const { access_token } = res.data;
       if (res.data.status) {
         localStorage.clear()
-        successCallback("Log out");
+        localStorage.setItem("access_token", access_token);
+        localStorage.setItem("current_user", JSON.stringify(res.data.data.user));
+        successCallback(res);
       } else {
-        errorCallback("Something went wrong: Please try again later");
+        errorCallback(res.data.messages);
       }
     } catch (e) {
       console.error(e);
