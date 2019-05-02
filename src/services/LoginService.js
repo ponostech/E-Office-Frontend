@@ -2,8 +2,24 @@ import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
 
 export class LoginService {
-  static async getCurrentUser() {
-    let userData=await localStorage.getItem("current_user");
+  static checkRole(roleName) {
+    let userData=localStorage.getItem("current_user");
+    let user=JSON.parse(userData)
+    let found=false;
+    if (!user) {
+       return found
+    }else{
+       const roles=user.roles;
+       roles.forEach(function(role, index) {
+         if (role.slug === roleName || role.name === roleName) {
+           found= true
+         }
+       })
+      return found
+    }
+  }
+  static  getCurrentUser() {
+    let userData=localStorage.getItem("current_user");
     return JSON.parse(userData)
   }
 
