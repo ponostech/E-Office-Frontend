@@ -15,6 +15,7 @@ export const RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
 
 
 export const APPLY_BANNER = "/banner/new";
+export const CHECK_LICENSE = "/license/check";
 
 
 export const RESET_PASSWORD = "/reset-password";

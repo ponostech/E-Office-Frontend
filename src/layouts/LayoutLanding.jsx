@@ -14,6 +14,7 @@ import AdvertiserLogin from "../views/advertiser/auth/AdvertiserLogin";
 import AdvertiserApplication from "../views/advertiser/AdvertiserApplication";
 import ShopRenewal from "../views/shop/ShopRenewal";
 import HotelApplication from "../views/hotel/HotelApplication";
+import CheckLicense from "../views/landing-pages/license-checking/CheckLicense";
 
 class LayoutLanding extends React.Component {
     constructor(props) {
@@ -57,6 +58,8 @@ class LayoutLanding extends React.Component {
                                    }}
                             />
                             <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} render={() => <AdvertiserLogin/>}/>
+
+                            <Route exact={true} path={OfficeRoutes.CHECK_LICENSE} render={() => <CheckLicense/>}/>
 
                             <Route exact={true} path={OfficeRoutes.APPLY_BANNER} render={(e) => {
                                 return <BannerApplicationForm doLoad={this.doLoad.bind(this)}
