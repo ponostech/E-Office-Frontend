@@ -5,6 +5,7 @@ import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {ApiRoutes} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
+import moment from "moment";
 
 class DeskFiles extends Component {
     state = {
@@ -59,6 +60,12 @@ class DeskFiles extends Component {
             {
                 name: "updated_at",
                 label: "RECEIVED ON",
+                options: {
+                    filter: false,
+                    customBodyRender: (value, meta, updateValue) => {
+                        return moment(value).format("Do MMMM YYYY");
+                    }
+                }
             },
             {
                 name: "branch",

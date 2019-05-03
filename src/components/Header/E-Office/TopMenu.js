@@ -41,6 +41,19 @@ const menu = (props) => {
                     linkClick={props.linkClick}
                     buttonText={"Receipt"}
                     buttonProps={{color: "transparent"}}/>
+
+                <CustomDropdown
+                    dropdownList={[
+                        {title: "New Application", link: routes.ADVERTISER_NEW_LIST},
+                        {title: "Under Process", link: routes.ADVERTISER_IN_PROCESS_LIST},
+                        {title: "Approved List", link: routes.ADVERTISER_APPROVE_LIST},
+                        {title: "Rejected List", link: routes.ADVERTISER_REJECT_LIST},
+                        {title: "Cancelled List", link: routes.ADVERTISER_CANCEL_LIST}
+                    ]}
+                    linkClick={props.linkClick}
+                    buttonText={"Advertiser"}
+                    buttonProps={{color: "transparent"}}/>
+
                 <CustomDropdown
                     dropdownList={[
                         {title: "New Application", link: routes.NEW_HOARDINGS},
@@ -62,17 +75,7 @@ const menu = (props) => {
                     linkClick={props.linkClick}
                     buttonText={"Kiosk"}
                     buttonProps={{color: "transparent"}}/>
-                <CustomDropdown
-                    dropdownList={[
-                        {title: "New Application", link: routes.ADVERTISER_NEW_LIST},
-                        {title: "Under Process", link: routes.ADVERTISER_IN_PROCESS_LIST},
-                        {title: "Approved List", link: routes.ADVERTISER_APPROVE_LIST},
-                        {title: "Rejected List", link: routes.ADVERTISER_REJECT_LIST},
-                        {title: "Cancelled List", link: routes.ADVERTISER_CANCEL_LIST}
-                    ]}
-                    linkClick={props.linkClick}
-                    buttonText={"Advertiser"}
-                    buttonProps={{color: "transparent"}}/>
+
                 <CustomDropdown
                     dropdownList={[
                         {title: "New Application", link: routes.NEW_BANNER},

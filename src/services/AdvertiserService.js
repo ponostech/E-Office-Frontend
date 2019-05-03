@@ -4,37 +4,37 @@ import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 import React from "react";
 
 export class AdvertiserService {
+    async create(state, errorCallback, successCallback) {
+        let data = {
+            name: state.name,
+            type: state.type.value,
+            phone_no: state.phone,
+            email: state.email,
+            password: state.password,
+            address: state.address,
+            registered: 1,
+            signature: state.signature.path,
+            documents: state.documentsUpload
+        };
 
-  async create(state, errorCallback, successCallback) {
-    let data = {
-      name: state.name,
-      type: state.type.value,
-      phone_no: state.phone,
-      email: state.email,
-      password: state.password,
-      address: state.address,
-      registered: 1,
-      signature: state.signature.path,
-      documents: state.documentsUpload
-    };
-
-    try {
-      let res = await axios.post(ApiRoutes.CREATE_ADVERTISER, data);
-      if (res.data.status) {
-        let msgs = [];
-        res.data.messages.forEach(function(msg) {
-          let temp = <p>{`${msg}.`}</p>;
-          msgs.push(temp);
-        });
-        successCallback(msgs);
-      } else {
-        errorCallback(ErrorToString(res.data.messages));
-      }
-    } catch (e) {
-      console.error(e);
-      errorCallback(e.toString());
+        try {
+            let res = await axios.post(ApiRoutes.CREATE_ADVERTISER, data);
+            if (res.data.status) {
+                let msgs = [];
+                res.data.messages.forEach(function (msg) {
+                    let temp = <p>{`${msg}.`}</p>;
+                    msgs.push(temp);
+                });
+                successCallback(msgs);
+            } else {
+                errorCallback(ErrorToString(res.data.messages));
+            }
+        } catch (e) {
+            console.error(e);
+            errorCallback(e.toString());
+        }
     }
-  }
+
 
   async fetch(status,errorCallback,successCallback) {
     const token = localStorage.getItem("access_token");
@@ -61,10 +61,5 @@ export class AdvertiserService {
         }else{
           errorCallback(ArrayToString(defRes.data.messages))
         }
-      }
-    } catch (error) {
-      console.error(error);
-      errorCallback(error.toString())
     }
-  }
 }
