@@ -6,17 +6,17 @@ import HoardingDetailDialog from "./HoardingDetailDialog";
 import ApplyHoardingDialog from "./form/ApplyHoardingDialog";
 import { HoardingService } from "../../../services/HoardingService";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
-import axios from "axios";
-import { ApiRoutes } from "../../../config/ApiRoutes";
 import { Chip, IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
+import ApplicationState from "../../../utils/ApplicationState";
+import { LoginService } from "../../../services/LoginService";
 
 class HoardingList extends Component {
   hoardingService = new HoardingService();
-
+  loginService = new LoginService();
   state = {
-    hoarding:{},
+    hoarding: {},
     hoardings: [],
     openDetail: false,
     openApply: false,
@@ -28,18 +28,18 @@ class HoardingList extends Component {
     document.title = "e-AMC | List of hoarding application";
     const { doLoad, doLoadFinish } = this.props;
     doLoad();
-    this.hoardingService.fetchAdvertiserHoarding(errorMessage=>this.setState({errorMessage}),
-        hoardings=>this.setState({hoardings}))
-      .finally(()=>doLoadFinish())
+    this.hoardingService.fetchAdvertiserHoarding(errorMessage => this.setState({ errorMessage }),
+      hoardings => this.setState({ hoardings }))
+      .finally(() => doLoadFinish());
   }
 
 
   render() {
     const tableColumns = [
-       {
+      {
         name: "applicant",
         label: "APPLICANT",
-        options:{
+        options: {
           customBodyRender: (applicant, tableMeta, updateValue) => {
             return (applicant.advertiser.name);
           }
@@ -52,7 +52,7 @@ class HoardingList extends Component {
             return (value.number);
           }
         }
-      } ,{
+      }, {
         name: "file",
         label: "SUBJECT",
         options: {
@@ -60,48 +60,67 @@ class HoardingList extends Component {
             return (value.subject);
           }
         }
-      },{
+      }, {
         name: "status",
         label: "STATUS",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             let color = "default";
             switch (value) {
-              case "new":
+              case ApplicationState.NEW_APPLICATION:
                 color = "default";
-                break
-              case "rejected":
+                break;
+              case ApplicationState.UNDER_PROCESS_APPLICATION:
+                color = "primary";
+                break;
+              case ApplicationState.REJECTED_APPLICATION:
                 color = "secondary";
                 break;
-              case "granted":
-                color="primary"
+              case ApplicationState.APPROVED_APPLICATION:
+                color = "primary";
+                break;
               default:
                 break;
             }
-            let chip=(
+            let chip = (
               <Chip label={value} title={value} color={color}/>
-            )
-            return chip
+            );
+            return chip;
           }
         }
-      },{
+      }, {
         name: "created_at",
         label: "Date",
         options: {
-          customBodyRender:(date)=>{
-            const d=moment(date).format("DD/MM/YYYY")
-            return d.toString()
+          customBodyRender: (date) => {
+            const d = moment(date).format("DD/MM/YYYY");
+            return d.toString();
           }
         }
-      },{
+      }, {
         name: "hoarding",
         label: "ACTIONS",
         options: {
           customBodyRender: (hoarding, tableMeta, updateValue) => {
+            const { rowIndex } = tableMeta;
+            const data = this.state.hoardings[rowIndex];
+            // switch (data.status) {
+            //   case ApplicationState.NEW_APPLICATION:
+            //     viewBtn=undefined
+            //     break;
+            //   case ApplicationState.UNDER_PROCESS_APPLICATION:
+            //     break;
+            //   case ApplicationState.REJECTED_APPLICATION:
+            //     break;
+            //   case ApplicationState.APPROVED_APPLICATION:
+            //     break;
+            //   default:
+            //     break;
+            // }
             let viewBtn = (
               <Tooltip title={"Click here to view details"}>
-                <IconButton onClick={(e)=>{
-                  this.setState({hoarding,openDetail:true})
+                <IconButton onClick={(e) => {
+                  this.setState({ hoarding, openDetail: true });
                 }}>
                   <EyeIcon/>
                 </IconButton>

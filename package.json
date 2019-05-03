@@ -28,7 +28,7 @@
     "react-bootstrap": "^1.0.0-beta.6",
     "react-bootstrap-dropdown": "^0.3.0",
     "react-bootstrap-sweetalert": "^4.4.1",
-    "react-chartist": "0.13.3",
+    "react-chartist": "^0.13.3",
     "react-datetime": "2.16.3",
     "react-dom": "16.8.1",
     "react-dropzone": "^9.0.0",

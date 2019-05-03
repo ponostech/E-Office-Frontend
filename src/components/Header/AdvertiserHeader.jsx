@@ -27,6 +27,7 @@ import { ADVERTISER_HOARDING } from "../../config/routes-constant/OfficeRoutes";
 import { ADVERTISER_NEW_KIOSK } from "../../config/routes-constant/OfficeRoutes";
 import { ADVERTISER_KIOSK } from "../../config/routes-constant/OfficeRoutes";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
+import { ADVERTISER_DASHBOARD } from "../../config/routes-constant/OfficeRoutes";
 
 class AdvertiserHeader extends React.Component {
   loginService = new LoginService();
@@ -132,7 +133,7 @@ class AdvertiserHeader extends React.Component {
     );
 
     const menuItem = [
-      { name: "dashboard", label: "Dashboard", icon: "dashboard",route:ADVERTISER_NEW_HOARDING },
+      { name: "dashboard", label: "Dashboard", icon: "dashboard",route:ADVERTISER_DASHBOARD },
       { name: "new_hoarding", label: "New Hoarding", icon: "tab",route:ADVERTISER_NEW_HOARDING },
       { name: "hoarding_list", label: "List of Hoarding", icon: "view_list",route:ADVERTISER_HOARDING },
       { name: "new_kiosk", label: "New Kiosk", icon: "smartphone",route:ADVERTISER_NEW_KIOSK },
