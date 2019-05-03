@@ -1,11 +1,11 @@
 import React from "react";
+import axios from 'axios';
 import MUIDataTable from "mui-datatables";
 import Grid from "@material-ui/core/Grid";
 import {withStyles} from "@material-ui/core/styles";
-import axios from "axios";
-import {ApiRoutes} from "../../../../config/ApiRoutes";
 import {Icon, IconButton} from "@material-ui/core";
-import { AdvertiserService } from "../../../../services/AdvertiserService";
+import moment from "moment";
+import {ADVERTISER_NEW_LIST} from '../../../../config/ApiRoutes';
 
 const styles = {
     button: {},
@@ -16,47 +16,37 @@ class AdvertiserNewList extends React.Component {
     state = {
         advertisers: [],
     };
-    advertiserService=new AdvertiserService();
 
     componentDidMount() {
         this.props.doLoad(true);
         this.getData();
     }
 
-    getData () {
-        this.advertiserService.fetch("new",errorMessage=>this.setState({errorMessage}),advertisers=>this.setState({advertisers}))
-          .finally(()=>{
-              this.props.doLoad(false)
-          })
+    getData() {
+        axios.get(ADVERTISER_NEW_LIST)
+            .then(res => {
+                console.log("Return", res)
+                if (res.data.status)
+                    this.setState({advertisers: res.data.data.advertiser_applications});
+                else
+                    console.log('Error', res);
+                this.props.doLoad(false);
+            })
     }
+
+    viewDetails = (id) => {
+        alert('View details: ID = '+ id)
+    };
 
     render() {
         const tableOptions = {
             filterType: "checkbox",
             responsive: "scroll",
-            rowsPerPage: 15,
+            rowsPerPage: 8,
             serverSide: false,
         };
 
         const tableColumns = [
-            {
-                name: "action",
-                label: "ACTION",
-                options: {
-                    filter: false,
-                    sort: false,
-                    customBodyRender: (value, tableMeta, updateValue) => {
-                        return (
-                            <div>
-                                <IconButton color="primary" size="small"
-                                            aria-label="View Details">
-                                    <Icon fontSize="small">remove_red_eye</Icon>
-                                </IconButton>
-                            </div>
-                        );
-                    }
-                }
-            },
             {
                 name: "name",
                 label: "APPLICANT",
@@ -72,7 +62,31 @@ class AdvertiserNewList extends React.Component {
             {
                 name: "created_at",
                 label: "DATE OF APPLICATION",
-            }
+                options: {
+                    filter: false,
+                    customBodyRender: (value) => {
+                        return moment(value).format("Do MMMM YYYY");
+                    }
+                }
+            },
+            {
+                name: "id",
+                label: "ACTION",
+                options: {
+                    filter: false,
+                    sort: false,
+                    customBodyRender: (value, meta) => {
+                        return (
+                            <div>
+                                <IconButton color="primary" size="small"
+                                            aria-label="View Details" onClick={this.viewDetails.bind(this, value)}>
+                                    <Icon fontSize="small">remove_red_eye</Icon>
+                                </IconButton>
+                            </div>
+                        );
+                    }
+                }
+            },
         ];
 
         return (

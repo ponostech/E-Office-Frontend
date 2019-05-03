@@ -1,3 +1,5 @@
+export const ADVERTISER_NEW_LIST = "/staff/advertiser/applications";
+
 export const FILE_TAKE = (id) => {
   return `/file/${id}/take`;
 };
@@ -53,5 +55,4 @@ export class ApiRoutes {
   static FILE="/files";
   static FILE_SEND = '/file/send';
   static FILE_DETAIL="/files";
-
 }
