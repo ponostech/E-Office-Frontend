@@ -62,9 +62,10 @@ export class StaffService {
       if (res.data.status) {
         successCallback(res.data.data.staffs);
       } else {
-        errorCallback("Something went wrong: Please try again");
+        errorCallback(ArrayToString(res.data.messages));
       }
     } catch (e) {
+      console.error(e)
       errorCallback(e.toString());
     }
   }

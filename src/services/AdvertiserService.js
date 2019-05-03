@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
-import { ErrorToString } from "../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 import React from "react";
 
 export class AdvertiserService {
@@ -51,7 +51,7 @@ export class AdvertiserService {
         advertisers = res.data.data.advertiser_applications;
           successCallback(advertisers)
         }else{
-          errorCallback("Something went wrong: Please try again later")
+          errorCallback(ArrayToString(res.data.messages))
         }
       } else {
         const defRes = await axios.get(ApiRoutes.STAFF_ADVERTISER, config);
@@ -59,7 +59,7 @@ export class AdvertiserService {
           advertisers = defRes.data.data.advertiser_applications;
           successCallback(advertisers)
         }else{
-          errorCallback("Something went wrong: Please try again later")
+          errorCallback(ArrayToString(defRes.data.messages))
         }
       }
     } catch (error) {
