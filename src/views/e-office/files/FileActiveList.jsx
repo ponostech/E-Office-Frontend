@@ -69,8 +69,9 @@ class FileActiveList extends Component {
     callFile = (id) => {
         axios.post(FILE_CALL(id))
             .then(res => {
-                // console.log(res.data);
-                window.location.replace(DESK);
+                if (res.data.status)
+                    window.location.replace(DESK);
+                // console.log("res", res.data);
             })
             .catch(err => {
             })
