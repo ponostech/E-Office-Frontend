@@ -49,12 +49,9 @@ import HotelRejectedList from "../views/e-office/applications/hotel/HotelRejecte
 import HotelNewList from "../views/e-office/applications/hotel/HotelNewList";
 
 class LayoutOffice extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false
-        };
-    }
+    state = {
+        loading: false
+    };
 
     doLoad = (val) => {
         this.setState({loading: val});
@@ -62,6 +59,8 @@ class LayoutOffice extends React.Component {
 
     render() {
         const currentUser = JSON.parse(localStorage.getItem('current_user'));
+        // console.log(currentUser);
+
         let test = <Redirect to={OfficeRoutes.ADVERTISER_LOGIN}/>;
         return (
             <Grid container justify={"center"}>
@@ -84,10 +83,14 @@ class LayoutOffice extends React.Component {
                            render={(props) => <FileDetail {...props} doLoad={this.doLoad}/>}/>
                     <Route exact path={OfficeRoutes.CREATED_FILES} component={FileCreatedList}/>
                     <Route exact path={OfficeRoutes.SENT_FILE} component={FileSentList}/>
-                    <Route exact path={OfficeRoutes.FILE_ACTIVE_LIST} render={props => <FileActiveList {...props} doLoad={this.doLoad}/>}/>
-                    <Route exact path={OfficeRoutes.FILE_IN_ACTIVE_LIST} render={props => <FileInActiveList {...props} doLoad={this.doLoad}/>}/>
-                    <Route exact path={OfficeRoutes.FILE_CLOSED_LIST} render={props => <FileClosedList {...props} doLoad={this.doLoad}/>}/>
-                    <Route exact path={OfficeRoutes.FILE_ARCHIVED_LIST} render={props => <FileArchivedList {...props} doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.FILE_ACTIVE_LIST}
+                           render={props => <FileActiveList {...props} doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.FILE_IN_ACTIVE_LIST}
+                           render={props => <FileInActiveList {...props} doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.FILE_CLOSED_LIST}
+                           render={props => <FileClosedList {...props} doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.FILE_ARCHIVED_LIST}
+                           render={props => <FileArchivedList {...props} doLoad={this.doLoad}/>}/>
 
                     {/*OBPAS*/}
                     <Route exact path={OfficeRoutes.OBPAS} component={FileStore}/>
