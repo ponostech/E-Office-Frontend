@@ -3,8 +3,8 @@ import axios from 'axios';
 import {Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import {ApiRoutes} from "../../../config/ApiRoutes";
-import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
+import {ApiRoutes, FILE_TAKE} from "../../../config/ApiRoutes";
+import {DESK, FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
 
 class FileActiveList extends Component {
     state = {
@@ -24,18 +24,42 @@ class FileActiveList extends Component {
         };
         axios.get(ApiRoutes.FILE, config)
             .then(res => {
-                this.setState({tableData: res.data.data.files, loading:false});
+                this.setState({tableData: res.data.data.files, loading: false});
                 this.props.doLoad(false);
             })
             .catch(error => {
                 this.props.doLoad(false);
-                this.setState({error: true, loading:false});
+                this.setState({error: true, loading: false});
             });
     }
 
     viewDetail = (id) => {
         const {history} = this.props;
         history.push(FILE_DETAIL_ROUTE(id));
+    };
+
+    openAssignment = (id) => {
+        this.getFile(id);
+    };
+
+    closeAssignment = () => {
+        this.setState({currentFile: null, openAssignment: false});
+    };
+
+    takeFile = (id) => {
+        axios.post(FILE_TAKE(id))
+            .then(res => {
+                window.location.replace(DESK);
+            })
+            .catch(err => {})
+    };
+
+    getFile = (id) => {
+        axios.get(ApiRoutes.FILE + "/" + id)
+            .then(res => {
+                this.setState({file: res.data.data.files, openAssignment: true});
+            })
+            .catch(err => {})
     };
 
     render() {
@@ -79,10 +103,20 @@ class FileActiveList extends Component {
                     sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
-                            <IconButton color="primary" size="small"
-                                        aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
-                                <Icon fontSize="small">remove_red_eye</Icon>
-                            </IconButton>
+                            <>
+                                <IconButton color="primary" size="small"
+                                            aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
+                                    <Icon fontSize="small">remove_red_eye</Icon>
+                                </IconButton>
+                                <IconButton variant="contained" color="secondary"
+                                            size="small" onClick={this.openAssignment.bind(this, value)}>
+                                    <Icon fontSize="small">send</Icon>
+                                </IconButton>
+                                <IconButton variant="contained" color="primary"
+                                            size="small" onClick={this.takeFile.bind(this, value)}>
+                                    <Icon fontSize="small">desktop_mac</Icon>
+                                </IconButton>
+                            </>
                         );
                     }
                 }
@@ -103,7 +137,7 @@ class FileActiveList extends Component {
                     </>
                 );
             } else {
-                files = <p style={{textAlign:'center', width: '100%', fontSize: 15}}>Something Went Wrong!</p>;
+                files = <p style={{textAlign: 'center', width: '100%', fontSize: 15}}>Something Went Wrong!</p>;
             }
         }
 

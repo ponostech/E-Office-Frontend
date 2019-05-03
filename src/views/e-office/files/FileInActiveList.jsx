@@ -47,7 +47,7 @@ class FileInActiveList extends Component {
     };
 
     closeAssignment = () => {
-        this.setState({currentFile: null, openAssignment: false});
+        this.setState({openAssignment: false});
     };
 
     takeFile = (id) => {
@@ -112,7 +112,6 @@ class FileInActiveList extends Component {
                                             aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
                                     <Icon fontSize="small">remove_red_eye</Icon>
                                 </IconButton>
-
                                 <IconButton variant="contained" color="secondary"
                                             size="small" onClick={this.openAssignment.bind(this, value)}>
                                     <Icon fontSize="small">send</Icon>

@@ -10,6 +10,7 @@ import FormatQuote from "@material-ui/icons/FormatQuote";
 
 import timelineStyle from "../../assets/jss/material-dashboard-pro-react/components/timelineStyle.jsx";
 import Avatar from "@material-ui/core/Avatar";
+import Badge from "../Badge/Badge";
 
 function Timeline({ ...props }) {
   const { classes, stories, simple } = props;
@@ -45,18 +46,15 @@ function Timeline({ ...props }) {
               </div>
             ) : null}
             <div className={panelClasses}>
-              {/*{prop.title ? (
+              {prop.title ? (
                 <div className={classes.timelineHeading}>
                   <Badge color={prop.titleColor} classes={{ badge: classes.timelineTitle }}>{prop.title}</Badge>
                 </div>
-              ) : null}*/}
+              ) : null}
               <div className={classes.testimonialIcon}>
                 <FormatQuote />
               </div>
-                <div className={classes.timelineBody}>{prop.body}</div>
-              {prop.footerTitle ? (
-                <h6 className={classes.footerTitle}>{prop.footerTitle}</h6>
-              ) : null}
+                <div className={classes.timelineBody} dangerouslySetInnerHTML={{__html: prop.body}} />
               {prop.footer ? <hr className={classes.footerLine} /> : null}
               {prop.avatar ? (
                     <Avatar alt="" src={prop.avatar} className={classes.avatar} />
@@ -69,6 +67,9 @@ function Timeline({ ...props }) {
               ) : null}
               {prop.footer ? (
                 <div className={classes.timelineFooter}>{prop.footer}</div>
+              ) : null}
+              {prop.footerTitle ? (
+                  <h6 className={classes.footerTitle}>{prop.footerTitle}</h6>
               ) : null}
             </div>
           </li>
