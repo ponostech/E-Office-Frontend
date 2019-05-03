@@ -3,8 +3,9 @@ import axios from 'axios';
 import {Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import {ApiRoutes, FILE_TAKE, FILE_CALL} from "../../../config/ApiRoutes";
+import {ApiRoutes, FILE_CALL, FILE_TAKE} from "../../../config/ApiRoutes";
 import {DESK, FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
+import moment from "moment";
 
 const currentUser = JSON.parse(localStorage.getItem('current_user'));
 
@@ -26,7 +27,9 @@ class FileActiveList extends Component {
         };
         axios.get(ApiRoutes.FILE, config)
             .then(res => {
-                this.setState({tableData: res.data.data.files, loading: false});
+                console.log(res.data);
+                if (res.data.status)
+                    this.setState({tableData: res.data.data.files, loading: false});
                 this.props.doLoad(false);
             })
             .catch(error => {
@@ -110,12 +113,34 @@ class FileActiveList extends Component {
                 },
             },
             {
+                name: "desk",
+                label: "FILE LOCATION",
+                options: {
+                    customBodyRender: (value, tableMeta, updateValue) => {
+                        let data = "";
+                        if (value.staff)
+                            data = value.staff.name + "\n(" + value.staff.designation + ")";
+                        return data
+                    }
+                },
+            },
+            {
                 name: "created_at",
                 label: "CREATED ON",
+                options: {
+                    filter: false,
+                    customBodyRender: (value, meta, updateValue) => {
+                        return moment(value).format("Do MMMM YYYY");
+                    }
+                }
             },
             {
                 name: "branch",
                 label: "BRANCH",
+                options: {
+                    filter: true,
+                    display: false
+                }
             },
             {
                 name: "id",
@@ -124,8 +149,6 @@ class FileActiveList extends Component {
                     filter: false,
                     sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
-                        // console.log('Table Meta', tableMeta);
-
                         let file_user_id = tableMeta.rowData[0];
                         let button = '';
 

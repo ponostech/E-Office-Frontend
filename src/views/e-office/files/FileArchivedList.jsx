@@ -5,6 +5,7 @@ import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {ApiRoutes} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
+import moment from "moment";
 
 class FileArchivedList extends Component {
     state = {
@@ -66,10 +67,22 @@ class FileArchivedList extends Component {
             {
                 name: "created_at",
                 label: "CREATED ON",
+                options: {
+                    filter: false,
+                    customBodyRender: (value, meta, updateValue) => {
+                        return moment(value).format("Do MMMM YYYY");
+                    }
+                }
             },
             {
                 name: "updated_at",
                 label: "ARCHIVED ON",
+                options: {
+                    filter: false,
+                    customBodyRender: (value, meta, updateValue) => {
+                        return moment(value).format("Do MMMM YYYY");
+                    }
+                }
             },
             {
                 name: "branch",

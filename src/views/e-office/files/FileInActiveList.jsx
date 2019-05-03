@@ -6,6 +6,7 @@ import MUIDataTable from "mui-datatables";
 import {ApiRoutes, FILE_TAKE} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE, DESK} from "../../../config/routes-constant/OfficeRoutes";
 import FileSendDialog from '../../common/SendDialog';
+import moment from "moment";
 
 class FileInActiveList extends Component {
     state = {
@@ -94,6 +95,12 @@ class FileInActiveList extends Component {
             {
                 name: "created_at",
                 label: "CREATED ON",
+                options: {
+                    filter: false,
+                    customBodyRender: (value, meta, updateValue) => {
+                        return moment(value).format("Do MMMM YYYY");
+                    }
+                }
             },
             {
                 name: "branch",
