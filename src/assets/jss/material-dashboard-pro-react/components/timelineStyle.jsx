@@ -225,11 +225,11 @@ const timelineStyle = theme => ({
       width: "40px",
       height: "40px"
     },
-    color: successColor[0]
+    color: grayColor[0]
   },
   avatar: {
     clear: "block",
-    marginTop: "20px"
+    marginTop: "4px"
   },
   timelineFooterText: {
     lineHeight: 1,

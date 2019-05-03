@@ -1,6 +1,9 @@
 export const FILE_TAKE = (id) => {
   return `/file/${id}/take`;
 };
+export const FILE_CALL = (id) => {
+  return `/file/${id}/call`;
+};
 export const FILE_NOTESHEET = (id) => {
   return `/file/${id}/notesheets`;
 };

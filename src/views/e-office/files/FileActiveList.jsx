@@ -3,8 +3,10 @@ import axios from 'axios';
 import {Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import {ApiRoutes, FILE_TAKE} from "../../../config/ApiRoutes";
+import {ApiRoutes, FILE_TAKE, FILE_CALL} from "../../../config/ApiRoutes";
 import {DESK, FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
+
+const currentUser = JSON.parse(localStorage.getItem('current_user'));
 
 class FileActiveList extends Component {
     state = {
@@ -51,7 +53,8 @@ class FileActiveList extends Component {
             .then(res => {
                 window.location.replace(DESK);
             })
-            .catch(err => {})
+            .catch(err => {
+            })
     };
 
     getFile = (id) => {
@@ -59,7 +62,18 @@ class FileActiveList extends Component {
             .then(res => {
                 this.setState({file: res.data.data.files, openAssignment: true});
             })
-            .catch(err => {})
+            .catch(err => {
+            })
+    };
+
+    callFile = (id) => {
+        axios.post(FILE_CALL(id))
+            .then(res => {
+                // console.log(res.data);
+                window.location.replace(DESK);
+            })
+            .catch(err => {
+            })
     };
 
     render() {
@@ -73,6 +87,13 @@ class FileActiveList extends Component {
         };
 
         const tableColumns = [
+            {
+                name: "current_user_id",
+                options: {
+                    display: false,
+                    filter: false
+                },
+            },
             {
                 name: "number",
                 label: "FILE NUMBER",
@@ -102,20 +123,38 @@ class FileActiveList extends Component {
                     filter: false,
                     sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
+                        // console.log('Table Meta', tableMeta);
+
+                        let file_user_id = tableMeta.rowData[0];
+                        let button = '';
+
+                        if (file_user_id === null) {
+                            // In theory: he hi hman a ngai lo
+                            button = <>
+                                <IconButton variant="contained" color="primary" size="small"
+                                            onClick={this.takeFile.bind(this, value)}>
+                                    <Icon fontSize="small">desktop_mac</Icon>
+                                </IconButton>
+                                <IconButton variant="contained" color="secondary" size="small"
+                                            onClick={this.openAssignment.bind(this, value)}>
+                                    <Icon fontSize="small">send</Icon>
+                                </IconButton>
+                            </>;
+                        } else {
+                            if (file_user_id !== currentUser.id) {
+                                button = <IconButton variant="contained" color="primary" size="small"
+                                                     onClick={this.callFile.bind(this, value)}><Icon
+                                    fontSize="small">desktop_windows</Icon></IconButton>;
+                            }
+                        }
+
                         return (
                             <>
                                 <IconButton color="primary" size="small"
                                             aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
                                     <Icon fontSize="small">remove_red_eye</Icon>
                                 </IconButton>
-                                <IconButton variant="contained" color="secondary"
-                                            size="small" onClick={this.openAssignment.bind(this, value)}>
-                                    <Icon fontSize="small">send</Icon>
-                                </IconButton>
-                                <IconButton variant="contained" color="primary"
-                                            size="small" onClick={this.takeFile.bind(this, value)}>
-                                    <Icon fontSize="small">desktop_mac</Icon>
-                                </IconButton>
+                                {button}
                             </>
                         );
                     }
