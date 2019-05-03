@@ -137,6 +137,7 @@ class HoardingList extends Component {
       filterType: "checkbox",
       rowsPerPage: 15,
       serverSide: false,
+      responsive: "scroll",
       customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
         return false;
       },
