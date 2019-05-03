@@ -47,6 +47,9 @@ import HotelUnderProcessList from "../views/e-office/applications/hotel/HotelUnd
 import HotelApprovedList from "../views/e-office/applications/hotel/HotelApprovedList";
 import HotelRejectedList from "../views/e-office/applications/hotel/HotelRejectedList";
 import HotelNewList from "../views/e-office/applications/hotel/HotelNewList";
+import AdvertiserApprovedList from "../views/e-office/applications/advertisers/AdvertiserApprovedList";
+import AdvertiserRejectedList from "../views/e-office/applications/advertisers/AdvertiserRejectedList";
+import AdvertiserCanceledList from "../views/e-office/applications/advertisers/AdvertiserCanceledList";
 
 class LayoutOffice extends React.Component {
     state = {
@@ -101,6 +104,12 @@ class LayoutOffice extends React.Component {
                            render={e => <AdvertiserNewList doLoad={this.doLoad}/>}/>
                     <Route exact path={OfficeRoutes.ADVERTISER_IN_PROCESS_LIST}
                            render={e => <AdvertiserInProcessList doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.ADVERTISER_APPROVE_LIST}
+                           render={e => <AdvertiserApprovedList doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.ADVERTISER_REJECT_LIST}
+                           render={e => <AdvertiserRejectedList doLoad={this.doLoad}/>}/>
+                           <Route exact path={OfficeRoutes.ADVERTISER_CANCEL_LIST}
+                           render={e => <AdvertiserCanceledList doLoad={this.doLoad}/>}/>
 
                     {/*Hoarding*/}
                     <Route exact path={OfficeRoutes.NEW_HOARDINGS}

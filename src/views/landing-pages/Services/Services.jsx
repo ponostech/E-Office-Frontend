@@ -216,7 +216,7 @@ export const CheckLicense = (props) => {
                     <p className={props.classes.cardDescription}>
                     </p>
                     <Button color="primary" round
-                            onClick={props.click(OfficeRoutes.APPLY_ADVERTISER)}>
+                            onClick={props.click(OfficeRoutes.CHECK_LICENSE)}>
                         Check
                     </Button>
                 </CardBody>

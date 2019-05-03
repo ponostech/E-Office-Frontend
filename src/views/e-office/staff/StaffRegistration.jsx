@@ -446,7 +446,7 @@ class StaffRegistration extends Component {
         <SubmitDialog open={this.state.submit} title={StaffViewModel.SUBMIT_TITLE} text={StaffViewModel.PLEASE_WAIT}/>
         <OfficeSnackbar onClose={() => this.setState({ errorMessage: "" })} variant={"error"}
                         open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
-        <OfficeSnackbar onClose={() => this.setState({ errorMessage: "" })} variant={"success"}
+        <OfficeSnackbar onClose={() => this.setState({ successMessage: "" })} variant={"success"}
                         open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
       </GridContainer>
     );
