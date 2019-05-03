@@ -100,4 +100,4 @@ export const ADVERTISER_NEW_LIST = '/e-office/applications/advertiser/new';
 export const ADVERTISER_IN_PROCESS_LIST = '/e-office/applications/advertiser/in-process';
 export const ADVERTISER_REJECT_LIST = '/e-office/applications/advertiser/reject';
 export const ADVERTISER_CANCEL_LIST = '/e-office/applications/advertiser/cancel';
-export const ADVERTISER_APPROVE_LIST = '/e-office/applications/advertiser/cancel';
+export const ADVERTISER_APPROVE_LIST = '/e-office/applications/advertiser/approved';

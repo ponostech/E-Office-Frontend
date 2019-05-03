@@ -14,7 +14,17 @@ import StarBorder from "@material-ui/icons/StarBorder";
 import Assessment from "@material-ui/icons/Assessment";
 import * as OfficeRoute from "../../../config/routes-constant/OfficeRoutes";
 import { LoginService } from "../../../services/LoginService";
-
+import withStyles from "@material-ui/core/es/styles/withStyles";
+const styles = theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+  nested: {
+    paddingLeft: theme.spacing.unit * 4,
+  },
+});
 const menuItems=[
   {
     name:"file",label:"File",menus:[
@@ -69,9 +79,8 @@ class MobileTopMenu extends React.Component {
     const { classes,history,closeDrawer } = this.props;
     return (
       <div>
-        <Typography color={"primary"} variant={"h4"}>Menu</Typography>
-        <List className={classes.list}>
-
+        <Typography style={{paddingBottom:10,paddingTop:10,paddingLeft:50}} color={"default"} variant={"h5"}>E-AMC OFFICE</Typography>
+        <List className={classes.root}>
           <ListItem name={"file"} button onClick={this.handleClick.bind(this,"file")}>
             <ListItemIcon>
               <InboxIcon/>
@@ -80,28 +89,19 @@ class MobileTopMenu extends React.Component {
             {this.state.openFile ? <ExpandLess/> : <ExpandMore/>}
           </ListItem>
           <Collapse in={this.state.openFile} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem className={classes.nested}>
+            <List  disablePadding>
+              <ListItem className={classes.nested} >
                 <NavLink to={OfficeRoute.NEW_FILE}>
-                  <ListItemIcon>
-                    <StarBorder/>
-                  </ListItemIcon>
                   <ListItemText inset primary="New File"/>
                 </NavLink>
               </ListItem>
               <ListItem className={classes.nested}>
                 <NavLink to={OfficeRoute.CREATED_FILES}>
-                  <ListItemIcon>
-                    <StarBorder/>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Created File"/>
+                  <ListItemText inset  primary="Created File"/>
                 </NavLink>
               </ListItem>
               <ListItem className={classes.nested}>
                 <NavLink to={OfficeRoute.FILE_ARCHIVED_LIST}>
-                  <ListItemIcon>
-                    <StarBorder/>
-                  </ListItemIcon>
                   <ListItemText inset primary="Archived"/>
                 </NavLink>
               </ListItem>
@@ -126,4 +126,4 @@ class MobileTopMenu extends React.Component {
   }
 }
 
-export default MobileTopMenu;
+export default withStyles(styles)(MobileTopMenu);

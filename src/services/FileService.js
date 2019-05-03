@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ApiRoutes } from "../config/ApiRoutes";
+import { ApiRoutes, FILE_TAKE } from "../config/ApiRoutes";
 import { FILE_SEND } from "../config/routes-constant/OfficeRoutes";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
@@ -19,6 +19,21 @@ export class FileService {
       console.log(res)
       if (res.data.status) {
         successCallback("File has been moved");
+      } else {
+        errorCallback(ArrayToString(res.data.messages));
+      }
+    } catch (e) {
+      console.error(e);
+      errorCallback(e.toString());
+    }
+
+  }
+  async takeFile(file_id, errorCallback, successCallback) {
+
+    try {
+      let res = await axios.post(FILE_TAKE(file_id) );
+      if (res.data.status) {
+        successCallback("You have taken the file");
       } else {
         errorCallback(ArrayToString(res.data.messages));
       }

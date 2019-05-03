@@ -14,7 +14,7 @@ const styles = {
     actionIcon: {}
 };
 
-class AdvertiserInProcessList extends React.Component {
+class AdvertiserCanceledList extends React.Component {
     state = {
         advertisers: [],
 
@@ -28,7 +28,7 @@ class AdvertiserInProcessList extends React.Component {
     }
 
     getData() {
-        this.advertiserService.fetch(ApplicationState.UNDER_PROCESS_APPLICATION,
+        this.advertiserService.fetch(ApplicationState.CANCELLED_APPLICATION,
           errorMessage=>this.setState({errorMessage}),
            advertisers=>this.setState({advertisers}))
           .finally(()=>this.props.doLoad(false));
@@ -83,7 +83,7 @@ class AdvertiserInProcessList extends React.Component {
             <>
                 <Grid item xs={12}>
                     <MUIDataTable
-                        title={"ADVERTISER: List of In Process Application"}
+                        title={"ADVERTISER: List of Cancelled License"}
                         data={this.state.advertisers}
                         columns={tableColumns}
                         options={tableOptions}
@@ -95,4 +95,4 @@ class AdvertiserInProcessList extends React.Component {
     }
 }
 
-export default withStyles(styles)(AdvertiserInProcessList);
+export default withStyles(styles)(AdvertiserCanceledList);
