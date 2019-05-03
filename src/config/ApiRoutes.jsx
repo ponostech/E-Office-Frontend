@@ -1,6 +1,9 @@
 export const FILE_TAKE = (id) => {
   return `/file/${id}/take`;
 };
+export const FILE_NOTESHEET = (id) => {
+  return `/file/${id}/notesheets`;
+};
 
 export class ApiRoutes {
   static BASE_URL = "http://139.59.26.3/api/v1";

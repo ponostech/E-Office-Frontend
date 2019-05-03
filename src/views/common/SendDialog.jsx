@@ -57,8 +57,8 @@ class SendDialog extends React.Component {
     formatStaff = (staffs) => {
         const user_id = JSON.parse(localStorage.getItem('current_user')).id;
         return staffs.filter(function (obj) {
-            return obj.id !== user_id;
-        })
+                return obj.id !== user_id;
+            })
             .map(obj => {
                 let temp = {};
                 temp['value'] = obj.id;

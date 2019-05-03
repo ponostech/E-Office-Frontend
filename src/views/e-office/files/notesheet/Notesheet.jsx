@@ -1,21 +1,22 @@
 import React, {Component} from "react";
+import axios from 'axios';
+import moment from 'moment';
 import {EventNote} from "@material-ui/icons";
-
 import Timeline from "../../../../components/Timeline/Timeline.jsx";
-import image from "../../../../assets/img/faces/card-profile1-square.jpg";
+import DefaultAvatar from "../../../../assets/img/default-avatar.png";
 import CreateNoteButton from "./NotesheetCreateButton";
 import CreateNoteDialog from "./NoteCreateDialog";
-import {Card, CardHeader} from "@material-ui/core";
-import {NewFileViewModel} from "../../../model/NewFileViewModel";
+import {CardHeader} from "@material-ui/core";
+import {FILE_NOTESHEET} from "../../../../config/ApiRoutes";
 
 const widgetStories = [
     {
-        // First story
         inverted: true,
         badgeColor: "success",
         badgeIcon: EventNote,
-        title: "Written By: Lala, Town Planner",
+        title: "",
         titleColor: "info",
+        avatar: DefaultAvatar,
         body: (
             <>
                 <p>
@@ -26,104 +27,52 @@ const widgetStories = [
                 </p>
             </>
         ),
-        footerTitle: (
-            <div>
-                File Moved to : John Doe, Asst Town Planner on 3rd February, 2019 (Tuesday)
-            </div>
-        ),
         footerName: "Alec Thompson",
         footerDesignation: "Town Planner",
-        avatar: image
+        footerTitle: (
+            <div>
+                Dated: 3rd February, 2019 (Tuesday)
+            </div>
+        )
     },
-    {
-        // Second story
-        inverted: true,
-        badgeColor: "success",
-        badgeIcon: EventNote,
-        title: "Another One",
-        titleColor: "info",
-        body: (
-            <p>
-                Thank God for the support of my wife and real friends. I also wanted to
-                point out that it’s the first album to go number 1 off of streaming!!! I
-                love you Ellen and also my number one design rule of anything I do from
-                shoes to music to homes is that Kim has to like it....
-            </p>
-        ),
-        footerTitle: (
-            <div>
-                File Moved to : John Doe, Asst Town Planner on 3rd February, 2019 (Tuesday)
-            </div>
-        ),
-        footerName: "Alec Thompson",
-        footerDesignation: "Town Planner",
-        avatar: image
-    },
-    {
-        // Third story
-        inverted: true,
-        badgeColor: "success",
-        badgeIcon: EventNote,
-        title: "Another Title",
-        titleColor: "info",
-        body: (
-            <div>
-                <p>
-                    Called I Miss the Old Kanye That’s all it was Kanye And I love you
-                    like Kanye loves Kanye Famous viewing @ Figueroa and 12th in downtown
-                    LA 11:10PM
-                </p>
-                <p>
-                    What if Kanye made a song about Kanye Royère doesn't make a Polar bear
-                    bed but the Polar bear couch is my favorite piece of furniture we own
-                    It wasn’t any Kanyes Set on his goals Kanye
-                </p>
-            </div>
-        ),
-        footerTitle: (
-            <div>
-                File Moved to : John Doe, Asst Town Planner on 3rd February, 2019 (Tuesday)
-            </div>
-        ),
-        footerName: "Alec Thompson",
-        footerDesignation: "Town Planner",
-        avatar: image
-    },
-    {
-        // Third story
-        inverted: true,
-        badgeColor: "success",
-        badgeIcon: EventNote,
-        title: "Another Title",
-        titleColor: "info",
-        body: (
-            <div>
-                <p>
-                    Called I Miss the Old Kanye That’s all it was Kanye And I love you
-                    like Kanye loves Kanye Famous viewing @ Figueroa and 12th in downtown
-                    LA 11:10PM
-                </p>
-                <p>
-                    What if Kanye made a song about Kanye Royère doesn't make a Polar bear
-                    bed but the Polar bear couch is my favorite piece of furniture we own
-                    It wasn’t any Kanyes Set on his goals Kanye
-                </p>
-            </div>
-        ),
-        footerTitle: (
-            <div>
-                File Moved to : John Doe, Asst Town Planner on 3rd February, 2019 (Tuesday)
-            </div>
-        ),
-        footerName: "Alec Thompson",
-        footerDesignation: "Town Planner",
-        avatar: image
-    }
 ];
 
 class Notesheets extends Component {
     state = {
+        note: [],
         openDialog: false
+    };
+
+    componentDidMount() {
+        axios.get(FILE_NOTESHEET(this.props.file.id))
+            .then(res => {
+                console.log('Note:', res.data);
+                let noteSheet = res.data;
+                if(noteSheet.status) {
+                    this.formatNote(noteSheet.data.notesheets);
+                } else {
+                    console.log("Fail: ", noteSheet)
+                }
+            });
+    }
+
+    formatNote = (note) => {
+        let formattedNote = note.map(data => {
+            let temp = {};
+            temp['inverted'] = true;
+            temp['badgeColor'] = 'success';
+            temp['badgeIcon'] = EventNote;
+            temp['title'] = data.action;
+            temp['titleColor'] = 'success';
+            temp['avatar'] = data.staff.photo ? data.staff.photo : DefaultAvatar;
+            temp['body'] = data.content;
+            temp['footerName'] = data.staff.staff.name;
+            temp['footerDesignation'] = data.staff.staff.designation;
+            temp['footerTitle'] = "Dated: " + moment(data.created_at).format("Do MMMM YYYY \(dddd\)");
+            return temp;
+        });
+        this.setState({note: formattedNote});
+        console.log('format:', formattedNote);
     };
 
     handleOpenCreateNote = () => {
@@ -139,7 +88,7 @@ class Notesheets extends Component {
                 <>
                     <CardHeader title={"File No.: " + this.props.file.number} subheader={"Subject: " + this.props.file.subject}/>
                     <CreateNoteButton click={this.handleOpenCreateNote} />
-                    <Timeline simple stories={widgetStories} />
+                    <Timeline simple stories={this.state.note} />
                     <CreateNoteButton click={this.handleOpenCreateNote} />
                     <CreateNoteDialog {...this.props} open={this.state.openDialog} close={this.handleCloseCreateNote}/>
                 </>
