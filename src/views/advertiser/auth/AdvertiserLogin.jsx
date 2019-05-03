@@ -33,6 +33,7 @@ class AdvertiserLogin extends Component {
       emailError: "",
       passwordError: "",
 
+      prestine:true,
       submit: false,
       errorMessage: ""
     };
@@ -51,7 +52,18 @@ class AdvertiserLogin extends Component {
     const { name, value } = e.target;
     switch (name) {
       case "email":
-        value.length === 0 ? this.setState({ emailError: "Email or Phone number is required" }) : this.setState({ emailError: "" });
+        if (value.match(/^\d/)) {
+          !value.match(Validators.PHONE_REGEX) ? this.setState({ emailError: "Phone number must be 10 digit number" }) : this.setState({ emailError: "" });
+        } else {
+          if (value.length === 0) {
+            this.setState({emailError:"Email/Phone No is required"})
+          }
+          else if (!value.match(Validators.EMAIL_REGEX)) {
+            this.setState({emailError:"Invalid Email address"})
+          }else {
+            this.setState({emailError:""})
+          }
+        }
         break;
       case "password":
         value.length === 0 ? this.setState({ passwordError: "Password is required" }) : this.setState({ passwordError: "" });
@@ -63,7 +75,8 @@ class AdvertiserLogin extends Component {
   handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({
-      [name]: value
+      [name]: value,
+      prestine:false
     });
 
     switch (name) {
@@ -90,7 +103,7 @@ class AdvertiserLogin extends Component {
     const invalid = Boolean(this.state.emailError) || Boolean(this.state.passwordError);
     const { email, password } = this.state;
 
-    if (invalid) {
+    if (invalid || this.state.prestine) {
       this.setState({ errorMessage: "Email and Password fields are required" });
       return;
     }

@@ -14,6 +14,8 @@ import KioskApplicationForm from "../views/advertiser/kiosk/form/KioskApplicatio
 import IdleTimer from "react-idle-timer";
 import { ApiRoutes } from "../config/ApiRoutes";
 import axios from "axios";
+import { LoginService } from "../services/LoginService";
+import AdvertiserDashboard from "../views/advertiser/AdvertiserDashboard";
 
 
 const style = {
@@ -32,6 +34,7 @@ class LayoutAdvertiser extends Component {
     this.state = {
       loading: false
     };
+    this.loginService=new LoginService();
 
     this.doLoad = this.doLoad.bind(this);
     this.idleTimer = null;
@@ -56,17 +59,11 @@ class LayoutAdvertiser extends Component {
   onIdle(e) {
     console.log("last active", this.idleTimer.getLastActiveTime());
     const { history } = this.props;
-    const token = localStorage.getItem("access_token");
-    const config = { headers: { "Authorization": `Bearer ${token}` } };
-    axios.post(ApiRoutes.LOGOUT_ROUTE, {}, config)
-      .then(res => {
-        if (res.data.status) {
-          history.push(OfficeRoutes.LOGIN);
-        }
+
+    this.loginService.logout(errorMessage=>console.log(errorMessage),
+      success=>{
+      history.push(OfficeRoutes.LOGIN)
       })
-      .catch(err => {
-        console.log(err);
-      });
   }
 
   render() {
@@ -94,6 +91,10 @@ class LayoutAdvertiser extends Component {
           <GridItem style={{ marginTop: 70 }} xs={12} sm={12} md={12}>
             <GridContainer justify={"center"}>
 
+              <Route exact path={OfficeRoutes.ADVERTISER_DASHBOARD}
+                     render={(e) => {
+                       return <AdvertiserDashboard doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
+                     }}/>
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING}
                      render={(e) => {
                        return <HoardingApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
