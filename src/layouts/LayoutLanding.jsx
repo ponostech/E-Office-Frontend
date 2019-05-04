@@ -10,7 +10,7 @@ import Footer from "../components/Footer/Footer.jsx";
 import HomePage from "../views/landing-pages/HomePage";
 import ShopApplication from "../views/shop/ShopApplication";
 import BannerApplicationForm from "../views/banner/BannerApplication";
-import AdvertiserLogin from "../views/advertiser/auth/AdvertiserLogin";
+import AdvertiserLogin from "../views/common/LoginView";
 import AdvertiserApplication from "../views/advertiser/AdvertiserApplication";
 import ShopRenewal from "../views/shop/ShopRenewal";
 import HotelApplication from "../views/hotel/HotelApplication";
