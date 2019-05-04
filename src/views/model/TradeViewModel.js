@@ -4,6 +4,7 @@ export class TradeViewModel {
 
   static REQUIRED_NAME = " Trade Name is required";
   static REQUIRED_RATE = " Rate of trade is required";
+  static RATE = " Rate of trade";
   static REQUIRED_FLA = " Whether Food License Authority License is required?";
   static FLA_TYPE = " Whether License from Food License Authority  is required?";
 

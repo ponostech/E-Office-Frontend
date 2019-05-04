@@ -29,7 +29,7 @@ export class TradeService {
     let data = {
       name: state.name,
       rate: state.rate,
-      fla: state.fla,
+      fla: state.fla.value,
     };
     try {
       let res = await axios.post(ApiRoutes.CREATE_TRADE, data);
@@ -41,6 +41,21 @@ export class TradeService {
         errorCallback(ErrorToString(res.data.messages));
       }
     } catch (e) {
+      errorCallback(e.toString());
+    }
+  }
+  async fetch(errorCallback, successCallback) {
+    // const token = localStorage.getItem("access_token");
+    // const config={ headers: {"Authorization" : `Bearer ${token}`} }
+    try {
+      const res = await axios.get(ApiRoutes.GET_TRADE);
+      if (res.data.status) {
+        successCallback(res.data.data.trades);
+      } else {
+        errorCallback(ArrayToString(res.data.messages));
+      }
+    } catch (e) {
+      console.error(e)
       errorCallback(e.toString());
     }
   }

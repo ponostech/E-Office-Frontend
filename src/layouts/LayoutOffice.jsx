@@ -24,7 +24,7 @@ import FileArchivedList from "../views/e-office/files/FileArchivedList";
 import HoardingDetails from "../views/e-office/applications/hoarding/HoardingDetails";
 import AdvertiserDetails from "../views/e-office/applications/advertisers/AdvertiserDetails";
 import DeskView from "../views/e-office/desk/DeskView";
-import TradeStore from "../views/e-office/admin/NewTrade";
+import TradeStore from "../views/e-office/admin/TradeNew";
 import UnderProcessHoarding from "../views/e-office/applications/hoarding/HoardingUnderProcessList";
 import RejectedHoardingApplications from "../views/e-office/applications/hoarding/HoardingRejectedList";
 import ApprovedHoarding from "../views/e-office/applications/hoarding/HoardingApprovedList";
@@ -50,7 +50,8 @@ import HotelNewList from "../views/e-office/applications/hotel/HotelNewList";
 import AdvertiserApprovedList from "../views/e-office/applications/advertisers/AdvertiserApprovedList";
 import AdvertiserRejectedList from "../views/e-office/applications/advertisers/AdvertiserRejectedList";
 import AdvertiserCanceledList from "../views/e-office/applications/advertisers/AdvertiserCanceledList";
-import NewTrade from "../views/e-office/admin/NewTrade";
+import TradeNew from "../views/e-office/admin/TradeNew";
+import TradeList from "../views/e-office/admin/TradeList";
 class LayoutOffice extends React.Component {
     state = {
         loading: false
@@ -163,8 +164,11 @@ class LayoutOffice extends React.Component {
                     <Route exact path={OfficeRoutes.REJECTED_HOTELLICENSE}
                            render={e => <HotelRejectedList doLoad={this.doLoad}/>}/>
                     {/*Admin*/}
-                    <Route exact path={OfficeRoutes.NEW_TRADE}
-                           render={e => <NewTrade doLoad={this.doLoad}/>}/>
+                    <Route exact path={OfficeRoutes.TRADE_NEW}
+                           render={e => <TradeNew doLoad={this.doLoad}/>}/>
+                    {/*Admin*/}
+                    <Route exact path={OfficeRoutes.TRADE_LIST}
+                           render={e => <TradeList doLoad={this.doLoad}/>}/>
                     <Route exact path={OfficeRoutes.STAFF_REGISTRATION}
                            render={e => <StaffRegistration doLoad={this.doLoad}/>}/>
                     <Route exact path={OfficeRoutes.STAFF_LIST}
