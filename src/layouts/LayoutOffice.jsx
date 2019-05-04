@@ -24,7 +24,7 @@ import FileArchivedList from "../views/e-office/files/FileArchivedList";
 import HoardingDetails from "../views/e-office/applications/hoarding/HoardingDetails";
 import AdvertiserDetails from "../views/e-office/applications/advertisers/AdvertiserDetails";
 import DeskView from "../views/e-office/desk/DeskView";
-import TradeStore from "../views/e-office/admin/TradeStore";
+import TradeStore from "../views/e-office/admin/NewTrade";
 import UnderProcessHoarding from "../views/e-office/applications/hoarding/HoardingUnderProcessList";
 import RejectedHoardingApplications from "../views/e-office/applications/hoarding/HoardingRejectedList";
 import ApprovedHoarding from "../views/e-office/applications/hoarding/HoardingApprovedList";
@@ -50,7 +50,7 @@ import HotelNewList from "../views/e-office/applications/hotel/HotelNewList";
 import AdvertiserApprovedList from "../views/e-office/applications/advertisers/AdvertiserApprovedList";
 import AdvertiserRejectedList from "../views/e-office/applications/advertisers/AdvertiserRejectedList";
 import AdvertiserCanceledList from "../views/e-office/applications/advertisers/AdvertiserCanceledList";
-
+import NewTrade from "../views/e-office/admin/NewTrade";
 class LayoutOffice extends React.Component {
     state = {
         loading: false
@@ -164,7 +164,7 @@ class LayoutOffice extends React.Component {
                            render={e => <HotelRejectedList doLoad={this.doLoad}/>}/>
                     {/*Admin*/}
                     <Route exact path={OfficeRoutes.NEW_TRADE}
-                           component={TradeStore}/>
+                           render={e => <NewTrade doLoad={this.doLoad}/>}/>
                     <Route exact path={OfficeRoutes.STAFF_REGISTRATION}
                            render={e => <StaffRegistration doLoad={this.doLoad}/>}/>
                     <Route exact path={OfficeRoutes.STAFF_LIST}
