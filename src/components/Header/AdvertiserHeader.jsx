@@ -11,7 +11,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 // @material-ui/icons
 import UserIcon from "@material-ui/icons/AccountCircleRounded";
-import HomeIcon from "@material-ui/icons/Home";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingIcon from "@material-ui/icons/Settings";
 // core components
@@ -91,8 +91,8 @@ class AdvertiserHeader extends React.Component {
         <div style={{ display: "flex", alignItems: "center" }}>
 
 
-          <IconButton style={{ marginLeft: 20 }}>
-            <HomeIcon/>
+          <IconButton onClick={e=>history.push(ADVERTISER_DASHBOARD)} style={{ marginLeft: 20 }}>
+            <DashboardIcon/>
           </IconButton>
 
           <CustomDropdown
