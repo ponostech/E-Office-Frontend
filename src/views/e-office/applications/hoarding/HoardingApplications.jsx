@@ -75,14 +75,14 @@ class HoardingApplications extends React.Component {
   };
 
   takeFile = (data) => {
-    this.setState({ openTakeFile: true, fileDetail: data.file });
+    this.setState({ openTakeFile: true, file: data.file });
   };
   confirmTake = (e) => {
     const { history } = this.props;
-    const { fileDetail } = this.state;
+    const { file } = this.state;
 
     this.setState({ submit: true, openTakeFile: false });
-    this.fileService.takeFile(fileDetail.id, errorMessage => this.setState({ errorMessage }),
+    this.fileService.takeFile(file.id, errorMessage => this.setState({ errorMessage }),
       takeMessage => {
         this.setState({ takeMessage, submit: false });
         timeout = setTimeout(function(handler) {
@@ -138,7 +138,7 @@ class HoardingApplications extends React.Component {
                 </Tooltip>
                 <Tooltip title={"Click here to assign this file to staff"}>
                   <IconButton variant="contained" color="secondary"
-                              size="small" onClick={e => this.setState({ file:application.file })}>
+                              size="small" onClick={e => this.setState({ file:application.file,openAssignment:true })}>
                     <Icon fontSize="small">send</Icon>
                   </IconButton>
                 </Tooltip>
@@ -228,7 +228,7 @@ class HoardingApplications extends React.Component {
         />
 
         {/*<HoardingApplicationDialog open={Boolean(this.state.hoarding)} onClose={()=>this.setState({hoarding:null})} application={this.state.hoarding} />*/}
-        <SendDialog open={Boolean(this.state.file)} close={() => this.setState({ file: null })}
+        <SendDialog open={this.state.openAssignment} close={() => this.setState({ file: null,openAssignment:false })}
                     file={this.state.file}/>
 
         <SubmitDialog open={this.state.submit} text={"File is taking ..."} title={"File Endorsement"}/>
