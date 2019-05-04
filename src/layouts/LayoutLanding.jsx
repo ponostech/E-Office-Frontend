@@ -34,7 +34,7 @@ class LayoutLanding extends React.Component {
 
     render() {
         const {classes, ...rest} = this.props;
-        {LoginService.isStaff() ? window.location.replace(DESK) : window.location.replace(ADVERTISER_DASHBOARD)}
+        // {LoginService.isStaff() ? window.location.replace(DESK) : null}
 
         return (
             <div className={classes.wrapper}>
