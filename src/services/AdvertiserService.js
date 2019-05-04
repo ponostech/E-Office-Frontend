@@ -47,6 +47,7 @@ export class AdvertiserService {
             status
           }
         }, config);
+        //
         if (res.data.status) {
         advertisers = res.data.data.advertiser_applications;
           successCallback(advertisers)
