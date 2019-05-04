@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import GridContainer from "../../../components/Grid/GridContainer";
-import GridItem from "../../../components/Grid/GridItem";
+import GridContainer from "../../components/Grid/GridContainer";
+import GridItem from "../../components/Grid/GridItem";
 import { Button, Divider, IconButton, InputAdornment, TextField, Typography } from "@material-ui/core";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { withRouter } from "react-router-dom";
-import Card from "../../../components/Card/Card";
+import Card from "../../components/Card/Card";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import EmailIcon from "@material-ui/icons/Mail";
 import LockIcon from "@material-ui/icons/Lock";
-import OfficeSnackbar from "../../../components/OfficeSnackbar";
-import { Validators } from "../../../utils/Validators";
-import { authContext } from "../../../context/AuthContext";
-import { LoginService } from "../../../services/LoginService";
+import OfficeSnackbar from "../../components/OfficeSnackbar";
+import { Validators } from "../../utils/Validators";
+import { authContext } from "../../context/AuthContext";
+import { LoginService } from "../../services/LoginService";
 
 const style = {
   root: {
@@ -20,7 +20,7 @@ const style = {
   }
 };
 
-class AdvertiserLogin extends Component {
+class LoginView extends Component {
   loginService = new LoginService();
 
   constructor(props) {
@@ -112,10 +112,9 @@ class AdvertiserLogin extends Component {
     this.loginService.login({ email, password }, errorMessage => this.setState({ errorMessage }),
       res => {
         const { access_token, redirect_url } = res.data;
-
         localStorage.setItem("access_token", access_token);
         localStorage.setItem("current_user", JSON.stringify(res.data.data.user));
-        res.data.data.user.staff ? window.location.replace("/e-office/desk") : window.location.replace(redirect_url);
+        window.location.replace(redirect_url);
       })
       .finally(() => this.setState({ submit: false }));
   };
@@ -200,5 +199,5 @@ class AdvertiserLogin extends Component {
   }
 }
 
-AdvertiserLogin.contextType = authContext;
-export default withStyles(style)(withRouter(AdvertiserLogin));
+LoginView.contextType = authContext;
+export default withStyles(style)(withRouter(LoginView));
