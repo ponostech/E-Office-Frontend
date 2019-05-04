@@ -81,7 +81,7 @@ class LayoutAdvertiser extends Component {
           onIdle={this.onIdle}
           onAction={this.onAction}
           debounce={250}
-          timeout={1000 * 60 * 2}/>
+          timeout={1000 * 60 * 15}/>
         {/* your app here */}
 
         <GridContainer justify={"center"} className={classes.container}>

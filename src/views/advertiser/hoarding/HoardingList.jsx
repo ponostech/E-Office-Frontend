@@ -2,24 +2,20 @@ import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
-import HoardingDetailDialog from "./HoardingDetailDialog";
-import ApplyHoardingDialog from "./form/ApplyHoardingDialog";
 import { HoardingService } from "../../../services/HoardingService";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { Chip, IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
 import ApplicationState from "../../../utils/ApplicationState";
-import { LoginService } from "../../../services/LoginService";
+import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 
 class HoardingList extends Component {
   hoardingService = new HoardingService();
-  loginService = new LoginService();
   state = {
-    hoarding: {},
+    hoarding: null,
     hoardings: [],
     openDetail: false,
-    openApply: false,
     errorMessage: ""
   };
 
@@ -103,7 +99,7 @@ class HoardingList extends Component {
         options: {
           customBodyRender: (hoarding, tableMeta, updateValue) => {
             const { rowIndex } = tableMeta;
-            const data = this.state.hoardings[rowIndex];
+            const file = this.state.hoardings[rowIndex];
             // switch (data.status) {
             //   case ApplicationState.NEW_APPLICATION:
             //     viewBtn=undefined
@@ -120,7 +116,8 @@ class HoardingList extends Component {
             let viewBtn = (
               <Tooltip title={"Click here to view details"}>
                 <IconButton onClick={(e) => {
-                  this.setState({ hoarding, openDetail: true });
+                  this.setState({ hoarding: file });
+                  this.setState({ openDetail: true });
                 }}>
                   <EyeIcon/>
                 </IconButton>
@@ -154,10 +151,8 @@ class HoardingList extends Component {
             columns={tableColumns}
             options={tableOptions}
           />
-          <ApplyHoardingDialog open={this.state.openApply} onClose={(e) => this.setState({ openApply: false })}/>
-          <HoardingDetailDialog
-            hoarding={this.state.hoarding}
-            open={this.state.openDetail} onClose={(e) => this.setState({ openDetail: false })}/>
+          <HoardingApplicationDialog open={Boolean(this.state.hoarding)} application={this.state.hoarding}
+                                     onClose={e => this.setState({ hoarding: null })}/>
           <OfficeSnackbar open={Boolean(this.state.errorMessage)} onClose={() => this.setState({ errorMessage: "" })}
                           variant={"error"} message={this.state.errorMessage}/>
         </Grid>
