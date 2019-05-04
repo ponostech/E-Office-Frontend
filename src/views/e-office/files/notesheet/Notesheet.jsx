@@ -7,6 +7,7 @@ import Timeline from "../../../../components/Timeline/Timeline.jsx";
 import DefaultAvatar from "../../../../assets/img/default-avatar.png";
 import CreateNoteButton from "./NotesheetCreateButton";
 import CreateNoteDialog from "./NoteCreateDialog";
+import Loading from "../../../common/LoadingView"
 import {FILE_NOTESHEET} from "../../../../config/ApiRoutes";
 
 class Notesheets extends Component {
@@ -19,8 +20,9 @@ class Notesheets extends Component {
     componentDidMount() {
         axios.get(FILE_NOTESHEET(this.props.file.id))
             .then(res => {
+                console.log('fire return', res);
                 let noteSheet = res.data;
-                if(noteSheet.status) {
+                if (noteSheet.status) {
                     this.formatNote(noteSheet.data.notesheets);
                     this.setState({loading: false});
                 } else {
@@ -57,18 +59,26 @@ class Notesheets extends Component {
     };
 
     render() {
+        let timeline = <Loading/>;
+        if (!this.state.loading)
+            if (this.state.note.length)
+                timeline = <Timeline simple stories={this.state.note}/>;
+            else
+                timeline = <ul><li>New File. Note not available.</li></ul>;
+
         return (
-                <>
-                    <CardHeader title={"File No.: " + this.props.file.number} subheader={"Subject: " + this.props.file.subject}/>
-                    <Divider/>
-                    <br/>
-                    <CreateNoteButton click={this.handleOpenCreateNote} />
-                    <Timeline simple stories={this.state.note} />
-                    <CreateNoteButton click={this.handleOpenCreateNote} />
-                    <CreateNoteDialog {...this.props} open={this.state.openDialog} close={this.handleCloseCreateNote}/>
-                </>
+            <>
+                <CardHeader title={"File No.: " + this.props.file.number}
+                            subheader={"Subject: " + this.props.file.subject}/>
+                <Divider/>
+                <br/>
+                <CreateNoteButton click={this.handleOpenCreateNote}/>
+                {timeline}
+                <CreateNoteButton click={this.handleOpenCreateNote}/>
+                <CreateNoteDialog {...this.props} open={this.state.openDialog} close={this.handleCloseCreateNote}/>
+            </>
         )
     };
-};
+}
 
 export default Notesheets;

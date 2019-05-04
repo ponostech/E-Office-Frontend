@@ -10,6 +10,8 @@ import {StaffRoute} from "./routes/StaffRoute";
 import OfficeDashboard from "./layouts/LayoutOffice";
 import LandingPage from "./layouts/LayoutLanding";
 import {AdvertiserRoute} from "./routes/AdvertiserRoute";
+import {LoginService} from "./services/LoginService";
+import {ADVERTISER_DASHBOARD, DESK} from "./config/routes-constant/OfficeRoutes";
 
 axios.defaults.baseURL = ApiRoutes.BASE_URL;
 axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
@@ -52,8 +54,8 @@ class App extends Component {
                     <Switch>
                         <AdvertiserRoute path={"/dashboard/advertiser"} component={AdvertiserDashboard}/>
                         <StaffRoute path={"/e-office"}  component={OfficeDashboard}/>
-                        {/*<Route path={"/dashboard/advertiser"} render={(e) => <AdvertiserDashboard setUser={this.setUser.bind(this)} currentUser={this.state.currentUser}/>}/>*/}
                         <Route path={"/"} render={(e) => <LandingPage/>}/>
+                        {/*<Route path={"/dashboard/advertiser"} render={(e) => <AdvertiserDashboard setUser={this.setUser.bind(this)} currentUser={this.state.currentUser}/>}/>*/}
                     </Switch>
                 </Router>
             </Provider>

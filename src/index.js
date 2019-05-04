@@ -6,6 +6,8 @@ import {MuiThemeProvider} from "@material-ui/core/styles";
 import theme from "./assets/office/theme";
 import App from "./App";
 import {ApiRoutes} from "./config/ApiRoutes";
+import {LoginService} from "./services/LoginService";
+import {ADVERTISER_DASHBOARD, DESK} from "./config/routes-constant/OfficeRoutes";
 
 // import {Route, Router, Switch} from "react-router-dom";
 // import indexRoutes from "routes/index.jsx";
@@ -29,7 +31,6 @@ if (token) {
         "Authorization": `Bearer ${token}`
     };
 }
-
 ReactDOM.render(
     <MuiThemeProvider theme={theme}>
         {/*<Router history={hist}>*/}

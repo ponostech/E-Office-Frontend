@@ -88,6 +88,7 @@ class SendDialog extends React.Component {
     };
 
     render() {
+        console.log("File",this.props.file);
         const {classes} = this.props;
         return (
             <Dialog
@@ -131,7 +132,7 @@ class SendDialog extends React.Component {
                         </Grid>
                     </ListItem>
                     <ListItem button>
-                        <ListItemText primary="Computer File. No." secondary={this.props.file.id} />
+                        <ListItemText primary="Computer File. No." secondary={this.props.file.id ? this.props.file.id : null} />
                     </ListItem>
                     <ListItem button>
                         <ListItemText primary="File No." secondary={this.props.file.number} />
