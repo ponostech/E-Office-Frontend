@@ -15,14 +15,14 @@ import AdvertiserApplication from "../views/advertiser/AdvertiserApplication";
 import ShopRenewal from "../views/shop/ShopRenewal";
 import HotelApplication from "../views/hotel/HotelApplication";
 import CheckLicense from "../views/landing-pages/license-checking/CheckLicense";
+import {LoginService} from "../services/LoginService";
+import {DESK} from "../config/routes-constant/OfficeRoutes";
+import {ADVERTISER_DASHBOARD} from "../config/routes-constant/OfficeRoutes";
 
 class LayoutLanding extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false
-        }
-    }
+    state = {
+        loading: false
+    };
 
     doLoad = () => {
         this.setState({loading: true})
@@ -34,6 +34,8 @@ class LayoutLanding extends React.Component {
 
     render() {
         const {classes, ...rest} = this.props;
+        {LoginService.isStaff() ? window.location.replace(DESK) : window.location.replace(ADVERTISER_DASHBOARD)}
+
         return (
             <div className={classes.wrapper}>
                 <AuthNavbar loading={this.state.loading} color={"primary"} brandText="AIZAWL MUNICIPAL CORP0RATION"
@@ -44,17 +46,17 @@ class LayoutLanding extends React.Component {
                             <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
 
                             <Route exact={true} path={OfficeRoutes.APPLY_HOTEL_LICENSE}
-                                render={() => <HotelApplication doLoad={this.doLoad.bind(this)}
-                                                                              doLoadFinish={this.doLoadFinish.bind(this)}/>}/>
+                                   render={() => <HotelApplication doLoad={this.doLoad.bind(this)}
+                                                                   doLoadFinish={this.doLoadFinish.bind(this)}/>}/>
                             <Route exact={true} path={OfficeRoutes.RENEW_SHOP_LICENSE}
                                    component={ShopRenewal}/>
                             <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE}
-                                render={() => <ShopApplication doLoad={this.doLoad.bind(this)}
+                                   render={() => <ShopApplication doLoad={this.doLoad.bind(this)}
                                                                   doLoadFinish={this.doLoadFinish.bind(this)}/>}/>
                             <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER}
                                    render={(e) => {
                                        return <AdvertiserApplication doLoad={this.doLoad.bind(this)}
-                                                               doLoadFinish={this.doLoadFinish.bind(this)}/>
+                                                                     doLoadFinish={this.doLoadFinish.bind(this)}/>
                                    }}
                             />
                             <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} render={() => <AdvertiserLogin/>}/>
@@ -76,6 +78,5 @@ class LayoutLanding extends React.Component {
     }
 
 }
-
 
 export default withStyles(pagesStyle)(LayoutLanding);

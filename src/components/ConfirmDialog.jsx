@@ -12,11 +12,11 @@ import PropTypes from "prop-types";
 class ConfirmDialog extends Component {
 
 
-    handleClick = (e) => {
+    handleClick = (name) => {
         const {onConfirm, onCancel} = this.props;
-        if (e.target.name === "confirm") {
+        if (name === "confirm") {
             onConfirm();
-        } else {
+        } else if (name === 'cancel'){
             onCancel()
         }
     };
@@ -36,9 +36,9 @@ class ConfirmDialog extends Component {
                 </DialogContent>
                 <DialogActions>
                     <Button name={"confirm"} variant={"outlined"} color={"primary"}
-                            onClick={this.handleClick.bind(this)}> {primaryButtonText}</Button>
+                            onClick={this.handleClick.bind(this, 'confirm')}> {primaryButtonText}</Button>
                     <Button name={"cancel"} variant={"outlined"} color={"secondary"}
-                            onClick={this.handleClick.bind(this)}> {secondaryButtonText}</Button>
+                            onClick={this.handleClick.bind(this, 'cancel')}> {secondaryButtonText}</Button>
                 </DialogActions>
             </Dialog>
         );

@@ -116,6 +116,7 @@ class SendDialog extends React.Component {
       )
     }
     render() {
+        console.log("File",this.props.file);
         const {classes} = this.props;
         let self=this;
         return (
@@ -159,6 +160,7 @@ class SendDialog extends React.Component {
                             </Grid>
                         </Grid>
                     </ListItem>
+
                   {
                     self.props.file?self.getFileDetail():""
                   }

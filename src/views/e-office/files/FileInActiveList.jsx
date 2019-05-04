@@ -7,11 +7,13 @@ import {ApiRoutes, FILE_TAKE} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE, DESK} from "../../../config/routes-constant/OfficeRoutes";
 import FileSendDialog from '../../common/SendDialog';
 import moment from "moment";
+import ConfirmDialog from "../../../components/ConfirmDialog";
 
 class FileInActiveList extends Component {
     state = {
         tableData: [],
         openAssignment: false,
+        openTakeFile: false,
         id: '',
         loading: true,
         file: [],
@@ -43,28 +45,24 @@ class FileInActiveList extends Component {
         history.push(FILE_DETAIL_ROUTE(id));
     };
 
-    openAssignment = (id) => {
-        this.getFile(id);
+    openAssignment = (data) => {
+        this.setState({file: data, openAssignment: true})
     };
 
     closeAssignment = () => {
         this.setState({openAssignment: false});
     };
 
-    takeFile = (id) => {
-        axios.post(FILE_TAKE(id))
-            .then(res => {
-                window.location.replace(DESK);
-            })
-            .catch(err => {})
+    takeFile = (data) => {
+        this.setState({file: data, openTakeFile: true})
     };
 
-    getFile = (id) => {
-        axios.get(ApiRoutes.FILE + "/" + id)
+    confirmTakeFile = () => {
+        axios.post(FILE_TAKE(this.state.file.id))
             .then(res => {
-                this.setState({file: res.data.data.files, openAssignment: true});
+                this.setState({openTakeFile: false});
+                window.location.replace(DESK);
             })
-            .catch(err => {})
     };
 
     render() {
@@ -113,6 +111,8 @@ class FileInActiveList extends Component {
                     filter: false,
                     sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
+                        let {rowIndex} = tableMeta;
+                        let data = this.state.tableData[rowIndex];
                         return (
                             <>
                                 <IconButton color="primary" size="small"
@@ -120,11 +120,11 @@ class FileInActiveList extends Component {
                                     <Icon fontSize="small">remove_red_eye</Icon>
                                 </IconButton>
                                 <IconButton variant="contained" color="secondary"
-                                            size="small" onClick={this.openAssignment.bind(this, value)}>
+                                            size="small" onClick={this.openAssignment.bind(this, data)}>
                                     <Icon fontSize="small">send</Icon>
                                 </IconButton>
                                 <IconButton variant="contained" color="primary"
-                                            size="small" onClick={this.takeFile.bind(this, value)}>
+                                            size="small" onClick={this.takeFile.bind(this, data)}>
                                     <Icon fontSize="small">desktop_mac</Icon>
                                 </IconButton>
                             </>
@@ -158,6 +158,10 @@ class FileInActiveList extends Component {
                 {files}
                 <FileSendDialog open={this.state.openAssignment} close={this.closeAssignment} file={this.state.file}
                                 props={this.props}/>
+
+                <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to call this file?"}
+                               onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
+                               onConfirm={this.confirmTakeFile.bind(this)}/>
             </>
         )
     }

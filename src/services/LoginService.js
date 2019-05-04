@@ -1,11 +1,18 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
-import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
+// import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
 export class LoginService {
+  static  user = JSON.parse(localStorage.getItem('current_user'));
+  static isStaff() {
+    return !!this.user.staff;
+  }
+  static getRole() {
+    return this.user.roles[0].slug;
+  }
   static hasRole(roleName) {
     let userData=localStorage.getItem("current_user");
-    let user=JSON.parse(userData)
+    let user=JSON.parse(userData);
     let found=false;
     if (!user) {
        return found
@@ -15,7 +22,7 @@ export class LoginService {
          if (role.slug === roleName || role.name === roleName) {
            found= true
          }
-       })
+       });
       return found
     }
   }
