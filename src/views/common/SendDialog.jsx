@@ -18,7 +18,7 @@ import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import {ApiRoutes} from "../../config/ApiRoutes";
 import {FILE_IN_ACTIVE_LIST, FILE_SEND} from "../../config/routes-constant/OfficeRoutes";
-
+import PropTypes from "prop-types";
 const styles = {
     appBar: {
         position: 'relative',
@@ -87,8 +87,37 @@ class SendDialog extends React.Component {
         }
     };
 
+    getFileDetail=()=>{
+      return(
+        <>
+          <ListItem button>
+            <ListItemText primary="Computer File. No." secondary={this.props.file.id} />
+          </ListItem>
+          <ListItem button>
+            <ListItemText primary="File No." secondary={this.props.file.number} />
+          </ListItem>
+          <Divider/>
+          <ListItem button>
+            <ListItemText primary="Subject: " secondary={this.props.file.subject} />
+          </ListItem>
+          <Divider/>
+          <ListItem button>
+            <ListItemText primary="Branch: " secondary={this.props.file.branch} />
+          </ListItem>
+          <Divider/>
+          <ListItem button>
+            <ListItemText primary="Classification: " secondary={this.props.file.classification} />
+          </ListItem>
+          <Divider/>
+          <ListItem button>
+            <ListItemText primary="Created On: " secondary={this.props.file.created_at} />
+          </ListItem>
+          </>
+      )
+    }
     render() {
         const {classes} = this.props;
+        let self=this;
         return (
             <Dialog
                 open={this.props.open}
@@ -130,28 +159,9 @@ class SendDialog extends React.Component {
                             </Grid>
                         </Grid>
                     </ListItem>
-                    <ListItem button>
-                        <ListItemText primary="Computer File. No." secondary={this.props.file.id} />
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemText primary="File No." secondary={this.props.file.number} />
-                    </ListItem>
-                    <Divider/>
-                    <ListItem button>
-                        <ListItemText primary="Subject: " secondary={this.props.file.subject} />
-                    </ListItem>
-                    <Divider/>
-                    <ListItem button>
-                        <ListItemText primary="Branch: " secondary={this.props.file.branch} />
-                    </ListItem>
-                    <Divider/>
-                    <ListItem button>
-                        <ListItemText primary="Classification: " secondary={this.props.file.classification} />
-                    </ListItem>
-                    <Divider/>
-                    <ListItem button>
-                        <ListItemText primary="Created On: " secondary={this.props.file.created_at} />
-                    </ListItem>
+                  {
+                    self.props.file?self.getFileDetail():""
+                  }
                     <Divider/>
                 </List>
                 <DialogActions>
@@ -164,6 +174,10 @@ class SendDialog extends React.Component {
 
 
 }
-
+SendDialog.propTypes={
+    open:PropTypes.bool.isRequired,
+    close:PropTypes.bool.isRequired,
+    file:PropTypes.array.isRequired
+}
 export default withStyles(styles)(SendDialog);
 

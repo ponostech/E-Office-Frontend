@@ -5,10 +5,8 @@ import { Icon, Tooltip } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import PinDrop from "@material-ui/icons/PinDrop";
-import Assignment from "../ApplicationAssignmentDialog";
 import { HoardingService } from "../../../../services/HoardingService";
 import GMapDialog from "../../../../components/GmapDialog";
-import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import { FileService } from "../../../../services/FileService";
@@ -17,6 +15,7 @@ import { withRouter } from "react-router-dom";
 import ApplicationState from "../../../../utils/ApplicationState";
 import { StaffService } from "../../../../services/StaffService";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
+import SendDialog from "../../../common/SendDialog";
 
 const styles = {
   button: {},
@@ -35,9 +34,10 @@ class HoardingApplications extends React.Component {
     openDetail: false,
     openMap: false,
     openTakeFile: false,
-    fileDetail: null,
+
     hoardings: [],
-    hoarding: {},
+    file: null,
+
     takeMessage: "",
     errorMessage: "",
     lat: 93,
@@ -73,9 +73,7 @@ class HoardingApplications extends React.Component {
   updateTable = (action, tableState) => {
 
   };
-  openAssignment = (data, event) => {
-    this.setState({ openAssignment: true });
-  };
+
   takeFile = (data) => {
     this.setState({ openTakeFile: true, fileDetail: data.file });
   };
@@ -83,7 +81,7 @@ class HoardingApplications extends React.Component {
     const { history } = this.props;
     const { fileDetail } = this.state;
 
-    this.setState({ submit: true ,openTakeFile:false});
+    this.setState({ submit: true, openTakeFile: false });
     this.fileService.takeFile(fileDetail.id, errorMessage => this.setState({ errorMessage }),
       takeMessage => {
         this.setState({ takeMessage, submit: false });
@@ -128,25 +126,25 @@ class HoardingApplications extends React.Component {
           sort: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             const { rowIndex } = tableMeta;
-            const data = this.state.hoardings[rowIndex];
+            const application = this.state.hoardings[rowIndex];
             return (
 
               <>
                 <Tooltip title={"Click her to view detail of file"}>
                   <IconButton color="primary" size="small"
-                              aria-label="View Details" onClick={this.viewDetail.bind(this, data)}>
+                              aria-label="View Details" onClick={this.viewDetail.bind(this, application)}>
                     <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Click here to assign this file to staff"}>
                   <IconButton variant="contained" color="secondary"
-                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                              size="small" onClick={e => this.setState({ file:application.file })}>
                     <Icon fontSize="small">send</Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Click here to take this file"}>
                   <IconButton variant="contained" color="primary"
-                              size="small" onClick={this.takeFile.bind(this, data)}>
+                              size="small" onClick={this.takeFile.bind(this, application)}>
                     <Icon fontSize="small">desktop_mac</Icon>
                   </IconButton>
                 </Tooltip>
@@ -223,18 +221,19 @@ class HoardingApplications extends React.Component {
             options={tableOptions}
           />
         </Grid>
-        <HoardingDetailDialog
-          hoarding={this.state.hoarding}
-          open={this.state.openDetail} onClose={(e) => this.setState({ openDetail: false })}/>
-        <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
-                    props={this.props} staffs={this.state.staffs}/>
+
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                     onClose={() => this.setState({ openMap: false })}
                     isMarkerShown={true}
         />
+
+        {/*<HoardingApplicationDialog open={Boolean(this.state.hoarding)} onClose={()=>this.setState({hoarding:null})} application={this.state.hoarding} />*/}
+        <SendDialog open={Boolean(this.state.file)} close={() => this.setState({ file: null })}
+                    file={this.state.file}/>
+
         <SubmitDialog open={this.state.submit} text={"File is taking ..."} title={"File Endorsement"}/>
 
-        <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to take this file ?"}
+        <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to call this file ?"}
                        onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
                        onConfirm={this.confirmTake.bind(this)}/>
 
