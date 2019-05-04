@@ -24,6 +24,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {ApiRoutes} from "../../../../config/ApiRoutes";
 
 import { convertToHTML } from "nib-converter";
+import FileUpload from "../../../../components/FileUpload";
 
 const styles = {
     appBar: {
@@ -193,6 +194,20 @@ class NoteCreateDialog extends React.Component {
                                             format={"dd/MM/yyyy"}
                                         />
                                     </MuiPickersUtilsProvider>
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={6}>
+                                    <FileUpload required={true}
+                                                document={{ id: 122, name: "Document Attachment", mime: "image/*" }}
+                                                onUploadSuccess={(data) => {
+                                                    this.setState(state => {
+                                                        state.passport = {
+                                                            name: "attachment",
+                                                            path: data.location
+                                                        };
+                                                    });
+                                                }} onUploadFailure={(err) => {
+                                        console.log(err);
+                                    }}/>
                                 </Grid>
                             </Grid>
                         </CardContent>
