@@ -112,8 +112,8 @@ const menu = (props) => {
 
                 <CustomDropdown
                     dropdownList={[
-                        {title: "New Trade", link: routes.NEW_TRADE},
-                        {title: "List Trade", link: routes.HOARDINGS},
+                        {title: "New Trade", link: routes.TRADE_NEW},
+                        {title: "List Trade", link: routes.TRADE_LIST},
                         {title: "New Staff", link: routes.STAFF_REGISTRATION},
                         {title: "List Staff", link: routes.STAFF_LIST}
 

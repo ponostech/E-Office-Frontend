@@ -42,7 +42,6 @@ export class ApiRoutes {
   static CREATE_HOTEL_LICENSE="hotels";
 
   static CREATE_BANNER="/banners";
-  static TRADES="/trades";
   static VERIFY_OTP="/otp/verify";
   static REQUEST_OTP="/otp/request";
   static LOGOUT_ROUTE="/auth/logout";
@@ -55,4 +54,6 @@ export class ApiRoutes {
   static FILE="/files";
   static FILE_SEND = '/file/send';
   static FILE_DETAIL="/files";
+  static CREATE_TRADE="/trades";
+  static GET_TRADE="/trades";
 }
