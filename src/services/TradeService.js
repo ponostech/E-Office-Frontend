@@ -1,37 +1,49 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
+import moment from "moment";
+import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
 export class TradeService {
-  async get() {
-    let res = await axios.get(ApiRoutes.TRADES);
-    return res.data;
+  async all(errorCallback, successCallback) {
+    const token = localStorage.getItem("access_token");
+    const config = { headers: { "Authorization": `Bearer ${token}` } };
+
+    try {
+      let res = await axios.get(ApiRoutes.GET_TRADE, config);
+
+      if (res.data.status) {
+        successCallback(res.data.data.trades)
+      } else {
+        errorCallback("Something went wrong: Please try again later")
+      }
+    } catch (e) {
+      console.error(e);
+      errorCallback(e.toString())
+    }
+
   }
 
-  async fetch(errorCallback, successCallback) {
+  async create(state, errorCallback, successCallback) {
+    const token = localStorage.getItem("access_token");
+    const config = { headers: { "Authorization": `Bearer ${token}` } };
+    let data = {
+      name: state.name,
+      rate: state.rate,
+      fla: state.fla,
+    };
     try {
-      let res = await axios.get(ApiRoutes.TRADES);
-      const stat = res.data.status;
-      let trades = [];
-      if (stat) {
-        res.data.data.trades.forEach((item, i) => {
-          let trade = {
-            value: item.id,
-            label: item.fla ? item.name + " (required Food License Authority Certificate)" : item.name,
-            fla: item.fla
-          };
-          trades.push(trade);
-        });
-       successCallback(trades)
+      let res = await axios.post(ApiRoutes.CREATE_TRADE, data);
+      console.log(res);
+      if (res.data.status) {
+        let msg = ArrayToString(res.data.messages);
+        successCallback(msg);
       } else {
-        errorCallback("Something went wrong: Please try again later");
+        errorCallback(ErrorToString(res.data.messages));
       }
     } catch (e) {
       errorCallback(e.toString());
     }
   }
 
-}
 
-export const fetchTrades = async () => {
-  return await axios.get(ApiRoutes.TRADES);
-};
+}
