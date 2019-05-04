@@ -19,7 +19,6 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import GridItem from "../../components/Grid/GridItem";
 import GridContainer from "../../components/Grid/GridContainer";
 import PropTypes from 'prop-types'
-import PrintIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import CloseIcon from "@material-ui/icons/Close";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
