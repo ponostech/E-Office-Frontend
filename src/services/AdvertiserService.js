@@ -36,31 +36,35 @@ export class AdvertiserService {
     }
 
 
-  async fetch(status,errorCallback,successCallback) {
-    const token = localStorage.getItem("access_token");
-    const config = { headers: { "Authorization": `Bearer ${token}` } };
-    let advertisers = [];
-    try {
-      if (status) {
-        const res = await axios.get(ApiRoutes.STAFF_ADVERTISER, {
-          params: {
-            status
-          }
-        }, config);
-        //
-        if (res.data.status) {
-        advertisers = res.data.data.advertiser_applications;
-          successCallback(advertisers)
-        }else{
-          errorCallback(ArrayToString(res.data.messages))
-        }
-      } else {
-        const defRes = await axios.get(ApiRoutes.STAFF_ADVERTISER, config);
-        if (defRes.data.status) {
-          advertisers = defRes.data.data.advertiser_applications;
-          successCallback(advertisers)
-        }else{
-          errorCallback(ArrayToString(defRes.data.messages))
+    async fetch(status,errorCallback,successCallback) {
+        const token = localStorage.getItem("access_token");
+        const config = { headers: { "Authorization": `Bearer ${token}` } };
+        let advertisers = [];
+        try {
+            if (status) {
+                const res = await axios.get(ApiRoutes.STAFF_ADVERTISER, {
+                    params: {
+                        status
+                    }
+                }, config);
+                if (res.data.status) {
+                    advertisers = res.data.data.advertiser_applications;
+                    successCallback(advertisers)
+                }else{
+                    errorCallback("Something went wrong: Please try again later")
+                }
+            } else {
+                const defRes = await axios.get(ApiRoutes.STAFF_ADVERTISER, config);
+                if (defRes.data.status) {
+                    advertisers = defRes.data.data.advertiser_applications;
+                    successCallback(advertisers)
+                }else{
+                    errorCallback("Something went wrong: Please try again later")
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            errorCallback(error.toString())
         }
     }
 }
