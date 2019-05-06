@@ -23,7 +23,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import {ApiRoutes} from "../../../../config/ApiRoutes";
 
-import { convertToHTML } from "nib-converter";
+import {convertToHTML} from "nib-converter";
 import FileUpload from "../../../../components/FileUpload";
 
 const styles = {
@@ -86,27 +86,29 @@ class NoteCreateDialog extends React.Component {
         }
     };
 
-    editorChange= (content) => {
+    editorChange = (content) => {
         this.setState({content: convertToHTML(content)});
     };
 
-    onSubmitNote = () => {
+    onSubmitNote = (action) => {
         let data = {
             file_id: this.props.file.id,
             content: this.state.content,
             action: this.state.action.name,
             priority: this.state.priority.name,
             fixed_date: moment(this.state.fixedDate).format('YYYY-MM-DD'),
-            status: 1,
+            status: 0,
         };
+
+        if (action === 'confirm') data.status = 1;
 
         axios.post(ApiRoutes.NOTESHEET, data)
             .then(res => {
                 this.props.close();
-                console.log('Notesheet Added Successfully');
+                // console.log('Notesheet Added Successfully');
             })
             .catch(err => {
-                console.log('Notesheet Added Failed');
+                // console.log('Notesheet Added Failed');
             });
     };
 
@@ -134,11 +136,9 @@ class NoteCreateDialog extends React.Component {
                 </AppBar>
                 <List>
                     <Card>
-                        <CardHeader title={"File No.: " + this.props.file.number} subheader={"Subject: " + this.props.file.subject}/>
+                        <CardHeader title={"File No.: " + this.props.file.number}
+                                    subheader={"Subject: " + this.props.file.subject}/>
                         <Divider/>
-                        <ListItem button>
-                            <ListItemText primary="Branch: " secondary={this.props.file.branch} />
-                        </ListItem>
                         <CardContent>
                             <Grid container spacing={16}>
                                 <Grid item lg={12}>
@@ -195,9 +195,14 @@ class NoteCreateDialog extends React.Component {
                                         />
                                     </MuiPickersUtilsProvider>
                                 </Grid>
+                            </Grid>
+                            <ListItem button>
+                                <ListItemText primary="Upload File Enclosure" secondary=""/>
+                            </ListItem>
+                            <Grid container spacing={16}>
                                 <Grid item xs={12} sm={12} md={6}>
                                     <FileUpload required={true}
-                                                document={{ id: 122, name: "Document Attachment", mime: "image/*" }}
+                                                document={{id: 122, name: "Document Attachment", mime: "image/*"}}
                                                 onUploadSuccess={(data) => {
                                                     this.setState(state => {
                                                         state.passport = {
@@ -215,8 +220,8 @@ class NoteCreateDialog extends React.Component {
                 </List>
                 <Divider/>
                 <DialogActions>
-                    <Button color="primary">Save Draft</Button>
-                    <Button color="primary" onClick={this.onSubmitNote}>Save</Button>
+                    <Button color="primary" onClick={this.onSubmitNote.bind(this, 'draft')}>Save Draft</Button>
+                    <Button color="primary" onClick={this.onSubmitNote.bind(this, 'confirm')}>Save</Button>
                     <Button color="secondary" onClick={this.props.close}>Cancel</Button>
                 </DialogActions>
             </Dialog>
