@@ -42,7 +42,6 @@ class HeaderOffice extends React.Component {
         const {classes, loading} = this.props;
         let menu = null;
         let role = LoginService.getRole();
-
         switch (role) {
             case 'administrator':
                 menu = <MenuAdminTop linkClick={this.handleLinkClick}/>;

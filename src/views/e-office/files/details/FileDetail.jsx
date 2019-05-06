@@ -3,8 +3,7 @@ import axios from 'axios';
 import {withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import LeftMenu from "./Menu/FileLeftMenu";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import {Route} from "react-router-dom";
+import {Route, withRouter} from "react-router-dom";
 import * as OfficeRoutes from "../../../../config/routes-constant/OfficeRoutes";
 import NoteSheet from "../notesheet/Notesheet";
 import DraftPermit from "../draft/DraftPermit";
@@ -70,7 +69,6 @@ class FileDetail extends Component {
 
         const view = (
             <>
-                <CssBaseline/>
                 <LeftMenu click={this.toggleContent}/>
                 <main className={classes.content}>
                     <Grid item xs={12} md={12} lg={12}>
@@ -98,4 +96,4 @@ class FileDetail extends Component {
     }
 }
 
-export default withStyles(styles)(FileDetail);
+export default withRouter(withStyles(styles)(FileDetail));
