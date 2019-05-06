@@ -88,35 +88,6 @@ class HotelNewList extends React.Component {
 
     const tableColumns = [
       {
-        name: "action",
-        label: "ACTION",
-        options: {
-          filter: false,
-          sort: false,
-          customBodyRender: (value, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
-            const data = this.state.hotels[rowIndex];
-            return (
-              <div>
-                <IconButton className={classes.button} color="primary" size="small"
-                            aria-label="View Details"
-                            onClick={e => this.setState({ shop: data, openDetail: true })}>
-                  <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" className={classes.button} color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, value)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
-                </IconButton>
-                <IconButton variant="contained" className={classes.button} color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
-                </IconButton>
-              </div>
-            );
-          }
-        }
-      },
-      {
         name: "file",
         label: "FILE NO.",
         options: {
@@ -168,7 +139,37 @@ class HotelNewList extends React.Component {
             );
           }
         }
-      }
+      },
+      {
+        name: "action",
+        label: "ACTION",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { rowIndex } = tableMeta;
+            const data = this.state.hotels[rowIndex];
+            return (
+                <div>
+                  <IconButton className={classes.button} color="primary" size="small"
+                              aria-label="View Details"
+                              onClick={e => this.setState({ shop: data, openDetail: true })}>
+                    <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" className={classes.button} color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, value)}>
+                    <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" className={classes.button} color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
+                  </IconButton>
+                </div>
+            );
+          }
+        }
+      },
+
 
     ];
 

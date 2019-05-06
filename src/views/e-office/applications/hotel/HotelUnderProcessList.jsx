@@ -1,10 +1,10 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
+import moment from 'moment';
 import Grid from "@material-ui/core/Grid";
-import { Icon, Tooltip } from "@material-ui/core";
+import { Icon } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-import PinDrop from "@material-ui/icons/PinDrop";
 import Assignment from "../ApplicationAssignmentDialog";
 import GMapDialog from "../../../../components/GmapDialog";
 import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
@@ -81,7 +81,7 @@ class HotelUnderProcessList extends React.Component {
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
-      rowsPerPage: 15,
+      rowsPerPage: 10,
       serverSide: false,
       onTableChange: function(action, tableState) {
         this.updateTable(action, tableState);
@@ -90,37 +90,8 @@ class HotelUnderProcessList extends React.Component {
 
     const tableColumns = [
       {
-        name: "action",
-        label: "ACTION",
-        options: {
-          filter: false,
-          sort: false,
-          customBodyRender: (value, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
-            const data = this.state.shops[rowIndex];
-            return (
-              <div>
-                <IconButton className={classes.button} color="primary" size="small"
-                            aria-label="View Details"
-                            onClick={e => this.setState({ shop: data, openDetail: true })}>
-                  <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" className={classes.button} color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, value)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
-                </IconButton>
-                <IconButton variant="contained" className={classes.button} color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
-                </IconButton>
-              </div>
-            );
-          }
-        }
-      },
-      {
         name: "file",
-        label: "FILE NO.",
+        label: "FILE NUMBER",
         options: {
           customBodyRender: (file, tableMeta, updateValue) => {
             return (
@@ -138,17 +109,24 @@ class HotelUnderProcessList extends React.Component {
             );
           }
         }
-      }, {
-        name: "created_at",
-        label: "DATE"
-      }, {
-        name: "name",
-        label: "SHOP NAME",
-      }, {
-        name: "owner",
-        label: "OWNER",
       },
       {
+        name: "created_at",
+        label: "DATE",
+        options: {
+          customBodyRender: (date) => {
+            return moment(date).format('Do MMMM YYYY')
+          }
+        }
+      },
+      {
+        name: "name",
+        label: "NAME OF SHOP",
+      }, {
+        name: "owner",
+        label: "NAME OF APPLICANT",
+      },
+      /*{
         name: "shop",
         label: "LOCATION",
         options: {
@@ -170,7 +148,42 @@ class HotelUnderProcessList extends React.Component {
             );
           }
         }
-      }
+      },*/
+      {
+        name: "action",
+        label: "ACTION",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { rowIndex } = tableMeta;
+            const data = this.state.shops[rowIndex];
+            const lat = Number(data.latitude);
+            const lng = Number(data.longitude);
+
+            return (
+                <div>
+                  <IconButton className={classes.button} color="primary" size="small"
+                              aria-label="View Details"
+                              onClick={e => this.setState({ shop: data, openDetail: true })}>
+                    <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" className={classes.button} color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, value)}>
+                    <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" className={classes.button} color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small" className={classes.actionIcon}>desktop_mac</Icon>
+                  </IconButton>
+                  <IconButton onClick={e => this.setState({ openMap: true,lat:lat ,lng:lng})}>
+                    <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
+                  </IconButton>
+                </div>
+            );
+          }
+        }
+      },
 
     ];
 
