@@ -85,7 +85,8 @@ export const REJECTED_HOTELLICENSE = "/e-office/applications/hotel-license/rejec
 export const HOARDING_DETAILS = "/e-office/applications/hoardings/:id/detail";
 export const BANNERS = "/e-office/applications/banners";
 export const OBPAS = "/e-office/applications/obpas";
-export const NEW_TRADE = "/e-office/admin/new-trade";
+export const TRADE_NEW = "/e-office/admin/trade-new";
+export const TRADE_LIST = "/e-office/admin/trade-list";
 
 export const STAFF_REGISTRATION = "/e-office/admin/new-staff";
 export const STAFF_LIST = "/e-office/admin/staffs";

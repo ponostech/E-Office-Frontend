@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Divider, IconButton, InputAdornment, TextField, Typography } from "@material-ui/core";
+import { Button, CardHeader, Divider, TextField, Typography } from "@material-ui/core";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import OfficeSelect from "../../../components/OfficeSelect";
@@ -15,7 +15,7 @@ const style = {
     }
 };
 
-class NewTrade extends Component {
+class TradeNew extends Component {
     tradeService = new TradeService();
     state = {
         name: "",
@@ -29,8 +29,8 @@ class NewTrade extends Component {
         prestine: true,
         submit: false,
         flas: [
-            { value: "no", label: "No" },
-            { value: "yes", label: "Yes" },
+            { value: 0, label: "No" },
+            { value: 1, label: "Yes" },
 
         ],
     };
@@ -121,16 +121,11 @@ class NewTrade extends Component {
           <GridContainer justify="flex-start">
               <GridItem xs={12} sm={12} md={10}>
                   <GridContainer>
-                      <GridItem className={classes.item} xs={12} sm={12} md={12}>
-                          <Typography variant={"h5"}>{TradeViewModel.TILE}</Typography>
-                      </GridItem>
-                    <GridItem className={classes.item} xs={12} sm={12} md={12}>
-                      <Typography variant={"h5"}>{TradeViewModel.SUB_HEADER}</Typography>
-                    </GridItem>
+                      <CardHeader title={"New Trade Entry"} subheader={"Star marks are mandatory"}/>
                       <GridItem className={classes.item} xs={12} sm={12} md={12}>
                           <Divider/>
                       </GridItem>
-                      <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                      <GridItem className={classes.item} xs={12} sm={12} md={7}>
                           <TextField
                             name={"name"}
                             value={this.state.name}
@@ -146,7 +141,7 @@ class NewTrade extends Component {
                             helperText={this.state.nameError}
                           />
                       </GridItem>
-                      <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                      <GridItem className={classes.item} xs={12} sm={12} md={7}>
                           <TextField
                             name={"rate"}
                             value={this.state.rate}
@@ -157,14 +152,14 @@ class NewTrade extends Component {
                             margin={"dense"}
                             fullWidth={true}
                             onChange={this.handleChange.bind(this)}
-                            label={TradeViewModel.REQUIRED_RATE}
+                            label={TradeViewModel.RATE}
                             error={Boolean(this.state.rateError)}
                             helperText={this.state.rateError}
                           />
                       </GridItem>
-                      <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                      <GridItem className={classes.item} xs={12} sm={12} md={7}>
                           <OfficeSelect value={this.state.fla}
-                                        label={TradeViewModel.FLA_TYPE}
+                                        label={"Whether Food Licensing Authority permit is required?"}
                                         name={"fla"}
                                         required={true}
                                         variant={"outlined"}
@@ -209,4 +204,4 @@ class NewTrade extends Component {
     }
 }
 
-export default withStyles(style)(NewTrade);
+export default withStyles(style)(TradeNew);
