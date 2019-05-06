@@ -40,6 +40,8 @@ import OtpDialog from "../../components/OtpDialog";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import "date-fns";
+import { HOME } from "../../config/routes-constant/OfficeRoutes";
+import { withRouter } from "react-router-dom";
 
 const style = {
   root: {
@@ -169,7 +171,7 @@ class ShopApplication extends Component {
                   success
                   style={{ display: "block", marginTop: "-100px" }}
                   title={"Success"}
-                  onConfirm={() => window.location.reload()}>
+                  onConfirm={() => history.push(HOME)}>
                   {msg}
                 </SweetAlert>
               )
@@ -802,4 +804,4 @@ class ShopApplication extends Component {
 
 }
 
-export default withStyles(style)(ShopApplication);
+export default withRouter(withStyles(style)(ShopApplication));

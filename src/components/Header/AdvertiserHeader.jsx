@@ -15,7 +15,7 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingIcon from "@material-ui/icons/Settings";
 // core components
-import { Button, Grid, IconButton, LinearProgress, Typography } from "@material-ui/core";
+import { Button, CardActions, Grid, IconButton, LinearProgress, Typography } from "@material-ui/core";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
 import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
@@ -158,7 +158,11 @@ class AdvertiserHeader extends React.Component {
           </List>
         </div>
         <div style={{flex:1}}>
-
+          <span>
+            {"\u00A0 "}
+            {"\u00A0 "}
+            {"\u00A0 "}
+            {"\u00A0 "}</span>
         </div>
         <div>
           <ListItem button onClick={() => new LoginService().logout((e)=>{console.error(e)},suc=>history.push(HOME))}>

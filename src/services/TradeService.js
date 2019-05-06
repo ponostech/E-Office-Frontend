@@ -50,7 +50,17 @@ export class TradeService {
     try {
       const res = await axios.get(ApiRoutes.GET_TRADE);
       if (res.data.status) {
-        successCallback(res.data.data.trades);
+        let newTrades = [];
+        let trades=res.data.data.trades;
+        trades.forEach(function(trade, index) {
+          let temp={
+            fla:trade.fla,
+            value:trade.id,
+            label:trade.fla?trade.name +" (Required Food License)":trade.name
+          }
+          newTrades.push(temp)
+        });
+        successCallback(newTrades);
       } else {
         errorCallback(ArrayToString(res.data.messages));
       }
