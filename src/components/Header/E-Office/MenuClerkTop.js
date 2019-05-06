@@ -14,13 +14,12 @@ const menu = (props) => {
     return (
         <>
             <div style={{display: "flex", alignItems: "center"}}>
-                <NavLink to={OfficeRoutes.HOME}><IconButton color="primary"><Icon>apps</Icon></IconButton></NavLink>
                 <NavLink to={OfficeRoutes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
                 <CustomDropdown
                     dropdownList={[
                         {title: "Create New", link: OfficeRoutes.NEW_FILE},
-                        // {title: "List Created By You", link: OfficeRoutes.CREATED_FILES},
-                        // {title: "List Sent by You", link: OfficeRoutes.SENT_FILE},
+                        {title: "List Created By You", link: OfficeRoutes.CREATED_FILES},
+                        {title: "List Sent by You", link: OfficeRoutes.SENT_FILE},
                         {title: "List New", link: OfficeRoutes.FILE_IN_ACTIVE_LIST},
                         {title: "List Closed", link: OfficeRoutes.FILE_CLOSED_LIST},
                         {title: "List Archived", link: OfficeRoutes.FILE_ARCHIVED_LIST},
@@ -55,7 +54,7 @@ const menu = (props) => {
                     buttonText="New Applications"
                     buttonProps={{color: "transparent"}}/>
 
-                <CustomDropdown
+                {/*<CustomDropdown
                     dropdownList={[
                         {title: "Under Process", link: OfficeRoutes.ADVERTISER_IN_PROCESS_LIST},
                         {title: "Approved List", link: OfficeRoutes.ADVERTISER_APPROVE_LIST},
@@ -113,7 +112,7 @@ const menu = (props) => {
                     ]}
                     linkClick={props.linkClick}
                     buttonText={"Hotel & Lodging"}
-                    buttonProps={{color: "transparent"}}/>
+                    buttonProps={{color: "transparent"}}/>*/}
             </div>
 
 

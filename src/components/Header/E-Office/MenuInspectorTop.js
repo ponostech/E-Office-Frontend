@@ -7,7 +7,6 @@ import Icon from "@material-ui/core/es/Icon/Icon";
 import {LoginService} from "../../../services/LoginService";
 import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
 
-
 const menu = (props) => {
     const {history} = props;
     const currentUser = JSON.parse(localStorage.getItem('current_user'));
@@ -15,7 +14,6 @@ const menu = (props) => {
     return (
         <>
             <div style={{display: "flex", alignItems: "center"}}>
-                <NavLink to={OfficeRoutes.HOME}><IconButton color="primary"><Icon>apps</Icon></IconButton></NavLink>
                 <NavLink to={OfficeRoutes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
                 <CustomDropdown
                     dropdownList={[
@@ -132,8 +130,6 @@ const menu = (props) => {
                     buttonText={"Report"}
                     buttonProps={{color: "transparent"}}/>
             </div>
-
-
             <div style={{display: "flex", alignItems: "center"}}>
                 <Typography variant={"caption"}
                             color={"textSecondary"}>Hello {currentUser.staff.name} ({currentUser.staff.designation})</Typography>

@@ -13,7 +13,6 @@ const menu = (props) => {
     return (
         <>
             <div style={{display: "flex", alignItems: "center"}}>
-                <NavLink to={OfficeRoutes.HOME}><IconButton color="primary"><Icon>apps</Icon></IconButton></NavLink>
                 <NavLink to={OfficeRoutes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
                 <CustomDropdown
                     dropdownList={[
