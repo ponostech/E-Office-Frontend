@@ -10,6 +10,7 @@ import DraftPermit from "../draft/DraftPermit";
 import DraftLetter from "../draft/DraftLetter";
 import FileSend from "../FileSend";
 import {ApiRoutes} from '../../../../config/ApiRoutes';
+import LoadingView from "../../../common/LoadingView";
 
 const styles = theme => ({
     root: {
@@ -89,7 +90,7 @@ class FileDetail extends Component {
         return (
             <Grid container className={classes.container}>
                 <div className={classes.root}>
-                    {loading ? "" : view}
+                    {loading ? <LoadingView/> : view}
                 </div>
             </Grid>
         );

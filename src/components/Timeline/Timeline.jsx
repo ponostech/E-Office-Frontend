@@ -11,6 +11,7 @@ import FormatQuote from "@material-ui/icons/FormatQuote";
 import timelineStyle from "../../assets/jss/material-dashboard-pro-react/components/timelineStyle.jsx";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "../Badge/Badge";
+import {convertToHTML} from "nib-converter";
 
 function Timeline({ ...props }) {
   const { classes, stories, simple } = props;
@@ -54,7 +55,7 @@ function Timeline({ ...props }) {
               <div className={classes.testimonialIcon}>
                 <FormatQuote />
               </div>
-                <div className={classes.timelineBody} dangerouslySetInnerHTML={{__html: prop.body}} />
+                <div className={classes.timelineBody} dangerouslySetInnerHTML={{__html: convertToHTML(prop.body)}} />
               {prop.footer ? <hr className={classes.footerLine} /> : null}
               {prop.avatar ? (
                     <Avatar alt="" src={prop.avatar} className={classes.avatar} />

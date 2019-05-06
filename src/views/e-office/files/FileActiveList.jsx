@@ -66,13 +66,15 @@ class FileActiveList extends Component {
             })
     };
 
-    callFile = (id) => {
-        axios.post(FILE_CALL(id))
+    callFile = (data) => {
+        this.setState({file: data, openCallFile: true})
+    };
+
+    confirmCallFile = () => {
+        axios.post(FILE_CALL(this.state.file.id))
             .then(res => {
-                if (res.data.status)
-                    window.location.replace(DESK);
-            })
-            .catch(err => {
+                this.setState({openCallFile: false});
+                window.location.replace(DESK);
             })
     };
 
@@ -211,7 +213,7 @@ class FileActiveList extends Component {
                                message={"Do you want to call this file?"}
                                onCancel={() => this.setState({openTakeFile: false})} open={this.state.openTakeFile}
                                onConfirm={this.confirmTakeFile.bind(this)}/>
-                <ConfirmDialog primaryButtonText={"Call File"} title={"Confirmation"}
+                <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"}
                                message={"Do you want to call this file?"}
                                onCancel={() => this.setState({openCallFile: false})} open={this.state.openCallFile}
                                onConfirm={this.confirmCallFile.bind(this)}/>
