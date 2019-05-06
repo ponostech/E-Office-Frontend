@@ -14,7 +14,6 @@ class FileInActiveList extends Component {
         tableData: [],
         openAssignment: false,
         openTakeFile: false,
-        id: '',
         loading: true,
         file: [],
         error: false,
@@ -50,7 +49,7 @@ class FileInActiveList extends Component {
     };
 
     closeAssignment = () => {
-        this.setState({openAssignment: false});
+        this.setState({file: [], openAssignment: false});
     };
 
     takeFile = (data) => {
