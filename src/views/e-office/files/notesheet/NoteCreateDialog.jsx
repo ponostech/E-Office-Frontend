@@ -25,6 +25,7 @@ import {ApiRoutes} from "../../../../config/ApiRoutes";
 
 import {convertToHTML} from "nib-converter";
 import FileUpload from "../../../../components/FileUpload";
+import LoadingView from "../../../common/LoadingView";
 
 const styles = {
     appBar: {
@@ -87,33 +88,109 @@ class NoteCreateDialog extends React.Component {
     };
 
     editorChange = (content) => {
-        this.setState({content: convertToHTML(content)});
+        this.setState({content: content});
     };
 
     onSubmitNote = (action) => {
+        this.props.onSubmit();
         let data = {
             file_id: this.props.file.id,
-            content: this.state.content,
+            content: JSON.stringify(this.state.content),
             action: this.state.action.name,
             priority: this.state.priority.name,
-            fixed_date: moment(this.state.fixedDate).format('YYYY-MM-DD'),
             status: 0,
         };
 
+        if (this.state.fixedDate) data.fixed_date = moment(this.state.fixedDate).format('YYYY-MM-DD');
         if (action === 'confirm') data.status = 1;
 
         axios.post(ApiRoutes.NOTESHEET, data)
             .then(res => {
-                this.props.close();
-                // console.log('Notesheet Added Successfully');
+                console.log("return", res);
+                window.location.reload();
             })
-            .catch(err => {
-                // console.log('Notesheet Added Failed');
-            });
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, loading} = this.props;
+        let content = <CardContent>
+            <Grid container spacing={16}>
+                <Grid item lg={12}>
+                    <Editor onChange={this.editorChange} default={this.state.content}/>
+                </Grid>
+                <Grid item xs={12} sm={12} md={6}>
+                    <OfficeSelect
+                        variant={"outlined"}
+                        margin={"dense"}
+                        value={this.state.action}
+                        required={true}
+                        fullWidth={true}
+                        name={"action"}
+                        error={!!this.state.actionError}
+                        onBlur={this.handleSelectBlur.bind(this, "action")}
+                        onChange={this.handleSelect.bind(this, "action")}
+                        ClearAble={true}
+                        label={"Select Action"}
+                        helperText={this.state.actionError}
+                        options={this.state.actionTypes}/>
+                </Grid>
+                <Grid item xs={12} sm={12} md={6}>
+                    <OfficeSelect
+                        variant={"outlined"}
+                        margin={"dense"}
+                        value={this.state.priority}
+                        required={true}
+                        fullWidth={true}
+                        name={"priority"}
+                        error={!!this.state.priorityError}
+                        onBlur={this.handleSelectBlur.bind(this, "priority")}
+                        onChange={this.handleSelect.bind(this, "priority")}
+                        ClearAble={true}
+                        label={"Set Priority"}
+                        helperText={this.state.priorityError}
+                        options={this.state.priorityTypes}/>
+                </Grid>
+                <Grid item xs={12} sm={12} md={6}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DatePicker
+                            fullWidth={true}
+                            InputLabelProps={
+                                {shrink: true}
+                            }
+                            label={"Fixed Date"}
+                            error={Boolean(this.state.dateError)}
+                            helperText={this.state.dateError}
+                            margin="dense"
+                            name={"fixedDate"}
+                            variant="outlined"
+                            value={this.state.fixedDate}
+                            onChange={this.handleDateChange}
+                            format={"dd/MM/yyyy"}
+                        />
+                    </MuiPickersUtilsProvider>
+                </Grid>
+            </Grid>
+            <ListItem button>
+                <ListItemText primary="Upload File Enclosure" secondary=""/>
+            </ListItem>
+            <Grid container spacing={16}>
+                <Grid item xs={12} sm={12} md={6}>
+                    <FileUpload required={true}
+                                document={{id: 122, name: "Document Attachment", mime: "image/*"}}
+                                onUploadSuccess={(data) => {
+                                    this.setState(state => {
+                                        state.passport = {
+                                            name: "attachment",
+                                            path: data.location
+                                        };
+                                    });
+                                }} onUploadFailure={(err) => {
+                        console.log(err);
+                    }}/>
+                </Grid>
+            </Grid>
+        </CardContent>;
+
         return (
             <Dialog
                 fullScreen
@@ -139,91 +216,15 @@ class NoteCreateDialog extends React.Component {
                         <CardHeader title={"File No.: " + this.props.file.number}
                                     subheader={"Subject: " + this.props.file.subject}/>
                         <Divider/>
-                        <CardContent>
-                            <Grid container spacing={16}>
-                                <Grid item lg={12}>
-                                    <Editor onChange={this.editorChange}/>
-                                </Grid>
-                                <Grid item xs={12} sm={12} md={6}>
-                                    <OfficeSelect
-                                        variant={"outlined"}
-                                        margin={"dense"}
-                                        value={this.state.action}
-                                        required={true}
-                                        fullWidth={true}
-                                        name={"action"}
-                                        error={!!this.state.actionError}
-                                        onBlur={this.handleSelectBlur.bind(this, "action")}
-                                        onChange={this.handleSelect.bind(this, "action")}
-                                        ClearAble={true}
-                                        label={"Select Action"}
-                                        helperText={this.state.actionError}
-                                        options={this.state.actionTypes}/>
-                                </Grid>
-                                <Grid item xs={12} sm={12} md={6}>
-                                    <OfficeSelect
-                                        variant={"outlined"}
-                                        margin={"dense"}
-                                        value={this.state.priority}
-                                        required={true}
-                                        fullWidth={true}
-                                        name={"priority"}
-                                        error={!!this.state.priorityError}
-                                        onBlur={this.handleSelectBlur.bind(this, "priority")}
-                                        onChange={this.handleSelect.bind(this, "priority")}
-                                        ClearAble={true}
-                                        label={"Set Priority"}
-                                        helperText={this.state.priorityError}
-                                        options={this.state.priorityTypes}/>
-                                </Grid>
-                                <Grid item xs={12} sm={12} md={6}>
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                        <DatePicker
-                                            fullWidth={true}
-                                            InputLabelProps={
-                                                {shrink: true}
-                                            }
-                                            label={"Fixed Date"}
-                                            error={Boolean(this.state.dateError)}
-                                            helperText={this.state.dateError}
-                                            margin="dense"
-                                            name={"fixedDate"}
-                                            variant="outlined"
-                                            value={this.state.fixedDate}
-                                            onChange={this.handleDateChange}
-                                            format={"dd/MM/yyyy"}
-                                        />
-                                    </MuiPickersUtilsProvider>
-                                </Grid>
-                            </Grid>
-                            <ListItem button>
-                                <ListItemText primary="Upload File Enclosure" secondary=""/>
-                            </ListItem>
-                            <Grid container spacing={16}>
-                                <Grid item xs={12} sm={12} md={6}>
-                                    <FileUpload required={true}
-                                                document={{id: 122, name: "Document Attachment", mime: "image/*"}}
-                                                onUploadSuccess={(data) => {
-                                                    this.setState(state => {
-                                                        state.passport = {
-                                                            name: "attachment",
-                                                            path: data.location
-                                                        };
-                                                    });
-                                                }} onUploadFailure={(err) => {
-                                        console.log(err);
-                                    }}/>
-                                </Grid>
-                            </Grid>
-                        </CardContent>
+                        {loading ? <LoadingView/> : content}
                     </Card>
                 </List>
                 <Divider/>
-                <DialogActions>
+                {loading ? "" : <DialogActions>
                     <Button color="primary" onClick={this.onSubmitNote.bind(this, 'draft')}>Save Draft</Button>
                     <Button color="primary" onClick={this.onSubmitNote.bind(this, 'confirm')}>Save</Button>
                     <Button color="secondary" onClick={this.props.close}>Cancel</Button>
-                </DialogActions>
+                </DialogActions>}
             </Dialog>
         )
     };

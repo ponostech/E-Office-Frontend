@@ -15,6 +15,7 @@ class Notesheets extends Component {
         note: [],
         openDialog: false,
         loading: true,
+        loadingNoteDialog: true,
     };
 
     componentDidMount() {
@@ -41,7 +42,7 @@ class Notesheets extends Component {
             temp['title'] = data.action;
             temp['titleColor'] = 'success';
             temp['avatar'] = data.staff.photo ? data.staff.photo : DefaultAvatar;
-            temp['body'] = data.content;
+            temp['body'] = JSON.parse(data.content);
             temp['footerName'] = data.staff.staff.name;
             temp['footerDesignation'] = data.staff.staff.designation;
             temp['footerTitle'] = "Dated: " + moment(data.created_at).format("Do MMMM YYYY \(dddd\)");
@@ -51,20 +52,30 @@ class Notesheets extends Component {
     };
 
     handleOpenCreateNote = () => {
+        let self = this;
         this.setState({openDialog: true});
+        setTimeout(function () {
+            self.loadingNoteDialog(false);
+        }, 2000)
     };
 
     handleCloseCreateNote = () => {
-        this.setState({openDialog: false});
+        this.setState({openDialog: false, loadingNoteDialog: true});
+    };
+
+    loadingNoteDialog = (value) => {
+        this.setState({loadingNoteDialog: value});
     };
 
     render() {
-        let timeline = <Loading/>;
-        if (!this.state.loading)
+        const {loading} = this.state;
+        let noteList = <Loading align="left" color="secondary"/>;
+
+        if (!loading)
             if (this.state.note.length)
-                timeline = <Timeline simple stories={this.state.note}/>;
+                noteList = <Timeline simple stories={this.state.note}/>;
             else
-                timeline = <ul><li>New File. Note not available.</li></ul>;
+                noteList = <div style={{padding: 20}}>New File. Note not available.</div>;
 
         return (
             <>
@@ -72,10 +83,12 @@ class Notesheets extends Component {
                             subheader={"Subject: " + this.props.file.subject}/>
                 <Divider/>
                 <br/>
-                <CreateNoteButton click={this.handleOpenCreateNote}/>
-                {timeline}
-                <CreateNoteButton click={this.handleOpenCreateNote}/>
-                <CreateNoteDialog {...this.props} open={this.state.openDialog} close={this.handleCloseCreateNote}/>
+                {loading ? "" : <CreateNoteButton click={this.handleOpenCreateNote}/>}
+                {noteList}
+                {loading ? "" : <CreateNoteButton click={this.handleOpenCreateNote}/>}
+                <CreateNoteDialog onSubmit={this.loadingNoteDialog.bind(this, true)} loading={this.state.loadingNoteDialog}
+                                  file={this.props.file} open={this.state.openDialog}
+                                  close={this.handleCloseCreateNote}/>
             </>
         )
     };

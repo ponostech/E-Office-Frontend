@@ -10,8 +10,6 @@ import PropTypes from "prop-types";
 //   }}/>
 
 class ConfirmDialog extends Component {
-
-
     handleClick = (name) => {
         const {onConfirm, onCancel} = this.props;
         if (name === "confirm") {

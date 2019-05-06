@@ -35,7 +35,7 @@ class HeaderOffice extends React.Component {
     };
 
     handleDrawerToggle = () => {
-        this.setState({open: !this.state.open});
+        this.setState(state => !state.open);
     };
 
     render() {

@@ -158,7 +158,7 @@ class FileInActiveList extends Component {
                 <FileSendDialog open={this.state.openAssignment} close={this.closeAssignment} file={this.state.file}
                                 props={this.props}/>
 
-                <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to call this file?"}
+                <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                                onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
                                onConfirm={this.confirmTakeFile.bind(this)}/>
             </>

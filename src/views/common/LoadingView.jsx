@@ -1,19 +1,17 @@
-import React, { Component } from "react";
-import { CircularProgress } from "@material-ui/core";
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
+import React from "react";
+import {CircularProgress, Grid} from "@material-ui/core";
 
-class LoadingView extends Component {
-  render() {
-    const { md,...rest } = this.props;
+const loadingView = (props) => {
     return (
-      <GridContainer justify={"center"}>
-        <GridItem xs={12} sm={12} md={md} {...rest}>
-            <CircularProgress variant={"indeterminate"} style={{width:100,height:100}}/>
-        </GridItem>
-      </GridContainer>
+        <Grid container justify={"center"} spacing={18}>
+            <Grid item lg={12} align={props.align ? props.align : 'center'}>
+                <div style={{margin: 20}}>
+                    <CircularProgress variant={"indeterminate"}
+                                      color={props.color ? props.color : "primary"}/>
+                </div>
+            </Grid>
+        </Grid>
     );
-  }
-}
+};
 
-export default LoadingView;
+export default loadingView;

@@ -6,6 +6,7 @@ import MUIDataTable from "mui-datatables";
 import {ApiRoutes} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
 import moment from "moment";
+import LoadingView from "../../common/LoadingView";
 
 class DeskFiles extends Component {
     state = {
@@ -89,8 +90,7 @@ class DeskFiles extends Component {
             },
         ];
 
-        let files = '';
-
+        let files = <LoadingView/>;
         if (!this.state.loading) {
             if (!this.state.error) {
                 files = (

@@ -4,7 +4,7 @@ import Editor from "nib-core";
 class TextEditor extends Component {
     render() {
         return (
-            <Editor onChange={this.props.onChange}/>
+            <Editor onChange={this.props.onChange} defaultValue={this.props.default}/>
         );
     }
 }
