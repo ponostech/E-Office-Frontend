@@ -6,16 +6,16 @@ export class LoginService {
   static token = localStorage.getItem('access_token');
   static user = JSON.parse(localStorage.getItem('current_user'));
   static isGuest() {
-    return (this.user == null);
+    return (!this.user);
   }
   static isLogin() {
     return this.token != null;
   }
   static isStaff() {
-    return (this.user !== null && this.user.staff !== null);
+    return (this.user && this.user.staff);
   }
   static isAdvertiser() {
-    return (this.user !== null && this.user.advertiser !== null);
+    return (this.user && this.user.advertiser);
   }
   static getRole() {
     return this.isLogin() ? this.user.roles[0].slug : 'guest';

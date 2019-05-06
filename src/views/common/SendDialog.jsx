@@ -179,7 +179,7 @@ class SendDialog extends React.Component {
 SendDialog.propTypes={
     open:PropTypes.bool.isRequired,
     close:PropTypes.bool.isRequired,
-    file:PropTypes.array.isRequired
+    file:PropTypes.any
 }
 export default withStyles(styles)(SendDialog);
 
