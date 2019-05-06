@@ -2,6 +2,7 @@ import React from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
 
 import * as  OfficeRoutes from "../config/routes-constant/OfficeRoutes";
+import {ADVERTISER_DASHBOARD, DESK, E_OFFICE} from "../config/routes-constant/OfficeRoutes";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import pagesStyle from "../assets/jss/material-dashboard-pro-react/layouts/pagesStyle";
 
@@ -16,13 +17,18 @@ import ShopRenewal from "../views/shop/ShopRenewal";
 import HotelApplication from "../views/hotel/HotelApplication";
 import CheckLicense from "../views/landing-pages/license-checking/CheckLicense";
 import {LoginService} from "../services/LoginService";
-import {DESK} from "../config/routes-constant/OfficeRoutes";
-import {ADVERTISER_DASHBOARD} from "../config/routes-constant/OfficeRoutes";
 
 class LayoutLanding extends React.Component {
-    state = {
-        loading: false
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false
+        };
+        // console.log('Login', LoginService.isLogin());
+        if (LoginService.hasRole('administrator')) window.location.replace(E_OFFICE);
+        else if (LoginService.isStaff()) window.location.replace(DESK);
+        else if (LoginService.isAdvertiser()) window.location.replace(ADVERTISER_DASHBOARD);
+    }
 
     doLoad = () => {
         this.setState({loading: true})
@@ -34,7 +40,7 @@ class LayoutLanding extends React.Component {
 
     render() {
         const {classes, ...rest} = this.props;
-        // {LoginService.isStaff() ? window.location.replace(DESK) : null}
+        // console.log("User", localStorage.getItem('current_user'));
 
         return (
             <div className={classes.wrapper}>
