@@ -63,6 +63,7 @@ export class LoginService {
     const config = { headers: { "Authorization": `Bearer ${token}` } };
     try {
       let res = await axios.post(ApiRoutes.LOGIN_ROUTE, credential);
+      console.log("login request result",res)
       const { access_token } = res.data;
       if (res.data.status) {
         localStorage.clear()

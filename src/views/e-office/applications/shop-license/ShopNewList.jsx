@@ -5,37 +5,43 @@ import { Icon, Tooltip } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import PinDrop from "@material-ui/icons/PinDrop";
-import Assignment from "../ApplicationAssignmentDialog";
 import GMapDialog from "../../../../components/GmapDialog";
-import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import { ShopService } from "../../../../services/ShopService";
+import { FileService } from "../../../../services/FileService";
+import SendDialog from "../../../common/SendDialog";
 
 const styles = {
   button: {},
   actionIcon: {}
 };
-
+var timeout = null;
 class ShopNewList extends React.Component {
   shopService = new ShopService();
+  fileService = new FileService();
   state = {
     openAssignment: false,
     openDetail: false,
     openMap: false,
     openTakeFile: false,
-    detailData: [],
+
     shops: [],
-    shop: {},
+    file: null,
+
     takeMessage: "",
     errorMessage: "",
     lat: 93,
-    lng:98
+    lng: 98
   };
+
+  componentWillUnmount() {
+    clearTimeout(timeout)
+  }
 
   componentDidMount() {
     const { doLoad } = this.props;
-    doLoad(true)
+    doLoad(true);
     this.shopService.fetch()
       .then(shops => {
         this.setState({ shops: shops });
@@ -43,24 +49,30 @@ class ShopNewList extends React.Component {
       .catch(err => {
         this.setState({ errorMessage: err.toString() });
       })
-      .finally(()=>{
-        doLoad(false)
+      .finally(() => {
+        doLoad(false);
       });
   }
 
-  updateTable = (action, tableState) => {
-
+  openAssignment = (file, event) => {
+    this.setState({ openAssignment: true, file });
   };
-  openAssignment = (id) => {
-    this.setState({ openAssignment: true });
-  };
-  takeFile = (data) => {
-    this.setState({ openTakeFile: true, fileDetail: data.file });
+  takeFile = (file, event) => {
+    this.setState({ openTakeFile: true, file });
   };
   confirmTake = (e) => {
-    const { fileDetail } = this.state;
-    console.log(fileDetail)
-    this.setState({ openTakeFile: false });
+    const { file } = this.state;
+    const self = this;
+    this.setState({ openTakeFile: false, submit: true });
+    this.fileService.takeFile(file.id, errorMessage => this.setState({ errorMessage }),
+      takeMessage => {
+        timeout=setTimeout(function(handler) {
+          self.setState({ takeMessage });
+        }, 2000);
+      })
+      .finally(() => {
+        this.setState({ submit: false });
+      });
     this.setState({ takeMessage: "You have taken the file" });
   };
   closeAssignment = () => {
@@ -105,11 +117,11 @@ class ShopNewList extends React.Component {
                   <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, value)}>
+                            size="small" onClick={this.openAssignment.bind(this, data.file)}>
                   <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
+                            size="small" onClick={this.takeFile.bind(this, data.file)}>
                   <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
                 </IconButton>
               </div>
@@ -142,10 +154,10 @@ class ShopNewList extends React.Component {
         label: "DATE"
       }, {
         name: "name",
-        label: "SHOP NAME",
+        label: "SHOP NAME"
       }, {
         name: "owner",
-        label: "OWNER",
+        label: "OWNER"
       },
       {
         name: "shop",
@@ -159,7 +171,7 @@ class ShopNewList extends React.Component {
 
             let view = (
               <Tooltip title={"Click here to view location"}>
-                <IconButton onClick={e => this.setState({ openMap: true,lat:lat ,lng:lng})}>
+                <IconButton onClick={e => this.setState({ openMap: true, lat: lat, lng: lng })}>
                   <PinDrop/>
                 </IconButton>
               </Tooltip>
@@ -183,12 +195,11 @@ class ShopNewList extends React.Component {
             options={tableOptions}
           />
         </Grid>
-        <HoardingDetailDialog
-          hoarding={this.state.shop}
-          open={this.state.openDetail} onClose={(e) => this.setState({ openDetail: false })}/>
-        <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
-                    props={this.props} staffs={this.state.staffs}/>
-        <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng} onClose={() => this.setState({ openMap: false })}
+
+        <SendDialog file={this.state.file} open={this.state.openAssignment}
+                    close={e => this.setState({ openAssignment: false })}/>
+        <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
+                    onClose={() => this.setState({ openMap: false })}
                     isMarkerShown={true}
         />
         <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to take this file ?"}

@@ -18,6 +18,7 @@ import LoginIcon from "@material-ui/icons/ArrowRight";
 import Home from "@material-ui/icons/Home";
 import authNavbarStyle from "assets/jss/material-dashboard-pro-react/components/authNavbarStyle.jsx";
 import {Button, Fab, LinearProgress} from "@material-ui/core";
+import { HOME, LOGIN } from "../../config/routes-constant/OfficeRoutes";
 
 // core components
 
@@ -25,7 +26,8 @@ class AuthNavbar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false
+            open: false,
+            showLogin:false,
         };
     }
 
@@ -114,31 +116,50 @@ class AuthNavbar extends React.Component {
                     </Hidden>
                     <Hidden smDown>{list}</Hidden>
                     <Hidden mdUp>
-                        <Button
-                            className={classes.sidebarButton}
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={this.handleDrawerToggle}
-                        >
-                            <Menu/>
-                        </Button>
+                        {
+                            this.state.showLogin?
+                              <Button
+                                className={classes.sidebarButton}
+                                color="inherit"
+                                aria-label="open home"
+                                onClick={e=>{
+                                    history.push(HOME)
+                                    this.setState({showLogin:false})
+                                }}
+                              >
+                                  HOME
+                              </Button>
+                              :
+                              <Button
+                                className={classes.sidebarButton}
+                                color="inherit"
+                                aria-label="open login"
+                                onClick={e=>{
+                                    history.push(LOGIN)
+                                    this.setState({showLogin:true})
+                                }}
+                              >
+                                  Login
+                              </Button>
+                        }
+
                     </Hidden>
-                    <Hidden mdUp>
-                        <Drawer
-                            variant="temporary"
-                            anchor={"right"}
-                            open={this.state.open}
-                            classes={{
-                                paper: classes.drawerPaper
-                            }}
-                            onClose={this.handleDrawerToggle}
-                            ModalProps={{
-                                keepMounted: true // Better open performance on mobile.
-                            }}
-                        >
-                            {list}
-                        </Drawer>
-                    </Hidden>
+                    {/*<Hidden mdUp>*/}
+                    {/*    <Drawer*/}
+                    {/*        variant="temporary"*/}
+                    {/*        anchor={"right"}*/}
+                    {/*        open={this.state.open}*/}
+                    {/*        classes={{*/}
+                    {/*            paper: classes.drawerPaper*/}
+                    {/*        }}*/}
+                    {/*        onClose={this.handleDrawerToggle}*/}
+                    {/*        ModalProps={{*/}
+                    {/*            keepMounted: true // Better open performance on mobile.*/}
+                    {/*        }}*/}
+                    {/*    >*/}
+                    {/*        {list}*/}
+                    {/*    </Drawer>*/}
+                    {/*</Hidden>*/}
                 </Toolbar>
                 {
                     loading ? <LinearProgress variant={"indeterminate"} color={"secondary"}/> : undefined
