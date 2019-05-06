@@ -6,13 +6,20 @@ import MUIDataTable from "mui-datatables";
 import {ApiRoutes, FILE_CALL, FILE_TAKE} from "../../../config/ApiRoutes";
 import {DESK, FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
 import moment from "moment";
+import FileSendDialog from "../../common/SendDialog";
+import ConfirmDialog from "../../../components/ConfirmDialog";
 
 const currentUser = JSON.parse(localStorage.getItem('current_user'));
 
 class FileActiveList extends Component {
     state = {
         tableData: [],
+        openAssignment: false,
+        openCallFile: false,
+        openTakeFile: false,
+        id: '',
         loading: true,
+        file: [],
         error: false,
     };
 
@@ -43,29 +50,19 @@ class FileActiveList extends Component {
         history.push(FILE_DETAIL_ROUTE(id));
     };
 
-    openAssignment = (id) => {
-        this.getFile(id);
+    openAssignment = (data) => {
+        this.setState({file: data, openAssignment: true})
     };
 
-    closeAssignment = () => {
-        this.setState({currentFile: null, openAssignment: false});
+    takeFile = (data) => {
+        this.setState({file: data, openTakeFile: true})
     };
 
-    takeFile = (id) => {
-        axios.post(FILE_TAKE(id))
+    confirmTakeFile = () => {
+        axios.post(FILE_TAKE(this.state.file.id))
             .then(res => {
+                this.setState({openTakeFile: false});
                 window.location.replace(DESK);
-            })
-            .catch(err => {
-            })
-    };
-
-    getFile = (id) => {
-        axios.get(ApiRoutes.FILE + "/" + id)
-            .then(res => {
-                this.setState({file: res.data.data.files, openAssignment: true});
-            })
-            .catch(err => {
             })
     };
 
@@ -74,7 +71,6 @@ class FileActiveList extends Component {
             .then(res => {
                 if (res.data.status)
                     window.location.replace(DESK);
-                // console.log("res", res.data);
             })
             .catch(err => {
             })
@@ -150,6 +146,8 @@ class FileActiveList extends Component {
                     sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         let file_user_id = tableMeta.rowData[0];
+                        let {rowIndex} = tableMeta;
+                        let data = this.state.tableData[rowIndex];
                         let button = '';
 
                         if (file_user_id === null) {
@@ -160,14 +158,14 @@ class FileActiveList extends Component {
                                     <Icon fontSize="small">desktop_mac</Icon>
                                 </IconButton>
                                 <IconButton variant="contained" color="secondary" size="small"
-                                            onClick={this.openAssignment.bind(this, value)}>
+                                            onClick={this.openAssignment.bind(this, data)}>
                                     <Icon fontSize="small">send</Icon>
                                 </IconButton>
                             </>;
                         } else {
                             if (file_user_id !== currentUser.id) {
                                 button = <IconButton variant="contained" color="primary" size="small"
-                                                     onClick={this.callFile.bind(this, value)}><Icon
+                                                     onClick={this.callFile.bind(this, data)}><Icon
                                     fontSize="small">desktop_windows</Icon></IconButton>;
                             }
                         }
@@ -204,7 +202,21 @@ class FileActiveList extends Component {
             }
         }
 
-        return files;
+        return (
+            <>
+                {files}
+                <FileSendDialog open={this.state.openAssignment} close={this.closeAssignment} file={this.state.file}
+                                props={this.props}/>
+                <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"}
+                               message={"Do you want to call this file?"}
+                               onCancel={() => this.setState({openTakeFile: false})} open={this.state.openTakeFile}
+                               onConfirm={this.confirmTakeFile.bind(this)}/>
+                <ConfirmDialog primaryButtonText={"Call File"} title={"Confirmation"}
+                               message={"Do you want to call this file?"}
+                               onCancel={() => this.setState({openCallFile: false})} open={this.state.openCallFile}
+                               onConfirm={this.confirmCallFile.bind(this)}/>
+            </>
+        );
     }
 }
 

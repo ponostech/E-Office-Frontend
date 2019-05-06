@@ -38,18 +38,22 @@ class LayoutOffice extends React.Component {
                 routeList = <p>Route not Found!</p>;
                 break;
         }
-        return routeList;
+
+        return {
+            role: role,
+            routeList: routeList
+        }
     };
 
     render() {
-        let routeList = this.getRoute();
+        let data = this.getRoute();
         return (
             <Grid container justify={"center"}>
                 <Grid item xs={12} sm={12} md={12}>
-                    <HeaderOffice loading={this.state.loading} color={"primary"}/>
+                    <HeaderOffice role={data.role} loading={this.state.loading} color={"primary"}/>
                 </Grid>
                 <Grid item style={{marginTop: 70, minHeight: "90vh", background: "white"}} xs={12} sm={12} md={12}>
-                    {routeList}
+                    {data.routeList}
                 </Grid>
             </Grid>
         );

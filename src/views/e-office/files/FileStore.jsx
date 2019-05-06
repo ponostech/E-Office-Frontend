@@ -49,22 +49,22 @@ class FileStore extends Component {
     }
     componentDidMount() {
         document.title = "e-AMC | New File Form";
-        var self = this;
-        const { doLoad, doLoadFinish } = this.props;
-
-        doLoad();
-        timeout = setTimeout(function(handler) {
-            Promise.all([self.fetchGroupHead(), self.fetchDocuments(), self.fetchLocalCouncil()])
-              .then(function([cats, docs, lcs]) {
-                  console.log(lcs);
-                  // self.setState({ loading: false });
-              });
-            doLoadFinish();
-            // self.setState({ loading: false });
-        }, 4000);
-        let user = new SingletonAuth().getCurrentUser();
-
-        console.log(user)
+        // var self = this;
+        // const { doLoad, doLoadFinish } = this.props;
+        //
+        // doLoad();
+        // timeout = setTimeout(function(handler) {
+        //     Promise.all([self.fetchGroupHead(), self.fetchDocuments(), self.fetchLocalCouncil()])
+        //       .then(function([cats, docs, lcs]) {
+        //           console.log(lcs);
+        //           // self.setState({ loading: false });
+        //       });
+        //     doLoadFinish();
+        //     // self.setState({ loading: false });
+        // }, 4000);
+        // let user = new SingletonAuth().getCurrentUser();
+        //
+        // console.log(user)
     }
 
     fetchGroupHead = () => {
@@ -96,6 +96,7 @@ class FileStore extends Component {
         const {name, value} = e.target;
         this.setState({[name]: value});
     };
+
     handleSelectBlur = (identifier, value) => {
         switch (identifier) {
             case "dealingId":
