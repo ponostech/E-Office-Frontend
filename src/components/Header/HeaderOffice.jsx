@@ -1,5 +1,4 @@
 import React from "react";
-import cx from "classnames";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
 // @material-ui/core components
@@ -12,29 +11,26 @@ import MenuIcon from "@material-ui/icons/Menu";
 // core components
 import {Grid, IconButton, LinearProgress} from "@material-ui/core";
 import Button from "../CustomButtons/Button";
+import MenuAdminTop from "./E-Office/MenuAdminTop";
+import MenuOfficerTop from "./E-Office/MenuOfficerTop";
+import MenuInspectorTop from "./E-Office/MenuInspectorTop";
+import MenuClerkTop from "./E-Office/MenuClerkTop";
+import MenuAdminTopMobile from "./E-Office/MenuAdminTopMobile";
+import {LoginService} from "../../services/LoginService";
 
-import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
-import TopMenu from "./E-Office/TopMenu";
-import MobileTopMenu from "./E-Office/MobileTopMenu";
-
-const styles =  {
-
+const styles = {
     drawerPaper: {
-          width: "60%",
+        width: "60%",
     },
 };
 
-class OfficePageHeader extends React.Component {
+class HeaderOffice extends React.Component {
     state = {
-        openFile: false,
-        openDesk: false,
-        openReceipt: false,
-        openApplication: false,
-        anchorEl: null
+        open: false
     };
 
-    handleLinkClick  = (link) => {
-        const { history } = this.props;
+    handleLinkClick = (link) => {
+        const {history} = this.props;
         history.push(link);
     };
 
@@ -42,26 +38,34 @@ class OfficePageHeader extends React.Component {
         this.setState({open: !this.state.open});
     };
 
-    activeRoute (routeName) {
-        return this.props.location.pathname.indexOf(routeName) > -1 ? true : false;
-    };
-
-    closeMenu = (e) => {
-        this.setState({anchorEl: null, openFile: false, openReceipt: false, openApplication: false});
-    };
-
     render() {
-        const {classes, color,loading} = this.props;
-        const {anchorEl} = this.state;
-        const appBarClasses = cx({
-            [" " + classes[color]]: color
-        });
+        const {classes, loading} = this.props;
+        let menu = null;
+        let role = LoginService.getRole();
+
+        switch (role) {
+            case 'administrator':
+                menu = <MenuAdminTop linkClick={this.handleLinkClick}/>;
+                break;
+            case 'officer':
+                menu = <MenuOfficerTop linkClick={this.handleLinkClick}/>;
+                break;
+            case 'inspector':
+                menu = <MenuInspectorTop linkClick={this.handleLinkClick}/>;
+                break;
+            case 'clerk':
+                menu = <MenuClerkTop linkClick={this.handleLinkClick}/>;
+                break;
+            default:
+                menu = <p>Menu not Found!</p>;
+                break;
+        }
 
         return (
             <AppBar position="fixed" color={"inherit"}>
                 <Toolbar>
                     <Hidden mdUp>
-                        <div style={{flex:1}}>
+                        <div style={{flex: 1}}>
                             <Button href="#" color="transparent">
                                 E-AMC-OFFICE
                             </Button>
@@ -69,7 +73,7 @@ class OfficePageHeader extends React.Component {
                     </Hidden>
                     <Hidden smDown>
                         <Grid container justify={"space-between"}>
-                            <TopMenu routes={OfficeRoutes} linkClick={this.handleLinkClick}/>
+                            {menu}
                         </Grid>
                     </Hidden>
                     <Hidden mdUp>
@@ -92,14 +96,13 @@ class OfficePageHeader extends React.Component {
                                 }}
                                 onClose={this.handleDrawerToggle}
                                 ModalProps={{
-                                    keepMounted: true // Better open performance on mobile.
+                                    keepMounted: true
                                 }}
                             >
-                                <MobileTopMenu closeDrawer={()=>this.setState({open:false})} classes={classes}/>
+                                <MenuAdminTopMobile closeDrawer={() => this.setState({open: false})} classes={classes}/>
                             </Drawer>
                         </Hidden>
                     </Hidden>
-
                 </Toolbar>
                 {
                     loading ? <LinearProgress color={"primary"} variant={"indeterminate"}/> : undefined
@@ -109,9 +112,9 @@ class OfficePageHeader extends React.Component {
     }
 }
 
-OfficePageHeader.propTypes = {
+HeaderOffice.propTypes = {
     classes: PropTypes.object.isRequired,
     color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"])
 };
 
-export default withRouter(withStyles(styles)(OfficePageHeader));
+export default withRouter(withStyles(styles)(HeaderOffice));

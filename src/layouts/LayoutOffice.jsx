@@ -5,7 +5,7 @@ import officeStyle from "../assets/jss/material-dashboard-pro-react/layouts/offi
 import withStyles from "@material-ui/core/styles/withStyles";
 import * as OfficeRoutes from "../config/routes-constant/OfficeRoutes";
 
-import OfficePageHeader from "../components/Header/OfficePageHeader";
+import OfficePageHeader from "../components/Header/HeaderOffice";
 import ReceiptStore from "../views/e-office/receipt/ReceiptStore";
 import FileStore from "../views/e-office/files/FileStore";
 import ReceiptShow from "../views/e-office/receipt/ReceiptShow";
@@ -24,7 +24,7 @@ import FileArchivedList from "../views/e-office/files/FileArchivedList";
 import HoardingDetails from "../views/e-office/applications/hoarding/HoardingDetails";
 import AdvertiserDetails from "../views/e-office/applications/advertisers/AdvertiserDetails";
 import DeskView from "../views/e-office/desk/DeskView";
-import TradeStore from "../views/e-office/admin/TradeNew";
+import TradeNew from "../views/e-office/admin/TradeNew";
 import UnderProcessHoarding from "../views/e-office/applications/hoarding/HoardingUnderProcessList";
 import RejectedHoardingApplications from "../views/e-office/applications/hoarding/HoardingRejectedList";
 import ApprovedHoarding from "../views/e-office/applications/hoarding/HoardingApprovedList";
@@ -50,8 +50,8 @@ import HotelNewList from "../views/e-office/applications/hotel/HotelNewList";
 import AdvertiserApprovedList from "../views/e-office/applications/advertisers/AdvertiserApprovedList";
 import AdvertiserRejectedList from "../views/e-office/applications/advertisers/AdvertiserRejectedList";
 import AdvertiserCanceledList from "../views/e-office/applications/advertisers/AdvertiserCanceledList";
-import TradeNew from "../views/e-office/admin/TradeNew";
 import TradeList from "../views/e-office/admin/TradeList";
+
 class LayoutOffice extends React.Component {
     state = {
         loading: false
@@ -62,13 +62,8 @@ class LayoutOffice extends React.Component {
     };
 
     render() {
-        const currentUser = JSON.parse(localStorage.getItem('current_user'));
-        // console.log(currentUser);
-
-        let test = <Redirect to={OfficeRoutes.ADVERTISER_LOGIN}/>;
         return (
             <Grid container justify={"center"}>
-                {!(currentUser && currentUser.staff != null) ? test : null}
                 <Grid item xs={12} sm={12} md={12}>
                     <OfficePageHeader loading={this.state.loading} color={"primary"}/>
                 </Grid>
@@ -109,7 +104,7 @@ class LayoutOffice extends React.Component {
                            render={e => <AdvertiserApprovedList doLoad={this.doLoad}/>}/>
                     <Route exact path={OfficeRoutes.ADVERTISER_REJECT_LIST}
                            render={e => <AdvertiserRejectedList doLoad={this.doLoad}/>}/>
-                           <Route exact path={OfficeRoutes.ADVERTISER_CANCEL_LIST}
+                    <Route exact path={OfficeRoutes.ADVERTISER_CANCEL_LIST}
                            render={e => <AdvertiserCanceledList doLoad={this.doLoad}/>}/>
 
                     {/*Hoarding*/}
