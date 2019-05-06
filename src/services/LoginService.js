@@ -3,13 +3,22 @@ import { ApiRoutes } from "../config/ApiRoutes";
 // import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
 export class LoginService {
-  static  user = JSON.parse(localStorage.getItem('current_user'));
+  static token = localStorage.getItem('access_token');
+  static user = JSON.parse(localStorage.getItem('current_user'));
+  static isGuest() {
+    return (this.user == null);
+  }
+  static isLogin() {
+    return this.token != null;
+  }
   static isStaff() {
-    return true;
-    // return (this.user !== null && this.user.staff !== undefined);
+    return (this.user !== null && this.user.staff !== null);
+  }
+  static isAdvertiser() {
+    return (this.user !== null && this.user.advertiser !== null);
   }
   static getRole() {
-    return this.user.roles[0].slug;
+    return this.isLogin() ? this.user.roles[0].slug : 'guest';
   }
   static hasRole(roleName) {
     let userData=localStorage.getItem("current_user");
