@@ -114,10 +114,12 @@ class HotelUnderProcessList extends React.Component {
                         const {rowIndex} = tableMeta;
                         const data = this.state.shops[rowIndex];
                         const shopName = data.name;
+                        const address = data.address;
                         return (
                             <ul style={{listStyleType: "none", padding: 0}}>
                                 <li><strong>Applicant: </strong>{value}</li>
                                 <li><strong>Shop Name: </strong>{shopName}</li>
+                                <li><strong>Proposed Location: </strong>{address}</li>
                             </ul>
                         )
                     }

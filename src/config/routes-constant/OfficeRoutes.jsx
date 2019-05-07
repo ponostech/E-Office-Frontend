@@ -48,6 +48,9 @@ export const FILE_IN_ACTIVE_LIST = "/e-office/files/new";
 export const FILE_DETAIL_ROUTE = (id) => {
     return `/e-office/file/${id}/detail`;
 };
+export const SHOP_DETAIL_ROUTE = (id) => {
+    return `/e-office/applications/shop-license/${id}/new`;
+};
 export const FILE_SEND = (id) => {
     return `/file/${id}/send`;
 };
