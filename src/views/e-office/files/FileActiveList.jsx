@@ -8,6 +8,7 @@ import {DESK, FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRou
 import moment from "moment";
 import FileSendDialog from "../../common/SendDialog";
 import ConfirmDialog from "../../../components/ConfirmDialog";
+import LoadingView from "../../common/LoadingView";
 
 const currentUser = JSON.parse(localStorage.getItem('current_user'));
 
@@ -186,7 +187,7 @@ class FileActiveList extends Component {
             },
         ];
 
-        let files = '';
+        let files = <LoadingView/>;
 
         if (!this.state.loading) {
             if (!this.state.error) {

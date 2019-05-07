@@ -8,8 +8,9 @@ import {FILE_DETAIL_ROUTE, DESK} from "../../../config/routes-constant/OfficeRou
 import FileSendDialog from '../../common/SendDialog';
 import moment from "moment";
 import ConfirmDialog from "../../../components/ConfirmDialog";
+import LoadingView from "../../common/LoadingView";
 
-class FileInActiveList extends Component {
+class FileNewList extends Component {
     state = {
         tableData: [],
         openAssignment: false,
@@ -94,7 +95,7 @@ class FileInActiveList extends Component {
                 label: "CREATED ON",
                 options: {
                     filter: false,
-                    customBodyRender: (value, meta, updateValue) => {
+                    customBodyRender: (value) => {
                         return moment(value).format("Do MMMM YYYY");
                     }
                 }
@@ -109,7 +110,7 @@ class FileInActiveList extends Component {
                 options: {
                     filter: false,
                     sort: false,
-                    customBodyRender: (value, tableMeta, updateValue) => {
+                    customBodyRender: (value, tableMeta) => {
                         let {rowIndex} = tableMeta;
                         let data = this.state.tableData[rowIndex];
                         return (
@@ -133,9 +134,7 @@ class FileInActiveList extends Component {
             },
         ];
 
-
-        let files = '';
-
+        let files = <LoadingView/>;
         if (!this.state.loading) {
             if (!this.state.error) {
                 files = (
@@ -166,4 +165,4 @@ class FileInActiveList extends Component {
     }
 }
 
-export default withRouter(FileInActiveList);
+export default withRouter(FileNewList);
