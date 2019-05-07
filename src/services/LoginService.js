@@ -79,4 +79,11 @@ export class LoginService {
     }
   }
 
+  forgotPassword(email, errorCallback, successCallback) {
+    setTimeout(function(handler) {
+      successCallback("scuk")
+
+    },3000);
+
+  }
 }

@@ -34,10 +34,6 @@ class ProfileLayout extends Component {
                                                 tabButton: "Change Password",
                                                 tabIcon: UserIcon,
                                                 tabContent: (<ChangePassword/>)
-                                            }, {
-                                                tabButton: "Notification",
-                                                tabIcon: NotificationIcon,
-                                                tabContent: (<NotesheetList/>)
                                             }
                                         ]}
                                     />

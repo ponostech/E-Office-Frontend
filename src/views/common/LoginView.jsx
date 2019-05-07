@@ -13,6 +13,7 @@ import OfficeSnackbar from "../../components/OfficeSnackbar";
 import { Validators } from "../../utils/Validators";
 import { authContext } from "../../context/AuthContext";
 import { LoginService } from "../../services/LoginService";
+import { FORGOT_PASSWORD } from "../../config/routes-constant/OfficeRoutes";
 
 const style = {
   root: {
@@ -99,6 +100,10 @@ class LoginView extends Component {
       this.doLogin(e);
     }
   };
+  handleForgot=(e)=>{
+    const { history } = this.props;
+    history.push(FORGOT_PASSWORD)
+  }
   doLogin = (setUser, e) => {
     const invalid = Boolean(this.state.emailError) || Boolean(this.state.passwordError);
     const { email, password } = this.state;
@@ -186,7 +191,7 @@ class LoginView extends Component {
             </GridItem>
             <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
             <GridContainer justify={"center"}>
-              <Button variant={"text"} color={"primary"}>Forgot password?</Button>
+              <Button onClick={this.handleForgot.bind(this)} variant={"text"} color={"primary"}>Forgot password?</Button>
             </GridContainer>
           </Card>
 

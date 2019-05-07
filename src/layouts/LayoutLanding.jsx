@@ -17,6 +17,7 @@ import ShopRenewal from "../views/shop/ShopRenewal";
 import HotelApplication from "../views/hotel/HotelApplication";
 import CheckLicense from "../views/landing-pages/license-checking/CheckLicense";
 import {LoginService} from "../services/LoginService";
+import ForgotPassword from "../views/common/ForgotPassword";
 
 class LayoutLanding extends React.Component {
     constructor(props) {
@@ -50,6 +51,7 @@ class LayoutLanding extends React.Component {
                     <div className={classes.container}>
                         <Switch>
                             <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
+                            <Route exact={true} path={OfficeRoutes.FORGOT_PASSWORD} component={ForgotPassword}/>
 
                             <Route exact={true} path={OfficeRoutes.APPLY_HOTEL_LICENSE}
                                    render={() => <HotelApplication doLoad={this.doLoad.bind(this)}
