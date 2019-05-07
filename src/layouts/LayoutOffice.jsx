@@ -35,6 +35,7 @@ class LayoutOffice extends React.Component {
                 routeList = <RouteListClerk linkClick={this.handleLinkClick} doLoad={this.doLoad}/>;
                 break;
             default:
+                this.clearLocalStorage();
                 routeList = <p>Route not Found!</p>;
                 break;
         }
@@ -43,6 +44,11 @@ class LayoutOffice extends React.Component {
             role: role,
             routeList: routeList
         }
+    };
+
+    clearLocalStorage = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('current_user');
     };
 
     render() {
