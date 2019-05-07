@@ -70,7 +70,7 @@ const customDropdownStyle = theme => ({
     border: "0",
     boxShadow: "0 2px 5px 0 rgba(" + hexToRgb(blackColor) + ", 0.26)",
     top: "100%",
-    zIndex: "1000",
+    zIndex: "1800",
     minWidth: "160px",
     padding: "5px 0",
     margin: "2px 0 0",
@@ -84,7 +84,7 @@ const customDropdownStyle = theme => ({
     padding: "0"
   },
   pooperResponsive: {
-    zIndex: "1200",
+    zIndex: "1400",
     [theme.breakpoints.down("sm")]: {
       zIndex: "1640",
       position: "static",
