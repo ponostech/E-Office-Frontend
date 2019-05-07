@@ -5,7 +5,6 @@ import cx from "classnames";
 import withStyles from "@material-ui/core/styles/withStyles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-
 import footerStyle from "assets/jss/material-dashboard-pro-react/components/footerStyle";
 
 function Footer({...props}) {
@@ -30,23 +29,18 @@ function Footer({...props}) {
                 <div className={classes.left}>
                     <List className={classes.list}>
                         <ListItem className={classes.inlineBlock}>
-                            <a href="#home" className={block}>
-                                Link
+                            <a href="https://amcmizoram.com" target="_blank" className={block}>
+                                AMC Website
                             </a>
                         </ListItem>
                         <ListItem className={classes.inlineBlock}>
-                            <a href="#company" className={block}>
-                                Link
+                            <a href="https://obpas.amcmizoram.com" className={block}>
+                                OBPAS
                             </a>
                         </ListItem>
                         <ListItem className={classes.inlineBlock}>
-                            <a href="#portfolio" className={block}>
-                               Link
-                            </a>
-                        </ListItem>
-                        <ListItem className={classes.inlineBlock}>
-                            <a href="#blog" className={block}>
-                               LINK
+                            <a href="https://amcmizoram.com/page/about-us" className={block}>
+                                About Us
                             </a>
                         </ListItem>
                     </List>
