@@ -13,6 +13,7 @@ import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import {ShopService} from "../../../../services/ShopService";
 import ApplicationState from "../../../../utils/ApplicationState";
 import LoadingView from "../../../common/LoadingView";
+import ShopApplicationDialog from "../../../common/ShopApplicationDialog";
 
 const styles = {
   button: {},
@@ -27,7 +28,9 @@ class ShopNewList extends React.Component {
     openMap: false,
     openTakeFile: false,
     detailData: [],
+
     shops: [],
+    application:null,
     shop: {},
     takeMessage: "",
     errorMessage: "",
@@ -181,7 +184,7 @@ class ShopNewList extends React.Component {
               <div>
                 <IconButton className={classes.button} color="primary" size="small"
                             aria-label="View Details"
-                            onClick={e => this.setState({shop: data, openDetail: true})}>
+                            onClick={e => this.setState({application:data})}>
                   <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="secondary"
@@ -221,6 +224,7 @@ class ShopNewList extends React.Component {
           hoarding={this.state.shop}
           open={this.state.openDetail} onClose={(e) => this.setState({openDetail: false})}/>
 
+          <ShopApplicationDialog open={Boolean(this.state.application)} onClose={e=>this.setState({application:null})} application={this.state.application}/>
         <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
                     props={this.props} staffs={this.state.staffs}/>
 

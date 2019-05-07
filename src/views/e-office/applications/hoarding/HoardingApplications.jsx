@@ -16,6 +16,7 @@ import ApplicationState from "../../../../utils/ApplicationState";
 import { StaffService } from "../../../../services/StaffService";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
 import SendDialog from "../../../common/SendDialog";
+import HoardingApplicationDialog from "../../../common/HoardingApplicationDialog";
 
 const styles = {
   button: {},
@@ -37,6 +38,7 @@ class HoardingApplications extends React.Component {
 
     hoardings: [],
     file: null,
+    application:null,
 
     takeMessage: "",
     errorMessage: "",
@@ -132,7 +134,7 @@ class HoardingApplications extends React.Component {
               <>
                 <Tooltip title={"Click her to view detail of file"}>
                   <IconButton color="primary" size="small"
-                              aria-label="View Details" onClick={this.viewDetail.bind(this, application)}>
+                              aria-label="View Details" onClick={e=>this.setState({application:true})}>
                     <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
                 </Tooltip>
@@ -227,7 +229,7 @@ class HoardingApplications extends React.Component {
                     isMarkerShown={true}
         />
 
-        {/*<HoardingApplicationDialog open={Boolean(this.state.hoarding)} onClose={()=>this.setState({hoarding:null})} application={this.state.hoarding} />*/}
+        <HoardingApplicationDialog open={Boolean(this.state.application)} onClose={()=>this.setState({application:null})} application={this.state.application} />
         <SendDialog open={this.state.openAssignment} close={() => this.setState({ file: null,openAssignment:false })}
                     file={this.state.file}/>
 

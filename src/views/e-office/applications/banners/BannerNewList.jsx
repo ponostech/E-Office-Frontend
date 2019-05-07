@@ -13,6 +13,7 @@ import { FileService } from "../../../../services/FileService";
 import { NEW_BANNER } from "../../../../config/routes-constant/OfficeRoutes";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { withRouter } from "react-router-dom";
+import BannerApplicationDialog from "../../../common/BannerApplicationDialog";
 
 const styles = {
   button: {},
@@ -26,10 +27,10 @@ class BannerNewList extends React.Component {
   state = {
     banners: [],
     file: null,
+    application: null,
 
     submit: false,
     openAssignment: false,
-    openDetail: false,
     openMap: false,
     openTakeFile: false,
 
@@ -109,7 +110,7 @@ class BannerNewList extends React.Component {
                 <Tooltip title={"Click here to view details"}>
                   <IconButton className={classes.button} color="primary" size="small"
                               aria-label="View Details"
-                              onClick={e => this.setState({ banner: data.file, openDetail: true })}>
+                              onClick={e =>this.setState({application:data})}>
                     <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                   </IconButton>
                 </Tooltip>
@@ -173,6 +174,7 @@ class BannerNewList extends React.Component {
           />
         </Grid>
 
+        <BannerApplicationDialog open={Boolean(this.state.application)} onClose={e=>this.setState({application:null})} application={this.state.application}/>
         <SendDialog close={e => this.setState({ openAssignment: false, file: null })} file={this.state.file}
                     open={this.state.openAssignment}/>
 
