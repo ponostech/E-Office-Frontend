@@ -206,7 +206,7 @@ class ShopNewList extends React.Component {
     let table = <LoadingView/>;
     if (!this.state.loading)
       table = <MUIDataTable
-        title={"HOTEL & LODGING LICENSE: List of Under Process Application"}
+        title={"SHOP LICENSE: List of New Application"}
         data={shops}
         columns={tableColumns}
         options={tableOptions}
