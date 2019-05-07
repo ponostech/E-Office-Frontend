@@ -64,7 +64,7 @@ export class HotelService {
       if (status) {
         const res = await axios.get(ApiRoutes.STAFF_HOTEL+`?status=${status}`, config);
         console.log(res)
-        hoardings = res.data.data.hotels;
+        hoardings = res.data.data.shops;
       } else {
         const defRes = await axios.get(ApiRoutes.STAFF_HOTEL, config);
         hoardings = defRes.data.data.shops;

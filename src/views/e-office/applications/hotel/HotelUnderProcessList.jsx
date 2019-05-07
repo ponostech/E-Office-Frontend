@@ -10,7 +10,7 @@ import GMapDialog from "../../../../components/GmapDialog";
 import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
-import {ShopService} from "../../../../services/ShopService";
+import {HotelService} from "../../../../services/HotelService";
 import ApplicationState from "../../../../utils/ApplicationState";
 import LoadingView from "../../../common/LoadingView";
 
@@ -20,15 +20,14 @@ const styles = {
 };
 
 class HotelUnderProcessList extends React.Component {
-    shopService = new ShopService();
+    hotelService = new HotelService();
     state = {
         openAssignment: false,
         openDetail: false,
         openMap: false,
         openTakeFile: false,
-        detailData: [],
-        shops: [],
-        shop: {},
+        hotels: [],
+        hotel: {},
         takeMessage: "",
         errorMessage: "",
         lat: 93,
@@ -39,9 +38,10 @@ class HotelUnderProcessList extends React.Component {
     componentDidMount() {
         const {doLoad} = this.props;
         doLoad(true);
-        this.shopService.fetch(ApplicationState.UNDER_PROCESS_APPLICATION)
-            .then(shops => {
-                this.setState({shops: shops});
+        this.hotelService.fetch(ApplicationState.UNDER_PROCESS_APPLICATION)
+            .then(hotels => {
+                //console.log('data', hotels)
+                this.setState({hotels: hotels});
             })
             .catch(err => {
                 this.setState({errorMessage: err.toString()});
@@ -76,7 +76,7 @@ class HotelUnderProcessList extends React.Component {
 
     render() {
         const {classes} = this.props;
-        const {shops} = this.state;
+        const {hotels} = this.state;
         const tableOptions = {
             filterType: "checkbox",
             responsive: "scroll",
@@ -112,7 +112,7 @@ class HotelUnderProcessList extends React.Component {
                 options: {
                     customBodyRender: (value, tableMeta, updatedValue) => {
                         const {rowIndex} = tableMeta;
-                        const data = this.state.shops[rowIndex];
+                        const data = this.state.hotels[rowIndex];
                         const shopName = data.name;
                         const address = data.address;
                         return (
@@ -173,7 +173,7 @@ class HotelUnderProcessList extends React.Component {
                     sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         const {rowIndex} = tableMeta;
-                        const data = this.state.shops[rowIndex];
+                        const data = this.state.hotels[rowIndex];
                         const lat = Number(data.latitude);
                         const lng = Number(data.longitude);
 
@@ -181,7 +181,7 @@ class HotelUnderProcessList extends React.Component {
                             <div>
                                 <IconButton className={classes.button} color="primary" size="small"
                                             aria-label="View Details"
-                                            onClick={e => this.setState({shop: data, openDetail: true})}>
+                                            onClick={e => this.setState({hotel: data, openDetail: true})}>
                                     <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                                 </IconButton>
                                 <IconButton variant="contained" className={classes.button} color="secondary"
@@ -207,7 +207,7 @@ class HotelUnderProcessList extends React.Component {
         if (!this.state.loading)
             table = <MUIDataTable
                 title={"HOTEL & LODGING LICENSE: List of Under Process Application"}
-                data={shops}
+                data={hotels}
                 columns={tableColumns}
                 options={tableOptions}
             />;
@@ -218,10 +218,10 @@ class HotelUnderProcessList extends React.Component {
                     {table}
                 </Grid>
                 <HoardingDetailDialog
-                    hoarding={this.state.shop}
+                    hoarding={this.state.hotel}
                     open={this.state.openDetail} onClose={(e) => this.setState({openDetail: false})}/>
 
-                <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
+                <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.hotel}
                             props={this.props} staffs={this.state.staffs}/>
 
                 <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}

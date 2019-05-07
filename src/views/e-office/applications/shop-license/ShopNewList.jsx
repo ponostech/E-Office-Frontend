@@ -137,6 +137,7 @@ class ShopNewList extends React.Component {
       {
         name: "name",
         label: "Name of Shop",
+        address:"address",
         options: {
           display: 'excluded',
           searchable: true,
