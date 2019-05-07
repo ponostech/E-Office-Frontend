@@ -52,7 +52,7 @@ class FileDetail extends Component {
             .then(res => {
                 let data = res.data;
                 if (data.status === true)
-                    this.setState({file: data.data.files, menus: data.data.menus, loading: false});
+                    this.setState({file: data.data.file, menus: data.data.menus, loading: false});
                 else
                     this.setState({error: true});
                 this.props.doLoad(false);
