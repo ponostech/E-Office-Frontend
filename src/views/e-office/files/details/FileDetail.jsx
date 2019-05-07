@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import axios from 'axios';
 import {withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import LeftMenu from "./Menu/FileLeftMenu";
+import FileMenuLeft from "./Menu/FileMenuLeft";
+import FileMenuRight from "./Menu/FileMenuRight";
 import {Route, withRouter} from "react-router-dom";
 import * as OfficeRoutes from "../../../../config/routes-constant/OfficeRoutes";
 import NoteSheet from "../notesheet/Notesheet";
@@ -50,6 +51,7 @@ class FileDetail extends Component {
     getData(id) {
         axios.get(ApiRoutes.FILE_DETAIL + "/" + id)
             .then(res => {
+                console.log("file", res);
                 let data = res.data;
                 if (data.status === true)
                     this.setState({file: data.data.file, menus: data.data.menus, loading: false});
@@ -59,12 +61,14 @@ class FileDetail extends Component {
                 console.log('file data: ', res);
             })
             .catch(err => {
+                console.log("file", err);
+
                 this.props.doLoad(false);
                 this.setState({error: true, loading: false});
             });
     }
 
-    toggleContent = (name) => {
+    handleItemClick = (name) => {
         const {history} = this.props;
         if (this.state.file.id)
             history.push("/e-office/file/" + this.state.file.id + "/detail/" + name);
@@ -76,7 +80,8 @@ class FileDetail extends Component {
 
         const view = (
             <>
-                <LeftMenu click={this.toggleContent} menus={this.state.menus}/>
+                <FileMenuLeft click={this.handleItemClick} menus={this.state.menus}/>
+                <FileMenuRight click={this.handleItemClick} menus={this.state.menus}/>
                 <main className={classes.content}>
                     <Grid item xs={12} md={12} lg={12}>
                         <Route path={OfficeRoutes.FILE_DETAIL + "/notesheet"}
