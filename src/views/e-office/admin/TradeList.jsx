@@ -4,11 +4,11 @@ import Grid from "@material-ui/core/Grid";
 import { Tooltip } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-import ConfirmDialog from "../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { TradeService } from "../../../services/TradeService";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import TradeEditDialog from "./TradeEditDialog";
 
 const styles = {
   button: {},
@@ -18,42 +18,32 @@ const styles = {
 class TradeList extends React.Component {
   tradeService = new TradeService();
   state = {
-    openDetail: false,
     trades: [],
-    trade: {},
-    errorMessage: ""
+    trade: null,
+
+    errorMessage: "",
+    successMessage: ""
   };
 
   componentDidMount() {
     const { doLoad } = this.props;
     doLoad(true);
 
-    this.tradeService.fetch(errorMessage => this.setState({ errorMessage }), trades => this.setState({ trades }))
+    this.tradeService.all(errorMessage => this.setState({ errorMessage }), trades => this.setState({ trades }))
       .finally(() => doLoad(false));
   }
 
-  openAssignment = (id) => {
-    this.setState({ openAssignment: true });
-  };
-  takeFile = (data) => {
-    this.setState({ openTakeFile: true, fileDetail: data.file });
-  };
-  confirmTake = (e) => {
-    const { fileDetail } = this.state;
-    console.log(fileDetail);
-    this.setState({ openTakeFile: false });
-    this.setState({ takeMessage: "You have taken the file" });
-  };
-  closeAssignment = () => {
-    this.setState({ openAssignment: false });
-  };
-
-  viewDetail = (id) => {
-    this.setState({ openDetail: true });
-  };
-  closeDetail = () => {
-    this.setState({ openDetail: false });
-  };
+  handleUpdate=(trade)=>{
+    this.setState({trade:null})
+    if (!trade) {
+      return
+    }
+    console.log(trade);
+    this.tradeService.update(trade,
+      errorMessage=>this.setState({errorMessage}),
+      successMessage=>this.setState({successMessage}))
+      .finally(()=>console.info("trade update request complete"))
+  }
 
   render() {
     const { classes } = this.props;
@@ -80,7 +70,7 @@ class TradeList extends React.Component {
             return (
               <div>
                 <Tooltip title={"Edit Trade"}>
-                  <IconButton>
+                  <IconButton onClick={e=>this.setState({trade:data})}>
                     <EditIcon color={"action"}/>
                   </IconButton>
                 </Tooltip>
@@ -96,22 +86,21 @@ class TradeList extends React.Component {
       },
       {
         name: "name",
-        label: "NAME OF TRADE",
-         }, {
+        label: "NAME OF TRADE"
+      }, {
         name: "rate",
-        label: "Rate"
-      },  {
+        label: "RATEs"
+      }, {
         name: "fla",
-        label: "FLA Required",
+        label: "FLA REQUIRED",
         options: {
           customBodyRender: (fla, tableMeta, updateValue) => {
             return (
-              (fla===0 ? "Yes" : "No")
-
+              (fla === 0 ? "Yes" : "No")
             );
           }
         }
-         },
+      }
 
     ];
 
@@ -125,12 +114,10 @@ class TradeList extends React.Component {
             options={tableOptions}
           />
         </Grid>
+        <TradeEditDialog open={Boolean(this.state.trade)} onClose={this.handleUpdate} trade={this.state.trade}/>
 
-        <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to take this file ?"}
-                       onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
-                       onConfirm={this.confirmTake.bind(this)}/>
-        <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
-                        onClose={e => this.setState({ takeMessage: "" })} open={Boolean(this.state.takeMessage)}/>
+        <OfficeSnackbar variant={"success"} message={this.state.successMessage}
+                        onClose={e => this.setState({ takeMessage: "" })} open={Boolean(this.state.successMessage)}/>
         <OfficeSnackbar variant={"error"} message={this.state.errorMessage}
                         onClose={e => this.setState({ errorMessage: "" })} open={Boolean(this.state.errorMessage)}/>
       </>

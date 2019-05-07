@@ -56,4 +56,7 @@ export class ApiRoutes {
   static FILE_DETAIL="/files";
   static CREATE_TRADE="/trades";
   static GET_TRADE="/trades";
+  static UPDATE_TRADE=(id)=>{
+    return `/trades/${id}`
+  };
 }
