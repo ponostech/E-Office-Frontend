@@ -14,7 +14,7 @@ import FileDetail from "../../views/e-office/files/details/FileDetail";
 import FileCreatedList from "../../views/e-office/files/FileCreatedList";
 import FileSentList from "../../views/e-office/files/FileSentList";
 import FileActiveList from "../../views/e-office/files/FileActiveList";
-import FileInActiveList from "../../views/e-office/files/FileNewList";
+import FileNewList from "../../views/e-office/files/FileNewList";
 import FileClosedList from "../../views/e-office/files/FileClosedList";
 import FileArchivedList from "../../views/e-office/files/FileArchivedList";
 import HoardingDetails from "../../views/e-office/applications/hoarding/HoardingDetails";
@@ -70,7 +70,7 @@ const routes = (props) => {
             <Route exact path={OfficeRoutes.FILE_ACTIVE_LIST}
                    render={e => <FileActiveList {...props} doLoad={props.doLoad}/>}/>
             <Route exact path={OfficeRoutes.FILE_IN_ACTIVE_LIST}
-                   render={e => <FileInActiveList {...props} doLoad={props.doLoad}/>}/>
+                   render={e => <FileNewList {...props} doLoad={props.doLoad}/>}/>
             <Route exact path={OfficeRoutes.FILE_CLOSED_LIST}
                    render={e => <FileClosedList {...props} doLoad={props.doLoad}/>}/>
             <Route exact path={OfficeRoutes.FILE_ARCHIVED_LIST}

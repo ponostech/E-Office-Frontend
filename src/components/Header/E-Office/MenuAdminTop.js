@@ -137,14 +137,18 @@ const menu = (props) => {
                 <Typography variant={"caption"}
                             color={"textSecondary"}>Hello {currentUser.staff.name} ({currentUser.staff.designation})</Typography>
                 <IconButton><Icon>account_circle_rounded</Icon></IconButton>
-                <NavLink to={OfficeRoutes.SETTING}><IconButton><Icon>settings</Icon></IconButton></NavLink>
+                <NavLink to={OfficeRoutes.SETTING}>
+                    <IconButton><Icon>settings</Icon></IconButton>
+                </NavLink>
 
                 <Tooltip title={"Click here to log user out"}>
-                    <IconButton onClick={() => {
+                    <IconButton style={{color:"red"}} onClick={() => {
                         new LoginService()
                             .logout(errorMessage => console.log(errorMessage), successMessage => history.push(OfficeRoutes.HOME))
                             .finally(() => console.log("log out request has been made"));
-                    }}><Icon>power_settings_new</Icon></IconButton>
+                    }}>
+                        <Icon>power_settings_new</Icon>
+                    </IconButton>
                 </Tooltip>
             </div>
         </>
