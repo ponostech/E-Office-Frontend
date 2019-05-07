@@ -18,7 +18,7 @@ const styles = theme => ({
 const notesheetCreateButton = (props) => {
     const {classes} = props;
     return (
-        <Button variant="contained" size="small" color="primary" className={classes.button} onClick={props.click}>
+        <Button size="small" color="primary" className={classes.button} onClick={props.click}>
             Create Note <Icon className={classes.rightIcon}>add</Icon>
         </Button>
     );
