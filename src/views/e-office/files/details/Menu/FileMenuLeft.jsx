@@ -145,17 +145,6 @@ class FileMenuLeft extends React.Component {
                         )) : null}
                     </List>
                     <Divider/>
-                    <List>
-                        {menus.create ? menus.create.map((item) => (
-                            <>
-                                <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
-                                    <ListItemIcon><Icon>{item.icon ? item.icon : 'create'}</Icon></ListItemIcon>
-                                    <ListItemText primary={item.name}/>
-                                </ListItem>
-                            </>
-                        )) : null}
-                    </List>
-                    <Divider/>
                     <br/>
                 </Drawer>
             </>

@@ -31,13 +31,11 @@ class TradeNew extends Component {
         flas: [
             { value: 0, label: "No" },
             { value: 1, label: "Yes" },
-
         ],
     };
 
     componentDidMount() {
-
-
+        
     }
 
     handleChange = (e) => {
