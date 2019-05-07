@@ -51,6 +51,7 @@ class FileDetail extends Component {
             .then(res => {
                 this.setState({file: res.data.data.files, loading: false});
                 this.props.doLoad(false);
+                console.log(res);
             })
             .catch(error => {
                 this.props.doLoad(false);

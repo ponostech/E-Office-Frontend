@@ -14,7 +14,7 @@ import FileDetail from "../../views/e-office/files/details/FileDetail";
 import FileCreatedList from "../../views/e-office/files/FileCreatedList";
 import FileSentList from "../../views/e-office/files/FileSentList";
 import FileActiveList from "../../views/e-office/files/FileActiveList";
-import FileInActiveList from "../../views/e-office/files/FileInActiveList";
+import FileInActiveList from "../../views/e-office/files/FileNewList";
 import FileClosedList from "../../views/e-office/files/FileClosedList";
 import FileArchivedList from "../../views/e-office/files/FileArchivedList";
 import HoardingDetails from "../../views/e-office/applications/hoarding/HoardingDetails";

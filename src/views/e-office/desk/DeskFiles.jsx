@@ -20,7 +20,7 @@ class DeskFiles extends Component {
         this.getFiles();
     }
 
-    getFiles() {
+    getFiles = () => {
         axios.get(ApiRoutes.DESK)
             .then(res => {
                 this.setState({tableData: res.data.data.files, loading: false});
@@ -32,7 +32,7 @@ class DeskFiles extends Component {
                 this.props.doLoad(false);
                 console.log('Desk Axios Error: ', err);
             });
-    }
+    };
 
     viewDetail = (id) => {
         const {history} = this.props;
