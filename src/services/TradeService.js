@@ -61,6 +61,7 @@ export class TradeService {
         errorCallback(ErrorToString(res.data.messages));
       }
     } catch (e) {
+      console.error(e)
       errorCallback(e.toString());
     }
   }

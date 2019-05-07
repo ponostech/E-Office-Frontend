@@ -13,6 +13,7 @@ import SendDialog from "../../../common/SendDialog";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
 import { FileService } from "../../../../services/FileService";
 import { withRouter } from "react-router-dom";
+import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 
 const styles = {
   button: {},
@@ -27,6 +28,7 @@ class KioskNewList extends React.Component {
 
     kiosks: [],
     file: null,
+    application: null,
     takeMessage: "",
     errorMessage: "",
     lat: 93,
@@ -118,7 +120,7 @@ class KioskNewList extends React.Component {
               <div>
                 <IconButton className={classes.button} color="primary" size="small"
                             aria-label="View Details"
-                            onClick={e => this.setState({ kiosk: data.kiosk, openDetail: true })}>
+                            onClick={e => this.setState({ application:data})}>
                   <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="secondary"
@@ -203,6 +205,7 @@ class KioskNewList extends React.Component {
           />
         </Grid>
 
+        <KioskApplicationDialog open={Boolean(this.state.application)} onClose={()=>this.setState({application:null})} application={this.state.application}/>
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                     onClose={() => this.setState({ openMap: false })}
                     isMarkerShown={true}

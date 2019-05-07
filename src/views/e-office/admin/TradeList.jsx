@@ -89,7 +89,7 @@ class TradeList extends React.Component {
         label: "NAME OF TRADE"
       }, {
         name: "rate",
-        label: "RATEs"
+        label: "RATE"
       }, {
         name: "fla",
         label: "FLA REQUIRED",
