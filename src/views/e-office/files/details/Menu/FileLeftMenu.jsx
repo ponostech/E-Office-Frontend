@@ -109,15 +109,16 @@ class LeftMenu extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
-        const menuItem = [
-            {name: "notesheet", label: "Notesheet", icon: "chat"},
-            {name: "draft", label: "Draft", icon: "create"},
-            {name: "report", label: "Site Verification", icon: "report"},
-            {name: "permit", label: "Draft Permit", icon: "how_to_reg"},
-            {name: "reject", label: "Draft Reject Letter", icon: "block"},
-            {name: "send", label: "Forward File", icon: "send"},
-        ];
+        const {classes, menus} = this.props;
+        // api_method: "POST", api_url: "file/4/send", icon: "", name: "Send", url: "send"
+        // const menuItem = [
+        //     {name: "notesheet", label: "Notesheet", icon: "chat"},
+        //     {name: "draft", label: "Draft", icon: "create"},
+        //     {name: "report", label: "Site Verification", icon: "report"},
+        //     {name: "permit", label: "Draft Permit", icon: "how_to_reg"},
+        //     {name: "reject", label: "Draft Reject Letter", icon: "block"},
+        //     {name: "send", label: "Forward File", icon: "send"},
+        // ];
         return (
             <>
                 <Drawer
@@ -140,16 +141,39 @@ class LeftMenu extends React.Component {
                         </IconButton>
                     </div>
                     <List>
-                        {menuItem.map((item) => (
+                        {menus.view.map((item) => (
                             <>
-                                <ListItem button key={item.name} onClick={() => this.props.click(item.name)}>
-                                    <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
-                                    <ListItemText primary={item.label}/>
+                                <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
+                                    <ListItemIcon><Icon>{item.icon ? item.icon : 'remove_red_eye'}</Icon></ListItemIcon>
+                                    <ListItemText primary={item.name}/>
                                 </ListItem>
                             </>
                         ))}
                     </List>
                     <Divider/>
+                    <List>
+                        {menus.create.map((item) => (
+                            <>
+                                <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
+                                    <ListItemIcon><Icon>{item.icon ? item.icon : 'create'}</Icon></ListItemIcon>
+                                    <ListItemText primary={item.name}/>
+                                </ListItem>
+                            </>
+                        ))}
+                    </List>
+                    <Divider/>
+                    <List>
+                        {menus.action.map((item) => (
+                            <>
+                                <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
+                                    <ListItemIcon><Icon>{item.icon ? item.icon : 'send'}</Icon></ListItemIcon>
+                                    <ListItemText primary={item.name}/>
+                                </ListItem>
+                            </>
+                        ))}
+                    </List>
+                    <Divider/>
+                    <br/>
                 </Drawer>
             </>
         );

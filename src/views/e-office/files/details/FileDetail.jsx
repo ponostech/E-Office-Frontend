@@ -36,6 +36,7 @@ const styles = theme => ({
 class FileDetail extends Component {
     state = {
         file: [],
+        menus: [],
         loading: true,
         error: false,
     };
@@ -49,11 +50,15 @@ class FileDetail extends Component {
     getData(id) {
         axios.get(ApiRoutes.FILE_DETAIL + "/" + id)
             .then(res => {
-                this.setState({file: res.data.data.files, loading: false});
+                let data = res.data;
+                if (data.status === true)
+                    this.setState({file: data.data.files, menus: data.data.menus, loading: false});
+                else
+                    this.setState({error: true});
                 this.props.doLoad(false);
-                console.log(res);
+                console.log('file data: ', res);
             })
-            .catch(error => {
+            .catch(err => {
                 this.props.doLoad(false);
                 this.setState({error: true, loading: false});
             });
@@ -71,7 +76,7 @@ class FileDetail extends Component {
 
         const view = (
             <>
-                <LeftMenu click={this.toggleContent}/>
+                <LeftMenu click={this.toggleContent} menus={this.state.menus}/>
                 <main className={classes.content}>
                     <Grid item xs={12} md={12} lg={12}>
                         <Route path={OfficeRoutes.FILE_DETAIL + "/notesheet"}
@@ -81,7 +86,8 @@ class FileDetail extends Component {
                         <Route path={OfficeRoutes.FILE_DETAIL + "/reject"}
                                render={(props) => <DraftLetter {...props} file={this.state.file}/>}/>
                         <Route path={OfficeRoutes.FILE_DETAIL + "/send"}
-                               render={(props) => <FileSend {...props} doLoad={this.props.doLoad} file={this.state.file}/>}/>
+                               render={(props) => <FileSend {...props} doLoad={this.props.doLoad}
+                                                            file={this.state.file}/>}/>
                         <Route path={OfficeRoutes.FILE_DETAIL} exact
                                render={(props) => <NoteSheet {...props} file={this.state.file}/>}/>
                     </Grid>

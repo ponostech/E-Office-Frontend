@@ -25,12 +25,12 @@ class DeskFiles extends Component {
             .then(res => {
                 this.setState({tableData: res.data.data.files, loading: false});
                 this.props.doLoad(false);
-                console.log('Desk Axios Response: ', res);
+                // console.log('Desk Axios Response: ', res);
             })
             .catch(err => {
                 this.setState({error: true, loading: false});
                 this.props.doLoad(false);
-                console.log('Desk Axios Error: ', err);
+                // console.log('Desk Axios Error: ', err);
             });
     };
 
