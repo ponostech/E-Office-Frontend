@@ -44,6 +44,26 @@ export class TradeService {
       errorCallback(e.toString());
     }
   }
+  async update(state, errorCallback, successCallback) {
+    const token = localStorage.getItem("access_token");
+    const config = { headers: { "Authorization": `Bearer ${token}` } };
+    let data = {
+      name: state.name,
+      rate: state.rate,
+      fla: state.fla,
+    };
+    try {
+      let res = await axios.post(ApiRoutes.UPDATE_TRADE(state.id), data);
+      if (res.data.status) {
+        let msg = ArrayToString(res.data.messages);
+        successCallback(msg);
+      } else {
+        errorCallback(ErrorToString(res.data.messages));
+      }
+    } catch (e) {
+      errorCallback(e.toString());
+    }
+  }
   async fetch(errorCallback, successCallback) {
     // const token = localStorage.getItem("access_token");
     // const config={ headers: {"Authorization" : `Bearer ${token}`} }
