@@ -7,7 +7,7 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -90,38 +90,31 @@ const styles = theme => ({
     },
 });
 
-class LeftMenu extends React.Component {
+class FileMenuRight extends React.Component {
     state = {
         open: false,
     };
 
     componentDidMount() {
-        let open = localStorage.getItem("open_drawer");
+        let open = localStorage.getItem("open_right_drawer");
         this.setState({open: JSON.parse(open)})
     }
 
     toogleDrawer = () => {
         this.setState(
             state => {
-                localStorage.setItem("open_drawer", !state.open);
-                return  {open: !state.open}
+                localStorage.setItem("open_right_drawer", !state.open);
+                return {open: !state.open}
             });
     };
 
     render() {
         const {classes, menus} = this.props;
-        // api_method: "POST", api_url: "file/4/send", icon: "", name: "Send", url: "send"
-        // const menuItem = [
-        //     {name: "notesheet", label: "Notesheet", icon: "chat"},
-        //     {name: "draft", label: "Draft", icon: "create"},
-        //     {name: "report", label: "Site Verification", icon: "report"},
-        //     {name: "permit", label: "Draft Permit", icon: "how_to_reg"},
-        //     {name: "reject", label: "Draft Reject Letter", icon: "block"},
-        //     {name: "send", label: "Forward File", icon: "send"},
-        // ];
+
         return (
             <>
                 <Drawer
+                    anchor="right"
                     variant="permanent"
                     className={classNames(classes.drawer, {
                         [classes.drawerOpen]: this.state.open,
@@ -137,40 +130,19 @@ class LeftMenu extends React.Component {
                 >
                     <div className={classes.toolbar}>
                         <IconButton onClick={this.toogleDrawer}>
-                            {!this.state.open ? <MenuIcon/> : <ChevronLeftIcon/>}
+                            {!this.state.open ? <MenuIcon/> : <ChevronRightIcon/>}
                         </IconButton>
                     </div>
-                    <List>
-                        {menus.view.map((item) => (
-                            <>
-                                <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
-                                    <ListItemIcon><Icon>{item.icon ? item.icon : 'remove_red_eye'}</Icon></ListItemIcon>
-                                    <ListItemText primary={item.name}/>
-                                </ListItem>
-                            </>
-                        ))}
-                    </List>
                     <Divider/>
                     <List>
-                        {menus.create.map((item) => (
-                            <>
-                                <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
-                                    <ListItemIcon><Icon>{item.icon ? item.icon : 'create'}</Icon></ListItemIcon>
-                                    <ListItemText primary={item.name}/>
-                                </ListItem>
-                            </>
-                        ))}
-                    </List>
-                    <Divider/>
-                    <List>
-                        {menus.action.map((item) => (
+                        {menus.action ? menus.action.map((item) => (
                             <>
                                 <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
                                     <ListItemIcon><Icon>{item.icon ? item.icon : 'send'}</Icon></ListItemIcon>
                                     <ListItemText primary={item.name}/>
                                 </ListItem>
                             </>
-                        ))}
+                        )) : null}
                     </List>
                     <Divider/>
                     <br/>
@@ -180,9 +152,9 @@ class LeftMenu extends React.Component {
     }
 }
 
-LeftMenu.propTypes = {
+FileMenuRight.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, {withTheme: true})(LeftMenu);
+export default withStyles(styles, {withTheme: true})(FileMenuRight);
