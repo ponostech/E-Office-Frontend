@@ -1,8 +1,8 @@
 import React from "react";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 
 import * as  OfficeRoutes from "../config/routes-constant/OfficeRoutes";
-import {ADVERTISER_DASHBOARD, DESK, E_OFFICE} from "../config/routes-constant/OfficeRoutes";
+import {ADVERTISER_DASHBOARD, DESK, E_OFFICE, HOME} from "../config/routes-constant/OfficeRoutes";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import pagesStyle from "../assets/jss/material-dashboard-pro-react/layouts/pagesStyle";
 
@@ -25,7 +25,6 @@ class LayoutLanding extends React.Component {
         this.state = {
             loading: false
         };
-        // console.log('Login', LoginService.isLogin());
         if (LoginService.hasRole('administrator')) window.location.replace(E_OFFICE);
         else if (LoginService.isStaff()) window.location.replace(DESK);
         else if (LoginService.isAdvertiser()) window.location.replace(ADVERTISER_DASHBOARD);
@@ -41,7 +40,6 @@ class LayoutLanding extends React.Component {
 
     render() {
         const {classes, ...rest} = this.props;
-        // console.log("User", localStorage.getItem('current_user'));
 
         return (
             <div className={classes.wrapper}>
@@ -50,7 +48,7 @@ class LayoutLanding extends React.Component {
                 <div className={classes.fullPage}>
                     <div className={classes.container}>
                         <Switch>
-                            <Route exact={true} path={OfficeRoutes.HOME} component={HomePage}/>
+                            <Route exact={true} path={OfficeRoutes.ROOT} component={HomePage}/>
                             <Route exact={true} path={OfficeRoutes.FORGOT_PASSWORD} component={ForgotPassword}/>
 
                             <Route exact={true} path={OfficeRoutes.APPLY_HOTEL_LICENSE}
@@ -76,7 +74,6 @@ class LayoutLanding extends React.Component {
                                                               doLoadFinish={this.doLoadFinish.bind(this)}/>
                             }}/>
 
-                            <Redirect from={OfficeRoutes.ROOT} to={OfficeRoutes.HOME}/>
                         </Switch>
                     </div>
                 </div>

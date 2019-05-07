@@ -3,7 +3,6 @@ export const LOGIN = "/auth/login";
 export const LOGOUT = "/auth/logout";
 export const FORGOT_PASSWORD = "/auth/forgot-password";
 export const HOME = "/home";
-export const FORM = "/form";
 export const E_OFFICE = "/e-office";
 
 export const ADVERTISER_LOGIN = "/auth/login";
