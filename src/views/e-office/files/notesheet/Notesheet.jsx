@@ -21,7 +21,6 @@ class Notesheets extends Component {
     componentDidMount() {
         axios.get(FILE_NOTESHEET(this.props.file.id))
             .then(res => {
-                console.log('fire return', res);
                 let noteSheet = res.data;
                 if (noteSheet.status) {
                     this.formatNote(noteSheet.data.notesheets);
