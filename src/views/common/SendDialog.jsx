@@ -116,7 +116,7 @@ class SendDialog extends React.Component {
       )
     }
     render() {
-        console.log("File",this.props.file);
+        // console.log("File",this.props.file);
         const {classes} = this.props;
         let self=this;
         return (
