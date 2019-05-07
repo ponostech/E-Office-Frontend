@@ -40,13 +40,13 @@ export const NEW_FILE = "/e-office/file/new";
 export const CREATED_FILES = "/e-office/created";
 export const SENT_FILE = "/e-office/sent";
 export const CLOSE_FILE = "/e-office/sent";
-export const FILE_DETAIL = "/e-office/file/:id/detail";
+export const FILE_DETAIL = "/e-office/file/:id/";
 export const FILE_ACTIVE_LIST = "/e-office/files/active";
 export const FILE_CLOSED_LIST = "/e-office/files/closed";
 export const FILE_ARCHIVED_LIST = "/e-office/files/archived";
 export const FILE_IN_ACTIVE_LIST = "/e-office/files/new";
 export const FILE_DETAIL_ROUTE = (id) => {
-    return `/e-office/file/${id}/detail`;
+    return `/e-office/file/${id}`;
 };
 export const SHOP_DETAIL_ROUTE = (id) => {
     return `/e-office/applications/shop-license/${id}/new`;

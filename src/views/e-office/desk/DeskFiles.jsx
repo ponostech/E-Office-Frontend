@@ -1,22 +1,25 @@
 import React, {Component} from "react";
-import axios from 'axios';
-import {Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
+import axios from 'axios';
+import moment from "moment";
 import MUIDataTable from "mui-datatables";
+import {Grid, Icon, IconButton} from "@material-ui/core";
 import {ApiRoutes} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
-import moment from "moment";
 import LoadingView from "../../common/LoadingView";
 
 class DeskFiles extends Component {
+    doLoad = this.props.doLoad;
+
     state = {
         tableData: [],
         loading: true,
         error: false,
+        errorMsg: '',
     };
 
     componentDidMount() {
-        this.props.doLoad(true);
+        this.doLoad(true);
         this.getFiles();
     }
 
@@ -24,12 +27,12 @@ class DeskFiles extends Component {
         axios.get(ApiRoutes.DESK)
             .then(res => {
                 this.setState({tableData: res.data.data.files, loading: false});
-                this.props.doLoad(false);
+                this.doLoad(false);
                 // console.log('Desk Axios Response: ', res);
             })
             .catch(err => {
-                this.setState({error: true, loading: false});
-                this.props.doLoad(false);
+                this.setState({error: true, errorMsg: err, loading: false});
+                this.doLoad(false);
                 // console.log('Desk Axios Error: ', err);
             });
     };
@@ -103,7 +106,7 @@ class DeskFiles extends Component {
                     </>
                 );
             } else {
-                files = <p style={{textAlign:'center', width: '100%', fontSize: 15}}>Something Went Wrong!</p>;
+                files = <p style={{textAlign: 'center', width: '100%', fontSize: 15}}>Something Went Wrong!</p>;
             }
         }
 

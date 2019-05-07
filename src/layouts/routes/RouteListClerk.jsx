@@ -9,7 +9,7 @@ import ReceiptList from "../../views/e-office/receipt/ReceiptList";
 import ReceiptSentList from "../../views/e-office/receipt/ReceiptSentList";
 import ShopNewList from "../../views/e-office/applications/shop-license/ShopNewList";
 import HoardingApplications from "../../views/e-office/applications/hoarding/HoardingApplications";
-import FileDetail from "../../views/e-office/files/details/FileDetail";
+import FileDetail from "../../views/e-office/files/details/FileView";
 import FileCreatedList from "../../views/e-office/files/FileCreatedList";
 import FileSentList from "../../views/e-office/files/FileSentList";
 import FileActiveList from "../../views/e-office/files/FileActiveList";

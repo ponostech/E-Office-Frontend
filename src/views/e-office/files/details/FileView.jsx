@@ -12,6 +12,15 @@ import DraftLetter from "../draft/DraftLetter";
 import FileSend from "../FileSend";
 import {ApiRoutes} from '../../../../config/ApiRoutes';
 import LoadingView from "../../../common/LoadingView";
+import FileDetails from "./Views/FileDetails";
+import FileMovements from "./Views/FileMovements";
+import FileEnclosures from "./Views/FileEnclosures";
+import FileDrafts from "./Views/FileDrafts";
+import FileApplicationDetails from "./Views/FileApplicationDetails";
+import FileSiteVerifications from "./Views/FileSiteVerifications";
+import FileDraftPermits from "./Views/FileDraftPermits";
+import FileDraftRejects from "./Views/FileDraftRejects";
+import FileDraftCancels from "./Views/FileDraftCancels";
 
 const styles = theme => ({
     root: {
@@ -34,7 +43,7 @@ const styles = theme => ({
     }
 });
 
-class FileDetail extends Component {
+class FileView extends Component {
     state = {
         file: [],
         menus: [],
@@ -71,7 +80,7 @@ class FileDetail extends Component {
     handleItemClick = (name) => {
         const {history} = this.props;
         if (this.state.file.id)
-            history.push("/e-office/file/" + this.state.file.id + "/detail/" + name);
+            history.push("/e-office/file/" + this.state.file.id + "/" + name);
     };
 
     render() {
@@ -84,7 +93,25 @@ class FileDetail extends Component {
                 <FileMenuRight click={this.handleItemClick} menus={this.state.menus}/>
                 <main className={classes.content}>
                     <Grid item xs={12} md={12} lg={12}>
-                        <Route path={OfficeRoutes.FILE_DETAIL + "/notesheet"}
+                        <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE (this.state.file.id) + "/details"}
+                               render={(props) => <FileDetails {...props} file={this.state.file}/>}/>
+                        <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE (this.state.file.id) + "/movements"}
+                               render={(props) => <FileMovements {...props} file={this.state.file}/>}/>
+                        <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE (this.state.file.id) + "/enclosures"}
+                               render={(props) => <FileEnclosures {...props} file={this.state.file}/>}/>
+                        <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE (this.state.file.id) + "/drafts"}
+                               render={(props) => <FileDrafts {...props} file={this.state.file}/>}/>
+                        <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE (this.state.file.id) + "/application-details"}
+                               render={(props) => <FileApplicationDetails {...props} file={this.state.file}/>}/>
+                        <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE (this.state.file.id) + "/site-verifications"}
+                               render={(props) => <FileSiteVerifications {...props} file={this.state.file}/>}/>
+                        <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE (this.state.file.id) + "/draft-permits"}
+                               render={(props) => <FileDraftPermits {...props} file={this.state.file}/>}/>
+                        <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE (this.state.file.id) + "/draft-rejects"}
+                               render={(props) => <FileDraftRejects {...props} file={this.state.file}/>}/>
+                        <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE (this.state.file.id) + "/draft-cancels"}
+                               render={(props) => <FileDraftCancels {...props} file={this.state.file}/>}/>
+                        <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE (this.state.file.id) + "/notesheet"}
                                render={(props) => <NoteSheet {...props} file={this.state.file}/>}/>
                         <Route path={OfficeRoutes.FILE_DETAIL + "/draft"}
                                render={(props) => <DraftPermit {...props} file={this.state.file}/>}/>
@@ -109,4 +136,4 @@ class FileDetail extends Component {
     }
 }
 
-export default withRouter(withStyles(styles)(FileDetail));
+export default withRouter(withStyles(styles)(FileView));
