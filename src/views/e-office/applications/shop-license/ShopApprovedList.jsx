@@ -20,7 +20,7 @@ const styles = {
   actionIcon: {},
 };
 
-class ShopNewList extends React.Component {
+class ShopApprovedList extends React.Component {
   shopService = new ShopService();
   state = {
     openAssignment: false,
@@ -42,7 +42,7 @@ class ShopNewList extends React.Component {
   componentDidMount() {
     const {doLoad} = this.props;
     doLoad(true);
-    this.shopService.fetch(ApplicationState.NEW_APPLICATION)
+    this.shopService.fetch(ApplicationState.APPROVED_APPLICATION)
       .then(shops => {
         this.setState({shops: shops});
       })
@@ -210,7 +210,7 @@ class ShopNewList extends React.Component {
     let table = <LoadingView/>;
     if (!this.state.loading)
       table = <MUIDataTable
-        title={"SHOP LICENSE: List of New Application"}
+        title={"SHOP LICENSE: List of Approved Application"}
         data={shops}
         columns={tableColumns}
         options={tableOptions}
@@ -226,10 +226,10 @@ class ShopNewList extends React.Component {
           open={this.state.openDetail} onClose={(e) => this.setState({openDetail: false})}/>
 
         <ShopApplicationDialog open={Boolean(this.state.application)}
-          onClose={e=>this.setState({application:null})} application={this.state.application}/>
+                               onClose={e=>this.setState({application:null})} application={this.state.application}/>
 
         <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
-          props={this.props} staffs={this.state.staffs}/>
+                    props={this.props} staffs={this.state.staffs}/>
 
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                     onClose={() => this.setState({openMap: false})}
@@ -252,4 +252,4 @@ class ShopNewList extends React.Component {
   }
 }
 
-export default withStyles(styles)(ShopNewList);
+export default withStyles(styles)(ShopApprovedList);
