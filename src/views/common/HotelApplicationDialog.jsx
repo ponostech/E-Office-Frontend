@@ -37,7 +37,7 @@ const styles = {
 /**
  * @return {string}
  */
-function ShopInfo(props) {
+function HotelInfo(props) {
   const { application, classes } = props;
   let view = application ? (
     <>
@@ -108,7 +108,7 @@ function DocumentView(props) {
   return view;
 }
 
-class ShopApplicationDialog extends Component {
+class HotelApplicationDialog extends Component {
   render() {
     const { open, onClose, application, classes } = this.props;
     const number = application ? "FILE NUMBER : " + application.file.number : "";
@@ -143,9 +143,9 @@ class ShopApplicationDialog extends Component {
                   tabContent: (<ApplicantInfo classes={classes} application={application}/>)
                 },
                 {
-                  tabButton: "Shop Info",
+                  tabButton: "Hotel/Lodging Info",
                   tabIcon: ShopIcon,
-                  tabContent: (<ShopInfo classes={classes} application={application}/>)
+                  tabContent: (<HotelInfo classes={classes} application={application}/>)
                 }, {
                   tabButton: "Documents",
                   tabIcon: BookIcon,
@@ -165,9 +165,9 @@ class ShopApplicationDialog extends Component {
   }
 }
 
-ShopApplicationDialog.propTypes = {
+HotelApplicationDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   application: PropTypes.object
 };
-export default withStyles(styles)(ShopApplicationDialog);
+export default withStyles(styles)(HotelApplicationDialog);
