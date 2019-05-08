@@ -42,7 +42,6 @@ export class StaffService {
     };
     try {
       let res = await axios.post(ApiRoutes.CREATE_STAFF, data);
-      console.log(res);
       if (res.data.status) {
         let msg = ArrayToString(res.data.messages);
         successCallback(msg);
@@ -50,6 +49,7 @@ export class StaffService {
         errorCallback(ErrorToString(res.data.messages));
       }
     } catch (e) {
+      console.error(e)
       errorCallback(e.toString());
     }
   }
