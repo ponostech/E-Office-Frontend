@@ -22,6 +22,19 @@ export class StaffService {
     }
 
   }
+  async update(staff,errorCallback,successCallback){
+    try{
+      let res=await axios.post(ApiRoutes.UPDATE_STAFF,staff);
+      if (res.data.status) {
+        successCallback("Staff info update successfully")
+      }else{
+        errorCallback(ErrorToString(res.data.messages))
+      }
+    }catch (e) {
+      console.error(e)
+      errorCallback(e.toString())
+    }
+  }
 
   async create(state, errorCallback, successCallback) {
     const token = localStorage.getItem("access_token");

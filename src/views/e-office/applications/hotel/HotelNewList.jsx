@@ -1,28 +1,25 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
-import moment from 'moment';
 import Grid from "@material-ui/core/Grid";
-import {Icon} from "@material-ui/core";
-import {withStyles} from "@material-ui/core/styles";
+import { Icon, Tooltip } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-
-import PinDrop from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../../../components/GmapDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import { HotelService } from "../../../../services/HotelService";
 import HotelApplicationDialog from "../../../common/HotelApplicationDialog";
 import SendDialog from "../../../common/SendDialog";
-import { FileService } from "../../../../services/FileService";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
-import { withRouter } from "react-router-dom";
+import LoadingDialog from "../../../common/LoadingDialog";
 
 
 const styles = {
   button: {},
-  actionIcon: {},
+  actionIcon: {}
 };
+let timeout = null;
 
 class HotelNewList extends React.Component {
   hotelService = new HotelService();
@@ -44,16 +41,20 @@ class HotelNewList extends React.Component {
     lng: 98
   };
 
+  componentWillUnmount() {
+    clearTimeout(timeout)
+  }
+
   componentDidMount() {
     const { doLoad } = this.props;
     doLoad(true);
     this.hotelService.fetch()
 
       .then(hotels => {
-        this.setState({hotels: hotels});
+        this.setState({ hotels: hotels });
       })
       .catch(err => {
-        this.setState({errorMessage: err.toString()});
+        this.setState({ errorMessage: err.toString() });
       })
       .finally(() => {
         doLoad(false);
@@ -93,16 +94,17 @@ class HotelNewList extends React.Component {
       });
   };
   closeAssignment = () => {
-    this.setState({openAssignment: false});
+    this.setState({ openAssignment: false });
   };
+
   render() {
-    const {classes} = this.props;
-    const {hotels} = this.state;
+    const { classes } = this.props;
+    const { hotels } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
       rowsPerPage: 10,
-      serverSide: false,
+      serverSide: false
     };
 
     const tableColumns = [
@@ -141,10 +143,10 @@ class HotelNewList extends React.Component {
       {
         name: "name",
         label: "Name of Shop",
-        address:"address",
+        address: "address",
         options: {
-          display: 'excluded',
-          searchable: true,
+          display: "excluded",
+          searchable: true
         }
       },
       /*{
@@ -177,13 +179,13 @@ class HotelNewList extends React.Component {
           filter: false,
           sort: false,
           customBodyRender: (value, tableMeta, updateValue) => {
-            const {rowIndex} = tableMeta;
+            const { rowIndex } = tableMeta;
             const data = this.state.hotels[rowIndex];
             const lat = Number(data.latitude);
             const lng = Number(data.longitude);
 
             return (
-       <>
+              <>
                 <Tooltip title={"Click here to view details of application"}>
                   <IconButton className={classes.button} color="primary" size="small"
                               aria-label="View Details"
@@ -208,11 +210,11 @@ class HotelNewList extends React.Component {
             );
           }
         }
-      },
+      }
 
     ];
 
-    let table = <LoadingView/>;
+    let table = <LoadingDialog/>;
     if (!this.state.loading)
       table = <MUIDataTable
         title={"Hotel/Lodging LICENSE: List of New Application"}
@@ -242,10 +244,10 @@ class HotelNewList extends React.Component {
         <SubmitDialog open={this.state.submit} title={"CALL FILE"} text={"Calling File ..."}/>
 
         <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
-                        onClose={e => this.setState({takeMessage: ""})} open={Boolean(this.state.takeMessage)}/>
+                        onClose={e => this.setState({ takeMessage: "" })} open={Boolean(this.state.takeMessage)}/>
 
         <OfficeSnackbar variant={"error"} message={this.state.errorMessage}
-                        onClose={e => this.setState({errorMessage: ""})}
+                        onClose={e => this.setState({ errorMessage: "" })}
                         open={Boolean(this.state.errorMessage)}/>
       </>
     );
