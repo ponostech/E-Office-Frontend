@@ -5,15 +5,19 @@ import Grid from "@material-ui/core/Grid";
 import {Icon} from "@material-ui/core";
 import {withStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-import Assignment from "../ApplicationAssignmentDialog";
+
+import PinDrop from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../../../components/GmapDialog";
-import HotelApplicationDetail from "../HotelApplicationDetail";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
-import {HotelService} from "../../../../services/HotelService";
-import ApplicationState from "../../../../utils/ApplicationState";
-import LoadingView from "../../../common/LoadingView";
-import ShopApplicationDialog from "../../../common/ShopApplicationDialog";
+import { HotelService } from "../../../../services/HotelService";
+import HotelApplicationDialog from "../../../common/HotelApplicationDialog";
+import SendDialog from "../../../common/SendDialog";
+import { FileService } from "../../../../services/FileService";
+import SubmitDialog from "../../../../components/SubmitDialog";
+import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
+import { withRouter } from "react-router-dom";
+
 
 const styles = {
   button: {},
@@ -22,27 +26,29 @@ const styles = {
 
 class HotelNewList extends React.Component {
   hotelService = new HotelService();
+
   state = {
     openAssignment: false,
     openDetail: false,
     openMap: false,
     openTakeFile: false,
-    detailData: [],
 
     hotels: [],
-    application:null,
-    hotel: {},
+    application: null,
+    file: null,
+
+    submit: false,
     takeMessage: "",
     errorMessage: "",
     lat: 93,
-    lng: 98,
-    loading: true,
+    lng: 98
   };
 
   componentDidMount() {
-    const {doLoad} = this.props;
+    const { doLoad } = this.props;
     doLoad(true);
-    this.hotelService.fetch(ApplicationState.NEW_APPLICATION)
+    this.hotelService.fetch()
+
       .then(hotels => {
         this.setState({hotels: hotels});
       })
@@ -50,33 +56,45 @@ class HotelNewList extends React.Component {
         this.setState({errorMessage: err.toString()});
       })
       .finally(() => {
-        this.setState({loading: false})
         doLoad(false);
       });
   }
-  openAssignment = (id) => {
-    this.setState({openAssignment: true});
+
+  updateTable = (action, tableState) => {
+
   };
-  takeFile = (data) => {
-    this.setState({openTakeFile: true, fileDetail: data.file});
+  openAssignment = (application, event) => {
+    this.setState({ file: application.file, openAssignment: true });
+  };
+
+  takeFile = (data, event) => {
+    this.setState({ openTakeFile: true, file: data.file });
+
   };
   confirmTake = (e) => {
-    const {fileDetail} = this.state;
-    console.log(fileDetail);
-    this.setState({openTakeFile: false});
-    this.setState({takeMessage: "You have taken the file"});
+    const { file } = this.state;
+    const { history } = this.props;
+    this.setState({ openTakeFile: false });
+    this.setState({ submit: true });
+
+    let self = this;
+    self.fileService.takeFile(file.id,
+      errorMessage => self.setState({ errorMessage }),
+      takeMessage => {
+        self.setState({ takeMessage });
+        timeout = setTimeout(function(handler) {
+          history.push(DESK);
+
+        }, 3000);
+
+      })
+      .finally(() => {
+        self.setState({ submit: false });
+      });
   };
   closeAssignment = () => {
     this.setState({openAssignment: false});
   };
-
-  openDetail = (id) => {
-    this.setState({openDetail: true});
-  };
-  closeDetail = () => {
-    this.setState({openDetail: false});
-  };
-
   render() {
     const {classes} = this.props;
     const {hotels} = this.state;
@@ -108,34 +126,17 @@ class HotelNewList extends React.Component {
             );
           }
         }
-      },
-      {
-        name: "owner",
-        label: "DETAILS",
-        options: {
-          customBodyRender: (value, tableMeta, updatedValue) => {
-            const {rowIndex} = tableMeta;
-            const data = this.state.hotels[rowIndex];
-            const shopName = data.name;
-            const address = data.address;
-            return (
-              <ul style={{listStyleType: "none", padding: 0}}>
-                <li><strong>Applicant: </strong>{value}</li>
-                <li><strong>Shop Name: </strong>{shopName}</li>
-                <li><strong>Proposed Location: </strong>{address}</li>
-              </ul>
-            )
-          }
-        }
-      },
-      {
+
+
+      }, {
         name: "created_at",
-        label: "DATE",
-        options: {
-          customBodyRender: (date) => {
-            return moment(date).format('Do MMMM YYYY')
-          }
-        }
+        label: "DATE"
+      }, {
+        name: "name",
+        label: "SHOP NAME"
+      }, {
+        name: "owner",
+        label: "OWNER"
       },
       {
         name: "name",
@@ -182,24 +183,28 @@ class HotelNewList extends React.Component {
             const lng = Number(data.longitude);
 
             return (
-              <div>
-                <IconButton className={classes.button} color="primary" size="small"
-                            aria-label="View Details"
-                            onClick={this.openDetail.bind(this, value)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" className={classes.button} color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, value)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
-                </IconButton>
-                <IconButton variant="contained" className={classes.button} color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>desktop_mac</Icon>
-                </IconButton>
-                <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                  <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
-                </IconButton>
-              </div>
+       <>
+                <Tooltip title={"Click here to view details of application"}>
+                  <IconButton className={classes.button} color="primary" size="small"
+                              aria-label="View Details"
+                              onClick={e => this.setState({ application: data })}>
+                    <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={"Click here to send this file"}>
+                  <IconButton variant="contained" className={classes.button} color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                    <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={"Click here to call this file"}>
+                  <IconButton variant="contained" className={classes.button} color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
+                  </IconButton>
+                </Tooltip>
+              </>
+
             );
           }
         }
@@ -221,23 +226,20 @@ class HotelNewList extends React.Component {
         <Grid item xs={12}>
           {table}
         </Grid>
-        <HotelApplicationDetail
-          hotel={this.state.hotel}
-          open={this.state.openDetail} onClose={(e) => this.setState({openDetail: false})}/>
-
-        <ShopApplicationDialog open={Boolean(this.state.application)} onClose={e=>this.setState({application:null})} application={this.state.application}/>
-        <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
-                    props={this.props} staffs={this.state.staffs}/>
-
+        <HotelApplicationDialog application={this.state.application} open={Boolean(this.state.application)}
+                                onClose={e => this.setState({ application: null })}/>
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
-                    onClose={() => this.setState({openMap: false})}
+                    onClose={() => this.setState({ openMap: false })}
                     isMarkerShown={true}
         />
+        <SendDialog open={this.state.openAssignment} close={e => this.setState({ openAssignment: false })}
+                    file={this.state.file}/>
 
-        <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"}
-                       message={"Do you want to take this file ?"}
-                       onCancel={() => this.setState({openTakeFile: false})} open={this.state.openTakeFile}
+        <ConfirmDialog primaryButtonText={"Call"} title={"Confirmation"} message={"Do you want to call this file ?"}
+                       onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
                        onConfirm={this.confirmTake.bind(this)}/>
+
+        <SubmitDialog open={this.state.submit} title={"CALL FILE"} text={"Calling File ..."}/>
 
         <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
                         onClose={e => this.setState({takeMessage: ""})} open={Boolean(this.state.takeMessage)}/>
