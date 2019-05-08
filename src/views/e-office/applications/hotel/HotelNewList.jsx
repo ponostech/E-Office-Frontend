@@ -1,8 +1,9 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
+import moment from 'moment';
 import Grid from "@material-ui/core/Grid";
-import { Icon, Tooltip } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import {Icon} from "@material-ui/core";
+import {withStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import PinDrop from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../../../components/GmapDialog";
@@ -18,20 +19,18 @@ import { withRouter } from "react-router-dom";
 
 const styles = {
   button: {},
-  actionIcon: {}
+  actionIcon: {},
 };
 
 let timeout = null;
 
 class HotelNewList extends React.Component {
   hotelService = new HotelService();
-  fileService = new FileService();
 
   state = {
     openAssignment: false,
     openMap: false,
     openTakeFile: false,
-
     hotels: [],
     application: null,
     file: null,
@@ -51,11 +50,12 @@ class HotelNewList extends React.Component {
     const { doLoad } = this.props;
     doLoad(true);
     this.hotelService.fetch()
+
       .then(hotels => {
-        this.setState({ hotels });
+        this.setState({hotels: hotels});
       })
       .catch(err => {
-        this.setState({ errorMessage: err.toString() });
+        this.setState({errorMessage: err.toString()});
       })
       .finally(() => {
         doLoad(false);
@@ -71,9 +71,11 @@ class HotelNewList extends React.Component {
 
   takeFile = (data, event) => {
     this.setState({ openTakeFile: true, file: data.file });
+
   };
 
   confirmTake = (e) => {
+
     const { file } = this.state;
     const { history } = this.props;
     this.setState({ openTakeFile: false });
@@ -93,29 +95,25 @@ class HotelNewList extends React.Component {
       .finally(() => {
         self.setState({ submit: false });
       });
-
   };
   closeAssignment = () => {
-    this.setState({ openAssignment: false });
+    this.setState({openAssignment: false});
   };
 
-
   render() {
-    const { classes } = this.props;
-    const { hotels } = this.state;
+    const {classes} = this.props;
+    const {hotels} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
-      rowsPerPage: 15,
+      rowsPerPage: 10,
       serverSide: false,
-      onTableChange: function(action, tableState) {
-      }.bind(this)
     };
 
     const tableColumns = [
       {
         name: "file",
-        label: "FILE NO.",
+        label: "FILE NUMBER",
         options: {
           customBodyRender: (file, tableMeta, updateValue) => {
             return (
@@ -133,6 +131,7 @@ class HotelNewList extends React.Component {
             );
           }
         }
+
       }, {
         name: "created_at",
         label: "DATE"
@@ -144,12 +143,21 @@ class HotelNewList extends React.Component {
         label: "OWNER"
       },
       {
-        name: "hotel",
+        name: "name",
+        label: "Name of Shop",
+        address:"address",
+        options: {
+          display: 'excluded',
+          searchable: true,
+        }
+      },
+      /*{
+        name: "shop",
         label: "LOCATION",
         options: {
-          customBodyRender: (hotel, tableMeta, updateValue) => {
+          customBodyRender: (shop, tableMeta, updateValue) => {
             const { rowIndex } = tableMeta;
-            const data = this.state.hotels[rowIndex];
+            const data = this.state.shops[rowIndex];
             const lat = Number(data.latitude);
             const lng = Number(data.longitude);
 
@@ -165,7 +173,7 @@ class HotelNewList extends React.Component {
             );
           }
         }
-      },
+      },*/
       {
         name: "action",
         label: "ACTION",
@@ -173,9 +181,13 @@ class HotelNewList extends React.Component {
           filter: false,
           sort: false,
           customBodyRender: (value, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
+            const {rowIndex} = tableMeta;
             const data = this.state.hotels[rowIndex];
+            const lat = Number(data.latitude);
+            const lng = Number(data.longitude);
+
             return (
+
               <>
                 <Tooltip title={"Click here to view details of application"}>
                   <IconButton className={classes.button} color="primary" size="small"
@@ -197,24 +209,29 @@ class HotelNewList extends React.Component {
                   </IconButton>
                 </Tooltip>
               </>
+
             );
           }
         }
       }
 
-
     ];
+
+    let table = <LoadingView/>;
+    if (!this.state.loading)
+      table = <MUIDataTable
+        title={"Hotel/Lodging LICENSE: List of New Application"}
+        data={hotels}
+        columns={tableColumns}
+        options={tableOptions}
+      />;
 
     return (
       <>
         <Grid item xs={12}>
-          <MUIDataTable
-            title={"HOTEL & LODGING LICENSE: List of New Application"}
-            data={hotels}
-            columns={tableColumns}
-            options={tableOptions}
-          />
+          {table}
         </Grid>
+
 
         <HotelApplicationDialog application={this.state.application} open={Boolean(this.state.application)}
                                 onClose={e => this.setState({ application: null })}/>
@@ -230,10 +247,13 @@ class HotelNewList extends React.Component {
                        onConfirm={this.confirmTake.bind(this)}/>
 
         <SubmitDialog open={this.state.submit} title={"CALL FILE"} text={"Calling File ..."}/>
+
         <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
-                        onClose={e => this.setState({ takeMessage: "" })} open={Boolean(this.state.takeMessage)}/>
+                        onClose={e => this.setState({takeMessage: ""})} open={Boolean(this.state.takeMessage)}/>
+
         <OfficeSnackbar variant={"error"} message={this.state.errorMessage}
-                        onClose={e => this.setState({ errorMessage: "" })} open={Boolean(this.state.errorMessage)}/>
+                        onClose={e => this.setState({errorMessage: ""})}
+                        open={Boolean(this.state.errorMessage)}/>
       </>
     );
   }

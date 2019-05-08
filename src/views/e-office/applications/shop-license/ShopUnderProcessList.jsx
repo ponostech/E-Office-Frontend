@@ -7,19 +7,20 @@ import {withStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Assignment from "../ApplicationAssignmentDialog";
 import GMapDialog from "../../../../components/GmapDialog";
-import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
+import ShopApplicationDetail from "../ShopApplicationDetail";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import {ShopService} from "../../../../services/ShopService";
 import ApplicationState from "../../../../utils/ApplicationState";
 import LoadingView from "../../../common/LoadingView";
+import ShopApplicationDialog from "../../../common/ShopApplicationDialog";
 
 const styles = {
   button: {},
   actionIcon: {},
 };
 
-class UnderProcessShopLicense extends React.Component {
+class ShopUnderProcessList extends React.Component {
   shopService = new ShopService();
   state = {
     openAssignment: false,
@@ -27,7 +28,9 @@ class UnderProcessShopLicense extends React.Component {
     openMap: false,
     openTakeFile: false,
     detailData: [],
+
     shops: [],
+    application:null,
     shop: {},
     takeMessage: "",
     errorMessage: "",
@@ -67,7 +70,7 @@ class UnderProcessShopLicense extends React.Component {
     this.setState({openAssignment: false});
   };
 
-  viewDetail = (id) => {
+  openDetail = (id) => {
     this.setState({openDetail: true});
   };
   closeDetail = () => {
@@ -137,6 +140,7 @@ class UnderProcessShopLicense extends React.Component {
       {
         name: "name",
         label: "Name of Shop",
+        address:"address",
         options: {
           display: 'excluded',
           searchable: true,
@@ -181,7 +185,7 @@ class UnderProcessShopLicense extends React.Component {
               <div>
                 <IconButton className={classes.button} color="primary" size="small"
                             aria-label="View Details"
-                            onClick={e => this.setState({shop: data, openDetail: true})}>
+                            onClick={this.openDetail.bind(this, value)}>
                   <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="secondary"
@@ -217,9 +221,12 @@ class UnderProcessShopLicense extends React.Component {
         <Grid item xs={12}>
           {table}
         </Grid>
-        <HoardingDetailDialog
-          hoarding={this.state.shop}
+        <ShopApplicationDetail
+          shop={this.state.shop}
           open={this.state.openDetail} onClose={(e) => this.setState({openDetail: false})}/>
+
+        <ShopApplicationDialog open={Boolean(this.state.application)}
+                               onClose={e=>this.setState({application:null})} application={this.state.application}/>
 
         <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
                     props={this.props} staffs={this.state.staffs}/>
@@ -245,4 +252,4 @@ class UnderProcessShopLicense extends React.Component {
   }
 }
 
-export default withStyles(styles)(UnderProcessShopLicense);
+export default withStyles(styles)(ShopUnderProcessList);

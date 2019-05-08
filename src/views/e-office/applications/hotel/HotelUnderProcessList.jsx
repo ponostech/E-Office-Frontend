@@ -7,12 +7,13 @@ import {withStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Assignment from "../ApplicationAssignmentDialog";
 import GMapDialog from "../../../../components/GmapDialog";
-import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
+import HotelApplicationDetail from "../HotelApplicationDetail";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import {HotelService} from "../../../../services/HotelService";
 import ApplicationState from "../../../../utils/ApplicationState";
 import LoadingView from "../../../common/LoadingView";
+import ShopApplicationDialog from "../../../common/ShopApplicationDialog";
 
 const styles = {
     button: {},
@@ -26,7 +27,10 @@ class HotelUnderProcessList extends React.Component {
         openDetail: false,
         openMap: false,
         openTakeFile: false,
+        detailData: [],
+
         hotels: [],
+        application:null,
         hotel: {},
         takeMessage: "",
         errorMessage: "",
@@ -39,17 +43,16 @@ class HotelUnderProcessList extends React.Component {
         const {doLoad} = this.props;
         doLoad(true);
         this.hotelService.fetch(ApplicationState.UNDER_PROCESS_APPLICATION)
-            .then(hotels => {
-                console.log('data', hotels)
-                this.setState({hotels: hotels});
-            })
-            .catch(err => {
-                this.setState({errorMessage: err.toString()});
-            })
-            .finally(() => {
-                this.setState({loading: false})
-                doLoad(false);
-            });
+          .then(hotels => {
+              this.setState({hotels: hotels});
+          })
+          .catch(err => {
+              this.setState({errorMessage: err.toString()});
+          })
+          .finally(() => {
+              this.setState({loading: false})
+              doLoad(false);
+          });
     }
     openAssignment = (id) => {
         this.setState({openAssignment: true});
@@ -67,7 +70,7 @@ class HotelUnderProcessList extends React.Component {
         this.setState({openAssignment: false});
     };
 
-    viewDetail = (id) => {
+    openDetail = (id) => {
         this.setState({openDetail: true});
     };
     closeDetail = () => {
@@ -91,7 +94,7 @@ class HotelUnderProcessList extends React.Component {
                 options: {
                     customBodyRender: (file, tableMeta, updateValue) => {
                         return (
-                            file.number
+                          file.number
                         );
                     }
                 }
@@ -101,7 +104,7 @@ class HotelUnderProcessList extends React.Component {
                 options: {
                     customBodyRender: (file, tableMeta, updateValue) => {
                         return (
-                            file.subject
+                          file.subject
                         );
                     }
                 }
@@ -116,11 +119,11 @@ class HotelUnderProcessList extends React.Component {
                         const shopName = data.name;
                         const address = data.address;
                         return (
-                            <ul style={{listStyleType: "none", padding: 0}}>
-                                <li><strong>Applicant: </strong>{value}</li>
-                                <li><strong>Shop Name: </strong>{shopName}</li>
-                                <li><strong>Proposed Location: </strong>{address}</li>
-                            </ul>
+                          <ul style={{listStyleType: "none", padding: 0}}>
+                              <li><strong>Applicant: </strong>{value}</li>
+                              <li><strong>Shop Name: </strong>{shopName}</li>
+                              <li><strong>Proposed Location: </strong>{address}</li>
+                          </ul>
                         )
                     }
                 }
@@ -137,16 +140,10 @@ class HotelUnderProcessList extends React.Component {
             {
                 name: "name",
                 label: "Name of Shop",
+                address:"address",
                 options: {
                     display: 'excluded',
                     searchable: true,
-                }
-            },
-            {
-                name: "address",
-                label: "Address",
-                options: {
-                    display: 'excluded',
                 }
             },
             /*{
@@ -185,24 +182,24 @@ class HotelUnderProcessList extends React.Component {
                         const lng = Number(data.longitude);
 
                         return (
-                            <div>
-                                <IconButton className={classes.button} color="primary" size="small"
-                                            aria-label="View Details"
-                                            onClick={e => this.setState({hotel: data, openDetail: true})}>
-                                    <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
-                                </IconButton>
-                                <IconButton variant="contained" className={classes.button} color="secondary"
-                                            size="small" onClick={this.openAssignment.bind(this, value)}>
-                                    <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
-                                </IconButton>
-                                <IconButton variant="contained" className={classes.button} color="primary"
-                                            size="small" onClick={this.takeFile.bind(this, data)}>
-                                    <Icon fontSize="small" className={classes.actionIcon}>desktop_mac</Icon>
-                                </IconButton>
-                                <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                                    <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
-                                </IconButton>
-                            </div>
+                          <div>
+                              <IconButton className={classes.button} color="primary" size="small"
+                                          aria-label="View Details"
+                                          onClick={this.openDetail.bind(this, value)}>
+                                  <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
+                              </IconButton>
+                              <IconButton variant="contained" className={classes.button} color="secondary"
+                                          size="small" onClick={this.openAssignment.bind(this, value)}>
+                                  <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
+                              </IconButton>
+                              <IconButton variant="contained" className={classes.button} color="primary"
+                                          size="small" onClick={this.takeFile.bind(this, data)}>
+                                  <Icon fontSize="small" className={classes.actionIcon}>desktop_mac</Icon>
+                              </IconButton>
+                              <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                                  <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
+                              </IconButton>
+                          </div>
                         );
                     }
                 }
@@ -213,41 +210,42 @@ class HotelUnderProcessList extends React.Component {
         let table = <LoadingView/>;
         if (!this.state.loading)
             table = <MUIDataTable
-                title={"HOTEL & LODGING LICENSE: List of Under Process Application"}
-                data={hotels}
-                columns={tableColumns}
-                options={tableOptions}
+              title={"Hotel/Lodging LICENSE: List of Under Process Application"}
+              data={hotels}
+              columns={tableColumns}
+              options={tableOptions}
             />;
 
         return (
-            <>
-                <Grid item xs={12}>
-                    {table}
-                </Grid>
-                <HoardingDetailDialog
-                    hoarding={this.state.hotel}
-                    open={this.state.openDetail} onClose={(e) => this.setState({openDetail: false})}/>
+          <>
+              <Grid item xs={12}>
+                  {table}
+              </Grid>
+              <HotelApplicationDetail
+                hotel={this.state.hotel}
+                open={this.state.openDetail} onClose={(e) => this.setState({openDetail: false})}/>
 
-                <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.hotel}
-                            props={this.props} staffs={this.state.staffs}/>
+              <ShopApplicationDialog open={Boolean(this.state.application)} onClose={e=>this.setState({application:null})} application={this.state.application}/>
+              <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
+                          props={this.props} staffs={this.state.staffs}/>
 
-                <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
-                            onClose={() => this.setState({openMap: false})}
-                            isMarkerShown={true}
-                />
+              <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
+                          onClose={() => this.setState({openMap: false})}
+                          isMarkerShown={true}
+              />
 
-                <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"}
-                               message={"Do you want to take this file ?"}
-                               onCancel={() => this.setState({openTakeFile: false})} open={this.state.openTakeFile}
-                               onConfirm={this.confirmTake.bind(this)}/>
+              <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"}
+                             message={"Do you want to take this file ?"}
+                             onCancel={() => this.setState({openTakeFile: false})} open={this.state.openTakeFile}
+                             onConfirm={this.confirmTake.bind(this)}/>
 
-                <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
-                                onClose={e => this.setState({takeMessage: ""})} open={Boolean(this.state.takeMessage)}/>
+              <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
+                              onClose={e => this.setState({takeMessage: ""})} open={Boolean(this.state.takeMessage)}/>
 
-                <OfficeSnackbar variant={"error"} message={this.state.errorMessage}
-                                onClose={e => this.setState({errorMessage: ""})}
-                                open={Boolean(this.state.errorMessage)}/>
-            </>
+              <OfficeSnackbar variant={"error"} message={this.state.errorMessage}
+                              onClose={e => this.setState({errorMessage: ""})}
+                              open={Boolean(this.state.errorMessage)}/>
+          </>
         );
     }
 }
