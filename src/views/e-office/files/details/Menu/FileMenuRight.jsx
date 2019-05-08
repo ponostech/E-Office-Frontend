@@ -128,11 +128,11 @@ class FileMenuRight extends React.Component {
                     }}
                     open={this.state.open}
                 >
-                    <div className={classes.toolbar}>
-                        <IconButton onClick={this.toogleDrawer}>
-                            {!this.state.open ? <MenuIcon/> : <ChevronRightIcon/>}
-                        </IconButton>
-                    </div>
+                    {/*<div className={classes.toolbar}>*/}
+                    {/*    <IconButton onClick={this.toogleDrawer}>*/}
+                    {/*        {!this.state.open ? <MenuIcon/> : <ChevronRightIcon/>}*/}
+                    {/*    </IconButton>*/}
+                    {/*</div>*/}
                     <Divider/>
                     <List>
                         {menus.create ? menus.create.map((item) => (
@@ -155,8 +155,6 @@ class FileMenuRight extends React.Component {
                             </>
                         )) : null}
                     </List>
-                    <Divider/>
-                    <br/>
                 </Drawer>
             </>
         );
