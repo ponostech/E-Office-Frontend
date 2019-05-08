@@ -88,19 +88,16 @@ class KioskApplicationDialog extends Component {
 
                       </>
                     }/>
+        <Divider/>
         <CardContent>
           <GridContainer>
 
-            <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <Typography variant={"h5"}>Details of application</Typography>
-            </GridItem>
-
-            <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <Divider/>
-            </GridItem>
-
             <GridItem xs={12} sm={12} md={6}>
               <Grid container={true} spacing={16} justify={"center"}>
+
+                <GridItem className={classes.item} xs={12} sm={12} md={12}>
+                  <Typography variant={"h5"}>Details of application</Typography>
+                </GridItem>
 
                 <GridItem className={classes.item} xs={4} sm={4} md={4}>
                   <Typography variant={"subtitle1"}>
@@ -223,7 +220,10 @@ class KioskApplicationDialog extends Component {
               </Grid>
             </GridItem>
             <GridItem xs={12} sm={12} md={6}>
-              <List>
+              <GridItem className={classes.item} xs={12} sm={12} md={12}>
+                <Typography variant={"h5"}>Uploaded Documents</Typography>
+              </GridItem>
+              <List dense={false}>
                 {
                   documents.map(function(doc, index) {
                     return (
@@ -256,6 +256,7 @@ class KioskApplicationDialog extends Component {
           {
             application ? self.getView() : undefined
           }
+          <Divider/>
         </DialogContent>
         <DialogActions>
           <Button variant={"outlined"} color={"secondary"} onClick={e => onClose()}>Close</Button>
