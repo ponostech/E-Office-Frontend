@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import {Icon} from "@material-ui/core";
 import {withStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
+
 import PinDrop from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../../../components/GmapDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -17,20 +18,21 @@ import SubmitDialog from "../../../../components/SubmitDialog";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 
+
 const styles = {
   button: {},
   actionIcon: {},
 };
-
-let timeout = null;
 
 class HotelNewList extends React.Component {
   hotelService = new HotelService();
 
   state = {
     openAssignment: false,
+    openDetail: false,
     openMap: false,
     openTakeFile: false,
+
     hotels: [],
     application: null,
     file: null,
@@ -41,10 +43,6 @@ class HotelNewList extends React.Component {
     lat: 93,
     lng: 98
   };
-
-  componentWillUnmount() {
-    clearTimeout(timeout);
-  }
 
   componentDidMount() {
     const { doLoad } = this.props;
@@ -73,9 +71,7 @@ class HotelNewList extends React.Component {
     this.setState({ openTakeFile: true, file: data.file });
 
   };
-
   confirmTake = (e) => {
-
     const { file } = this.state;
     const { history } = this.props;
     this.setState({ openTakeFile: false });
@@ -99,7 +95,6 @@ class HotelNewList extends React.Component {
   closeAssignment = () => {
     this.setState({openAssignment: false});
   };
-
   render() {
     const {classes} = this.props;
     const {hotels} = this.state;
@@ -132,6 +127,7 @@ class HotelNewList extends React.Component {
           }
         }
 
+
       }, {
         name: "created_at",
         label: "DATE"
@@ -163,7 +159,7 @@ class HotelNewList extends React.Component {
 
             let view = (
               <Tooltip title={"Click here to view location"}>
-                <IconButton onClick={e => this.setState({ openMap: true, lat: lat, lng: lng })}>
+                <IconButton onClick={e => this.setState({ openMap: true,lat:lat ,lng:lng})}>
                   <PinDrop/>
                 </IconButton>
               </Tooltip>
@@ -187,8 +183,7 @@ class HotelNewList extends React.Component {
             const lng = Number(data.longitude);
 
             return (
-
-              <>
+       <>
                 <Tooltip title={"Click here to view details of application"}>
                   <IconButton className={classes.button} color="primary" size="small"
                               aria-label="View Details"
@@ -213,7 +208,7 @@ class HotelNewList extends React.Component {
             );
           }
         }
-      }
+      },
 
     ];
 
@@ -231,8 +226,6 @@ class HotelNewList extends React.Component {
         <Grid item xs={12}>
           {table}
         </Grid>
-
-
         <HotelApplicationDialog application={this.state.application} open={Boolean(this.state.application)}
                                 onClose={e => this.setState({ application: null })}/>
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
@@ -259,4 +252,4 @@ class HotelNewList extends React.Component {
   }
 }
 
-export default withRouter(withStyles(styles)(HotelNewList));
+export default withStyles(styles)(HotelNewList);
