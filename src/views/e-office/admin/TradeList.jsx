@@ -90,7 +90,7 @@ class TradeList extends React.Component {
                         return (
                             <div>
                                 <Tooltip title={"Edit Trade"}>
-                                    <IconButton onClick={e => this.setState({trade: data})}>
+                                    <IconButton onClick={e =>  this.setState({trade: data})}>
                                         <EditIcon color={"action"}/>
                                     </IconButton>
                                 </Tooltip>

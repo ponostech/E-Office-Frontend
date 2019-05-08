@@ -40,6 +40,7 @@ import "date-fns";
 import { HotelService } from "../../services/HotelService";
 import { TradeService } from "../../services/TradeService";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
+import { withRouter } from "react-router-dom";
 
 const style = {
   root: {
@@ -809,7 +810,7 @@ class HotelApplication extends Component {
                     <Button name={"secondary"}
                             color={"secondary"}
                             variant={"outlined"}
-                            onClick={this.handleClick.bind(this)}>
+                            onClick={e=>window.location.reload()}>
                       {ShopLicenseViewModel.SECONDARY_TEXT}
 
                     </Button>
@@ -848,4 +849,4 @@ class HotelApplication extends Component {
 
 }
 
-export default withStyles(style)(HotelApplication);
+export default withRouter( withStyles(style)(HotelApplication));

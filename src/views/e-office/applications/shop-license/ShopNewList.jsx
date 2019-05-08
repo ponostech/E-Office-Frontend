@@ -146,29 +146,7 @@ class ShopNewList extends React.Component {
           searchable: true,
         }
       },
-      /*{
-        name: "shop",
-        label: "LOCATION",
-        options: {
-          customBodyRender: (shop, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
-            const data = this.state.shops[rowIndex];
-            const lat = Number(data.latitude);
-            const lng = Number(data.longitude);
 
-            let view = (
-              <Tooltip title={"Click here to view location"}>
-                <IconButton onClick={e => this.setState({ openMap: true,lat:lat ,lng:lng})}>
-                  <PinDrop/>
-                </IconButton>
-              </Tooltip>
-            );
-            return (
-              view
-            );
-          }
-        }
-      },*/
       {
         name: "action",
         label: "ACTION",
