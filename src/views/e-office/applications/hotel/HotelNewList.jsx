@@ -13,6 +13,8 @@ import HotelApplicationDialog from "../../../common/HotelApplicationDialog";
 import SendDialog from "../../../common/SendDialog";
 import { FileService } from "../../../../services/FileService";
 import SubmitDialog from "../../../../components/SubmitDialog";
+import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
+import { withRouter } from "react-router-dom";
 
 const styles = {
   button: {},
@@ -20,6 +22,7 @@ const styles = {
 };
 
 let timeout = null;
+
 class HotelNewList extends React.Component {
   hotelService = new HotelService();
   fileService = new FileService();
@@ -41,7 +44,7 @@ class HotelNewList extends React.Component {
   };
 
   componentWillUnmount() {
-    clearTimeout(timeout)
+    clearTimeout(timeout);
   }
 
   componentDidMount() {
@@ -63,7 +66,7 @@ class HotelNewList extends React.Component {
 
   };
   openAssignment = (application, event) => {
-    this.setState({ file:application.file, openAssignment: true });
+    this.setState({ file: application.file, openAssignment: true });
   };
 
   takeFile = (data, event) => {
@@ -72,21 +75,25 @@ class HotelNewList extends React.Component {
 
   confirmTake = (e) => {
     const { file } = this.state;
+    const { history } = this.props;
     this.setState({ openTakeFile: false });
     this.setState({ submit: true });
 
     let self = this;
-    timeout=setTimeout(function(handler) {
-      self.fileService.takeFile(file.id,
-        errorMessage => self.setState({ errorMessage }),
-        takeMessage => self.setState({ takeMessage }))
-        .finally(() => {
-          self.setState({ submit: false });
-        });
-    },3000);
+    self.fileService.takeFile(file.id,
+      errorMessage => self.setState({ errorMessage }),
+      takeMessage => {
+        self.setState({ takeMessage });
+        timeout = setTimeout(function(handler) {
+          history.push(DESK);
 
+        }, 3000);
 
-    this.setState({ takeMessage: "You have taken the file" });
+      })
+      .finally(() => {
+        self.setState({ submit: false });
+      });
+
   };
   closeAssignment = () => {
     this.setState({ openAssignment: false });
@@ -232,4 +239,4 @@ class HotelNewList extends React.Component {
   }
 }
 
-export default withStyles(styles)(HotelNewList);
+export default withRouter(withStyles(styles)(HotelNewList));
