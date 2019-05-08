@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   Button,
   Card,
@@ -7,7 +7,9 @@ import {
   Chip,
   Dialog,
   DialogActions,
-  DialogContent, Divider, Grid,
+  DialogContent,
+  Divider,
+  Grid,
   IconButton,
   List,
   ListItem,
@@ -18,11 +20,12 @@ import {
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import GridItem from "../../components/Grid/GridItem";
 import GridContainer from "../../components/Grid/GridContainer";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import CloseIcon from "@material-ui/icons/Close";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import PrintIcon from "@material-ui/icons/Print";
+
 const style = {
   item: {
     padding: "10px 10px !important"
@@ -32,11 +35,11 @@ const style = {
 class HoardingApplicationDialog extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   componentDidMount() {
-    console.log(this.props.application)
+    console.log(this.props.application);
   }
 
   getField = (model) => {
@@ -63,27 +66,28 @@ class HoardingApplicationDialog extends Component {
     return view;
   };
 
-  getView=()=>{
-    const {open, onClose, application,classes} = this.props;
-    console.log(application)
-    const { file,hoarding,applicant,documents } =application;
+  getView = () => {
+    const { open, onClose, application, classes } = this.props;
+    console.log(application);
+    const { file, hoarding, applicant, documents } = application;
     return (
       <Card>
         <CardHeader title={`FILE NO : ${file.number}`}
                     subheader={`SUBJECT : ${file.subject} \n Branch: ${file.branch}`}
                     action={
                       <>
-                      <IconButton onClick={onClose}>
-                        <PrintIcon/>
-                      </IconButton>
-                      <IconButton onClick={onClose}>
-                      <DownloadIcon/>
-                      </IconButton>
-                      <IconButton onClick={onClose}>
-                      <CloseIcon/>
-                      </IconButton>
+                        <IconButton onClick={onClose}>
+                          <PrintIcon/>
+                        </IconButton>
+                        <IconButton onClick={onClose}>
+                          <DownloadIcon/>
+                        </IconButton>
+                        <IconButton onClick={onClose}>
+                          <CloseIcon/>
+                        </IconButton>
                       </>
                     }/>
+        <Divider/>
         <CardContent>
           <GridContainer>
 
@@ -93,9 +97,6 @@ class HoardingApplicationDialog extends Component {
                 <GridItem className={classes.item} xs={12} sm={12} md={12}>
                   <Typography variant={"h5"}>Details of application</Typography>
                 </GridItem>
-                <GridItem className={classes.item} xs={12} sm={12} md={12}>
-                  <Divider/>
-                </GridItem>
                 <GridItem className={classes.item} xs={4} sm={4} md={4}>
                   <Typography variant={"subtitle1"}>
                     Address
@@ -103,7 +104,7 @@ class HoardingApplicationDialog extends Component {
                 </GridItem>
                 <GridItem className={classes.item} xs={8} sm={8} md={8}>
                   <Typography variant={"subtitle2"}>
-                    {": "+hoarding.address}
+                    {": " + hoarding.address}
                   </Typography>
                 </GridItem>
 
@@ -114,7 +115,7 @@ class HoardingApplicationDialog extends Component {
                 </GridItem>
                 <GridItem className={classes.item} xs={8} sm={8} md={8}>
                   <Typography variant={"subtitle2"}>
-                    {": "+hoarding.road_detail}
+                    {": " + hoarding.road_detail}
                   </Typography>
                 </GridItem>
 
@@ -125,7 +126,7 @@ class HoardingApplicationDialog extends Component {
                 </GridItem>
                 <GridItem className={classes.item} xs={8} sm={8} md={8}>
                   <Typography variant={"subtitle2"}>
-                    {": "+hoarding.length}
+                    {": " + hoarding.length}
                   </Typography>
                 </GridItem>
 
@@ -136,7 +137,7 @@ class HoardingApplicationDialog extends Component {
                 </GridItem>
                 <GridItem className={classes.item} xs={8} sm={8} md={8}>
                   <Typography variant={"subtitle2"}>
-                    {":" +hoarding.height}
+                    {":" + hoarding.height}
                   </Typography>
                 </GridItem>
 
@@ -147,7 +148,7 @@ class HoardingApplicationDialog extends Component {
                 </GridItem>
                 <GridItem className={classes.item} xs={8} sm={8} md={8}>
                   <Typography variant={"subtitle2"}>
-                    {": "+hoarding.ground_clearance}
+                    {": " + hoarding.ground_clearance}
                   </Typography>
                 </GridItem>
 
@@ -158,7 +159,7 @@ class HoardingApplicationDialog extends Component {
                 </GridItem>
                 <GridItem className={classes.item} xs={8} sm={8} md={8}>
                   <Typography variant={"subtitle2"}>
-                    {": "+hoarding.display_type}
+                    {": " + hoarding.display_type}
                   </Typography>
                 </GridItem>
 
@@ -169,7 +170,7 @@ class HoardingApplicationDialog extends Component {
                 </GridItem>
                 <GridItem className={classes.item} xs={8} sm={8} md={8}>
                   <Typography variant={"subtitle2"}>
-                    {hoarding.both_side?": Yes":": No"}
+                    {hoarding.both_side ? ": Yes" : ": No"}
                   </Typography>
                 </GridItem>
 
@@ -180,7 +181,7 @@ class HoardingApplicationDialog extends Component {
                 </GridItem>
                 <GridItem className={classes.item} xs={8} sm={8} md={8}>
                   <Typography variant={"subtitle2"}>
-                    {": "+hoarding.land_owner_name}
+                    {": " + hoarding.land_owner_name}
                   </Typography>
                 </GridItem>
 
@@ -191,7 +192,7 @@ class HoardingApplicationDialog extends Component {
                 </GridItem>
                 <GridItem className={classes.item} xs={8} sm={8} md={8}>
                   <Typography variant={"subtitle2"}>
-                    {": "+hoarding.land_owner_type ? ": Private":": Public"}
+                    {": " + hoarding.land_owner_type ? ": Private" : ": Public"}
                   </Typography>
                 </GridItem>
 
@@ -211,12 +212,10 @@ class HoardingApplicationDialog extends Component {
               <GridItem className={classes.item} xs={12} sm={12} md={12}>
                 <Typography variant={"h5"}>Uploaded Documents</Typography>
               </GridItem>
-              <GridItem xs={12} sm={12} md={12}>
-                <Divider/>
-              </GridItem>
+
               <List dense={false}>
                 {
-                  documents.map(function (doc, index) {
+                  documents.map(function(doc, index) {
                     return (
                       <ListItem key={index}>
                         <ListItemText primary={doc.name}/>
@@ -234,18 +233,20 @@ class HoardingApplicationDialog extends Component {
           </GridContainer>
         </CardContent>
       </Card>
-    )
-  }
+    );
+  };
+
   render() {
-    const {open, onClose, application} = this.props;
-    let self=this;
+    const { open, onClose, application } = this.props;
+    let self = this;
     return (
 
       <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"lg"}>
         <DialogContent>
           {
-            application?self.getView() :undefined
+            application ? self.getView() : undefined
           }
+          <Divider/>
         </DialogContent>
         <DialogActions>
           <Button variant={"outlined"} color={"secondary"} onClick={e => onClose()}>Close</Button>
@@ -254,10 +255,11 @@ class HoardingApplicationDialog extends Component {
     );
   }
 }
-HoardingApplicationDialog.propTypes={
-  application:PropTypes.object.isRequired,
-  open:PropTypes.bool.isRequired,
-  onClose:PropTypes.func.isRequired
-}
+
+HoardingApplicationDialog.propTypes = {
+  application: PropTypes.object.isRequired,
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
+};
 
 export default withStyles(style)(HoardingApplicationDialog);
