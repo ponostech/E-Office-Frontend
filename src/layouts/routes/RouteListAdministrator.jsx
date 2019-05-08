@@ -47,10 +47,12 @@ import AdvertiserApprovedList from "../../views/e-office/applications/advertiser
 import AdvertiserRejectedList from "../../views/e-office/applications/advertisers/AdvertiserRejectedList";
 import AdvertiserCanceledList from "../../views/e-office/applications/advertisers/AdvertiserCanceledList";
 import TradeList from "../../views/e-office/admin/TradeList";
+import DashboardAdmin from "../../views/e-office/admin/DashboardAdmin";
 
 const routes = (props) => {
     return (
         <>
+            <Route exact path={OfficeRoutes.E_OFFICE} render={e => <DashboardAdmin doLoad={props.doLoad}/>}/>
             <Route exact path={OfficeRoutes.DESK} render={e => <DeskView doLoad={props.doLoad}/>}/>
 
             {/*Receipt*/}
