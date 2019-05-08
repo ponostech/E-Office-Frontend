@@ -59,17 +59,17 @@ export class HotelService {
   async fetch(status) {
     const token = localStorage.getItem("access_token");
     const config = { headers: { "Authorization": `Bearer ${token}` } };
-    let hoardings = [];
+    let hotels = [];
     try {
       if (status) {
         const res = await axios.get(ApiRoutes.STAFF_HOTEL+`?status=${status}`, config);
-        console.log(res)
-        hoardings = res.data.data.shops;
+        // console.log(res)
+        hotels = res.data.data.hotels;
       } else {
         const defRes = await axios.get(ApiRoutes.STAFF_HOTEL, config);
-        hoardings = defRes.data.data.shops;
+        hotels = defRes.data.data.hotels;
       }
-      return hoardings;
+      return hotels;
 
     } catch (error) {
       console.error(error);

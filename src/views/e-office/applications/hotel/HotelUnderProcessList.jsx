@@ -40,7 +40,7 @@ class HotelUnderProcessList extends React.Component {
         doLoad(true);
         this.hotelService.fetch(ApplicationState.UNDER_PROCESS_APPLICATION)
             .then(hotels => {
-                //console.log('data', hotels)
+                console.log('data', hotels)
                 this.setState({hotels: hotels});
             })
             .catch(err => {
@@ -140,6 +140,13 @@ class HotelUnderProcessList extends React.Component {
                 options: {
                     display: 'excluded',
                     searchable: true,
+                }
+            },
+            {
+                name: "address",
+                label: "Address",
+                options: {
+                    display: 'excluded',
                 }
             },
             /*{
