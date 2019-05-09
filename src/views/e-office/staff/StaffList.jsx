@@ -55,14 +55,15 @@ class StaffList extends React.Component {
           .finally(()=>console.info("roles request completed"))
     }
     getBranches=()=>{
-        this.staffService.getRoles(errorMessage=>this.setState({errorMessage}),
+        this.staffService.getBranch(errorMessage=>this.setState({errorMessage}),
           branches=>this.setState({branches}))
           .finally(()=>console.info("Branches request completed"))
     }
 
     handleEdit=(staff)=>{
         if (staff) {
-            console.log(staff)
+            console.log(staff);
+            this.staffService.update(staff);
         }else {
             this.setState({staff:null})
         }
