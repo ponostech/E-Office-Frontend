@@ -42,7 +42,7 @@ class HotelRejectedList extends React.Component {
   componentDidMount() {
     const {doLoad} = this.props;
     doLoad(true);
-    this.hotelService.fetch(ApplicationState.NEW_APPLICATION)
+    this.hotelService.fetch(ApplicationState.REJECTED_APPLICATION)
       .then(hotels => {
         this.setState({hotels: hotels});
       })

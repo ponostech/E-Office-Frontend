@@ -11,7 +11,10 @@ import { HotelService } from "../../../../services/HotelService";
 import HotelApplicationDialog from "../../../common/HotelApplicationDialog";
 import SendDialog from "../../../common/SendDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
-import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
+import { DESK } from "../../../../config/routes-constant/OfficeRoute
+import Tooltip from "@material-ui/core/Tooltip";
+import {timeout} from "@material-ui/icons";
+import LoadingView from "../../../common/LoadingView";
 import LoadingDialog from "../../../common/LoadingDialog";
 
 
@@ -132,7 +135,12 @@ class HotelNewList extends React.Component {
 
       }, {
         name: "created_at",
-        label: "DATE"
+        label: "DATE",
+        options: {
+          customBodyRender: (date) => {
+            return moment(date).format('Do MMMM YYYY')
+          }
+        }
       }, {
         name: "name",
         label: "SHOP NAME"
