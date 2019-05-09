@@ -144,7 +144,7 @@ export const ApplyKiosk = (props) => {
                         To Apply for New Kiosk
                     </p>
                     <Button color="primary" round
-                            onClick={props.click(OfficeRoutes.APPLY_BANNER)}>
+                            onClick={props.click(OfficeRoutes.LOGIN)}>
                         Apply
                     </Button>
                 </CardBody>

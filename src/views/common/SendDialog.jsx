@@ -101,7 +101,7 @@ class SendDialog extends React.Component {
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
               Send File to:{this.state.recipient_id ? this.state.recipient_id.label : ""}
             </Typography>
-            <Button onClick={this.props.close} color="inherit">
+            <Button onClick={this.props.onClose} color="inherit">
               Close
             </Button>
           </Toolbar>
