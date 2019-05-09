@@ -1,7 +1,8 @@
 
 export const FILE_STATUS ={
   NEW:"new",
-  INACTIVE:"in-active"
+  INACTIVE:"in-active",
+  ACTIVE:"active"
 }
 
 export const FormatStaff = (staffs) => {

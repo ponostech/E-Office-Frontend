@@ -113,14 +113,14 @@ class HoardingApplications extends React.Component {
   };
 
   sendFile = (fileId, receipientId) => {
-    this.setState({ openAssignment: true, submit: true });
+    this.setState({ openAssignment: false, submit: true });
     this.fileService.sendFile(fileId, receipientId, errorMessage => this.setState({ errorMessage }),
       takeMessage => {
         this.setState({ takeMessage });
         setTimeout(function(handler) {
           window.location.reload();
         }, 3000);
-      }).finally(() => this.setState({ openAssignment: false, submit: false }));
+      }).finally(() => this.setState({ submit: false }));
   };
 
   render() {
