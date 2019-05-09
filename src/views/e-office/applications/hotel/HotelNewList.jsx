@@ -49,9 +49,9 @@ class HotelNewList extends React.Component {
     staffs:[]
   };
 
-  componentWillUnmount() {
-    clearTimeout(timeout)
-  }
+  // componentWillUnmount() {
+  //   clearTimeout(timeout)
+  // }
 
   componentDidMount() {
     const { doLoad } = this.props;
@@ -162,10 +162,29 @@ class HotelNewList extends React.Component {
       }, {
         name: "name",
         label: "SHOP NAME"
-      }, {
-        name: "owner",
-        label: "OWNER"
+      },  {
+        owner: "owner",
+        label: "DETAILS",
+        options: {
+          customBodyRender: (value, tableMeta, updatedValue) => {
+            const {rowIndex} = tableMeta;
+            const data = this.state.hotels[rowIndex];
+            const owner = data.owner;
+            const owner_address = data.owner_address;
+            const address = data.address;
+            const phone = data.phone;
+            return (
+              <ul style={{listStyleType: "none", padding: 0}}>
+                <li><strong>Applicant: </strong>{owner}</li>
+                <li><strong>Owner Address: </strong>{owner_address}</li>
+                <li><strong>Proposed Location: </strong>{address}</li>
+                <li><strong>Mobile: </strong>{phone}</li>
+              </ul>
+            )
+          }
+        }
       },
+
       {
         name: "name",
         label: "Name of Shop",
@@ -189,6 +208,9 @@ class HotelNewList extends React.Component {
 
             return (
               <>
+                <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                  <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
+                </IconButton>
                 <Tooltip title={"Click here to view details of application"}>
                   <IconButton className={classes.button} color="primary" size="small"
                               aria-label="View Details"
@@ -231,8 +253,6 @@ class HotelNewList extends React.Component {
         <Grid item xs={12}>
           {table}
         </Grid>
-        <HotelApplicationDialog application={this.state.application} open={Boolean(this.state.application)}
-                                onClose={e => this.setState({ application: null })}/>
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                     onClose={() => this.setState({ openMap: false })}
                     isMarkerShown={true}
