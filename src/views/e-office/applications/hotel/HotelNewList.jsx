@@ -5,18 +5,17 @@ import Grid from "@material-ui/core/Grid";
 import {Icon} from "@material-ui/core";
 import {withStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-
-import PinDrop from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../../../components/GmapDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import { HotelService } from "../../../../services/HotelService";
 import HotelApplicationDialog from "../../../common/HotelApplicationDialog";
 import SendDialog from "../../../common/SendDialog";
-import { FileService } from "../../../../services/FileService";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
-import { withRouter } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
+import {timeout} from "@material-ui/icons";
+import LoadingView from "../../../common/LoadingView";
 
 
 const styles = {
@@ -130,7 +129,12 @@ class HotelNewList extends React.Component {
 
       }, {
         name: "created_at",
-        label: "DATE"
+        label: "DATE",
+        options: {
+          customBodyRender: (date) => {
+            return moment(date).format('Do MMMM YYYY')
+          }
+        }
       }, {
         name: "name",
         label: "SHOP NAME"
