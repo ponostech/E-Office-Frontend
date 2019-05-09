@@ -38,14 +38,15 @@ class HoardingApplications extends React.Component {
 
     hoardings: [],
     file: null,
-    application:null,
+    application: null,
 
     takeMessage: "",
     errorMessage: "",
     lat: 93,
     lng: 98,
 
-    staffs: []
+    staffs: [],
+    submit: false
   };
 
   componentWillUnmount() {
@@ -56,24 +57,29 @@ class HoardingApplications extends React.Component {
     const { doLoad } = this.props;
     doLoad(true);
 
+    Promise.all([this.fetchStaff(), this.fetchHoarding()])
+      .then(function(val) {
+        console.log(val);
+      })
+      .finally(() => doLoad(false));
+  }
+
+  updateTable = (action, tableState) => {
+
+  };
+  fetchStaff = () => {
     this.staffService.fetch(errorMessage => this.setState({ errorMessage }),
       staffs => this.setState({ staffs }))
       .finally(() => console.log("staff request has been made"));
-
+  };
+  fetchHoarding = () => {
     this.hoardingService.fetch(ApplicationState.NEW_APPLICATION)
       .then(hoardings => {
         this.setState({ hoardings: hoardings });
       })
       .catch(err => {
         this.setState({ errorMessage: err.toString() });
-      })
-      .finally(() => {
-        doLoad(false);
       });
-  }
-
-  updateTable = (action, tableState) => {
-
   };
 
   takeFile = (data) => {
@@ -106,6 +112,17 @@ class HoardingApplications extends React.Component {
     this.setState({ openDetail: false });
   };
 
+  sendFile = (fileId, receipientId) => {
+    this.setState({ openAssignment: true, submit: true });
+    this.fileService.sendFile(fileId, receipientId, errorMessage => this.setState({ errorMessage }),
+      takeMessage => {
+        this.setState({ takeMessage });
+        setTimeout(function(handler) {
+          window.location.reload();
+        }, 3000);
+      }).finally(() => this.setState({ openAssignment: false, submit: false }));
+  };
+
   render() {
     const { classes } = this.props;
     const { hoardings } = this.state;
@@ -134,13 +151,14 @@ class HoardingApplications extends React.Component {
               <>
                 <Tooltip title={"Click her to view detail of file"}>
                   <IconButton color="primary" size="small"
-                              aria-label="View Details" onClick={e=>this.setState({application:true})}>
+                              aria-label="View Details" onClick={e => this.setState({ application: application })}>
                     <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Click here to assign this file to staff"}>
                   <IconButton variant="contained" color="secondary"
-                              size="small" onClick={e => this.setState({ file:application.file,openAssignment:true })}>
+                              size="small"
+                              onClick={e => this.setState({ file: application.file, openAssignment: true })}>
                     <Icon fontSize="small">send</Icon>
                   </IconButton>
                 </Tooltip>
@@ -229,9 +247,15 @@ class HoardingApplications extends React.Component {
                     isMarkerShown={true}
         />
 
-        <HoardingApplicationDialog open={Boolean(this.state.application)} onClose={()=>this.setState({application:null})} application={this.state.application} />
-        <SendDialog open={this.state.openAssignment} close={() => this.setState({ file: null,openAssignment:false })}
-                    file={this.state.file}/>
+        <HoardingApplicationDialog open={Boolean(this.state.application)}
+                                   onClose={() => this.setState({ application: null })}
+                                   application={this.state.application}/>
+        <SendDialog staffs={this.state.staffs}
+                    open={this.state.openAssignment}
+                    onClose={() => this.setState({ file: null, openAssignment: false })}
+                    file={this.state.file}
+                    onSend={this.sendFile.bind(this)}
+        />
 
         <SubmitDialog open={this.state.submit} text={"File is taking ..."} title={"File Endorsement"}/>
 

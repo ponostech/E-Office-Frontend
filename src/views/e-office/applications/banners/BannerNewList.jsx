@@ -10,10 +10,11 @@ import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import { BannerService } from "../../../../services/BannerService";
 import SendDialog from "../../../common/SendDialog";
 import { FileService } from "../../../../services/FileService";
-import { NEW_BANNER } from "../../../../config/routes-constant/OfficeRoutes";
+import { DESK, NEW_BANNER } from "../../../../config/routes-constant/OfficeRoutes";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { withRouter } from "react-router-dom";
 import BannerApplicationDialog from "../../../common/BannerApplicationDialog";
+import { StaffService } from "../../../../services/StaffService";
 
 const styles = {
   button: {},
@@ -23,8 +24,10 @@ const styles = {
 class BannerNewList extends React.Component {
   bannerService = new BannerService();
   fileService = new FileService();
+  staffService=new StaffService();
 
   state = {
+    staffs:[],
     banners: [],
     file: null,
     application: null,
@@ -44,6 +47,17 @@ class BannerNewList extends React.Component {
     const { doLoad } = this.props;
     doLoad(true);
 
+    Promise.all([this.fetchBanners(),this.fetchStaffs()])
+      .then(function(val) {
+        console.log(val)
+      })
+      .finally(()=>{
+        doLoad(false)
+      })
+
+  }
+
+  fetchBanners=()=>{
     this.bannerService.fetch()
       .then(banners => {
         this.setState({ banners });
@@ -51,9 +65,10 @@ class BannerNewList extends React.Component {
       .catch(err => {
         this.setState({ errorMessage: err.toString() });
       })
-      .finally(() => {
-        doLoad(false);
-      });
+  }
+  fetchStaffs=()=>{
+    this.staffService.all(errorMessage=>console.log(errorMessage),
+      staffs=>this.setState({staffs}))
   }
 
   openAssignment = (file) => {
@@ -85,6 +100,16 @@ class BannerNewList extends React.Component {
     this.setState({ openDetail: false });
   };
 
+  sendFile=(fileId,receipientId)=>{
+    this.setState({openAssignment:false,submit:true});
+    this.fileService.sendFile(fileId,receipientId,errorMessage=>this.setState({errorMessage}),
+        takeMessage=>{
+      this.setState({takeMessage})
+          setTimeout(function(handler) {
+            window.location.reload()
+          },3000)
+    }).finally(()=>this.setState({submit:false}))
+  }
   render() {
     const { classes } = this.props;
     const { banners } = this.state;
@@ -175,7 +200,8 @@ class BannerNewList extends React.Component {
         </Grid>
 
         <BannerApplicationDialog open={Boolean(this.state.application)} onClose={e=>this.setState({application:null})} application={this.state.application}/>
-        <SendDialog close={e => this.setState({ openAssignment: false, file: null })} file={this.state.file}
+        <SendDialog onClose={e => this.setState({ openAssignment: false, file: null })} file={this.state.file}
+                    staffs={this.state.staffs} onSend={this.sendFile.bind(this)}
                     open={this.state.openAssignment}/>
 
         <GMapDialog open={this.state.openMap} viewMode={true} lat={this.state.lat} lng={this.state.lng}
