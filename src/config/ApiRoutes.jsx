@@ -7,8 +7,11 @@ export const FILE_CALL = (id) => {
   return `/file/${id}/call`;
 };
 export const FILE_NOTESHEET = (id) => {
-  return `/file/${id}/notesheets`;
+  return `/files/${id}/notesheets`;
 };
+
+export const FILE_ACTION_TYPES = "setting/notesheet/actions";
+export const FILE_PRIORITIES = "setting/notesheet/priorities";
 
 export class ApiRoutes {
   static BASE_URL = "http://139.59.26.3/api/v1";
