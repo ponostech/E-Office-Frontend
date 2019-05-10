@@ -36,7 +36,7 @@ export const ADVERTISER_SETTING = "/dashboard/advertiser/setting";
 
 /*E-Office routes*/
 export const DESK = "/e-office/desk";
-export const NEW_FILE = "/e-office/file/new";
+export const NEW_FILE = "/e-office/files/new";
 export const CREATED_FILES = "/e-office/created";
 export const SENT_FILE = "/e-office/sent";
 export const CLOSE_FILE = "/e-office/sent";
