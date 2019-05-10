@@ -93,23 +93,23 @@ class FileView extends Component {
           <FileMenuRight click={this.handleItemClick} menus={this.state.menus}/>
           <main className={classes.content} style={{marginRight: '220px'}}>
             <Grid item xs={12} md={12} lg={12}>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/details"}
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/details"}
                      render={(props) => <FileDetails {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/movements"}
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/movements"}
                      render={(props) => <FileMovements {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/enclosures"}
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/enclosures"}
                      render={(props) => <FileEnclosures {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/drafts"}
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/drafts"}
                      render={(props) => <FileDrafts {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/application-details"}
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/application-details"}
                      render={(props) => <FileApplicationDetails {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/site-verifications"}
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/site-verifications"}
                      render={(props) => <FileSiteVerifications {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/draft-permits"}
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/draft-permits"}
                      render={(props) => <FileDraftPermits {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/draft-rejects"}
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/draft-rejects"}
                      render={(props) => <FileDraftRejects {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/draft-cancels"}
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/draft-cancels"}
                      render={(props) => <FileDraftCancels {...props} file={this.state.file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/notesheets"}
                      render={(props) => <NoteSheetView {...props} file={this.state.file}/>}/>
