@@ -3,6 +3,7 @@ import { ApiRoutes, FILE_TAKE } from "../config/ApiRoutes";
 import { FILE_SEND } from "../config/routes-constant/OfficeRoutes";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
+
 export class FileService {
   async get(id) {
     const token = localStorage.getItem("access_token");
@@ -12,6 +13,24 @@ export class FileService {
     return res.data.data;
   }
 
+  async fetch(status,errorCallback,successCallback){
+    let config = {
+      params: {status}
+    };
+    let files=[]
+    try{
+     let res =await axios.get(ApiRoutes.FILE, config)
+      if (res.data.status) {
+        successCallback(res.data.data.files)
+      }else{
+        errorCallback(ArrayToString(res.data.messages))
+      }
+    }catch (e) {
+      errorCallback(e.toString())
+      console.error(e)
+    }
+
+  }
   async sendFile(file_id, recipient_id, errorCallback, successCallback) {
 
     try {

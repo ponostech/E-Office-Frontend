@@ -12,7 +12,11 @@ import HotelApplicationDialog from "../../../common/HotelApplicationDialog";
 import SendDialog from "../../../common/SendDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
+import LoadingView from "../../../common/LoadingView";
 import LoadingDialog from "../../../common/LoadingDialog";
+import moment from "moment";
+import { StaffService } from "../../../../services/StaffService";
+import { FileService } from "../../../../services/FileService";
 
 
 const styles = {
@@ -23,6 +27,8 @@ let timeout = null;
 
 class HotelNewList extends React.Component {
   hotelService = new HotelService();
+  staffService = new StaffService();
+  fileService = new FileService();
 
   state = {
     openAssignment: false,
@@ -38,27 +44,35 @@ class HotelNewList extends React.Component {
     takeMessage: "",
     errorMessage: "",
     lat: 93,
-    lng: 98
+    lng: 98,
+
+    staffs:[]
   };
 
-  componentWillUnmount() {
-    clearTimeout(timeout)
-  }
+  // componentWillUnmount() {
+  //   clearTimeout(timeout)
+  // }
 
   componentDidMount() {
     const { doLoad } = this.props;
     doLoad(true);
-    this.hotelService.fetch()
+    Promise.all([this.fetchHotel(),this.fetchStaff()])
+      .finally(()=>doLoad(false))
 
+  }
+  fetchHotel=()=>{
+    this.hotelService.fetch()
       .then(hotels => {
         this.setState({ hotels: hotels });
       })
       .catch(err => {
         this.setState({ errorMessage: err.toString() });
       })
-      .finally(() => {
-        doLoad(false);
-      });
+  }
+  fetchStaff=()=>{
+    this.staffService.fetch(errorMessage => this.setState({ errorMessage }),
+      staffs => this.setState({ staffs }))
+      .finally(() => console.log("staff request has been made"));
   }
 
   updateTable = (action, tableState) => {
@@ -93,8 +107,15 @@ class HotelNewList extends React.Component {
         self.setState({ submit: false });
       });
   };
-  closeAssignment = () => {
-    this.setState({ openAssignment: false });
+  sendFile = (fileId, receipientId) => {
+    this.setState({ openAssignment: false, submit: true });
+    this.fileService.sendFile(fileId, receipientId, errorMessage => this.setState({ errorMessage }),
+      takeMessage => {
+        this.setState({ takeMessage });
+        setTimeout(function(handler) {
+          window.location.reload();
+        }, 3000);
+      }).finally(() => this.setState({  submit: false }));
   };
 
   render() {
@@ -132,14 +153,38 @@ class HotelNewList extends React.Component {
 
       }, {
         name: "created_at",
-        label: "DATE"
+        label: "DATE",
+        options: {
+          customBodyRender: (date) => {
+            return moment(date).format('Do MMMM YYYY')
+          }
+        }
       }, {
         name: "name",
         label: "SHOP NAME"
-      }, {
-        name: "owner",
-        label: "OWNER"
+      },  {
+        owner: "owner",
+        label: "DETAILS",
+        options: {
+          customBodyRender: (value, tableMeta, updatedValue) => {
+            const {rowIndex} = tableMeta;
+            const data = this.state.hotels[rowIndex];
+            const owner = data.owner;
+            const owner_address = data.owner_address;
+            const address = data.address;
+            const phone = data.phone;
+            return (
+              <ul style={{listStyleType: "none", padding: 0}}>
+                <li><strong>Applicant: </strong>{owner}</li>
+                <li><strong>Owner Address: </strong>{owner_address}</li>
+                <li><strong>Proposed Location: </strong>{address}</li>
+                <li><strong>Mobile: </strong>{phone}</li>
+              </ul>
+            )
+          }
+        }
       },
+
       {
         name: "name",
         label: "Name of Shop",
@@ -149,29 +194,6 @@ class HotelNewList extends React.Component {
           searchable: true
         }
       },
-      /*{
-        name: "shop",
-        label: "LOCATION",
-        options: {
-          customBodyRender: (shop, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
-            const data = this.state.shops[rowIndex];
-            const lat = Number(data.latitude);
-            const lng = Number(data.longitude);
-
-            let view = (
-              <Tooltip title={"Click here to view location"}>
-                <IconButton onClick={e => this.setState({ openMap: true,lat:lat ,lng:lng})}>
-                  <PinDrop/>
-                </IconButton>
-              </Tooltip>
-            );
-            return (
-              view
-            );
-          }
-        }
-      },*/
       {
         name: "action",
         label: "ACTION",
@@ -186,6 +208,9 @@ class HotelNewList extends React.Component {
 
             return (
               <>
+                <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                  <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
+                </IconButton>
                 <Tooltip title={"Click here to view details of application"}>
                   <IconButton className={classes.button} color="primary" size="small"
                               aria-label="View Details"
@@ -228,13 +253,13 @@ class HotelNewList extends React.Component {
         <Grid item xs={12}>
           {table}
         </Grid>
-        <HotelApplicationDialog application={this.state.application} open={Boolean(this.state.application)}
-                                onClose={e => this.setState({ application: null })}/>
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                     onClose={() => this.setState({ openMap: false })}
                     isMarkerShown={true}
         />
-        <SendDialog open={this.state.openAssignment} close={e => this.setState({ openAssignment: false })}
+        <SendDialog open={this.state.openAssignment} onSend={this.sendFile.bind(this)}
+                    onClose={e => this.setState({ openAssignment: false })}
+                    staffs={this.state.staffs}
                     file={this.state.file}/>
 
         <ConfirmDialog primaryButtonText={"Call"} title={"Confirmation"} message={"Do you want to call this file ?"}

@@ -14,6 +14,7 @@ import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
 import { FileService } from "../../../../services/FileService";
 import { withRouter } from "react-router-dom";
 import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
+import { StaffService } from "../../../../services/StaffService";
 
 const styles = {
   button: {},
@@ -24,6 +25,7 @@ var timeout = null;
 class KioskNewList extends React.Component {
   kioskService = new KioskService();
   fileService=new FileService();
+  staffService=new StaffService();
   state = {
 
     kiosks: [],
@@ -36,25 +38,34 @@ class KioskNewList extends React.Component {
 
     openMap: false,
     openTakeFile: false,
-    openSendFile: false,
+    openAssignment: false,
+
+    staffs: []
   };
 
   componentDidMount() {
     const { doLoad } = this.props;
     doLoad(true);
 
-    this.kioskService.fetch()
-      .then(kiosks => {
-        this.setState({ kiosks: kiosks });
+    Promise.all([this.fetchKiosk(),this.fetchStaff()])
+      .then(function(va) {
+        console.log(va)
       })
-      .catch(err => {
-        this.setState({ errorMessage: err.toString() });
-      })
-      .finally(() => {
-        doLoad(false);
-      });
+      .finally(()=>doLoad(false))
+
   }
 
+  fetchKiosk=()=>{
+    this.kioskService.fetch()
+      .then(kiosks => this.setState({ kiosks: kiosks }))
+      .catch(err => this.setState({ errorMessage: err.toString() }))
+
+  }
+  fetchStaff=()=>{
+    this.staffService.fetch(errorMessage => this.setState({ errorMessage }),
+      staffs => this.setState({ staffs }))
+      .finally(() => console.log("staff request has been made"));
+  }
   componentWillUnmount() {
     clearTimeout(timeout)
   }
@@ -80,10 +91,7 @@ class KioskNewList extends React.Component {
           history.push(DESK);
         }, 2000);
       })
-      .finally(() => this.setState({ submit: false }));
-  };
-  closeAssignment = () => {
-    this.setState({ openAssignment: false });
+      .finally(() => this.setState({openAssignment:false, submit: false }));
   };
 
   viewDetail = (id) => {
@@ -92,6 +100,17 @@ class KioskNewList extends React.Component {
   closeDetail = () => {
     this.setState({ openDetail: false });
   };
+
+  sendFile=(fileId,receipientId)=>{
+    this.setState({openAssignment:false,submit:true});
+    this.fileService.sendFile(fileId,receipientId,errorMessage=>this.setState({errorMessage}),
+      takeMessage=>{
+        this.setState({takeMessage})
+        setTimeout(function(handler) {
+          window.location.reload()
+        },3000)
+      }).finally(()=>this.setState({submit:false}))
+  }
 
   render() {
     const { classes } = this.props;
@@ -124,7 +143,7 @@ class KioskNewList extends React.Component {
                   <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="secondary"
-                            size="small" onClick={e => this.setState({ file: data.file,openSendFile:true })}>
+                            size="small" onClick={e => this.setState({ file: data.file,openAssignment:true })}>
                   <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="primary"
@@ -210,7 +229,9 @@ class KioskNewList extends React.Component {
                     onClose={() => this.setState({ openMap: false })}
                     isMarkerShown={true}
         />
-        <SendDialog open={this.state.openSendFile} file={this.state.file} close={e => this.setState({ file: null,openSendFile:false })}/>
+        <SendDialog staffs={this.state.staffs} open={this.state.openAssignment} file={this.state.file}
+                    onSend={this.sendFile.bind(this)}
+                    onClose={e => this.setState({ file: null,openAssignment:false })}/>
         <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"}
                        message={"Do you want to call this file ?"}
                        onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
