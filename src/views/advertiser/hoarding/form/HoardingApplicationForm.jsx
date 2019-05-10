@@ -36,6 +36,7 @@ import { CategoryServices } from "../../../../services/CategoryServices";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { ADVERTISER_PROPOSED_HOARDING } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
+import { APPLICATION_NAME } from "../../../../utils/Util";
 
 const style = {
   root: {
@@ -469,16 +470,18 @@ class HoardingApplicationForm extends Component {
                 </GridItem>
                 {this.state.documents.map((doc, index) => {
                   return <GridItem className={classes.root} key={index} xs={12} sm={12} md={12}>
-                    <FileUpload onUploadSuccess={(data) => {
-                      this.setState(state => {
-                        let temp = {
-                          document_id: doc.id,
-                          name: doc.name,
-                          path: data.location
-                        };
-                        state.uploadDocuments.push(temp);
-                      });
-                    }} onUploadFailure={(e) => {
+                    <FileUpload
+                      applicationName={APPLICATION_NAME.HOARDING}
+                      onUploadSuccess={(data) => {
+                        this.setState(state => {
+                          let temp = {
+                            document_id: doc.id,
+                            name: doc.name,
+                            path: data.location
+                          };
+                          state.uploadDocuments.push(temp);
+                        });
+                      }} onUploadFailure={(e) => {
                       console.log(e);
                     }} document={doc}/>
                   </GridItem>;

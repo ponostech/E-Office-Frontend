@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CircularProgress, InputAdornment, TextField,Button } from "@material-ui/core";
+import { Button, CircularProgress, InputAdornment, TextField } from "@material-ui/core";
 import PropTypes from "prop-types";
 import S3FileUpload from "react-s3";
 import TickIcon from "@material-ui/icons/Check";
@@ -7,8 +7,9 @@ import ErrorIcon from "@material-ui/icons/Error";
 import DocumentIcon from "@material-ui/icons/Book";
 import ImageIcon from "@material-ui/icons/Image";
 import { BUCKET_NAME, REGION, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY } from "../Configuration";
+import moment from "moment";
 
-var uniqid = require('uniqid');
+var uniqid = require("uniqid");
 const config = {
   bucketName: BUCKET_NAME,
   dirName: "office", /* optional */
@@ -17,13 +18,15 @@ const config = {
   secretAccessKey: S3_SECRET_ACCESS_KEY
 };
 
+
 class FileUpload extends Component {
   constructor(props) {
     super(props);
     let data = props.document;
     data.status = "prestine";
     this.state = {
-      file: data
+      file: data,
+      uploadedFile: null
     };
   }
 
@@ -56,19 +59,21 @@ class FileUpload extends Component {
   };
 
   render() {
-    const { onUploadSuccess, onUploadFailure, required, ...rest } = this.props;
+    const { onUploadSuccess, onUploadFailure, required, applicationName, ...rest } = this.props;
     const { file } = this.state;
     var self = this;
 
+    let path = moment().format("YYYY-MM");
+    config.dirName = `${applicationName}/${path}`;
     return (
       <>
         <TextField
           {...rest}
 
-          // onClick={() => {
-          //   let imageUpload = document.getElementById(file.id);
-          //   imageUpload.click();
-          // }}
+          onClick={() => {
+            let imageUpload = document.getElementById(file.id);
+            imageUpload.click();
+          }}
           onChange={() => {
             // let imageUpload = document.getElementById(file.id);
             // imageUpload.click();
@@ -101,7 +106,7 @@ class FileUpload extends Component {
                     let item = e.target.files[0];
 
                     let blob = item.slice(0, item.size, item.type);
-                    let newName = "folder_one"+"/"+file.name.toLowerCase()+"-"+uniqid()+ item.name;
+                    let newName = "folder_one" + "/" + file.name.toLowerCase() + "-" + uniqid() + item.name;
                     let newFile = new File([blob], newName, { type: item.type });
 
                     let temp = file;
@@ -110,12 +115,25 @@ class FileUpload extends Component {
                     self.setState({
                       file: temp
                     });
+                    if (self.state.uploadedFile) {
+                      const uploadedFile = self.state.uploadedFile;
+                      let delConfig = config;
+                      delConfig.dirName = uploadedFile.dirName;
+
+                      S3FileUpload.deleteFile(uploadedFile.path, delConfig)
+                        .then(data => console.log("Deleted file",data))
+                        .catch(e => console.error(e));
+                    }
                     S3FileUpload
                       .uploadFile(newFile, config)
                       .then(data => {
                         temp.status = "success";
                         self.setState({
-                          file: temp
+                          file: temp,
+                          uploadedFile: {
+                            path: newFile.name,
+                            dirName: `${applicationName}/${path}`
+                          }
                         });
                         onUploadSuccess(data);
                       })
@@ -145,14 +163,16 @@ class FileUpload extends Component {
 
 FileUpload.defaultProps = {
   title: "Document Upload",
-  required: false
+  required: false,
+  applicationName: "default"
 };
 FileUpload.propTypes = {
   document: PropTypes.object.isRequired,
   onUploadSuccess: PropTypes.func.isRequired,
   onUploadFailure: PropTypes.func.isRequired,
   title: PropTypes.string,
-  required: PropTypes.bool
+  required: PropTypes.bool,
+  applicationName: PropTypes.string
 };
 
 export default FileUpload;

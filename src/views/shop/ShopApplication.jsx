@@ -27,7 +27,6 @@ import OfficeSnackbar from "../../components/OfficeSnackbar";
 import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
 import { ShopService } from "../../services/ShopService";
-import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
 import PlaceIcon from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../components/GmapDialog";
 import { Validators } from "../../utils/Validators";
@@ -35,13 +34,14 @@ import AddressField from "../../components/AddressField";
 import { TradeService } from "../../services/TradeService";
 import { LocalCouncilService } from "../../services/LocalCouncilService";
 import SweetAlert from "react-bootstrap-sweetalert";
-import { OtpService, RequestOtp } from "../../services/OtpService";
+import { OtpService } from "../../services/OtpService";
 import OtpDialog from "../../components/OtpDialog";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import "date-fns";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
+import { APPLICATION_NAME } from "../../utils/Util";
 
 const style = {
   root: {
@@ -145,13 +145,13 @@ class ShopApplication extends Component {
     var self = this;
     this.otpService.requestOtp(this.state.phone, "Shop License Application",
       errorMessage => {
-      this.setState({errorMessage})
+        this.setState({ errorMessage });
       },
       otpMessage => {
         this.setState({ openOtp: true });
         this.setState({ otpMessage });
       })
-      .finally(()=>console.log("Finish otp request"));
+      .finally(() => console.log("Finish otp request"));
 
   };
   onVerifiedOtp = (verified) => {
@@ -163,21 +163,21 @@ class ShopApplication extends Component {
     if (verified) {
       this.setState({ submit: true });
       this.shopService.create(this.state,
-          errorMessage=>this.setState({errorMessage}),
-          msg=>{
-            this.setState({
-              success: (
-                <SweetAlert
-                  success
-                  style={{ display: "block", marginTop: "-100px" }}
-                  title={"Success"}
-                  onConfirm={() => history.push(HOME)}>
-                  {msg}
-                </SweetAlert>
-              )
-            });
-          })
-        .finally(()=>this.setState({submit:false}))
+        errorMessage => this.setState({ errorMessage }),
+        msg => {
+          this.setState({
+            success: (
+              <SweetAlert
+                success
+                style={{ display: "block", marginTop: "-100px" }}
+                title={"Success"}
+                onConfirm={() => history.push(HOME)}>
+                {msg}
+              </SweetAlert>
+            )
+          });
+        })
+        .finally(() => this.setState({ submit: false }));
     }
   };
   fetchLocalCouncil = () => {
@@ -700,7 +700,9 @@ class ShopApplication extends Component {
                       return <GridItem key={index} className={classes.root} sm={12} xs={12}
                                        md={12}>
 
-                        <FileUpload key={index} document={doc} onUploadSuccess={(data) => {
+                        <FileUpload
+                          applicationName={APPLICATION_NAME.SHOP}
+                          key={index} document={doc} onUploadSuccess={(data) => {
                           let temp = {
                             document_id: doc.id,
                             name: doc.name,

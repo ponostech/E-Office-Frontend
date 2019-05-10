@@ -4,7 +4,14 @@ export const FILE_STATUS ={
   INACTIVE:"in-active",
   ACTIVE:"active"
 }
-
+export const APPLICATION_NAME ={
+  HOARDING:"hoarding",
+  KIOSK:"kiosk",
+  BANNER:"banner",
+  SHOP:"shop",
+  HOTEL:"hotel",
+  ADVERTISER:"advertiser"
+}
 export const FormatStaff = (staffs) => {
   const user_id = JSON.parse(localStorage.getItem('current_user')).id;
   return staffs.filter(function (obj) {
