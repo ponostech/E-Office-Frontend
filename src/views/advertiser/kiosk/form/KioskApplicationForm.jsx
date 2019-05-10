@@ -36,6 +36,7 @@ import AddressField from "../../../../components/AddressField";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { ADVERTISER_PROPOSED_KIOSK } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
+import { APPLICATION_NAME } from "../../../../utils/Util";
 
 
 const style = {
@@ -488,16 +489,18 @@ class KioskApplicationForm extends Component {
                 </GridItem>
                 {this.state.documents.map((doc, index) => {
                   return <GridItem key={index} className={classes.root} sm={12} xs={12} md={12}>
-                    <FileUpload onUploadSuccess={(data) => {
-                      this.setState(state => {
-                        let temp = {
-                          document_id: doc.id,
-                          name: doc.name,
-                          path: data.location
-                        };
-                        state.uploadDocuments.push(temp);
-                      });
-                    }} onUploadFailure={(e) => {
+                    <FileUpload
+                      applicationName={APPLICATION_NAME.KIOSK}
+                      onUploadSuccess={(data) => {
+                        this.setState(state => {
+                          let temp = {
+                            document_id: doc.id,
+                            name: doc.name,
+                            path: data.location
+                          };
+                          state.uploadDocuments.push(temp);
+                        });
+                      }} onUploadFailure={(e) => {
                       console.log(e);
                     }} document={doc}/>
                   </GridItem>;

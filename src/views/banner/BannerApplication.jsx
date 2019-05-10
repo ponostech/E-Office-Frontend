@@ -31,6 +31,7 @@ import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
 import SweetAlert from 'react-bootstrap-sweetalert'
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
+import { APPLICATION_NAME } from "../../utils/Util";
 const style = {
   root: {
     padding: "10px 15px !important"
@@ -413,7 +414,8 @@ class BannerApplication extends Component {
                   </GridItem>
 
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload document={{ id: 1, name: "Signature of applicant", mandatory: 1, mime: "image/*" }}
+                    <FileUpload applicationName={APPLICATION_NAME.BANNER}
+                                document={{ id: 1, name: "Signature of applicant", mandatory: 1, mime: "image/*" }}
                                 onUploadSuccess={(data) => {
                                   let temp = {
                                     name: "signature",

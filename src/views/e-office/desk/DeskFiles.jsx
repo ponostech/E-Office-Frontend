@@ -47,7 +47,6 @@ class DeskFiles extends Component {
 
         const tableOptions = {
             filterType: "checkbox",
-            responsive: "scroll",
             rowsPerPage: 10,
             serverSide: false,
         };

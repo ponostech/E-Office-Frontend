@@ -31,6 +31,7 @@ import OfficeSelect from "../../components/OfficeSelect";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { AdvertiserService } from "../../services/AdvertiserService";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
+import { APPLICATION_NAME } from "../../utils/Util";
 
 const style = {
     root: {
@@ -377,7 +378,7 @@ class AdvertiserApplication extends Component {
                                         }}/>
                                 </GridItem>
                                 <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                                    <FileUpload document={{id: 40, name: "Signature", mime: "image/*", mandatory: 1}}
+                                    <FileUpload applicationName={APPLICATION_NAME.ADVERTISER} document={{id: 40, name: "Signature", mime: "image/*", mandatory: 1}}
                                                 onUploadSuccess={(data) => {
                                                     let temp = {
                                                         document_id: 1,
@@ -408,7 +409,8 @@ class AdvertiserApplication extends Component {
                                                             state.documentsUpload.push(temp);
                                                         });
                                                     }}
-                                                    onUploadFailure={(err) => console.log(err)}/>
+                                                    onUploadFailure={(err) => console.log(err)}
+                                                    applicationName={APPLICATION_NAME.ADVERTISER}/>
                                     </GridItem>
                                 )}
                                 <GridItem xs={12} sm={12} md={12}>

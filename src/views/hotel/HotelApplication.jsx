@@ -41,6 +41,7 @@ import { HotelService } from "../../services/HotelService";
 import { TradeService } from "../../services/TradeService";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
+import { APPLICATION_NAME } from "../../utils/Util";
 
 const style = {
   root: {
@@ -60,7 +61,7 @@ class HotelApplication extends Component {
   hotelService = new HotelService();
   localCouncilService = new LocalCouncilService();
   otpService = new OtpService();
-  tradeService=new TradeService();
+  tradeService = new TradeService();
   state = {
     name: "",
     phone: "",
@@ -137,12 +138,12 @@ class HotelApplication extends Component {
   componentDidMount() {
     document.title = "e-AMC | Shop License Application Form";
     const { doLoad, doLoadFinish } = this.props;
-    const self=this;
+    const self = this;
     doLoad();
     timeout = setTimeout(function(handler) {
       Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
         .then(function([values]) {
-           doLoadFinish()
+          doLoadFinish();
         });
     }, 4000);
   }
@@ -157,8 +158,8 @@ class HotelApplication extends Component {
     const { history } = this.props;
     if (verified) {
       this.setState({ submit: true });
-      this.hotelService.create(this.state,errorMessage=>this.setState({errorMessage}),
-        successMessage=>this.setState({
+      this.hotelService.create(this.state, errorMessage => this.setState({ errorMessage }),
+        successMessage => this.setState({
           success: (
             <SweetAlert
               success
@@ -169,7 +170,7 @@ class HotelApplication extends Component {
             </SweetAlert>
           )
         }))
-        .finally(()=>this.setState({submit:false}))
+        .finally(() => this.setState({ submit: false }));
     }
   };
 
@@ -202,7 +203,6 @@ class HotelApplication extends Component {
       default:
         break;
     }
-
 
 
     this.setState({ prestine: false });
@@ -722,16 +722,18 @@ class HotelApplication extends Component {
                     }}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload required={true}
-                                document={{ id: 344, name: "Signature", mime: "image/*" }}
-                                onUploadSuccess={(data) => {
-                                  this.setState(state => {
-                                    state.signature = {
-                                      name: "signature",
-                                      path: data.location
-                                    };
-                                  });
-                                }} onUploadFailure={(err) => {
+                    <FileUpload
+                      applicationName={APPLICATION_NAME.HOTEL}
+                      required={true}
+                      document={{ id: 344, name: "Signature", mime: "image/*" }}
+                      onUploadSuccess={(data) => {
+                        this.setState(state => {
+                          state.signature = {
+                            name: "signature",
+                            path: data.location
+                          };
+                        });
+                      }} onUploadFailure={(err) => {
                       console.log(err);
                     }}/>
                   </GridItem>
@@ -810,7 +812,7 @@ class HotelApplication extends Component {
                     <Button name={"secondary"}
                             color={"secondary"}
                             variant={"outlined"}
-                            onClick={e=>window.location.reload()}>
+                            onClick={e => window.location.reload()}>
                       {ShopLicenseViewModel.SECONDARY_TEXT}
 
                     </Button>
@@ -849,4 +851,4 @@ class HotelApplication extends Component {
 
 }
 
-export default withRouter( withStyles(style)(HotelApplication));
+export default withRouter(withStyles(style)(HotelApplication));
