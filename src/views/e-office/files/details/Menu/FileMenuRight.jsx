@@ -5,15 +5,15 @@ import {withStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+// import IconButton from '@material-ui/core/IconButton';
+// import MenuIcon from '@material-ui/icons/Menu';
+// import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from "@material-ui/core/Icon";
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const styles = theme => ({
     root: {
@@ -84,6 +84,13 @@ const styles = theme => ({
     //     padding: '0 8px',
     //     ...theme.mixins.toolbar,
     },
+    menuIcon: {
+        padding: 0,
+        margin: 0,
+    },
+    menuName: {
+        fontSize: 14
+    },
     content: {
     //     flexGrow: 1,
     //     padding: theme.spacing.unit * 3,
@@ -138,8 +145,8 @@ class FileMenuRight extends React.Component {
                         {menus.create ? menus.create.map((item) => (
                             <>
                                 <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
-                                    <ListItemIcon><Icon>{item.icon ? item.icon : 'edit'}</Icon></ListItemIcon>
-                                    <ListItemText primary={item.name}/>
+                                    <ListItemIcon classes={{root: classes.menuIcon}}><Icon>{item.icon ? item.icon : 'edit'}</Icon></ListItemIcon>
+                                    <ListItemText classes={{primary: classes.menuName}} primary={item.name}/>
                                 </ListItem>
                             </>
                         )) : null}
@@ -149,8 +156,8 @@ class FileMenuRight extends React.Component {
                         {menus.action ? menus.action.map((item) => (
                             <>
                                 <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
-                                    <ListItemIcon><Icon>{item.icon ? item.icon : 'send'}</Icon></ListItemIcon>
-                                    <ListItemText primary={item.name}/>
+                                    <ListItemIcon classes={{root: classes.menuIcon}} ><Icon>{item.icon ? item.icon : 'send'}</Icon></ListItemIcon>
+                                    <ListItemText classes={{primary: classes.menuName}} primary={item.name}/>
                                 </ListItem>
                             </>
                         )) : null}

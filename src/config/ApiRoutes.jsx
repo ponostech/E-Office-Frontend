@@ -7,7 +7,7 @@ export const FILE_CALL = (id) => {
   return `/file/${id}/call`;
 };
 export const FILE_NOTESHEET = (id) => {
-  return `/file/${id}/notesheets`;
+  return `/files/${id}/notesheets`;
 };
 
 export class ApiRoutes {
