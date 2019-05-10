@@ -23,24 +23,25 @@ import FileDraftRejects from "./Views/FileDraftRejects";
 import FileDraftCancels from "./Views/FileDraftCancels";
 
 const styles = theme => ({
-  root: {
-    display: "flex",
-    width: "100%",
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3
-  },
-  container: {
-    display: "flex"
-  },
-  toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar
-  }
+    root: {
+        display: "flex",
+        width: "100%",
+        zIndex:1000
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing.unit * 3
+    },
+    container: {
+        display: "flex"
+    },
+    toolbar: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        padding: "0 8px",
+        ...theme.mixins.toolbar
+    }
 });
 
 class FileView extends Component {
