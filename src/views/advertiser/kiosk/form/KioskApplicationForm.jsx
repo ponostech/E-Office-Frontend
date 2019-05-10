@@ -33,9 +33,8 @@ import GMapDialog from "../../../../components/GmapDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { CategoryServices } from "../../../../services/CategoryServices";
 import AddressField from "../../../../components/AddressField";
-import { ErrorToString } from "../../../../utils/ErrorUtil";
 import SweetAlert from "react-bootstrap-sweetalert";
-import { ADVERTISER_HOARDING, ADVERTISER_KIOSK } from "../../../../config/routes-constant/OfficeRoutes";
+import { ADVERTISER_PROPOSED_KIOSK } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 
 
@@ -118,25 +117,26 @@ class KioskApplicationForm extends Component {
   componentWillUnmount() {
     clearTimeout(timeout);
   }
+
   fetchLocalCouncil = () => {
     this.localCouncilservice.fetch(
-      errorMessage=>this.setState({errorMessage}),
-      localCouncils=>this.setState({localCouncils}))
-      .finally(()=>console.info("Local council fetch successfully"))
+      errorMessage => this.setState({ errorMessage }),
+      localCouncils => this.setState({ localCouncils }))
+      .finally(() => console.info("Local council fetch successfully"));
   };
 
   fetchCategory = () => {
     this.categoryService.fetch(
-      errorMessage=>this.setState({errorMessage}),
-      categories=>this.setState({categories}))
-      .finally(()=>console.info("Areas categories fetch successfully"))
+      errorMessage => this.setState({ errorMessage }),
+      categories => this.setState({ categories }))
+      .finally(() => console.info("Areas categories fetch successfully"));
   };
 
   fetchDocument = () => {
     this.documentService.fetch("hoarding_kiosk",
-      errorMessage=>this.setState({errorMessage}),
-      documents=>this.setState({documents}))
-      .finally(()=>console.info("Document attachment fetch successfully"))
+      errorMessage => this.setState({ errorMessage }),
+      documents => this.setState({ documents }))
+      .finally(() => console.info("Document attachment fetch successfully"));
   };
 
   isInvalid = () => {
@@ -161,22 +161,22 @@ class KioskApplicationForm extends Component {
     }
     this.setState({ submit: true });
     this.kioskService.create(this.state,
-      errorMessage=>this.setState({errorMessage}),
-      successMessage=>{
+      errorMessage => this.setState({ errorMessage }),
+      successMessage => {
         this.setState({
           success: (
             <SweetAlert
               success
               style={{ display: "block", marginTop: "-100px" }}
               title={"Success"}
-              onConfirm={() => history.push(ADVERTISER_KIOSK)}
+              onConfirm={() => history.push(ADVERTISER_PROPOSED_KIOSK)}
             >
               {successMessage}
             </SweetAlert>
           )
         });
       })
-      .finally(()=>this.setState({submit:false}));
+      .finally(() => this.setState({ submit: false }));
   };
   handleRadio = (e) => {
     this.setState({ landLordType: e.target.value });
@@ -533,7 +533,7 @@ class KioskApplicationForm extends Component {
                   {"\u00A0 "}
                   {"\u00A0 "}
                   <Button name={"reset"} variant={"outlined"} color={"secondary"}
-                          onClick={(e)=>window.location.reload()}>Reset</Button>
+                          onClick={(e) => window.location.reload()}>Reset</Button>
                 </GridItem>
               </GridContainer>
 

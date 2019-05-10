@@ -32,10 +32,9 @@ import GMapDialog from "../../../../components/GmapDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../../../components/AddressField";
-import { ErrorToString } from "../../../../utils/ErrorUtil";
 import { CategoryServices } from "../../../../services/CategoryServices";
 import SweetAlert from "react-bootstrap-sweetalert";
-import { ADVERTISER_HOARDING } from "../../../../config/routes-constant/OfficeRoutes";
+import { ADVERTISER_PROPOSED_HOARDING } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 
 const style = {
@@ -43,6 +42,7 @@ const style = {
     padding: "10px 15px !important"
   }
 };
+
 class HoardingApplicationForm extends Component {
   constructor(props) {
     super(props);
@@ -88,7 +88,7 @@ class HoardingApplicationForm extends Component {
       agree: false,
 
       success: null,
-      submit: false,
+      submit: false
     };
 
     this.localCouncilservice = new LocalCouncilService();
@@ -103,10 +103,10 @@ class HoardingApplicationForm extends Component {
     const { doLoad, doLoadFinish } = this.props;
 
     doLoad();
-      Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
-        .then(function([cats, locs, docs]) {
-            doLoadFinish();
-        });
+    Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
+      .then(function([cats, locs, docs]) {
+        doLoadFinish();
+      });
 
   }
 
@@ -116,23 +116,23 @@ class HoardingApplicationForm extends Component {
 
   fetchLocalCouncil = () => {
     this.localCouncilservice.fetch(
-      errorMessage=>this.setState({errorMessage}),
-      localCouncils=>this.setState({localCouncils}))
-      .finally(()=>console.info("Local council fetch successfully"))
+      errorMessage => this.setState({ errorMessage }),
+      localCouncils => this.setState({ localCouncils }))
+      .finally(() => console.info("Local council fetch successfully"));
   };
 
   fetchCategory = () => {
     this.categoryService.fetch(
-      errorMessage=>this.setState({errorMessage}),
-      categories=>this.setState({categories}))
-      .finally(()=>console.info("Areas categories fetch successfully"))
+      errorMessage => this.setState({ errorMessage }),
+      categories => this.setState({ categories }))
+      .finally(() => console.info("Areas categories fetch successfully"));
   };
 
   fetchDocument = () => {
     this.documentService.fetch("hoarding_kiosk",
-        errorMessage=>this.setState({errorMessage}),
-        documents=>this.setState({documents}))
-      .finally(()=>console.info("Document attachment fetch successfully"))
+      errorMessage => this.setState({ errorMessage }),
+      documents => this.setState({ documents }))
+      .finally(() => console.info("Document attachment fetch successfully"));
   };
 
   invalid = () => {
@@ -154,22 +154,22 @@ class HoardingApplicationForm extends Component {
     }
     this.setState({ submit: true });
     this.hoardingService.create(this.state,
-      errorMessage=>this.setState({errorMessage}),
-      successMessage=>{
+      errorMessage => this.setState({ errorMessage }),
+      successMessage => {
         this.setState({
           success: (
             <SweetAlert
               success
               style={{ display: "block", marginTop: "-100px" }}
               title={"Success"}
-              onConfirm={() => history.push(ADVERTISER_HOARDING)}
+              onConfirm={() => history.push(ADVERTISER_PROPOSED_HOARDING)}
             >
               {successMessage}
             </SweetAlert>
           )
         });
       })
-      .finally(()=>this.setState({submit:false}));
+      .finally(() => this.setState({ submit: false }));
   };
   handleRadio = (e) => {
     this.setState({ landLordType: e.target.value });
