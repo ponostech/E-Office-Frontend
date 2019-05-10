@@ -22,15 +22,20 @@ export const RESET_PASSWORD = "/reset-password";
 export const NEW_STAFF = "/staff/new";
 export const LIST_STAFF = "/staff";
 
-export const PROPOSED_KIOSK = "/advertiser/kiosk/propose";
-export const RENEW_KIOSK = "/advertiser/kiosk/:id/renew";
-export const KIOSK_DETAIL = "/advertiser/kiosk/:id/details";
-
 export const ADVERTISER_DASHBOARD = "/dashboard/advertiser";
-export const ADVERTISER_HOARDING = "/dashboard/advertiser/hoarding/list";
+
 export const ADVERTISER_NEW_HOARDING = "/dashboard/advertiser/hoarding/new";
-export const ADVERTISER_KIOSK = "/dashboard/advertiser/kiosk";
+export const ADVERTISER_PROPOSED_HOARDING = "/dashboard/advertiser/hoarding/proposed";
+export const ADVERTISER_AVAILABLE_HOARDING = "/dashboard/advertiser/hoarding/available";
+export const ADVERTISER_ACTIVE_HOARDING = "/dashboard/advertiser/hoarding/active";
+export const ADVERTISER_WITHDRAWN_HOARDING = "/dashboard/advertiser/hoarding/withdrawn";
+
 export const ADVERTISER_NEW_KIOSK = "/dashboard/advertiser/kiosk/new";
+export const ADVERTISER_PROPOSED_KIOSK = "/dashboard/advertiser/kiosk/proposed";
+export const ADVERTISER_AVAILABLE_KIOSK = "/dashboard/advertiser/kiosk/available";
+export const ADVERTISER_ACTIVE_KIOSK = "/dashboard/advertiser/kiosk/active";
+export const ADVERTISER_WITHDRAWN_KIOSK = "/dashboard/advertiser/kiosk/withdrawn";
+
 export const ADVERTISER_PROFILE = "/dashboard/advertiser/profile";
 export const ADVERTISER_SETTING = "/dashboard/advertiser/setting";
 

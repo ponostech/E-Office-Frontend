@@ -2,23 +2,28 @@ import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
-import { Chip, IconButton, Tooltip } from "@material-ui/core";
+import { IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
 import { KioskService } from "../../../../services/KioskService";
-import ApplyHoardingDialog from "../../hoarding/form/ApplyHoardingDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
+import CloseIcon from "@material-ui/icons/Close";
+import ConfirmDialog from "../../../../components/ConfirmDialog";
 
-class KioskLists extends Component {
+class KioskProposedLists extends Component {
   kioskService = new KioskService();
 
   state = {
     kiosk: null,
     kiosks: [],
+
     openDetail: false,
-    openApply: false,
-    errorMessage: ""
+
+    errorMessage: "",
+    successMessage: "",
+
+    openWithdraw: false
   };
 
   componentDidMount() {
@@ -30,7 +35,9 @@ class KioskLists extends Component {
       kiosks => this.setState({ kiosks }))
       .finally(() => doLoadFinish());
   }
-
+  withdraw = (data) => {
+    this.setState({ openWithdraw: false });
+  };
 
   render() {
     const tableColumns = [
@@ -44,7 +51,7 @@ class KioskLists extends Component {
         }
       }, {
         name: "file",
-        label: "FILE ID",
+        label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             return (value.number);
@@ -59,31 +66,35 @@ class KioskLists extends Component {
           }
         }
       }, {
-        name: "status",
-        label: "STATUS",
+        name: "kiosk",
+        label: "DETAILS",
+        options: {
+          customBodyRender: (kiosk, tableMeta, updateValue) => {
+            const { rowIndex } = tableMeta;
+            let view = (
+              <>
+                <ul>
+                  <li><strong>LOCATION</strong> {kiosk.address}</li>
+                  <li><strong>LENGTH</strong> {kiosk.length}</li>
+                  <li><strong>HEIGHT</strong> {kiosk.height}</li>
+                </ul>
+              </>
+            );
+
+            return (view);
+          }
+        }
+      }, {
+        name: "kiosk",
+        label: "COLLAPSIBLE",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            let color = "default";
-            switch (value) {
-              case "new":
-                color = "default";
-                break;
-              case "rejected":
-                color = "secondary";
-                break;
-              case "granted":
-                color = "primary";
-
-            }
-            let chip = (
-              <Chip label={value} title={value} color={color}/>
-            );
-            return chip;
+            return value ? "Yes" : "No";
           }
         }
       }, {
         name: "created_at",
-        label: "Date",
+        label: "DATE",
         options: {
           customBodyRender: (date) => {
             const d = moment(date).format("DD/MM/YYYY");
@@ -99,13 +110,22 @@ class KioskLists extends Component {
             const file = this.state.kiosks[rowIndex];
 
             let viewBtn = (
-              <Tooltip title={"Click here to view details"}>
-                <IconButton onClick={(e) => {
-                  this.setState({ kiosk: file });
-                }}>
-                  <EyeIcon/>
-                </IconButton>
-              </Tooltip>
+              <>
+                <Tooltip title={"Click here to view details"}>
+                  <IconButton onClick={(e) => {
+                    this.setState({ kiosk: file,openDetail:true });
+                  }}>
+                    <EyeIcon/>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={"Click here to withdraw application"}>
+                  <IconButton onClick={(e) => {
+                    this.setState({ openWithdraw: true, kiosk: file });
+                  }}>
+                    <CloseIcon color={"secondary"}/>
+                  </IconButton>
+                </Tooltip>
+              </>
             );
 
             return (viewBtn);
@@ -130,18 +150,24 @@ class KioskLists extends Component {
       <>
         <Grid item sm={12} xs={12} md={12}>
           <MUIDataTable
-            title={"KIOSK: List of applications"}
+            title={"KIOSK: List of Proposed"}
             data={this.state.kiosks}
             columns={tableColumns}
             options={tableOptions}
           />
-          <ApplyHoardingDialog open={this.state.openApply}
-                               onClose={(e) => this.setState({ openApply: false })}/>
-          <KioskApplicationDialog open={Boolean(this.state.kiosk)} application={this.state.kiosk}
-                                  onClose={e => this.setState({ kiosk: null })}/>
+          <KioskApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.kiosk}
+                                  onClose={e => this.setState({ kiosk: null,openDetail:false })}/>
+
+          <ConfirmDialog onCancel={() => this.setState({ openWithdraw: false })} open={this.state.openWithdraw}
+                         onConfirm={this.withdraw.bind(this)}
+                         message={"Do you want to withdraw application?"}/>
+
           <OfficeSnackbar open={Boolean(this.state.errorMessage)}
                           onClose={() => this.setState({ errorMessage: "" })}
                           variant={"error"} message={this.state.errorMessage}/>
+          <OfficeSnackbar open={Boolean(this.state.successMessage)}
+                          onClose={() => this.setState({ successMessage: "" })}
+                          variant={"error"} message={this.state.successMessage}/>
         </Grid>
 
       </>
@@ -149,4 +175,4 @@ class KioskLists extends Component {
   }
 }
 
-export default KioskLists;
+export default KioskProposedLists;

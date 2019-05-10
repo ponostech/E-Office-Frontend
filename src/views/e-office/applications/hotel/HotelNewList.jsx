@@ -160,10 +160,23 @@ class HotelNewList extends React.Component {
           }
         }
       }, {
-        name: "name",
-        label: "SHOP NAME"
-      },  {
-        owner: "owner",
+        name: "owner",
+        options:{
+          display: "excluded"
+        }
+      }, {
+        name: "address",
+        options:{
+          display: "excluded"
+        }
+      },{
+        name: "phone",
+        options:{
+          display: "excluded"
+        }
+      },
+    {
+        name: "owner_address",
         label: "DETAILS",
         options: {
           customBodyRender: (value, tableMeta, updatedValue) => {
@@ -177,7 +190,7 @@ class HotelNewList extends React.Component {
               <ul style={{listStyleType: "none", padding: 0}}>
                 <li><strong>Applicant: </strong>{owner}</li>
                 <li><strong>Owner Address: </strong>{owner_address}</li>
-                <li><strong>Proposed Location: </strong>{address}</li>
+                <li><strong>Location: </strong>{address}</li>
                 <li><strong>Mobile: </strong>{phone}</li>
               </ul>
             )

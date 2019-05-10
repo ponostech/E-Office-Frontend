@@ -10,7 +10,7 @@ import moment from "moment";
 import ApplicationState from "../../../utils/ApplicationState";
 import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 
-class HoardingList extends Component {
+class HoardingWithdrawnList extends Component {
   hoardingService = new HoardingService();
   state = {
     hoarding: null,
@@ -24,7 +24,7 @@ class HoardingList extends Component {
     document.title = "e-AMC | List of hoarding application";
     const { doLoad, doLoadFinish } = this.props;
     doLoad();
-    this.hoardingService.fetchAdvertiserHoarding(errorMessage => this.setState({ errorMessage }),
+    this.hoardingService.fetch(ApplicationState.APPROVED_APPLICATION,errorMessage => this.setState({ errorMessage }),
       hoardings => this.setState({ hoardings }))
       .finally(() => doLoadFinish());
   }
@@ -56,35 +56,7 @@ class HoardingList extends Component {
             return (value.subject);
           }
         }
-      }, {
-        name: "status",
-        label: "STATUS",
-        options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            let color = "default";
-            switch (value) {
-              case ApplicationState.NEW_APPLICATION:
-                color = "default";
-                break;
-              case ApplicationState.UNDER_PROCESS_APPLICATION:
-                color = "primary";
-                break;
-              case ApplicationState.REJECTED_APPLICATION:
-                color = "secondary";
-                break;
-              case ApplicationState.APPROVED_APPLICATION:
-                color = "primary";
-                break;
-              default:
-                break;
-            }
-            let chip = (
-              <Chip label={value} title={value} color={color}/>
-            );
-            return chip;
-          }
-        }
-      }, {
+      },  {
         name: "created_at",
         label: "Date",
         options: {
@@ -146,7 +118,7 @@ class HoardingList extends Component {
       <>
         <Grid item sm={12} xs={12} md={12}>
           <MUIDataTable
-            title={"Hoarding: List of applications"}
+            title={"Hoarding: List of withdrawn Applications"}
             data={this.state.hoardings}
             columns={tableColumns}
             options={tableOptions}
@@ -162,4 +134,4 @@ class HoardingList extends Component {
   }
 }
 
-export default HoardingList;
+export default HoardingWithdrawnList;

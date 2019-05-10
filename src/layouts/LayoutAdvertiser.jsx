@@ -5,17 +5,21 @@ import { Route } from "react-router-dom";
 import * as OfficeRoutes from "../config/routes-constant/OfficeRoutes";
 
 import AdvertiserHeader from "../components/Header/AdvertiserHeader";
-import HoardingList from "../views/advertiser/hoarding/HoardingList";
-import KioskLists from "../views/advertiser/kiosk/lists/KioskLists";
+import KioskProposedLists from "../views/advertiser/kiosk/lists/KioskProposedLists";
 import ProfileLayout from "../views/advertiser/profile/ProfileLayout";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import HoardingApplicationForm from "../views/advertiser/hoarding/form/HoardingApplicationForm";
 import KioskApplicationForm from "../views/advertiser/kiosk/form/KioskApplicationForm";
 import IdleTimer from "react-idle-timer";
-import { ApiRoutes } from "../config/ApiRoutes";
-import axios from "axios";
 import { LoginService } from "../services/LoginService";
 import AdvertiserDashboard from "../views/advertiser/AdvertiserDashboard";
+import HoardingProposedList from "../views/advertiser/hoarding/HoardingProposedList";
+import HoardingAvailableList from "../views/advertiser/hoarding/HoardingAvailableList";
+import HoardingActiveList from "../views/advertiser/hoarding/HoardingActiveList";
+import HoardingWithdrawnList from "../views/advertiser/hoarding/HoardingWithdrawnList";
+import KioskAvailableList from "../views/advertiser/kiosk/lists/KioskAvailableList";
+import KioskActiveList from "../views/advertiser/kiosk/lists/KioskActiveList";
+import KioskWithdrawnList from "../views/advertiser/kiosk/lists/KioskWithdrawnList";
 
 
 const style = {
@@ -34,7 +38,7 @@ class LayoutAdvertiser extends Component {
     this.state = {
       loading: false
     };
-    this.loginService=new LoginService();
+    this.loginService = new LoginService();
 
     this.doLoad = this.doLoad.bind(this);
     this.idleTimer = null;
@@ -60,10 +64,10 @@ class LayoutAdvertiser extends Component {
     console.log("last active", this.idleTimer.getLastActiveTime());
     const { history } = this.props;
 
-    this.loginService.logout(errorMessage=>console.log(errorMessage),
-      success=>{
-      history.push(OfficeRoutes.LOGIN)
-      })
+    this.loginService.logout(errorMessage => console.log(errorMessage),
+      success => {
+        history.push(OfficeRoutes.LOGIN);
+      });
   }
 
   render() {
@@ -99,13 +103,32 @@ class LayoutAdvertiser extends Component {
                      render={(e) => {
                        return <HoardingApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
                      }}/>
-              <Route exact path={OfficeRoutes.ADVERTISER_HOARDING}
-                     render={p => <HoardingList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
-              <Route exact path={OfficeRoutes.ADVERTISER_KIOSK}
-                     render={p => <KioskLists doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+
+                     {/*Hoarding routes list*/}
+              <Route exact path={OfficeRoutes.ADVERTISER_PROPOSED_HOARDING}
+                     render={p => <HoardingProposedList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_AVAILABLE_HOARDING}
+                     render={p => <HoardingAvailableList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_ACTIVE_HOARDING}
+                     render={p => <HoardingActiveList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_WITHDRAWN_HOARDING}
+                     render={p => <HoardingWithdrawnList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+
+                     {/*Kiosk routes list*/}
 
               <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK}
-                     render={(e) => <KioskApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+                     render={(e) => {
+                       return <KioskApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
+                     }}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_PROPOSED_KIOSK}
+                     render={p => <KioskProposedLists doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_AVAILABLE_KIOSK}
+                     render={p => <KioskAvailableList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_ACTIVE_KIOSK}
+                     render={p => <KioskActiveList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+              <Route exact path={OfficeRoutes.ADVERTISER_WITHDRAWN_KIOSK}
+                     render={p => <KioskWithdrawnList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+
 
               {/*<Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>*/}
               <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>

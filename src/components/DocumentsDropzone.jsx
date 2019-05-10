@@ -173,8 +173,6 @@ class DocumentsDropzone extends Component {
       })
     );
     return (
-      <Dialog fullScreen={Boolean(fullScreen)} open={openDialog} onClose={this.onClose.bind(this)}
-              scroll={"body"}>
         <Card>
           <CardHeader title={title} subheader={subHeader} action={
             <IconButton onClick={this.onClose.bind(this)} name={"cancel"}>
@@ -241,7 +239,6 @@ class DocumentsDropzone extends Component {
                     color={"secondary"}>Cancel</Button>
           </DialogActions>
         </Card>
-      </Dialog>
 
     );
   }
@@ -254,7 +251,6 @@ DocumentsDropzone.defaultProps={
 DocumentsDropzone.propTypes = {
   documents: PropTypes.array.isRequired,
   openDialog: PropTypes.bool.isRequired,
-  onCloseHandler: PropTypes.func.isRequired,
   acceptedFiles: PropTypes.string.isRequired,
   fullScreen: PropTypes.bool,
   title:PropTypes.string,

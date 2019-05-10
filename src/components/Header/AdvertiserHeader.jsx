@@ -15,19 +15,20 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingIcon from "@material-ui/icons/Settings";
 // core components
-import { Button, CardActions, Grid, IconButton, LinearProgress, Typography } from "@material-ui/core";
+import { Button, IconButton, LinearProgress, Typography } from "@material-ui/core";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
 import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
+import {
+  ADVERTISER_DASHBOARD,
+  ADVERTISER_NEW_HOARDING,
+  ADVERTISER_NEW_KIOSK,
+  ADVERTISER_PROPOSED_HOARDING,
+  HOME
+} from "../../config/routes-constant/OfficeRoutes";
 import Icon from "@material-ui/core/es/Icon";
-import { authContext } from "../../context/AuthContext";
 import { LoginService } from "../../services/LoginService";
-import { ADVERTISER_NEW_HOARDING } from "../../config/routes-constant/OfficeRoutes";
-import { ADVERTISER_HOARDING } from "../../config/routes-constant/OfficeRoutes";
-import { ADVERTISER_NEW_KIOSK } from "../../config/routes-constant/OfficeRoutes";
-import { ADVERTISER_KIOSK } from "../../config/routes-constant/OfficeRoutes";
-import { HOME } from "../../config/routes-constant/OfficeRoutes";
-import { ADVERTISER_DASHBOARD } from "../../config/routes-constant/OfficeRoutes";
+import { ADVERTISER_PROPOSED_KIOSK } from "../../config/routes-constant/OfficeRoutes";
 
 class AdvertiserHeader extends React.Component {
   loginService = new LoginService();
@@ -91,14 +92,17 @@ class AdvertiserHeader extends React.Component {
         <div style={{ display: "flex", alignItems: "center" }}>
 
 
-          <IconButton onClick={e=>history.push(ADVERTISER_DASHBOARD)} style={{ marginLeft: 20 }}>
+          <IconButton onClick={e => history.push(ADVERTISER_DASHBOARD)} style={{ marginLeft: 20 }}>
             <DashboardIcon/>
           </IconButton>
 
           <CustomDropdown
             dropdownList={[
               { title: "New hoarding", link: OfficeRoutes.ADVERTISER_NEW_HOARDING },
-              { title: "List of hoarding", link: OfficeRoutes.ADVERTISER_HOARDING }
+              { title: "Proposed Hoarding", link: OfficeRoutes.ADVERTISER_PROPOSED_HOARDING },
+              { title: "Available Hoarding", link: OfficeRoutes.ADVERTISER_AVAILABLE_HOARDING },
+              { title: "Active Hoarding", link: OfficeRoutes.ADVERTISER_ACTIVE_HOARDING },
+              { title: "Withdrawn Hoarding", link: OfficeRoutes.ADVERTISER_WITHDRAWN_HOARDING }
             ]}
             linkClick={this.handleHoarding.bind(this)}
             buttonText={"Hoarding"}
@@ -106,7 +110,10 @@ class AdvertiserHeader extends React.Component {
           <CustomDropdown
             dropdownList={[
               { title: "New Kiosk", link: OfficeRoutes.ADVERTISER_NEW_KIOSK },
-              { title: "List of kiosks", link: OfficeRoutes.ADVERTISER_KIOSK }
+              { title: "Proposed Kiosk", link: OfficeRoutes.ADVERTISER_PROPOSED_KIOSK },
+              { title: "Available Kiosk", link: OfficeRoutes.ADVERTISER_AVAILABLE_KIOSK },
+              { title: "Active Kiosk", link: OfficeRoutes.ADVERTISER_ACTIVE_KIOSK },
+              { title: "Withdrawn Kiosk", link: OfficeRoutes.ADVERTISER_WITHDRAWN_KIOSK }
             ]}
             linkClick={this.handleKiosk.bind(this)}
             buttonText={"Kiosk"}
@@ -133,31 +140,31 @@ class AdvertiserHeader extends React.Component {
     );
 
     const menuItem = [
-      { name: "dashboard", label: "Dashboard", icon: "dashboard",route:ADVERTISER_DASHBOARD },
-      { name: "new_hoarding", label: "New Hoarding", icon: "tab",route:ADVERTISER_NEW_HOARDING },
-      { name: "hoarding_list", label: "List of Hoarding", icon: "view_list",route:ADVERTISER_HOARDING },
-      { name: "new_kiosk", label: "New Kiosk", icon: "smartphone",route:ADVERTISER_NEW_KIOSK },
-      { name: "kiosk_list", label: "list of Kiosks", icon: "view_list",route:ADVERTISER_KIOSK },
+      { name: "dashboard", label: "Dashboard", icon: "dashboard", route: ADVERTISER_DASHBOARD },
+      { name: "new_hoarding", label: "New Hoarding", icon: "tab", route: ADVERTISER_NEW_HOARDING },
+      { name: "hoarding_list", label: "List of Hoarding", icon: "view_list", route: ADVERTISER_PROPOSED_HOARDING },
+      { name: "new_kiosk", label: "New Kiosk", icon: "smartphone", route: ADVERTISER_NEW_KIOSK },
+      { name: "kiosk_list", label: "list of Kiosks", icon: "view_list", route: ADVERTISER_PROPOSED_KIOSK }
     ];
     var list = (
       <GridContainer justify={"center"} direction={"column"} alignItems={"flex-start"} style={{ padding: 20 }}>
         <div>
           <Typography variant={"h5"} color={"primary"}>Menu</Typography>
         </div>
-        <div style={{flex:1}}>
+        <div style={{ flex: 1 }}>
           <List>
             {menuItem.map((item, index) => (
-              <ListItem button key={index} onClick={() =>{
-                this.handleDrawerToggle()
-                history.push(item.route)
-              } }>
+              <ListItem button key={index} onClick={() => {
+                this.handleDrawerToggle();
+                history.push(item.route);
+              }}>
                 <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
                 <ListItemText primary={item.label}/>
               </ListItem>
             ))}
           </List>
         </div>
-        <div style={{flex:1}}>
+        <div style={{ flex: 1 }}>
           <span>
             {"\u00A0 "}
             {"\u00A0 "}
@@ -165,7 +172,9 @@ class AdvertiserHeader extends React.Component {
             {"\u00A0 "}</span>
         </div>
         <div>
-          <ListItem button onClick={() => new LoginService().logout((e)=>{console.error(e)},suc=>history.push(HOME))}>
+          <ListItem button onClick={() => new LoginService().logout((e) => {
+            console.error(e);
+          }, suc => history.push(HOME))}>
             <ListItemIcon><Icon>power</Icon></ListItemIcon>
             <ListItemText primary={"Log out"}/>
           </ListItem>

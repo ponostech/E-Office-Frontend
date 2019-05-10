@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, CardHeader, Divider, TextField, Typography } from "@material-ui/core";
+import { Button, CardActions, CardHeader, Divider, TextField, Typography } from "@material-ui/core";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import OfficeSelect from "../../../components/OfficeSelect";
@@ -170,7 +170,7 @@ class TradeNew extends Component {
                                         options={this.state.flas}/>
                       </GridItem>
                       <GridItem className={classes.item} xs={12} sm={12} md={12}>
-                          <GridContainer alignItems={"flex-end"}>
+                          <CardActions style={{justifyContent:"flex-end"}}>
                               <div>
                                   <Button name={"primary"} disabled={this.state.submit}
                                           color={"primary"} variant={"outlined"}
@@ -187,7 +187,7 @@ class TradeNew extends Component {
                                       {TradeViewModel.SECONDARY_TEXT}
                                   </Button>
                               </div>
-                          </GridContainer>
+                          </CardActions>
                       </GridItem>
 
                   </GridContainer>
