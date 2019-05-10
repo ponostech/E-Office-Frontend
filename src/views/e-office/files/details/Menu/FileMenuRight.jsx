@@ -12,6 +12,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from "@material-ui/core/Icon";
+import Typography from "@material-ui/core/Typography";
 
 const drawerWidth = 220;
 
@@ -142,6 +143,7 @@ class FileMenuRight extends React.Component {
                     {/*</div>*/}
                     <Divider/>
                     <List>
+                        <Typography variant="h6">Create</Typography>
                         {menus.create ? menus.create.map((item) => (
                             <>
                                 <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>

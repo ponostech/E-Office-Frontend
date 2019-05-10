@@ -13,7 +13,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from "@material-ui/core/Icon";
 
-const drawerWidth = 210;
+const drawerWidth = 220;
 
 const styles = theme => ({
   root: {
