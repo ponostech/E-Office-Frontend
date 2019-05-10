@@ -10,6 +10,9 @@ export const FILE_NOTESHEET = (id) => {
   return `/files/${id}/notesheets`;
 };
 
+export const FILE_ACTION_TYPES = "setting/notesheet/actions";
+export const FILE_PRIORITIES = "setting/notesheet/priorities";
+
 export class ApiRoutes {
   static BASE_URL = "http://139.59.26.3/api/v1";
   static LOGIN_ROUTE = "/auth/login";

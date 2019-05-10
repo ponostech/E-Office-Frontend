@@ -85,8 +85,7 @@ const styles = theme => ({
     padding: '0 8px',
     ...theme.mixins.toolbar,
   },
-  menuIcon: {
-  },
+  menuIcon: {},
   menuName: {
     fontSize: 14,
   },
@@ -106,7 +105,7 @@ class FileMenuLeft extends React.Component {
     this.setState({open: JSON.parse(open)})
   }
 
-  toogleDrawer = () => {
+  toggleDrawer = () => {
     this.setState(
         state => {
           localStorage.setItem("open_drawer", !state.open);
@@ -117,7 +116,6 @@ class FileMenuLeft extends React.Component {
   render() {
     const {classes, menus} = this.props;
     // api_method: "POST", api_url: "file/4/send", icon: "", name: "Send", url: "send"
-
     return (
         <>
           <Drawer
@@ -135,7 +133,7 @@ class FileMenuLeft extends React.Component {
               open={this.state.open}
           >
             <div className={classes.toolbar}>
-              <IconButton onClick={this.toogleDrawer}>
+              <IconButton onClick={this.toggleDrawer}>
                 {!this.state.open ? <MenuIcon/> : <ChevronLeftIcon/>}
               </IconButton>
             </div>
@@ -144,7 +142,9 @@ class FileMenuLeft extends React.Component {
               {menus.view ? menus.view.map((item) => (
                   <>
                     <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
-                      <ListItemIcon classes={{root: classes.menuIcon}}><Icon>{item.icon ? item.icon : 'remove_red_eye'}</Icon></ListItemIcon>
+                      <ListItemIcon classes={{root: classes.menuIcon}}>
+                        <Icon>{item.icon ? item.icon : 'remove_red_eye'}</Icon>
+                      </ListItemIcon>
                       <ListItemText classes={{primary: classes.menuName}} primary={item.name}/>
                     </ListItem>
                   </>
