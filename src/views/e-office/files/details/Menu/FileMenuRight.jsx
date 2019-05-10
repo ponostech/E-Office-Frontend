@@ -136,14 +136,13 @@ class FileMenuRight extends React.Component {
                     }}
                     open={this.state.open}
                 >
-                    {/*<div className={classes.toolbar}>*/}
-                    {/*    <IconButton onClick={this.toogleDrawer}>*/}
-                    {/*        {!this.state.open ? <MenuIcon/> : <ChevronRightIcon/>}*/}
-                    {/*    </IconButton>*/}
-                    {/*</div>*/}
+                    <div className={classes.toolbar}>
+                        <ListItem button>
+                            <ListItemText classes={{primary: classes.menuName}} primary="CREATE"/>
+                        </ListItem>
+                    </div>
                     <Divider/>
                     <List>
-                        <Typography variant="h6">Create</Typography>
                         {menus.create ? menus.create.map((item) => (
                             <>
                                 <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
@@ -153,6 +152,12 @@ class FileMenuRight extends React.Component {
                             </>
                         )) : null}
                     </List>
+                    <Divider/>
+                    <div className={classes.toolbar}>
+                        <ListItem button>
+                            <ListItemText classes={{primary: classes.menuName}} primary="ACTION"/>
+                        </ListItem>
+                    </div>
                     <Divider/>
                     <List>
                         {menus.action ? menus.action.map((item) => (

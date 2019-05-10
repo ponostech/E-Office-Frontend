@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import axios from 'axios';
 import moment from 'moment';
 import {EventNote} from "@material-ui/icons";
-import {CardHeader, Divider} from "@material-ui/core";
+import {CardHeader, Divider, Icon, Tooltip, Fab} from "@material-ui/core";
 import Timeline from "../../../../components/Timeline/Timeline.jsx";
 import DefaultAvatar from "../../../../assets/img/default-avatar.png";
 import CreateNoteButton from "./NotesheetCreateButton";
@@ -83,9 +83,9 @@ class NotesheetView extends Component {
                       subheader={"Subject: " + this.props.file.subject}/>
           <Divider/>
           <br/>
-          {loading ? "" : <CreateNoteButton click={this.handleOpenCreateNote}/>}
           {noteList}
           {loading ? "" : <CreateNoteButton click={this.handleOpenCreateNote}/>}
+
           <CreateNoteDialog onSubmit={this.loadingNoteDialog.bind(this, true)} loading={this.state.loadingNoteDialog}
                             file={this.props.file} open={this.state.openDialog}
                             close={this.handleCloseCreateNote}/>
