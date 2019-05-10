@@ -64,7 +64,7 @@ class FileUpload extends Component {
     var self = this;
 
     let path = moment().format("YYYY-MM");
-    config.dirName = `${applicationName}/${path}`;
+    config.dirName = `office/${applicationName}/${path}`;
     return (
       <>
         <TextField
@@ -106,7 +106,7 @@ class FileUpload extends Component {
                     let item = e.target.files[0];
 
                     let blob = item.slice(0, item.size, item.type);
-                    let newName = "folder_one" + "/" + file.name.toLowerCase() + "-" + uniqid() + item.name;
+                    let newName = file.name.toLowerCase() + "-" + uniqid() + item.name;
                     let newFile = new File([blob], newName, { type: item.type });
 
                     let temp = file;
@@ -115,15 +115,18 @@ class FileUpload extends Component {
                     self.setState({
                       file: temp
                     });
+//delete existing data
                     if (self.state.uploadedFile) {
                       const uploadedFile = self.state.uploadedFile;
+
                       let delConfig = config;
                       delConfig.dirName = uploadedFile.dirName;
 
-                      S3FileUpload.deleteFile(uploadedFile.path, delConfig)
-                        .then(data => console.log("Deleted file",data))
+                      S3FileUpload.deleteFile(uploadedFile.name, delConfig)
+                        .then(data => console.log("Deleted file", data))
                         .catch(e => console.error(e));
                     }
+                    //store new file
                     S3FileUpload
                       .uploadFile(newFile, config)
                       .then(data => {
@@ -131,7 +134,7 @@ class FileUpload extends Component {
                         self.setState({
                           file: temp,
                           uploadedFile: {
-                            path: newFile.name,
+                            name: newFile.name,
                             dirName: `${applicationName}/${path}`
                           }
                         });
