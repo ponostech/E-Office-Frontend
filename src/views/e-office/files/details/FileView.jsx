@@ -21,6 +21,7 @@ import FileSiteVerifications from "./Views/FileSiteVerifications";
 import FileDraftPermits from "./Views/FileDraftPermits";
 import FileDraftRejects from "./Views/FileDraftRejects";
 import FileDraftCancels from "./Views/FileDraftCancels";
+import NoteSheetDraftView from "../notesheet/NotesheetDraftView";
 
 const styles = theme => ({
   root: {
@@ -95,6 +96,10 @@ class FileView extends Component {
             <Grid item xs={12} md={12} lg={12}>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/details"}
                      render={(props) => <FileDetails {...props} file={this.state.file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/notesheets"}
+                     render={(props) => <NoteSheetView {...props} file={this.state.file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/notesheets/drafts"}
+                     render={(props) => <NoteSheetDraftView {...props} file={this.state.file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/movements"}
                      render={(props) => <FileMovements {...props} file={this.state.file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/enclosures"}
@@ -111,8 +116,6 @@ class FileView extends Component {
                      render={(props) => <FileDraftRejects {...props} file={this.state.file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/draft-cancels"}
                      render={(props) => <FileDraftCancels {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/notesheets"}
-                     render={(props) => <NoteSheetView {...props} file={this.state.file}/>}/>
               <Route path={OfficeRoutes.FILE_DETAIL + "/draft"}
                      render={(props) => <DraftPermit {...props} file={this.state.file}/>}/>
               <Route path={OfficeRoutes.FILE_DETAIL + "/reject"}
