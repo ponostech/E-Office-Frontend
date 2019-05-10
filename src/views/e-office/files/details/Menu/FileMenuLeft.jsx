@@ -133,6 +133,7 @@ class FileMenuLeft extends React.Component {
               open={this.state.open}
           >
             <div className={classes.toolbar}>
+              <span style={{flex: 1, paddingLeft: '10px', color: 'black', fontSize: 16}}>VIEW</span>
               <IconButton onClick={this.toggleDrawer}>
                 {!this.state.open ? <MenuIcon/> : <ChevronLeftIcon/>}
               </IconButton>
