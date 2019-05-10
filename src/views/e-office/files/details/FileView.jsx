@@ -91,7 +91,7 @@ class FileView extends Component {
         <>
           <FileMenuLeft click={this.handleItemClick} menus={this.state.menus}/>
           <FileMenuRight click={this.handleItemClick} menus={this.state.menus}/>
-          <main className={classes.content} style={{marginRight: '220px'}}>
+          <main className={classes.content} style={{marginRight: '190px'}}>
             <Grid item xs={12} md={12} lg={12}>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/details"}
                      render={(props) => <FileDetails {...props} file={this.state.file}/>}/>

@@ -9,7 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import SingletonAuth from "../../../utils/SingletonAuth";
 
 var timeout = null;
-class FileStore extends Component {
+class FileCreate extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -312,4 +312,4 @@ class FileStore extends Component {
     }
 }
 
-export default FileStore;
+export default FileCreate;

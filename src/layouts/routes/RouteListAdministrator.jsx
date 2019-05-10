@@ -3,14 +3,14 @@ import React from 'react';
 import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import {Route, withRouter} from "react-router-dom";
 import ReceiptStore from "../../views/e-office/receipt/ReceiptStore";
-import FileStore from "../../views/e-office/files/FileStore";
+import FileCreate from "../../views/e-office/files/FileCreate";
 import ReceiptShow from "../../views/e-office/receipt/ReceiptShow";
 import ReceiptList from "../../views/e-office/receipt/ReceiptList";
 import ReceiptSentList from "../../views/e-office/receipt/ReceiptSentList";
 import ShopNewList from "../../views/e-office/applications/shop-license/ShopNewList";
 import HoardingApplications from "../../views/e-office/applications/hoarding/HoardingApplications";
 import Settings from "../../views/e-office/settings/Setting";
-import FileDetail from "../../views/e-office/files/details/FileView";
+import FileView from "../../views/e-office/files/details/FileView";
 import FileCreatedList from "../../views/e-office/files/FileCreatedList";
 import FileSentList from "../../views/e-office/files/FileSentList";
 import FileActiveList from "../../views/e-office/files/FileActiveList";
@@ -62,9 +62,9 @@ const routes = (props) => {
             <Route exact path={OfficeRoutes.SENT_RECEIPT} component={ReceiptSentList}/>
 
             {/*File*/}
-            <Route exact path={OfficeRoutes.NEW_FILE} render={e => <FileStore doLoad={props.doLoad}/>}/>
+            <Route exact path={OfficeRoutes.NEW_FILE} render={e => <FileCreate doLoad={props.doLoad}/>}/>
             <Route path={OfficeRoutes.FILE_DETAIL}
-                   render={(e) => <FileDetail {...props} doLoad={props.doLoad}/>}/>
+                   render={(e) => <FileView {...props} doLoad={props.doLoad}/>}/>
             <Route exact path={OfficeRoutes.CREATED_FILES} component={FileCreatedList}/>
             <Route exact path={OfficeRoutes.SENT_FILE} component={FileSentList}/>
             <Route exact path={OfficeRoutes.FILE_ACTIVE_LIST}
@@ -77,7 +77,7 @@ const routes = (props) => {
                    render={e => <FileArchivedList {...props} doLoad={props.doLoad}/>}/>
 
             {/*OBPAS*/}
-            <Route exact path={OfficeRoutes.OBPAS} component={FileStore}/>
+            <Route exact path={OfficeRoutes.OBPAS} component={FileCreate}/>
 
             {/*Advertiser*/}
             <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
