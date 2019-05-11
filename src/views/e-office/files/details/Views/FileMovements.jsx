@@ -3,6 +3,7 @@ import axios from 'axios';
 import {FILE_MOVEMENTS} from "../../../../../config/ApiRoutes";
 import LoadingView from "../../../../common/LoadingView";
 import {CardHeader, Divider, List, ListItem, ListItemText} from "@material-ui/core";
+import moment from "moment";
 
 class FileMovements extends Component {
   state = {
@@ -23,10 +24,10 @@ class FileMovements extends Component {
   render() {
     const {loading, movements} = this.state;
 
-    let list = "No movement";
+    let list = "No file movement";
     if(movements.length > 0)
       list = this.state.movements.map(res => {
-        return <><ListItem><ListItemText primary={"Sent by " + res.sender.staff.name + " (" + res.sender.staff.designation + ")" + " to " + res.recipient.staff.name + " (" + res.sender.staff.designation + ")"} secondary={"On: " + res.created_at}/></ListItem><Divider/></>;
+        return <><ListItem><ListItemText primary={"Sent by " + res.sender.staff.name + " (" + res.sender.staff.designation + ")" + " to " + res.recipient.staff.name + " (" + res.sender.staff.designation + ")"} secondary={"On: " + moment(res.created_at).format("Do MMMM YYYY")}/></ListItem><Divider/></>;
       });
 
     return (

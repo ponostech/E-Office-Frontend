@@ -31,7 +31,8 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing.unit * 3,
+    marginRight: '190px',
   },
   container: {
     display: "flex"
@@ -42,7 +43,15 @@ const styles = theme => ({
     justifyContent: "flex-end",
     padding: "0 8px",
     ...theme.mixins.toolbar
-  }
+  },
+  "@media print": {
+    hide: {
+      display: "none",
+    },
+    content: {
+      margin: 0,
+    }
+  },
 });
 
 class FileView extends Component {
@@ -98,9 +107,11 @@ class FileView extends Component {
 
     const view = (
         <>
+          <div className={classes.hide}>
           <FileMenuLeft click={this.handleItemClick} menus={this.state.menus}/>
           <FileMenuRight click={this.handleItemClick} menus={this.state.menus}/>
-          <main className={classes.content} style={{marginRight: '190px'}}>
+          </div>
+          <main className={classes.content}>
             <Grid item xs={12} md={12} lg={12}>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/details"}
                      render={(props) => <FileDetails {...props} file={this.state.file}/>}/>
