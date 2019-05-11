@@ -20,7 +20,7 @@ const notesheetCreateButton = (props) => {
   const {classes} = props;
   return (
       <Tooltip title="Add Note" aria-label="Add Note" onClick={props.click}>
-        <Fab color="primary" aria-label="Add" style={{position: 'absolute', left: 270, bottom: 40, zIndex: 9000}}>
+        <Fab color="primary" aria-label="Add" style={{position: 'absolute', right: 230, bottom: 40, zIndex: 9000}}>
           <Icon>add</Icon>
         </Fab>
       </Tooltip>
