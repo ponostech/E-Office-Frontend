@@ -19,8 +19,6 @@ import Editor from "../draft/Editor";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import Grid from "@material-ui/core/Grid";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import { ApiRoutes, FILE_ACTION_TYPES, FILE_PRIORITIES } from "../../../../config/ApiRoutes";
 // import {convertToHTML} from "nib-converter";
 import LoadingView from "../../../common/LoadingView";
@@ -50,7 +48,8 @@ class NoteCreateDialog extends React.Component {
     priority: null,
     fixedDate: null,
     priorityTypes: [],
-    actionTypes: []
+    actionTypes: [],
+    files:[]
   };
 
   componentDidMount() {
@@ -74,7 +73,7 @@ class NoteCreateDialog extends React.Component {
   };
 
   handleSelect = (name, e) => {
-    this.setState({[name]: e});
+    this.setState({ [name]: e });
   };
 
   handleSelectBlur = (identifier, e) => {
@@ -92,7 +91,7 @@ class NoteCreateDialog extends React.Component {
 
 
   editorChange = (e) => {
-    this.setState({content: e.target.getContent()});
+    this.setState({ content: e.target.getContent() });
   };
 
   onSubmitNote = (action) => {
@@ -104,20 +103,20 @@ class NoteCreateDialog extends React.Component {
       content: this.state.content,
       action: this.state.action.value,
       priority: this.state.priority.value,
-      status: 0,
+      status: 0
     };
 
     if (this.state.fixedDate) data.fixed_date = moment(this.state.fixedDate).format("YYYY-MM-DD");
     if (action === "confirm") data.status = 1;
 
     axios.post(ApiRoutes.NOTESHEET, data)
-        .then(res => {
-          // console.log("return", res);
-          window.location.reload();
-        })
-        .catch(err => {
-          console.log("error", err);
-        });
+      .then(res => {
+        // console.log("return", res);
+        window.location.reload();
+      })
+      .catch(err => {
+        console.log("error", err);
+      });
   };
 
   render() {
@@ -183,7 +182,8 @@ class NoteCreateDialog extends React.Component {
           </MuiPickersUtilsProvider>
         </Grid>
         <Grid item={true} lg={6}>
-          <NotesheetAttachment onSuccess={(files)=>this.setState(files)}/>
+          <Typography variant={"h5"} style={{textAlign:"center"}}>Notesheet Attachment</Typography>
+          <NotesheetAttachment onSuccess={(files) => this.setState({files})}/>
         </Grid>
 
       </Grid>

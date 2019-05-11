@@ -20,18 +20,16 @@ const config = {
 
 class NotesheetAttachment extends Component {
   state = {
-    uploadedFiles: [
-      { name: "file name", file: {}, location: "http://www.google.com" }
-    ]
+    uploadedFiles: []
   };
-  handleFileDelete = (file) => {
+  handleFileDelete = (uploadedFile) => {
     const self = this;
-    config.dirName = file.dirName;
-    S3FileUpload.deleteFile(file, config)
+    config.dirName = uploadedFile.dirName;
+    S3FileUpload.deleteFile(uploadedFile.file.name, config)
       .then(res => {
         console.log(res);
         let arr = self.state.uploadedFiles.forEach(function(item) {
-          return item.name !== file.name;
+          return item.name !== uploadedFile.name;
         });
         self.setState({ uploadedFiles: arr });
         self.props.onSuccess(self.state.uploadedFiles)
@@ -41,9 +39,9 @@ class NotesheetAttachment extends Component {
   renderUploadedFileList = () => {
     let view = (
       <List>
-        {this.state.uploadedFiles.map(value => {
+        {this.state.uploadedFiles.map((value,index) => {
           return (
-            <ListItem key={value.name}>
+            <ListItem key={index}>
               <ListItemText secondary={Math.round(value.file.size / 1024) + " Kb"} primary={value.name}
                             color={"primary"}/>
               <ListItemSecondaryAction>
@@ -66,23 +64,23 @@ class NotesheetAttachment extends Component {
 
     acceptedFiles.forEach(function(file, index) {
       let blob = file.slice(0, file.size, file.type);
-      let newName = file.name.toLowerCase() + "-" + uniqid() + item.name;
-      let newFile = new File([blob], newName, { type: item.type });
+      let newName = file.name.toLowerCase() + "-" + uniqid() + file.name;
+      let newFile = new File([blob], newName, { type: file.type });
       let path = moment().format("DD-YYYY");
 
-      config.dirName += path;
+      config.dirName +="/"+ path;
       S3FileUpload.uploadFile(newFile, config)
         .then(data => {
           console.log(data);
+          let newFiles = self.state.uploadedFiles;
           let temp = {
             name: file.name,
             dirName: config.dirName,
             file: newFile,
             location: data.location
           };
-          self.setState(state => {
-            state.uploadedFiles.push(temp);
-          });
+          newFiles.push(temp)
+          self.setState({uploadedFiles:newFiles});
           self.props.onSuccess(self.state.uploadedFiles)
         })
         .catch(err => {
