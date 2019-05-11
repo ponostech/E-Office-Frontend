@@ -18,9 +18,9 @@ const timelineStyle = theme => ({
       }
     },
     listStyle: "none",
-    padding: "20px 0 20px",
+    padding: "0 0 10px",
     position: "relative",
-    marginTop: "30px",
+    marginTop: "0px",
     "&:before": {
       top: "50px",
       bottom: "0",
@@ -33,14 +33,12 @@ const timelineStyle = theme => ({
     }
   },
   timelineSimple: {
-    marginTop: "30px",
-    padding: "0 0 20px",
     "&:before": {
       left: "5%"
     }
   },
   item: {
-    marginBottom: "20px",
+    marginBottom: "10px",
     position: "relative",
     "&:before,&:after": {
       content: '" "',
@@ -172,12 +170,12 @@ const timelineStyle = theme => ({
     }
   },
   timelineSimplePanel: {
-    width: "86%"
+    width: "86%",
   },
   timelinePanelInverted: {
     [theme.breakpoints.up("sm")]: {
       float: "right",
-      backgroundColor: whiteColor,
+      backgroundColor: "#F8F8F8",
       "&:before": {
         borderLeftWidth: "0",
         borderRightWidth: "15px",
@@ -199,10 +197,10 @@ const timelineStyle = theme => ({
     fontSize: "12px"
   },
   timelineBody: {
-    fontSize: "17px",
+    // fontSize: "15px",
     lineHeight: "28px",
     color: "#666666",
-    paddingBottom: "10px"
+    paddingBottom: "10px",
   },
   timelineFooter: {
     zIndex: "1000",

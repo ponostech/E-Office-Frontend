@@ -98,7 +98,17 @@ class FileView extends Component {
   };
 
   openDialog = (name) => {
-    alert('dialog');
+    switch (name) {
+      case "test":
+        break;
+      default:
+        this.openNoteDialog();
+        break
+    }
+  };
+
+  openNoteDialog = () => {
+    alert('Note')
   };
 
   render() {
