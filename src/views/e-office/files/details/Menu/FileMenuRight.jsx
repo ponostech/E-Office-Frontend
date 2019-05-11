@@ -145,7 +145,7 @@ class FileMenuRight extends React.Component {
                     <List>
                         {menus.create ? menus.create.map((item) => (
                             <>
-                                <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
+                                <ListItem button key={item.name} onClick={() => this.props.click(item.url, 'modal', item.name)}>
                                     <ListItemIcon classes={{root: classes.menuIcon}}><Icon>{item.icon ? item.icon : 'edit'}</Icon></ListItemIcon>
                                     <ListItemText classes={{primary: classes.menuName}} primary={item.name}/>
                                 </ListItem>

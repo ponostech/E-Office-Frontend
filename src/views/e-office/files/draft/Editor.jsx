@@ -9,12 +9,16 @@ class TextEditor extends Component {
                      plugins: 'print preview searchreplace autolink directionality visualblocks visualchars ' +
                          'fullscreen image link media template codesample table charmap hr pagebreak nonbreaking ' +
                          'anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu' +
-                         'colorpicker textpattern help image code',
+                         ' colorpicker textpattern help image code',
+                     // plugins: 'print preview searchreplace autolink directionality visualblocks visualchars ' +
+                     //     'fullscreen image link media template codesample table charmap hr pagebreak nonbreaking ' +
+                     //     'anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu' +
+                     //     'colorpicker textpattern help image code',
                      toolbar: 'formatselect | bold italic strikethrough forecolor backcolor | link | ' +
                          'alignleft aligncenter alignright alignjustify | numlist bullist outdent indent ' +
                          '| removeformat | code'
                    }}
-                   onSelectionChange={this.props.onChange}
+                   onChange={this.props.onChange}
                    initialValue={this.props.default}/>
   }
 }

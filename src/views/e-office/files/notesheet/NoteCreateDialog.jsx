@@ -72,17 +72,8 @@ class NoteCreateDialog extends React.Component {
     this.setState({fixedDate: dateDate});
   };
 
-  handleSelect = (identifier, value) => {
-    switch (identifier) {
-      case "action":
-        this.setState({action: value});
-        break;
-      case "priority":
-        this.setState({priority: value});
-        break;
-      default:
-        break;
-    }
+  handleSelect = (name, e) => {
+    this.setState({[name]: e});
   };
 
   handleSelectBlur = (identifier, e) => {
@@ -98,17 +89,18 @@ class NoteCreateDialog extends React.Component {
     }
   };
 
-  editorChange = (content) => {
-    this.setState({content: content});
+  editorChange = (e) => {
+    this.setState({content: e.target.getContent()});
   };
 
   onSubmitNote = (action) => {
     this.props.onSubmit();
+
     let data = {
       file_id: this.props.file.id,
-      content: JSON.stringify(this.state.content),
-      action: this.state.action.name,
-      priority: this.state.priority.name,
+      content: this.state.content,
+      action: this.state.action.value,
+      priority: this.state.priority.value,
       status: 0,
     };
 
@@ -117,9 +109,12 @@ class NoteCreateDialog extends React.Component {
 
     axios.post(ApiRoutes.NOTESHEET, data)
         .then(res => {
-          console.log("return", res);
+          // console.log("return", res);
           window.location.reload();
         })
+        .catch(err => {
+          console.log("error", err);
+        });
   };
 
   render() {

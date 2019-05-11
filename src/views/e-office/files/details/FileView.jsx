@@ -78,10 +78,18 @@ class FileView extends Component {
         });
   }
 
-  handleItemClick = (name) => {
+  handleItemClick = (url, mode = null, name = null) => {
     const {history} = this.props;
-    if (this.state.file.id)
-      history.push("/e-office/file/" + this.state.file.id + "/" + name);
+    if (!this.state.file.id)
+      return true;
+    if (mode === 'modal')
+      this.openDialog(name);
+    else
+      history.push("/e-office/file/" + this.state.file.id + "/" + url);
+  };
+
+  openDialog = (name) => {
+    alert('dialog');
   };
 
   render() {
