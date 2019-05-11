@@ -22,7 +22,7 @@ function Timeline({ ...props }) {
       [classes.timelineSimple]: simple
     });
   return (
-    <ul className={timelineClass}>
+    <ul style={{marginBottom: 30}} className={timelineClass}>
       {stories.map((prop, key) => {
         const panelClasses =
           classes.timelinePanel +
@@ -55,7 +55,7 @@ function Timeline({ ...props }) {
               <div className={classes.testimonialIcon}>
                 <FormatQuote />
               </div>
-                <div className={classes.timelineBody} dangerouslySetInnerHTML={{__html: convertToHTML(prop.body)}} />
+                <div className={classes.timelineBody} dangerouslySetInnerHTML={{__html: prop.body}} />
               {prop.footer ? <hr className={classes.footerLine} /> : null}
               {prop.avatar ? (
                     <Avatar alt="" src={prop.avatar} className={classes.avatar} />
