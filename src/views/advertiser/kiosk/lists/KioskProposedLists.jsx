@@ -41,15 +41,7 @@ class KioskProposedLists extends Component {
 
   render() {
     const tableColumns = [
-      {
-        name: "applicant",
-        label: "APPLICANT",
-        options: {
-          customBodyRender: (applicant, tableMeta, updateValue) => {
-            return (applicant.advertiser.name);
-          }
-        }
-      }, {
+     {
         name: "file",
         label: "FILE NUMBER",
         options: {
@@ -75,8 +67,6 @@ class KioskProposedLists extends Component {
               <>
                 <ul>
                   <li><strong>LOCATION</strong> {kiosk.address}</li>
-                  <li><strong>LENGTH</strong> {kiosk.length}</li>
-                  <li><strong>HEIGHT</strong> {kiosk.height}</li>
                 </ul>
               </>
             );
@@ -138,7 +128,7 @@ class KioskProposedLists extends Component {
       filterType: "checkbox",
       rowsPerPage: 15,
       serverSide: false,
-      responsive: "scroll",
+      selectableRows:false,
       customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
         return false;
       },

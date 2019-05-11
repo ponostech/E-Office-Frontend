@@ -33,14 +33,6 @@ class HoardingActiveList extends Component {
   render() {
     const tableColumns = [
       {
-        name: "applicant",
-        label: "APPLICANT",
-        options: {
-          customBodyRender: (applicant, tableMeta, updateValue) => {
-            return (applicant.advertiser.name);
-          }
-        }
-      }, {
         name: "file",
         label: "FILE ID",
         options: {
@@ -56,9 +48,27 @@ class HoardingActiveList extends Component {
             return (value.subject);
           }
         }
+      },{
+        name: "hoarding",
+        label: "DETAILS",
+        options: {
+          customBodyRender: (hoarding, tableMeta, updateValue) => {
+            const { rowIndex } = tableMeta;
+            const file = this.state.hoardings[rowIndex];
+            let view=(
+              <>
+                <ul>
+                  <li><strong>LOCATION</strong> {hoarding.address}</li>
+                </ul>
+              </>
+            );
+
+            return (view);
+          }
+        }
       },  {
         name: "created_at",
-        label: "Date",
+        label: "DATE",
         options: {
           customBodyRender: (date) => {
             const d = moment(date).format("DD/MM/YYYY");

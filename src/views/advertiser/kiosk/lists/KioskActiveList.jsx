@@ -33,15 +33,7 @@ class KioskActiveList extends Component {
 
   render() {
     const tableColumns = [
-      {
-        name: "applicant",
-        label: "APPLICANT",
-        options: {
-          customBodyRender: (applicant, tableMeta, updateValue) => {
-            return (applicant.advertiser.name);
-          }
-        }
-      }, {
+     {
         name: "file",
         label: "FILE ID",
         options: {
@@ -58,26 +50,19 @@ class KioskActiveList extends Component {
           }
         }
       }, {
-        name: "status",
-        label: "STATUS",
+        name: "kiosk",
+        label: "DETAILS",
         options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            let color = "default";
-            switch (value) {
-              case "new":
-                color = "default";
-                break;
-              case "rejected":
-                color = "secondary";
-                break;
-              case "granted":
-                color = "primary";
-
-            }
-            let chip = (
-              <Chip label={value} title={value} color={color}/>
+          customBodyRender: (kiosk, tableMeta, updateValue) => {
+            const { rowIndex } = tableMeta;
+            let view = (
+              <>
+                <ul>
+                  <li><strong>LOCATION</strong> {kiosk.address}</li>
+                </ul>
+              </>
             );
-            return chip;
+            return (view);
           }
         }
       }, {
@@ -117,7 +102,7 @@ class KioskActiveList extends Component {
       filterType: "checkbox",
       rowsPerPage: 15,
       serverSide: false,
-      responsive: "scroll",
+      selectableRows:false,
       customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
         return false;
       },

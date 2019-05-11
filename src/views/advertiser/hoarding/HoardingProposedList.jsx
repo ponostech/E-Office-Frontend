@@ -38,14 +38,6 @@ class HoardingProposedList extends Component {
   render() {
     const tableColumns = [
       {
-        name: "applicant",
-        label: "APPLICANT",
-        options: {
-          customBodyRender: (applicant, tableMeta, updateValue) => {
-            return (applicant.advertiser.name);
-          }
-        }
-      }, {
         name: "file",
         label: "FILE NUMBER",
         options: {
@@ -72,8 +64,6 @@ class HoardingProposedList extends Component {
               <>
                 <ul>
                   <li><strong>LOCATION</strong> {hoarding.address}</li>
-                  <li><strong>LENGTH</strong> {hoarding.length}</li>
-                  <li><strong>HEIGHT</strong> {hoarding.height}</li>
                 </ul>
               </>
             );
