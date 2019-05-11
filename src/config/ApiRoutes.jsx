@@ -10,6 +10,10 @@ export const FILE_NOTESHEET = (id) => {
   return `/files/${id}/notesheets`;
 };
 
+export const FILE_MOVEMENTS = (id) => {
+  return `/files/${id}/movements`;
+};
+
 export const FILE_ACTION_TYPES = "setting/notesheet/actions";
 export const FILE_PRIORITIES = "setting/notesheet/priorities";
 

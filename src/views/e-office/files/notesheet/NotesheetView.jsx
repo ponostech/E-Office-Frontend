@@ -21,13 +21,13 @@ class NotesheetView extends Component {
   componentDidMount() {
     axios.get(FILE_NOTESHEET(this.props.file.id))
         .then(res => {
-          console.log("note", res);
+          // console.log("note", res);
           let noteSheet = res.data;
           if (noteSheet.status) {
             this.formatNote(noteSheet.data.notesheets);
             this.setState({loading: false});
           } else {
-            console.log("Fail Notesheet: ", noteSheet);
+            // console.log("Fail Notesheet: ", noteSheet);
             this.setState({loading: false});
           }
         });
