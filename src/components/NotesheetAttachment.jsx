@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Tooltip } from "@material-ui/core";
+import { List } from "@material-ui/core";
 import S3FileUpload from "react-s3";
-import DeleteIcon from "@material-ui/icons/DeleteForever";
 import { BUCKET_NAME, REGION, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY } from "../Configuration";
 import classNames from "classnames";
 import Dropzone from "react-dropzone";
 import moment from "moment";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
+import NotesheetAttachmentItem from "./NotesheetAttachmentItem";
 
 var uniqid = require("uniqid");
 
@@ -22,36 +22,27 @@ class NotesheetAttachment extends Component {
   state = {
     uploadedFiles: []
   };
-  handleFileDelete = (uploadedFile) => {
-    const self = this;
-    config.dirName = uploadedFile.dirName;
-    S3FileUpload.deleteFile(uploadedFile.file.name, config)
-      .then(res => {
-        console.log(res);
-        let arr = self.state.uploadedFiles.forEach(function(item) {
-          return item.name !== uploadedFile.name;
-        });
-        self.setState({ uploadedFiles: arr });
-        self.props.onSuccess(self.state.uploadedFiles)
-      })
-      .catch(err => console.error(err));
+  handleDelete = (uploadedFile) => {
+    console.log(uploadedFile);
+    let arr = [];
+    this.state.uploadedFiles.forEach(item => {
+      if (item.name !== uploadedFile.name) {
+        arr.push(item);
+      }
+    });
+    this.setState({
+      uploadedFiles: arr
+    });
+    this.props.onSuccess(this.state.uploadedFiles);
   };
   renderUploadedFileList = () => {
     let view = (
       <List>
-        {this.state.uploadedFiles.map((value,index) => {
+        {this.state.uploadedFiles.map((value, index) => {
           return (
-            <ListItem key={index}>
-              <ListItemText secondary={Math.round(value.file.size / 1024) + " Kb"} primary={value.name}
-                            color={"primary"}/>
-              <ListItemSecondaryAction>
-                <Tooltip title={"Click here to delete"}>
-                  <IconButton onClick={this.handleFileDelete.bind(this, value)}>
-                    <DeleteIcon color={"error"}/>
-                  </IconButton>
-                </Tooltip>
-              </ListItemSecondaryAction>
-            </ListItem>
+            <NotesheetAttachmentItem onNameChanged={(newName)=>{
+              this.setState(state=>state.uploadedFile[index].name=newName)
+            }} file={value} key={index} onDelete={this.handleDelete.bind(this)}/>
           );
         })}
       </List>
@@ -66,22 +57,23 @@ class NotesheetAttachment extends Component {
       let blob = file.slice(0, file.size, file.type);
       let newName = file.name.toLowerCase() + "-" + uniqid() + file.name;
       let newFile = new File([blob], newName, { type: file.type });
-      let path = moment().format("DD-YYYY");
+      let loc = moment().format("DD-YYYY");
 
-      config.dirName +="/"+ path;
+      config.dirName += "/" + loc;
       S3FileUpload.uploadFile(newFile, config)
         .then(data => {
           console.log(data);
           let newFiles = self.state.uploadedFiles;
           let temp = {
-            name: file.name,
+            id: uniqid(),
+            name: file.name.substring(0, file.name.lastIndexOf('.')),
             dirName: config.dirName,
             file: newFile,
             location: data.location
           };
-          newFiles.push(temp)
-          self.setState({uploadedFiles:newFiles});
-          self.props.onSuccess(self.state.uploadedFiles)
+          newFiles.push(temp);
+          self.setState({ uploadedFiles: newFiles });
+          self.props.onSuccess(self.state.uploadedFiles);
         })
         .catch(err => {
           console.error(err);
@@ -123,8 +115,8 @@ class NotesheetAttachment extends Component {
 NotesheetAttachment.defaultProps = {
   acceptedFiles: "image/*,application/pdf"
 };
-NotesheetAttachment.propTypes={
-  onSuccess:PropTypes.func.isRequired,
+NotesheetAttachment.propTypes = {
+  onSuccess: PropTypes.func.isRequired,
   acceptedFiles: PropTypes.string
-}
+};
 export default NotesheetAttachment;
