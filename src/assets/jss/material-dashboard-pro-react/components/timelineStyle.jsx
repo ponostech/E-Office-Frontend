@@ -9,6 +9,7 @@ import {
   grayColor,
   hexToRgb
 } from "../../../../assets/jss/material-dashboard-pro-react.jsx";
+
 const timelineStyle = theme => ({
   timeline: {
     [theme.breakpoints.down("sm")]: {
@@ -75,47 +76,47 @@ const timelineStyle = theme => ({
   info: {
     backgroundColor: infoColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(" +
-      hexToRgb(blackColor) +
-      ", 0.14), 0 7px 10px -5px rgba(" +
-      hexToRgb(infoColor[0]) +
-      ", 0.4)"
+        "0 4px 20px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.14), 0 7px 10px -5px rgba(" +
+        hexToRgb(infoColor[0]) +
+        ", 0.4)"
   },
   success: {
     backgroundColor: successColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(" +
-      hexToRgb(blackColor) +
-      ", 0.14), 0 7px 10px -5px rgba(" +
-      hexToRgb(successColor[0]) +
-      ", 0.4)"
+        "0 4px 20px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.14), 0 7px 10px -5px rgba(" +
+        hexToRgb(successColor[0]) +
+        ", 0.4)"
   },
   danger: {
     backgroundColor: dangerColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(" +
-      hexToRgb(blackColor) +
-      ", 0.14), 0 7px 10px -5px rgba(" +
-      hexToRgb(dangerColor[0]) +
-      ", 0.4)"
+        "0 4px 20px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.14), 0 7px 10px -5px rgba(" +
+        hexToRgb(dangerColor[0]) +
+        ", 0.4)"
   },
   warning: {
     backgroundColor: warningColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(" +
-      hexToRgb(blackColor) +
-      ", 0.14), 0 7px 10px -5px rgba(" +
-      hexToRgb(warningColor[0]) +
-      ", 0.4)"
+        "0 4px 20px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.14), 0 7px 10px -5px rgba(" +
+        hexToRgb(warningColor[0]) +
+        ", 0.4)"
   },
   primary: {
     backgroundColor: primaryColor[0],
     boxShadow:
-      "0 4px 20px 0px rgba(" +
-      hexToRgb(blackColor) +
-      ", 0.14), 0 7px 10px -5px rgba(" +
-      hexToRgb(primaryColor[0]) +
-      ", 0.4)"
+        "0 4px 20px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.14), 0 7px 10px -5px rgba(" +
+        hexToRgb(primaryColor[0]) +
+        ", 0.4)"
   },
   badgeIcon: {
     width: "24px",
@@ -210,10 +211,9 @@ const timelineStyle = theme => ({
   },
   footerTitle: {
     color: blackColor,
-    fontWeight: "400",
-    margin: "10px 0px 0px",
-    fontStyle: "italic",
-    fontSize: "0.9em"
+    fontWeight: "200",
+    margin: "4px 0px 0px",
+    fontSize: "0.8em"
   },
   footerLine: {
     marginTop: "10px",
@@ -233,7 +233,43 @@ const timelineStyle = theme => ({
   },
   timelineFooterText: {
     lineHeight: 1,
-    margin: "4px 0"
+    margin: "10px 0 0"
+  },
+  "@media print": {
+    timelineBadge: {
+      display: 'none',
+    },
+    timelineSimple: {
+      "&:before": {
+        left: "0",
+      }
+    },
+    timelineSimpleBadge: {
+      left: 0,
+      display:"none",
+    },
+    timelineSimplePanel: {
+      width: '100%',
+    },
+    timeline: {
+      left: 0,
+      padding: 0,
+      margin: 0,
+    },
+    timelineHeading: {
+      padding: 0,
+      margin: 0,
+    },
+    timelinePanel: {
+      width: "100%",
+      padding: 10,
+      margin: 0,
+    },
+    timelineBody: {
+      padding: 10,
+      margin: 0,
+      width: "100%",
+    },
   }
 });
 

@@ -93,6 +93,11 @@ const styles = theme => ({
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
   },
+  "@media print": {
+    hide: {
+      display: "none",
+    },
+  },
 });
 
 class FileMenuLeft extends React.Component {

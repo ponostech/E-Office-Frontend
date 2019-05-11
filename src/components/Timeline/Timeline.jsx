@@ -11,7 +11,6 @@ import FormatQuote from "@material-ui/icons/FormatQuote";
 import timelineStyle from "../../assets/jss/material-dashboard-pro-react/components/timelineStyle.jsx";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "../Badge/Badge";
-import {convertToHTML} from "nib-converter";
 
 function Timeline({ ...props }) {
   const { classes, stories, simple } = props;
@@ -61,11 +60,11 @@ function Timeline({ ...props }) {
                     <Avatar alt="" src={prop.avatar} className={classes.avatar} />
               ) : null}
               {prop.footerName ? (
-                <h6 className={classes.timelineFooterText}>{prop.footerName}</h6>
+                <h6 className={classes.timelineFooterText}>{prop.footerName} {prop.footerDesignation ? " ("+prop.footerDesignation+")" : null}</h6>
               ) : null}
-              {prop.footerDesignation ? (
-                <h6 className={classes.timelineFooterText}>{prop.footerDesignation}</h6>
-              ) : null}
+              {/*{prop.footerDesignation ? (*/}
+              {/*  <h6 className={classes.timelineFooterText}>{prop.footerDesignation}</h6>*/}
+              {/*) : null}*/}
               {prop.footer ? (
                 <div className={classes.timelineFooter}>{prop.footer}</div>
               ) : null}

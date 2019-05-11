@@ -40,7 +40,7 @@ class NotesheetDraftView extends Component {
       temp['title'] = data.action;
       temp['titleColor'] = 'success';
       temp['avatar'] = data.staff.photo ? data.staff.photo : DefaultAvatar;
-      temp['body'] = JSON.parse(data.content);
+      temp['body'] = data.content;
       temp['footerName'] = data.staff.staff.name;
       temp['footerDesignation'] = data.staff.staff.designation;
       temp['footerTitle'] = "Dated: " + moment(data.created_at).format("Do MMMM YYYY \(dddd\)");
