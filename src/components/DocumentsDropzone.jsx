@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
-  Card,
+  Card, CardActions,
   CardContent,
   CardHeader,
   DialogActions,
@@ -179,7 +179,6 @@ class DocumentsDropzone extends Component {
               <CloseIcon/>
             </IconButton>
           }/>
-          <DialogContent>
             <CardContent>
               <h4>Required Documents<span>*</span></h4>
               <List dense={true}>
@@ -231,13 +230,12 @@ class DocumentsDropzone extends Component {
                 ]}
               />
             </CardContent>
-          </DialogContent>
-          <DialogActions>
+          <CardActions>
             <Button disabled={this.state.files.length !== this.state.docSize} name={"confirm"} onClick={this.onClose.bind(this)} variant={"outlined"}
                     color={"primary"}>Confirm</Button>
             <Button name={"cancel"} onClick={this.onClose.bind(this)} variant={"outlined"}
                     color={"secondary"}>Cancel</Button>
-          </DialogActions>
+          </CardActions>
         </Card>
 
     );
@@ -250,7 +248,6 @@ DocumentsDropzone.defaultProps={
 
 DocumentsDropzone.propTypes = {
   documents: PropTypes.array.isRequired,
-  openDialog: PropTypes.bool.isRequired,
   acceptedFiles: PropTypes.string.isRequired,
   fullScreen: PropTypes.bool,
   title:PropTypes.string,

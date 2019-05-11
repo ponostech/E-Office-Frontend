@@ -43,15 +43,7 @@ class HoardingAvailableList extends Component {
 
   render() {
     const tableColumns = [
-      {
-        name: "applicant",
-        label: "APPLICANT",
-        options: {
-          customBodyRender: (applicant, tableMeta, updateValue) => {
-            return (applicant.advertiser.name);
-          }
-        }
-      }, {
+       {
         name: "file",
         label: "FILE ID",
         options: {
@@ -87,9 +79,6 @@ class HoardingAvailableList extends Component {
               <>
                 <ul>
                   <li><strong>LOCATION</strong> {hoarding.address}</li>
-                  <li><strong>LENGTH</strong> {hoarding.length}</li>
-                  <li><strong>HEIGHT</strong> {hoarding.height}</li>
-                  <li><strong>TYPE</strong> {hoarding.type}</li>
                 </ul>
                 </>
             );
@@ -134,7 +123,7 @@ class HoardingAvailableList extends Component {
       filterType: "checkbox",
       rowsPerPage: 15,
       serverSide: false,
-      responsive: "scroll",
+      selectableRows:false,
       customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
         return false;
       },

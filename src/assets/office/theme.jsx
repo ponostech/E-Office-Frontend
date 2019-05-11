@@ -34,5 +34,6 @@ export default createMuiTheme({
       disableRipple: true, // No more ripple, on the whole application 💣!
       color: "#fff"
     },
+
   }
 });

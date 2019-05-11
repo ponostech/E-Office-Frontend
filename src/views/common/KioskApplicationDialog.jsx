@@ -71,24 +71,8 @@ class KioskApplicationDialog extends Component {
     console.log(application);
     const { file, kiosk, applicant, documents } = application;
     return (
-      <Card>
-        <CardHeader title={`FILE NO : ${file.number}`}
-                    subheader={`SUBJECT : ${file.subject} \n Branch: ${file.branch}`}
-                    action={
-                      <>
-                        <IconButton onClick={onClose}>
-                          <PrintIcon/>
-                        </IconButton>
-                        <IconButton onClick={onClose}>
-                          <DownloadIcon/>
-                        </IconButton>
-                        <IconButton onClick={onClose}>
-                          <CloseIcon/>
-                        </IconButton>
+      <>
 
-                      </>
-                    }/>
-        <Divider/>
         <CardContent>
           <GridContainer>
 
@@ -242,22 +226,41 @@ class KioskApplicationDialog extends Component {
             </GridItem>
           </GridContainer>
         </CardContent>
-      </Card>
+      </>
     );
   };
 
   render() {
     const { open, onClose, application } = this.props;
+    const number=application ? application.file.number : "";
+    const subject=application ? application.file.subject : "";
     let self = this;
     return (
 
       <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"lg"}>
+        <CardHeader title={`FILE NO : ${number}`}
+                    subheader={`SUBJECT : ${subject}`}
+                    action={
+                      <>
+                        <IconButton onClick={onClose}>
+                          <PrintIcon/>
+                        </IconButton>
+                        <IconButton onClick={onClose}>
+                          <DownloadIcon/>
+                        </IconButton>
+                        <IconButton onClick={onClose}>
+                          <CloseIcon/>
+                        </IconButton>
+
+                      </>
+                    }/>
+        <Divider/>
         <DialogContent>
           {
             application ? self.getView() : undefined
           }
-          <Divider/>
         </DialogContent>
+          <Divider/>
         <DialogActions>
           <Button variant={"outlined"} color={"secondary"} onClick={e => onClose()}>Close</Button>
         </DialogActions>
