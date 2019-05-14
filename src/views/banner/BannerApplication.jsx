@@ -24,14 +24,13 @@ import { BannerService } from "../../services/BannerService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../components/AddressField";
 import { Validators } from "../../utils/Validators";
-import { DocumentService } from "../../services/DocumentService";
 import OtpDialog from "../../components/OtpDialog";
-import { OtpService, RequestOtp } from "../../services/OtpService";
-import { ArrayToString, ErrorToString } from "../../utils/ErrorUtil";
-import SweetAlert from 'react-bootstrap-sweetalert'
+import { OtpService } from "../../services/OtpService";
+import SweetAlert from "react-bootstrap-sweetalert";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { APPLICATION_NAME } from "../../utils/Util";
+
 const style = {
   root: {
     padding: "10px 15px !important"
@@ -43,7 +42,7 @@ var timeout = null;
 class BannerApplication extends Component {
   localCouncilservice = new LocalCouncilService();
   bannerService = new BannerService();
-  otpService=new OtpService();
+  otpService = new OtpService();
 
   bannerRef = React.createRef();
 
@@ -103,24 +102,24 @@ class BannerApplication extends Component {
     const { doLoad, doLoadFinish } = this.props;
 
     doLoad();
-    this.fetchLocalCouncil()
+    this.fetchLocalCouncil();
   }
 
   sendOtp = () => {
-    this.otpService.requestOtp(this.state.phone,"Banner Advertisement Application",
-      errorMessage=>this.setState({errorMessage}),
-      otpMessage=>{
-      this.setState({otpMessage,openOtp:true})
+    this.otpService.requestOtp(this.state.phone, "Banner Advertisement Application",
+      errorMessage => this.setState({ errorMessage }),
+      otpMessage => {
+        this.setState({ otpMessage, openOtp: true });
       })
-      .finally(()=>console.log("Otp send successfully"))
+      .finally(() => console.log("Otp send successfully"));
   };
 
-    fetchLocalCouncil = () => {
-      this.localCouncilservice.fetch(
-        errorMessage=>this.setState({errorMessage}),
-        localCouncils=>this.setState({localCouncils}))
-        .finally(()=>this.props.doLoadFinish())
-    };
+  fetchLocalCouncil = () => {
+    this.localCouncilservice.fetch(
+      errorMessage => this.setState({ errorMessage }),
+      localCouncils => this.setState({ localCouncils }))
+      .finally(() => this.props.doLoadFinish());
+  };
 
 
   handleChange = (e) => {
@@ -160,8 +159,8 @@ class BannerApplication extends Component {
 
     if (verified) {
       this.setState({ submit: true });
-      this.bannerService.create(this.state,errorMessage=>this.setState(errorMessage),
-        successMessage=>this.setState({
+      this.bannerService.create(this.state, errorMessage => this.setState(errorMessage),
+        successMessage => this.setState({
           success: (
             <SweetAlert
               success
@@ -172,7 +171,7 @@ class BannerApplication extends Component {
             </SweetAlert>
           )
         }))
-        .finally(()=>this.setState({submit:false}))
+        .finally(() => this.setState({ submit: false }));
     }
   };
 
@@ -191,9 +190,9 @@ class BannerApplication extends Component {
 
   };
 
-  saveDraft=(e)=>{
+  saveDraft = (e) => {
 
-  }
+  };
 
   onClear = () => {
     this.setState({
@@ -296,43 +295,43 @@ class BannerApplication extends Component {
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <OfficeSelect
-                        value={this.state.type}
-                        label={BannerViewModel.APPLICANT_TYPE}
-                        name={"type"}
-                        variant={"outlined"}
-                        margin={"dense"}
-                        fullWidth={true}
-                        required={true}
-                        error={Boolean(this.state.typeError)}
-                        helperText={this.state.typeError}
-                        onBlur={this.handleSelectBlur.bind(this, "type")}
-                        onChange={this.handleSelect.bind(this, "type")}
-                        options={this.state.types}/>
+                      value={this.state.type}
+                      label={BannerViewModel.APPLICANT_TYPE}
+                      name={"type"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      required={true}
+                      error={Boolean(this.state.typeError)}
+                      helperText={this.state.typeError}
+                      onBlur={this.handleSelectBlur.bind(this, "type")}
+                      onChange={this.handleSelect.bind(this, "type")}
+                      options={this.state.types}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <AddressField
-                        textFieldProps={{
-                          placeholder: "Address",
-                          value: this.state.address,
-                          name: "address",
-                          required: true,
-                          variant: "outlined",
-                          margin: "dense",
-                          fullWidth: true,
-                          error: Boolean(this.state.addressError),
-                          helperText: this.state.addressError,
-                          onBlur: this.handleBlur.bind(this),
-                          onChange: this.handleChange.bind(this),
-                          label: BannerViewModel.ADDRESS
-                        }}
-                        onPlaceSelect={(place) => {
-                          if (place) {
-                            let name = place.name;
-                            let address = place.formatted_address;
-                            let complete_address = address.includes(name) ? address : `${name} ${address}`;
-                            this.setState({ address: complete_address });
-                          }
-                        }}
+                      textFieldProps={{
+                        placeholder: "Address",
+                        value: this.state.address,
+                        name: "address",
+                        required: true,
+                        variant: "outlined",
+                        margin: "dense",
+                        fullWidth: true,
+                        error: Boolean(this.state.addressError),
+                        helperText: this.state.addressError,
+                        onBlur: this.handleBlur.bind(this),
+                        onChange: this.handleChange.bind(this),
+                        label: BannerViewModel.ADDRESS
+                      }}
+                      onPlaceSelect={(place) => {
+                        if (place) {
+                          let name = place.name;
+                          let address = place.formatted_address;
+                          let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                          this.setState({ address: complete_address });
+                        }
+                      }}
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
@@ -440,26 +439,26 @@ class BannerApplication extends Component {
                 <div>
                   <Button name={"primary"}
                           disabled={
-                    this.state.prestine ||
-                  Boolean(this.state.nameError) ||
-                  Boolean(this.state.phoneError) ||
-                  Boolean(this.state.addressError) ||
-                  Boolean(this.state.localCouncilError) ||
-                    Boolean(this.state.displayTypeError) ||
-                    !this.state.agree
-                  }
+                            this.state.prestine ||
+                            Boolean(this.state.nameError) ||
+                            Boolean(this.state.phoneError) ||
+                            Boolean(this.state.addressError) ||
+                            Boolean(this.state.localCouncilError) ||
+                            Boolean(this.state.displayTypeError) ||
+                            !this.state.agree
+                          }
                           color={"primary"} variant={"outlined"}
                           onClick={this.onSubmit.bind(this)}>
                     {BannerViewModel.PRIMARY_TEXT}
                   </Button>
                   {"\u00A0 "}
-                  {"\u00A0 "}
-                  <Button name={"secondary"}
-                          color={"primary"}
-                          variant={"outlined"}
-                          onClick={this.saveDraft.bind(this)}>
-                    {BannerViewModel.DRAFT}
-                  </Button>
+                  {/*{"\u00A0 "}*/}
+                  {/*<Button name={"secondary"}*/}
+                  {/*        color={"primary"}*/}
+                  {/*        variant={"outlined"}*/}
+                  {/*        onClick={this.saveDraft.bind(this)}>*/}
+                  {/*  {BannerViewModel.DRAFT}*/}
+                  {/*</Button>*/}
                   {"\u00A0 "}
                   {"\u00A0 "}
                   <Button name={"secondary"}

@@ -799,14 +799,16 @@ class HotelApplication extends Component {
                             onClick={this.onSubmit.bind(this)}>
                       {ShopLicenseViewModel.PRIMARY_TEXT}
                     </Button>
+                    {/*{"\u00A0 "}*/}
+                    {/*{"\u00A0 "}*/}
+                    {/*<Button name={"secondary"}*/}
+                    {/*        color={"primary"}*/}
+                    {/*        variant={"outlined"}*/}
+                    {/*        onClick={this.saveDraft.bind(this)}>*/}
+                    {/*  {ShopLicenseViewModel.DRAFT}*/}
+                    {/*</Button>*/}
                     {"\u00A0 "}
                     {"\u00A0 "}
-                    <Button name={"secondary"}
-                            color={"primary"}
-                            variant={"outlined"}
-                            onClick={this.saveDraft.bind(this)}>
-                      {ShopLicenseViewModel.DRAFT}
-                    </Button>
                     {"\u00A0 "}
                     {"\u00A0 "}
                     <Button name={"secondary"}
