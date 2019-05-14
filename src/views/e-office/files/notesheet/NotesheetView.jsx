@@ -9,13 +9,21 @@ import CreateNoteButton from "./NotesheetCreateButton";
 import CreateNoteDialog from "./NoteCreateDialog";
 import Loading from "../../../common/LoadingView"
 import {FILE_NOTESHEET} from "../../../../config/ApiRoutes";
+import { NotesheetService } from "../../../../services/NotesheetService";
+import SubmitDialog from "../../../../components/SubmitDialog";
+import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 
 class NotesheetView extends Component {
+  noteService = new NotesheetService();
+
   state = {
     note: [],
     openDialog: false,
     loading: true,
-    loadingNoteDialog: true,
+
+    errorMessage:"",
+    successMessage: "",
+    submit:false,
   };
 
   componentDidMount() {
@@ -54,13 +62,22 @@ class NotesheetView extends Component {
   handleOpenCreateNote = () => {
     let self = this;
     this.setState({openDialog: true});
-    setTimeout(function () {
-      self.loadingNoteDialog(false);
-    }, 2000)
   };
 
-  handleCloseCreateNote = () => {
-    this.setState({openDialog: false, loadingNoteDialog: true});
+  handleCloseCreateNote = (data) => {
+    this.setState({openDialog: false});
+    if (data) {
+      this.setState({ submit: true})
+      this.noteService.create(data,
+        errorMessage=>this.setState({errorMessage}),
+        successMessage=>this.setState({successMessage}))
+        .finally(()=>{
+          this.setState({submit:false})
+        })
+    }else{
+      //cancel or close button pressed
+
+    }
   };
 
   loadingNoteDialog = (value) => {
@@ -86,9 +103,15 @@ class NotesheetView extends Component {
           {noteList}
           {loading ? "" : <CreateNoteButton click={this.handleOpenCreateNote}/>}
 
-          <CreateNoteDialog onSubmit={this.loadingNoteDialog.bind(this, true)} loading={this.state.loadingNoteDialog}
-                            file={this.props.file} open={this.state.openDialog}
-                            close={this.handleCloseCreateNote}/>
+          <CreateNoteDialog  file={this.props.file} open={this.state.openDialog} onClose={this.handleCloseCreateNote}/>
+
+          <SubmitDialog open={this.state.submit} title={"Create Notesheet"} text={"Notesheet is creating ..."}/>
+
+          <OfficeSnackbar variant={"success"} onClose={()=>this.setState({successMessage:""})} open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
+          <OfficeSnackbar variant={"error"} onClose={()=>this.setState({errorMessage:""})} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
+          {/*<CreateNoteDialog onSubmit={this.loadingNoteDialog.bind(this, true)} loading={this.state.loadingNoteDialog}*/}
+          {/*                  file={this.props.file} open={this.state.openDialog}*/}
+          {/*                  close={this.handleCloseCreateNote}/>*/}
         </>
     )
   };

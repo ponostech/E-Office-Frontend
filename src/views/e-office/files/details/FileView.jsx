@@ -22,6 +22,11 @@ import FileDraftPermits from "./Views/FileDraftPermits";
 import FileDraftRejects from "./Views/FileDraftRejects";
 import FileDraftCancels from "./Views/FileDraftCancels";
 import NoteSheetDraftView from "../notesheet/NotesheetDraftView";
+import { CREATE_NAME } from "../../../../utils/FileDetailConstant";
+import CreateNoteDialog from "../notesheet/NoteCreateDialog";
+import SubmitDialog from "../../../../components/SubmitDialog";
+import OfficeSnackbar from "../../../../components/OfficeSnackbar";
+import { NotesheetService } from "../../../../services/NotesheetService";
 
 const styles = theme => ({
   root: {
@@ -55,11 +60,19 @@ const styles = theme => ({
 });
 
 class FileView extends Component {
+  noteService=new NotesheetService();
   state = {
     file: [],
     menus: [],
     loading: true,
     error: false,
+
+    openNote:false,
+    openDraft:false,
+
+    errorMessage: "",
+    successMessage:"",
+    submit:false
   };
 
   componentDidMount() {
@@ -99,17 +112,32 @@ class FileView extends Component {
 
   openDialog = (name) => {
     switch (name) {
-      case "test":
+      case CREATE_NAME.CREATE_NOTE:
+        this.setState({openNote:true});
+        break;
+      case CREATE_NAME.CREATE_DRAFT:
+        this.setState({openDraft:true});
         break;
       default:
-        this.openNoteDialog();
         break
     }
   };
 
-  openNoteDialog = () => {
-    alert('Note')
+  handleCloseCreateNote = (data) => {
+    this.setState({openNote: false});
+    if (data) {
+      this.setState({ submit: true})
+      this.noteService.create(data,
+        errorMessage=>this.setState({errorMessage}),
+        successMessage=>this.setState({successMessage}))
+        .finally(()=>{
+          this.setState({submit:false})
+        })
+    }else{
+      //cancel or close button pressed
+    }
   };
+
 
   render() {
     const {classes} = this.props;
@@ -163,6 +191,11 @@ class FileView extends Component {
           <div className={classes.root}>
             {loading ? <LoadingView/> : view}
           </div>
+          <CreateNoteDialog  file={this.state.file} open={this.state.openNote} onClose={this.handleCloseCreateNote}/>
+          <SubmitDialog open={this.state.submit} title={"Create Notesheet"} text={"Notesheet is creating ..."}/>
+
+          <OfficeSnackbar variant={"success"} onClose={()=>this.setState({successMessage:""})} open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
+          <OfficeSnackbar variant={"error"} onClose={()=>this.setState({errorMessage:""})} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
         </Grid>
     );
   }

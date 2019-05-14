@@ -61,7 +61,7 @@ function OfficeSnackbar(props) {
   const Icon = variantIcon[variant];
 
   return (
-    <Snackbar open={open}
+    <Snackbar  open={open}
               onClose={onClose}
               autoHideDuration={duration}
               anchorOrigin={position}
