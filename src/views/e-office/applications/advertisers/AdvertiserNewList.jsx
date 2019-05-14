@@ -25,11 +25,8 @@ class AdvertiserNewList extends React.Component {
     getData() {
         axios.get(ADVERTISER_NEW_LIST)
             .then(res => {
-                console.log("Return", res)
                 if (res.data.status)
                     this.setState({advertisers: res.data.data.advertiser_applications});
-                else
-                    console.log('Error', res);
                 this.props.doLoad(false);
             })
     }
@@ -75,7 +72,7 @@ class AdvertiserNewList extends React.Component {
                 options: {
                     filter: false,
                     sort: false,
-                    customBodyRender: (value, meta) => {
+                    customBodyRender: (value) => {
                         return (
                             <div>
                                 <IconButton color="primary" size="small"
