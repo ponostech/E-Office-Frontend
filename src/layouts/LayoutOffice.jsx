@@ -23,6 +23,12 @@ class LayoutOffice extends React.Component {
         let routeList = null;
         let role = LoginService.getRole();
         switch (role) {
+            case 'commissioner':
+                routeList = <RouteListAdministrator linkClick={this.handleLinkClick} doLoad={this.doLoad}/>;
+                break;
+            case 'secretary':
+                routeList = <RouteListAdministrator linkClick={this.handleLinkClick} doLoad={this.doLoad}/>;
+                break;
             case 'administrator':
                 routeList = <RouteListAdministrator linkClick={this.handleLinkClick} doLoad={this.doLoad}/>;
                 break;

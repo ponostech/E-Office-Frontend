@@ -43,6 +43,12 @@ class HeaderOffice extends React.Component {
         let menu = null;
         let {role} = this.props;
         switch (role) {
+            case 'commissioner':
+                menu = <MenuAdminTop linkClick={this.handleLinkClick}/>;
+                break;
+            case 'secretary':
+                menu = <MenuAdminTop linkClick={this.handleLinkClick}/>;
+                break;
             case 'administrator':
                 menu = <MenuAdminTop linkClick={this.handleLinkClick}/>;
                 break;
