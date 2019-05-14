@@ -57,7 +57,7 @@ export const SHOP_DETAIL_ROUTE = (id) => {
     return `/e-office/applications/shop-license/${id}/new`;
 };
 export const FILE_SEND = (id) => {
-    return `/file/${id}/send`;
+    return `/files/${id}/send`;
 };
 export const NEW_RECEIPT = "/e-office/receipt/new";
 export const CREATED_RECEIPT = "/e-office/receipt/created";

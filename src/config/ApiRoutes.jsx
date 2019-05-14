@@ -1,7 +1,7 @@
 export const ADVERTISER_NEW_LIST = "/staff/advertiser/applications";
 
 export const FILE_TAKE = (id) => {
-  return `/file/${id}/take`;
+  return `/files/${id}/take`;
 };
 export const FILE_CALL = (id) => {
   return `/file/${id}/call`;
@@ -16,6 +16,7 @@ export const FILE_MOVEMENTS = (id) => {
 
 export const FILE_ACTION_TYPES = "setting/notesheet/actions";
 export const FILE_PRIORITIES = "setting/notesheet/priorities";
+export const GET_STAFF = "/staffs";
 
 export class ApiRoutes {
   static BASE_URL = "http://139.59.26.3/api/v1";
@@ -59,7 +60,7 @@ export class ApiRoutes {
 
   static NOTESHEET = "/notesheets";
   static FILE = "/files";
-  static FILE_SEND = "/file/send";
+  static FILE_SEND = "/files/send";
   static FILE_DETAIL = "/files";
   static CREATE_TRADE = "/trades";
   static GET_TRADE = "/trades";

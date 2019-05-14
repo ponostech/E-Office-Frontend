@@ -34,15 +34,9 @@ function Transition(props) {
 class SendDialog extends React.Component {
   state = {
     user_id: null,
-    staffs: [],
     recipient_id: null,
     loading: true
   };
-
-  componentWillReceiveProps(nextProps, nextContext) {
-    // const staffs = FormatStaff(nextProps.staffs);
-    // this.setState({ staffs });
-  }
 
   handleOfficeSelect = (identifier, value) => {
     this.setState({
@@ -117,7 +111,7 @@ class SendDialog extends React.Component {
               <Grid item xs={12}>
                 <OfficeSelect
                   value={this.state.recipient_id}
-                  options={this.state.staffs}
+                  options={FormatStaff(this.props.staffs)}
                   name={"recipient_id"}
                   label={"Send File To"}
                   variant={"outlined"}
