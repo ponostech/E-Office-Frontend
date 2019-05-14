@@ -127,7 +127,11 @@ const menu = (props) => {
                 {title: "New Trade", link: OfficeRoutes.TRADE_NEW},
                 {title: "List Trade", link: OfficeRoutes.TRADE_LIST},
                 {title: "New Staff", link: OfficeRoutes.STAFF_REGISTRATION},
-                {title: "List Staff", link: OfficeRoutes.STAFF_LIST}
+                {title: "List Staff", link: OfficeRoutes.STAFF_LIST},
+                {title: "Permit Template", link: OfficeRoutes.PERMIT_TEMPLATE},
+                {title: "License Template", link: OfficeRoutes.LICENSE_TEMPLATE},
+                {title: "Rejected Template", link: OfficeRoutes.REJECTED_TEMPLATE},
+                {title: "Cancelled Template", link: OfficeRoutes.CANCELLED_TEMPLATE},
 
               ]}
               linkClick={props.linkClick}

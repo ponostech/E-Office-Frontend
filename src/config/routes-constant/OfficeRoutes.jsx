@@ -95,8 +95,14 @@ export const OBPAS = "/e-office/applications/obpas";
 export const TRADE_NEW = "/e-office/admin/trade-new";
 export const TRADE_LIST = "/e-office/admin/trade-list";
 
+//admin control menu item routes
 export const STAFF_REGISTRATION = "/e-office/admin/new-staff";
 export const STAFF_LIST = "/e-office/admin/staffs";
+export const PERMIT_TEMPLATE = "/e-office/admin/permit-template";
+export const LICENSE_TEMPLATE = "/e-office/admin/license-template";
+export const REJECTED_TEMPLATE = "/e-office/admin/rejected-template";
+export const CANCELLED_TEMPLATE = "/e-office/admin/cancelled-template";
+
 
 export const SETTING = "/e-office/setting";
 export const BRANCHES = "/setting/branches";
