@@ -25,6 +25,9 @@ import LoadingView from "../../../common/LoadingView";
 import NotesheetAttachment from "../../../../components/NotesheetAttachment";
 import CalendarIcon from "@material-ui/icons/Today";
 
+import PropTypes from "prop-types";
+import { NotesheetService } from "../../../../services/NotesheetService";
+
 const styles = {
   appBar: {
     position: "relative"
@@ -42,22 +45,34 @@ function Transition(props) {
 }
 
 class NoteCreateDialog extends React.Component {
-  state = {
-    content: "",
-    action: null,
-    priority: null,
-    fixedDate: null,
-    priorityTypes: [],
-    actionTypes: [],
-    files:[]
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: "",
+      action: null,
+      priority: null,
+      fixedDate: null,
+      priorityTypes: [],
+      actionTypes: [],
+      files: [],
+
+      hasError: false,
+      loading:true
+    };
+
   };
 
   componentDidMount() {
+
     axios.all([this.getFileActionTypes(), this.getFilePriorities()])
       .then(axios.spread((actions, priorities) => {
-        this.setState({ actionTypes: actions.data.data.actions, priorityTypes: priorities.data.data.priorities });
-      }));
+        this.setState({ actionTypes: actions.data.data.actions, priorityTypes: priorities.data.data.priorities,loading:false });
+      }))
+      .catch(err => {
+        this.setState({ hasError: true });
+      });
   }
+
 
   getFileActionTypes = () => {
     return axios.get(FILE_ACTION_TYPES);
@@ -95,7 +110,6 @@ class NoteCreateDialog extends React.Component {
   };
 
   onSubmitNote = (action) => {
-    this.props.onSubmit();
 
     let data = {
       file_id: this.props.file.id,
@@ -109,18 +123,17 @@ class NoteCreateDialog extends React.Component {
     if (this.state.fixedDate) data.fixed_date = moment(this.state.fixedDate).format("YYYY-MM-DD");
     if (action === "confirm") data.status = 1;
 
-    axios.post(ApiRoutes.NOTESHEET, data)
-      .then(res => {
-        // console.log("return", res);
-        window.location.reload();
-      })
-      .catch(err => {
-        console.log("error", err);
-      });
+    this.props.onClose(data);
+
+  };
+
+  handleClose = () => {
+    this.props.onClose(null);
   };
 
   render() {
-    const { classes, loading } = this.props;
+    const { classes,open } = this.props;
+    const { loading } = this.state;
     let content = <CardContent>
       <Grid container spacing={16}>
         <Grid item lg={12}>
@@ -182,8 +195,8 @@ class NoteCreateDialog extends React.Component {
           </MuiPickersUtilsProvider>
         </Grid>
         <Grid item={true} lg={6}>
-          <Typography variant={"h5"} style={{textAlign:"center"}}>Notesheet Attachment</Typography>
-          <NotesheetAttachment onSuccess={(files) => this.setState({files})}/>
+          <Typography variant={"h5"} style={{ textAlign: "center" }}>Notesheet Attachment</Typography>
+          <NotesheetAttachment onSuccess={(files) => this.setState({ files })}/>
         </Grid>
 
       </Grid>
@@ -193,19 +206,19 @@ class NoteCreateDialog extends React.Component {
     return (
       <Dialog
         fullScreen
-        open={this.props.open}
-        onClose={this.props.close}
+        open={open}
+        onClose={this.handleClose.bind(this)}
         TransitionComponent={Transition}
       >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton color="inherit" onClick={this.props.close} aria-label="Close">
+            <IconButton color="inherit" onClick={this.handleClose.bind(this)} aria-label="Close">
               <CloseIcon/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
               Create Note
             </Typography>
-            <Button onClick={this.props.close} color="inherit">
+            <Button onClick={this.handleClose.bind(this)} color="inherit">
               Close
             </Button>
           </Toolbar>
@@ -221,13 +234,20 @@ class NoteCreateDialog extends React.Component {
         <Divider/>
         {loading ? "" : <DialogActions>
           <Button color="primary" onClick={this.onSubmitNote.bind(this, "draft")}>Save Draft</Button>
-          <Button color="primary" onClick={this.onSubmitNote.bind(this, "confirm")}>Save</Button>
-          <Button color="secondary" onClick={this.props.close}>Cancel</Button>
+          <Button color="primary" onClick={this.onSubmitNote.bind(this,"confirm")}>Save</Button>
+          <Button color="secondary" onClick={this.handleClose.bind(this)}>Cancel</Button>
         </DialogActions>}
       </Dialog>
     );
   };
 }
+
+NoteCreateDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  file: PropTypes.object.isRequired
+};
+
 
 export default withStyles(styles)(NoteCreateDialog);
 
