@@ -1,7 +1,7 @@
 export const ADVERTISER_NEW_LIST = "/staff/advertiser/applications";
 
 export const FILE_TAKE = (id) => {
-  return `/file/${id}/take`;
+  return `/files/${id}/take`;
 };
 export const FILE_CALL = (id) => {
   return `/file/${id}/call`;

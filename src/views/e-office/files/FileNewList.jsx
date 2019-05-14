@@ -49,7 +49,7 @@ class FileNewList extends Component {
       errorMessage => {
         this.setState(errorMessage);
       },
-      files => this.setState({ files })
+      tableData => this.setState({ tableData })
     );
   };
   sendFile = (fileId, receipientId) => {
