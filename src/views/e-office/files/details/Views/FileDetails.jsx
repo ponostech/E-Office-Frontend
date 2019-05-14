@@ -34,10 +34,13 @@ const fileDetails = (props) => {
         </ListItem>
         <Divider/>
         {file.status === "active" ?
-            <><ListItem button>
-              <ListItemText primary="Current Location"
-                            secondary={file.desk.staff.name + "(" + file.desk.staff.designation + ")"}/>
-            </ListItem><Divider/></>: null
+            <>
+              <ListItem button>
+                <ListItemText primary="Current Location"
+                              secondary={file.desk.staff.name + "(" + file.desk.staff.designation + ")"}/>
+              </ListItem>
+              <Divider/>
+            </> : null
         }
         <ListItem button>
           <ListItemText primary="Created On" secondary={moment(file.created_at).format("Do MMMM YYYY")}/>

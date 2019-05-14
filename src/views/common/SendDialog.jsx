@@ -40,8 +40,8 @@ class SendDialog extends React.Component {
   };
 
   componentWillReceiveProps(nextProps, nextContext) {
-    const staffs = FormatStaff(nextProps.staffs);
-    this.setState({ staffs });
+    // const staffs = FormatStaff(nextProps.staffs);
+    // this.setState({ staffs });
   }
 
   handleOfficeSelect = (identifier, value) => {

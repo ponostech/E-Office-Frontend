@@ -1,21 +1,19 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
-import Grid from "@material-ui/core/Grid";
-import { Icon, Tooltip } from "@material-ui/core";
+import { Icon, Tooltip, IconButton, Grid } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
 import GMapDialog from "../../../../components/GmapDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import { HotelService } from "../../../../services/HotelService";
-import HotelApplicationDialog from "../../../common/HotelApplicationDialog";
 import SendDialog from "../../../common/SendDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import LoadingDialog from "../../../common/LoadingDialog";
 import moment from "moment";
-import ApplicationState from "../../../../utils/ApplicationState";
+import axios from "axios";
+import {ApiRoutes} from "../../../../config/ApiRoutes";
 
 
 const styles = {
@@ -25,8 +23,6 @@ const styles = {
 let timeout = null;
 
 class HotelUnderProcessList extends React.Component {
-    hotelService = new HotelService();
-
     state = {
         openAssignment: false,
         openDetail: false,
@@ -44,25 +40,19 @@ class HotelUnderProcessList extends React.Component {
         lng: 98
     };
 
-    // componentWillUnmount() {
-    //     clearTimeout(timeout)
-    // }
-
     componentDidMount() {
         const { doLoad } = this.props;
         doLoad(true);
-        this.hotelService.fetch(ApplicationState.UNDER_PROCESS_APPLICATION)
-
-          .then(hotels => {
-              this.setState({ hotels: hotels });
-          })
-          .catch(err => {
-              this.setState({ errorMessage: err.toString() });
-          })
-          .finally(() => {
-              doLoad(false);
-          });
+        this.getFiles();
     }
+
+    getFiles = () => {
+        axios.get(ApiRoutes.STAFF_HOTEL, {params: {status: 'in-process'}})
+            .then(res => {
+                this.setState({hotel: res.data.data.hotel, loading: false});
+                this.props.doLoad(false);
+            })
+    };
 
     updateTable = (action, tableState) => {
 
@@ -73,8 +63,8 @@ class HotelUnderProcessList extends React.Component {
 
     takeFile = (data, event) => {
         this.setState({ openTakeFile: true, file: data.file });
-
     };
+
     confirmTake = (e) => {
         const { file } = this.state;
         const { history } = this.props;
