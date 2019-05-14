@@ -113,7 +113,6 @@ class NoteCreateDialog extends React.Component {
 
     let data = {
       file_id: this.props.file.id,
-
       content: this.state.content,
       action: this.state.action.value,
       priority: this.state.priority.value,
