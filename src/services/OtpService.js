@@ -40,7 +40,7 @@ export class OtpService {
       if (res.data.status) {
           successCallback("otp verified")
       } else {
-        errorCallback("Something went wrong:Please try again later")
+        errorCallback(ArrayToString(res.data.messages))
       }
     } catch (e) {
       errorCallback(e.toString())
