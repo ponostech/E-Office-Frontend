@@ -22,11 +22,11 @@ import FileDraftPermits from "./Views/FileDraftPermits";
 import FileDraftRejects from "./Views/FileDraftRejects";
 import FileDraftCancels from "./Views/FileDraftCancels";
 import NoteSheetDraftView from "../notesheet/NotesheetDraftView";
-import { CREATE_NAME } from "../../../../utils/FileDetailConstant";
+import {CREATE_NAME} from "../../../../utils/FileDetailConstant";
 import CreateNoteDialog from "../notesheet/NoteCreateDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
-import { NotesheetService } from "../../../../services/NotesheetService";
+import {NotesheetService} from "../../../../services/NotesheetService";
 
 const styles = theme => ({
   root: {
@@ -60,43 +60,40 @@ const styles = theme => ({
 });
 
 class FileView extends Component {
-  noteService=new NotesheetService();
+  noteService = new NotesheetService();
   state = {
     file: [],
     menus: [],
     loading: true,
     error: false,
 
-    openNote:false,
-    openDraft:false,
+    openNote: false,
+    openDraft: false,
 
     errorMessage: "",
-    successMessage:"",
-    submit:false
+    successMessage: "",
+    submit: false
   };
 
   componentDidMount() {
     this.props.doLoad(true);
-    const {id} = this.props.match.params;
-    this.getData(id);
+    this.getData(this.props.match.params.id);
   }
 
   getData(id) {
     axios.get(ApiRoutes.FILE_DETAIL + "/" + id)
         .then(res => {
           let data = res.data;
-          if (data.status === true)
-            this.setState({file: data.data.file, menus: data.data.menus, loading: false});
-          else
-            this.setState({error: true});
+          data.status === true ? this.setState({
+            file: data.data.file,
+            menus: data.data.menus,
+            loading: false
+          }) : this.setState({error: true});
           this.props.doLoad(false);
-          console.log('file data: ', res);
         })
         .catch(err => {
-          console.log("file", err);
-
-          this.props.doLoad(false);
           this.setState({error: true, loading: false});
+          this.props.doLoad(false);
         });
   }
 
@@ -113,10 +110,10 @@ class FileView extends Component {
   openDialog = (name) => {
     switch (name) {
       case CREATE_NAME.CREATE_NOTE:
-        this.setState({openNote:true});
+        this.setState({openNote: true});
         break;
       case CREATE_NAME.CREATE_DRAFT:
-        this.setState({openDraft:true});
+        this.setState({openDraft: true});
         break;
       default:
         break
@@ -126,14 +123,14 @@ class FileView extends Component {
   handleCloseCreateNote = (data) => {
     this.setState({openNote: false});
     if (data) {
-      this.setState({ submit: true})
+      this.setState({submit: true});
       this.noteService.create(data,
-        errorMessage=>this.setState({errorMessage}),
-        successMessage=>this.setState({successMessage}))
-        .finally(()=>{
-          this.setState({submit:false})
-        })
-    }else{
+          errorMessage => this.setState({errorMessage}),
+          successMessage => this.setState({successMessage}))
+          .finally(() => {
+            this.setState({submit: false})
+          })
+    } else {
       //cancel or close button pressed
     }
   };
@@ -146,8 +143,8 @@ class FileView extends Component {
     const view = (
         <>
           <div className={classes.hide}>
-          <FileMenuLeft click={this.handleItemClick} menus={this.state.menus}/>
-          <FileMenuRight click={this.handleItemClick} menus={this.state.menus}/>
+            <FileMenuLeft click={this.handleItemClick} menus={this.state.menus}/>
+            <FileMenuRight click={this.handleItemClick} menus={this.state.menus}/>
           </div>
           <main className={classes.content}>
             <Grid item xs={12} md={12} lg={12}>
@@ -191,11 +188,13 @@ class FileView extends Component {
           <div className={classes.root}>
             {loading ? <LoadingView/> : view}
           </div>
-          <CreateNoteDialog  file={this.state.file} open={this.state.openNote} onClose={this.handleCloseCreateNote}/>
+          <CreateNoteDialog file={this.state.file} open={this.state.openNote} onClose={this.handleCloseCreateNote}/>
           <SubmitDialog open={this.state.submit} title={"Create Notesheet"} text={"Notesheet is creating ..."}/>
 
-          <OfficeSnackbar variant={"success"} onClose={()=>this.setState({successMessage:""})} open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
-          <OfficeSnackbar variant={"error"} onClose={()=>this.setState({errorMessage:""})} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
+          <OfficeSnackbar variant={"success"} onClose={() => this.setState({successMessage: ""})}
+                          open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
+          <OfficeSnackbar variant={"error"} onClose={() => this.setState({errorMessage: ""})}
+                          open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
         </Grid>
     );
   }
