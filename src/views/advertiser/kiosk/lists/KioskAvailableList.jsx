@@ -10,29 +10,44 @@ import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 import CheckIcon from "@material-ui/icons/CheckBox";
 import KioskApplyDialog from "../KioskApplyDialog";
+import { DocumentService } from "../../../../services/DocumentService";
 
 class KioskAvailableList extends Component {
   kioskService = new KioskService();
-
+ documentService=new DocumentService();
   state = {
     kiosk: null,
     kiosks: [],
     openDetail: false,
     openApply: false,
 
+    advertiserDocuments: [],
+
     errorMessage: "",
     successMessage: ""
   };
 
   componentDidMount() {
-    document.title = "e-AMC | List of kiosk application";
+    document.title = "e-AMC | List of Kiosk application";
     const { doLoad, doLoadFinish } = this.props;
     doLoad();
+    Promise.all([this.fetchKiosk(),this.fetchDocument()])
+      .then(function(values) {
+        doLoadFinish();
+      });
+  }
+  fetchKiosk=()=>{
     this.kioskService.fetchAdvertiserKiosk(
       errorMessage => this.setState({ errorMessage }),
       kiosks => this.setState({ kiosks }))
-      .finally(() => doLoadFinish());
   }
+  fetchDocument = () => {
+    this.documentService.fetch("advertiser",
+      errorMessage => this.setState({ errorMessage }),
+      advertiserDocuments => this.setState({ advertiserDocuments }))
+      .finally(() => console.info("Document attachment fetch successfully"));
+  };
+
   applyKiosk=(data)=>{
     this.setState({openApply:false})
     this.setState({successMessage:"You have applied kiosk"})
@@ -144,7 +159,7 @@ class KioskAvailableList extends Component {
             columns={tableColumns}
             options={tableOptions}
           />
-         <KioskApplyDialog onClose={()=>this.setState({openApply:false})} open={this.state.openApply}
+         <KioskApplyDialog documents={this.state.advertiserDocuments} onClose={()=>this.setState({openApply:false})} open={this.state.openApply}
                            onConfirm={this.applyKiosk.bind(this)} application={this.state.kiosk}/>
           <KioskApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.kiosk}
                                   onClose={e => this.setState({ openDetail:false,kiosk: null })}/>

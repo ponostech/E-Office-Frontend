@@ -18,7 +18,7 @@ class ApplyKioskDialog extends Component {
         <GridContainer style={{padding:20}}>
           <GridItem justify={"space-between"} className={classes.item} md={12}>
             <GridContainer justify={"space-between"}>
-              <Typography variant={"title"}>Apply hoarding advertisement</Typography>
+              <Typography variant={"title"}>Apply Kiosk advertisement</Typography>
               <IconButton onClick={onClose}>
                 <CloseIcon/>
               </IconButton>

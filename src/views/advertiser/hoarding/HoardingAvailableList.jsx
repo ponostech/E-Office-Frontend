@@ -10,9 +10,11 @@ import CheckIcon from "@material-ui/icons/CheckBox";
 import moment from "moment";
 import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 import HoardingApplyDialog from "./form/HoardingApplyDialog";
+import { DocumentService } from "../../../services/DocumentService";
 
 class HoardingAvailableList extends Component {
   hoardingService = new HoardingService();
+  documentService=new DocumentService();
   state = {
     hoarding: null,
     hoardings: [],
@@ -21,7 +23,8 @@ class HoardingAvailableList extends Component {
     errorMessage: "",
     successMessage: "",
 
-    openApply: false
+    openApply: false,
+    advertiserDocuments:[]
   };
 
 
@@ -29,11 +32,21 @@ class HoardingAvailableList extends Component {
     document.title = "e-AMC | List of hoarding application";
     const { doLoad, doLoadFinish } = this.props;
     doLoad();
+    Promise.all([this.fetchHoardings(),this.fetchDocument()])
+      .then(function(values) {
+        doLoadFinish();
+      });
+  }
+  fetchHoardings=()=>{
     this.hoardingService.fetchAdvertiserHoarding(errorMessage => this.setState({ errorMessage }),
       hoardings => this.setState({ hoardings }))
-      .finally(() => doLoadFinish());
   }
-
+  fetchDocument = () => {
+    this.documentService.fetch("advertiser",
+      errorMessage => this.setState({ errorMessage }),
+      advertiserDocuments => this.setState({ advertiserDocuments }))
+      .finally(() => console.info("Document attachment fetch successfully"));
+  };
   applyHoarding = (data) => {
     this.setState({ openApply: false });
     //TODO:: business logic to apply hoarding
@@ -105,8 +118,9 @@ class HoardingAvailableList extends Component {
                 </Tooltip>
                 <Tooltip title={"Click here to apply hoarding"}>
                   <IconButton onClick={(e) => {
-                    this.setState({ openApply: true, haording: file });
+                    this.setState({ openApply: true, hoarding: file });
                   }}>
+
                     <CheckIcon color={"primary"}/>
                   </IconButton>
                 </Tooltip>
@@ -140,10 +154,10 @@ class HoardingAvailableList extends Component {
             columns={tableColumns}
             options={tableOptions}
           />
-          <HoardingApplyDialog open={this.state.openApply} onClose={() => this.setState({ openApply: false })}
+          <HoardingApplyDialog documents={this.state.advertiserDocuments} open={this.state.openApply} onClose={() => this.setState({ openApply: false })}
                                onConfirm={this.applyHoarding.bind(this)} application={this.state.hoarding}/>
-          <HoardingApplicationDialog open={Boolean(this.state.hoarding)} application={this.state.hoarding}
-                                     onClose={e => this.setState({ hoarding: null })}/>
+          <HoardingApplicationDialog open={this.state.openDetail} application={this.state.hoarding}
+                                     onClose={e => this.setState({ hoarding: null,openDetail:false })}/>
 
           <OfficeSnackbar open={Boolean(this.state.errorMessage)} onClose={() => this.setState({ errorMessage: "" })}
                           variant={"error"} message={this.state.errorMessage}/>
