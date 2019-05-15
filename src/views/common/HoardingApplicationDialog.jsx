@@ -49,12 +49,12 @@ class HoardingApplicationDialog extends Component {
         (
           <>
             <GridItem md={4}>
-              <Typography variant={"textPrimary"}>
+              <Typography variant={"h5"}>
                 {key}
               </Typography>
             </GridItem>
             <GridItem md={8}>
-              <Typography variant={"textSecondary"}>
+              <Typography variant={"h6"}>
                 {value}
               </Typography>
             </GridItem>
@@ -74,17 +74,13 @@ class HoardingApplicationDialog extends Component {
 
           <GridItem xs={12} sm={12} md={6}>
             <Grid container={true} spacing={16} justify={"center"}>
-
-              <GridItem className={classes.item} xs={12} sm={12} md={12}>
-                <Typography variant={"h5"}>Details of application</Typography>
-              </GridItem>
               <GridItem className={classes.item} xs={4} sm={4} md={4}>
                 <Typography variant={"subtitle1"}>
                   Address
                 </Typography>
               </GridItem>
               <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle2"}>
+                <Typography variant={"subtitle1"}>
                   {": " + hoarding.address}
                 </Typography>
               </GridItem>
@@ -95,8 +91,8 @@ class HoardingApplicationDialog extends Component {
                 </Typography>
               </GridItem>
               <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle2"}>
-                  {": " + hoarding.road_detail}
+                <Typography variant={"subtitle1"}>
+                  {": " + hoarding.road_detail ? hoarding.road_detail : 'n/a'}
                 </Typography>
               </GridItem>
 
@@ -106,7 +102,7 @@ class HoardingApplicationDialog extends Component {
                 </Typography>
               </GridItem>
               <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle2"}>
+                <Typography variant={"subtitle1"}>
                   {": " + hoarding.length}
                 </Typography>
               </GridItem>
@@ -117,7 +113,7 @@ class HoardingApplicationDialog extends Component {
                 </Typography>
               </GridItem>
               <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle2"}>
+                <Typography variant={"subtitle1"}>
                   {":" + hoarding.height}
                 </Typography>
               </GridItem>
@@ -128,7 +124,7 @@ class HoardingApplicationDialog extends Component {
                 </Typography>
               </GridItem>
               <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle2"}>
+                <Typography variant={"subtitle1"}>
                   {": " + hoarding.ground_clearance}
                 </Typography>
               </GridItem>
@@ -139,7 +135,7 @@ class HoardingApplicationDialog extends Component {
                 </Typography>
               </GridItem>
               <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle2"}>
+                <Typography variant={"subtitle1"}>
                   {": " + hoarding.display_type}
                 </Typography>
               </GridItem>
@@ -150,7 +146,7 @@ class HoardingApplicationDialog extends Component {
                 </Typography>
               </GridItem>
               <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle2"}>
+                <Typography variant={"subtitle1"}>
                   {hoarding.both_side ? ": Yes" : ": No"}
                 </Typography>
               </GridItem>
@@ -161,7 +157,7 @@ class HoardingApplicationDialog extends Component {
                 </Typography>
               </GridItem>
               <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle2"}>
+                <Typography variant={"subtitle1"}>
                   {": " + hoarding.land_owner_name}
                 </Typography>
               </GridItem>
@@ -172,7 +168,7 @@ class HoardingApplicationDialog extends Component {
                 </Typography>
               </GridItem>
               <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle2"}>
+                <Typography variant={"subtitle1"}>
                   {": " + hoarding.land_owner_type ? ": Private" : ": Public"}
                 </Typography>
               </GridItem>
@@ -191,7 +187,7 @@ class HoardingApplicationDialog extends Component {
           <GridItem xs={12} sm={12} md={6}>
 
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <Typography variant={"h5"}>Uploaded Documents</Typography>
+              <Typography variant={"h6"}>Uploaded Documents</Typography>
             </GridItem>
 
             <List dense={false}>
