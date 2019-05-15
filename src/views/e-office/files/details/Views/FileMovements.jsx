@@ -17,7 +17,6 @@ class FileMovements extends Component {
         .then(res => {
           if (res.data.status)
             this.setState({movements: res.data.data.file_movements, loading: false});
-          console.log('return', res.data.data.file_movements);
         })
   }
 
@@ -25,9 +24,16 @@ class FileMovements extends Component {
     const {loading, movements} = this.state;
 
     let list = "No file movement";
-    if(movements.length > 0)
+    if (movements.length > 0)
       list = this.state.movements.map(res => {
-        return <><ListItem><ListItemText primary={"Sent by " + res.sender.staff.name + " (" + res.sender.staff.designation + ")" + " to " + res.recipient.staff.name + " (" + res.sender.staff.designation + ")"} secondary={"On: " + moment(res.created_at).format("Do MMMM YYYY")}/></ListItem><Divider/></>;
+        return <>
+          <ListItem>
+            <ListItemText
+                primary={"Sent by " + res.sender.staff.name + " (" + res.sender.staff.designation + ")" + " to " + res.recipient.staff.name + " (" + res.recipient.staff.designation + ")"}
+                secondary={"On: " + moment(res.created_at).format("Do MMMM YYYY")}/>
+          </ListItem>
+          <Divider/>
+        </>;
       });
 
     return (
