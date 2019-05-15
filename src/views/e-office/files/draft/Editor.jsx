@@ -4,6 +4,8 @@ import {Editor} from '@tinymce/tinymce-react';
 
 class TextEditor extends Component {
   render() {
+    let height = this.props.height ? this.props.height : 500;
+
     return <Editor apiKey='qulfync0z1y6prrv19isratnaskphp6bdrnacv8yb33g9ntf'
                    init={{
                      plugins: 'print preview searchreplace autolink directionality visualblocks visualchars ' +
@@ -14,7 +16,7 @@ class TextEditor extends Component {
                          'alignleft aligncenter alignright alignjustify | numlist bullist outdent indent ' +
                          '| removeformat | code | table',
                      fontsize_formats: "8pt 9pt 10pt 11px 12pt 13pt 14pt  15pt 18pt 24pt 36pt 48px",
-                     height: 500,
+                     height: height,
                    }}
                    onChange={this.props.onChange}
                    initialValue={this.props.default}/>

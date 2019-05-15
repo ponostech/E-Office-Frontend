@@ -27,6 +27,8 @@ import CreateNoteDialog from "../notesheet/NoteCreateDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import {NotesheetService} from "../../../../services/NotesheetService";
+import FileDraftDialog from "../dialog/FileDraftDialog";
+import FileDraftPermitDialog from "../dialog/FileDraftPermitDialog";
 
 const styles = theme => ({
   root: {
@@ -69,6 +71,7 @@ class FileView extends Component {
 
     openNote: false,
     openDraft: false,
+    openDraftPermit: false,
 
     errorMessage: "",
     successMessage: "",
@@ -84,11 +87,8 @@ class FileView extends Component {
     axios.get(ApiRoutes.FILE_DETAIL + "/" + id)
         .then(res => {
           let data = res.data;
-          data.status === true ? this.setState({
-            file: data.data.file,
-            menus: data.data.menus,
-            loading: false
-          }) : this.setState({error: true});
+          data.status === true ? this.setState({file: data.data.file, menus: data.data.menus, loading: false})
+              : this.setState({error: true});
           this.props.doLoad(false);
         })
         .catch(err => {
@@ -115,7 +115,11 @@ class FileView extends Component {
       case CREATE_NAME.CREATE_DRAFT:
         this.setState({openDraft: true});
         break;
+      case 'Draft Permit':
+        this.setState({openDraftPermit: true});
+        break;
       default:
+        console.log(name);
         break
     }
   };
@@ -133,6 +137,10 @@ class FileView extends Component {
     } else {
       //cancel or close button pressed
     }
+  };
+
+  closeDialog = (key) => {
+    this.setState({[key]: false});
   };
 
 
@@ -189,6 +197,12 @@ class FileView extends Component {
             {loading ? <LoadingView/> : view}
           </div>
           <CreateNoteDialog file={this.state.file} open={this.state.openNote} onClose={this.handleCloseCreateNote}/>
+
+          {this.state.openDraft && <FileDraftDialog file={this.state.file} open={this.state.openDraft}
+                                                    onClose={this.closeDialog.bind(this, 'openDraft')}/>}
+          {this.state.openDraftPermit && <FileDraftPermitDialog file={this.state.file} open={this.state.openDraftPermit}
+                                                                onClose={this.closeDialog.bind(this, 'openDraftPermit')}/>}
+
           <SubmitDialog open={this.state.submit} title={"Create Notesheet"} text={"Notesheet is creating ..."}/>
 
           <OfficeSnackbar variant={"success"} onClose={() => this.setState({successMessage: ""})}

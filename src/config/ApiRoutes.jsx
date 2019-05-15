@@ -14,10 +14,14 @@ export const FILE_MOVEMENTS = (id) => {
   return `/files/${id}/movements`;
 };
 
+export const DRAFT_CREATE = "drafts";
+
 export const FILE_ACTION_TYPES = "setting/notesheet/actions";
 export const FILE_PRIORITIES = "setting/notesheet/priorities";
 export const GET_STAFF = "/staffs";
-
+export const GET_PERMIT_TEMPLATE = (type) => {
+  return `/permit-templates/${type}`;
+};
 export class ApiRoutes {
   static BASE_URL = "http://139.59.26.3/api/v1";
   static LOGIN_ROUTE = "/auth/login";
