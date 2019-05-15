@@ -89,101 +89,102 @@ class AdvertiserDashboard extends Component {
     const{classes}=this.props
     return (
       <Grid spacing={16} container={true}>
-        <Grid item={true} xs={12} sm={12} md={3}>
-          <Card raised={true}>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>content_copy</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                Under Process Applications
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  view detail
-                </a>
-              </div>
-            </CardFooter>
-          </Card>
-        </Grid>
-        <Grid item={true} xs={12} sm={12} md={3}>
-          <Card raised={true}>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>content_copy</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  Get more space
-                </a>
-              </div>
-            </CardFooter>
-          </Card>
-        </Grid>
-        <Grid item={true} xs={12} sm={12} md={3}>
-          <Card raised={true}>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>content_copy</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  Get more space
-                </a>
-              </div>
-            </CardFooter>
-          </Card>
-        </Grid>
-        <Grid item={true} xs={12} sm={12} md={3}>
-          <Card raised={true}>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>content_copy</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  Get more space
-                </a>
-              </div>
-            </CardFooter>
-          </Card>
-        </Grid>
-        <Grid xs={12} sm={12} md={12}>
-          <Card raised={true}>
-            <CardHeader stats icon>
-              <CardIcon color="success">
-                <Icon>table_chart</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Chart of something</p>
+        <p>Advertiser dashboard</p>
+        {/*<Grid item={true} xs={12} sm={12} md={3}>*/}
+        {/*  <Card raised={true}>*/}
+        {/*    <CardHeader color="warning" stats icon>*/}
+        {/*      <CardIcon color="warning">*/}
+        {/*        <Icon>content_copy</Icon>*/}
+        {/*      </CardIcon>*/}
+        {/*      <p className={classes.cardCategory}>Used Space</p>*/}
+        {/*      <h3 className={classes.cardTitle}>*/}
+        {/*        Under Process Applications*/}
+        {/*      </h3>*/}
+        {/*    </CardHeader>*/}
+        {/*    <CardFooter stats>*/}
+        {/*      <div className={classes.stats}>*/}
+        {/*        <a href="#pablo" onClick={e => e.preventDefault()}>*/}
+        {/*          view detail*/}
+        {/*        </a>*/}
+        {/*      </div>*/}
+        {/*    </CardFooter>*/}
+        {/*  </Card>*/}
+        {/*</Grid>*/}
+        {/*<Grid item={true} xs={12} sm={12} md={3}>*/}
+        {/*  <Card raised={true}>*/}
+        {/*    <CardHeader color="warning" stats icon>*/}
+        {/*      <CardIcon color="warning">*/}
+        {/*        <Icon>content_copy</Icon>*/}
+        {/*      </CardIcon>*/}
+        {/*      <p className={classes.cardCategory}>Used Space</p>*/}
+        {/*      <h3 className={classes.cardTitle}>*/}
+        {/*        49/50 <small>GB</small>*/}
+        {/*      </h3>*/}
+        {/*    </CardHeader>*/}
+        {/*    <CardFooter stats>*/}
+        {/*      <div className={classes.stats}>*/}
+        {/*        <a href="#pablo" onClick={e => e.preventDefault()}>*/}
+        {/*          Get more space*/}
+        {/*        </a>*/}
+        {/*      </div>*/}
+        {/*    </CardFooter>*/}
+        {/*  </Card>*/}
+        {/*</Grid>*/}
+        {/*<Grid item={true} xs={12} sm={12} md={3}>*/}
+        {/*  <Card raised={true}>*/}
+        {/*    <CardHeader color="warning" stats icon>*/}
+        {/*      <CardIcon color="warning">*/}
+        {/*        <Icon>content_copy</Icon>*/}
+        {/*      </CardIcon>*/}
+        {/*      <p className={classes.cardCategory}>Used Space</p>*/}
+        {/*      <h3 className={classes.cardTitle}>*/}
+        {/*        49/50 <small>GB</small>*/}
+        {/*      </h3>*/}
+        {/*    </CardHeader>*/}
+        {/*    <CardFooter stats>*/}
+        {/*      <div className={classes.stats}>*/}
+        {/*        <a href="#pablo" onClick={e => e.preventDefault()}>*/}
+        {/*          Get more space*/}
+        {/*        </a>*/}
+        {/*      </div>*/}
+        {/*    </CardFooter>*/}
+        {/*  </Card>*/}
+        {/*</Grid>*/}
+        {/*<Grid item={true} xs={12} sm={12} md={3}>*/}
+        {/*  <Card raised={true}>*/}
+        {/*    <CardHeader color="warning" stats icon>*/}
+        {/*      <CardIcon color="warning">*/}
+        {/*        <Icon>content_copy</Icon>*/}
+        {/*      </CardIcon>*/}
+        {/*      <p className={classes.cardCategory}>Used Space</p>*/}
+        {/*      <h3 className={classes.cardTitle}>*/}
+        {/*        49/50 <small>GB</small>*/}
+        {/*      </h3>*/}
+        {/*    </CardHeader>*/}
+        {/*    <CardFooter stats>*/}
+        {/*      <div className={classes.stats}>*/}
+        {/*        <a href="#pablo" onClick={e => e.preventDefault()}>*/}
+        {/*          Get more space*/}
+        {/*        </a>*/}
+        {/*      </div>*/}
+        {/*    </CardFooter>*/}
+        {/*  </Card>*/}
+        {/*</Grid>*/}
+        {/*<Grid xs={12} sm={12} md={12}>*/}
+        {/*  <Card raised={true}>*/}
+        {/*    <CardHeader stats icon>*/}
+        {/*      <CardIcon color="success">*/}
+        {/*        <Icon>table_chart</Icon>*/}
+        {/*      </CardIcon>*/}
+        {/*      <p className={classes.cardCategory}>Chart of something</p>*/}
 
-            </CardHeader>
-              <CardContent>
-                <ChartistGraph data={simpleLineChartData} options={options} type={'Line'} />
-              </CardContent>
-          </Card>
+        {/*    </CardHeader>*/}
+        {/*      <CardContent>*/}
+        {/*        <ChartistGraph data={simpleLineChartData} options={options} type={'Line'} />*/}
+        {/*      </CardContent>*/}
+        {/*  </Card>*/}
 
-        </Grid>
+        {/*</Grid>*/}
 
       </Grid>
     );

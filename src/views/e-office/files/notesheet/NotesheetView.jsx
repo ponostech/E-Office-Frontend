@@ -70,7 +70,10 @@ class NotesheetView extends Component {
       this.setState({ submit: true})
       this.noteService.create(data,
         errorMessage=>this.setState({errorMessage}),
-        successMessage=>this.setState({successMessage}))
+        successMessage=>{
+        this.setState({successMessage});
+        window.location.reload();
+        })
         .finally(()=>{
           this.setState({submit:false})
         })

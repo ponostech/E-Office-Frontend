@@ -54,6 +54,7 @@ class NoteCreateDialog extends React.Component {
       fixedDate: null,
       priorityTypes: [],
       actionTypes: [],
+
       files: [],
 
       hasError: false,
@@ -116,11 +117,12 @@ class NoteCreateDialog extends React.Component {
       content: this.state.content,
       action: this.state.action.value,
       priority: this.state.priority.value,
-      status: 0
+      draft: 1,
+      attachments:this.state.files
     };
 
     if (this.state.fixedDate) data.fixed_date = moment(this.state.fixedDate).format("YYYY-MM-DD");
-    if (action === "confirm") data.status = 1;
+    if (action === "confirm") data.draft = 0;
 
     this.props.onClose(data);
 
@@ -194,7 +196,7 @@ class NoteCreateDialog extends React.Component {
           </MuiPickersUtilsProvider>
         </Grid>
         <Grid item={true} lg={6}>
-          <Typography variant={"h5"} style={{ textAlign: "center" }}>Notesheet Attachment</Typography>
+          <Typography variant={"h6"} >Notesheet Attachment</Typography>
           <NotesheetAttachment onSuccess={(files) => this.setState({ files })}/>
         </Grid>
 

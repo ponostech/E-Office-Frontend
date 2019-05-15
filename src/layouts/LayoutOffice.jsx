@@ -56,7 +56,7 @@ class LayoutOffice extends React.Component {
     clearLocalStorage = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('current_user');
-        window.location.replace(LOGIN)
+        // window.location.replace(LOGIN)
     };
 
     render() {
