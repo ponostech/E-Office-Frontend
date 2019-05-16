@@ -22,7 +22,7 @@ export default class CancelTemplateService {
     try {
       let res =  await axios.post(ApiRoutes.CREATE_CANCEL_TEMPLATE,template);
       if (res.data.status) {
-        successCallback(ArrayToString(res.data.messages));
+        successCallback(ArrayToString(res.data.messages),res.data.data.template.id);
       } else {
         errorCallback("Something went wrong: Please try again later");
       }
