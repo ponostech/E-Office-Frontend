@@ -47,11 +47,11 @@ class HoardingCancelTemplate extends Component {
   doSave = () => {
     let data = {
       content: this.state.content,
-      type:this.state.type
+      type: this.state.type
     };
     this.setState({ submit: true });
     this.cancelTemplateService.create(data, errorMessage => this.setState({ errorMessage }),
-      successMessage => this.setState({ successMessage ,edit:true}))
+      (successMessage,id) => this.setState({ successMessage ,edit:true,id}))
       .finally(() => this.setState({ submit: false }));
   };
   handleClick = (identifier) => {
@@ -64,7 +64,7 @@ class HoardingCancelTemplate extends Component {
         }
         break;
       case "reset":
-        this.setState({content:""});
+        this.setState({ content: "" });
         break;
       default:
         break;

@@ -51,7 +51,7 @@ class BannerCancelTemplate extends Component {
     };
     this.setState({ submit: true });
     this.cancelTemplateService.create(data, errorMessage => this.setState({ errorMessage }),
-      successMessage => this.setState({ successMessage,edit:true }))
+      (successMessage,id) => this.setState({ successMessage,edit:true,id }))
       .finally(() => this.setState({ submit: false }));
   };
   handleClick = (identifier) => {
