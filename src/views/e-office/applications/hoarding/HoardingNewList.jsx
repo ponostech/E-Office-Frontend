@@ -1,168 +1,275 @@
-import React, { Component } from "react";
-import ReactTable from "react-table";
-import { Button, Checkbox, Chip, IconButton, InputAdornment, TextField, Tooltip } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
-import "react-table/react-table.css";
-import GridItem from "../../../../components/Grid/GridItem";
-import GetIcon from "@material-ui/icons/DragHandle";
-import EyeIcon from "@material-ui/icons/RemoveRedEyeSharp";
-import { OfficeRoutes } from "../../../../config/routes-constant/OfficeRoutes";
-import { withRouter } from "react-router-dom";
-import GridContainer from "../../../../components/Grid/GridContainer";
-import ApplicationAssignmentDialog from "../ApplicationAssignmentDialog";
+import React from "react";
+import MUIDataTable from "mui-datatables";
+import Grid from "@material-ui/core/Grid";
+import { Icon, Tooltip } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import PinDrop from "@material-ui/icons/PinDrop";
+import { HoardingService } from "../../../../services/HoardingService";
+import GMapDialog from "../../../../components/GmapDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import HoardingDetailDialog from "./HoardingDetailDialog";
+import OfficeSnackbar from "../../../../components/OfficeSnackbar";
+import { FileService } from "../../../../services/FileService";
+import SubmitDialog from "../../../../components/SubmitDialog";
+import { withRouter } from "react-router-dom";
+import ApplicationState from "../../../../utils/ApplicationState";
+import { StaffService } from "../../../../services/StaffService";
+import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
+import SendDialog from "../../../common/SendDialog";
+import HoardingApplicationDialog from "../../../common/HoardingApplicationDialog";
 
-class HoardingNewList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      openDialog: false,
-      openConfirm: false,
-      viewDetail: false,
-      selectedFiles: [],
-      hoarding: {},
+const styles = {
+  button: {},
+  actionIcon: {}
+};
 
-    };
+var timeout = null;
+
+class HoardingNewList extends React.Component {
+  hoardingService = new HoardingService();
+  fileService = new FileService();
+  staffService = new StaffService();
+
+  state = {
+    openAssignment: false,
+    openDetail: false,
+    openMap: false,
+    openTakeFile: false,
+
+    hoardings: [],
+    file: null,
+    application: null,
+
+    takeMessage: "",
+    errorMessage: "",
+    lat: 93,
+    lng: 98,
+
+    staffs: [],
+    submit: false
+  };
+
+  componentWillUnmount() {
+    clearTimeout(timeout);
   }
 
-  takeFiles = (e) => {
-    this.setState({ openConfirm: false });
+  componentDidMount() {
+    const { doLoad } = this.props;
+    doLoad(true);
+
+    Promise.all([this.fetchStaff(), this.fetchHoarding()])
+      .then(function(val) {
+        console.log(val);
+      })
+      .finally(() => doLoad(false));
+  }
+
+  updateTable = (action, tableState) => {
+
   };
-  handleMoreMenu = (menu) => {
+  fetchStaff = () => {
+    this.staffService.fetch(errorMessage => this.setState({ errorMessage }),
+      staffs => this.setState({ staffs }))
+      .finally(() => console.log("staff request has been made"));
+  };
+  fetchHoarding = () => {
+    this.hoardingService.fetch(ApplicationState.NEW_APPLICATION)
+      .then(hoardings => {
+        this.setState({ hoardings: hoardings });
+      })
+      .catch(err => {
+        this.setState({ errorMessage: err.toString() });
+      });
+  };
+
+  takeFile = (data) => {
+    this.setState({ openTakeFile: true, file: data.file });
+  };
+  confirmTake = (e) => {
     const { history } = this.props;
-    switch (menu) {
-      case "View details":
-        history.push(OfficeRoutes.HOARDING_DETAILS);
-        break;
-      default:
-        break;
-    }
+    const { file } = this.state;
+
+    this.setState({ submit: true, openTakeFile: false });
+    this.fileService.takeFile(file.id, errorMessage => this.setState({ errorMessage }),
+      takeMessage => {
+        this.setState({ takeMessage, submit: false });
+        timeout = setTimeout(function(handler) {
+          history.push(DESK);
+        }, 2000);
+      })
+      .finally(() => this.setState({ submit: false }));
+
   };
-  onUserAssign = (user) => {
-    this.setState({
-      openDialog: false
-    });
+  closeAssignment = () => {
+    this.setState({ openAssignment: false });
   };
-  showDetails = (id) => {
-    let hoarding = this.state.data.filter(function(item) {
-      return item.application_no === id;
-    });
-    this.setState({
-      viewDetail: true
-    });
+
+  viewDetail = (data, event) => {
+    console.log(data);
+    this.setState({ openDetail: true });
   };
-  closeDetail=(e)=>{
-    this.setState({
-      viewDetail:false
-    })
-  }
+  closeDetail = () => {
+    this.setState({ openDetail: false });
+  };
+
+  sendFile = (fileId, receipientId) => {
+    this.setState({ openAssignment: false, submit: true });
+    this.fileService.sendFile(fileId, receipientId, errorMessage => this.setState({ errorMessage }),
+      takeMessage => {
+        this.setState({ takeMessage });
+        setTimeout(function(handler) {
+          window.location.reload();
+        }, 3000);
+      }).finally(() => this.setState({ submit: false }));
+  };
 
   render() {
-    const columns = [{
-      Header: "",
-      accessor: "application_no",
-      Cell: props => <Checkbox name={"check"}/>,
-      maxWidth: 40
-    }, {
-      Header: "Applciation No",
-      accessor: "application_no" // String-based value accessors!
-    }, {
-      Header: "length",
-      accessor: "length",
-      Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
-    }, {
-      Header: "Height",
-      accessor: "height" // String-based value accessors!
-    }, {
-      Header: "Type of Ads",
-      accessor: "type" // String-based value accessors!
-    }, {
-      Header: "Local Council",
-      accessor: "localCouncil" // String-based value accessors!
-    }, {
-      Header: "Land Owner",
-      accessor: "landOwner"
-    }, {
-      Header: "Expiry Date",
-      accessor: "expired"
-    }, {
-      Header: "Status",
-      accessor: "application_no",
-      Cell: props => {
-        return (
-          <Chip variant={"outlined"} label={"ACTIVE"} color={"primary"}/>
-        );
-      }
-    }, {
-      Header: "Action",
-      accessor: "application_no",
-      maxWidth: 60,
-      Cell: props => {
-        return (
-          <Tooltip title={"Click here to view details"}>
-            <IconButton onClick={(e) => this.showDetails(props.value)}>
-              <EyeIcon/>
-            </IconButton>
-          </Tooltip>
-        );
-      }
-    }];
+    const { classes } = this.props;
+    const { hoardings } = this.state;
+    const tableOptions = {
+      filterType: "checkbox",
+      responsive: "scroll",
+      rowsPerPage: 15,
+      serverSide: false,
+      onTableChange: function(action, tableState) {
+        this.updateTable(action, tableState);
+      }.bind(this)
+    };
 
+    const tableColumns = [
+      {
+        name: "action",
+        label: "ACTION",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { rowIndex } = tableMeta;
+            const application = this.state.hoardings[rowIndex];
+            return (
 
-    return (
-      <div>
-        <GridItem xs={12} sm={12} md={12}>
-          <GridContainer justify={"space-between"}>
-            <GridItem>
-              <TextField variant={"outlined"}
-                         margin={"dense"}
-                         InputProps={{
-                           startAdornment: (
-                             <InputAdornment
-                               position="end">
-                               <SearchIcon/>
-                             </InputAdornment>
-                           ),
-                           placeholder: "Search"
-                         }}/>
-            </GridItem>
-            <GridItem>
-              <div>
-                <Tooltip title={"Click here to get this file"}>
-                  <IconButton onClick={(e) => this.setState({ openConfirm: true })}>
-                    <GetIcon/>
+              <>
+                <Tooltip title={"Click her to view detail of file"}>
+                  <IconButton color="primary" size="small"
+                              aria-label="View Details" onClick={e => this.setState({ application: application })}>
+                    <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
                 </Tooltip>
-                <Button color={"primary"} variant={"outlined"} onClick={(e) => this.setState({ openDialog: true })}>
-                  Assign User
-                </Button>
-              </div>
-            </GridItem>
-          </GridContainer>
+                <Tooltip title={"Click here to assign this file to staff"}>
+                  <IconButton variant="contained" color="secondary"
+                              size="small"
+                              onClick={e => this.setState({ file: application.file, openAssignment: true })}>
+                    <Icon fontSize="small">send</Icon>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={"Click here to take this file"}>
+                  <IconButton variant="contained" color="primary"
+                              size="small" onClick={this.takeFile.bind(this, application)}>
+                    <Icon fontSize="small">desktop_mac</Icon>
+                  </IconButton>
+                </Tooltip>
+              </>
+            );
+          }
+        }
+      },
+      {
+        name: "file",
+        label: "FILE NO.",
+        options: {
+          customBodyRender: (file, tableMeta, updateValue) => {
+            return (
+              file.number
+            );
+          }
+        }
+      }, {
+        name: "file",
+        label: "SUBJECT",
+        options: {
+          customBodyRender: (file, tableMeta, updateValue) => {
+            return (
+              file.subject
+            );
+          }
+        }
+      }, {
+        name: "created_at",
+        label: "DATE"
+      }, {
+        name: "applicant",
+        label: "APPLICANT",
+        options: {
+          customBodyRender: (applicant, tableMeta, updateValue) => {
+            return (
+              applicant.advertiser.name
+            );
+          }
+        }
+      },
+      {
+        name: "hoarding",
+        label: "LOCATION",
+        options: {
+          customBodyRender: (hoarding, tableMeta, updateValue) => {
+            const lat = Number(hoarding.latitude);
+            const lng = Number(hoarding.longitude);
 
-        </GridItem>
-        <GridItem xs={12} sm={12} md={12}>
-          <ReactTable
-            columns={columns}
-            data={this.state.data}
-            showPagination={true}
-            showPaginationBottom={true}
-            showPageSizeOptions={true}
-            pageSizeOptions={[5, 10, 20, 25, 50, 100]}
-            defaultPageSize={10}
+            let view = (
+              <Tooltip title={"Click here to view location"}>
+                <IconButton onClick={e => this.setState({ openMap: true, lat: lat, lng: lng })}>
+                  <PinDrop/>
+                </IconButton>
+              </Tooltip>
+            );
+            return (
+              view
+            );
+          }
+        }
+      }
+
+    ];
+
+    return (
+      <>
+        <Grid item xs={12}>
+          <MUIDataTable
+            title={"Hoarding: List of New Application"}
+            data={hoardings}
+            columns={tableColumns}
+            options={tableOptions}
           />
-        </GridItem>
-        <ApplicationAssignmentDialog open={this.state.openDialog} onClose={this.onUserAssign.bind(this)}
-                                     files={this.state.selectedFiles}/>
-        <ConfirmDialog message={"Click confirm button to take these files"}
-                       open={this.state.openConfirm}
-                       onConfirm={this.takeFiles}
-                       onCancel={(e) => this.setState({ openConfirm: false })}/>
-                       <HoardingDetailDialog open={this.state.viewDetail} haording={this.state.hoarding} onClose={this.closeDetail.bind(this)}/>
-      </div>
+        </Grid>
+
+        <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
+                    onClose={() => this.setState({ openMap: false })}
+                    isMarkerShown={true}
+        />
+
+        <HoardingApplicationDialog open={Boolean(this.state.application)}
+                                   onClose={() => this.setState({ application: null })}
+                                   application={this.state.application}/>
+        <SendDialog staffs={this.state.staffs}
+                    open={this.state.openAssignment}
+                    onClose={() => this.setState({ file: null, openAssignment: false })}
+                    file={this.state.file}
+                    onSend={this.sendFile.bind(this)}
+        />
+
+        <SubmitDialog open={this.state.submit} text={"File is taking ..."} title={"File Endorsement"}/>
+
+        <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to call this file ?"}
+                       onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
+                       onConfirm={this.confirmTake.bind(this)}/>
+
+        <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
+                        onClose={e => this.setState({ takeMessage: "" })} open={Boolean(this.state.takeMessage)}/>
+        <OfficeSnackbar variant={"error"} message={this.state.errorMessage}
+                        onClose={e => this.setState({ errorMessage: "" })} open={Boolean(this.state.errorMessage)}/>
+      </>
     );
   }
 }
 
-export default withRouter(HoardingNewList);
+export default withRouter(withStyles(styles)(HoardingNewList));

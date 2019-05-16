@@ -8,7 +8,7 @@ import ReceiptShow from "../../views/e-office/receipt/ReceiptShow";
 import ReceiptList from "../../views/e-office/receipt/ReceiptList";
 import ReceiptSentList from "../../views/e-office/receipt/ReceiptSentList";
 import ShopNewList from "../../views/e-office/applications/shop-license/ShopNewList";
-import HoardingApplications from "../../views/e-office/applications/hoarding/HoardingApplications";
+import HoardingApplications from "../../views/e-office/applications/hoarding/HoardingNewList";
 import Settings from "../../views/e-office/settings/Setting";
 import FileDetail from "../../views/e-office/files/details/FileView";
 import FileCreatedList from "../../views/e-office/files/FileCreatedList";
