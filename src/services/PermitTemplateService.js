@@ -6,7 +6,7 @@ export default class PermitTemplateService {
 
   async update(template,errorCallback,successCallback) {
     try {
-      let res = await axios.post(ApiRoutes.UPDATE_PERMIT_TEMPLATE(template.id),{template});
+      let res = await axios.post(ApiRoutes.UPDATE_PERMIT_TEMPLATE(template.id),template);
       if (res.data.status) {
         successCallback(ArrayToString(res.data.messages));
       } else {

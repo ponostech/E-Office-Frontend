@@ -6,7 +6,7 @@ export default class CancelTemplateService {
 
   async update(template,errorCallback,successCallback) {
     try {
-      let res = await axios.post(ApiRoutes.UPDATE_LICENSE_TEMPLATE(template.id),{template});
+      let res = await axios.post(ApiRoutes.UPDATE_CANCEL_TEMPLATE(template.id),template);
       if (res.data.status) {
         successCallback(ArrayToString(res.data.messages));
       } else {
@@ -20,7 +20,7 @@ export default class CancelTemplateService {
 
   async create(template,errorCallback,successCallback) {
     try {
-      let res =  await axios.post(ApiRoutes.CREATE_LICENSE_TEMPLATE,template);
+      let res =  await axios.post(ApiRoutes.CREATE_CANCEL_TEMPLATE,template);
       if (res.data.status) {
         successCallback(ArrayToString(res.data.messages));
       } else {
@@ -34,7 +34,7 @@ export default class CancelTemplateService {
   async get(module, errorCallback, successCallback) {
 
     try {
-      let res = await axios.get(ApiRoutes.GET_LICENSE_TEMPLATE(module));
+      let res = await axios.get(ApiRoutes.GET_CANCEL_TEMPLATE(module));
       if (res.data.status) {
         successCallback(res.data.data.template);
       } else {

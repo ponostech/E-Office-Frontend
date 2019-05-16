@@ -48,11 +48,12 @@ class AdvertiserRejectTemplate extends Component {
   };
   doSave = () => {
     let data={
-      content:this.state.content
+      content:this.state.content,
+      type:"advertiser"
     }
     this.setState({submit:true})
     this.rejectTemplateService.create(data,errorMessage=>this.setState({errorMessage}),
-      successMessage=>this.setState({successMessage}))
+      successMessage=>this.setState({successMessage,edit:true}))
       .finally(()=>this.setState({submit:false}))
   };
   handleClick = (identifier) => {
@@ -65,6 +66,7 @@ class AdvertiserRejectTemplate extends Component {
         }
         break;
       case "reset":
+        this.setState({content:""});
         break;
       default:
         break;

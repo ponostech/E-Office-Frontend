@@ -24,7 +24,7 @@ class BannerPermitTemplate extends Component {
 
   componentDidMount() {
     this.props.doLoad(true);
-    this.permitTemplateService.get("shop",
+    this.permitTemplateService.get("banner",
       errorMessage => this.setState({ errorMessage }),
       template => {
         if (template)
@@ -46,11 +46,12 @@ class BannerPermitTemplate extends Component {
   };
   doSave = () => {
     let data = {
-      content: this.state.content
+      content: this.state.content,
+      type:"banner"
     };
     this.setState({ submit: true });
     this.permitTemplateService.create(data, errorMessage => this.setState({ errorMessage }),
-      successMessage => this.setState({ successMessage }))
+      successMessage => this.setState({ successMessage,edit:true }))
       .finally(() => this.setState({ submit: false }));
   };
   handleClick = (identifier) => {
@@ -63,6 +64,7 @@ class BannerPermitTemplate extends Component {
         }
         break;
       case "reset":
+        this.setState({ content: "" });
         break;
       default:
         break;
