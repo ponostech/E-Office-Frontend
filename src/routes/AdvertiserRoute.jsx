@@ -7,7 +7,7 @@ export const AdvertiserRoute = ({ component: Component, ...rest }) => (
     let user = LoginService.getCurrentUser();
     if (!user) {
       console.info("User is not set")
-      return <Redirect to='/auth/login'/>;
+      return <Redirect to='/'/>;
     }
     if (LoginService.hasRole("advertiser")) {
       console.info("Advertiser role is found")

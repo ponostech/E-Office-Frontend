@@ -2,12 +2,10 @@ import React, { Component } from "react";
 import {
   Button,
   CardHeader,
-  Chip,
   Dialog,
   DialogActions,
   DialogContent,
   Divider,
-  Grid,
   IconButton,
   List,
   ListItem,
@@ -72,128 +70,56 @@ class HoardingApplicationDialog extends Component {
       <>
         <GridContainer>
 
-          <GridItem xs={12} sm={12} md={6}>
-            <Grid container={true} spacing={16} justify={"center"}>
-              <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                <Typography variant={"subtitle1"}>
-                  Address
-                </Typography>
-              </GridItem>
-              <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle1"}>
-                  {": " + hoarding.address}
-                </Typography>
-              </GridItem>
-
-              <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                <Typography variant={"subtitle1"}>
-                  Road detail
-                </Typography>
-              </GridItem>
-              <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle1"}>
-                  {": " + hoarding.road_detail ? hoarding.road_detail : 'n/a'}
-                </Typography>
-              </GridItem>
-
-              <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                <Typography variant={"subtitle1"}>
-                  Length
-                </Typography>
-              </GridItem>
-              <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle1"}>
-                  {": " + hoarding.length}
-                </Typography>
-              </GridItem>
-
-              <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                <Typography variant={"subtitle1"}>
-                  height
-                </Typography>
-              </GridItem>
-              <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle1"}>
-                  {":" + hoarding.height}
-                </Typography>
-              </GridItem>
-
-              <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                <Typography variant={"subtitle1"}>
-                  Ground Clearance
-                </Typography>
-              </GridItem>
-              <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle1"}>
-                  {": " + hoarding.ground_clearance}
-                </Typography>
-              </GridItem>
-
-              <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                <Typography variant={"subtitle1"}>
-                  Type of display
-                </Typography>
-              </GridItem>
-              <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle1"}>
-                  {": " + hoarding.display_type}
-                </Typography>
-              </GridItem>
-
-              <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                <Typography variant={"subtitle1"}>
-                  Is Both sided ?
-                </Typography>
-              </GridItem>
-              <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle1"}>
-                  {hoarding.both_side ? ": Yes" : ": No"}
-                </Typography>
-              </GridItem>
-
-              <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                <Typography variant={"subtitle1"}>
-                  Landlord/Landowner
-                </Typography>
-              </GridItem>
-              <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle1"}>
-                  {": " + hoarding.land_owner_name}
-                </Typography>
-              </GridItem>
-
-              <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                <Typography variant={"subtitle1"}>
-                  Type of Landlord/Landowner
-                </Typography>
-              </GridItem>
-              <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Typography variant={"subtitle1"}>
-                  {": " + hoarding.land_owner_type ? ": Private" : ": Public"}
-                </Typography>
-              </GridItem>
-
-              <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                <Typography variant={"subtitle1"}>
-                  Status
-                </Typography>
-              </GridItem>
-              <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                <Chip color={"primary"} label={file.status}/>
-              </GridItem>
-            </Grid>
+          <GridItem xs={12} sm={12} md={5}>
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
+              <Typography variant={"h6"}>Details of Hoarding</Typography>
+            </GridItem>
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
+              <List dense={false}>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Location"} secondary={hoarding.address}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                <ListItemText primary={"Length"} secondary={hoarding.length}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                <ListItemText primary={"Height"} secondary={hoarding.height}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                <ListItemText primary={"Type of Display"} secondary={hoarding.display_type}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                <ListItemText primary={"Is Both Sided"} secondary={hoarding.both_side ? "Yes" : "No"}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                <ListItemText primary={"Details of Road"}
+                                secondary={hoarding.road_detail ? hoarding.road_detail : "N/A"}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                <ListItemText primary={"Ground Clearance"} secondary={hoarding.ground_clearance}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                <ListItemText primary={"Landlord / Land owner"} secondary={hoarding.land_owner_name}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                <ListItemText primary={"Type of Landlord / Landowner"}
+                                secondary={hoarding.land_owner_type ? "Public" : "Private"}/>
+                </ListItem>
+              </List>
+            </GridItem>
           </GridItem>
 
-          <GridItem xs={12} sm={12} md={6}>
+          <GridItem xs={12} sm={12} md={7}>
 
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <Typography variant={"h6"}>Uploaded Documents</Typography>
             </GridItem>
 
-            <List dense={false}>
+            <List>
               {
                 documents.map(function(doc, index) {
                   return (
+                    <>
                     <ListItem key={index}>
                       <ListItemText primary={doc.name}/>
                       <ListItemSecondaryAction>
@@ -202,6 +128,7 @@ class HoardingApplicationDialog extends Component {
                         </IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
+                    </>
                   );
                 })
               }
@@ -214,8 +141,8 @@ class HoardingApplicationDialog extends Component {
 
   render() {
     const { open, onClose, application } = this.props;
-    const number=application ? application.file.number : "";
-    const subject=application ? application.file.subject : "";
+    const number = application ? application.file.number : "";
+    const subject = application ? application.file.subject : "";
     let self = this;
     return (
 
@@ -241,7 +168,7 @@ class HoardingApplicationDialog extends Component {
             application ? self.getView() : undefined
           }
         </DialogContent>
-          <Divider/>
+        <Divider/>
         <DialogActions>
           <Button variant={"outlined"} color={"secondary"} onClick={e => onClose()}>Close</Button>
         </DialogActions>
