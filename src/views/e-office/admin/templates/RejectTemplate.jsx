@@ -8,6 +8,8 @@ import ShopRejectTemplate from "./reject/ShopRejectTemplate";
 import HoardingRejectTemplate from "./reject/HoardingRejectTemplate";
 import KioskRejectTemplate from "./reject/KioskRejectTemplate";
 import BannerRejectTemplate from "./reject/BannerRejectTemplate";
+import TechnicalPersonRejectTemplate from "./reject/TechnicalPersonRejectTemplate";
+import BuildingRejectTemplate from "./reject/BuildingRejectTemplate";
 
 
 const styles = theme => ({
@@ -58,7 +60,7 @@ const styles = theme => ({
 
 class RejectTemplate extends Component {
   state = {
-    value: "shop"
+    value: "advertiser"
   };
 
   handleChange = (event, value) => {
@@ -82,10 +84,10 @@ class RejectTemplate extends Component {
             <Tab value={"advertiser"}
                  disableRipple
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Advertising License"}/>
+                 label={"Advertising "}/>
             <Tab disableRipple value={"shop"}
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Shop License"}/>
+                 label={"Shop"}/>
             <Tab disableRipple value={"hotel"}
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                  label={"Hotel& Lodging"}/>
@@ -104,7 +106,11 @@ class RejectTemplate extends Component {
 
             <Tab disableRipple value={"technical"}
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Techinical Person License"}/>
+                 label={"Techinical Person "}/>
+
+            <Tab disableRipple value={"building"}
+                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                 label={"Building"}/>
 
           </Tabs>
         </CardContent>
@@ -115,6 +121,8 @@ class RejectTemplate extends Component {
           {value === "hoarding" && <HoardingRejectTemplate doLoad={this.props.doLoad}/>}
           {value === "kiosk" && <KioskRejectTemplate doLoad={this.props.doLoad}/>}
           {value === "banner" && <BannerRejectTemplate doLoad={this.props.doLoad}/>}
+          {value === "technical" && <TechnicalPersonRejectTemplate doLoad={this.props.doLoad}/>}
+          {value === "building" && <BuildingRejectTemplate doLoad={this.props.doLoad}/>}
         </div>
       </Card>
     );

@@ -75,6 +75,7 @@ export class ApiRoutes {
     return `/trades/${id}`;
   };
 
+  //template
   static GET_LICENSE_TEMPLATE = (module) => {
     return `license-templates/${module}`;
   };
@@ -95,7 +96,7 @@ export class ApiRoutes {
   static UPDATE_CANCEL_TEMPLATE=(id)=> `/cancel-templates/${id}`;
   static GET_CANCEL_TEMPLATE=(module)=> `/cancel-templates/${module}`;
 
-  static CREATE_REJECT_TEMPLATE="/reject-templates"
+  static CREATE_REJECT_TEMPLATE="/reject-templates";
   static UPDATE_REJECT_TEMPLATE=(id)=> `/reject-templates/${id}`;
-  static GET_ReJECT_TEMPLATE=(module)=> `/reject-templates/${module}`;
+  static GET_REJECT_TEMPLATE=(module)=> `/reject-templates/${module}`;
 }

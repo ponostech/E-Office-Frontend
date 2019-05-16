@@ -10,7 +10,7 @@ class AdvertiserLicenseTemplate extends Component {
   licenseTemplateService = new LicenseTemplateService();
 
   state = {
-    id:null,
+    id: null,
     content: "",
     type: "advertiser",
 
@@ -24,45 +24,47 @@ class AdvertiserLicenseTemplate extends Component {
 
   componentDidMount() {
     this.props.doLoad(true);
-    this.licenseTemplateService.get("shop",
+    this.licenseTemplateService.get("advertiser",
       errorMessage => this.setState({ errorMessage }),
       template => {
-      if (template)
-      this.setState({ content:template.content,id:template.id,type:template.type, edit: true })
+        if (template)
+          this.setState({ content: template.content, id: template.id, type: template.type, edit: true });
       })
       .finally(() => this.props.doLoad(false));
   }
 
   doUpdate = () => {
-     let template={
-        id:this.state.id,
-        content:this.state.content,
-        type:this.state.type
-      }
-    this.setState({submit:true})
-    this.licenseTemplateService.update(template,errorMessage=>this.setState({errorMessage}),
-      successMessage=>this.setState({successMessage}))
-      .finally(()=>this.setState({submit:false}))
+    let template = {
+      id: this.state.id,
+      content: this.state.content,
+      type: this.state.type
+    };
+    this.setState({ submit: true });
+    this.licenseTemplateService.update(template, errorMessage => this.setState({ errorMessage }),
+      successMessage => this.setState({ successMessage }))
+      .finally(() => this.setState({ submit: false }));
   };
   doSave = () => {
-    let data={
-      content:this.state.content
-    }
-    this.setState({submit:true})
-    this.licenseTemplateService.create(data,errorMessage=>this.setState({errorMessage}),
-      successMessage=>this.setState({successMessage}))
-      .finally(()=>this.setState({submit:false}))
+    let data = {
+      content: this.state.content,
+      type: "advertiser"
+    };
+    this.setState({ submit: true });
+    this.licenseTemplateService.create(data, errorMessage => this.setState({ errorMessage }),
+      successMessage => this.setState({ successMessage, edit: true }))
+      .finally(() => this.setState({ submit: false }));
   };
   handleClick = (identifier) => {
     switch (identifier) {
       case "save":
         if (this.state.edit) {
-          this.doUpdate()
+          this.doUpdate();
         } else {
-          this.doSave()
+          this.doSave();
         }
         break;
       case "reset":
+        this.setState({ content: "" });
         break;
       default:
         break;

@@ -19,7 +19,7 @@ class TextEditor extends Component {
                      height: height,
                    }}
                    onChange={this.props.onChange}
-                   initialValue={this.props.default}/>
+                   value={this.props.default}/>
   }
 }
 

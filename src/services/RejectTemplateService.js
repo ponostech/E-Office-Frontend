@@ -6,7 +6,7 @@ export default class RejectTemplateService {
 
   async update(template,errorCallback,successCallback) {
     try {
-      let res = await axios.post(ApiRoutes.UPDATE_LICENSE_TEMPLATE(template.id),{template});
+      let res = await axios.post(ApiRoutes.UPDATE_REJECT_TEMPLATE(template.id),template);
       if (res.data.status) {
         successCallback(ArrayToString(res.data.messages));
       } else {
@@ -20,7 +20,7 @@ export default class RejectTemplateService {
 
   async create(template,errorCallback,successCallback) {
     try {
-      let res =  await axios.post(ApiRoutes.CREATE_LICENSE_TEMPLATE,template);
+      let res =  await axios.post(ApiRoutes.CREATE_REJECT_TEMPLATE,template);
       if (res.data.status) {
         successCallback(ArrayToString(res.data.messages));
       } else {
@@ -34,7 +34,7 @@ export default class RejectTemplateService {
   async get(module, errorCallback, successCallback) {
 
     try {
-      let res = await axios.get(ApiRoutes.GET_LICENSE_TEMPLATE(module));
+      let res = await axios.get(ApiRoutes.GET_REJECT_TEMPLATE(module));
       if (res.data.status) {
         successCallback(res.data.data.template);
       } else {

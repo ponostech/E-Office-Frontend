@@ -5,14 +5,14 @@ import SubmitDialog from "../../../../../components/SubmitDialog";
 import OfficeSnackbar from "../../../../../components/OfficeSnackbar";
 import RejectTemplateService from "../../../../../services/RejectTemplateService";
 
-class ShopRejectTemplate extends Component {
+class BuildingRejectTemplate extends Component {
 
   rejectTemplateService = new RejectTemplateService();
 
   state = {
     id: null,
     content: "",
-    type: "shop",
+    type: "building",
 
     edit: false,
     submit: false,
@@ -24,7 +24,7 @@ class ShopRejectTemplate extends Component {
 
   componentDidMount() {
     this.props.doLoad(true);
-    this.rejectTemplateService.get("shop",
+    this.rejectTemplateService.get("building",
       errorMessage => this.setState({ errorMessage }),
       template => {
         if (template)
@@ -103,4 +103,4 @@ class ShopRejectTemplate extends Component {
   }
 }
 
-export default ShopRejectTemplate;
+export default BuildingRejectTemplate;

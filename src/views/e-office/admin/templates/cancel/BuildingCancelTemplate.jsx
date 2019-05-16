@@ -3,16 +3,16 @@ import TextEditor from "../../../files/draft/Editor";
 import { Button, Card, CardActions, CardContent } from "@material-ui/core";
 import SubmitDialog from "../../../../../components/SubmitDialog";
 import OfficeSnackbar from "../../../../../components/OfficeSnackbar";
-import RejectTemplateService from "../../../../../services/RejectTemplateService";
+import CancelTemplateService from "../../../../../services/CancelTemplateService";
 
-class ShopRejectTemplate extends Component {
+class BuildingCancelTemplate extends Component {
 
-  rejectTemplateService = new RejectTemplateService();
+  cancelTemplateService = new CancelTemplateService();
 
   state = {
     id: null,
     content: "",
-    type: "shop",
+    type: "building",
 
     edit: false,
     submit: false,
@@ -24,7 +24,7 @@ class ShopRejectTemplate extends Component {
 
   componentDidMount() {
     this.props.doLoad(true);
-    this.rejectTemplateService.get("shop",
+    this.cancelTemplateService.get("building",
       errorMessage => this.setState({ errorMessage }),
       template => {
         if (template)
@@ -40,7 +40,7 @@ class ShopRejectTemplate extends Component {
       type: this.state.type
     };
     this.setState({ submit: true });
-    this.rejectTemplateService.update(template, errorMessage => this.setState({ errorMessage }),
+    this.cancelTemplateService.update(template, errorMessage => this.setState({ errorMessage }),
       successMessage => this.setState({ successMessage }))
       .finally(() => this.setState({ submit: false }));
   };
@@ -50,8 +50,8 @@ class ShopRejectTemplate extends Component {
       type:this.state.type
     };
     this.setState({ submit: true });
-    this.rejectTemplateService.create(data, errorMessage => this.setState({ errorMessage }),
-      successMessage => this.setState({ successMessage,edit:true }))
+    this.cancelTemplateService.create(data, errorMessage => this.setState({ errorMessage }),
+      successMessage => this.setState({ successMessage ,edit:true}))
       .finally(() => this.setState({ submit: false }));
   };
   handleClick = (identifier) => {
@@ -103,4 +103,4 @@ class ShopRejectTemplate extends Component {
   }
 }
 
-export default ShopRejectTemplate;
+export default BuildingCancelTemplate;

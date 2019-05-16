@@ -12,7 +12,7 @@ class ShopLicenseTemplate extends Component {
   state = {
     id:null,
     content: "",
-    type: "",
+    type: "shop",
 
     edit: false,
     submit: false,
@@ -46,11 +46,12 @@ class ShopLicenseTemplate extends Component {
   };
   doSave = () => {
     let data={
-      content:this.state.content
+      content:this.state.content,
+      shop:"shop"
     }
     this.setState({submit:true})
     this.licenseTemplateService.create(data,errorMessage=>this.setState({errorMessage}),
-      successMessage=>this.setState({successMessage}))
+      successMessage=>this.setState({successMessage,edit:true}))
       .finally(()=>this.setState({submit:false}))
   };
   handleClick = (identifier) => {
@@ -63,6 +64,7 @@ class ShopLicenseTemplate extends Component {
         }
         break;
       case "reset":
+        this.setState({ content: "" });
         break;
       default:
         break;

@@ -2,16 +2,14 @@ import React, { Component } from "react";
 import { Card, CardContent, CardHeader, withStyles } from "@material-ui/core";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import HotelLicenseTemplate from "./licenses/HotelLicenseTemplate";
-import ShopLicenseTemplate from "./licenses/ShopLicenseTemplate";
-import AdvertiserLicenseTemplate from "./licenses/AdvertiserLicenseTemplate";
-import TechnicalPersonLicenseTemplate from "./licenses/TechnicalPersonLicenseTemplate";
 import AdvertiserCancelTemplate from "./cancel/AdvertiserCancelTemplate";
 import HotelCancelTemplate from "./cancel/HotelCancelTemplate";
 import ShopCancelTemplate from "./cancel/ShopCancelTemplate";
 import HoardingCancelTemplate from "./cancel/HoardingCancelTemplate";
 import KioskCancelTemplate from "./cancel/KioskCancelTemplate";
 import BannerCancelTemplate from "./cancel/BannerCancelTemplate";
+import BuildingCancelTemplate from "./cancel/BuildingCancelTemplate";
+import TechnicalPersonCancelTemplate from "./cancel/TechnicalPersonCancelTemplate";
 
 
 const styles = theme => ({
@@ -62,7 +60,7 @@ const styles = theme => ({
 
 class CancelTemplate extends Component {
   state = {
-    value: "shop"
+    value: "advertiser"
   };
 
   handleChange = (event, value) => {
@@ -86,29 +84,33 @@ class CancelTemplate extends Component {
             <Tab value={"advertiser"}
                  disableRipple
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Advertising License"}/>
+                 label={"Advertising "}/>
             <Tab disableRipple value={"shop"}
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Shop License"}/>
+                 label={"Shop "}/>
             <Tab disableRipple value={"hotel"}
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                  label={"Hotel& Lodging"}/>
 
-                 <Tab disableRipple value={"hoarding"}
+            <Tab disableRipple value={"hoarding"}
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                  label={"Hoarding"}/>
 
-                 <Tab disableRipple value={"kiosk"}
+            <Tab disableRipple value={"kiosk"}
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                  label={"Kiosk"}/>
 
-                 <Tab disableRipple value={"banner"}
+            <Tab disableRipple value={"banner"}
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                  label={"Banner"}/>
 
             <Tab disableRipple value={"technical"}
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Techinical Person License"}/>
+                 label={"Techinical Person "}/>
+
+                 <Tab disableRipple value={"building"}
+                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                 label={"Building "}/>
 
           </Tabs>
         </CardContent>
@@ -119,6 +121,8 @@ class CancelTemplate extends Component {
           {value === "hoarding" && <HoardingCancelTemplate doLoad={this.props.doLoad}/>}
           {value === "kiosk" && <KioskCancelTemplate doLoad={this.props.doLoad}/>}
           {value === "banner" && <BannerCancelTemplate doLoad={this.props.doLoad}/>}
+          {value === "technical" && <TechnicalPersonCancelTemplate doLoad={this.props.doLoad}/>}
+          {value === "building" && <BuildingCancelTemplate doLoad={this.props.doLoad}/>}
         </div>
       </Card>
     );

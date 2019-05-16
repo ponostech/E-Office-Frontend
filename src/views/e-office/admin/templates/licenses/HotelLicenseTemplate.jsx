@@ -12,7 +12,7 @@ class HotelLicenseTemplate extends Component {
   state = {
     id:null,
     content: "",
-    type: "",
+    type: "hotel",
 
     edit: false,
     submit: false,
@@ -24,7 +24,7 @@ class HotelLicenseTemplate extends Component {
 
   componentDidMount() {
     this.props.doLoad(true);
-    this.licenseTemplateService.get("shop",
+    this.licenseTemplateService.get("hotel",
       errorMessage => this.setState({ errorMessage }),
       template => {
       if (template)
@@ -46,11 +46,12 @@ class HotelLicenseTemplate extends Component {
   };
   doSave = () => {
     let data={
-      content:this.state.content
+      content:this.state.content,
+      type:"hotel"
     }
     this.setState({submit:true})
     this.licenseTemplateService.create(data,errorMessage=>this.setState({errorMessage}),
-      successMessage=>this.setState({successMessage}))
+      successMessage=>this.setState({successMessage,edit:true}))
       .finally(()=>this.setState({submit:false}))
   };
   handleClick = (identifier) => {
@@ -63,6 +64,7 @@ class HotelLicenseTemplate extends Component {
         }
         break;
       case "reset":
+        this.setState({ content: "" });
         break;
       default:
         break;
