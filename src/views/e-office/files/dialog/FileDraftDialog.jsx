@@ -5,27 +5,38 @@ import LoadingView from "../../../common/LoadingView";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import DialogWrapper from './common/DialogWrapper';
 import Editor from "../draft/Editor";
-import {DRAFT_CREATE} from "../../../../config/ApiRoutes";
+import {DRAFT_CREATE, FILE_DRAFT_VIEW} from "../../../../config/ApiRoutes";
 import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
+import SubmitDialog from "../../../../components/SubmitDialog";
 
 const styles = {};
 
 class FileDraftDialog extends Component {
   state = {
+    fileId: 1,
     content: '',
     loading: false,
+    successMsg: null,
     errorMsg: null,
+    submit: false,
   };
+
+  componentDidMount() {
+    this.setState({file: this.props.file});
+  }
 
   editorChange = (e) => {
     this.setState({content: e.target.getContent()})
   };
 
-  processResponse = (res) => {
+  processResponse = (res, fileId) => {
     if (res.data.status) {
-      window.location.reload()
+      this.setState({successMsg: 'Submitted Successfully'});
+      setTimeout(function () {
+        window.location.replace(FILE_DRAFT_VIEW(fileId))
+      }, 1000)
     } else {
-      this.setState({loading: false, errorMsg: res.data.messages})
+      this.setState({submit: false, loading: false, errorMsg: res.data.messages})
     }
   };
 
@@ -37,9 +48,9 @@ class FileDraftDialog extends Component {
     };
     axios.post(DRAFT_CREATE, params)
         .then(res => {
-          this.processResponse(res);
+          this.processResponse(res, this.props.file.id);
         })
-        .catch(err => this.setState({errorMsg: "Network Error"}));
+        .catch(err => this.setState({submit: false, errorMsg: "Network Error"}));
   };
 
   validate = () => {
@@ -51,12 +62,13 @@ class FileDraftDialog extends Component {
   };
 
   onSubmit = () => {
+    this.setState({submit: true});
     if (this.validate()) this.storeData();
   };
 
   render() {
     const {open, onClose, file} = this.props;
-    const {loading, errorMsg} = this.state;
+    const {loading, errorMsg, successMsg, submit} = this.state;
     const content =
         <Grid container>
           <Grid item lg={12}>
@@ -71,7 +83,7 @@ class FileDraftDialog extends Component {
           {loading ? <LoadingView/> : content}
         </Card>;
 
-    const action =
+    let action = (submit || loading) ? "" :
         <>
           <Button color="primary" onClick={this.onSubmit}>Save</Button>
           <Button color="secondary" onClick={onClose}>Cancel</Button>
@@ -81,6 +93,8 @@ class FileDraftDialog extends Component {
         <>
           <DialogWrapper title="Create Draft" action={action} open={open} onClose={onClose} content={dialogContent}/>
           {errorMsg && <ErrorHandler messages={errorMsg}/>}
+          {successMsg && <SuccessHandler messages={successMsg}/>}
+          {submit && <SubmitDialog open={submit} title={"Create Draft"} text={"Draft is creating ..."}/>}
         </>
     )
   }

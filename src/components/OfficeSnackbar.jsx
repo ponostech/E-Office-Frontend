@@ -10,8 +10,8 @@ import amber from "@material-ui/core/colors/amber";
 import IconButton from "@material-ui/core/IconButton";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import WarningIcon from "@material-ui/icons/Warning";
-import { withStyles } from "@material-ui/core/styles";
-import { Snackbar } from "@material-ui/core";
+import {withStyles} from "@material-ui/core/styles";
+import {Snackbar} from "@material-ui/core";
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -21,6 +21,9 @@ const variantIcon = {
 };
 
 const styles1 = theme => ({
+  root: {
+    top: 80,
+  },
   success: {
     backgroundColor: green[600]
   },
@@ -41,57 +44,57 @@ const styles1 = theme => ({
     marginRight: theme.spacing.unit
   },
   message: {
-    display:'flex',
-    justify:"center",
-    whiteSpace:'pre-line'
+    display: 'flex',
+    justify: "center",
+    whiteSpace: 'pre-line'
   }
 });
 
 function convertMessage(messages) {
   let arr = [];
-  messages.forEach(function(msg, index) {
-    let para=<p>{msg}</p>
+  messages.forEach(function (msg, index) {
+    let para = <p>{msg}</p>;
     arr.push(para)
   });
   return arr;
 }
 
 function OfficeSnackbar(props) {
-  const { classes, duration, position, open, className, message, onClose, variant, ...other } = props;
+  const {classes, duration, position, open, className, message, onClose, variant, ...other} = props;
   const Icon = variantIcon[variant];
 
   return (
-    <Snackbar  open={open}
-              onClose={onClose}
-              autoHideDuration={duration}
-              anchorOrigin={position}
-    >
-      <SnackbarContent
-        className={classNames(classes[variant], className)}
-        aria-describedby="client-snackbar"
-        message={
-          <div id="client-snackbar"  className={classes.message}>
-          <Icon className={classNames(classes.icon, classes.iconVariant)}/>
-            {
-              Array.isArray(message)?convertMessage(message):<p>{message}</p>
+      <Snackbar open={open}
+                classes={{root: classes.root}}
+                onClose={onClose}
+                autoHideDuration={duration}
+                anchorOrigin={position}
+      >
+        <SnackbarContent
+            className={classNames(classes[variant], className)}
+            aria-describedby="client-snackbar"
+            message={
+              <div id="client-snackbar" className={classes.message}>
+                <Icon className={classNames(classes.icon, classes.iconVariant)}/>
+                {
+                  Array.isArray(message) ? convertMessage(message) : <p>{message}</p>
+                }
+              </div>
             }
-
-        </div>
-        }
-        action={[
-          <IconButton
-            key="close"
-            aria-label="Close"
-            color="inherit"
-            className={classes.close}
-            onClick={onClose}
-          >
-            <CloseIcon className={classes.icon}/>
-          </IconButton>
-        ]}
-        {...other}
-      />
-    </Snackbar>
+            action={[
+              <IconButton
+                  key="close"
+                  aria-label="Close"
+                  color="inherit"
+                  className={classes.close}
+                  onClick={onClose}
+              >
+                <CloseIcon className={classes.icon}/>
+              </IconButton>
+            ]}
+            {...other}
+        />
+      </Snackbar>
   );
 }
 
@@ -99,7 +102,7 @@ OfficeSnackbar.defaultProps = {
   variant: "success",
   duration: 5000,
   position:
-    { vertical: "top", horizontal: "right" }
+      {vertical: "top", horizontal: "right"}
 };
 OfficeSnackbar.propTypes = {
   classes: PropTypes.object.isRequired,

@@ -120,6 +120,7 @@ class FileMenuLeft extends React.Component {
 
   render() {
     const {classes, menus} = this.props;
+    console.log("Menus s: ", menus);
     // api_method: "POST", api_url: "file/4/send", icon: "", name: "Send", url: "send"
     return (
         <>
