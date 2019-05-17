@@ -23,6 +23,9 @@ export const FILE_DRAFT_PERMIT_VIEW = (id) => {
 export const FILE_DRAFT_LIST = (id, type = 'general') => {
   return `/files/${id}/drafts/${type}`;
 };
+export const GET_DRAFT = (id) => {
+  return `/drafts/${id}`;
+};
 
 export const DRAFT_CREATE = "drafts";
 

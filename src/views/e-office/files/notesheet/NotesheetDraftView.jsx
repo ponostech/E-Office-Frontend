@@ -73,7 +73,7 @@ class NotesheetDraftView extends Component {
       if (this.state.note.length)
         noteList = <Timeline simple stories={this.state.note}/>;
       else
-        noteList = <div style={{padding: 20}}>New File. Note not available.</div>;
+        noteList = <div style={{padding: 20}}>Draft Note not available.</div>;
 
     return (
         <>

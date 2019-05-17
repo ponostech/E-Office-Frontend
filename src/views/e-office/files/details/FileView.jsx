@@ -39,7 +39,7 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
-    marginRight: '190px',
+    marginRight: '220px',
   },
   container: {
     display: "flex"
@@ -181,8 +181,7 @@ class FileView extends Component {
               <Route path={OfficeRoutes.FILE_DETAIL + "/reject"}
                      render={(props) => <DraftLetter {...props} file={this.state.file}/>}/>
               <Route path={OfficeRoutes.FILE_DETAIL + "/send"}
-                     render={(props) => <FileSend {...props} doLoad={this.props.doLoad}
-                                                  file={this.state.file}/>}/>
+                     render={(props) => <FileSend {...props} doLoad={this.props.doLoad} file={this.state.file}/>}/>
               <Route path={OfficeRoutes.FILE_DETAIL} exact
                      render={(props) => <NoteSheetView {...props} file={this.state.file}/>}/>
             </Grid>
@@ -198,13 +197,15 @@ class FileView extends Component {
 
           {this.state.openDraft && <FileDraftDialog file={this.state.file} open={this.state.openDraft}
                                                     onClose={this.closeDialog.bind(this, 'openDraft')}/>}
+
           {this.state.openDraftPermit && <FileDraftPermitDialog file={this.state.file} open={this.state.openDraftPermit}
                                                                 onClose={this.closeDialog.bind(this, 'openDraftPermit')}/>}
 
-          <SubmitDialog open={this.state.submit} title={"Create Notesheet"} text={"Notesheet is creating ..."}/>
+          <SubmitDialog open={this.state.submit} title="Create Notesheet" text="Notesheet is Creating ..."/>
 
           <OfficeSnackbar variant={"success"} onClose={() => this.setState({successMessage: ""})}
                           open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
+
           <OfficeSnackbar variant={"error"} onClose={() => this.setState({errorMessage: ""})}
                           open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
         </Grid>

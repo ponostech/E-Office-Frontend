@@ -12,6 +12,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from "@material-ui/core/Icon";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const drawerWidth = 220;
 
@@ -148,12 +149,14 @@ class FileMenuLeft extends React.Component {
             <List>
               {menus.view ? menus.view.map((item) => (
                   <>
-                    <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
-                      <ListItemIcon classes={{root: classes.menuIcon}}>
-                        <Icon>{item.icon ? item.icon : 'remove_red_eye'}</Icon>
-                      </ListItemIcon>
-                      <ListItemText classes={{primary: classes.menuName}} primary={item.name}/>
-                    </ListItem>
+                    <Tooltip title={"View " + item.name}>
+                      <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
+                        <ListItemIcon classes={{root: classes.menuIcon}}>
+                          <Icon>{item.icon ? item.icon : 'remove_red_eye'}</Icon>
+                        </ListItemIcon>
+                        <ListItemText classes={{primary: classes.menuName}} primary={item.name}/>
+                      </ListItem>
+                    </Tooltip>
                   </>
               )) : null}
             </List>

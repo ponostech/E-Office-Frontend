@@ -33,32 +33,32 @@ class FileDraftPermitDialog extends Component {
         .catch(err => this.setState({loading: false, errorMsg: "Network Error!"}));
   };
 
-  editorChange = (e) => {
-    this.setState({content: e.target.getContent()})
+  editorChange = (e) => this.setState({content: e.target.getContent()});
+
+  result = (fileId) => {
+    this.setState({successMsg: 'Submitted Successfully'});
+    setTimeout(() => {
+      window.location.replace(FILE_DRAFT_PERMIT_VIEW(fileId))
+    }, 1000);
   };
 
   processResponse = (res, fileId) => {
-    if (res.data.status) {
-      this.setState({successMsg: 'Submitted Successfully'});
-      setTimeout(function () {
-        window.location.replace(FILE_DRAFT_PERMIT_VIEW(fileId))
-      }, 1000);
-    } else {
-      this.setState({loading: false, errorMsg: res.data.messages})
-    }
+    if (res.data.status) this.result(fileId);
+    else this.setState({loading: false, submit: false, errorMsg: res.data.messages});
   };
 
   storeData = () => {
+    this.setState({submit: true});
     let params = {
       content: this.state.content,
       file_id: this.props.file.id,
-      type: 'licenses'
+      type: 'license'
     };
     axios.post(DRAFT_CREATE, params)
         .then(res => {
           this.processResponse(res, this.props.file.id);
         })
-        .catch(err => this.setState({errorMsg: "Network Error"}));
+        .catch(err => this.setState({submit: false, errorMsg: "Network Error"}));
   };
 
   validate = () => {
@@ -70,7 +70,6 @@ class FileDraftPermitDialog extends Component {
   };
 
   onSubmit = () => {
-    this.setState({submit: true});
     if (this.validate()) this.storeData();
   };
 
