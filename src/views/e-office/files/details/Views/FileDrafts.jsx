@@ -32,10 +32,15 @@ class FileDrafts extends Component {
     return "Created On: " + moment(value.created_at).format("Do MMMM YYYY");
   };
 
+  singleRowClicked = (value) => {
+    console.log("message: " + value.id);
+  };
+
   render() {
     const {loading, errorMsg} = this.state;
 
-    const data = this.state.data.map(value => <DetailViewRow primary={"Draft No. " + value.id}
+    const data = this.state.data.map(value => <DetailViewRow value={value} click={this.singleRowClicked}
+                                                             primary={"Draft No. " + value.id}
                                                              secondary={this.formatCreated(value)}/>);
     return (
         <>
