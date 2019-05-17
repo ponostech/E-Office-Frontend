@@ -51,7 +51,7 @@ class OfficeInput extends Component {
         );
     }
 
-    return <CardActions>{this.inputElement}</CardActions>;
+    return <>{this.inputElement}</>;
   }
 }
 

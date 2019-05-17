@@ -18,12 +18,18 @@ export default createMuiTheme({
   spacing: [4, 8, 12, 16, 20],
   // shadows:["none"],
   props: {
+
     MuiAppBar: {
       elevation: 2
     },
+
     MuiCard: {
       raised: false,
       elevation: 0
+    },
+    MuiInputBase:{
+      fullWidth:true,
+      margin:"dense"
     },
     MuiInput: {
       color: "#26B99A"

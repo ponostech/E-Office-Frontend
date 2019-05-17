@@ -48,10 +48,15 @@ class Form extends Component {
         elementType: "select",
         elementConfig: {
           placeholder: 'Select',
+
           options: [
             { value: "one", displayValue: "One" },
             { value: "two", displayValue: "Two" }
           ]
+        },
+        valid:false,
+        validation: {
+          required: false
         },
         value: ""
       }

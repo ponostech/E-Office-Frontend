@@ -18,6 +18,8 @@ import HotelApplication from "../views/hotel/HotelApplication";
 import CheckLicense from "../views/landing-pages/license-checking/CheckLicense";
 import {LoginService} from "../services/LoginService";
 import ForgotPassword from "../views/common/ForgotPassword";
+import Form from "../views/Form";
+import FormBuilder from "../views/e-office/site-verification/FormBuilder";
 
 class LayoutLanding extends React.Component {
     constructor(props) {
@@ -71,6 +73,7 @@ class LayoutLanding extends React.Component {
                             <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} render={() => <AdvertiserLogin/>}/>
 
                             <Route exact={true} path={OfficeRoutes.CHECK_LICENSE} render={() => <CheckLicense/>}/>
+                            <Route exact={true} path={"/test"} render={() => <FormBuilder/>}/>
 
                             <Route exact={true} path={OfficeRoutes.APPLY_BANNER} render={(e) => {
                                 return <BannerApplicationForm doLoad={this.doLoad.bind(this)}
