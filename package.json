@@ -49,6 +49,7 @@
     "react-tagsinput": "3.19.0",
     "react-virtualized": "^9.21.1",
     "slick-carousel": "^1.8.1",
+    "tinymce-line-height-plugin": "^1.0.0",
     "typescript": "^3.4.5",
     "uniqid": "^5.0.3",
     "universal-cookie": "^3.1.0"

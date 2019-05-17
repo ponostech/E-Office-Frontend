@@ -14,6 +14,13 @@ export const FILE_MOVEMENTS = (id) => {
   return `/files/${id}/movements`;
 };
 
+export const FILE_DRAFT_VIEW = (id) => {
+  return `/e-office/file/${id}/view/drafts`;
+};
+export const FILE_DRAFT_LIST = (id, type = 'general') => {
+  return `/files/${id}/drafts/${type}`;
+};
+
 export const DRAFT_CREATE = "drafts";
 
 export const FILE_ACTION_TYPES = "setting/notesheet/actions";
