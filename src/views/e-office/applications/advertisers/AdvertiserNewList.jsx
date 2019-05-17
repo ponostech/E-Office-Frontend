@@ -1,15 +1,15 @@
 import React from "react";
 import axios from 'axios';
 import MUIDataTable from "mui-datatables";
-import Grid from "@material-ui/core/Grid";
 import {withStyles} from "@material-ui/core/styles";
-import {Icon, IconButton} from "@material-ui/core";
+import {Icon, IconButton, Grid} from "@material-ui/core";
 import moment from "moment";
 import {ADVERTISER_NEW_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
 import AdvertiserViewDialog from "./common/AdvertiserViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
+import LoadingView from "../../../common/LoadingView";
 
 const styles = {
   button: {},
@@ -24,10 +24,7 @@ class AdvertiserNewList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-  };
-
-  closeViewDialog = () => {
-    this.setState({openViewDialog: false});
+    loading: true,
   };
 
   componentDidMount() {
@@ -36,54 +33,35 @@ class AdvertiserNewList extends React.Component {
     this.getStaffs();
   }
 
-  getData() {
-    axios.get(ADVERTISER_NEW_LIST)
-        .then(res => {
-          if (res.data.status)
-            this.setState({advertisers: res.data.data.advertiser_applications});
-          this.props.doLoad(false);
-        })
-  }
+  getData = () => axios.get(ADVERTISER_NEW_LIST).then(res => this.processResult(res));
 
-  getStaffs = () => {
-    axios.get(GET_STAFF)
-        .then(res => {
-          this.setState({staffs: res.data.data.staffs})
-        })
+  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
+
+  processResult = (res) => {
+    if (res.data.status) this.setState({loading: false, advertisers: res.data.data.advertiser_applications});
+    this.props.doLoad(false);
   };
 
-  viewDetails = (data) => {
-    this.setState({openViewDialog: true, advertiser: data});
-  };
+  closeViewDialog = () => this.setState({openViewDialog: false});
 
-  openAssignment = (data) => {
-    this.setState({file: data, openAssignment: true});
-  };
+  viewDetails = (data) => this.setState({openViewDialog: true, advertiser: data});
 
-  closeAssignment = () => {
-    this.setState({file: null, openAssignment: false});
-  };
+  openAssignment = (data) => this.setState({file: data, openAssignment: true});
 
-  takeFile = (data) => {
-    this.setState({advertiser: data, openTakeFile: true});
-  };
+  closeAssignment = () => this.setState({file: null, openAssignment: false});
 
-  confirmTakeFile = () => {
-    axios.post(FILE_TAKE(this.state.advertiser.id))
-        .then(res => {
-          this.setState({openTakeFile: false});
-          window.location.replace(DESK);
-        });
-  };
+  takeFile = (data) => this.setState({advertiser: data, openTakeFile: true});
 
-  sendFile = (id, recipient_id) => {
-    axios.post(FILE_SEND(id), {recipient_id})
-        .then(res => {
-          window.location.reload()
-        })
-  };
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.advertiser.id))
+      .then(res => {
+        this.setState({openTakeFile: false});
+        window.location.replace(DESK);
+      });
+
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
   render() {
+    const {loading} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -99,6 +77,9 @@ class AdvertiserNewList extends React.Component {
       {
         name: "type",
         label: "APPLICANT TYPE",
+        options: {
+          customBodyRender: (value) => value.toUpperCase(),
+        }
       },
       {
         name: "address",
@@ -109,9 +90,7 @@ class AdvertiserNewList extends React.Component {
         label: "DATE OF APPLICATION",
         options: {
           filter: false,
-          customBodyRender: (value) => {
-            return moment(value).format("Do MMMM YYYY");
-          }
+          customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
         }
       },
       {
@@ -120,7 +99,7 @@ class AdvertiserNewList extends React.Component {
         options: {
           filter: false,
           sort: false,
-          customBodyRender: (value, tableMeta, updatedValue) => {
+          customBodyRender: (value, tableMeta) => {
             const {rowIndex} = tableMeta;
             let data = this.state.advertisers[rowIndex];
             return (
@@ -146,14 +125,15 @@ class AdvertiserNewList extends React.Component {
 
     return (
         <>
-          <Grid item xs={12}>
+          {loading ? <LoadingView/> : <Grid item xs={12}>
             <MUIDataTable
                 title={"ADVERTISER: List of New Application"}
                 data={this.state.advertisers}
                 columns={tableColumns}
                 options={tableOptions}
             />
-          </Grid>
+          </Grid>}
+
           {this.state.openViewDialog &&
           <AdvertiserViewDialog open={this.state.openViewDialog} close={this.closeViewDialog}
                                 data={this.state.advertiser}/>}
