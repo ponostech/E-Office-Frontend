@@ -17,6 +17,9 @@ export const FILE_MOVEMENTS = (id) => {
 export const FILE_DRAFT_VIEW = (id) => {
   return `/e-office/file/${id}/view/drafts`;
 };
+export const FILE_DRAFT_PERMIT_VIEW = (id) => {
+  return `/e-office/file/${id}/view/draft-permit`;
+};
 export const FILE_DRAFT_LIST = (id, type = 'general') => {
   return `/files/${id}/drafts/${type}`;
 };
