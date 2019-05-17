@@ -134,8 +134,6 @@ class FileView extends Component {
           .finally(() => {
             this.setState({submit: false})
           })
-    } else {
-      //cancel or close button pressed
     }
   };
 
@@ -172,7 +170,7 @@ class FileView extends Component {
                      render={(props) => <FileApplicationDetails {...props} file={this.state.file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/site-verifications"}
                      render={(props) => <FileSiteVerifications {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/draft-permits"}
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/draft-licenses"}
                      render={(props) => <FileDraftPermits {...props} file={this.state.file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/draft-rejects"}
                      render={(props) => <FileDraftRejects {...props} file={this.state.file}/>}/>

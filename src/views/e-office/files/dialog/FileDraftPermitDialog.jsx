@@ -5,8 +5,9 @@ import LoadingView from "../../../common/LoadingView";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import DialogWrapper from './common/DialogWrapper';
 import Editor from "../draft/Editor";
-import {ApiRoutes, DRAFT_CREATE, GET_PERMIT_TEMPLATE} from "../../../../config/ApiRoutes";
+import {DRAFT_CREATE, GET_PERMIT_TEMPLATE, FILE_DRAFT_PERMIT_VIEW} from "../../../../config/ApiRoutes";
 import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
+import SubmitDialog from "../../../../components/SubmitDialog";
 
 const styles = {};
 
@@ -15,22 +16,33 @@ class FileDraftPermitDialog extends Component {
     content: '',
     loading: true,
     errorMsg: null,
+    successMsg: null,
+    submit: false,
   };
 
   componentDidMount() {
+    this.getData();
+  }
+
+  getData = () => {
     axios.get(GET_PERMIT_TEMPLATE('hoarding'))
         .then(res => {
-          this.setState({loading: false, content: res.data.data.template.content})
+          if (res.data.status) this.setState({loading: false, content: res.data.data.template.content});
+          else this.setState({loading: false, errorMsg: res.data.messages});
         })
-  }
+        .catch(err => this.setState({loading: false, errorMsg: "Network Error!"}));
+  };
 
   editorChange = (e) => {
     this.setState({content: e.target.getContent()})
   };
 
-  processResponse = (res) => {
+  processResponse = (res, fileId) => {
     if (res.data.status) {
-      window.location.reload()
+      this.setState({successMsg: 'Submitted Successfully'});
+      setTimeout(function () {
+        window.location.replace(FILE_DRAFT_PERMIT_VIEW(fileId))
+      }, 1000);
     } else {
       this.setState({loading: false, errorMsg: res.data.messages})
     }
@@ -40,11 +52,11 @@ class FileDraftPermitDialog extends Component {
     let params = {
       content: this.state.content,
       file_id: this.props.file.id,
-      type: 'general'
+      type: 'licenses'
     };
     axios.post(DRAFT_CREATE, params)
         .then(res => {
-          this.processResponse(res);
+          this.processResponse(res, this.props.file.id);
         })
         .catch(err => this.setState({errorMsg: "Network Error"}));
   };
@@ -58,12 +70,13 @@ class FileDraftPermitDialog extends Component {
   };
 
   onSubmit = () => {
+    this.setState({submit: true});
     if (this.validate()) this.storeData();
   };
 
   render() {
     const {open, onClose, file} = this.props;
-    const {loading, errorMsg} = this.state;
+    const {loading, errorMsg, successMsg, submit} = this.state;
     const content =
         <Grid container>
           <Grid item lg={12}>
@@ -78,7 +91,7 @@ class FileDraftPermitDialog extends Component {
           {loading ? <LoadingView/> : content}
         </Card>;
 
-    const action =
+    const action = (submit || loading) ? "" :
         <>
           <Button color="primary" onClick={this.onSubmit}>Save</Button>
           <Button color="secondary" onClick={onClose}>Cancel</Button>
@@ -89,6 +102,8 @@ class FileDraftPermitDialog extends Component {
           <DialogWrapper title="Create Draft Permit" action={action} open={open} onClose={onClose}
                          content={dialogContent}/>
           {errorMsg && <ErrorHandler messages={errorMsg}/>}
+          {successMsg && <SuccessHandler messages={successMsg}/>}
+          {submit && <SubmitDialog open={submit} title={"Create Draft"} text={"Draft is creating ..."}/>}
         </>
     )
   }
