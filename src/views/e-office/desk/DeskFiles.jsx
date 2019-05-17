@@ -3,7 +3,7 @@ import {withRouter} from "react-router-dom";
 import axios from 'axios';
 import moment from "moment";
 import MUIDataTable from "mui-datatables";
-import {Grid, Icon, IconButton} from "@material-ui/core";
+import {Grid, Icon, IconButton, Tooltip} from "@material-ui/core";
 import {ApiRoutes} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../common/LoadingView";
@@ -80,10 +80,12 @@ class DeskFiles extends Component {
                     sort: false,
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
-                            <IconButton color="primary" size="small"
-                                        aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
-                                <Icon fontSize="small">remove_red_eye</Icon>
-                            </IconButton>
+                            <Tooltip title="View Details">
+                                <IconButton color="primary" size="small"
+                                            aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
+                                    <Icon fontSize="small">remove_red_eye</Icon>
+                                </IconButton>
+                            </Tooltip>
                         );
                     }
                 }

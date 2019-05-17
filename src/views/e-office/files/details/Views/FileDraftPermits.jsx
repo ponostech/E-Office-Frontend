@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import {CardHeader} from "@material-ui/core";
 import DetailViewRow from "../../../common/DetailViewRow";
 import LoadingView from "../../../../common/LoadingView";
 import {FILE_DRAFT_LIST} from "../../../../../config/ApiRoutes";
@@ -42,7 +43,7 @@ class FileDraftPermitList extends Component {
                                                              secondary={this.formatCreated(value)}/>);
     return (
         <>
-          <p>List of Drafts Permit</p>
+          <CardHeader title="List of Drafts Permit"/>
           {loading ? <LoadingView align="left"/> : data}
           {errorMsg && <ErrorHandler messages={this.state.errorMsg}/>}
           {showDetails && <DraftSingleViewDialog data={singleData} open={showDetails} onClose={this.closeDetails}/>}
