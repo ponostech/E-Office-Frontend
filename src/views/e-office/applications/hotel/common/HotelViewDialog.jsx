@@ -46,7 +46,7 @@ class HotelViewDialog extends Component {
                 <CloseIcon/>
               </IconButton>
               <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-                View Advertiser Application
+                View Hotel/Lodging Application
               </Typography>
               <Button onClick={this.props.close} color="inherit">
                 Close
@@ -55,9 +55,13 @@ class HotelViewDialog extends Component {
           </AppBar>
           <List>
             <Card>
-              <DetailViewRow primary="Name of Applicant" secondary={data.name} />
+              <DetailViewRow primary="Name of Applicant" secondary={data.owner} />
               <DetailViewRow primary="Type of Applicant" secondary={data.type.toUpperCase()} />
-              <DetailViewRow primary="Address of Applicant" secondary={data.address} />
+              <DetailViewRow primary="Owner Address" secondary={data.owner_address} />
+              <DetailViewRow primary="Mobile" secondary={data.phone} />
+              <DetailViewRow primary="Shop Name" secondary={data.name} />
+              <DetailViewRow primary="Proposed Location" secondary={data.address} />
+              <DetailViewRow primary="Details of Business" secondary={data.details} />
               <DetailViewRow primary="Date of Application" secondary={moment(data.created_at).format("Do MMMM YYYY")} />
               <DetailViewRow primary="Status" secondary={data.status.toUpperCase()} />
             </Card>

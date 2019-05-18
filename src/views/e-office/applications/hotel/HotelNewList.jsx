@@ -11,6 +11,7 @@ import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
+import GMapDialog from "../../../../components/GmapDialog";
 
 const styles = {
   button: {},
@@ -20,6 +21,7 @@ const styles = {
 class HotelNewList extends React.Component {
   state = {
     hotels: [],
+    openMap: false,
     staffs: null,
     file: null,
     hotel: null,
@@ -40,21 +42,21 @@ class HotelNewList extends React.Component {
   getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
 
   processResult = (res) => {
-    if (res.data.status) this.setState({loading: false, hotels: res.data.data.hotel_applications});
+    if (res.data.status) this.setState({loading: false, hotels: res.data.data.hotels});
     this.props.doLoad(false);
   };
 
   closeViewDialog = () => this.setState({openViewDialog: false});
 
-  viewDetails = (data) => this.setState({openViewDialog: true, advertiser: data});
+  viewDetails = (data) => this.setState({openViewDialog: true, hotel: data});
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
 
   closeAssignment = () => this.setState({file: null, openAssignment: false});
 
-  takeFile = (data) => this.setState({advertiser: data, openTakeFile: true});
+  takeFile = (data) => this.setState({hotel: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.advertiser.id))
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id))
     .then(res => {
       this.setState({openTakeFile: false});
       this.props.history.push(DESK);
@@ -63,6 +65,7 @@ class HotelNewList extends React.Component {
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
   render() {
+    const { classes } = this.props;
     const {loading, hotel, hotels, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
@@ -73,19 +76,67 @@ class HotelNewList extends React.Component {
 
     const tableColumns = [
       {
-        name: "name",
+        name: "owner",
         label: "APPLICANT",
       },
       {
-        name: "type",
-        label: "APPLICANT TYPE",
+        name: "owner",
+        label: "Name of Applicant",
+        options: {
+          display: "excluded",
+          searchable: true
+        }
+      },
+      {
+        name: "owner_address",
+        label: "OWNER ADDRESS",
         options: {
           customBodyRender: (value) => value.toUpperCase(),
         }
       },
       {
+        name: "owner_address",
+        label: "Owner Address",
+        options: {
+          display: "excluded",
+          searchable: true
+        }
+      },
+      {
+        name: "phone",
+        label: "Mobile",
+      },
+      {
+        name: "phone",
+        label: "Mobile No.",
+        options: {
+          display: "excluded",
+          searchable: true
+        }
+      },
+      {
+        name: "name",
+        label: "SHOP NAME",
+      },
+      {
+        name: "name",
+        label: "Name of Shop",
+        options: {
+          display: "excluded",
+          searchable: true
+        }
+      },
+      {
         name: "address",
-        label: "ADDRESS",
+        label: "PROPOSED LOCATION",
+      },
+      {
+        name: "address",
+        label: "Proposed Location",
+        options: {
+          display: "excluded",
+          searchable: true
+        }
       },
       {
         name: "created_at",
@@ -93,6 +144,14 @@ class HotelNewList extends React.Component {
         options: {
           filter: false,
           customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
+        }
+      },
+      {
+        name: "created_at",
+        label: "Date of Application",
+        options: {
+          display: "excluded",
+          searchable: true
         }
       },
       {
@@ -104,8 +163,13 @@ class HotelNewList extends React.Component {
           customBodyRender: (value, tableMeta) => {
             const {rowIndex} = tableMeta;
             let data = hotels[rowIndex];
+            const lat = Number(data.latitude);
+            const lng = Number(data.longitude);
             return (
               <div>
+                <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                  <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
+                </IconButton>
                 <IconButton color="primary" size="small"
                             aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                   <Icon fontSize="small">remove_red_eye</Icon>
@@ -135,7 +199,10 @@ class HotelNewList extends React.Component {
             options={tableOptions}
           />
         </Grid>}
-
+        <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
+                    onClose={() => this.setState({ openMap: false })}
+                    isMarkerShown={true}
+        />
         {openViewDialog &&
         <HotelViewDialog open={openViewDialog} close={this.closeViewDialog}
                               data={hotel}/>}
