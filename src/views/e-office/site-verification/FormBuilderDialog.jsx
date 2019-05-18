@@ -5,8 +5,8 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Divider,
-  IconButton,
+  Divider, FormControlLabel,
+  IconButton, Switch,
   TextField
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
@@ -19,6 +19,7 @@ class FormBuilderDialog extends Component {
   state = {
     name:"",
     label:"",
+    placeHolder:"",
     selectedControl:undefined,
     config:null,
 
@@ -35,62 +36,39 @@ class FormBuilderDialog extends Component {
     ]
   };
   handleSelectChanged = (selected) => {
-    this.setState({selectedControl:selected})
+    this.setState({selectedControl:selected});
     this.renderControl(selected)
   };
 
+  handleRadio = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
+  handleChange=(e)=>{
+    // this.setState({[e.target.name]:e.target.value});
+  }
+
   renderControl=(selected)=>{
-    let config = null;
+    let config = {
+      name:selected.value,
+      placeHolder:"Place holder",
+      required:true
+    };
       switch (selected.value) {
         case 'text':
-          config={
-            name:"text",
-            placeHolder:"",
-            required:false,
-            pattern:"",
-          }
+          config.pattern="";
           break;
         case "email":
-          config={
-            name:"email",
-            placeHolder:"",
-            required:false,
-            pattern: ""
-          }
+          config.pattern="";
           break;
         case "number":
-          config={
-            name:"number",
-            placeHolder:"",
-            required:false,
-            min:0,
-            max:10
-          }
+          config.minimum=0;
+          config.maximum=100;
           break;
           case "radio":
-          config={
-            placeHolder:"",
-            required:false,
-            options:[]
-          }
+            config.options = [];
           break;
-          case "select":
-          config={
-            placeHolder:"",
-            required:false,
-            options:[]
-          }
-          break;
-        case "address":
-          config={
-            placeHolder:"",
-            required:false,
-          };
-          break;
-        case 'coordinate':
-          config={
-            required:true
-          }
+        case "select":
+          config.options=[];
           break;
         default:
           break;
@@ -113,7 +91,6 @@ class FormBuilderDialog extends Component {
           <GridContainer>
             <GridItem md={6}>
 
-
           <TextField
             variant={"outlined"}
             fullWidth={true}
@@ -122,6 +99,7 @@ class FormBuilderDialog extends Component {
             value={this.state.name}
             required={true}/>
             </GridItem>
+
             <GridItem md={6}>
               <TextField
                 variant={"outlined"}
@@ -131,6 +109,30 @@ class FormBuilderDialog extends Component {
                 value={this.state.label}
                 required={true}/>
             </GridItem>
+
+            <GridItem md={6}>
+              <TextField
+                variant={"outlined"}
+                fullWidth={true}
+                margin={"dense"}
+                label={"PlaceHolder"}
+                value={this.state.placeHolder}
+                required={true}/>
+            </GridItem>
+
+            <GridItem md={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    onChange={this.handleRadio('checkedB')}
+                    value="checkedB"
+                    color="primary"
+                  />
+                }
+                label="Is Required?"
+              />
+            </GridItem>
+
             <GridItem md={12}>
               <OfficeSelect
                 variant={"outlined"}
@@ -142,6 +144,8 @@ class FormBuilderDialog extends Component {
                 onChange={this.handleSelectChanged.bind(this)}
                 options={this.state.selectOptions}/>
             </GridItem>
+
+
           </GridContainer>
 
           <Divider/>
