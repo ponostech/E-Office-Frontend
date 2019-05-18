@@ -57,15 +57,12 @@ class HotelNewList extends React.Component {
   takeFile = (data) => this.setState({hotel: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id))
-    .then(res => {
-      this.setState({openTakeFile: false});
-      this.props.history.push(DESK);
-    });
+      .then(res => this.props.history.push(DESK));
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
   render() {
-    const { classes } = this.props;
+    const {classes} = this.props;
     const {loading, hotel, hotels, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
@@ -80,78 +77,23 @@ class HotelNewList extends React.Component {
         label: "APPLICANT",
       },
       {
-        name: "owner",
-        label: "Name of Applicant",
-        options: {
-          display: "excluded",
-          searchable: true
-        }
-      },
-      {
         name: "owner_address",
         label: "OWNER ADDRESS",
-        options: {
-          customBodyRender: (value) => value.toUpperCase(),
-        }
-      },
-      {
-        name: "owner_address",
-        label: "Owner Address",
-        options: {
-          display: "excluded",
-          searchable: true
-        }
-      },
-      {
-        name: "phone",
-        label: "Mobile",
-      },
-      {
-        name: "phone",
-        label: "Mobile No.",
-        options: {
-          display: "excluded",
-          searchable: true
-        }
       },
       {
         name: "name",
         label: "SHOP NAME",
       },
       {
-        name: "name",
-        label: "Name of Shop",
-        options: {
-          display: "excluded",
-          searchable: true
-        }
-      },
-      {
         name: "address",
         label: "PROPOSED LOCATION",
       },
       {
-        name: "address",
-        label: "Proposed Location",
-        options: {
-          display: "excluded",
-          searchable: true
-        }
-      },
-      {
         name: "created_at",
-        label: "DATE OF APPLICATION",
+        label: "APPLICATION DATE",
         options: {
           filter: false,
           customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
-        }
-      },
-      {
-        name: "created_at",
-        label: "Date of Application",
-        options: {
-          display: "excluded",
-          searchable: true
         }
       },
       {
@@ -166,23 +108,23 @@ class HotelNewList extends React.Component {
             const lat = Number(data.latitude);
             const lng = Number(data.longitude);
             return (
-              <div>
-                <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                  <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
-                </IconButton>
-                <IconButton color="primary" size="small"
-                            aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                  <Icon fontSize="small">remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, data)}>
-                  <Icon fontSize="small">send</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small">desktop_mac</Icon>
-                </IconButton>
-              </div>
+                <div>
+                  <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                    <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
+                  </IconButton>
+                  <IconButton color="primary" size="small"
+                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                    <Icon fontSize="small">remove_red_eye</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                    <Icon fontSize="small">send</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small">desktop_mac</Icon>
+                  </IconButton>
+                </div>
             );
           }
         }
@@ -190,33 +132,33 @@ class HotelNewList extends React.Component {
     ];
 
     return (
-      <>
-        {loading ? <LoadingView/> : <Grid item xs={12}>
-          <MUIDataTable
-            title={"HOTEL/LODGING: List of New Application"}
-            data={hotels}
-            columns={tableColumns}
-            options={tableOptions}
+        <>
+          {loading ? <LoadingView/> : <Grid item xs={12}>
+            <MUIDataTable
+                title={"HOTEL/LODGING: List of New Application"}
+                data={hotels}
+                columns={tableColumns}
+                options={tableOptions}
+            />
+          </Grid>}
+          <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
+                      onClose={() => this.setState({openMap: false})}
+                      isMarkerShown={true}
           />
-        </Grid>}
-        <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
-                    onClose={() => this.setState({ openMap: false })}
-                    isMarkerShown={true}
-        />
-        {openViewDialog &&
-        <HotelViewDialog open={openViewDialog} close={this.closeViewDialog}
-                              data={hotel}/>}
+          {openViewDialog &&
+          <HotelViewDialog open={openViewDialog} close={this.closeViewDialog}
+                           data={hotel}/>}
 
-        {openAssignment && staffs &&
-        <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
-                        onClose={this.closeAssignment} file={file}
-                        props={this.props}/>}
+          {openAssignment && staffs &&
+          <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                          onClose={this.closeAssignment} file={file}
+                          props={this.props}/>}
 
-        {openTakeFile &&
-        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
-                       onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
-                       onConfirm={this.confirmTakeFile}/>}
-      </>
+          {openTakeFile &&
+          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                         onConfirm={this.confirmTakeFile}/>}
+        </>
     );
   }
 }
