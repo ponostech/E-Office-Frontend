@@ -58,7 +58,7 @@ class AdvertiserInProcessListList extends React.Component {
     else this.setState({errorMsg: res.data.messages});
   };
 
-  confirmTakeFile = () => axios.post(FILE_CALL(this.state.advertiser.id))
+  confirmTakeFile = () => axios.post(FILE_CALL(this.state.advertiser.file.id))
       .then(res => this.processConfirmTakeResponse(res))
       .catch(err => this.setState({errorMsg: err.toString()}));
 
