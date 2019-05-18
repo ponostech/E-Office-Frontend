@@ -18,7 +18,7 @@ const styles = {
   actionIcon: {}
 };
 
-class HotelApprovedList extends React.Component {
+class HotelCancelledList extends React.Component {
   state = {
     hotels: [],
     openMap: false,
@@ -36,7 +36,7 @@ class HotelApprovedList extends React.Component {
     this.getData();
     this.getStaffs();
   }
-  getData = () => axios.get(HOTEL_LIST, {params: {status: 'approve'}})
+  getData = () => axios.get(HOTEL_LIST, {params: {status: 'cancel'}})
     .then(res => this.processResult(res))
     .catch(err => this.setState({errorMsg: err.toString()}))
     .then(() => this.doLoad(false));
@@ -137,7 +137,7 @@ class HotelApprovedList extends React.Component {
       <>
         {loading ? <LoadingView/> : <Grid item xs={12}>
           <MUIDataTable
-            title={"HOTEL/LODGING: List of Approved Applications"}
+            title={"HOTEL/LODGING: List of Cancelled Applications"}
             data={hotels}
             columns={tableColumns}
             options={tableOptions}
@@ -165,4 +165,4 @@ class HotelApprovedList extends React.Component {
   }
 }
 
-export default withRouter(withStyles(styles)(HotelApprovedList));
+export default withRouter(withStyles(styles)(HotelCancelledList));

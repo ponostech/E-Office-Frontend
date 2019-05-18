@@ -39,7 +39,7 @@ import AdvertiserNewList from "../../views/e-office/applications/advertisers/Adv
 import AdvertiserInProcessList from "../../views/e-office/applications/advertisers/AdvertiserInProcessList";
 import StaffList from "../../views/e-office/staff/StaffList";
 import StaffRegistration from "../../views/e-office/staff/StaffRegistration";
-import HotelUnderProcessList from "../../views/e-office/applications/hotel/HotelUnderProcessList";
+import HotelUnderProcessList from "../../views/e-office/applications/hotel/HotelInProcessList";
 import HotelApprovedList from "../../views/e-office/applications/hotel/HotelApprovedList";
 import HotelRejectedList from "../../views/e-office/applications/hotel/HotelRejectedList";
 import HotelNewList from "../../views/e-office/applications/hotel/HotelNewList";
