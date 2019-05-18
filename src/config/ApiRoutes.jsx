@@ -1,3 +1,5 @@
+export const HOARDING_LIST = "/hoardings/applications";
+
 export const ADVERTISER_LIST = "/staff/advertiser/applications";
 export const HOTEL_LIST = "/hotels";
 
@@ -29,7 +31,6 @@ export const GET_DRAFT = (id) => {
 };
 
 export const DRAFT_CREATE = "drafts";
-
 export const FILE_ACTION_TYPES = "setting/notesheet/actions";
 export const FILE_PRIORITIES = "setting/notesheet/priorities";
 export const GET_STAFF = "/staffs";
