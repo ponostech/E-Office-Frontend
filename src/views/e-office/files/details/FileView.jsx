@@ -91,13 +91,9 @@ class FileView extends Component {
   processResponse = (res) => this.setState({file: res.data.data.file, menus: res.data.data.menus, loading: false});
 
   handleItemClick = (url, mode = null, name = null) => {
-    const {history} = this.props;
-    if (!this.state.file.id)
-      return true;
-    if (mode === 'modal')
-      this.openDialog(name);
-    else
-      history.push("/e-office/file/" + this.state.file.id + "/" + url);
+    if (!this.state.file.id) return true;
+    if (mode === 'modal') this.openDialog(name);
+    else this.props.history.push("/e-office/file/" + this.state.file.id + "/" + url);
   };
 
   openDialog = (name) => {
@@ -113,7 +109,7 @@ class FileView extends Component {
         break;
       default:
         console.log(name);
-        break
+        break;
     }
   };
 
@@ -180,18 +176,17 @@ class FileView extends Component {
     );
     return (
         <Grid container className={classes.container}>
-          <div className={classes.root}>
-            {loading ? <LoadingView/> : view}
-          </div>
-          <CreateNoteDialog file={file} open={openNote} onClose={this.handleCloseCreateNote}/>
+          <div className={classes.root}>{loading ? <LoadingView/> : view}</div>
 
-          {openDraft && <FileDraftDialog file={file} open={openDraft}
-                                         onClose={this.closeDialog.bind(this, 'openDraft')}/>}
+          {openNote && <CreateNoteDialog file={file} open={openNote} onClose={this.handleCloseCreateNote}/>}
+
+          {openDraft &&
+          <FileDraftDialog file={file} open={openDraft} onClose={this.closeDialog.bind(this, 'openDraft')}/>}
 
           {openDraftPermit && <FileDraftPermitDialog file={file} open={openDraftPermit}
                                                      onClose={this.closeDialog.bind(this, 'openDraftPermit')}/>}
 
-          <SubmitDialog open={submit} title="Create Notesheet" text="Notesheet is Creating ..."/>
+          {submit && <SubmitDialog open={submit} title="Create Notesheet" text="Notesheet is Creating ..."/>}
 
           <OfficeSnackbar variant={"success"} onClose={() => this.setState({successMessage: ""})}
                           open={Boolean(successMessage)} message={successMessage}/>
