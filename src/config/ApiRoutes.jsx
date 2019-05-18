@@ -1,4 +1,5 @@
 export const ADVERTISER_LIST = "/staff/advertiser/applications";
+export const HOTEL_LIST = "/hotels";
 
 export const FILE_TAKE = (id) => {
   return `/files/${id}/take`;
