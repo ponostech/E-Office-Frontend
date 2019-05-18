@@ -1,95 +1,89 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios";
-import { Grid, Icon, IconButton } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
+import {Grid, Icon, IconButton} from "@material-ui/core";
+import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import { FILE_TAKE } from "../../../config/ApiRoutes";
-import { DESK, FILE_DETAIL_ROUTE } from "../../../config/routes-constant/OfficeRoutes";
+import {ApiRoutes, FILE_TAKE} from "../../../config/ApiRoutes";
+import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../config/routes-constant/OfficeRoutes";
 import FileSendDialog from "../../common/SendDialog";
 import moment from "moment";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import LoadingView from "../../common/LoadingView";
-import { FileService } from "../../../services/FileService";
-import { StaffService } from "../../../services/StaffService";
-import { FILE_STATUS } from "../../../utils/Util";
+import ErrorHandler, {SuccessHandler} from "../../common/StatusHandler";
 
 class FileNewList extends Component {
-  fileService = new FileService();
-  staffService = new StaffService();
   state = {
     staffs: [],
     tableData: [],
+    singleData: [],
     openAssignment: false,
     openTakeFile: false,
     loading: true,
-    file: [],
-    error: false
+    errorMsg: '',
+    successMsg: '',
   };
 
   componentDidMount() {
-    const { doLoad } = this.props;
-    doLoad(true);
-
-    Promise.all([this.fetchFile(), this.fetchStaffs()])
-      .then(function(val) {
-        console.log(val);
-      })
-      .finally(() => {
-        this.setState({loading:false})
-        doLoad(false);
-      });
+    this.props.doLoad(true);
+    this.getData();
   }
 
-  fetchStaffs = () => {
-    this.staffService.all(errorMessage => console.log(errorMessage),
-      staffs => this.setState({ staffs }));
-  };
-  fetchFile = () => {
-    this.fileService.fetch(FILE_STATUS.INACTIVE,
-      errorMessage => {
-        this.setState(errorMessage);
-      },
-      tableData => this.setState({ tableData })
-    );
-  };
-  sendFile = (fileId, receipientId) => {
-    this.setState({ openAssignment: true, submit: true });
-    this.fileService.sendFile(fileId, receipientId, errorMessage => this.setState({ errorMessage }),
-      takeMessage => {
-        this.setState({ takeMessage });
-        setTimeout(function(handler) {
-          window.location.reload();
-        }, 3000);
-      }).finally(() => this.setState({ submit: false }));
+  getData = () => {
+    axios.all([this.getTableData(), this.getStaffs()])
+        .then(axios.spread((tableData, staffs) => this.processDataResponse(tableData, staffs)))
+        .then(res => this.setState({loading: false}))
+        .then(res => this.props.doLoad(false))
+        .catch(err => this.setState({errorMsg: err.toString()}))
   };
 
-  viewDetail = (id) => {
-    const { history } = this.props;
-    history.push(FILE_DETAIL_ROUTE(id));
+  processDataResponse = (tableData, staffs) => {
+    if (tableData.data.status && staffs.data.status)
+      this.setState({tableData: tableData.data.data.files, staffs: staffs.data.data.staffs});
+    else this.setState({loading: false, errorMsg: "Data Error"})
   };
 
-  openAssignment = (data) => {
-    this.setState({ file: data, openAssignment: true });
+  getTableData = () => axios.get(ApiRoutes.FILE, {params: {status: 'in-active'}});
+
+  getStaffs = () => axios.get(ApiRoutes.GET_STAFF);
+
+  sendFile = (id, recipient_id) => {
+    axios.post(FILE_SEND(id), {recipient_id})
+        .then(res => this.processSendResponse(res))
+        .catch(err => this.setState({errorMsg: err.toString()}));
   };
 
-  closeAssignment = () => {
-    this.setState({ file: [], openAssignment: false });
+  processSendResponse = (res) => {
+    if (res.data.status) this.processSendResponseSuccess();
+    else this.setState({errorMsg: res.data.messages});
   };
 
-  takeFile = (data) => {
-    this.setState({ file: data, openTakeFile: true });
+  processSendResponseSuccess = () => {
+    this.setState({successMsg: 'File sent successfully', errorMsg: '', openAssignment: false});
+    this.getTableData().then(res => this.setState({tableData: res.data.data.files}));
   };
 
-  confirmTakeFile = () => {
-    axios.post(FILE_TAKE(this.state.file.id))
-      .then(res => {
-        this.setState({ openTakeFile: false });
-        window.location.replace(DESK);
-      });
+  viewDetail = (id) => this.props.history.push(FILE_DETAIL_ROUTE(id));
+
+  openAssignment = (data) => this.setState({singleData: data, openAssignment: true});
+
+  closeAssignment = () => this.setState({singleData: [], openAssignment: false});
+
+  takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
+
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.id))
+      .then(res => this.confirmTakeFileResponse(res));
+
+  confirmTakeFileResponse = (res) => {
+    if (res.data.status) {
+      this.setState({successMsg: "File called successfully", openTakeFile: false});
+      setTimeout(() => this.props.history.push(DESK), 2000);
+    }
   };
+
+  onStatusClose = () => this.setState({errorMsg: '', successMsg: ''});
 
   render() {
-    const { tableData } = this.state;
+    const {tableData, loading, openAssignment, errorMsg, successMsg, openTakeFile, singleData, staffs} = this.state;
 
     const tableOptions = {
       filterType: "checkbox",
@@ -134,57 +128,52 @@ class FileNewList extends Component {
           filter: false,
           sort: false,
           customBodyRender: (value, tableMeta) => {
-            let { rowIndex } = tableMeta;
+            let {rowIndex} = tableMeta;
             let data = this.state.tableData[rowIndex];
             return (
-              <>
-                <IconButton color="primary" size="small"
-                            aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
-                  <Icon fontSize="small">remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, data)}>
-                  <Icon fontSize="small">send</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small">desktop_mac</Icon>
-                </IconButton>
-              </>
+                <>
+                  <IconButton color="primary" size="small"
+                              aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
+                    <Icon fontSize="small">remove_red_eye</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                    <Icon fontSize="small">send</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small">desktop_mac</Icon>
+                  </IconButton>
+                </>
             );
           }
         }
       }
     ];
 
-    let files = <LoadingView/>;
-    if (!this.state.loading) {
-      if (!this.state.error) {
-        files = (
-          <>
-            <Grid item xs={12}>
-              <MUIDataTable title={"File: List of New Files"} data={tableData} columns={tableColumns}
-                            options={tableOptions}
-              />
-            </Grid>
-          </>
-        );
-      } else {
-        files = <p style={{ textAlign: "center", width: "100%", fontSize: 15 }}>Something Went Wrong!</p>;
-      }
-    }
+    const files =
+        <Grid item xs={12}>
+          <MUIDataTable title={"File: List of New Files"} data={tableData} columns={tableColumns}
+                        options={tableOptions}/>
+        </Grid>;
 
     return (
-      <>
-        {files}
-        <FileSendDialog onSend={this.sendFile.bind(this)} staffs={this.state.staffs} open={this.state.openAssignment}
-                        onClose={this.closeAssignment} file={this.state.file}
-                        props={this.props}/>
+        <>
+          {loading ? <LoadingView/> : files}
 
-        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
-                       onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
-                       onConfirm={this.confirmTakeFile.bind(this)}/>
-      </>
+          {openAssignment &&
+          <FileSendDialog onSend={this.sendFile.bind(this)} staffs={staffs} open={openAssignment}
+                          onClose={this.closeAssignment} file={singleData}
+                          props={this.props}/>}
+
+          {openTakeFile &&
+          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                         onConfirm={this.confirmTakeFile.bind(this)}/>}
+
+          {errorMsg && <ErrorHandler messages={errorMsg} onClose={this.onStatusClose}/>}
+          {successMsg && <SuccessHandler messages={successMsg} onClose={this.onStatusClose}/>}
+        </>
     );
   }
 }
