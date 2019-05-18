@@ -104,7 +104,8 @@ const menu = (props) => {
                 {title: "New Application", link: OfficeRoutes.NEW_SHOPLICENSE},
                 {title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_SHOPLICENSE},
                 {title: "Approved List", link: OfficeRoutes.APPROVED_SHOPLICENSE},
-                {title: "Reject List", link: OfficeRoutes.REJECTED_SHOPLICENSE}
+                {title: "Reject List", link: OfficeRoutes.REJECTED_SHOPLICENSE},
+                {title: "Cancelled List", link: OfficeRoutes.CANCELLED_SHOPLICENSE}
 
               ]}
               linkClick={props.linkClick}
@@ -115,7 +116,8 @@ const menu = (props) => {
                 {title: "New Application", link: OfficeRoutes.NEW_HOTELLICENSE},
                 {title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_HOTELLICENSE},
                 {title: "Approved List", link: OfficeRoutes.APPROVED_HOTELLICENSE},
-                {title: "Reject List", link: OfficeRoutes.REJECTED_HOTELLICENSE}
+                {title: "Rejected List", link: OfficeRoutes.REJECTED_HOTELLICENSE},
+                {title: "Cancelled List", link: OfficeRoutes.CANCELLED_HOTELLICENSE}
 
               ]}
               linkClick={props.linkClick}
