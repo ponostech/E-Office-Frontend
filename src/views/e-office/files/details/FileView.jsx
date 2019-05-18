@@ -62,40 +62,33 @@ const styles = theme => ({
 });
 
 class FileView extends Component {
+  doLoad = this.props.doLoad;
   noteService = new NotesheetService();
   state = {
     file: [],
     menus: [],
     loading: true,
-    error: false,
-
     openNote: false,
     openDraft: false,
     openDraftPermit: false,
-
     errorMessage: "",
     successMessage: "",
     submit: false
   };
 
   componentDidMount() {
-    this.props.doLoad(true);
+    this.doLoad(true);
     this.getData(this.props.match.params.id);
   }
 
   getData(id) {
     axios.get(ApiRoutes.FILE_DETAIL + "/" + id)
-        .then(res => {
-          let data = res.data;
-          data.status === true ? this.setState({file: data.data.file, menus: data.data.menus, loading: false})
-              : this.setState({error: true});
-          this.props.doLoad(false);
-        })
-        .catch(err => {
-          this.setState({error: true, loading: false});
-          this.props.doLoad(false);
-        });
+        .then(res => res.data.status ? this.processResponse(res) : this.setState({errorMessage: res.data.messages}))
+        .catch(err => this.setState({errorMessage: "Network Error!", loading: false}))
+        .then(() => this.doLoad(false));
   }
+
+  processResponse = (res) => this.setState({file: res.data.data.file, menus: res.data.data.menus, loading: false});
 
   handleItemClick = (url, mode = null, name = null) => {
     const {history} = this.props;
@@ -137,53 +130,50 @@ class FileView extends Component {
     }
   };
 
-  closeDialog = (key) => {
-    this.setState({[key]: false});
-  };
-
+  closeDialog = (key) => this.setState({[key]: false});
 
   render() {
     const {classes} = this.props;
-    const {loading} = this.state;
+    const {loading, openDraft, openDraftPermit, openNote, file, submit, successMessage, errorMessage, menus} = this.state;
 
     const view = (
         <>
           <div className={classes.hide}>
-            <FileMenuLeft click={this.handleItemClick} menus={this.state.menus}/>
-            <FileMenuRight click={this.handleItemClick} menus={this.state.menus}/>
+            <FileMenuLeft click={this.handleItemClick} menus={menus}/>
+            <FileMenuRight click={this.handleItemClick} menus={menus}/>
           </div>
           <main className={classes.content}>
             <Grid item xs={12} md={12} lg={12}>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/details"}
-                     render={(props) => <FileDetails {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/notesheets"}
-                     render={(props) => <NoteSheetView {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/notesheets/drafts"}
-                     render={(props) => <NoteSheetDraftView {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/movements"}
-                     render={(props) => <FileMovements {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/enclosures"}
-                     render={(props) => <FileEnclosures {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/drafts"}
-                     render={(props) => <FileDrafts {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/application-details"}
-                     render={(props) => <FileApplicationDetails {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/site-verifications"}
-                     render={(props) => <FileSiteVerifications {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/draft-licenses"}
-                     render={(props) => <FileDraftPermits {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/draft-rejects"}
-                     render={(props) => <FileDraftRejects {...props} file={this.state.file}/>}/>
-              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(this.state.file.id) + "/view/draft-cancels"}
-                     render={(props) => <FileDraftCancels {...props} file={this.state.file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/details"}
+                     render={(props) => <FileDetails {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/notesheets"}
+                     render={(props) => <NoteSheetView {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/notesheets/drafts"}
+                     render={(props) => <NoteSheetDraftView {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/movements"}
+                     render={(props) => <FileMovements {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/enclosures"}
+                     render={(props) => <FileEnclosures {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/drafts"}
+                     render={(props) => <FileDrafts {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/application-details"}
+                     render={(props) => <FileApplicationDetails {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/site-verifications"}
+                     render={(props) => <FileSiteVerifications {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-licenses"}
+                     render={(props) => <FileDraftPermits {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-rejects"}
+                     render={(props) => <FileDraftRejects {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-cancels"}
+                     render={(props) => <FileDraftCancels {...props} file={file}/>}/>
               <Route path={OfficeRoutes.FILE_DETAIL + "/draft"}
-                     render={(props) => <DraftPermit {...props} file={this.state.file}/>}/>
+                     render={(props) => <DraftPermit {...props} file={file}/>}/>
               <Route path={OfficeRoutes.FILE_DETAIL + "/reject"}
-                     render={(props) => <DraftLetter {...props} file={this.state.file}/>}/>
+                     render={(props) => <DraftLetter {...props} file={file}/>}/>
               <Route path={OfficeRoutes.FILE_DETAIL + "/send"}
-                     render={(props) => <FileSend {...props} doLoad={this.props.doLoad} file={this.state.file}/>}/>
+                     render={(props) => <FileSend {...props} doLoad={this.props.doLoad} file={file}/>}/>
               <Route path={OfficeRoutes.FILE_DETAIL} exact
-                     render={(props) => <NoteSheetView {...props} file={this.state.file}/>}/>
+                     render={(props) => <NoteSheetView {...props} file={file}/>}/>
             </Grid>
           </main>
         </>
@@ -193,21 +183,21 @@ class FileView extends Component {
           <div className={classes.root}>
             {loading ? <LoadingView/> : view}
           </div>
-          <CreateNoteDialog file={this.state.file} open={this.state.openNote} onClose={this.handleCloseCreateNote}/>
+          <CreateNoteDialog file={file} open={openNote} onClose={this.handleCloseCreateNote}/>
 
-          {this.state.openDraft && <FileDraftDialog file={this.state.file} open={this.state.openDraft}
-                                                    onClose={this.closeDialog.bind(this, 'openDraft')}/>}
+          {openDraft && <FileDraftDialog file={file} open={openDraft}
+                                         onClose={this.closeDialog.bind(this, 'openDraft')}/>}
 
-          {this.state.openDraftPermit && <FileDraftPermitDialog file={this.state.file} open={this.state.openDraftPermit}
-                                                                onClose={this.closeDialog.bind(this, 'openDraftPermit')}/>}
+          {openDraftPermit && <FileDraftPermitDialog file={file} open={openDraftPermit}
+                                                     onClose={this.closeDialog.bind(this, 'openDraftPermit')}/>}
 
-          <SubmitDialog open={this.state.submit} title="Create Notesheet" text="Notesheet is Creating ..."/>
+          <SubmitDialog open={submit} title="Create Notesheet" text="Notesheet is Creating ..."/>
 
           <OfficeSnackbar variant={"success"} onClose={() => this.setState({successMessage: ""})}
-                          open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
+                          open={Boolean(successMessage)} message={successMessage}/>
 
           <OfficeSnackbar variant={"error"} onClose={() => this.setState({errorMessage: ""})}
-                          open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
+                          open={Boolean(errorMessage)} message={errorMessage}/>
         </Grid>
     );
   }
