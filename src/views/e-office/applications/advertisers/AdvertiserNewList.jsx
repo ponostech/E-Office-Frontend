@@ -1,5 +1,6 @@
 import React from "react";
 import axios from 'axios';
+import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid} from "@material-ui/core";
@@ -20,6 +21,7 @@ class AdvertiserNewList extends React.Component {
   state = {
     advertisers: [],
     staffs: null,
+    file: null,
     advertiser: null,
     openAssignment: false,
     openTakeFile: false,
@@ -55,13 +57,13 @@ class AdvertiserNewList extends React.Component {
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.advertiser.id))
       .then(res => {
         this.setState({openTakeFile: false});
-        window.location.replace(DESK);
+        this.props.history.push(DESK);
       });
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
   render() {
-    const {loading} = this.state;
+    const {loading, advertiser, advertisers, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -101,7 +103,7 @@ class AdvertiserNewList extends React.Component {
           sort: false,
           customBodyRender: (value, tableMeta) => {
             const {rowIndex} = tableMeta;
-            let data = this.state.advertisers[rowIndex];
+            let data = advertisers[rowIndex];
             return (
                 <div>
                   <IconButton color="primary" size="small"
@@ -128,28 +130,28 @@ class AdvertiserNewList extends React.Component {
           {loading ? <LoadingView/> : <Grid item xs={12}>
             <MUIDataTable
                 title={"ADVERTISER: List of New Application"}
-                data={this.state.advertisers}
+                data={advertisers}
                 columns={tableColumns}
                 options={tableOptions}
             />
           </Grid>}
 
-          {this.state.openViewDialog &&
-          <AdvertiserViewDialog open={this.state.openViewDialog} close={this.closeViewDialog}
-                                data={this.state.advertiser}/>}
+          {openViewDialog &&
+          <AdvertiserViewDialog open={openViewDialog} close={this.closeViewDialog}
+                                data={advertiser}/>}
 
-          {this.state.openAssignment && this.state.staffs &&
-          <FileSendDialog onSend={this.sendFile} staffs={this.state.staffs} open={this.state.openAssignment}
-                          onClose={this.closeAssignment} file={this.state.file}
+          {openAssignment && staffs &&
+          <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                          onClose={this.closeAssignment} file={file}
                           props={this.props}/>}
 
-          {this.state.openTakeFile &&
+          {openTakeFile &&
           <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
-                         onCancel={() => this.setState({openTakeFile: false})} open={this.state.openTakeFile}
+                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                          onConfirm={this.confirmTakeFile}/>}
         </>
     );
   }
 }
 
-export default withStyles(styles)(AdvertiserNewList);
+export default withRouter(withStyles(styles)(AdvertiserNewList));
