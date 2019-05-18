@@ -4,11 +4,13 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import {ADVERTISER_NEW_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
+import {ADVERTISER_LIST, FILE_CALL, GET_STAFF} from '../../../../config/ApiRoutes';
 import AdvertiserViewDialog from "./common/AdvertiserViewDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
+import {DESK} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
+import {withRouter} from "react-router-dom";
+import ErrorHandler from "../../../common/StatusHandler";
 
 const styles = {
   button: {},
@@ -24,6 +26,7 @@ class AdvertiserInProcessListList extends React.Component {
     openTakeFile: false,
     openViewDialog: false,
     loading: true,
+    errorMsg: null,
   };
 
   componentDidMount() {
@@ -32,13 +35,16 @@ class AdvertiserInProcessListList extends React.Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(ADVERTISER_NEW_LIST).then(res => this.processResult(res));
+  getData = () => axios.get(ADVERTISER_LIST, {params: {status: 'in-process'}})
+      .then(res => this.processResult(res))
+      .catch(err => this.setState({errorMsg: err.toString()}))
+      .then(() => this.doLoad(false));
 
   getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, advertisers: res.data.data.advertiser_applications});
-    this.props.doLoad(false);
+    else this.setState({errorMsg: res.data.messages})
   };
 
   closeViewDialog = () => this.setState({openViewDialog: false});
@@ -47,14 +53,17 @@ class AdvertiserInProcessListList extends React.Component {
 
   takeFile = (data) => this.setState({advertiser: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.advertiser.id))
-      .then(res => {
-        this.setState({openTakeFile: false});
-        window.location.replace(DESK);
-      });
+  processConfirmTakeResponse = (res) => {
+    if (res.data.status) this.props.history.push(DESK);
+    else this.setState({errorMsg: res.data.messages});
+  };
+
+  confirmTakeFile = () => axios.post(FILE_CALL(this.state.advertiser.id))
+      .then(res => this.processConfirmTakeResponse(res))
+      .catch(err => this.setState({errorMsg: err.toString()}));
 
   render() {
-    const {loading, advertiser, advertisers, openTakeFile, openViewDialog} = this.state;
+    const {loading, advertiser, advertisers, openTakeFile, openViewDialog, errorMsg} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -134,9 +143,11 @@ class AdvertiserInProcessListList extends React.Component {
           <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                          onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                          onConfirm={this.confirmTakeFile}/>}
+
+          {errorMsg && <ErrorHandler messages={errorMsg}/>}
         </>
     );
   }
 }
 
-export default withStyles(styles)(AdvertiserInProcessListList);
+export default withRouter(withStyles(styles)(AdvertiserInProcessListList));

@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid} from "@material-ui/core";
 import moment from "moment";
-import {ADVERTISER_NEW_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
+import {ADVERTISER_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
 import AdvertiserViewDialog from "./common/AdvertiserViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -35,7 +35,7 @@ class AdvertiserNewList extends React.Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(ADVERTISER_NEW_LIST).then(res => this.processResult(res));
+  getData = () => axios.get(ADVERTISER_LIST).then(res => this.processResult(res));
 
   getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
 
