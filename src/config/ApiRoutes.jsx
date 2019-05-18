@@ -1,10 +1,10 @@
-export const ADVERTISER_NEW_LIST = "/staff/advertiser/applications";
+export const ADVERTISER_LIST = "/staff/advertiser/applications";
 
 export const FILE_TAKE = (id) => {
   return `/files/${id}/take`;
 };
 export const FILE_CALL = (id) => {
-  return `/file/${id}/call`;
+  return `/files/${id}/call`;
 };
 export const FILE_NOTESHEET = (id) => {
   return `/files/${id}/notesheets`;
