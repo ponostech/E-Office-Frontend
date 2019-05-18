@@ -1,17 +1,16 @@
 import React from "react";
+import axios from 'axios';
+import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import Grid from "@material-ui/core/Grid";
-import { Icon, Tooltip } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import PinDrop from "@material-ui/icons/PinDrop";
-import Assignment from "../ApplicationAssignmentDialog";
-import { HoardingService } from "../../../../services/HoardingService";
-import GMapDialog from "../../../../components/GmapDialog";
-import HoardingDetailDialog from "../../../advertiser/hoarding/HoardingDetailDialog";
+import {withStyles} from "@material-ui/core/styles";
+import {Icon, IconButton, Grid} from "@material-ui/core";
+import moment from "moment";
+import {HOARDING_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
+import HoardingViewDialog from "./common/HoardingViewDialog";
+import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import OfficeSnackbar from "../../../../components/OfficeSnackbar";
-import ApplicationState from "../../../../utils/ApplicationState";
+import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
+import LoadingView from "../../../common/LoadingView";
 
 const styles = {
   button: {},
@@ -19,186 +18,148 @@ const styles = {
 };
 
 class HoardingRejectedList extends React.Component {
-  hoardingService = new HoardingService();
+  doLoad = this.props.doLoad;
   state = {
+    tableData: [],
+    staffs: null,
+    file: null,
+    singleData: null,
     openAssignment: false,
-    openDetail: false,
-    openMap: false,
     openTakeFile: false,
-    detailData: [],
-    hoardings: [],
-    hoarding: {},
-    takeMessage: "",
-    errorMessage: ""
+    openViewDialog: false,
+    loading: true,
   };
 
   componentDidMount() {
-    const { doLoad } = this.props;
-    doLoad(true)
-    this.hoardingService.fetch(ApplicationState.REJECTED_APPLICATION)
-      .then(hoardings => {
-        this.setState({ hoardings: hoardings });
-      })
-      .catch(err => {
-        this.setState({ errorMessage: err.toString() });
-      })
-      .then(()=>{
-        doLoad(false)
-      })
+    this.doLoad(true);
+    this.getData();
+    this.getStaffs();
   }
 
-  updateTable = (action, tableState) => {
+  getData = () => axios.get(HOARDING_LIST, {params: {status: 'reject'}}).then(res => this.processResult(res));
 
-  };
-  openAssignment = (id) => {
-    this.setState({ openAssignment: true });
-  };
-  takeFile = (data) => {
-    this.setState({ openTakeFile: true, fileDetail: data.file });
-  };
-  confirmTake = (e) => {
-    const { fileDetail } = this.state;
-    console.log(fileDetail)
-    this.setState({ openTakeFile: false });
-    this.setState({ takeMessage: "You have taken the file" });
-  };
-  closeAssignment = () => {
-    this.setState({ openAssignment: false });
+  processResult = (res) => {
+    if (res.data.status) this.setState({loading: false, tableData: res.data.data.hoarding_applications});
+    this.doLoad(false);
   };
 
-  viewDetail = (id) => {
-    this.setState({ openDetail: true });
-  };
-  closeDetail = () => {
-    this.setState({ openDetail: false });
-  };
+  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
+
+  closeViewDialog = () => this.setState({openViewDialog: false});
+
+  viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
+
+  openAssignment = (data) => this.setState({file: data, openAssignment: true});
+
+  closeAssignment = () => this.setState({file: null, openAssignment: false});
+
+  takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
+
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
+      .then(res => {
+        this.setState({openTakeFile: false});
+        this.props.history.push(DESK);
+      });
+
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
   render() {
-    const { classes } = this.props;
-    const { hoardings } = this.state;
+    const {loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
-      rowsPerPage: 15,
+      rowsPerPage: 8,
       serverSide: false,
-      onTableChange: function(action, tableState) {
-        this.updateTable(action, tableState);
-      }.bind(this)
     };
 
     const tableColumns = [
       {
-        name: "action",
+        name: "applicant",
+        label: "APPLICANT",
+        options: {
+          customBodyRender: function (value) {
+            return value.advertiser.name;
+          }
+        }
+      },
+      {
+        name: "applicant",
+        label: "APPLICANT TYPE",
+        options: {
+          customBodyRender: value => value.advertiser.type.toUpperCase()
+        }
+      },
+      {
+        name: 'created_at',
+        label: 'APPLICATION DATE',
+        options: {
+          customBodyRender: value => moment(value).format("Do MMMM YYYY")
+        }
+      },
+      {
+        name: 'file',
+        label: "FILE LOCATION",
+        options: {
+          customBodyRender: value => value.desk.staff.name + " (" + value.desk.staff.designation + ")"
+        }
+      },
+      {
+        name: "id",
         label: "ACTION",
         options: {
           filter: false,
           sort: false,
-          customBodyRender: (value, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
-            const data = this.state.hoardings[rowIndex];
+          customBodyRender: (value, tableMeta) => {
+            const {rowIndex} = tableMeta;
+            let data = tableData[rowIndex];
             return (
-              <div>
-                <IconButton className={classes.button} color="primary" size="small"
-                            aria-label="View Details"
-                            onClick={e => this.setState({ hoarding: data.hoarding, openDetail: true })}>
-                  <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" className={classes.button} color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, value)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
-                </IconButton>
-                <IconButton variant="contained" className={classes.button} color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
-                </IconButton>
-              </div>
+                <div>
+                  <IconButton color="primary" size="small"
+                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                    <Icon fontSize="small">remove_red_eye</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                    <Icon fontSize="small">send</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small">desktop_mac</Icon>
+                  </IconButton>
+                </div>
             );
           }
         }
       },
-      {
-        name: "file",
-        label: "FILE NO.",
-        options: {
-          customBodyRender: (file, tableMeta, updateValue) => {
-            return (
-              file.number
-            );
-          }
-        }
-      }, {
-        name: "file",
-        label: "SUBJECT",
-        options: {
-          customBodyRender: (file, tableMeta, updateValue) => {
-            return (
-              file.subject
-            );
-          }
-        }
-      }, {
-        name: "created_at",
-        label: "DATE"
-      }, {
-        name: "applicant",
-        label: "APPLICANT",
-        options: {
-          customBodyRender: (applicant, tableMeta, updateValue) => {
-            return (
-              applicant.advertiser.name
-            );
-          }
-        }
-      },
-      {
-        name: "hoarding",
-        label: "LOCATION",
-        options: {
-          customBodyRender: (hoarding, tableMeta, updateValue) => {
-            let view = (
-              <Tooltip title={"Click here to view location"}>
-                <IconButton onClick={e => this.setState({ openMap: true })}>
-                  <PinDrop/>
-                </IconButton>
-              </Tooltip>
-            );
-            return (
-              view
-            );
-          }
-        }
-      }
-
     ];
 
     return (
-      <>
-        <Grid item xs={12}>
-          <MUIDataTable
-            title={"Hoarding: List of Under Process Application"}
-            data={hoardings}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-        </Grid>
-        <HoardingDetailDialog
-          hoarding={this.state.hoarding}
-          open={this.state.openDetail} onClose={(e) => this.setState({ openDetail: false })}/>
-        <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
-                    props={this.props} staffs={this.state.staffs}/>
-        <GMapDialog viewMode={true} open={this.state.openMap} onClose={() => this.setState({ openMap: false })}
-                    isMarkerShown={true}
-        />
-        <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"} message={"Do you want to take this file ?"}
-                       onCancel={() => this.setState({ openTaskFile: false })} open={this.state.openTakeFile}
-                       onConfirm={this.confirmTake.bind(this)}/>
-        <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
-                        onClose={e => this.setState({ takeMessage: "" })} open={Boolean(this.state.takeMessage)}/>
-        <OfficeSnackbar variant={"error"} message={this.state.errorMessage}
-                        onClose={e => this.setState({ errorMessage: "" })} open={Boolean(this.state.errorMessage)}/>
-      </>
+        <>
+          {loading ? <LoadingView/> : <Grid item xs={12}>
+            <MUIDataTable
+                title={"Hoarding: List of Rejected Application"}
+                data={tableData}
+                columns={tableColumns}
+                options={tableOptions}
+            />
+          </Grid>}
+
+          {openViewDialog &&
+          <HoardingViewDialog open={openViewDialog} close={this.closeViewDialog}
+                              data={singleData}/>}
+
+          {openAssignment && staffs &&
+          <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                          onClose={this.closeAssignment} file={file}
+                          props={this.props}/>}
+
+          {openTakeFile &&
+          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                         onConfirm={this.confirmTakeFile}/>}
+        </>
     );
   }
 }
 
-export default withStyles(styles)(HoardingRejectedList);
+export default withRouter(withStyles(styles)(HoardingRejectedList));

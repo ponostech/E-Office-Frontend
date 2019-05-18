@@ -36,7 +36,7 @@ class HoardingUnderProcessList extends React.Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(HOARDING_LIST).then(res => this.processResult(res));
+  getData = () => axios.get(HOARDING_LIST, {params: {status: 'in-process'}}).then(res => this.processResult(res));
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, tableData: res.data.data.hoarding_applications});
@@ -55,7 +55,7 @@ class HoardingUnderProcessList extends React.Component {
 
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.id))
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
       .then(res => {
         this.setState({openTakeFile: false});
         this.props.history.push(DESK);

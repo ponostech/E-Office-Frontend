@@ -8,7 +8,6 @@ import ReceiptShow from "../../views/e-office/receipt/ReceiptShow";
 import ReceiptList from "../../views/e-office/receipt/ReceiptList";
 import ReceiptSentList from "../../views/e-office/receipt/ReceiptSentList";
 import ShopNewList from "../../views/e-office/applications/shop-license/ShopNewList";
-import HoardingApplications from "../../views/e-office/applications/hoarding/HoardingNewList";
 import Settings from "../../views/e-office/settings/Setting";
 import FileDetail from "../../views/e-office/files/details/FileView";
 import FileCreatedList from "../../views/e-office/files/FileCreatedList";
@@ -21,6 +20,7 @@ import HoardingDetails from "../../views/e-office/applications/hoarding/Hoarding
 import AdvertiserDetails from "../../views/e-office/applications/advertisers/AdvertiserDetails";
 import DeskView from "../../views/e-office/desk/DeskView";
 import TradeNew from "../../views/e-office/admin/TradeNew";
+import HoardingApplications from "../../views/e-office/applications/hoarding/HoardingNewList";
 import UnderProcessHoarding from "../../views/e-office/applications/hoarding/HoardingUnderProcessList";
 import RejectedHoardingApplications from "../../views/e-office/applications/hoarding/HoardingRejectedList";
 import ApprovedHoarding from "../../views/e-office/applications/hoarding/HoardingApprovedList";

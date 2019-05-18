@@ -54,7 +54,7 @@ class AdvertiserNewList extends React.Component {
 
   takeFile = (data) => this.setState({advertiser: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.advertiser.id))
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.advertiser.file.id))
       .then(res => {
         this.setState({openTakeFile: false});
         this.props.history.push(DESK);
