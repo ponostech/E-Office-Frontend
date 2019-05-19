@@ -35,9 +35,15 @@ class AdvertiserNewList extends React.Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(ADVERTISER_LIST).then(res => this.processResult(res));
+  getData = () => {
+    axios.get(ADVERTISER_LIST).then(res => this.processResult(res))
+        .catch(err => this.setState({errorMsg: err.toString()}));
+  };
 
-  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
+  getStaffs = () => {
+    axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}))
+        .catch(err => this.setState({errorMsg: err.toString()}));
+  };
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, advertisers: res.data.data.advertiser_applications});
@@ -55,10 +61,7 @@ class AdvertiserNewList extends React.Component {
   takeFile = (data) => this.setState({advertiser: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.advertiser.file.id))
-      .then(res => {
-        this.setState({openTakeFile: false});
-        this.props.history.push(DESK);
-      });
+      .then(res => this.props.history.push(DESK));
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
