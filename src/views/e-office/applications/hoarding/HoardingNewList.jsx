@@ -97,13 +97,6 @@ class HoardingNewList extends React.Component {
         }
       },
       {
-        name: 'file',
-        label: "FILE LOCATION",
-        options: {
-          customBodyRender: value => value.desk.staff.name + " (" + value.desk.staff.designation + ")"
-        }
-      },
-      {
         name: "id",
         label: "ACTION",
         options: {
