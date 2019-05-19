@@ -33,21 +33,17 @@ class HotelNewList extends React.Component {
 
   componentDidMount() {
     this.props.doLoad(true);
-    this.getData();
-    this.getStaffs();
+    this.getData().then(res => this.processResult(res)).then(res => this.props.doLoad(false));
+    this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
   }
 
-  getData = () => {
-    axios.get(HOTEL_LIST).then(res => this.processResult(res)).then(res => this.props.doLoad(false));
-  };
+  getData = () => axios.get(HOTEL_LIST);
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, hotels: res.data.data.hotels});
   };
 
-  getStaffs = () => {
-    axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
-  };
+  getStaffs = () => axios.get(GET_STAFF);
 
   closeViewDialog = () => this.setState({openViewDialog: false});
 
