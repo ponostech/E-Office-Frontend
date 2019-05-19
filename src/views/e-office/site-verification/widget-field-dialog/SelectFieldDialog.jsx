@@ -70,12 +70,13 @@ class SelectFieldDialog extends Component {
     Object.assign(item, temp);
   };
   handleClick = (id, event) => {
+    const { widget, onClose } = this.props;
     switch (id) {
       case "save":
-        this.props.onClose(this.state);
+        onClose(widget.name,this.state);
         break;
       case "close":
-        this.props.onClose(null);
+        onClose(null,null);
         break;
       default:
         break;
