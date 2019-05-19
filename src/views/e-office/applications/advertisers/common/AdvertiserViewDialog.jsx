@@ -1,14 +1,6 @@
 import React, {Component} from 'react';
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
-import {Card} from "@material-ui/core";
-import DialogActions from "@material-ui/core/DialogActions";
-import {Dialog, Slide} from "@material-ui/core";
-import withStyles from "@material-ui/core/es/styles/withStyles";
+import {AppBar, Toolbar, IconButton, Typography, Button, List, Slide, Card} from "@material-ui/core";
+import {Dialog, Grid, DialogContent, DialogActions, withStyles} from "@material-ui/core";
 import DetailViewRow from "../../../common/DetailViewRow";
 import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
@@ -53,15 +45,34 @@ class AdvertiserViewDialog extends Component {
               </Button>
             </Toolbar>
           </AppBar>
-          <List>
-            <Card>
-              <DetailViewRow primary="Name of Applicant" secondary={data.name} />
-              <DetailViewRow primary="Type of Applicant" secondary={data.type.toUpperCase()} />
-              <DetailViewRow primary="Address of Applicant" secondary={data.address} />
-              <DetailViewRow primary="Date of Application" secondary={moment(data.created_at).format("Do MMMM YYYY")} />
-              <DetailViewRow primary="Status" secondary={data.status.toUpperCase()} />
-            </Card>
-          </List>
+          <DialogContent>
+            <Grid container>
+              <Grid item md>
+                <List>
+                  <Card>
+                    <DetailViewRow primary="Name of Applicant" secondary={data.name}/>
+                    <DetailViewRow primary="Type of Applicant" secondary={data.type.toUpperCase()}/>
+                    <DetailViewRow primary="Address of Applicant" secondary={data.address}/>
+                    <DetailViewRow primary="Date of Application"
+                                   secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
+                    <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
+                  </Card>
+                </List>
+              </Grid>
+              <Grid item md>
+                <List>
+                  <Card>
+                    <DetailViewRow primary="Name of Applicant" secondary={data.name}/>
+                    <DetailViewRow primary="Type of Applicant" secondary={data.type.toUpperCase()}/>
+                    <DetailViewRow primary="Address of Applicant" secondary={data.address}/>
+                    <DetailViewRow primary="Date of Application"
+                                   secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
+                    <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
+                  </Card>
+                </List>
+              </Grid>
+            </Grid>
+          </DialogContent>
           <DialogActions>
             <Button color="secondary" onClick={this.props.close}>Close</Button>
           </DialogActions>
