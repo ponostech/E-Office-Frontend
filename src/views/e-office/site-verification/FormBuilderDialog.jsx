@@ -150,7 +150,7 @@ class FormBuilderDialog extends Component {
 
           <Divider/>
 
-          {this.state.config?<FormBuilderConfigView config={this.state.config}/>:""}
+          {/*{this.state.config?<FormBuilderConfigView  config={this.state.config}/>:""}*/}
         </DialogContent>
         <Divider/>
         <DialogActions>
