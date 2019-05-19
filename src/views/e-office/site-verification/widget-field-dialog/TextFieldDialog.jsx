@@ -31,25 +31,23 @@ class TextFieldDialog extends Component {
 
   handleChange = (e) => {
     const { name, value } = e.target;
+    let elementConfig=this.state.elementConfig;
     switch (name) {
       case "name":
-        this.setState(state=>{
-          state.elementConfig.name=value
-        });
+        elementConfig.name=value;
+        this.setState({elementConfig})
         break;
       case "label":
-        this.setState(state=>{
-          state.elementConfig.label=value
-        });
+        elementConfig.label=value;
+        this.setState({elementConfig})
         break;
       case "placeholder":
-        this.setState(state=>{
-          state.elementConfig.placeholder=value
-        });
+        elementConfig.placeholder=value;
+        this.setState({elementConfig})
         break;
       case 'value':
         this.setState({[name]:value})
-
+        break;
     }
   };
   handleRadio = event => {
@@ -61,12 +59,13 @@ class TextFieldDialog extends Component {
     })
   };
   handleClick = (id, event) => {
+    const { widget, onClose } = this.props;
     switch (id) {
       case "save":
-        this.props.onClose(this.state);
+        onClose(this.state.elementConfig.name,this.state);
         break;
       case "close":
-        this.props.onClose(null);
+        onClose(null,null);
         break;
       default:
         break;

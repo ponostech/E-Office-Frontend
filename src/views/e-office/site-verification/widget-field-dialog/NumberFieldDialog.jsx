@@ -19,6 +19,7 @@ class NumberFieldDialog extends Component {
   state = {
     elementType: "Number",
     elementConfig:{
+      type:"Number",
       name: "name",
       label: "Name",
       placeholder: "placeholder",
@@ -33,37 +34,35 @@ class NumberFieldDialog extends Component {
   };
   handleChange = (e) => {
     const { name, value } = e.target;
+    let elementConfig=this.state.elementConfig;
+    let validation=this.state.validation;
     switch (name) {
       case "name":
-        this.setState(state=>{
-          state.elementConfig.name=value
-        });
+        elementConfig.name=value;
+        this.setState({elementConfig});
         break;
       case "label":
-        this.setState(state=>{
-          state.elementConfig.label=value
-        });
+        elementConfig.label=value;
+        this.setState({elementConfig});
         break;
       case "placeholder":
-        this.setState(state=>{
-          state.elementConfig.placeholder=value
-        });
+        elementConfig.placeholder=value;
+        this.setState({elementConfig});
         break;
       case "minimum":
-        this.setState(state=>{
-          state.validation.minimum=value;
-        })
+        validation.minimum=value;
+        this.setState({ validation});
         break;
-        case "maximum":
-        this.setState(state=>{
-          state.validation.maximum=value;
-        })
+      case "maximum":
+        validation.maximum = value;
+        this.setState({validation});
         break;
       case 'value':
-        this.setState({[name]:value})
-
+        this.setState({[name]:value});
+        break;
     }
   };
+
   handleRadio = event => {
     const validation={
       required:event.target.checked
@@ -71,12 +70,13 @@ class NumberFieldDialog extends Component {
     this.setState({ validation })
   };
   handleClick = (id, event) => {
+    const { widget, onClose } = this.props;
     switch (id) {
       case "save":
-        this.props.onClose(this.state);
+        onClose(widget.name,this.state);
         break;
       case "close":
-        this.props.onClose(null);
+        onClose(null,null);
         break;
       default:
         break;

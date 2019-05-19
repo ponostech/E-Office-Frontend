@@ -11,14 +11,13 @@ import {
   ListItemText, TextField,
   Typography
 } from "@material-ui/core";
-import FormFieldDialog from "./FormFieldDialog";
 import Card from "../../../components/Card/Card";
 import SelectFieldDialog from "./widget-field-dialog/SelectFieldDialog";
-import FormBuilderView from "./FormBuilderView";
+import DynamicFormPreview from "./DynamicFormPreview";
 import TextFieldDialog from "./widget-field-dialog/TextFieldDialog";
 import NumberFieldDialog from "./widget-field-dialog/NumberFieldDialog";
 
-const options = [
+const widgets = [
   { name: "Textfield", icon: "keyboard_arrow_right" },
   { name: "Email", icon: "email" },
   { name: "Phone", icon: "phone" },
@@ -31,6 +30,7 @@ const options = [
 ];
 
 class FormBuilderContainer extends Component {
+
   constructor(props) {
     super(props);
 
@@ -40,7 +40,7 @@ class FormBuilderContainer extends Component {
       openSelectDialog:false,
       selectedWidget:null,
 
-      stateData:[],
+      formElement:{},
     }
   }
   handleClick = (identifier,event) => {
@@ -59,16 +59,15 @@ class FormBuilderContainer extends Component {
   };
 
   addWidget=(type,config)=>{
-    let data=[...this.state.stateData];
+    let data=this.state.formElement;
+    data[type]=config;
 
-    data.push(config)
     this.setState({
       openNumberDialog:false,
       openSelectDialog:false,
       openTextDialog:false,
-      stateData:data
-    })
-
+      formElement:data
+    });
   }
   render() {
     const self = this;
@@ -80,7 +79,7 @@ class FormBuilderContainer extends Component {
           <Divider/>
           <List>
             {
-              options.map(function(item, index) {
+              widgets.map(function(item, index) {
                 return (
                   <>
                     <ListItem onClick={self.handleClick.bind(this,item)} button={true} color={"primary"} key={index}>
@@ -104,17 +103,14 @@ class FormBuilderContainer extends Component {
         <GridItem md={9} lg={9}>
 
           <Card raised={true} style={{padding:30}}>
-            <FormBuilderView/>
+            <DynamicFormPreview formElements={this.state.formElement}/>
           </Card>
 
         </GridItem>
 
-        <TextFieldDialog widget={this.state.selectedWidget} open={this.state.openTextDialog}  onClose={()=>this.setState({openTextDialog:false})} />
-        <NumberFieldDialog widget={this.state.selectedWidget} open={this.state.openNumberDialog}  onClose={()=>this.setState({openNumberDialog:false})} />
-        <SelectFieldDialog widget={this.state.selectedWidget} open={this.state.openSelectDialog} onClose={(items)=>{
-          console.log(items)
-          this.setState({openSelectDialog:false})
-        }}  />
+        <TextFieldDialog widget={this.state.selectedWidget} open={this.state.openTextDialog}  onClose={this.addWidget.bind(this)} />
+        <NumberFieldDialog widget={this.state.selectedWidget} open={this.state.openNumberDialog}  onClose={this.addWidget.bind(this)} />
+        <SelectFieldDialog widget={this.state.selectedWidget} open={this.state.openSelectDialog} onClose={this.addWidget.bind(this)} />
       </GridContainer>
     );
   }
