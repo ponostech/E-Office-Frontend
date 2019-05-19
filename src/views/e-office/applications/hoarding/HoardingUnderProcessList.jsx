@@ -36,14 +36,18 @@ class HoardingUnderProcessList extends React.Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(HOARDING_LIST, {params: {status: 'in-process'}}).then(res => this.processResult(res));
+  getData = () => {
+    axios.get(HOARDING_LIST, {params: {status: 'in-process'}}).then(res => this.processResult(res));
+  };
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, tableData: res.data.data.hoarding_applications});
     this.doLoad(false);
   };
 
-  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
+  getStaffs = () => {
+    axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
+  };
 
   closeViewDialog = () => this.setState({openViewDialog: false});
 

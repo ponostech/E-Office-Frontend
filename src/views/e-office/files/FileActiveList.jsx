@@ -1,120 +1,89 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios";
-import { Grid, Icon, IconButton } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
+import {Grid, Icon, IconButton} from "@material-ui/core";
+import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import { ApiRoutes, FILE_CALL, FILE_TAKE } from "../../../config/ApiRoutes";
-import { DESK, FILE_DETAIL_ROUTE } from "../../../config/routes-constant/OfficeRoutes";
-import moment from "moment";
+import {ApiRoutes, FILE_TAKE} from "../../../config/ApiRoutes";
+import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../config/routes-constant/OfficeRoutes";
 import FileSendDialog from "../../common/SendDialog";
+import moment from "moment";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import LoadingView from "../../common/LoadingView";
-import { StaffService } from "../../../services/StaffService";
-import { FileService } from "../../../services/FileService";
-import { FILE_STATUS } from "../../../utils/Util";
-import SubmitDialog from "../../../components/SubmitDialog";
+import ErrorHandler, {SuccessHandler} from "../../common/StatusHandler";
 
-const currentUser = JSON.parse(localStorage.getItem("current_user"));
-
-class FileActiveList extends Component {
-  staffService = new StaffService();
-  fileService = new FileService();
+class FileNewList extends Component {
   state = {
+    staffs: [],
     tableData: [],
+    singleData: [],
     openAssignment: false,
-    openCallFile: false,
     openTakeFile: false,
-    id: "",
     loading: true,
-    file: [],
-    error: false,
-
-    staffs: []
+    errorMsg: '',
+    successMsg: '',
   };
 
   componentDidMount() {
-    const { doLoad } = this.props;
-    doLoad(true);
-    Promise.all([this.fetchFiles(), this.fetchStaff()])
-      .finally(() => {
-        this.setState({ loading: false });
-        doLoad(false);
-      });
+    this.props.doLoad(true);
+    this.getData();
   }
 
-  fetchStaff = () => {
-    this.staffService.fetch(errorMessage => this.setState({ error: true }),
-      staffs => this.setState({ staffs }))
-      .finally(() => console.log("staff request has been made"));
+  getData = () => {
+    axios.all([this.getTableData(), this.getStaffs()])
+        .then(axios.spread((tableData, staffs) => this.processDataResponse(tableData, staffs)))
+        .then(res => this.setState({loading: false}))
+        .then(res => this.props.doLoad(false))
+        .catch(err => this.setState({errorMsg: err.toString()}))
   };
 
-  fetchFiles = () => {
-    this.fileService.fetch(FILE_STATUS.ACTIVE, errorMessage => this.setState({ errorMessage }),
-      tableData => this.setState({ tableData }));
+  getTableData = () => axios.get(ApiRoutes.FILE, {params: {status: 'active'}});
+
+  processDataResponse = (tableData, staffs) => {
+    if (tableData.data.status && staffs.data.status)
+      this.setState({tableData: tableData.data.data.files, staffs: staffs.data.data.staffs});
+    else this.setState({loading: false, errorMsg: "Data Error"})
   };
 
-  getFiles() {
-    let config = {
-      params: { status: "active" }
-    };
-    axios.get(ApiRoutes.FILE, config)
-      .then(res => {
-        console.log(res.data);
-        if (res.data.status)
-          this.setState({ tableData: res.data.data.files, loading: false });
-        this.props.doLoad(false);
-      })
-      .catch(error => {
-        this.props.doLoad(false);
-        this.setState({ error: true, loading: false });
-      });
-  }
+  getStaffs = () => axios.get(ApiRoutes.GET_STAFF);
 
-  viewDetail = (id) => {
-    const { history } = this.props;
-    history.push(FILE_DETAIL_ROUTE(id));
+  sendFile = (id, recipient_id) => {
+    axios.post(FILE_SEND(id), {recipient_id})
+        .then(res => this.processSendResponse(res))
+        .catch(err => this.setState({errorMsg: err.toString()}));
   };
 
-  openAssignment = (data) => {
-    this.setState({ file: data, openAssignment: true });
+  processSendResponse = (res) => {
+    if (res.data.status) this.processSendResponseSuccess();
+    else this.setState({errorMsg: res.data.messages});
   };
 
-  takeFile = (data) => {
-    this.setState({ file: data, openTakeFile: true });
-  };
-  sendFile = (fileId, receipientId) => {
-    this.setState({ openAssignment: false, submit: true });
-    this.fileService.sendFile(fileId, receipientId, errorMessage => this.setState({ errorMessage }),
-      takeMessage => {
-        this.setState({ takeMessage });
-        setTimeout(function(handler) {
-          window.location.reload();
-        }, 3000);
-      }).finally(() => this.setState({ submit: false }));
+  processSendResponseSuccess = () => {
+    this.setState({successMsg: 'File sent successfully', errorMsg: '', openAssignment: false});
+    this.getTableData().then(res => this.setState({tableData: res.data.data.files}));
   };
 
-  confirmTakeFile = () => {
-    axios.post(FILE_TAKE(this.state.file.id))
-      .then(res => {
-        this.setState({ openTakeFile: false });
-        window.location.replace(DESK);
-      });
+  viewDetail = (id) => this.props.history.push(FILE_DETAIL_ROUTE(id));
+
+  openAssignment = (data) => this.setState({singleData: data, openAssignment: true});
+
+  closeAssignment = () => this.setState({singleData: [], openAssignment: false});
+
+  takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
+
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.id))
+      .then(res => this.confirmTakeFileResponse(res));
+
+  confirmTakeFileResponse = (res) => {
+    if (res.data.status) {
+      this.setState({successMsg: "File called successfully", openTakeFile: false});
+      setTimeout(() => this.props.history.push(DESK), 2000);
+    }
   };
 
-  callFile = (data) => {
-    this.setState({ file: data, openCallFile: true });
-  };
-
-  confirmCallFile = () => {
-    axios.post(FILE_CALL(this.state.file.id))
-      .then(res => {
-        this.setState({ openCallFile: false });
-        window.location.replace(DESK);
-      });
-  };
+  onStatusClose = () => this.setState({errorMsg: '', successMsg: ''});
 
   render() {
-    const { tableData } = this.state;
+    const {tableData, loading, openAssignment, errorMsg, successMsg, openTakeFile, singleData, staffs} = this.state;
 
     const tableOptions = {
       filterType: "checkbox",
@@ -124,13 +93,6 @@ class FileActiveList extends Component {
     };
 
     const tableColumns = [
-      {
-        name: "current_user_id",
-        options: {
-          display: false,
-          filter: false
-        }
-      },
       {
         name: "number",
         label: "FILE NUMBER",
@@ -146,34 +108,18 @@ class FileActiveList extends Component {
         }
       },
       {
-        name: "desk",
-        label: "FILE LOCATION",
-        options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            let data = "";
-            if (value.staff)
-              data = value.staff.name + "\n(" + value.staff.designation + ")";
-            return data;
-          }
-        }
-      },
-      {
         name: "created_at",
         label: "CREATED ON",
         options: {
           filter: false,
-          customBodyRender: (value, meta, updateValue) => {
+          customBodyRender: (value) => {
             return moment(value).format("Do MMMM YYYY");
           }
         }
       },
       {
         name: "branch",
-        label: "BRANCH",
-        options: {
-          filter: true,
-          display: false
-        }
+        label: "BRANCH"
       },
       {
         name: "id",
@@ -181,84 +127,55 @@ class FileActiveList extends Component {
         options: {
           filter: false,
           sort: false,
-          customBodyRender: (value, tableMeta, updateValue) => {
-            let file_user_id = tableMeta.rowData[0];
-            let { rowIndex } = tableMeta;
+          customBodyRender: (value, tableMeta) => {
+            let {rowIndex} = tableMeta;
             let data = this.state.tableData[rowIndex];
-            let button = "";
-
-            if (file_user_id === null) {
-              // In theory: he hi hman a ngai lo
-              button = <>
-                <IconButton variant="contained" color="primary" size="small"
-                            onClick={this.takeFile.bind(this, value)}>
-                  <Icon fontSize="small">desktop_mac</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="secondary" size="small"
-                            onClick={this.openAssignment.bind(this, data)}>
-                  <Icon fontSize="small">send</Icon>
-                </IconButton>
-              </>;
-            } else {
-              if (file_user_id !== currentUser.id) {
-                button = <IconButton variant="contained" color="primary" size="small"
-                                     onClick={this.callFile.bind(this, value)}><Icon
-                  fontSize="small">desktop_windows</Icon></IconButton>;
-              }
-            }
-
             return (
-              <>
-                <IconButton color="primary" size="small"
-                            aria-label="View Details" onClick={this.viewDetail.bind(this, data.id)}>
-                  <Icon fontSize="small">remove_red_eye</Icon>
-                </IconButton>
-                {button}
-              </>
+                <>
+                  <IconButton color="primary" size="small"
+                              aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
+                    <Icon fontSize="small">remove_red_eye</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                    <Icon fontSize="small">send</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small">desktop_mac</Icon>
+                  </IconButton>
+                </>
             );
           }
         }
       }
     ];
 
-    let files = <LoadingView/>;
-
-    if (!this.state.loading) {
-      if (!this.state.error) {
-        files = (
-          <>
-            <Grid item xs={12}>
-              <MUIDataTable title={"File: List of Active"} data={tableData} columns={tableColumns}
-                            options={tableOptions}
-              />
-            </Grid>
-          </>
-        );
-      } else {
-        files = <p style={{ textAlign: "center", width: "100%", fontSize: 15 }}>Something Went Wrong!</p>;
-      }
-    }
+    const files =
+        <Grid item xs={12}>
+          <MUIDataTable title={"File: List of New Files"} data={tableData} columns={tableColumns}
+                        options={tableOptions}/>
+        </Grid>;
 
     return (
-      <>
-        {files}
-        <FileSendDialog open={this.state.openAssignment}
-                        onSend={this.sendFile.bind(this)}
-                        staffs={this.state.staffs}
-                        onClose={this.closeAssignment} file={this.state.file}
-                        props={this.props}/>
-        <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"}
-                       message={"Do you want to call this file?"}
-                       onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
-                       onConfirm={this.confirmTakeFile.bind(this)}/>
-        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"}
-                       message={"Do you want to call this file?"}
-                       onCancel={() => this.setState({ openCallFile: false })} open={this.state.openCallFile}
-                       onConfirm={this.confirmCallFile.bind(this)}/>
-        <SubmitDialog open={this.state.submit} text={"Sending file ..."} title={"Send"}/>
-      </>
+        <>
+          {loading ? <LoadingView/> : files}
+
+          {openAssignment &&
+          <FileSendDialog onSend={this.sendFile.bind(this)} staffs={staffs} open={openAssignment}
+                          onClose={this.closeAssignment} file={singleData}
+                          props={this.props}/>}
+
+          {openTakeFile &&
+          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                         onConfirm={this.confirmTakeFile.bind(this)}/>}
+
+          {errorMsg && <ErrorHandler messages={errorMsg} onClose={this.onStatusClose}/>}
+          {successMsg && <SuccessHandler messages={successMsg} onClose={this.onStatusClose}/>}
+        </>
     );
   }
 }
 
-export default withRouter(FileActiveList);
+export default withRouter(FileNewList);

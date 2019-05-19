@@ -18,7 +18,7 @@ import HotelApplication from "../views/hotel/HotelApplication";
 import CheckLicense from "../views/landing-pages/license-checking/CheckLicense";
 import {LoginService} from "../services/LoginService";
 import ForgotPassword from "../views/common/ForgotPassword";
-import Form from "../views/Form";
+// import Form from "../views/Form";
 import FormBuilder from "../views/e-office/site-verification/FormBuilder";
 import FormBuilderContainer from "../views/e-office/site-verification/FormBuilderContainer";
 

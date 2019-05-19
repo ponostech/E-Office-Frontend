@@ -12,11 +12,10 @@ class ErrorHandler extends Component {
   }
 
   componentWillUpdate(nextProps, nextState, nextContext) {
-    if (this.state.open === false)
-      this.setState({open: true, errorMessage: nextProps.messages});
+    if (this.state.open === false) this.setState({open: true, errorMessage: nextProps.messages});
   }
 
-  onClose = () => this.setState({open: false, errorMessage: null});
+  onClose = () => {this.setState({open: false, errorMessage: null})};
 
   render() {
     const {open, errorMessage} = this.state;
@@ -35,15 +34,14 @@ class SuccessHandler extends Component {
   }
 
   componentWillUpdate(nextProps, nextState, nextContext) {
-    if (this.state.open === false)
-      this.setState({open: true, successMessage: nextProps.messages});
+    if (this.state.open === false) this.setState({open: true, successMessage: nextProps.messages});
   }
 
   onClose = () => this.setState({open: false, successMessage: null});
 
   render() {
     const {open, successMessage} = this.state;
-    return <OfficeSnackbar open={open} onClose={this.onClose} variant="success" message={successMessage}/>;
+    return <OfficeSnackbar open={open} onClose={this.props.onClose} variant="success" message={successMessage}/>;
   };
 }
 
