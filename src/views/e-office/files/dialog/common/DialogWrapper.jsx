@@ -17,7 +17,7 @@ const styles = {
     flex: 1
   },
   actionWrap: {
-    marginBottom: 60,
+    marginBottom: 20,
   }
 };
 
