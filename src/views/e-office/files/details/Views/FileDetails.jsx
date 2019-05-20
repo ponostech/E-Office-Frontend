@@ -4,10 +4,9 @@ import moment from 'moment';
 
 const fileDetails = (props) => {
   const file = props.file;
-  console.log("file", file);
   return (
       <List>
-        <CardHeader title="File Details"/>
+        <CardHeader title="File Details" subheader="See details below"/>
         <Divider/>
         <ListItem button>
           <ListItemText primary="File Number" secondary={file.number}/>
@@ -30,7 +29,7 @@ const fileDetails = (props) => {
         </ListItem>
         <Divider/>
         <ListItem button>
-          <ListItemText primary="Status" secondary={file.status}/>
+          <ListItemText primary="Status" secondary={file.status.toUpperCase()}/>
         </ListItem>
         <Divider/>
         {file.status === "active" ?

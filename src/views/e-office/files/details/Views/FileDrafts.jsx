@@ -5,6 +5,7 @@ import LoadingView from "../../../../common/LoadingView";
 import {FILE_DRAFT_LIST} from "../../../../../config/ApiRoutes";
 import ErrorHandler from "../../../../common/StatusHandler";
 import moment from "moment";
+import {CardHeader} from "@material-ui/core";
 
 class FileDrafts extends Component {
   state = {
@@ -44,7 +45,7 @@ class FileDrafts extends Component {
                                                              secondary={this.formatCreated(value)}/>);
     return (
         <>
-          <p>List of Drafts</p>
+          <CardHeader title="List of Drafts" subheader="See details below"/>
           {loading ? <LoadingView align="left"/> : data}
           {errorMsg && <ErrorHandler messages={this.state.errorMsg}/>}
         </>

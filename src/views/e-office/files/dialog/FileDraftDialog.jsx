@@ -8,12 +8,12 @@ import Editor from "../draft/Editor";
 import {DRAFT_CREATE, FILE_DRAFT_VIEW} from "../../../../config/ApiRoutes";
 import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
 import SubmitDialog from "../../../../components/SubmitDialog";
+import {withRouter} from "react-router-dom";
 
 const styles = {};
 
 class FileDraftDialog extends Component {
   state = {
-    fileId: 1,
     content: '',
     loading: false,
     successMsg: null,
@@ -25,19 +25,18 @@ class FileDraftDialog extends Component {
     this.setState({file: this.props.file});
   }
 
-  editorChange = (e) => {
-    this.setState({content: e.target.getContent()})
-  };
+  editorChange = (e) => this.setState({content: e.target.getContent()});
 
   processResponse = (res, fileId) => {
-    if (res.data.status) {
-      this.setState({successMsg: 'Submitted Successfully'});
-      setTimeout(function () {
-        window.location.replace(FILE_DRAFT_VIEW(fileId))
-      }, 1000)
-    } else {
-      this.setState({submit: false, loading: false, errorMsg: res.data.messages})
-    }
+    if (res.data.status) this.processSuccess(fileId);
+    else this.setState({submit: false, loading: false, errorMsg: res.data.messages})
+  };
+
+  processSuccess = (fileId) => {
+    this.setState({successMsg: 'Submitted Successfully'});
+    setTimeout(function () {
+      this.props.history.push(FILE_DRAFT_VIEW(fileId))
+    }, 1000)
   };
 
   storeData = () => {
@@ -47,23 +46,16 @@ class FileDraftDialog extends Component {
       type: 'general'
     };
     axios.post(DRAFT_CREATE, params)
-        .then(res => {
-          this.processResponse(res, this.props.file.id);
-        })
+        .then(res => this.processResponse(res, this.props.file.id))
         .catch(err => this.setState({submit: false, errorMsg: "Network Error"}));
   };
 
-  validate = () => {
-    if (this.state.content === "") {
-      this.setState({errorMsg: 'Content cannot be blank!'});
-      return false;
-    }
-    return true;
-  };
+  valid = () => this.state.content !== "";
 
   onSubmit = () => {
     this.setState({submit: true});
-    if (this.validate()) this.storeData();
+    if (this.valid()) this.storeData();
+    else this.setState({errorMsg: 'Content cannot be blank!'});
   };
 
   render() {
@@ -72,7 +64,7 @@ class FileDraftDialog extends Component {
     const content =
         <Grid container>
           <Grid item lg={12}>
-            <Editor onChange={this.editorChange} default={this.state.content}/>
+            <Editor onChange={this.editorChange} default={this.state.content} height={500}/>
           </Grid>
         </Grid>;
 
@@ -100,4 +92,4 @@ class FileDraftDialog extends Component {
   }
 }
 
-export default withStyles(styles)(FileDraftDialog);
+export default withRouter(withStyles(styles)(FileDraftDialog));

@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {withStyles, Drawer, List, Divider} from '@material-ui/core';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Icon from "@material-ui/core/Icon";
+import {withStyles, Drawer, List, Divider, ListItem, ListItemIcon, ListItemText, Icon} from '@material-ui/core';
 // import IconButton from '@material-ui/core/IconButton';
 // import MenuIcon from '@material-ui/icons/Menu';
 // import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -92,6 +88,9 @@ const styles = theme => ({
     //     flexGrow: 1,
     //     padding: theme.spacing.unit * 3,
   },
+  listHead: {
+    paddingLeft: 16
+  }
 });
 
 class FileMenuRight extends React.Component {
@@ -108,55 +107,49 @@ class FileMenuRight extends React.Component {
     const {classes, menus} = this.props;
 
     return (
-        <>
-          <Drawer
-              anchor="right"
-              variant="permanent"
-              className={classNames(classes.drawer, {
+        <Drawer
+            anchor="right"
+            variant="permanent"
+            className={classNames(classes.drawer, {
+              [classes.drawerOpen]: this.state.open,
+              [classes.drawerClose]: !this.state.open,
+            })}
+            classes={{
+              paper: classNames({
                 [classes.drawerOpen]: this.state.open,
                 [classes.drawerClose]: !this.state.open,
-              })}
-              classes={{
-                paper: classNames({
-                  [classes.drawerOpen]: this.state.open,
-                  [classes.drawerClose]: !this.state.open,
-                }),
-              }}
-              open={this.state.open}
-          >
-            <div className={classes.toolbar}>
-              <ListItem button>
-                <ListItemText classes={{primary: classes.menuName}} primary="CREATE"/>
-              </ListItem>
-            </div>
-            <Divider/>
-            <List>
-              {menus.create ? menus.create.map((item) => (
-                  <ListItem button key={item.name} onClick={() => this.props.click(item.url, 'modal', item.name)}>
-                    <ListItemIcon
-                        classes={{root: classes.menuIcon}}><Icon>{item.icon ? item.icon : 'edit'}</Icon></ListItemIcon>
-                    <ListItemText classes={{primary: classes.menuName}} primary={item.name}/>
-                  </ListItem>
-              )) : null}
-            </List>
-            <Divider/>
-            <div className={classes.toolbar}>
-              <ListItem button>
-                <ListItemText classes={{primary: classes.menuName}} primary="ACTION"/>
-              </ListItem>
-            </div>
-            <Divider/>
-            <List>
-              {menus.action ? menus.action.map((item) => (
-                  <ListItem button key={item.name} onClick={() => this.props.click(item.url, 'modal', item.name)}>
-                    <ListItemIcon
-                        classes={{root: classes.menuIcon}}><Icon>{item.icon ? item.icon : 'send'}</Icon></ListItemIcon>
-                    <ListItemText classes={{primary: classes.menuName}} primary={item.name}/>
-                  </ListItem>
-              )) : null}
-            </List>
-          </Drawer>
-        </>
+              }),
+            }}
+            open={this.state.open}
+        >
+          <List className={classes.toolbar + " " + classes.listHead}>
+            <ListItemText classes={{primary: classes.menuName}} primary="CREATE"/>
+          </List>
+          <Divider/>
+          <List>
+            {menus.create ? menus.create.map((item) => (
+                <ListItem button key={item.name} onClick={() => this.props.click(item.url, 'modal', item.name)}>
+                  <ListItemIcon
+                      classes={{root: classes.menuIcon}}><Icon>{item.icon ? item.icon : 'edit'}</Icon></ListItemIcon>
+                  <ListItemText classes={{primary: classes.menuName}} primary={item.name}/>
+                </ListItem>
+            )) : null}
+          </List>
+          <Divider/>
+          <List className={classes.toolbar + " " + classes.listHead}>
+            <ListItemText classes={{primary: classes.menuName}} primary="ACTION"/>
+          </List>
+          <Divider/>
+          <List>
+            {menus.action ? menus.action.map((item) => (
+                <ListItem button key={item.name} onClick={() => this.props.click(item.url, 'modal', item.name)}>
+                  <ListItemIcon
+                      classes={{root: classes.menuIcon}}><Icon>{item.icon ? item.icon : 'send'}</Icon></ListItemIcon>
+                  <ListItemText classes={{primary: classes.menuName}} primary={item.name}/>
+                </ListItem>
+            )) : null}
+          </List>
+        </Drawer>
     );
   }
 }
