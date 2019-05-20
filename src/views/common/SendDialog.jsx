@@ -17,6 +17,7 @@ import OfficeSelect from "../../components/OfficeSelect";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import { FormatStaff } from "../../utils/Util";
+import moment from "moment";
 
 const styles = {
   appBar: {
@@ -54,6 +55,7 @@ class SendDialog extends React.Component {
         <ListItem button>
           <ListItemText primary="Computer File. No." secondary={this.props.file.id}/>
         </ListItem>
+        <Divider/>
         <ListItem button>
           <ListItemText primary="File No." secondary={this.props.file.number}/>
         </ListItem>
@@ -71,7 +73,7 @@ class SendDialog extends React.Component {
         </ListItem>
         <Divider/>
         <ListItem button>
-          <ListItemText primary="Created On: " secondary={this.props.file.created_at}/>
+          <ListItemText primary="Created On: " secondary={moment(this.props.file.created_at).format('Do MMMM YYYY')}/>
         </ListItem>
       </>
     );
@@ -130,7 +132,7 @@ class SendDialog extends React.Component {
         </List>
         <DialogActions>
           <Button disabled={!Boolean(this.state.recipient_id)} color="primary"
-                  onClick={this.handleSubmit.bind(this)}>Assign</Button>
+                  onClick={this.handleSubmit.bind(this)}>{this.props.actionText ? this.props.actionText : "Assign"}</Button>
           <Button color="secondary" onClick={this.props.onClose}>Cancel</Button>
         </DialogActions>
       </Dialog>

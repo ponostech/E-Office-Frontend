@@ -19,14 +19,14 @@ import Editor from "../draft/Editor";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import Grid from "@material-ui/core/Grid";
-import { ApiRoutes, FILE_ACTION_TYPES, FILE_PRIORITIES } from "../../../../config/ApiRoutes";
-// import {convertToHTML} from "nib-converter";
+import { FILE_ACTION_TYPES, FILE_PRIORITIES } from "../../../../config/ApiRoutes";
 import LoadingView from "../../../common/LoadingView";
 import NotesheetAttachment from "../../../../components/NotesheetAttachment";
 import CalendarIcon from "@material-ui/icons/Today";
 
 import PropTypes from "prop-types";
 import { NotesheetService } from "../../../../services/NotesheetService";
+import DialogContent from "@material-ui/core/DialogContent";
 
 const styles = {
   appBar: {
@@ -141,20 +141,6 @@ class NoteCreateDialog extends React.Component {
           <Editor onChange={this.editorChange} default={this.state.content}/>
         </Grid>
         <Grid item={true} lg={6}>
-          <OfficeSelect
-            variant={"outlined"}
-            margin={"dense"}
-            value={this.state.action}
-            required={true}
-            fullWidth={true}
-            name={"action"}
-            error={!!this.state.actionError}
-            onBlur={this.handleSelectBlur.bind(this, "action")}
-            onChange={this.handleSelect.bind(this, "action")}
-            ClearAble={true}
-            label={"Select Action"}
-            helperText={this.state.actionError}
-            options={this.state.actionTypes}/>
 
           <OfficeSelect
             variant={"outlined"}
@@ -171,6 +157,21 @@ class NoteCreateDialog extends React.Component {
             helperText={this.state.priorityError}
             options={this.state.priorityTypes}/>
 
+          <OfficeSelect
+              variant={"outlined"}
+              margin={"dense"}
+              value={this.state.action}
+              required={true}
+              fullWidth={true}
+              name={"action"}
+              error={!!this.state.actionError}
+              onBlur={this.handleSelectBlur.bind(this, "action")}
+              onChange={this.handleSelect.bind(this, "action")}
+              ClearAble={true}
+              label={"Select Action"}
+              helperText={this.state.actionError}
+              options={this.state.actionTypes}/>
+
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DatePicker
               fullWidth={true}
@@ -183,7 +184,7 @@ class NoteCreateDialog extends React.Component {
                     <CalendarIcon/>
                   </InputAdornment>
               }}
-              label={"Fixed Date"}
+              label={"Fixed Date (if any)"}
               error={Boolean(this.state.dateError)}
               helperText={this.state.dateError}
               margin="dense"
@@ -194,6 +195,11 @@ class NoteCreateDialog extends React.Component {
               format={"dd/MM/yyyy"}
             />
           </MuiPickersUtilsProvider>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
         </Grid>
         <Grid item={true} lg={6}>
           <Typography variant={"h6"} >Notesheet Attachment</Typography>
@@ -224,14 +230,16 @@ class NoteCreateDialog extends React.Component {
             </Button>
           </Toolbar>
         </AppBar>
-        <List>
-          <Card>
-            <CardHeader title={"File No.: " + this.props.file.number}
-                        subheader={"Subject: " + this.props.file.subject}/>
-            <Divider/>
-            {loading ? <LoadingView/> : content}
-          </Card>
-        </List>
+        <DialogContent>
+          <List>
+            <Card>
+              <CardHeader title={"File No.: " + this.props.file.number}
+                          subheader={"Subject: " + this.props.file.subject}/>
+              <Divider/>
+              {loading ? <LoadingView/> : content}
+            </Card>
+          </List>
+        </DialogContent>
         <Divider/>
         {loading ? "" : <DialogActions>
           <Button color="primary" onClick={this.onSubmitNote.bind(this, "draft")}>Save Draft</Button>
