@@ -19,13 +19,11 @@ class NotesheetDraftView extends Component {
   componentDidMount() {
     axios.get(FILE_NOTESHEET(this.props.file.id) + "/drafts")
         .then(res => {
-          console.log("note", res);
           let noteSheet = res.data;
           if (noteSheet.status && noteSheet.data.notesheet_drafts.length > 0) {
             this.formatNote(noteSheet.data.notesheet_drafts);
             this.setState({loading: false});
           } else {
-            console.log("Fail Notesheet: ", noteSheet);
             this.setState({loading: false});
           }
         });
@@ -49,29 +47,13 @@ class NotesheetDraftView extends Component {
     this.setState({note: formattedNote});
   };
 
-  handleOpenCreateNote = () => {
-    let self = this;
-    this.setState({openDialog: true});
-    setTimeout(function () {
-      self.loadingNoteDialog(false);
-    }, 2000)
-  };
-
-  handleCloseCreateNote = () => {
-    this.setState({openDialog: false, loadingNoteDialog: true});
-  };
-
-  loadingNoteDialog = (value) => {
-    this.setState({loadingNoteDialog: value});
-  };
-
   render() {
     const {loading} = this.state;
     let noteList = <Loading align="left" color="secondary"/>;
 
     if (!loading)
       if (this.state.note.length)
-        noteList = <Timeline simple stories={this.state.note}/>;
+        noteList = <Timeline simple stories={this.state.note} draft/>;
       else
         noteList = <div style={{padding: 20}}>Draft Note not available.</div>;
 
