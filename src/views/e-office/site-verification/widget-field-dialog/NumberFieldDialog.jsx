@@ -17,63 +17,41 @@ import GridContainer from "../../../../components/Grid/GridContainer";
 class NumberFieldDialog extends Component {
 
   state = {
-    elementType: "Number",
-    elementConfig:{
-      type:"Number",
-      name: "name",
-      label: "Name",
-      placeholder: "placeholder",
-    },
-    validation:{
-      required: true,
-      minimum: 0,
-      maximum: 100,
-    },
-    valid:false,
+    name: "",
+    label: "",
+    placeholder: "",
+    minimum: 0,
+    maximum:100,
+    required:false,
+
     value: "Default value",
   };
   handleChange = (e) => {
     const { name, value } = e.target;
-    let elementConfig=this.state.elementConfig;
-    let validation=this.state.validation;
-    switch (name) {
-      case "name":
-        elementConfig.name=value;
-        this.setState({elementConfig});
-        break;
-      case "label":
-        elementConfig.label=value;
-        this.setState({elementConfig});
-        break;
-      case "placeholder":
-        elementConfig.placeholder=value;
-        this.setState({elementConfig});
-        break;
-      case "minimum":
-        validation.minimum=value;
-        this.setState({ validation});
-        break;
-      case "maximum":
-        validation.maximum = value;
-        this.setState({validation});
-        break;
-      case 'value':
-        this.setState({[name]:value});
-        break;
-    }
+    this.setState({[name]:value})
   };
 
   handleRadio = event => {
-    const validation={
-      required:event.target.checked
-    }
-    this.setState({ validation })
+    this.setState({ required:event.target.checked })
   };
   handleClick = (id, event) => {
     const { widget, onClose } = this.props;
     switch (id) {
       case "save":
-        onClose(widget.name,this.state);
+        const config = {
+          elementType: "Number",
+          elementConfig:{
+            name: this.state.name,
+            label: this.state.label,
+            placeholder: this.state.placeholder,
+          },
+          validation:{
+            required: this.state.required
+          },
+          valid:false,
+          value: this.state.value,
+        };
+        onClose(widget.name,config);
         break;
       case "close":
         onClose(null,null);
@@ -97,24 +75,25 @@ class NumberFieldDialog extends Component {
         <DialogContent>
 
           <GridContainer>
-            <TextField onChange={this.handleChange.bind(this)} required={true} value={this.state.elementConfig.name}
+            <TextField name={"name"} onChange={this.handleChange.bind(this)} required={true} value={this.state.name}
                        variant={"outlined"} fullWidth={true} margin={"dense"} label={"Name"}/>
-            <TextField onChange={this.handleChange.bind(this)} required={true} value={this.state.elementConfig.label}
+            <TextField name={"label"} onChange={this.handleChange.bind(this)} required={true} value={this.state.label}
                        variant={"outlined"} fullWidth={true} margin={"dense"} label={"Label"}/>
-            <TextField onChange={this.handleChange.bind(this)} required={true} value={this.state.elementConfig.placeholder}
+            <TextField name={"placeholder"} onChange={this.handleChange.bind(this)} required={true} value={this.state.placeholder}
                        variant={"outlined"} fullWidth={true} margin={"dense"} label={"PlaceHolder"}/>
-            <TextField onChange={this.handleChange.bind(this)} required={true} type={"number"}
-                       value={this.state.validation.minimum} variant={"outlined"} fullWidth={true} margin={"dense"}
+            <TextField name={"minimum"} onChange={this.handleChange.bind(this)} required={true} type={"number"}
+                       value={this.state.minimum} variant={"outlined"} fullWidth={true} margin={"dense"}
                        label={"Minimum"}/>
-            <TextField onChange={this.handleChange.bind(this)} required={true} type={"number"}
-                       value={this.state.validation.maximum} variant={"outlined"} fullWidth={true} margin={"dense"}
+            <TextField name={"maximum"} onChange={this.handleChange.bind(this)} required={true} type={"number"}
+                       value={this.state.maximum} variant={"outlined"} fullWidth={true} margin={"dense"}
                        label={"Maximum"}/>
 
             <FormControlLabel
               control={
                 <Switch
                   onChange={this.handleRadio.bind(this)}
-                  value={this.state.validation.required}
+                  value={this.state.required}
+                  checked={this.state.required}
                   color="primary"
                 />
               }

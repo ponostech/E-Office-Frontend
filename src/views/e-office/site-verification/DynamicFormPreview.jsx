@@ -1,85 +1,92 @@
 import React, { Component } from "react";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
-import { Button, CardActions, Divider, Typography } from "@material-ui/core";
+import { Button, CardActions, DialogActions, Divider, IconButton, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
-import OfficeInput from "../../../components/UI/Input/OfficeInput";
 import FormFieldFactory from "./FormFieldFactory";
+import TrashIcon from "@material-ui/icons/DeleteForeverOutlined";
 
 class DynamicFormPreview extends Component {
 
-  state={
-    title:"",
+  state = {
+    title: "",
     subTitle: "",
-    formElements:null
-  }
+    formElements: []
+  };
   submitHandler = event => {
     event.preventDefault();
     const formData = {};
-    for (let formElementIdentifier in this.state.formElements) {
-      formData[formElementIdentifier] = this.state.formElements[
-        formElementIdentifier
-        ].value;
+    for (let key in this.state.formElements) {
+      formData[key] = this.state.formElements[key].value;
     }
   };
 
+  removeItem = (index, e) => {
+    let formElements = this.state.formElements;
+    formElements.splice(index, 1);
+    this.setState({ formElements });
+  };
 
   componentWillReceiveProps(nextProps, nextContext) {
     this.setState({
-      formElements:nextProps.formElements
-    })
+      formElements: nextProps.formElements
+    });
   }
+
   inputChangedHandler = (event, inputIdentifier) => {
-    console.log(inputIdentifier)
+  console.log(inputIdentifier);
   };
 
   render() {
     const { formElements } = this.state;
-    const formElementsArray = [];
-    for (let key in this.state.formElements) {
-      formElementsArray.push({
-        id: key,
-        config: this.state.formElements[key]
-      });
-    }
 
     let form = (
-      <GridItem md={6}>
-      <form onSubmit={this.submitHandler}>
-        {formElementsArray.map(formElement => (
-          <FormFieldFactory
-            key={formElement.id}
-            elementType={formElement.config.elementType}
-            elementConfig={formElement.config.elementConfig}
-            value={formElement.config.value}
-            changed={event => this.inputChangedHandler(event, formElement.id)}
-          />
+      <>
+        {formElements.map((element, index) => (
+          <>
+            <GridItem md={5}>
+
+              <FormFieldFactory
+                key={element.key}
+                elementType={element.config.elementType}
+                elementConfig={element.config.elementConfig}
+                validation={element.config.validation}
+                value={element.config.value}
+                changed={event => this.inputChangedHandler(event, element.key)}
+              />
+            </GridItem>
+            <GridItem md={1}>
+              <IconButton onClick={this.removeItem.bind(this, index)}>
+                <TrashIcon color={"secondary"}/>
+              </IconButton>
+            </GridItem>
+          </>
         ))}
-        <CardActions>
-          <Button variant={"outlined"} color={"primary"}>Save</Button>
-          <Button variant={"outlined"} color={"secondary"}>Reset</Button>
-        </CardActions>
-      </form>
-      </GridItem>
+
+      </>
     );
     return (
-      <GridContainer style={{height:"80vh"}}>
+      <GridContainer justify={"flex-start"} alignItems={"flex-start"} style={{ height: "80vh" }}>
         <GridItem md={12} lg={12}>
-          <Typography contentEditable={true} variant={"h6"}>Title</Typography>
-          <Typography contentEditable={true} variant={"subtitle2"}>Subtitle</Typography>
+          <Typography  contentEditable={true} variant={"h6"}>title</Typography>
+          <Typography  contentEditable={true} variant={"subtitle2"}>Subtitle</Typography>
         </GridItem>
 
         <GridItem md={12}>
           <Divider/>
         </GridItem>
-
         {form}
+        <DialogActions>
+          <Button onClick={this.submitHandler} variant={"outlined"} color={"primary"}>Save</Button>
+          <Button onClick={e => this.setState({ formElements: [] })} variant={"outlined"}
+                  color={"secondary"}>Reset</Button>
+        </DialogActions>
       </GridContainer>
     );
   }
 }
 
-DynamicFormPreview.propTypes={
-  formElements:PropTypes.object.isRequired
-}
+DynamicFormPreview.propTypes = {
+  formElements: PropTypes.object.isRequired
+};
 export default DynamicFormPreview;

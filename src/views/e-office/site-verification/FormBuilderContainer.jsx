@@ -40,12 +40,15 @@ class FormBuilderContainer extends Component {
       openSelectDialog:false,
       selectedWidget:null,
 
-      formElement:{},
+      formElements:[],
     }
   }
   handleClick = (identifier,event) => {
     switch (identifier.name) {
-      case "Select":
+      case "Textfield":
+        this.setState({selectedWidget:identifier,openTextDialog:true});
+        break;
+        case "Select":
         this.setState({selectedWidget:identifier,openSelectDialog:true});
         break;
       case "Number":
@@ -58,16 +61,22 @@ class FormBuilderContainer extends Component {
     }
   };
 
-  addWidget=(type,config)=>{
-    let data=this.state.formElement;
-    data[type]=config;
-
+  addWidget=(key,config)=>{
     this.setState({
       openNumberDialog:false,
       openSelectDialog:false,
       openTextDialog:false,
-      formElement:data
     });
+    if (!key) {
+      return
+    }
+    let data=[...this.state.formElements];
+
+    let element={
+      key,
+      config
+    }
+    this.state.formElements.push(element)
   }
   render() {
     const self = this;
@@ -103,7 +112,7 @@ class FormBuilderContainer extends Component {
         <GridItem md={9} lg={9}>
 
           <Card raised={true} style={{padding:30}}>
-            <DynamicFormPreview formElements={this.state.formElement}/>
+            <DynamicFormPreview formElements={this.state.formElements}/>
           </Card>
 
         </GridItem>
