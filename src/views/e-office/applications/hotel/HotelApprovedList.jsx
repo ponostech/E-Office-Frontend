@@ -40,7 +40,7 @@ class HotelApprovedList extends React.Component {
   getData = () => axios.get(HOTEL_LIST, {params: {status: 'approve'}})
     .then(res => this.processResult(res))
     .catch(err => this.setState({errorMsg: err.toString()}))
-    .then(() => this.doLoad(false));
+    .then(() => this.props.doLoad(false));
 
   getStaffs = () => axios.get(GET_STAFF);
 
