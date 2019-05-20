@@ -77,6 +77,8 @@ class FileNewList extends Component {
     if (res.data.status) {
       this.setState({successMsg: "File called successfully", openTakeFile: false});
       setTimeout(() => this.props.history.push(DESK), 2000);
+    } else {
+      this.setState({errorMsg: res.data.messages, openTakeFile: false});
     }
   };
 

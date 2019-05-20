@@ -3,7 +3,7 @@ import axios from "axios";
 import {Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import {ApiRoutes, FILE_TAKE} from "../../../config/ApiRoutes";
+import {ApiRoutes, FILE_CALL, FILE_TAKE} from "../../../config/ApiRoutes";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../config/routes-constant/OfficeRoutes";
 import FileSendDialog from "../../common/SendDialog";
 import moment from "moment";
@@ -70,13 +70,15 @@ class FileNewList extends Component {
 
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.id))
+  confirmTakeFile = () => axios.post(FILE_CALL(this.state.singleData.id))
       .then(res => this.confirmTakeFileResponse(res));
 
   confirmTakeFileResponse = (res) => {
     if (res.data.status) {
       this.setState({successMsg: "File called successfully", openTakeFile: false});
       setTimeout(() => this.props.history.push(DESK), 2000);
+    } else {
+      this.setState({errorMsg: res.data.messages, openTakeFile: false});
     }
   };
 

@@ -29,6 +29,10 @@ import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import {NotesheetService} from "../../../../services/NotesheetService";
 import FileDraftDialog from "../dialog/FileDraftDialog";
 import FileDraftPermitDialog from "../dialog/FileDraftPermitDialog";
+import {FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
+import FileSendDialog from "../../../common/SendDialog";
+import {DESK} from "../../../../config/routes-constant/OfficeRoutes";
+import ConfirmDialog from "../../../../components/ConfirmDialog";
 
 const styles = theme => ({
   root: {
@@ -67,10 +71,14 @@ class FileView extends Component {
   state = {
     file: [],
     menus: [],
+    staffs: [],
     loading: true,
     openNote: false,
     openDraft: false,
     openDraftPermit: false,
+    openAssignment: false,
+    openCloseFileConfirmDialog: false,
+
     errorMessage: "",
     successMessage: "",
     submit: false
@@ -82,16 +90,24 @@ class FileView extends Component {
   }
 
   getData(id) {
-    axios.get(ApiRoutes.FILE_DETAIL + "/" + id)
-        .then(res => res.data.status ? this.processResponse(res) : this.setState({errorMessage: res.data.messages}))
+    axios.all([this.getFileData(id), this.getStaffs()])
+        .then(axios.spread((file, staffs) => this.processDataResponse(file, staffs)))
+        .then(res => this.setState({loading: false}))
+        .then(() => this.doLoad(false))
         .catch(err => this.setState({errorMessage: "Network Error!", loading: false}))
-        .then(() => this.doLoad(false));
   }
 
-  processResponse = (res) => this.setState({file: res.data.data.file, menus: res.data.data.menus, loading: false});
+  getFileData = (id) => axios.get(ApiRoutes.FILE_DETAIL + "/" + id);
+
+  getStaffs = () => axios.get(ApiRoutes.GET_STAFF);
+
+  processDataResponse = (file, staffs) => {
+    if (file.data.status && staffs.data.status)
+      this.setState({file: file.data.data.file, menus: file.data.data.menus, staffs: staffs.data.data.staffs});
+    else this.setState({loading: false, errorMessage: "Data Error"});
+  };
 
   handleItemClick = (url, mode = null, name = null) => {
-    if (!this.state.file.id) return true;
     if (mode === 'modal') this.openDialog(name);
     else this.props.history.push("/e-office/file/" + this.state.file.id + "/" + url);
   };
@@ -107,8 +123,14 @@ class FileView extends Component {
       case 'Draft Permit':
         this.setState({openDraftPermit: true});
         break;
+      case 'Send':
+        this.setState({openAssignment: true});
+        break;
+      case 'Close':
+        this.setState({openCloseFileConfirmDialog: true});
+        break;
       default:
-        console.log(name);
+        alert(name);
         break;
     }
   };
@@ -128,9 +150,28 @@ class FileView extends Component {
 
   closeDialog = (key) => this.setState({[key]: false});
 
+  sendFile = (id, recipient_id) => {
+    axios.post(FILE_SEND(id), {recipient_id})
+        .then(res => this.processSendResponse(res))
+        .catch(err => this.setState({errorMessage: err.toString()}));
+  };
+
+  processSendResponse = (res) => {
+    if (res.data.status) this.processSendResponseSuccess();
+    else this.setState({errorMessage: res.data.messages});
+  };
+
+  processSendResponseSuccess = () => {
+    this.setState({successMessage: 'File sent successfully', errorMessage: '', openAssignment: false});
+    setTimeout(() => this.props.history.push(DESK), 2000);
+  };
+
+  confirmCloseFile = () => {this.setState({successMessage: 'file closed successfully'})};
+
   render() {
     const {classes} = this.props;
     const {loading, openDraft, openDraftPermit, openNote, file, submit, successMessage, errorMessage, menus} = this.state;
+    const {openAssignment, staffs, openCloseFileConfirmDialog} = this.state;
 
     const view = (
         <>
@@ -177,6 +218,15 @@ class FileView extends Component {
     return (
         <Grid container className={classes.container}>
           <div className={classes.root}>{loading ? <LoadingView/> : view}</div>
+
+          {openCloseFileConfirmDialog &&
+          <ConfirmDialog onCancel={this.closeDialog.bind(this, 'openCloseFileConfirmDialog')}
+                         open={openCloseFileConfirmDialog} onConfirm={this.confirmCloseFile} message="Are you sure you want to close this file?"/>}
+
+          {openAssignment &&
+          <FileSendDialog onSend={this.sendFile.bind(this)} staffs={staffs} open={openAssignment}
+                          onClose={this.closeDialog.bind(this, 'openAssignment')} file={file}
+                          props={this.props} actionText="Send File"/>}
 
           {openNote && <CreateNoteDialog file={file} open={openNote} onClose={this.handleCloseCreateNote}/>}
 
