@@ -2,6 +2,7 @@ import React from "react";
 import cx from "classnames";
 import PropTypes from "prop-types";
 
+
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -11,6 +12,7 @@ import FormatQuote from "@material-ui/icons/FormatQuote";
 import timelineStyle from "../../assets/jss/material-dashboard-pro-react/components/timelineStyle.jsx";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "../Badge/Badge";
+import Button from '@material-ui/core/Button';
 
 function Timeline({...props}) {
   const {classes, stories, simple, draft} = props;
@@ -46,6 +48,10 @@ function Timeline({...props}) {
                     </div>
                 ) : null}
                 <div className={draft ? panelClasses + " " + classes.draft : panelClasses}>
+                  {draft && <div style={{float:"right"}}>
+                    <Button variant='text' color="primary">Edit</Button>
+                    <Button color="secondary">Delete</Button>
+                  </div>}
                   {prop.title ? (
                       <div className={classes.timelineHeading}>
                         <Badge color={prop.titleColor} classes={{badge: classes.timelineTitle}}>{prop.title}</Badge>
