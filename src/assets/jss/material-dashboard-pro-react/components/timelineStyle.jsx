@@ -172,10 +172,13 @@ const timelineStyle = theme => ({
   timelineSimplePanel: {
     width: "86%",
   },
+  draft: {
+    backgroundColor: "#ffffd4 !important",
+  },
   timelinePanelInverted: {
     [theme.breakpoints.up("sm")]: {
       float: "right",
-      backgroundColor: "#F8F8F8",
+      backgroundColor: "#eafeea",
       "&:before": {
         borderLeftWidth: "0",
         borderRightWidth: "15px",

@@ -77,11 +77,13 @@ class FileView extends Component {
     openDraft: false,
     openDraftPermit: false,
     openAssignment: false,
-    openCloseFileConfirmDialog: false,
+    openFileCloseDialog: false,
+    openFileArchiveDialog: false,
+    openFileReOpenDialog: false,
 
     errorMessage: "",
     successMessage: "",
-    submit: false
+    submitNote: false
   };
 
   componentDidMount() {
@@ -127,7 +129,13 @@ class FileView extends Component {
         this.setState({openAssignment: true});
         break;
       case 'Close':
-        this.setState({openCloseFileConfirmDialog: true});
+        this.setState({openFileCloseDialog: true});
+        break;
+      case 'Archive':
+        this.setState({openFileArchiveDialog: true});
+        break;
+      case 'Re-Open':
+        this.setState({openFileReOpenDialog: true});
         break;
       default:
         alert(name);
@@ -138,12 +146,12 @@ class FileView extends Component {
   handleCloseCreateNote = (data) => {
     this.setState({openNote: false});
     if (data) {
-      this.setState({submit: true});
+      this.setState({submitNote: true});
       this.noteService.create(data,
           errorMessage => this.setState({errorMessage}),
           successMessage => this.setState({successMessage}))
           .finally(() => {
-            this.setState({submit: false})
+            this.setState({submitNote: false})
           })
     }
   };
@@ -166,12 +174,27 @@ class FileView extends Component {
     setTimeout(() => this.props.history.push(DESK), 2000);
   };
 
-  confirmCloseFile = () => {this.setState({successMessage: 'file closed successfully'})};
+  confirmStatusChange = (status) => {
+    switch (status) {
+      case 'close':
+        this.setState({successMessage: 'File closed successfully'});
+        break;
+      case 'archive':
+        this.setState({successMessage: 'File archived successfully'});
+        break;
+      case 're-open':
+        this.setState({successMessage: 'File Re-Open successfully'});
+        break;
+      default:
+        alert("not match");
+        break;
+    }
+  };
 
   render() {
     const {classes} = this.props;
-    const {loading, openDraft, openDraftPermit, openNote, file, submit, successMessage, errorMessage, menus} = this.state;
-    const {openAssignment, staffs, openCloseFileConfirmDialog} = this.state;
+    const {loading, openDraft, openDraftPermit, openNote, file, submitNote, successMessage, errorMessage, menus} = this.state;
+    const {openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog} = this.state;
 
     const view = (
         <>
@@ -219,9 +242,18 @@ class FileView extends Component {
         <Grid container className={classes.container}>
           <div className={classes.root}>{loading ? <LoadingView/> : view}</div>
 
-          {openCloseFileConfirmDialog &&
-          <ConfirmDialog onCancel={this.closeDialog.bind(this, 'openCloseFileConfirmDialog')}
-                         open={openCloseFileConfirmDialog} onConfirm={this.confirmCloseFile} message="Are you sure you want to close this file?"/>}
+          {openFileCloseDialog &&
+          <ConfirmDialog onCancel={this.closeDialog.bind(this, 'openFileCloseDialog')}
+                         open={openFileCloseDialog} onConfirm={this.confirmStatusChange.bind(this, 'close')}
+                         message="Are you sure you want to close this file?"/>}
+          {openFileArchiveDialog &&
+          <ConfirmDialog onCancel={this.closeDialog.bind(this, 'openFileArchiveDialog')}
+                         open={openFileArchiveDialog} onConfirm={this.confirmStatusChange.bind(this, 'archive')}
+                         message="Are you sure you want to archive this file?"/>}
+          {openFileReOpenDialog &&
+          <ConfirmDialog onCancel={this.closeDialog.bind(this, 'openFileReOpenDialog')}
+                         open={openFileReOpenDialog} onConfirm={this.confirmStatusChange.bind(this, 're-open')}
+                         message="Are you sure you want to Re-Open this file?"/>}
 
           {openAssignment &&
           <FileSendDialog onSend={this.sendFile.bind(this)} staffs={staffs} open={openAssignment}
@@ -236,11 +268,10 @@ class FileView extends Component {
           {openDraftPermit && <FileDraftPermitDialog file={file} open={openDraftPermit}
                                                      onClose={this.closeDialog.bind(this, 'openDraftPermit')}/>}
 
-          {submit && <SubmitDialog open={submit} title="Create Notesheet" text="Notesheet is Creating ..."/>}
+          {submitNote && <SubmitDialog open={submitNote} title="Create Notesheet" text="Note is Creating ... Please wait"/>}
 
           <OfficeSnackbar variant={"success"} onClose={() => this.setState({successMessage: ""})}
                           open={Boolean(successMessage)} message={successMessage}/>
-
           <OfficeSnackbar variant={"error"} onClose={() => this.setState({errorMessage: ""})}
                           open={Boolean(errorMessage)} message={errorMessage}/>
         </Grid>
