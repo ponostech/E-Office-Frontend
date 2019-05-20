@@ -30,7 +30,7 @@ import NewBannerApplications from "../../views/e-office/applications/banners/Ban
 import UnderProcessBanner from "../../views/e-office/applications/banners/BannerUnderProcessList";
 import BannerGrantedList from "../../views/e-office/applications/banners/BannerApprovedList";
 import BannerRejectedList from "../../views/e-office/applications/banners/BannerRejectedList";
-import UnderProcessShopLicense from "../../views/e-office/applications/shop-license/ShopUnderProcessList";
+import UnderProcessShopLicense from "../../views/e-office/applications/shop-license/ShopInProcessList";
 import ApprovedShopLicense from "../../views/e-office/applications/shop-license/ShopApprovedList";
 import RejectedShopLicense from "../../views/e-office/applications/shop-license/ShopRejectedList";
 import AdvertiserNewList from "../../views/e-office/applications/advertisers/AdvertiserNewList";

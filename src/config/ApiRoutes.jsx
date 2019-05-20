@@ -2,6 +2,7 @@ export const HOARDING_LIST = "/hoardings/applications";
 
 export const ADVERTISER_LIST = "/staff/advertiser/applications";
 export const HOTEL_LIST = "/hotels";
+export const SHOP_LIST = "/shops";
 
 export const FILE_TAKE = (id) => {
   return `/files/${id}/take`;

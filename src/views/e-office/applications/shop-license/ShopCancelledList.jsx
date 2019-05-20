@@ -18,7 +18,7 @@ const styles = {
   actionIcon: {}
 };
 
-class ShopInProcessList extends React.Component {
+class ShopCancelledList extends React.Component {
   state = {
     shops: [],
     openMap: false,
@@ -36,7 +36,7 @@ class ShopInProcessList extends React.Component {
     this.getData();
     this.getStaffs();
   }
-  getData = () => axios.get(SHOP_LIST, {params: {status: 'approve'}})
+  getData = () => axios.get(SHOP_LIST, {params: {status: 'cancel'}})
     .then(res => this.processResult(res))
     .catch(err => this.setState({errorMsg: err.toString()}))
     .then(() => this.doLoad(false));
@@ -137,7 +137,7 @@ class ShopInProcessList extends React.Component {
       <>
         {loading ? <LoadingView/> : <Grid item xs={12}>
           <MUIDataTable
-            title={"SHOP: List of Approved Applications"}
+            title={"SHOP: List of Cancelled Applications"}
             data={shops}
             columns={tableColumns}
             options={tableOptions}
@@ -165,4 +165,4 @@ class ShopInProcessList extends React.Component {
   }
 }
 
-export default withRouter(withStyles(styles)(ShopInProcessList));
+export default withRouter(withStyles(styles)(ShopCancelledList));
