@@ -164,7 +164,6 @@ class NoteCreateDialog extends React.Component {
               label={"Select Action"}
               helperText={this.state.actionError}
               options={this.state.actionTypes}/>
-
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DatePicker
                 fullWidth={true}
