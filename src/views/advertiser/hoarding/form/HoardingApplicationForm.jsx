@@ -529,8 +529,7 @@ class HoardingApplicationForm extends Component {
           this.setState({
             coordinate: `Latitude: ${lat} , Longitude: ${lng}`
           });
-        }} fullScreen={true}
-                    isMarkerShown={true}/>
+        }} fullScreen={true} isMarkerShown={true}/>
 
         <OfficeSnackbar open={Boolean(this.state.errorMessage)} variant={"error"}
                         message={this.state.errorMessage}

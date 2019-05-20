@@ -31,7 +31,7 @@ class SelectFieldDialog extends Component {
       options:[]
     },
     validation: {
-      required: true
+      required: false
     },
     valid: false,
   };
@@ -73,6 +73,20 @@ class SelectFieldDialog extends Component {
     const { widget, onClose } = this.props;
     switch (id) {
       case "save":
+        const config = {
+          elementType: "Select",
+          elementConfig:{
+            name: this.state.elementConfig.name,
+            label: this.state.elementConfig.label,
+            placeholder: this.state.elementConfig.placeholder,
+            options:this.state.elementConfig.options
+          },
+          validation:{
+            required: this.state.validation.required
+          },
+          valid:false,
+          value: null,
+        };
         onClose(widget.name,this.state);
         break;
       case "close":
