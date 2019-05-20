@@ -36,7 +36,7 @@ class ShopInProcessList extends React.Component {
     this.getData();
     this.getStaffs();
   }
-  getData = () => axios.get(SHOP_LIST, {params: {status: 'approve'}})
+  getData = () => axios.get(SHOP_LIST, {params: {status: 'in-process'}})
     .then(res => this.processResult(res))
     .catch(err => this.setState({errorMsg: err.toString()}))
     .then(() => this.doLoad(false));
@@ -137,7 +137,7 @@ class ShopInProcessList extends React.Component {
       <>
         {loading ? <LoadingView/> : <Grid item xs={12}>
           <MUIDataTable
-            title={"SHOP: List of Approved Applications"}
+            title={"SHOP: List of Under Process Application"}
             data={shops}
             columns={tableColumns}
             options={tableOptions}
@@ -149,7 +149,7 @@ class ShopInProcessList extends React.Component {
         />
         {openViewDialog &&
         <ShopViewDialog open={openViewDialog} close={this.closeViewDialog}
-                        data={shop}/>}
+                         data={shop}/>}
 
         {openAssignment && staffs &&
         <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}

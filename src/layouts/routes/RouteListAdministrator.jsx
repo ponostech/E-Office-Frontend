@@ -32,9 +32,10 @@ import NewBannerApplications from "../../views/e-office/applications/banners/Ban
 import UnderProcessBanner from "../../views/e-office/applications/banners/BannerUnderProcessList";
 import BannerGrantedList from "../../views/e-office/applications/banners/BannerApprovedList";
 import BannerRejectedList from "../../views/e-office/applications/banners/BannerRejectedList";
-import UnderProcessShopLicense from "../../views/e-office/applications/shop-license/ShopUnderProcessList";
+import UnderProcessShopLicense from "../../views/e-office/applications/shop-license/ShopInProcessList";
 import ApprovedShopLicense from "../../views/e-office/applications/shop-license/ShopApprovedList";
 import RejectedShopLicense from "../../views/e-office/applications/shop-license/ShopRejectedList";
+import ShopCancelledList from "../../views/e-office/applications/shop-license/ShopCancelledList";
 import AdvertiserNewList from "../../views/e-office/applications/advertisers/AdvertiserNewList";
 import AdvertiserInProcessList from "../../views/e-office/applications/advertisers/AdvertiserInProcessList";
 import StaffList from "../../views/e-office/staff/StaffList";
@@ -42,6 +43,7 @@ import StaffRegistration from "../../views/e-office/staff/StaffRegistration";
 import HotelUnderProcessList from "../../views/e-office/applications/hotel/HotelInProcessList";
 import HotelApprovedList from "../../views/e-office/applications/hotel/HotelApprovedList";
 import HotelRejectedList from "../../views/e-office/applications/hotel/HotelRejectedList";
+import HotelCancelledList from "../../views/e-office/applications/hotel/HotelCancelledList";
 import HotelNewList from "../../views/e-office/applications/hotel/HotelNewList";
 import AdvertiserApprovedList from "../../views/e-office/applications/advertisers/AdvertiserApprovedList";
 import AdvertiserRejectedList from "../../views/e-office/applications/advertisers/AdvertiserRejectedList";
@@ -137,7 +139,8 @@ const routes = (props) => {
              render={e => <ApprovedShopLicense doLoad={props.doLoad}/>}/>
       <Route exact path={OfficeRoutes.REJECTED_SHOPLICENSE}
              render={e => <RejectedShopLicense doLoad={props.doLoad}/>}/>
-
+      <Route exact path={OfficeRoutes.CANCELLED_SHOPLICENSE}
+             render={e => <ShopCancelledList doLoad={props.doLoad}/>}/>
       {/*Shop Licensing*/}
       <Route exact path={OfficeRoutes.NEW_HOTELLICENSE}
              render={e => <HotelNewList doLoad={props.doLoad}/>}/>
@@ -147,6 +150,8 @@ const routes = (props) => {
              render={e => <HotelApprovedList doLoad={props.doLoad}/>}/>
       <Route exact path={OfficeRoutes.REJECTED_HOTELLICENSE}
              render={e => <HotelRejectedList doLoad={props.doLoad}/>}/>
+      <Route exact path={OfficeRoutes.CANCELLED_HOTELLICENSE}
+             render={e => <HotelCancelledList doLoad={props.doLoad}/>}/>
       {/*Admin*/}
       <Route exact path={OfficeRoutes.TRADE_NEW}
              render={e => <TradeNew doLoad={props.doLoad}/>}/>
