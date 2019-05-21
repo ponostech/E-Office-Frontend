@@ -45,6 +45,7 @@ const menu = (props) => {
                 {title: "Advertiser", link: OfficeRoutes.ADVERTISER_NEW_LIST},
                 {title: "Hoarding", link: OfficeRoutes.NEW_HOARDINGS},
                 {title: "Kiosks", link: OfficeRoutes.NEW_KIOSKS},
+                {title: "Banner", link: OfficeRoutes.NEW_BANNER},
                 {title: "Shop", link: OfficeRoutes.NEW_SHOPLICENSE},
                 {title: "Hotel & Lodging", link: OfficeRoutes.NEW_HOTELLICENSE},
               ]}
@@ -85,7 +86,6 @@ const menu = (props) => {
 
           <CustomDropdown
               dropdownList={[
-                {title: "New Application", link: OfficeRoutes.NEW_BANNER},
                 {title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_BANNER},
                 {title: "Approved List", link: OfficeRoutes.APPROVED_BANNER},
                 {title: "Reject List", link: OfficeRoutes.REJECTED_BANNER}
@@ -145,7 +145,7 @@ const menu = (props) => {
           <NavLink to={OfficeRoutes.SETTING}><IconButton><Icon>settings</Icon></IconButton></NavLink>
 
           <Tooltip title={"Click here to log user out"}>
-            <IconButton onClick={
+            <IconButton style={{color: "red"}} onClick={
               () => {
                 new LoginService()
                     .logout(errorMessage => console.log(errorMessage), successMessage => history.push(OfficeRoutes.HOME))

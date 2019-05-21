@@ -39,7 +39,7 @@ export const GET_PERMIT_TEMPLATE = (type) => {
   return `/permit-templates/${type}`;
 };
 export const GET_NOTE = (id) => `/notesheets/${id}`;
-
+export const FILE_STATUS_UPDATE = (id) => `files/${id}/update/status`;
 export class ApiRoutes {
   static BASE_URL = "http://139.59.26.3/api/v1";
   static LOGIN_ROUTE = "/auth/login";

@@ -10,7 +10,6 @@ import NoteSheetView from "../notesheet/NotesheetView";
 import DraftPermit from "../draft/DraftPermit";
 import DraftLetter from "../draft/DraftLetter";
 import FileSend from "../FileSend";
-import {ApiRoutes} from '../../../../config/ApiRoutes';
 import LoadingView from "../../../common/LoadingView";
 import FileDetails from "./Views/FileDetails";
 import FileMovements from "./Views/FileMovements";
@@ -32,6 +31,7 @@ import FileDraftPermitDialog from "../dialog/FileDraftPermitDialog";
 import {FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import FileSendDialog from "../../../common/SendDialog";
 import {DESK} from "../../../../config/routes-constant/OfficeRoutes";
+import {ApiRoutes, FILE_STATUS_UPDATE} from '../../../../config/ApiRoutes';
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 
 const styles = theme => ({
@@ -177,17 +177,36 @@ class FileView extends Component {
   confirmStatusChange = (status) => {
     switch (status) {
       case 'close':
-        this.setState({successMessage: 'File closed successfully'});
+        this.confirmStatusUdpate('closed');
         break;
       case 'archive':
-        this.setState({successMessage: 'File archived successfully'});
+        this.confirmStatusUdpate('archived');
         break;
       case 're-open':
-        this.setState({successMessage: 'File Re-Open successfully'});
+        this.confirmStatusUdpate('re-open');
         break;
       default:
         alert("not match");
         break;
+    }
+  };
+
+  updateStatus = (status) => axios.post(FILE_STATUS_UPDATE(this.state.file.id), {status: status});
+
+  confirmStatusUdpate = (status) => {
+    this.updateStatus(status)
+        .then(res => this.processStatusResponse(res, status))
+        .catch(err => this.setState({errorMessage: err.toString()}));
+  };
+
+  processStatusResponse = (res, status) => {
+    if (res.data.status) {
+      if (status === "closed") this.setState({successMessage: 'File closed successfully', openFileCloseDialog: false});
+      else if (status === "archived") this.setState({successMessage: 'File archive successfully', openFileArchiveDialog: false});
+      else if (status === "re-open") this.setState({successMessage: 'File re-opened successfully', openFileReOpenDialog: false});
+      setTimeout(() => this.props.history.push(DESK), 1000);
+    } else {
+      this.setState({errorMessage: res.data.messages});
     }
   };
 
@@ -268,7 +287,8 @@ class FileView extends Component {
           {openDraftPermit && <FileDraftPermitDialog file={file} open={openDraftPermit}
                                                      onClose={this.closeDialog.bind(this, 'openDraftPermit')}/>}
 
-          {submitNote && <SubmitDialog open={submitNote} title="Create Notesheet" text="Note is Creating ... Please wait"/>}
+          {submitNote &&
+          <SubmitDialog open={submitNote} title="Create Notesheet" text="Note is Creating ... Please wait"/>}
 
           <OfficeSnackbar variant={"success"} onClose={() => this.setState({successMessage: ""})}
                           open={Boolean(successMessage)} message={successMessage}/>
