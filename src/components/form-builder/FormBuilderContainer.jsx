@@ -133,7 +133,7 @@ class FormBuilderContainer extends Component {
           </GridItem>
           <GridItem md={9} lg={9}>
 
-            <Card raised={true} style={{ padding: 30 }}>
+            <Card style={{ padding: 20 }}>
               <DynamicFormPreview formElements={this.state.formElements}/>
             </Card>
 

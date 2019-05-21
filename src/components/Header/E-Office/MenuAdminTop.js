@@ -134,11 +134,24 @@ const menu = (props) => {
                 {title: "License Template", link: OfficeRoutes.LICENSE_TEMPLATE},
                 {title: "Rejected Template", link: OfficeRoutes.REJECTED_TEMPLATE},
                 {title: "Cancelled Template", link: OfficeRoutes.CANCELLED_TEMPLATE},
+                {title: "Site Verifications", link: OfficeRoutes.SITE_VERIFICATION_LIST},
 
               ]}
               linkClick={props.linkClick}
               buttonText={"Admin Control"}
               buttonProps={{color: "transparent"}}/>
+
+          <CustomDropdown
+            dropdownList={[
+              {title: "Hoarding", link: OfficeRoutes.HOARDING_SITE_VERIFICATION},
+              {title: "Kiosk", link: OfficeRoutes.KIOSK_SITE_VERIFICATION},
+              {title: "Shop", link: OfficeRoutes.SHOP_SITE_VERIFICATION},
+              {title: "Hotel", link: OfficeRoutes.HOTEL_SITE_VERIFICATION},
+
+            ]}
+            linkClick={props.linkClick}
+            buttonText={"Site Verification"}
+            buttonProps={{color: "transparent"}}/>
 
           <CustomDropdown
               dropdownList={[
