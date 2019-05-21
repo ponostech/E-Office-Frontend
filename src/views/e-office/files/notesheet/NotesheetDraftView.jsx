@@ -6,16 +6,18 @@ import {CardHeader, Divider, Icon, Tooltip, Fab} from "@material-ui/core";
 import Timeline from "../../../../components/Timeline/Timeline.jsx";
 import DefaultAvatar from "../../../../assets/img/default-avatar.png";
 import Loading from "../../../common/LoadingView"
-import {FILE_NOTESHEET} from "../../../../config/ApiRoutes";
+import {GET_NOTE, FILE_NOTESHEET} from "../../../../config/ApiRoutes";
 import CreateNoteDialog from "./NoteCreateDialog";
 
 class NotesheetDraftView extends Component {
   state = {
     note: [],
-    singleNote: null,
+    singleNote: [],
     openDialog: false,
+    editNote: false,
     loading: true,
     loadingNoteDialog: true,
+    errorMsg: '',
   };
 
   componentDidMount() {
@@ -28,6 +30,9 @@ class NotesheetDraftView extends Component {
     if (res.data.status && res.data.data.notesheet_drafts.length > 0) this.formatNote(res.data.data.notesheet_drafts);
   };
 
+  handleCloseCreateNote = (data) => {
+    this.setState({openDialog: false});
+  };
 
   formatNote = (note) => {
     let formattedNote = note.map(data => {
@@ -53,17 +58,28 @@ class NotesheetDraftView extends Component {
   };
 
   editNote = (id) => {
-    alert("Edit " + id)
+    this.getSingleNote(id)
+        .then(res => this.getSingleNoteResponse(res))
+        .then(res => this.setState({loading: false}))
+        .catch(err => this.setState({errorMsg: err.toString()}));
+  };
+
+  getSingleNote = (id) => axios.get(GET_NOTE(id));
+
+  getSingleNoteResponse = (res) => {
+    if (res.data.status) this.setState({singleNote: res.data.data.notesheet, openDialog: true, editNote: true});
+    else this.setState({errorMsg: res.data.messages});
   };
 
   render() {
-    const {loading} = this.state;
+    const {loading, openDialog} = this.state;
     const {file} = this.props;
     let noteList = <Loading align="left" color="secondary"/>;
 
     if (!loading)
       if (this.state.note.length)
-        noteList = <Timeline simple stories={this.state.note} onNoteDelete={this.deleteNote} onNoteEdit={this.editNote} draft/>;
+        noteList = <Timeline simple stories={this.state.note} onNoteDelete={this.deleteNote} onNoteEdit={this.editNote}
+                             draft/>;
       else
         noteList = <div style={{padding: 20}}>Draft Note not available.</div>;
 
@@ -73,7 +89,9 @@ class NotesheetDraftView extends Component {
           <Divider/>
           <br/>
           {noteList}
-          <CreateNoteDialog file={this.props.file} open={this.state.openDialog} onClose={this.handleCloseCreateNote}/>
+          {openDialog &&
+          <CreateNoteDialog file={this.props.file} note={this.state.singleNote} open={this.state.openDialog}
+                            edit={this.state.editNote} onClose={this.handleCloseCreateNote}/>}
         </>
     )
   };
