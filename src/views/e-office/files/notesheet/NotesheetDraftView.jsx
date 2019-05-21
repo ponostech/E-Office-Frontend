@@ -8,15 +8,18 @@ import DefaultAvatar from "../../../../assets/img/default-avatar.png";
 import Loading from "../../../common/LoadingView"
 import {GET_NOTE, FILE_NOTESHEET} from "../../../../config/ApiRoutes";
 import CreateNoteDialog from "./NoteCreateDialog";
+import ConfirmDialog from "../../../../components/ConfirmDialog";
 
 class NotesheetDraftView extends Component {
   state = {
     note: [],
     singleNote: [],
     openDialog: false,
+    openConfirmDelete: false,
     editNote: false,
     loading: true,
     loadingNoteDialog: true,
+    currentNoteId: null,
     errorMsg: '',
   };
 
@@ -30,9 +33,9 @@ class NotesheetDraftView extends Component {
     if (res.data.status && res.data.data.notesheet_drafts.length > 0) this.formatNote(res.data.data.notesheet_drafts);
   };
 
-  handleCloseCreateNote = (data) => {
-    this.setState({openDialog: false});
-  };
+  handleCloseCreateNote = (data) => this.setState({openDialog: false});
+
+  onCancelDelete = () => this.setState({openConfirmDelete: false});
 
   formatNote = (note) => {
     let formattedNote = note.map(data => {
@@ -53,8 +56,11 @@ class NotesheetDraftView extends Component {
     this.setState({note: formattedNote});
   };
 
-  deleteNote = (id) => {
-    alert("Delete " + id)
+  deleteNote = (id) => this.setState({openConfirmDelete: true, currentNoteId: id});
+
+  onConfirmDelete = () => {
+    this.setState({openConfirmDelete: false});
+    alert('Delete ' + this.state.currentNoteId);
   };
 
   editNote = (id) => {
@@ -72,7 +78,7 @@ class NotesheetDraftView extends Component {
   };
 
   render() {
-    const {loading, openDialog} = this.state;
+    const {loading, openDialog, openConfirmDelete, singleNote, editNote} = this.state;
     const {file} = this.props;
     let noteList = <Loading align="left" color="secondary"/>;
 
@@ -90,8 +96,10 @@ class NotesheetDraftView extends Component {
           <br/>
           {noteList}
           {openDialog &&
-          <CreateNoteDialog file={this.props.file} note={this.state.singleNote} open={this.state.openDialog}
-                            edit={this.state.editNote} onClose={this.handleCloseCreateNote}/>}
+          <CreateNoteDialog file={file} note={singleNote} open={openDialog}
+                            edit={editNote} onClose={this.handleCloseCreateNote}/>}
+          {openConfirmDelete &&
+          <ConfirmDialog onCancel={this.onCancelDelete} open={openConfirmDelete} onConfirm={this.onConfirmDelete}/>}
         </>
     )
   };
