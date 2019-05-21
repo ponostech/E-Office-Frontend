@@ -1,31 +1,18 @@
 import React from "react";
+import PropTypes from "prop-types";
 import axios from "axios";
 import moment from "moment";
-import {withStyles} from "@material-ui/core/styles/index";
-import Button from "@material-ui/core/Button/index";
-import Dialog from "@material-ui/core/Dialog/index";
-import List from "@material-ui/core/List/index";
-import Divider from "@material-ui/core/Divider/index";
-import AppBar from "@material-ui/core/AppBar/index";
-import IconButton from "@material-ui/core/IconButton/index";
-import Typography from "@material-ui/core/Typography/index";
+import {withStyles, Button, Dialog, List, Divider, AppBar, Typography, Toolbar, Slide} from "@material-ui/core";
+import {Card, CardContent, CardHeader, InputAdornment, Grid, DialogActions, IconButton} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import Slide from "@material-ui/core/Slide/index";
-import DialogActions from "@material-ui/core/DialogActions/index";
-import Toolbar from "@material-ui/core/Toolbar";
-import {Card, CardContent, CardHeader, InputAdornment} from "@material-ui/core";
 import OfficeSelect from "../../../../components/OfficeSelect";
 import Editor from "../draft/Editor";
 import {DatePicker, MuiPickersUtilsProvider} from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import Grid from "@material-ui/core/Grid";
 import {FILE_ACTION_TYPES, FILE_PRIORITIES} from "../../../../config/ApiRoutes";
 import LoadingView from "../../../common/LoadingView";
 import NotesheetAttachment from "../../../../components/NotesheetAttachment";
 import CalendarIcon from "@material-ui/icons/Today";
-
-import PropTypes from "prop-types";
-import {NotesheetService} from "../../../../services/NotesheetService";
 import DialogContent from "@material-ui/core/DialogContent";
 import ErrorHandler from "../../../common/StatusHandler";
 
@@ -46,23 +33,19 @@ function Transition(props) {
 }
 
 class NoteCreateDialog extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      content: "",
-      action: null,
-      priority: null,
-      fixedDate: null,
-      priorityTypes: [],
-      actionTypes: [],
+  state = {
+    content: "",
+    action: null,
+    priority: null,
+    fixedDate: null,
+    priorityTypes: [],
+    actionTypes: [],
 
-      files: [],
+    files: [],
 
-      hasError: false,
-      errorMsg: '',
-      loading: true
-    };
-
+    hasError: false,
+    errorMsg: '',
+    loading: true
   };
 
   componentDidMount() {
@@ -75,7 +58,11 @@ class NoteCreateDialog extends React.Component {
     this.setState({
       actionTypes: actions.data.data.actions,
       priorityTypes: priorities.data.data.priorities,
-      loading: false
+      loading: false,
+      content: this.props.note.content,
+      action: {"value": this.props.note.action, "label": this.props.note.action},
+      priority: {"value": this.props.note.priority, "label": this.props.note.priority},
+      fixedDate: this.props.note.fixed_date,
     });
   };
 
@@ -127,7 +114,7 @@ class NoteCreateDialog extends React.Component {
   handleClose = () => this.props.onClose(null);
 
   render() {
-    const {classes, open} = this.props;
+    const {classes, open, edit} = this.props;
     const {loading, errorMsg} = this.state;
     let content = <CardContent>
       <Grid container spacing={16}>
@@ -164,6 +151,7 @@ class NoteCreateDialog extends React.Component {
               label={"Select Action"}
               helperText={this.state.actionError}
               options={this.state.actionTypes}/>
+
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DatePicker
                 fullWidth={true}
@@ -200,6 +188,18 @@ class NoteCreateDialog extends React.Component {
       </Grid>
     </CardContent>;
 
+    const addActionList = <DialogActions>
+      <Button color="primary" onClick={this.onSubmitNote.bind(this, "draft")}>Save Draft</Button>
+      <Button color="primary" onClick={this.onSubmitNote.bind(this, "confirm")}>Save</Button>
+      <Button color="secondary" onClick={this.handleClose.bind(this)}>Cancel</Button>
+    </DialogActions>;
+
+    const editActionList = <DialogActions>
+      <Button color="primary" onClick={this.onSubmitNote.bind(this, "draft")}>Save Draft</Button>
+      <Button color="primary" onClick={this.onSubmitNote.bind(this, "confirm")}>Confirm</Button>
+      <Button color="secondary" onClick={this.handleClose.bind(this)}>Cancel Edit</Button>
+    </DialogActions>;
+
     return (
         <>
           <Dialog
@@ -233,18 +233,19 @@ class NoteCreateDialog extends React.Component {
               {errorMsg && <ErrorHandler messages={errorMsg}/>}
             </DialogContent>
             <Divider/>
-            {loading ? "" : <DialogActions>
-              <Button color="primary" onClick={this.onSubmitNote.bind(this, "draft")}>Save Draft</Button>
-              <Button color="primary" onClick={this.onSubmitNote.bind(this, "confirm")}>Save</Button>
-              <Button color="secondary" onClick={this.handleClose.bind(this)}>Cancel</Button>
-            </DialogActions>}
+            {loading ? "" : (edit ? editActionList : addActionList)}
           </Dialog>
         </>
     );
   };
 }
 
+NoteCreateDialog.defaultProps = {
+  edit: false,
+};
+
 NoteCreateDialog.propTypes = {
+  edit: PropTypes.bool,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   file: PropTypes.object.isRequired
