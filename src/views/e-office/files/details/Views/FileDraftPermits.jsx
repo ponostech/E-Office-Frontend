@@ -30,7 +30,8 @@ class FileDraftPermitList extends Component {
         .catch(err => this.setState({errorMsg: 'Network Error!'}))
   };
 
-  formatCreated = (value) => "Created On: " + moment(value.created_at).format("Do MMMM YYYY");
+  formatCreated = (value) => "Created by - " + value.creator.staff.name + " (" + value.creator.staff.designation + ")" +
+      " on " + moment(value.created_at).format("Do MMMM YYYY");
 
   closeDetails = () => this.setState({showDetails: false, loading: false});
 
