@@ -54,6 +54,12 @@ import PermitTemplates from "../../views/e-office/admin/templates/PermitTemplate
 import LicenseTemplate from "../../views/e-office/admin/templates/LicenseTemplate";
 import CancelTemplate from "../../views/e-office/admin/templates/CancelTemplate";
 import RejectTemplate from "../../views/e-office/admin/templates/RejectTemplate";
+import HoardingSiteVerification from "../../views/e-office/site-verification/HoardingSiteVerification";
+import KioskSiteVerification from "../../views/e-office/site-verification/KioskSiteVerification";
+import ShopSiteVerification from "../../views/e-office/site-verification/ShopSiteVerification";
+import HotelSiteVerification from "../../views/e-office/site-verification/HotelSiteVerification";
+import FormBuilderContainer from "../../components/form-builder/FormBuilderContainer";
+import SiteVerificationFormList from "../../views/e-office/site-verification/SiteVerificationFormList";
 
 const routes = (props) => {
   return (
@@ -162,6 +168,20 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.STAFF_LIST}
              render={e => <StaffList doLoad={props.doLoad}/>}/>
 
+      {/*site verification*/}
+      <Route exact path={OfficeRoutes.SITE_VERIFICATION_LIST}
+             render={e => <SiteVerificationFormList doLoad={props.doLoad}/>}/>
+             <Route exact path={OfficeRoutes.SITE_VERIFICATION}
+             render={e => <FormBuilderContainer doLoad={props.doLoad}/>}/>
+
+      <Route exact path={OfficeRoutes.HOARDING_SITE_VERIFICATION}
+             render={e => <HoardingSiteVerification doLoad={props.doLoad}/>}/>
+      <Route exact path={OfficeRoutes.KIOSK_SITE_VERIFICATION}
+             render={e => <KioskSiteVerification doLoad={props.doLoad}/>}/>
+      <Route exact path={OfficeRoutes.SHOP_SITE_VERIFICATION}
+             render={e => <ShopSiteVerification doLoad={props.doLoad}/>}/>
+      <Route exact path={OfficeRoutes.HOTEL_SITE_VERIFICATION}
+             render={e => <HotelSiteVerification doLoad={props.doLoad}/>}/>
 
       <Route exact path={OfficeRoutes.PERMIT_TEMPLATE}
              render={e => <PermitTemplates doLoad={props.doLoad}/>}/>

@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import GridContainer from "../../Grid/GridContainer";
+import WidgetConstant from "../WidgetConstant";
 
 class TextFieldDialog extends Component {
   state = {
@@ -68,7 +69,7 @@ class TextFieldDialog extends Component {
     switch (id) {
       case "save":
         const config = {
-          elementType: "Textfield",
+          elementType:widget.name,
           elementConfig:{
             name: this.state.elementConfig.name,
             label: this.state.elementConfig.label,

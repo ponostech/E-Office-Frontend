@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import GridItem from "../../../../components/Grid/GridItem";
-import FormFieldFactory from "../../../../components/form-builder/FormFieldFactory";
-import GridContainer from "../../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
+import FormFieldFactory from "../../../components/form-builder/FormFieldFactory";
+import GridContainer from "../../../components/Grid/GridContainer";
 import { Button, CardActions, Divider, Typography } from "@material-ui/core";
-import WidgetConstant from "../../../../components/form-builder/WidgetConstant";
+import WidgetConstant from "../../../components/form-builder/WidgetConstant";
 
 class HoardingSiteVerification extends Component {
   state = {

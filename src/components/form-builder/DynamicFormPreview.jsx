@@ -1,17 +1,26 @@
 import React, { Component } from "react";
-import GridContainer from "../Grid/GridContainer";
 import GridItem from "../Grid/GridItem";
-import { Button, DialogActions, Divider, IconButton, Typography } from "@material-ui/core";
-import PropTypes from "prop-types";
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, IconButton } from "@material-ui/core";
 import FormFieldFactory from "./FormFieldFactory";
 import TrashIcon from "@material-ui/icons/DeleteForeverOutlined";
+import OfficeSelect from "../OfficeSelect";
+import GridContainer from "../Grid/GridContainer";
 
+const options= [
+  { value: "hoarding", label: "Hoarding site verification" },
+  { value: "kiosk", label: "Kiosk site verification" },
+  { value: "shop", label: "Shop site verification" },
+  { value: "hotel", label: "Hotel site verification" }
+]
 class DynamicFormPreview extends Component {
 
   state = {
     title: "",
     subTitle: "",
-    formElements: []
+    formElements: [],
+
+    selectedType:{value:"hoarding", label:"Hoarding site verification"},
+
   };
   submitHandler = event => {
     event.preventDefault();
@@ -66,29 +75,34 @@ class DynamicFormPreview extends Component {
       </>
     );
     return (
-      <GridContainer justify={"flex-start"} alignItems={"flex-start"}>
-        <GridItem md={12} lg={12}>
-          <Typography contentEditable={true} variant={"h6"}>title</Typography>
-          <Typography contentEditable={true} variant={"subtitle2"}>Subtitle</Typography>
-        </GridItem>
+      <Card>
+        <CardHeader contentEditable={true} onChange={event => console.log(event)} title={"title"} subheader={"subheader"} action={
+          <OfficeSelect
+            label={"Type of site verification"}
+            variant={"outlined"}
+            margin={"dense"}
+            value={this.state.selectedType}
+            onChange={val => this.setState({ selectedType: val })}
+            options={options}
+          />
+        }/>
+        <Divider/>
+        <CardContent>
+          <GridContainer justify={"flex-start"} alignItems={"flex-start"}>
 
-        <GridItem md={12}>
-          <Divider/>
-        </GridItem>
-        <GridContainer style={{ height: "80vh" }}>
           {form}
-        </GridContainer>
-        <DialogActions>
+
+          </GridContainer>
+        </CardContent>
+        <Divider/>
+        <CardActions style={{justifyContent:"flex-end"}}>
           <Button onClick={this.submitHandler} variant={"outlined"} color={"primary"}>Save</Button>
           <Button onClick={e => this.setState({ formElements: [] })} variant={"outlined"}
                   color={"secondary"}>Reset</Button>
-        </DialogActions>
-      </GridContainer>
-    );
-  }
+        </CardActions>
+      </Card>
+    )
+  };
 }
 
-DynamicFormPreview.propTypes = {
-  formElements: PropTypes.object.isRequired
-};
 export default DynamicFormPreview;
