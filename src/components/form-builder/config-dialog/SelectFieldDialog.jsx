@@ -16,9 +16,9 @@ import {
   TextField,
   Typography
 } from "@material-ui/core";
-import TrashIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import GridContainer from "../../../../components/Grid/GridContainer";
-import CloseIcon from "@material-ui/icons/Close";
+import TrashIcon from "@material-ui/icons/DeleteForeverOutlined";
+import GridContainer from "../../Grid/GridContainer";
+import CloseIcon from "@material-ui/icons/CloseOutlined";
 import PropTypes from "prop-types";
 
 class SelectFieldDialog extends Component {
@@ -74,7 +74,7 @@ class SelectFieldDialog extends Component {
     switch (id) {
       case "save":
         const config = {
-          elementType: "Select",
+          elementType: widget.name,
           elementConfig:{
             name: this.state.elementConfig.name,
             label: this.state.elementConfig.label,
@@ -87,7 +87,7 @@ class SelectFieldDialog extends Component {
           valid:false,
           value: null,
         };
-        onClose(widget.name,this.state);
+        onClose(this.state.elementConfig.name,config);
         break;
       case "close":
         onClose(null,null);
@@ -126,14 +126,14 @@ class SelectFieldDialog extends Component {
   };
 
   render() {
-    const { open, onClose } = this.props;
+    const { open, onClose,widget } = this.props;
 
     const self = this;
     return (
-      <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"md"}>
+      <Dialog open={open} onClose={this.handleClick.bind(this,"close")} fullWidth={true} maxWidth={"md"}>
 
-        <CardHeader title={"Configuration"} action={
-          <IconButton onClick={onClose}>
+        <CardHeader title={`Configuration (${widget?widget.name:""})`} action={
+          <IconButton onClick={this.handleClick.bind(this,"close")}>
             <CloseIcon color={"action"}/>
           </IconButton>
         }/>

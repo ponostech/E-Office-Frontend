@@ -12,7 +12,7 @@ import {
   TextField
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import GridContainer from "../../../../components/Grid/GridContainer";
+import GridContainer from "../../Grid/GridContainer";
 
 class TextFieldDialog extends Component {
   state = {
@@ -91,13 +91,13 @@ class TextFieldDialog extends Component {
   };
 
   render() {
-    const { open, onClose } = this.props;
+    const { open, onClose ,widget} = this.props;
     const self = this;
 
     return (
-      <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"md"}>
+      <Dialog open={open} onClose={this.handleClick.bind(this,"close")} fullWidth={true} maxWidth={"md"}>
 
-        <CardHeader title={"Configuration"} action={
+        <CardHeader title={`Configuration (${widget?widget.name:""})`} action={
           <IconButton onClick={this.handleClick.bind(this,"close")}>
             <CloseIcon color={"action"}/>
           </IconButton>

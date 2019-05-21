@@ -20,7 +20,7 @@ import {LoginService} from "../services/LoginService";
 import ForgotPassword from "../views/common/ForgotPassword";
 // import Form from "../views/Form";
 import FormBuilder from "../views/e-office/site-verification/FormBuilder";
-import FormBuilderContainer from "../views/e-office/site-verification/FormBuilderContainer";
+import FormBuilderContainer from "../components/form-builder/FormBuilderContainer";
 import HoardingSiteVerification from "../views/e-office/site-verification/hoarding/HoardingSiteVerification";
 
 class LayoutLanding extends React.Component {

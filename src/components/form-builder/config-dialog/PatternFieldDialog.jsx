@@ -11,62 +11,74 @@ import {
   Switch,
   TextField
 } from "@material-ui/core";
-import CloseIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import GridContainer from "../../../../components/Grid/GridContainer";
+import CloseIcon from "@material-ui/icons/CloseOutlined";
+import GridContainer from "../../Grid/GridContainer";
+import WidgetConstant from "../WidgetConstant";
 
-class NumberFieldDialog extends Component {
+class PatternFieldDialog extends Component {
 
   state = {
     name: "",
     label: "",
     placeholder: "",
-    minimum: 0,
-    maximum:100,
-    required:false,
-
-    value: "Default value",
+    required: false,
+    pattern: "",
+    value: ""
   };
   handleChange = (e) => {
     const { name, value } = e.target;
-    this.setState({[name]:value})
+    this.setState({ [name]: value });
   };
 
   handleRadio = event => {
-    this.setState({ required:event.target.checked })
+    this.setState({ required: event.target.checked });
   };
   handleClick = (id, event) => {
     const { widget, onClose } = this.props;
     switch (id) {
       case "save":
         const config = {
-          elementType: "Number",
-          elementConfig:{
+          elementType: WidgetConstant.PATTERN,
+          elementConfig: {
             name: this.state.name,
             label: this.state.label,
             placeholder: this.state.placeholder,
           },
-          validation:{
-            required: this.state.required
+          validation: {
+            required: this.state.required,
+            pattern:this.state.pattern
           },
-          valid:false,
-          value: this.state.value,
+          valid: false,
+          value: this.state.value
         };
-        onClose(widget.name,config);
+        this.doClear();
+        onClose(this.state.name, config);
         break;
       case "close":
-        onClose(null,null);
+        this.doClear();
+        onClose(null, null);
         break;
       default:
         break;
     }
   };
 
+  doClear=()=>{
+    this.setState({
+      name:"",
+      label:"",
+      placeholder:"",
+      pattern:"",
+      value: "",
+      required:false
+    })
+  }
   render() {
-    const { open, onClose } = this.props;
+    const { open, onClose , widget } = this.props;
     return (
-      <Dialog open={open} onClose={onClose} fullWidth={true} maxWidth={"md"}>
+      <Dialog open={open} onClose={this.handleClick.bind(this,"close")} fullWidth={true} maxWidth={"md"}>
 
-        <CardHeader title={"Configuration"} action={
+        <CardHeader title={`Configuration (${widget?widget.name:""})`} action={
           <IconButton onClick={onClose}>
             <CloseIcon color={"action"}/>
           </IconButton>
@@ -79,14 +91,18 @@ class NumberFieldDialog extends Component {
                        variant={"outlined"} fullWidth={true} margin={"dense"} label={"Name"}/>
             <TextField name={"label"} onChange={this.handleChange.bind(this)} required={true} value={this.state.label}
                        variant={"outlined"} fullWidth={true} margin={"dense"} label={"Label"}/>
-            <TextField name={"placeholder"} onChange={this.handleChange.bind(this)} required={true} value={this.state.placeholder}
+            <TextField name={"placeholder"} onChange={this.handleChange.bind(this)} required={true}
+                       value={this.state.placeholder}
                        variant={"outlined"} fullWidth={true} margin={"dense"} label={"PlaceHolder"}/>
-            <TextField name={"minimum"} onChange={this.handleChange.bind(this)} required={true} type={"number"}
-                       value={this.state.minimum} variant={"outlined"} fullWidth={true} margin={"dense"}
-                       label={"Minimum"}/>
-            <TextField name={"maximum"} onChange={this.handleChange.bind(this)} required={true} type={"number"}
-                       value={this.state.maximum} variant={"outlined"} fullWidth={true} margin={"dense"}
-                       label={"Maximum"}/>
+
+            <TextField name={"pattern"} onChange={this.handleChange.bind(this)} required={true}
+                       value={this.state.pattern}
+                       variant={"outlined"} fullWidth={true} margin={"dense"} label={"Pattern"}/>
+
+                       <TextField name={"value"} onChange={this.handleChange.bind(this)} required={true}
+                       value={this.state.value}
+                       variant={"outlined"} fullWidth={true} margin={"dense"} label={"Default Value"}/>
+
 
             <FormControlLabel
               control={
@@ -103,7 +119,12 @@ class NumberFieldDialog extends Component {
 
         </DialogContent>
         <DialogActions>
-          <Button variant={"outlined"} color={"primary"} onClick={this.handleClick.bind(this, "save")}>Save</Button>
+          <Button disabled={
+            !Boolean(this.state.name) ||
+            !Boolean(this.state.label) ||
+            !Boolean(this.state.placeholder) ||
+            !Boolean(this.state.pattern)
+          } variant={"outlined"} color={"primary"} onClick={this.handleClick.bind(this, "save")}>Save</Button>
           <Button variant={"outlined"} color={"secondary"} onClick={this.handleClick.bind(this, "close")}>Close</Button>
         </DialogActions>
       </Dialog>
@@ -112,4 +133,4 @@ class NumberFieldDialog extends Component {
   }
 }
 
-export default NumberFieldDialog;
+export default PatternFieldDialog;

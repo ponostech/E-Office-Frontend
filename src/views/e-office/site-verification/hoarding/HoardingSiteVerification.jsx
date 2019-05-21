@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import GridItem from "../../../../components/Grid/GridItem";
-import FormFieldFactory from "../FormFieldFactory";
+import FormFieldFactory from "../../../../components/form-builder/FormFieldFactory";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import { Button, CardActions, Divider, Typography } from "@material-ui/core";
-import WidgetConstant from "../constant/WidgetConstant";
+import WidgetConstant from "../../../../components/form-builder/WidgetConstant";
 
 class HoardingSiteVerification extends Component {
   state = {
@@ -12,7 +12,7 @@ class HoardingSiteVerification extends Component {
 
     formElements: [
       {
-        elementType: "Textfield",
+        elementType: WidgetConstant.CHECKBOX,
         elementConfig: {
           name: "name",
           label: "Name of the applicant",
@@ -36,7 +36,7 @@ class HoardingSiteVerification extends Component {
         valid: false,
         value: ""
       }, {
-        elementType: WidgetConstant.SELECT,
+        elementType: WidgetConstant.RADIO,
         elementConfig: {
           name: "gender",
           label: "Gender",
@@ -56,17 +56,20 @@ class HoardingSiteVerification extends Component {
 
   };
 
-  checkValidity(value, rules) {
+  checkValidity(value, validation) {
     let isValid = true;
 
-    if (rules.required) {
+    if (validation.required) {
       isValid = Boolean(value);
+    }
+    else if (validation.pattern) {
+      isValid=value.match(validation.pattern)
     }
 
     return isValid;
   }
 
-  submitHandler = event => {
+  onSubmit = event => {
     const formData = {};
     const elements = this.state.formElements;
     let valid = true;
@@ -77,7 +80,9 @@ class HoardingSiteVerification extends Component {
       formData[element.elementConfig.name] = element.value.value ? element.value.value : element.value;
     });
     if (!valid) {
-
+      //TODO::display error message
+    }else{
+      //TODO::submit form data
     }
     console.log(formData);
   };
@@ -90,11 +95,12 @@ class HoardingSiteVerification extends Component {
     let element = newElements[key];
     if (element.elementType === WidgetConstant.SELECT) {
       element.value = event;
+    }else if (element.elementType === WidgetConstant.CHECKBOX) {
+      element.value=event.target.checked
     } else if (element.elementType === WidgetConstant.ADDRESS) {
       element.value = event;
     } else {
       element.value = event.target.value;
-
     }
     element.valid = this.checkValidity(element.value, element.validation);
 
@@ -142,7 +148,7 @@ class HoardingSiteVerification extends Component {
           <GridItem md={12}>
             <CardActions style={{ justifyContent: "flex-end" }}>
 
-              <Button variant={"outlined"} onClick={this.submitHandler.bind(this)} color={"primary"}> Submit</Button>
+              <Button variant={"outlined"} onClick={this.onSubmit.bind(this)} color={"primary"}> Submit</Button>
               {"\u00A0 "}
               {"\u00A0 "}
               {"\u00A0 "}

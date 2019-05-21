@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import GridContainer from "../../../components/Grid/GridContainer";
-import GridItem from "../../../components/Grid/GridItem";
-import { Button, CardActions, DialogActions, Divider, IconButton, Typography } from "@material-ui/core";
+import GridContainer from "../Grid/GridContainer";
+import GridItem from "../Grid/GridItem";
+import { Button, DialogActions, Divider, IconButton, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import FormFieldFactory from "./FormFieldFactory";
 import TrashIcon from "@material-ui/icons/DeleteForeverOutlined";
@@ -34,7 +34,7 @@ class DynamicFormPreview extends Component {
   }
 
   inputChangedHandler = (event, inputIdentifier) => {
-  console.log(inputIdentifier);
+    console.log(inputIdentifier);
   };
 
   render() {
@@ -66,16 +66,18 @@ class DynamicFormPreview extends Component {
       </>
     );
     return (
-      <GridContainer justify={"flex-start"} alignItems={"flex-start"} style={{ height: "80vh" }}>
+      <GridContainer justify={"flex-start"} alignItems={"flex-start"}>
         <GridItem md={12} lg={12}>
-          <Typography  contentEditable={true} variant={"h6"}>title</Typography>
-          <Typography  contentEditable={true} variant={"subtitle2"}>Subtitle</Typography>
+          <Typography contentEditable={true} variant={"h6"}>title</Typography>
+          <Typography contentEditable={true} variant={"subtitle2"}>Subtitle</Typography>
         </GridItem>
 
         <GridItem md={12}>
           <Divider/>
         </GridItem>
-        {form}
+        <GridContainer style={{ height: "80vh" }}>
+          {form}
+        </GridContainer>
         <DialogActions>
           <Button onClick={this.submitHandler} variant={"outlined"} color={"primary"}>Save</Button>
           <Button onClick={e => this.setState({ formElements: [] })} variant={"outlined"}

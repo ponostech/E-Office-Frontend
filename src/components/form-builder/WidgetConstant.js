@@ -6,5 +6,9 @@ export default class WidgetConstant {
   static CHECKBOX="Checkbox";
   static ADDRESS="Address";
   static COORDINATE="Coordinate";
+  static PATTERN="Pattern";
+  static EMAIL="Email";
+  static PHONE="Phone";
+
 
 };

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  Checkbox,
   FormControl,
   FormControlLabel,
   FormLabel, IconButton,
@@ -8,13 +9,13 @@ import {
   RadioGroup,
   TextField, Tooltip
 } from "@material-ui/core";
-import OfficeSelect from "../../../components/OfficeSelect";
-import WidgetConstant from "./constant/WidgetConstant";
-import AddressField from "../../../components/AddressField";
-import * as HoardingApplicationFormModel from "../../model/HoardingApplicationFormModel";
+import OfficeSelect from "../OfficeSelect";
+import WidgetConstant from "./WidgetConstant";
+import AddressField from "../AddressField";
+import * as HoardingApplicationFormModel from "../../views/model/HoardingApplicationFormModel";
 import MapIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import GMapDialog from "../../../components/GmapDialog";
-import GridContainer from "../../../components/Grid/GridContainer";
+import GMapDialog from "../GmapDialog";
+import GridContainer from "../Grid/GridContainer";
 
 class FormFieldFactory extends Component {
 state={
@@ -25,6 +26,21 @@ openMap:false
 
     switch (elementType) {
       case WidgetConstant.TEXTFIELD:
+        this.inputElement = (
+          <TextField
+            {...this.props.elementConfig}
+            variant={"outlined"}
+            fullWidth={true}
+            margin={"dense"}
+            required={validation.required}
+            label={elementConfig.label}
+            placeholder={elementConfig.placeholder}
+            value={value}
+            onChange={changed}
+          />
+        );
+        break;
+        case WidgetConstant.PATTERN:
         this.inputElement = (
           <TextField
             {...this.props.elementConfig}
@@ -58,6 +74,20 @@ openMap:false
             value={value}
             onChange={changed}
           />
+        );
+        break;
+        case WidgetConstant.CHECKBOX:
+        this.inputElement = (
+          <FormControlLabel
+            name={elementConfig.name}
+            style={{ whiteSpace: "pre-line" }}
+            control={
+              <Checkbox required={validation.required}
+                        color={"primary"}
+                        value={value}
+                        onChange={changed}/>
+            }
+            label={elementConfig.label}/>
         );
         break;
         case WidgetConstant.COORDINATE:
@@ -135,7 +165,7 @@ openMap:false
       case WidgetConstant.RADIO:
         this.inputElement = (
 
-          <FormControl component="div">
+          <FormControl fullWidth={true} margin={"dense"} component="div">
             <FormLabel required={validation.required}>{elementConfig.label}</FormLabel>
             <RadioGroup
               row={true}
