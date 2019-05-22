@@ -40,9 +40,7 @@ class NoteCreateDialog extends React.Component {
     fixedDate: null,
     priorityTypes: [],
     actionTypes: [],
-
     files: [],
-
     hasError: false,
     errorMsg: '',
     loading: true
@@ -56,14 +54,21 @@ class NoteCreateDialog extends React.Component {
   }
 
   processResult = (actions, priorities) => {
-    this.setState({
+    let stateList = {
       actionTypes: actions.data.data.actions,
       priorityTypes: priorities.data.data.priorities,
-      // content: this.props.note.content,
-      // action: {"value": this.props.note.action, "label": this.props.note.action},
-      // priority: {"value": this.props.note.priority, "label": this.props.note.priority},
-      // fixedDate: this.props.note.fixed_date,
-    });
+    };
+
+    if (this.props.note) { // if edit note
+      let tempList = {
+        content: this.props.note.content,
+        action: {"value": this.props.note.action, "label": this.props.note.action},
+        priority: {"value": this.props.note.priority, "label": this.props.note.priority},
+        fixedDate: this.props.note.fixed_date,
+      };
+      stateList = {...stateList, ...tempList};
+    }
+    this.setState(stateList);
   };
 
   getFileActionTypes = () => axios.get(FILE_ACTION_TYPES);
@@ -75,16 +80,8 @@ class NoteCreateDialog extends React.Component {
   handleSelect = (name, e) => this.setState({[name]: e});
 
   handleSelectBlur = (identifier, e) => {
-    switch (identifier) {
-      case "priority":
-        this.state.priority ? this.setState({priorityError: ""}) : this.setState({priorityError: "Priority Type is required"});
-        break;
-      case "action":
-        this.state.action ? this.setState({actionError: ""}) : this.setState({actionError: "Select Type of action"});
-        break;
-      default:
-        break;
-    }
+    if (identifier === 'priority') this.state.priority ? this.setState({priorityError: ""}) : this.setState({priorityError: "Priority Type is required"});
+    else if (identifier === 'action') this.state.action ? this.setState({actionError: ""}) : this.setState({actionError: "Select Type of action"});
   };
 
   editorChange = (e) => this.setState({content: e.target.getContent()});
@@ -102,7 +99,6 @@ class NoteCreateDialog extends React.Component {
 
       if (this.state.fixedDate) data.fixed_date = moment(this.state.fixedDate).format("YYYY-MM-DD");
       if (action === "confirm") data.draft = 0;
-
       this.props.onClose(data);
     } else {
       this.setState({errorMsg: 'Please fill all the required field.'})
@@ -241,11 +237,10 @@ class NoteCreateDialog extends React.Component {
 }
 
 NoteCreateDialog.defaultProps = {
-  edit: false,
+  note: null,
 };
 
 NoteCreateDialog.propTypes = {
-  edit: PropTypes.bool,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   file: PropTypes.object.isRequired
