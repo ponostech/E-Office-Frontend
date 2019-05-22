@@ -51,18 +51,18 @@ class NoteCreateDialog extends React.Component {
   componentDidMount() {
     axios.all([this.getFileActionTypes(), this.getFilePriorities()])
         .then(axios.spread((actions, priorities) => this.processResult(actions, priorities)))
-        .catch(err => this.setState({hasError: true}));
+        .then(res => this.setState({loading: false}))
+        .catch(err => this.setState({errorMsg: err.toString()}));
   }
 
   processResult = (actions, priorities) => {
     this.setState({
       actionTypes: actions.data.data.actions,
       priorityTypes: priorities.data.data.priorities,
-      loading: false,
-      content: this.props.note.content,
-      action: {"value": this.props.note.action, "label": this.props.note.action},
-      priority: {"value": this.props.note.priority, "label": this.props.note.priority},
-      fixedDate: this.props.note.fixed_date,
+      // content: this.props.note.content,
+      // action: {"value": this.props.note.action, "label": this.props.note.action},
+      // priority: {"value": this.props.note.priority, "label": this.props.note.priority},
+      // fixedDate: this.props.note.fixed_date,
     });
   };
 
