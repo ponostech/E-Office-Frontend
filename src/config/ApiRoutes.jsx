@@ -36,9 +36,10 @@ export const DRAFT_CREATE = "drafts";
 export const FILE_ACTION_TYPES = "setting/notesheet/actions";
 export const FILE_PRIORITIES = "setting/notesheet/priorities";
 export const GET_STAFF = "/staffs";
-export const GET_PERMIT_TEMPLATE = (type) => {
-  return `/permit-templates/${type}`;
-};
+export const GET_PERMIT_TEMPLATE = (type) => `/permit-templates/${type}`;
+export const GET_LICENSE_TEMPLATE = (type) => `/license-templates/${type}`;
+export const GET_REJECT_TEMPLATE = (type) => `/reject-templates/${type}`;
+export const GET_CANCEL_TEMPLATE = (type) => `/cancel-templates/${type}`;
 export const GET_NOTE = (id) => `/notesheets/${id}`;
 export const FILE_STATUS_UPDATE = (id) => `files/${id}/update/status`;
 export class ApiRoutes {

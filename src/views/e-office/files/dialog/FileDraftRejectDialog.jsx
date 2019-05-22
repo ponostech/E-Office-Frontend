@@ -5,13 +5,13 @@ import LoadingView from "../../../common/LoadingView";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import DialogWrapper from './common/DialogWrapper';
 import Editor from "../draft/Editor";
-import {DRAFT_CREATE, GET_PERMIT_TEMPLATE, FILE_DRAFT_PERMIT_VIEW} from "../../../../config/ApiRoutes";
+import {DRAFT_CREATE, GET_REJECT_TEMPLATE, FILE_DRAFT_PERMIT_VIEW} from "../../../../config/ApiRoutes";
 import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
 import SubmitDialog from "../../../../components/SubmitDialog";
 
 const styles = {};
 
-class FileDraftPermitDialog extends Component {
+class FileDraftRejectDialog extends Component {
   state = {
     content: '',
     loading: true,
@@ -25,7 +25,7 @@ class FileDraftPermitDialog extends Component {
   }
 
   getData = () => {
-    axios.get(GET_PERMIT_TEMPLATE('hoarding'))
+    axios.get(GET_REJECT_TEMPLATE(this.props.module))
         .then(res => {
           if (res.data.status) this.setState({loading: false, content: res.data.data.template.content});
           else this.setState({loading: false, errorMsg: res.data.messages});
@@ -98,7 +98,7 @@ class FileDraftPermitDialog extends Component {
 
     return (
         <>
-          <DialogWrapper title="Create Draft Permit" action={action} open={open} onClose={onClose}
+          <DialogWrapper title="Create Draft License" action={action} open={open} onClose={onClose}
                          content={dialogContent}/>
           {errorMsg && <ErrorHandler messages={errorMsg}/>}
           {successMsg && <SuccessHandler messages={successMsg}/>}
@@ -108,4 +108,4 @@ class FileDraftPermitDialog extends Component {
   }
 }
 
-export default withStyles(styles)(FileDraftPermitDialog);
+export default withStyles(styles)(FileDraftRejectDialog);
