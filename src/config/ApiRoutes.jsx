@@ -1,9 +1,11 @@
 export const HOARDING_LIST = "/hoardings/applications";
 export const KIOSK_LIST = "/kiosks/applications";
+export const LOCAL_COUNCIL = "/local-councils";
 
 export const ADVERTISER_LIST = "/staff/advertiser/applications";
 export const HOTEL_LIST = "/hotels";
 export const SHOP_LIST = "/shops";
+export const BANNER_LIST = "/banners";
 
 export const FILE_TAKE = (id) => {
   return `/files/${id}/take`;
