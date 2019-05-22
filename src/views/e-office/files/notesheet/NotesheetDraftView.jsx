@@ -6,12 +6,14 @@ import {CardHeader, Divider, Icon, Tooltip, Fab} from "@material-ui/core";
 import Timeline from "../../../../components/Timeline/Timeline.jsx";
 import DefaultAvatar from "../../../../assets/img/default-avatar.png";
 import Loading from "../../../common/LoadingView"
-import {GET_NOTE, FILE_NOTESHEET} from "../../../../config/ApiRoutes";
+import {GET_NOTE, FILE_NOTESHEET, DELETE_NOTE_DRAFT} from "../../../../config/ApiRoutes";
 import CreateNoteDialog from "./NoteCreateDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
+import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
 
 class NotesheetDraftView extends Component {
   state = {
+    currentFile: null,
     note: [],
     singleNote: [],
     openDialog: false,
@@ -20,17 +22,24 @@ class NotesheetDraftView extends Component {
     loading: true,
     loadingNoteDialog: true,
     currentNoteId: null,
+    successMsg: '',
     errorMsg: '',
   };
+  this;
 
   componentDidMount() {
-    this.getData().then(res => this.processResponse(res)).then(res => this.setState({loading: false}));
+    this.getNoteSheet(this.props.file.id);
   }
 
-  getData = () => axios.get(FILE_NOTESHEET(this.props.file.id) + "/drafts");
+  getNoteSheet = (id) => {
+    this.setState({currentFile: id});
+    this.getData(id).then(res => this.processResponse(res)).then(res => this.setState({loading: false}));
+  };
+
+  getData = (id) => axios.get(FILE_NOTESHEET(id) + "/drafts");
 
   processResponse = (res) => {
-    if (res.data.status && res.data.data.notesheet_drafts.length > 0) this.formatNote(res.data.data.notesheet_drafts);
+    if (res.data.status) this.formatNote(res.data.data.notesheet_drafts);
   };
 
   handleCloseCreateNote = (data) => this.setState({openDialog: false});
@@ -59,8 +68,19 @@ class NotesheetDraftView extends Component {
   deleteNote = (id) => this.setState({openConfirmDelete: true, currentNoteId: id});
 
   onConfirmDelete = () => {
-    this.setState({openConfirmDelete: false});
-    alert('Delete ' + this.state.currentNoteId);
+    axios.delete(DELETE_NOTE_DRAFT(this.state.currentNoteId))
+        .then(res => this.confirmDeleteResponse(res))
+        .then(res => this.setState({openConfirmDelete: false, currentNoteId: null}))
+        .catch(err => this.setState({errorMsg: err.toString()}))
+  };
+
+  confirmDeleteResponse = (res) => {
+    if (res.data.status) {
+      this.getNoteSheet(this.state.currentFile);
+      this.setState({successMsg: res.data.messages, loading: true});
+    } else {
+      this.setState({errorMsg: res.data.message})
+    }
   };
 
   editNote = (id) => {
@@ -77,8 +97,10 @@ class NotesheetDraftView extends Component {
     else this.setState({errorMsg: res.data.messages});
   };
 
+  closeStatusDialog = () => this.setState({errorMsg: '', successMsg: ''});
+
   render() {
-    const {loading, openDialog, openConfirmDelete, singleNote, editNote} = this.state;
+    const {loading, openDialog, openConfirmDelete, singleNote, editNote, successMsg, errorMsg} = this.state;
     const {file} = this.props;
     let noteList = <Loading align="left" color="secondary"/>;
 
@@ -100,6 +122,9 @@ class NotesheetDraftView extends Component {
                             edit={editNote} onClose={this.handleCloseCreateNote}/>}
           {openConfirmDelete &&
           <ConfirmDialog onCancel={this.onCancelDelete} open={openConfirmDelete} onConfirm={this.onConfirmDelete}/>}
+
+          {errorMsg && <ErrorHandler messages={errorMsg} open={errorMsg} onClose={this.closeStatusDialog}/>}
+          {successMsg && <SuccessHandler messages={successMsg} open={successMsg} onClose={this.closeStatusDialog}/>}
         </>
     )
   };

@@ -30,7 +30,7 @@ export const FILE_DRAFT_LIST = (id, type = 'general') => {
 export const GET_DRAFT = (id) => {
   return `/drafts/${id}`;
 };
-
+export const DELETE_NOTE_DRAFT = (id) => `/notesheets/${id}`;
 export const DRAFT_CREATE = "drafts";
 export const FILE_ACTION_TYPES = "setting/notesheet/actions";
 export const FILE_PRIORITIES = "setting/notesheet/priorities";
