@@ -1,9 +1,20 @@
 import React, {Component} from 'react';
-import {AppBar, Toolbar, IconButton, withStyles} from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  withStyles,
+  TableBody,
+  TableRow,
+  TableCell,
+  Table,
+  TableHead
+} from "@material-ui/core";
 import {Button, List, Typography, Card, DialogContent, DialogActions, Dialog, Slide} from "@material-ui/core";
 import DetailViewRow from "../../../common/DetailViewRow";
 import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
+import GridItem from "../../../../common/BannerApplicationDialog";
 
 const styles = {
   appBar: {
@@ -24,7 +35,7 @@ function Transition(props) {
 class BannerViewDialog extends Component {
   render() {
     console.log(this.props);
-    const {classes, data} = this.props;
+    const {classes, data, now, then, diff, duration, result} = this.props;
     return (
         <Dialog
             fullScreen
@@ -38,7 +49,7 @@ class BannerViewDialog extends Component {
                 <CloseIcon/>
               </IconButton>
               <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-                View Hotel/Lodging Application
+                View Banner Application
               </Typography>
               <Button onClick={this.props.close} color="inherit">
                 Close
@@ -48,16 +59,52 @@ class BannerViewDialog extends Component {
           <DialogContent>
             <List>
               <Card>
-                <DetailViewRow primary="Name of Applicant" secondary={data.owner} />
-                <DetailViewRow primary="Type of Applicant" secondary={data.type.toUpperCase()} />
-                <DetailViewRow primary="Owner Address" secondary={data.owner_address} />
+                <DetailViewRow primary="Name of Applicant" secondary={data.name} />
+                <DetailViewRow primary="Type of Applicant" secondary={data.applicant_type.toUpperCase()} />
+                <DetailViewRow primary="Owner Address" secondary={data.address} />
                 <DetailViewRow primary="Mobile" secondary={data.phone} />
                 <DetailViewRow primary="Shop Name" secondary={data.name} />
                 <DetailViewRow primary="Proposed Location" secondary={data.address} />
                 <DetailViewRow primary="Details of Business" secondary={data.details} />
                 <DetailViewRow primary="Date of Application" secondary={moment(data.created_at).format("Do MMMM YYYY")} />
-                <DetailViewRow primary="Status" secondary={data.status.toUpperCase()} />
-              </Card>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Length</TableCell>
+                      <TableCell>Height</TableCell>
+                      <TableCell>Locations</TableCell>
+                      <TableCell>From</TableCell>
+                      <TableCell>To</TableCell>
+                      <TableCell>No of days</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data?
+                      data.advertisements.map(function(item, index) {
+                        let now  = item.from;
+                        let then = item.to;
+                       // then  = moment(then).format('D-MM-YYYY');
+                        //now   = moment(now).format('D-MM-YYYY');
+                        let diff = moment(then).diff(moment(now),'days');
+                        let duration = moment.duration(diff);
+                        console.log(moment(diff));
+                        return (
+                          <TableRow key={index}>
+                            <TableCell>{item.length}</TableCell>
+                            <TableCell>{item.height}</TableCell>
+                            <TableCell>{item.locations}</TableCell>
+                            <TableCell>{item.from}</TableCell>
+                            <TableCell>{item.to}</TableCell>
+                            <TableCell>
+                              {diff}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      }):""
+                    }
+                  </TableBody>
+                </Table>
+               </Card>
             </List>
           </DialogContent>
           <DialogActions>

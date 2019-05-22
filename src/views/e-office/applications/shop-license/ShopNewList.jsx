@@ -53,7 +53,7 @@ class ShopNewList extends React.Component {
 
   closeAssignment = () => this.setState({file: null, openAssignment: false});
 
-  takeFile = (data) => this.setState({hotel: data, openTakeFile: true});
+  takeFile = (data) => this.setState({shop: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.shop.file.id))
     .then(res => this.props.history.push(DESK));
