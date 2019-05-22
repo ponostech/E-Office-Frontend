@@ -47,7 +47,7 @@ class FileDraftDialog extends Component {
     };
     axios.post(DRAFT_CREATE, params)
         .then(res => this.processResponse(res, this.props.file.id))
-        .catch(err => this.setState({submit: false, errorMsg: "Network Error"}));
+        .catch(err => this.setState({submit: false, errorMsg: err.toString()}));
   };
 
   valid = () => this.state.content !== "";

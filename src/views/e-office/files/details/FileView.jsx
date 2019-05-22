@@ -28,6 +28,9 @@ import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import {NotesheetService} from "../../../../services/NotesheetService";
 import FileDraftDialog from "../dialog/FileDraftDialog";
 import FileDraftPermitDialog from "../dialog/FileDraftPermitDialog";
+import FileDraftLicenseDialog from "../dialog/FileDraftLicenseDialog";
+import FileDraftRejectDialog from "../dialog/FileDraftRejectDialog";
+import FileDraftCancelDialog from "../dialog/FileDraftCancelDialog";
 import {FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import FileSendDialog from "../../../common/SendDialog";
 import {DESK} from "../../../../config/routes-constant/OfficeRoutes";
@@ -72,18 +75,21 @@ class FileView extends Component {
     file: [],
     menus: [],
     staffs: [],
-    loading: true,
+    moduleName: null,
     openNote: false,
     openDraft: false,
     openDraftPermit: false,
+    openDraftLicense: false,
+    openDraftReject: false,
+    openDraftCancel: false,
     openAssignment: false,
     openFileCloseDialog: false,
     openFileArchiveDialog: false,
     openFileReOpenDialog: false,
-
     errorMessage: "",
     successMessage: "",
-    submitNote: false
+    submitNote: false,
+    loading: true
   };
 
   componentDidMount() {
@@ -109,12 +115,12 @@ class FileView extends Component {
     else this.setState({loading: false, errorMessage: "Data Error"});
   };
 
-  handleItemClick = (url, mode = null, name = null) => {
-    if (mode === 'modal') this.openDialog(name);
+  handleItemClick = (url, mode = null, name = null, moduleName = null) => {
+    if (mode === 'modal') this.openDialog(name, moduleName);
     else this.props.history.push("/e-office/file/" + this.state.file.id + "/" + url);
   };
 
-  openDialog = (name) => {
+  openDialog = (name, moduleName) => {
     switch (name) {
       case CREATE_NAME.CREATE_NOTE:
         this.setState({openNote: true});
@@ -122,8 +128,17 @@ class FileView extends Component {
       case CREATE_NAME.CREATE_DRAFT:
         this.setState({openDraft: true});
         break;
+      case 'Draft License':
+        this.setState({openDraftLicense: true});
+        break;
       case 'Draft Permit':
         this.setState({openDraftPermit: true});
+        break;
+      case 'Draft Reject':
+        this.setState({openDraftReject: true});
+        break;
+      case 'Draft Cancel':
+        this.setState({openDraftCancel: true});
         break;
       case 'Send':
         this.setState({openAssignment: true});
@@ -141,6 +156,7 @@ class FileView extends Component {
         alert(name);
         break;
     }
+    this.setState({moduleName: moduleName})
   };
 
   handleCloseCreateNote = (data) => {
@@ -202,8 +218,14 @@ class FileView extends Component {
   processStatusResponse = (res, status) => {
     if (res.data.status) {
       if (status === "closed") this.setState({successMessage: 'File closed successfully', openFileCloseDialog: false});
-      else if (status === "archived") this.setState({successMessage: 'File archive successfully', openFileArchiveDialog: false});
-      else if (status === "re-open") this.setState({successMessage: 'File re-opened successfully', openFileReOpenDialog: false});
+      else if (status === "archived") this.setState({
+        successMessage: 'File archive successfully',
+        openFileArchiveDialog: false
+      });
+      else if (status === "re-open") this.setState({
+        successMessage: 'File re-opened successfully',
+        openFileReOpenDialog: false
+      });
       setTimeout(() => this.props.history.push(DESK), 1000);
     } else {
       this.setState({errorMessage: res.data.messages});
@@ -213,7 +235,8 @@ class FileView extends Component {
   render() {
     const {classes} = this.props;
     const {loading, openDraft, openDraftPermit, openNote, file, submitNote, successMessage, errorMessage, menus} = this.state;
-    const {openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog} = this.state;
+    const {openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog, openDraftLicense} = this.state;
+    const {moduleName, openDraftReject, openDraftCancel} = this.state;
 
     const view = (
         <>
@@ -273,7 +296,6 @@ class FileView extends Component {
           <ConfirmDialog onCancel={this.closeDialog.bind(this, 'openFileReOpenDialog')}
                          open={openFileReOpenDialog} onConfirm={this.confirmStatusChange.bind(this, 're-open')}
                          message="Are you sure you want to Re-Open this file?"/>}
-
           {openAssignment &&
           <FileSendDialog onSend={this.sendFile.bind(this)} staffs={staffs} open={openAssignment}
                           onClose={this.closeDialog.bind(this, 'openAssignment')} file={file}
@@ -284,8 +306,14 @@ class FileView extends Component {
           {openDraft &&
           <FileDraftDialog file={file} open={openDraft} onClose={this.closeDialog.bind(this, 'openDraft')}/>}
 
-          {openDraftPermit && <FileDraftPermitDialog file={file} open={openDraftPermit}
+          {openDraftPermit && <FileDraftPermitDialog module={moduleName} file={file} open={openDraftPermit}
                                                      onClose={this.closeDialog.bind(this, 'openDraftPermit')}/>}
+          {openDraftLicense && <FileDraftLicenseDialog module={moduleName} file={file} open={openDraftLicense}
+                                                       onClose={this.closeDialog.bind(this, 'openDraftLicense')}/>}
+          {openDraftReject && <FileDraftRejectDialog module={moduleName} file={file} open={openDraftReject}
+                                                       onClose={this.closeDialog.bind(this, 'openDraftReject')}/>}
+          {openDraftCancel && <FileDraftCancelDialog module={moduleName} file={file} open={openDraftCancel}
+                                                       onClose={this.closeDialog.bind(this, 'openDraftCancel')}/>}
 
           {submitNote &&
           <SubmitDialog open={submitNote} title="Create Notesheet" text="Note is Creating ... Please wait"/>}
