@@ -1,247 +1,155 @@
 import React from "react";
+import axios from 'axios';
+import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import Grid from "@material-ui/core/Grid";
-import { Icon, Tooltip } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import PinDrop from "@material-ui/icons/PinDrop";
-import GMapDialog from "../../../../components/GmapDialog";
+import {withStyles} from "@material-ui/core/styles";
+import {Icon, IconButton, Grid} from "@material-ui/core";
+import moment from "moment";
+import {KIOSK_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
+import KioskViewDialog from "./common/KioskViewDialog";
+import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import OfficeSnackbar from "../../../../components/OfficeSnackbar";
-import { KioskService } from "../../../../services/KioskService";
-import SendDialog from "../../../common/SendDialog";
-import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
-import { FileService } from "../../../../services/FileService";
-import { withRouter } from "react-router-dom";
-import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
-import { StaffService } from "../../../../services/StaffService";
+import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
+import LoadingView from "../../../common/LoadingView";
 
 const styles = {
   button: {},
   actionIcon: {}
 };
-var timeout = null;
 
 class KioskNewList extends React.Component {
-  kioskService = new KioskService();
-  fileService=new FileService();
-  staffService=new StaffService();
+  doLoad = this.props.doLoad;
   state = {
-
-    kiosks: [],
+    tableData: [],
+    staffs: null,
     file: null,
-    application: null,
-    takeMessage: "",
-    errorMessage: "",
-    lat: 93,
-    lng: 98,
-
-    openMap: false,
-    openTakeFile: false,
+    singleData: null,
     openAssignment: false,
-
-    staffs: []
+    openTakeFile: false,
+    openViewDialog: false,
+    loading: true,
   };
 
   componentDidMount() {
-    const { doLoad } = this.props;
-    doLoad(true);
-
-    Promise.all([this.fetchKiosk(),this.fetchStaff()])
-      .then(function(va) {
-        console.log(va)
-      })
-      .finally(()=>doLoad(false))
-
+    this.doLoad(true);
+    this.getData();
+    this.getStaffs();
   }
 
-  fetchKiosk=()=>{
-    this.kioskService.fetch()
-      .then(kiosks => this.setState({ kiosks: kiosks }))
-      .catch(err => this.setState({ errorMessage: err.toString() }))
+  getData = () => axios.get(KIOSK_LIST, {params: {status: 'new'}}).then(res => this.processResult(res));
 
-  }
-  fetchStaff=()=>{
-    this.staffService.fetch(errorMessage => this.setState({ errorMessage }),
-      staffs => this.setState({ staffs }))
-      .finally(() => console.log("staff request has been made"));
-  }
-  componentWillUnmount() {
-    clearTimeout(timeout)
-  }
-
-  updateTable = (action, tableState) => {
-
-  };
-  openAssignment = (id) => {
-    this.setState({ openAssignment: true });
-  };
-  takeFile = (data) => {
-    this.setState({ openTakeFile: true, file: data.file });
-  };
-  confirmTake = (e) => {
-    const { history } = this.props;
-    const { file } = this.state;
-
-    this.setState({ submit: true, openTakeFile: false });
-    this.fileService.takeFile(file.id, errorMessage => this.setState({ errorMessage }),
-      takeMessage => {
-        this.setState({ takeMessage, submit: false });
-        timeout = setTimeout(function(handler) {
-          history.push(DESK);
-        }, 2000);
-      })
-      .finally(() => this.setState({openAssignment:false, submit: false }));
+  processResult = (res) => {
+    if (res.data.status) this.setState({loading: false, tableData: res.data.data.kiosk_applications});
+    this.doLoad(false);
   };
 
-  viewDetail = (id) => {
-    this.setState({ openDetail: true });
-  };
-  closeDetail = () => {
-    this.setState({ openDetail: false });
-  };
+  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
 
-  sendFile=(fileId,receipientId)=>{
-    this.setState({openAssignment:false,submit:true});
-    this.fileService.sendFile(fileId,receipientId,errorMessage=>this.setState({errorMessage}),
-      takeMessage=>{
-        this.setState({takeMessage})
-        setTimeout(function(handler) {
-          window.location.reload()
-        },3000)
-      }).finally(()=>this.setState({submit:false}))
-  }
+  closeViewDialog = () => this.setState({openViewDialog: false});
+
+  viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
+
+  openAssignment = (data) => this.setState({file: data, openAssignment: true});
+
+  closeAssignment = () => this.setState({file: null, openAssignment: false});
+
+  takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
+
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
+    .then(res => {
+      this.setState({openTakeFile: false});
+      this.props.history.push(DESK);
+    });
+
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
   render() {
-    const { classes } = this.props;
-    const { kiosks } = this.state;
+    const {loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
-      rowsPerPage: 15,
+      rowsPerPage: 8,
       serverSide: false,
-      onTableChange: function(action, tableState) {
-        this.updateTable(action, tableState);
-      }.bind(this)
     };
 
     const tableColumns = [
       {
-        name: "action",
+        name: "applicant",
+        label: "APPLICANT",
+        options: {
+          customBodyRender: function (value) {
+            return value.advertiser.name;
+          }
+        }
+      },
+      {
+        name: "applicant",
+        label: "APPLICANT TYPE",
+        options: {
+          customBodyRender: value => value.advertiser.type.toUpperCase()
+        }
+      },
+      {
+        name: 'created_at',
+        label: 'APPLICATION DATE',
+        options: {
+          customBodyRender: value => moment(value).format("Do MMMM YYYY")
+        }
+      },
+      {
+        name: "id",
         label: "ACTION",
         options: {
           filter: false,
           sort: false,
-          customBodyRender: (value, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
-            const data = this.state.kiosks[rowIndex];
+          customBodyRender: (value, tableMeta) => {
+            const {rowIndex} = tableMeta;
+            let data = tableData[rowIndex];
             return (
               <div>
-                <IconButton className={classes.button} color="primary" size="small"
-                            aria-label="View Details"
-                            onClick={e => this.setState({ application:data})}>
-                  <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
+                <IconButton color="primary" size="small"
+                            aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                  <Icon fontSize="small">remove_red_eye</Icon>
                 </IconButton>
-                <IconButton variant="contained" className={classes.button} color="secondary"
-                            size="small" onClick={e => this.setState({ file: data.file,openAssignment:true })}>
-                  <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
+                <IconButton variant="contained" color="secondary"
+                            size="small" onClick={this.openAssignment.bind(this, data)}>
+                  <Icon fontSize="small">send</Icon>
                 </IconButton>
-                <IconButton variant="contained" className={classes.button} color="primary"
+                <IconButton variant="contained" color="primary"
                             size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
+                  <Icon fontSize="small">desktop_mac</Icon>
                 </IconButton>
               </div>
             );
           }
         }
       },
-      {
-        name: "file",
-        label: "FILE NO.",
-        options: {
-          customBodyRender: (file, tableMeta, updateValue) => {
-            return (
-              file.number
-            );
-          }
-        }
-      }, {
-        name: "file",
-        label: "SUBJECT",
-        options: {
-          customBodyRender: (file, tableMeta, updateValue) => {
-            return (
-              file.subject
-            );
-          }
-        }
-      }, {
-        name: "created_at",
-        label: "DATE"
-      }, {
-        name: "applicant",
-        label: "APPLICANT",
-        options: {
-          customBodyRender: (applicant, tableMeta, updateValue) => {
-            return (
-              applicant.advertiser.name
-            );
-          }
-        }
-      },
-      {
-        name: "kiosk",
-        label: "LOCATION",
-        options: {
-          customBodyRender: (kiosk, tableMeta, updateValue) => {
-            const lat = Number(kiosk.latitude);
-            const lng = Number(kiosk.longitude);
-
-            let view = (
-              <Tooltip title={"Click here to view location"}>
-                <IconButton onClick={e => this.setState({ openMap: true, lat: lat, lng: lng })}>
-                  <PinDrop/>
-                </IconButton>
-              </Tooltip>
-            );
-            return (
-              view
-            );
-          }
-        }
-      }
-
     ];
 
     return (
       <>
-        <Grid item xs={12}>
+        {loading ? <LoadingView/> : <Grid item xs={12}>
           <MUIDataTable
-            title={"KIOSK: List of New Application"}
-            data={kiosks}
+            title={"Hoarding: List of New Application"}
+            data={tableData}
             columns={tableColumns}
             options={tableOptions}
           />
-        </Grid>
+        </Grid>}
 
-        <KioskApplicationDialog open={Boolean(this.state.application)} onClose={()=>this.setState({application:null})} application={this.state.application}/>
-        <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
-                    onClose={() => this.setState({ openMap: false })}
-                    isMarkerShown={true}
-        />
-        <SendDialog staffs={this.state.staffs} open={this.state.openAssignment} file={this.state.file}
-                    onSend={this.sendFile.bind(this)}
-                    onClose={e => this.setState({ file: null,openAssignment:false })}/>
-        <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"}
-                       message={"Do you want to call this file ?"}
-                       onCancel={() => this.setState({ openTakeFile: false })} open={this.state.openTakeFile}
-                       onConfirm={this.confirmTake.bind(this)}/>
+        {openViewDialog &&
+        <KioskViewDialog open={openViewDialog} close={this.closeViewDialog}
+                            data={singleData}/>}
 
-        <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
-                        onClose={e => this.setState({ takeMessage: "" })} open={Boolean(this.state.takeMessage)}/>
-        <OfficeSnackbar variant={"error"} message={this.state.errorMessage}
-                        onClose={e => this.setState({ errorMessage: "" })}
-                        open={Boolean(this.state.errorMessage)}/>
+        {openAssignment && staffs &&
+        <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                        onClose={this.closeAssignment} file={file}
+                        props={this.props}/>}
+
+        {openTakeFile &&
+        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                       onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                       onConfirm={this.confirmTakeFile}/>}
       </>
     );
   }
