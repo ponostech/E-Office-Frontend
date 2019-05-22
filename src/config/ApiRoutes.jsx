@@ -1,4 +1,5 @@
 export const HOARDING_LIST = "/hoardings/applications";
+export const KIOSK_LIST = "/kiosks/applications";
 
 export const ADVERTISER_LIST = "/staff/advertiser/applications";
 export const HOTEL_LIST = "/hotels";
