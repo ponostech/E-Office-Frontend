@@ -119,4 +119,10 @@ export class ApiRoutes {
   static CREATE_REJECT_TEMPLATE="/reject-templates";
   static UPDATE_REJECT_TEMPLATE=(id)=> `/reject-templates/${id}`;
   static GET_REJECT_TEMPLATE=(module)=> `/reject-templates/${module}`;
+
+  static CREATE_SITE_VERIFICATION_TEMPLATE="/site-verification-templates";
+
+  static GET_SITE_VERIFICATION_TEMPLATE(module) {
+    return 	`site-verification-templates/${module}`
+  }
 }
