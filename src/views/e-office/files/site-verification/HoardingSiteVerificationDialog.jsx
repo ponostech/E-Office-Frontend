@@ -1,25 +1,33 @@
 import React, { Component } from "react";
-import GridItem from "../../../components/Grid/GridItem";
-import FormFieldFactory from "../../../components/form-builder/FormFieldFactory";
-import GridContainer from "../../../components/Grid/GridContainer";
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, Typography } from "@material-ui/core";
-import WidgetConstant from "../../../components/form-builder/WidgetConstant";
-import { SiteVerificationService } from "../../../services/SiteVerificationService";
+import {
+  Button,
+  CardActions,
+  CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider
+} from "@material-ui/core";
+import { SiteVerificationService } from "../../../../services/SiteVerificationService";
+import WidgetConstant from "../../../../components/form-builder/WidgetConstant";
+import GridItem from "../../../../components/Grid/GridItem";
+import FormFieldFactory from "../../../../components/form-builder/FormFieldFactory";
+import GridContainer from "../../../../components/Grid/GridContainer";
+import PropTypes from "prop-types";
 
-class HoardingSiteVerification extends Component {
+class HoardingSiteVerificationDialog extends Component {
   siteVerification = new SiteVerificationService();
   state = {};
 
   componentDidMount() {
-    this.props.doLoad(true);
-    this.siteVerification.getTemplate("hoarding", errorMessage => console.log(errorMessage), template => {
+    this.siteVerification.fetch("hoarding", errorMessage => console.log(errorMessage), template => {
       this.setState({
         title: template.title,
         subTitle: template.subTitle,
         formElements: template.formElements
       });
     })
-      .finally(() => this.props.doLoad(false));
   }
 
   checkValidity(value, validation) {
@@ -49,8 +57,7 @@ class HoardingSiteVerification extends Component {
     } else {
       //TODO::submit form data
     }
-    console.log(formData);
-    // this.siteVerification.submit
+    this.props.onClose(null)
   };
 
   inputChangedHandler = (event, key) => {
@@ -96,32 +103,34 @@ class HoardingSiteVerification extends Component {
         </>
       );
     }
-
+    const { open, onClose } = this.props;
     return (
-      <>
-        <Card>
-          <CardHeader title={this.state.title ? this.state.title : ""} subheader={this.state.subTitle ? this.state.subTitle : ""}/>
-          <Divider/>
-          <CardContent>
-            <GridContainer justify={"flex-start"}>
-                  {form}
-            </GridContainer>
-          </CardContent>
-          <Divider/>
-          <CardActions style={{ justifyContent: "flex-end" }}>
-
-            <Button variant={"outlined"} onClick={this.onSubmit.bind(this)} color={"primary"}> Submit</Button>
-            {"\u00A0 "}
-            {"\u00A0 "}
-            {"\u00A0 "}
-            {"\u00A0 "}
-            <Button variant={"outlined"} color={"secondary"} onClick={e => window.location.reload()}> Reset</Button>
-          </CardActions>
-        </Card>
-
-      </>
+      <Dialog open={open} onClose={onClose}>
+        <DialogTitle title={"fd"}>
+        </DialogTitle>
+        <Divider/>
+        <DialogContent>
+          <GridContainer justify={"flex-start"}>
+            {form}
+          </GridContainer>
+        </DialogContent>
+        <Divider/>
+      <DialogActions>
+        <Button variant={"outlined"} onClick={this.onSubmit.bind(this)} color={"primary"}> Submit</Button>
+        {"\u00A0 "}
+        {"\u00A0 "}
+        {"\u00A0 "}
+        {"\u00A0 "}
+        <Button variant={"outlined"} color={"secondary"} onClick={e => onClose(null)}> Reset</Button>
+      </DialogActions>
+      </Dialog>
     );
   }
 }
+HoardingSiteVerificationDialog.propTypes={
+  open:PropTypes.bool.isRequired,
+  onClose:PropTypes.func.isRequired
 
-export default HoardingSiteVerification;
+}
+
+export default HoardingSiteVerificationDialog;

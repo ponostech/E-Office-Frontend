@@ -5,6 +5,8 @@ import FormFieldFactory from "./FormFieldFactory";
 import TrashIcon from "@material-ui/icons/DeleteForeverOutlined";
 import OfficeSelect from "../OfficeSelect";
 import GridContainer from "../Grid/GridContainer";
+import SiteVerificationFormList from "../../views/e-office/site-verification/SiteVerificationFormList";
+import { SiteVerificationService } from "../../services/SiteVerificationService";
 
 const options= [
   { value: "hoarding", label: "Hoarding site verification" },
@@ -14,20 +16,29 @@ const options= [
 ]
 class DynamicFormPreview extends Component {
 
+  siteVerificationService = new SiteVerificationService();
+
   state = {
-    title: "",
-    subTitle: "",
+    title: "Title",
+    subTitle: "Subtitle",
     formElements: [],
 
     selectedType:{value:"hoarding", label:"Hoarding site verification"},
 
   };
   submitHandler = event => {
-    event.preventDefault();
-    const formData = {};
-    for (let key in this.state.formElements) {
-      formData[key] = this.state.formElements[key].value;
+
+    let type = this.state.selectedType.value;
+    let formElements=[];
+    this.state.formElements.forEach(item=>{
+      formElements.push(item.config)
+    })
+    let data={
+      title:this.state.title,
+      subTitle:this.state.subTitle,
+      formElements:formElements
     }
+    this.siteVerificationService.createTemplate(type,data,errorMessage=>console.log(errorMessage),successMessage=>console.log(successMessage))
   };
 
   removeItem = (index, e) => {

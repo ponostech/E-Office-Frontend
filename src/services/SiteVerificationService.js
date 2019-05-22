@@ -1,19 +1,43 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
-import { ErrorToString } from "../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 import React from "react";
 
 export class SiteVerificationService {
 
-  async fetch(status,errorCallback,successCallback) {
-    const token = localStorage.getItem("access_token");
-    const config = { headers: { "Authorization": `Bearer ${token}` } };
+  async createTemplate(type,data,errorCallback,successCallback){
+    try{
+      let res=await axios.post(ApiRoutes.CREATE_SITE_VERIFICATION_TEMPLATE,{type,data});
+      console.log(res)
+      if (res.data.status) {
+          successCallback(ArrayToString(res.data.messages))
+      }else{
+        errorCallback(ArrayToString(res.data.messages))
+      }
+    }catch (e) {
+      console.error(e)
+      errorCallback(e.toString())
+    }
+  }
+
+  async fetch(type,data,template,errorCallback,successCallback){
+    try{
+       let res=await axios.post(ApiRoutes.CREATE_HOARDING_VERIFICATION)
+    }catch (error) {
+      console.error(error);
+      errorCallback(errorCallback.toString())
+    }
+  }
+
+  async getTemplate(module,errorCallback,successCallback) {
+
     try {
-        const res = await axios.get(ApiRoutes.STAFF_BANNER + `?status=${status}`, config);
-      if (res.status) {
-        successCallback(res.data.data)
+        const res = await axios.get(ApiRoutes.GET_SITE_VERIFICATION_TEMPLATE(module));
+      if (res.data.status) {
+        console.log(res.data.data.template.data)
+        successCallback(res.data.data.template.data)
       }else {
-        errorCallback("error")
+        errorCallback(ArrayToString(res.data.messages))
       }
 
     } catch (error) {
@@ -22,4 +46,23 @@ export class SiteVerificationService {
     }
   }
 
+  async createSiteVerification(url, formData,template,errorCallback,successCallback) {
+    try {
+      const res = await axios.post(url,{
+        data:formData,
+        template,
+        draft:0
+      });
+      if (res.data.status) {
+        console.log(res)
+        successCallback(ArrayToString(res.data.messages))
+      }else {
+        errorCallback(ArrayToString(res.data.messages))
+      }
+
+    } catch (error) {
+      console.error(error);
+      errorCallback(error.toString())
+    }
+  }
 }
