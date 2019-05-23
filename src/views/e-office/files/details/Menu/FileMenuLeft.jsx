@@ -150,7 +150,7 @@ class FileMenuLeft extends React.Component {
               {menus.view ? menus.view.map((item) => (
                   <>
                     <Tooltip title={"View " + item.name}>
-                      <ListItem button key={item.name} onClick={() => this.props.click(item.url)}>
+                      <ListItem button key={item.name} onClick={() => this.props.click(item.url,item.module)}>
                         <ListItemIcon classes={{root: classes.menuIcon}}>
                           <Icon>{item.icon ? item.icon : 'remove_red_eye'}</Icon>
                         </ListItemIcon>

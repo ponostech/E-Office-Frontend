@@ -8,7 +8,7 @@ import GridContainer from "../../../../components/Grid/GridContainer";
 import PropTypes from "prop-types";
 
 
-class HoardingSiteVerificationDialog extends Component {
+class HotelSiteVerificationDialog extends Component {
   siteVerification = new SiteVerificationService();
   state = {
 
@@ -17,14 +17,14 @@ class HoardingSiteVerificationDialog extends Component {
   };
 
   componentDidMount() {
-    this.siteVerification.getTemplate("hoarding", errorMessage =>this.setState({errorMessage}), template => {
+    this.siteVerification.getTemplate("hotel", errorMessage => this.setState({errorMessage}), template => {
       this.setState({
         title: template.title,
         subTitle: template.subTitle,
         formElements: template.formElements
       });
     })
-      .finally(() => this.setState({loading:false}));
+      .finally(() => this.setState({ loading: false }));
   }
 
   checkValidity(value, validation) {
@@ -33,7 +33,7 @@ class HoardingSiteVerificationDialog extends Component {
     if (validation.required) {
       isValid = Boolean(value);
     } else if (validation.pattern) {
-      isValid = new RegExp(validation.pattern).test(value)
+      isValid = value.match(validation.pattern);
     }
 
     return isValid;
@@ -53,7 +53,7 @@ class HoardingSiteVerificationDialog extends Component {
     if (!valid) {
       this.setState({ errorMessage: "Please fill all the required field" });
     } else {
-      let url = "site-verifications/hoarding/" + file.fileable_id;
+      let url = "site-verifications/hotel/" + file.fileable_id;
       let template = {
         title: this.state.title,
         subTitle: this.state.subTitle,
@@ -113,7 +113,7 @@ class HoardingSiteVerificationDialog extends Component {
         <DialogTitle title={"title"}>
           <Typography variant={"title"}>FILE NO: {file.number}</Typography>
           <Typography variant={"subtitle1"}>SITE VERIFICATION OF {file.subject}</Typography>
-          {/*<Typography hidden={!Boolean(errorMessage)} color={"secondary"} variant={"caption"}>{errorMessage}</Typography>*/}
+          <Typography hidden={Boolean(errorMessage)} color={"secondary"} variant={"caption"}>{errorMessage}</Typography>
         </DialogTitle>
         <Divider/>
 
@@ -136,10 +136,10 @@ class HoardingSiteVerificationDialog extends Component {
   }
 }
 
-HoardingSiteVerificationDialog.propTypes = {
+HotelSiteVerificationDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   file: PropTypes.object.isRequired
 };
 
-export default HoardingSiteVerificationDialog;
+export default HotelSiteVerificationDialog;

@@ -123,6 +123,7 @@ export class ApiRoutes {
   static GET_REJECT_TEMPLATE=(module)=> `/reject-templates/${module}`;
 
   static CREATE_SITE_VERIFICATION_TEMPLATE="/site-verification-templates";
+  static GET_ALL_SITE_VERIFICATION_TEMPLATE="/site-verifications/templates";
 
   static GET_SITE_VERIFICATION_TEMPLATE(module) {
     return 	`site-verification-templates/${module}`

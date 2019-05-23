@@ -45,6 +45,25 @@ export class SiteVerificationService {
       errorCallback(error.toString())
     }
   }
+  async all(url,errorCallback,successCallback){
+    try{
+      let res=await axios.get(url)
+      console.log(res);
+      if (res.data.status) {
+        // let verificationData =[]
+        // res.data.data.verifications.forEach(function(item, index) {
+        //   verificationData.push(item.data)
+        // });
+          successCallback(res.data.data.verifications)
+      }else{
+        errorCallback(ArrayToString(res.data.messages))
+      }
+    }catch (e) {
+      console.error(e);
+      errorCallback(e.toString())
+    }
+  }
+
 
   async createSiteVerification(url, formData,template,errorCallback,successCallback) {
     try {
@@ -63,6 +82,20 @@ export class SiteVerificationService {
     } catch (error) {
       console.error(error);
       errorCallback(error.toString())
+    }
+  }
+
+  async allTemplate(errorCallback, successCallback) {
+    try{
+      let res=await axios.get(ApiRoutes.GET_ALL_SITE_VERIFICATION_TEMPLATE)
+      if (res.data.status) {
+        successCallback(res.data.data.templates)
+      }else{
+        errorCallback(ArrayToString(res.data.messages))
+      }
+    }catch (e) {
+      console.error(e);
+      errorCallback(e.toString)
     }
   }
 }
