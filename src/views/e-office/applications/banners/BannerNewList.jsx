@@ -52,7 +52,7 @@ class BannerNewList extends React.Component {
 
   closeAssignment = () => this.setState({file: null, openAssignment: false});
 
-  takeFile = (data) => this.setState({hotel: data, openTakeFile: true});
+  takeFile = (data) => this.setState({banner: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.banner.file.id))
     .then(res => this.props.history.push(DESK));
