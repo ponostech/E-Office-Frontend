@@ -230,7 +230,7 @@ class FileView extends Component {
     }
   };
   handleCloseHotelVerification = (url, data, template) => {
-    this.setState({ openKioskVerification: false, submitNote: true });
+    this.setState({ openHotelVerification: false });
     if (url && data && template) {
       this.setState({ submitNote: true });
       this.siteVerificationService.createSiteVerification(url, data, template,
@@ -238,7 +238,6 @@ class FileView extends Component {
         successMessage => this.setState({ successMessage }))
         .finally(() => this.setState({ submitNote: false }));
     }
-    this.setState({ submitNote: false });
   };
   closeDialog = (key) => this.setState({ [key]: false });
 

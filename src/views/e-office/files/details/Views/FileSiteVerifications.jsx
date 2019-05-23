@@ -4,6 +4,7 @@ import { SiteVerificationService } from "../../../../../services/SiteVerificatio
 import { Card, CardContent, CardHeader, Divider, List } from "@material-ui/core";
 import DetailViewRow from "../../../common/DetailViewRow";
 import moment from "moment";
+import OfficeSnackbar from "../../../../../components/OfficeSnackbar";
 
 class FileSiteVerifications extends Component {
   siteVerificationService=new SiteVerificationService();
@@ -15,7 +16,7 @@ class FileSiteVerifications extends Component {
 
   componentDidMount() {
     const { type, file } = this.props;
-    let url=`/site-verifications/kiosk/${file.fileable_id}`;
+    let url=`/site-verifications/${type}/${file.fileable_id}`;
     this.siteVerificationService.all(url,
       errorMessage=>this.setState({errorMessage}),
       data=>this.setState({data}))
@@ -39,13 +40,13 @@ class FileSiteVerifications extends Component {
            })
           }
         </CardContent>
+
+        <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage} onClose={e=>this.setState({errorMessage:""})}/>
         </Card>
     );
   }
 }
-FileSiteVerifications.defaultProps={
-  type:"kiosk"
-}
+
 FileSiteVerifications.propTypes={
   type:PropTypes.string.isRequired,
   file:PropTypes.object.isRequired,
