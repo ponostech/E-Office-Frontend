@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid} from "@material-ui/core";
 import moment from "moment";
-import { SHOP_LIST, FILE_TAKE, GET_STAFF, ADVERTISER_LIST } from "../../../../config/ApiRoutes";
+import { SHOP_LIST, FILE_TAKE, GET_STAFF } from "../../../../config/ApiRoutes";
 import ShopViewDialog from "./common/ShopViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";

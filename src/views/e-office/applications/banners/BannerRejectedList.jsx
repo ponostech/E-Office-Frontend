@@ -1,15 +1,17 @@
 import React from "react";
+import axios from 'axios';
+import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import Grid from "@material-ui/core/Grid";
-import {Icon} from "@material-ui/core";
 import {withStyles} from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import Assignment from "../ApplicationAssignmentDialog";
-import GMapDialog from "../../../../components/GmapDialog";
+import {Icon, IconButton, Grid} from "@material-ui/core";
+import moment from "moment";
+import { BANNER_LIST, FILE_TAKE, GET_STAFF } from "../../../../config/ApiRoutes";
+import BannerViewDialog from "./common/BannerViewDialog";
+import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import OfficeSnackbar from "../../../../components/OfficeSnackbar";
-import {BannerService} from "../../../../services/BannerService";
-import ApplicationState from "../../../../utils/ApplicationState";
+import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
+import LoadingView from "../../../common/LoadingView";
+import GMapDialog from "../../../../components/GmapDialog";
 
 const styles = {
   button: {},
@@ -17,166 +19,160 @@ const styles = {
 };
 
 class BannerRejectedList extends React.Component {
-  bannerService = new BannerService();
   state = {
-    openAssignment: false,
-    openDetail: false,
-    openMap: false,
-    openTakeFile: false,
-    detailData: [],
     banners: [],
-    banner: {},
-    takeMessage: "",
-    errorMessage: "",
-    lat: 93,
-    lng: 98
+    openMap: false,
+    staffs: null,
+    file: null,
+    banner: null,
+    openAssignment: false,
+    openTakeFile: false,
+    openViewDialog: false,
+    loading: true,
   };
 
   componentDidMount() {
-    const {doLoad} = this.props;
-    doLoad(true);
-
-    this.bannerService.fetch(ApplicationState.REJECTED_APPLICATION)
-      .then(banners => {
-        this.setState({banners});
-      })
-      .catch(err => {
-        this.setState({errorMessage: err.toString()});
-      })
-      .finally(() => {
-        doLoad(false);
-      });
+    this.props.doLoad(true);
+    this.getData();
+    this.getStaffs();
   }
+  getData = () => axios.get(BANNER_LIST, {params: {status: 'reject'}})
+    .then(res => this.processResult(res))
+    .catch(err => this.setState({errorMsg: err.toString()}))
+    .then(() => this.doLoad(false));
 
-  updateTable = (action, tableState) => {
+  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
 
-  };
-  openAssignment = (id) => {
-    this.setState({openAssignment: true});
-  };
-  takeFile = (data) => {
-    this.setState({openTakeFile: true, fileDetail: data.file});
-  };
-  confirmTake = (e) => {
-    const {fileDetail} = this.state;
-    this.setState({openTakeFile: false});
-    this.setState({takeMessage: "You have taken the file"});
-  };
-  closeAssignment = () => {
-    this.setState({openAssignment: false});
+  processResult = (res) => {
+    if (res.data.status) this.setState({loading: false, banners: res.data.data.banners});
+    this.props.doLoad(false);
   };
 
-  viewDetail = (id) => {
-    this.setState({openDetail: true});
-  };
-  closeDetail = () => {
-    this.setState({openDetail: false});
-  };
+  closeViewDialog = () => this.setState({openViewDialog: false});
+
+  viewDetails = (data) => this.setState({openViewDialog: true, banner: data});
+
+  openAssignment = (data) => this.setState({file: data, openAssignment: true});
+
+  closeAssignment = () => this.setState({file: null, openAssignment: false});
+
+  takeFile = (data) => this.setState({banner: data, openTakeFile: true});
+
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.banner.file.id))
+    .then(res => this.props.history.push(DESK));
+
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
   render() {
     const {classes} = this.props;
-    const {banners} = this.state;
+    const {loading, banner, banners, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
-      rowsPerPage: 15,
+      rowsPerPage: 8,
       serverSide: false,
-      onTableChange: function (action, tableState) {
-        this.updateTable(action, tableState);
-      }.bind(this)
     };
 
     const tableColumns = [
       {
-        name: "action",
+        name: "name",
+        label: "APPLICANT",
+      },
+      {
+        name: "address",
+        label: "OWNER ADDRESS",
+      },
+      {
+        name: "applicant_type",
+        label: "APPLICANT TYPE",
+      },
+      {
+        name: "advertisement_type",
+        label: "TYPE OF ADVERTISEMENTS",
+      },
+      {
+        name: "advertisement_count",
+        label: "NO OF ADVERTISEMENTS",
+      },
+      {
+        name: "local_council",
+        label: "LOCAL COUNCIL.",
+        options: {
+          customBodyRender: (local_council, tableMeta, updateValue) => {
+            return (
+              local_council.name
+            );
+          }
+        }
+      },
+      {
+        name: "created_at",
+        label: "APPLICATION DATE",
+        options: {
+          filter: false,
+          customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
+        }
+      },
+      {
+        name: "id",
         label: "ACTION",
         options: {
           filter: false,
           sort: false,
-          customBodyRender: (value, tableMeta, updateValue) => {
+          customBodyRender: (value, tableMeta) => {
             const {rowIndex} = tableMeta;
-            const data = this.state.banners[rowIndex];
+            let data = banners[rowIndex];
             return (
               <div>
-                <IconButton className={classes.button} color="primary" size="small"
-                            aria-label="View Details"
-                            onClick={e => this.setState({banner: data.banner, openDetail: true})}>
-                  <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
+                <IconButton color="primary" size="small"
+                            aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                  <Icon fontSize="small">remove_red_eye</Icon>
                 </IconButton>
-                <IconButton variant="contained" className={classes.button} color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, value)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
+                <IconButton variant="contained" color="secondary"
+                            size="small" onClick={this.openAssignment.bind(this, data)}>
+                  <Icon fontSize="small">send</Icon>
                 </IconButton>
-                <IconButton variant="contained" className={classes.button} color="primary"
+                <IconButton variant="contained" color="primary"
                             size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
+                  <Icon fontSize="small">desktop_mac</Icon>
                 </IconButton>
               </div>
             );
           }
         }
-      }, {
-        name: "created_at",
-        label: "DATE"
-      }, {
-        name: "file",
-        label: "FILE NO.",
-        options: {
-          customBodyRender: (file, tableMeta, updateValue) => {
-            return (
-              file.number
-            );
-          }
-        }
-      }, {
-        name: "file",
-        label: "SUBJECT",
-        options: {
-          customBodyRender: (file, tableMeta, updateValue) => {
-            return (
-              file.subject
-            );
-          }
-        }
-      }, {
-        name: "name",
-        label: "APPLICANT",
-      }, {
-        name: "advertisement_type",
-        label: "ADVERTISEMENT TYPE"
-      }
-
+      },
     ];
 
     return (
       <>
-        <Grid item xs={12}>
+        {loading ? <LoadingView/> : <Grid item xs={12}>
           <MUIDataTable
-            title={"BANNER: List of Rejected Application"}
+            title={"Banner: List of Rejected Application"}
             data={banners}
             columns={tableColumns}
             options={tableOptions}
           />
-        </Grid>
-
-        <Assignment open={this.state.openAssignment} close={this.closeAssignment} data={this.state.detailData}
-                    props={this.props} staffs={this.state.staffs}/>
-        <GMapDialog open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
+        </Grid>}
+        <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                     onClose={() => this.setState({openMap: false})}
                     isMarkerShown={true}
         />
-        <ConfirmDialog primaryButtonText={"Take"} title={"Confirmation"}
-                       message={"Do you want to take this file ?"}
-                       onCancel={() => this.setState({openTakeFile: false})} open={this.state.openTakeFile}
-                       onConfirm={this.confirmTake.bind(this)}/>
-        <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
-                        onClose={e => this.setState({takeMessage: ""})} open={Boolean(this.state.takeMessage)}/>
-        <OfficeSnackbar variant={"error"} message={this.state.errorMessage}
-                        onClose={e => this.setState({errorMessage: ""})}
-                        open={Boolean(this.state.errorMessage)}/>
+        {openViewDialog &&
+        <BannerViewDialog open={openViewDialog} close={this.closeViewDialog}
+                          data={banner}/>}
+
+        {openAssignment && staffs &&
+        <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                        onClose={this.closeAssignment} file={file}
+                        props={this.props}/>}
+
+        {openTakeFile &&
+        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                       onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                       onConfirm={this.confirmTakeFile}/>}
       </>
     );
   }
 }
 
-export default withStyles(styles)(BannerRejectedList);
+export default withRouter(withStyles(styles)(BannerRejectedList));
