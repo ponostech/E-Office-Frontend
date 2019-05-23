@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  Button,
-  CardActions,
-  CardContent,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider, Typography
-} from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography } from "@material-ui/core";
 import { SiteVerificationService } from "../../../../services/SiteVerificationService";
 import WidgetConstant from "../../../../components/form-builder/WidgetConstant";
 import GridItem from "../../../../components/Grid/GridItem";
@@ -21,7 +12,8 @@ class KioskSiteVerificationDialog extends Component {
   siteVerification = new SiteVerificationService();
   state = {
 
-    loading:true
+    loading: true,
+    errorMessage: ""
   };
 
   componentDidMount() {
@@ -32,7 +24,7 @@ class KioskSiteVerificationDialog extends Component {
         formElements: template.formElements
       });
     })
-      .finally(() => this.setState({loading:false}));
+      .finally(() => this.setState({ loading: false }));
   }
 
   checkValidity(value, validation) {
@@ -59,17 +51,16 @@ class KioskSiteVerificationDialog extends Component {
       formData[element.elementConfig.name] = element.value.value ? element.value.value : element.value;
     });
     if (!valid) {
-      //TODO::display error message
+      this.setState({ errorMessage: "Please fill all the required field" });
     } else {
-      //TODO::submit form data
+      let url = "site-verifications/kiosk/" + file.fileable_id;
+      let template = {
+        title: this.state.title,
+        subTitle: this.state.subTitle,
+        formElements: this.state.formElements
+      };
+      this.props.onClose(url, formData, template);
     }
-    let url="site-verifications/kiosk/"+file.fileable_id;
-    let template={
-      title:this.state.title,
-      subTitle:this.state.subTitle,
-      formElements:this.state.formElements
-    }
-    this.props.onClose(url,formData,template);
   };
 
   inputChangedHandler = (event, key) => {
@@ -93,8 +84,8 @@ class KioskSiteVerificationDialog extends Component {
   };
 
   render() {
-    const { formElements,loading } = this.state;
-    const { open, onClose,file } = this.props;
+    const { formElements, loading, errorMessage } = this.state;
+    const { open, onClose, file } = this.props;
 
     let form = (<p>No site verification is generated</p>);
     if (formElements) {
@@ -118,35 +109,37 @@ class KioskSiteVerificationDialog extends Component {
       );
     }
     return (
-      <Dialog fullWidth={true} maxWidth={"lg"} open={open} onClose={onClose}>
+      <Dialog fullWidth={true} maxWidth={"lg"} open={open}>
         <DialogTitle title={"title"}>
           <Typography variant={"title"}>FILE NO: {file.number}</Typography>
           <Typography variant={"subtitle1"}>SITE VERIFICATION OF {file.subject}</Typography>
+          <Typography hidden={Boolean(errorMessage)} color={"secondary"} variant={"caption"}>{errorMessage}</Typography>
         </DialogTitle>
         <Divider/>
 
         <DialogContent>
           <GridContainer justify={"flex-start"}>
-            {loading?"loading":form}
+            {loading ? "loading" : form}
           </GridContainer>
         </DialogContent>
         <Divider/>
-      <DialogActions>
-        <Button variant={"outlined"} onClick={this.onSubmit.bind(this)} color={"primary"}> Submit</Button>
-        {"\u00A0 "}
-        {"\u00A0 "}
-        {"\u00A0 "}
-        {"\u00A0 "}
-        <Button variant={"outlined"} color={"secondary"} onClick={e => onClose(null)}> Close</Button>
-      </DialogActions>
+        <DialogActions>
+          <Button variant={"outlined"} onClick={this.onSubmit.bind(this)} color={"primary"}> Submit</Button>
+          {"\u00A0 "}
+          {"\u00A0 "}
+          {"\u00A0 "}
+          {"\u00A0 "}
+          <Button variant={"outlined"} color={"secondary"} onClick={e => onClose(null,null,null)}> Close</Button>
+        </DialogActions>
       </Dialog>
     );
   }
 }
-KioskSiteVerificationDialog.propTypes={
-  open:PropTypes.bool.isRequired,
-  onClose:PropTypes.func.isRequired,
-  file:PropTypes.object.isRequired
-}
+
+KioskSiteVerificationDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  file: PropTypes.object.isRequired
+};
 
 export default KioskSiteVerificationDialog;
