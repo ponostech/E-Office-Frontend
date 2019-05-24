@@ -73,7 +73,7 @@ class FileDraftRejectDialog extends Component {
     const content =
         <Grid container>
           <Grid item lg={12}>
-            <Editor onChange={this.editorChange} default={this.state.content} height={1000}/>
+            <Editor onChange={this.editorChange} default={this.state.content} height={600}/>
           </Grid>
         </Grid>;
 
@@ -92,7 +92,7 @@ class FileDraftRejectDialog extends Component {
 
     return (
         <>
-          <DialogWrapper title="Create Draft License" action={action} open={open} onClose={onClose}
+          <DialogWrapper title="Create Draft Reject" action={action} open={open} onClose={onClose}
                          content={dialogContent}/>
           {errorMsg && <ErrorHandler messages={errorMsg}/>}
           {successMsg && <SuccessHandler messages={successMsg}/>}

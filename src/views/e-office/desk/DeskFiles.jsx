@@ -59,7 +59,7 @@ class DeskFiles extends Component {
         label: "RECEIVED ON",
         options: {
           filter: false,
-          customBodyRender: (value, meta, updateValue) => {
+          customBodyRender: (value) => {
             return moment(value).format("Do MMMM YYYY");
           }
         }
@@ -74,7 +74,7 @@ class DeskFiles extends Component {
         options: {
           filter: false,
           sort: false,
-          customBodyRender: (value, tableMeta, updateValue) => {
+          customBodyRender: (value) => {
             return (
                 <Tooltip title="View Details">
                   <IconButton color="primary" size="small"
