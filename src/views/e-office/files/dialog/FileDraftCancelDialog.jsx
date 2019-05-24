@@ -5,9 +5,11 @@ import LoadingView from "../../../common/LoadingView";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import DialogWrapper from './common/DialogWrapper';
 import Editor from "../draft/Editor";
-import {DRAFT_CREATE, GET_CANCEL_TEMPLATE, FILE_DRAFT_PERMIT_VIEW} from "../../../../config/ApiRoutes";
+import {DRAFT_CREATE, GET_CANCEL_TEMPLATE} from "../../../../config/ApiRoutes";
 import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
 import SubmitDialog from "../../../../components/SubmitDialog";
+import {withRouter} from "react-router-dom";
+import {FILE_DETAIL_ROUTE} from "../../../../config/routes-constant/OfficeRoutes";
 
 const styles = {};
 
@@ -35,30 +37,26 @@ class FileDraftCancelDialog extends Component {
 
   editorChange = (e) => this.setState({content: e.target.getContent()});
 
-  result = (fileId) => {
-    this.setState({successMsg: 'Submitted Successfully'});
-    setTimeout(() => {
-      window.location.replace(FILE_DRAFT_PERMIT_VIEW(fileId))
-    }, 1000);
-  };
-
-  processResponse = (res, fileId) => {
-    if (res.data.status) this.result(fileId);
-    else this.setState({loading: false, submit: false, errorMsg: res.data.messages});
-  };
-
   storeData = () => {
     this.setState({submit: true});
     let params = {
       content: this.state.content,
       file_id: this.props.file.id,
-      type: 'license'
+      type: 'cancel'
     };
     axios.post(DRAFT_CREATE, params)
-        .then(res => {
-          this.processResponse(res, this.props.file.id);
-        })
-        .catch(err => this.setState({submit: false, errorMsg: "Network Error"}));
+        .then(res => this.processResponse(res, this.props.file.id))
+        .catch(err => this.setState({submit: false, errorMsg: err.toString()}));
+  };
+
+  processResponse = (res, fileId) => {
+    if (res.data.status) this.result(res, fileId);
+    else this.setState({loading: false, submit: false, errorMsg: res.data.messages});
+  };
+
+  result = (res, fileId) => {
+    this.setState({successMsg: res.data.messages, loading: false, submit: false, });
+    setTimeout(() => {this.props.onClose(); this.props.history.push(FILE_DETAIL_ROUTE(fileId) + "/view/draft-cancels")}, 1000);
   };
 
   validate = () => {
@@ -108,4 +106,4 @@ class FileDraftCancelDialog extends Component {
   }
 }
 
-export default withStyles(styles)(FileDraftCancelDialog);
+export default withRouter(withStyles(styles)(FileDraftCancelDialog));

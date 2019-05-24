@@ -8,6 +8,8 @@ import Editor from "../draft/Editor";
 import {DRAFT_CREATE, GET_REJECT_TEMPLATE, FILE_DRAFT_PERMIT_VIEW} from "../../../../config/ApiRoutes";
 import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
 import SubmitDialog from "../../../../components/SubmitDialog";
+import {withRouter} from "react-router-dom";
+import {FILE_DETAIL_ROUTE} from "../../../../config/routes-constant/OfficeRoutes";
 
 const styles = {};
 
@@ -35,16 +37,13 @@ class FileDraftRejectDialog extends Component {
 
   editorChange = (e) => this.setState({content: e.target.getContent()});
 
-  result = (fileId) => {
-    this.setState({successMsg: 'Submitted Successfully'});
-    setTimeout(() => {
-      window.location.replace(FILE_DRAFT_PERMIT_VIEW(fileId))
-    }, 1000);
+  onSubmit = () => {
+    if (this.validate()) this.storeData();
   };
 
-  processResponse = (res, fileId) => {
-    if (res.data.status) this.result(fileId);
-    else this.setState({loading: false, submit: false, errorMsg: res.data.messages});
+  validate = () => {
+    if (this.state.content === "") {this.setState({errorMsg: 'Content cannot be blank!'}); return false;}
+    return true;
   };
 
   storeData = () => {
@@ -52,25 +51,20 @@ class FileDraftRejectDialog extends Component {
     let params = {
       content: this.state.content,
       file_id: this.props.file.id,
-      type: 'license'
+      type: 'reject'
     };
-    axios.post(DRAFT_CREATE, params)
-        .then(res => {
-          this.processResponse(res, this.props.file.id);
-        })
-        .catch(err => this.setState({submit: false, errorMsg: "Network Error"}));
+    axios.post(DRAFT_CREATE, params).then(res => this.processResponse(res, this.props.file.id))
+        .catch(err => this.setState({submit: false, errorMsg: err.toString()}));
   };
 
-  validate = () => {
-    if (this.state.content === "") {
-      this.setState({errorMsg: 'Content cannot be blank!'});
-      return false;
-    }
-    return true;
+  processResponse = (res, fileId) => {
+    if (res.data.status) this.result(fileId);
+    else this.setState({loading: false, submit: false, errorMsg: res.data.messages});
   };
 
-  onSubmit = () => {
-    if (this.validate()) this.storeData();
+  result = (fileId) => {
+    this.setState({successMsg: 'Submitted Successfully'});
+    setTimeout(() => {this.props.onClose(); this.props.history.push(FILE_DETAIL_ROUTE(fileId) + "/view/draft-rejects")}, 1000);
   };
 
   render() {
@@ -108,4 +102,4 @@ class FileDraftRejectDialog extends Component {
   }
 }
 
-export default withStyles(styles)(FileDraftRejectDialog);
+export default withRouter(withStyles(styles)(FileDraftRejectDialog));

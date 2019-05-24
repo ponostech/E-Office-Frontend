@@ -18,15 +18,17 @@ class FileDrafts extends Component {
     this.getData();
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.location.key !== this.props.location.key) this.getData();
+  }
+
   getData = () => {
     axios.get(FILE_DRAFT_LIST(this.props.file.id))
         .then(res => {
           if (res.data.status) this.setState({loading: false, data: res.data.data.drafts});
           else this.setState({errorMsg: res.data.messages});
         })
-        .catch(err => {
-          this.setState({errorMsg: 'Network Error!'});
-        })
+        .catch(err => this.setState({errorMsg: err.toString()}))
   };
 
   formatCreated = (value) => {
@@ -38,15 +40,15 @@ class FileDrafts extends Component {
   };
 
   render() {
-    const {loading, errorMsg} = this.state;
-
-    const data = this.state.data.map(value => <DetailViewRow value={value} click={this.singleRowClicked}
-                                                             primary={"Draft No. " + value.id}
-                                                             secondary={this.formatCreated(value)}/>);
+    const {loading, errorMsg, data} = this.state;
+    const content = data.length === 0 ? "No draft" : data.map(value => <DetailViewRow value={value}
+                                                                                      click={this.singleRowClicked}
+                                                                                      primary={"Draft No. " + value.id}
+                                                                                      secondary={this.formatCreated(value)}/>);
     return (
         <>
           <CardHeader title="List of Drafts" subheader="See details below"/>
-          {loading ? <LoadingView align="left"/> : data}
+          {loading ? <LoadingView align="left"/> : content}
           {errorMsg && <ErrorHandler messages={this.state.errorMsg}/>}
         </>
     )

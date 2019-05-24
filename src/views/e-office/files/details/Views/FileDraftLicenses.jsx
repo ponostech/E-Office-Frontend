@@ -8,7 +8,7 @@ import ErrorHandler from "../../../../common/StatusHandler";
 import moment from "moment";
 import DraftSingleViewDialog from "../../../../common/DraftSingleViewDialog";
 
-class FileDraftPermitList extends Component {
+class FileDraftLicensesList extends Component {
   state = {
     showDetails: false,
     data: [],
@@ -26,7 +26,7 @@ class FileDraftPermitList extends Component {
   }
 
   getData = (id) => {
-    axios.get(FILE_DRAFT_LIST(id, 'permit'))
+    axios.get(FILE_DRAFT_LIST(id, 'license'))
         .then(res => {
           if (res.data.status) this.setState({loading: false, data: res.data.data.drafts});
           else this.setState({errorMsg: res.data.messages});
@@ -42,14 +42,14 @@ class FileDraftPermitList extends Component {
   openDetails = (value) => this.setState({loading: true, singleData: value, showDetails: true});
 
   render() {
-    const {loading, errorMsg, showDetails, singleData, data} = this.state;
-    const content = data.length === 0 ? "No draft" :  data.map(value => <DetailViewRow value={value} click={this.openDetails}
+    const {loading, errorMsg, showDetails, singleData} = this.state;
+    const data = this.state.data.map(value => <DetailViewRow value={value} click={this.openDetails}
                                                              primary={"Draft Permit No. " + value.id}
                                                              secondary={this.formatCreated(value)}/>);
     return (
         <>
-          <CardHeader title="List of Drafts Permit"/>
-          {loading ? <LoadingView align="left"/> : content}
+          <CardHeader title="List of Drafts Licenses"/>
+          {loading ? <LoadingView align="left"/> : data}
           {errorMsg && <ErrorHandler messages={this.state.errorMsg}/>}
           {showDetails && <DraftSingleViewDialog data={singleData} open={showDetails} onClose={this.closeDetails}/>}
         </>
@@ -57,4 +57,4 @@ class FileDraftPermitList extends Component {
   }
 }
 
-export default FileDraftPermitList;
+export default FileDraftLicensesList;

@@ -8,6 +8,8 @@ import Editor from "../draft/Editor";
 import {DRAFT_CREATE, GET_PERMIT_TEMPLATE, FILE_DRAFT_PERMIT_VIEW} from "../../../../config/ApiRoutes";
 import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
 import SubmitDialog from "../../../../components/SubmitDialog";
+import {FILE_DETAIL_ROUTE} from "../../../../config/routes-constant/OfficeRoutes";
+import {withRouter} from "react-router-dom";
 
 const styles = {};
 
@@ -25,7 +27,7 @@ class FileDraftPermitDialog extends Component {
   }
 
   getData = () => {
-    axios.get(GET_PERMIT_TEMPLATE('hoarding'))
+    axios.get(GET_PERMIT_TEMPLATE(this.props.module))
         .then(res => {
           if (res.data.status) this.setState({loading: false, content: res.data.data.template.content});
           else this.setState({loading: false, errorMsg: res.data.messages});
@@ -35,30 +37,8 @@ class FileDraftPermitDialog extends Component {
 
   editorChange = (e) => this.setState({content: e.target.getContent()});
 
-  result = (fileId) => {
-    this.setState({successMsg: 'Submitted Successfully'});
-    setTimeout(() => {
-      window.location.replace(FILE_DRAFT_PERMIT_VIEW(fileId))
-    }, 1000);
-  };
-
-  processResponse = (res, fileId) => {
-    if (res.data.status) this.result(fileId);
-    else this.setState({loading: false, submit: false, errorMsg: res.data.messages});
-  };
-
-  storeData = () => {
-    this.setState({submit: true});
-    let params = {
-      content: this.state.content,
-      file_id: this.props.file.id,
-      type: 'license'
-    };
-    axios.post(DRAFT_CREATE, params)
-        .then(res => {
-          this.processResponse(res, this.props.file.id);
-        })
-        .catch(err => this.setState({submit: false, errorMsg: "Network Error"}));
+  onSubmit = () => {
+    if (this.validate()) this.storeData();
   };
 
   validate = () => {
@@ -69,8 +49,29 @@ class FileDraftPermitDialog extends Component {
     return true;
   };
 
-  onSubmit = () => {
-    if (this.validate()) this.storeData();
+  storeData = () => {
+    this.setState({submit: true});
+    let params = {
+      content: this.state.content,
+      file_id: this.props.file.id,
+      type: 'permit'
+    };
+    axios.post(DRAFT_CREATE, params)
+        .then(res => this.processResponse(res, this.props.file.id))
+        .catch(err => this.setState({submit: false, errorMsg: err.toString()}));
+  };
+
+  processResponse = (res, fileId) => {
+    if (res.data.status) this.result(res, fileId);
+    else this.setState({loading: false, submit: false, errorMsg: res.data.messages});
+  };
+
+  result = (res, fileId) => {
+    this.setState({successMsg: res.data.messages});
+    setTimeout(() => {
+      this.props.onClose();
+      this.props.history.push(FILE_DETAIL_ROUTE(fileId) + "/view/draft-permits")
+    }, 1000);
   };
 
   render() {
@@ -108,4 +109,4 @@ class FileDraftPermitDialog extends Component {
   }
 }
 
-export default withStyles(styles)(FileDraftPermitDialog);
+export default withRouter(withStyles(styles)(FileDraftPermitDialog));

@@ -9,6 +9,7 @@ import {DRAFT_CREATE, FILE_DRAFT_VIEW} from "../../../../config/ApiRoutes";
 import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import {withRouter} from "react-router-dom";
+import {FILE_DETAIL_ROUTE} from "../../../../config/routes-constant/OfficeRoutes";
 
 const styles = {};
 
@@ -28,15 +29,13 @@ class FileDraftDialog extends Component {
   editorChange = (e) => this.setState({content: e.target.getContent()});
 
   processResponse = (res, fileId) => {
-    if (res.data.status) this.processSuccess(fileId);
+    if (res.data.status) this.processSuccess(res, fileId);
     else this.setState({submit: false, loading: false, errorMsg: res.data.messages})
   };
 
-  processSuccess = (fileId) => {
-    this.setState({successMsg: 'Submitted Successfully'});
-    setTimeout(function () {
-      this.props.history.push(FILE_DRAFT_VIEW(fileId))
-    }, 1000)
+  processSuccess = (res, fileId) => {
+    this.setState({successMsg: res.data.messages});
+    setTimeout(() => {this.props.onClose(); this.props.history.push(FILE_DETAIL_ROUTE(fileId) + "/view/drafts")}, 1000);
   };
 
   storeData = () => {
