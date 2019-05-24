@@ -7,7 +7,7 @@ import moment from "moment";
 import {ADVERTISER_LIST, FILE_CALL, GET_STAFF} from '../../../../config/ApiRoutes';
 import AdvertiserViewDialog from "./common/AdvertiserViewDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import {DESK} from "../../../../config/routes-constant/OfficeRoutes";
+import {DESK, FILE_DETAIL_ROUTE} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import {withRouter} from "react-router-dom";
 import ErrorHandler from "../../../common/StatusHandler";
@@ -50,6 +50,8 @@ class AdvertiserApprovedList extends React.Component {
     closeViewDialog = () => this.setState({openViewDialog: false});
 
     viewDetails = (data) => this.setState({openViewDialog: true, advertiser: data});
+
+    viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
     takeFile = (data) => this.setState({advertiser: data, openTakeFile: true});
 
@@ -106,6 +108,12 @@ class AdvertiserApprovedList extends React.Component {
                         let data = advertisers[rowIndex];
                         return (
                             <div>
+                                <Tooltip title="View File">
+                                    <IconButton color="primary" size="small"
+                                                aria-label="View Details" onClick={this.viewFile.bind(this, data)}>
+                                        <Icon fontSize="small">folder</Icon>
+                                    </IconButton>
+                                </Tooltip>
                                 <Tooltip title="View Details">
                                     <IconButton color="primary" size="small"
                                                 aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>

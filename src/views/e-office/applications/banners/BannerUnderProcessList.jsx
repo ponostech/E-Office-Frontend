@@ -34,14 +34,14 @@ class BannerUnderProcessList extends React.Component {
   componentDidMount() {
     this.props.doLoad(true);
     this.getData();
-    this.getStaffs();
+    this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
   }
   getData = () => axios.get(BANNER_LIST, {params: {status: 'in-process'}})
     .then(res => this.processResult(res))
     .catch(err => this.setState({errorMsg: err.toString()}))
     .then(() => this.doLoad(false));
 
-  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
+  getStaffs = () => axios.get(GET_STAFF);
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, banners: res.data.data.banners});
@@ -64,7 +64,6 @@ class BannerUnderProcessList extends React.Component {
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
   render() {
-    const {classes} = this.props;
     const {loading, banner, banners, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
@@ -77,18 +76,23 @@ class BannerUnderProcessList extends React.Component {
       {
         name: "name",
         label: "APPLICANT",
-      },
+      },/*
       {
         name: "address",
         label: "OWNER ADDRESS",
-      },
+      },/*
       {
         name: "applicant_type",
         label: "APPLICANT TYPE",
-      },
+      },*/
       {
         name: "advertisement_type",
-        label: "TYPE OF ADVERTISEMENTS",
+        label: "TYPE",
+        options: {
+          customBodyRender: function (value) {
+            return value.toUpperCase();
+          }
+        }
       },
       {
         name: "advertisement_count",
@@ -98,7 +102,7 @@ class BannerUnderProcessList extends React.Component {
         name: "local_council",
         label: "LOCAL COUNCIL.",
         options: {
-          customBodyRender: (local_council, tableMeta, updateValue) => {
+          customBodyRender: (local_council) => {
             return (
               local_council.name
             );

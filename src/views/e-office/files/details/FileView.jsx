@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios";
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import FileMenuLeft from "./Menu/FileMenuLeft";
 import FileMenuRight from "./Menu/FileMenuRight";
-import { Route, withRouter } from "react-router-dom";
+import {Route, withRouter} from "react-router-dom";
 import * as OfficeRoutes from "../../../../config/routes-constant/OfficeRoutes";
-import { DESK, FILE_SEND } from "../../../../config/routes-constant/OfficeRoutes";
+import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import NoteSheetView from "../notesheet/NotesheetView";
 import DraftPermit from "../draft/DraftPermit";
 import DraftLetter from "../draft/DraftLetter";
@@ -23,21 +23,21 @@ import FileDraftLicenses from "./Views/FileDraftLicenses";
 import FileDraftRejects from "./Views/FileDraftRejects";
 import FileDraftCancels from "./Views/FileDraftCancels";
 import NoteSheetDraftView from "../notesheet/NotesheetDraftView";
-import { CREATE_NAME } from "../../../../utils/FileDetailConstant";
+import {CREATE_NAME} from "../../../../utils/FileDetailConstant";
 import CreateNoteDialog from "../notesheet/NoteCreateDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
-import { NotesheetService } from "../../../../services/NotesheetService";
+import {NotesheetService} from "../../../../services/NotesheetService";
 import FileDraftDialog from "../dialog/FileDraftDialog";
 import FileDraftPermitDialog from "../dialog/FileDraftPermitDialog";
 import FileDraftLicenseDialog from "../dialog/FileDraftLicenseDialog";
 import FileDraftRejectDialog from "../dialog/FileDraftRejectDialog";
 import FileDraftCancelDialog from "../dialog/FileDraftCancelDialog";
 import FileSendDialog from "../../../common/SendDialog";
-import { ApiRoutes, FILE_STATUS_UPDATE } from "../../../../config/ApiRoutes";
+import {ApiRoutes, FILE_STATUS_UPDATE} from "../../../../config/ApiRoutes";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import KioskSiteVerificationDialog from "../site-verification/KioskSiteVerificationDialog";
-import { SiteVerificationService } from "../../../../services/SiteVerificationService";
+import {SiteVerificationService} from "../../../../services/SiteVerificationService";
 import ShopSiteVerificationDialog from "../site-verification/ShopSiteVerificationDialog";
 import HotelSiteVerificationDialog from "../site-verification/HotelSiteVerificationDialog";
 import HoardingSiteVerificationDialog from "../site-verification/HoardingSiteVerificationDialog";
@@ -111,10 +111,10 @@ class FileView extends Component {
 
   getData(id) {
     axios.all([this.getFileData(id), this.getStaffs()])
-      .then(axios.spread((file, staffs) => this.processDataResponse(file, staffs)))
-      .then(res => this.setState({ loading: false }))
-      .then(() => this.doLoad(false))
-      .catch(err => this.setState({ errorMessage: "Network Error!", loading: false }));
+        .then(axios.spread((file, staffs) => this.processDataResponse(file, staffs)))
+        .then(res => this.setState({loading: false}))
+        .then(() => this.doLoad(false))
+        .catch(err => this.setState({errorMessage: "Network Error!", loading: false}));
   }
 
   getFileData = (id) => axios.get(ApiRoutes.FILE_DETAIL + "/" + id);
@@ -123,14 +123,14 @@ class FileView extends Component {
 
   processDataResponse = (file, staffs) => {
     if (file.data.status && staffs.data.status)
-      this.setState({ file: file.data.data.file, menus: file.data.data.menus, staffs: staffs.data.data.staffs });
+      this.setState({file: file.data.data.file, menus: file.data.data.menus, staffs: staffs.data.data.staffs});
     else
-      this.setState({ loading: false, errorMessage: "Data Error" });
+      this.setState({loading: false, errorMessage: "Data Error"});
   };
 
 
   handleItemClick = (url, mode = null, name = null, moduleName = null) => {
-    this.setState({ moduleName: moduleName });
+    this.setState({moduleName: moduleName});
     if (mode === "modal")
       this.openDialog(name, moduleName);
     else
@@ -140,122 +140,122 @@ class FileView extends Component {
   openDialog = (name, moduleName) => {
     switch (name) {
       case CREATE_NAME.CREATE_NOTE:
-        this.setState({ openNote: true });
+        this.setState({openNote: true});
         break;
       case CREATE_NAME.CREATE_DRAFT:
-        this.setState({ openDraft: true });
+        this.setState({openDraft: true});
         break;
       case CREATE_NAME.CREATE_VERIFICATION:
         switch (moduleName) {
           case "hoarding":
-            this.setState({ openHoardingVerification: true });
+            this.setState({openHoardingVerification: true});
             break;
           case "kiosk":
-            this.setState({ openKioskVerification: true });
+            this.setState({openKioskVerification: true});
             break;
           case "shop":
-            this.setState({ openShopVerification: true });
+            this.setState({openShopVerification: true});
             break;
           case "hotel":
-            this.setState({ openHotelVerification: true });
+            this.setState({openHotelVerification: true});
             break;
         }
         break;
       case "Draft Permit":
-        this.setState({ openDraftPermit: true });
+        this.setState({openDraftPermit: true});
         break;
       case "Draft Reject":
-        this.setState({ openDraftReject: true });
+        this.setState({openDraftReject: true});
         break;
       case "Draft Cancel":
-        this.setState({ openDraftCancel: true });
+        this.setState({openDraftCancel: true});
         break;
       case "Send":
-        this.setState({ openAssignment: true });
+        this.setState({openAssignment: true});
         break;
       case "Close":
-        this.setState({ openFileCloseDialog: true });
+        this.setState({openFileCloseDialog: true});
         break;
       case "Archive":
-        this.setState({ openFileArchiveDialog: true });
+        this.setState({openFileArchiveDialog: true});
         break;
       case "Re-Open":
-        this.setState({ openFileReOpenDialog: true });
+        this.setState({openFileReOpenDialog: true});
         break;
       default:
         alert(name);
         break;
     }
-    this.setState({ moduleName: moduleName });
+    this.setState({moduleName: moduleName});
   };
 
   handleCloseCreateNote = (data) => {
-    this.setState({ openNote: false });
+    this.setState({openNote: false});
     if (data) {
-      this.setState({ submitNote: true });
+      this.setState({submitNote: true});
       this.noteService.create(data,
-        errorMessage => this.setState({ errorMessage }),
-        successMessage => this.setState({ successMessage }))
-        .finally(() => {
-          this.setState({ submitNote: false });
-        });
+          errorMessage => this.setState({errorMessage}),
+          successMessage => this.setState({successMessage}))
+          .finally(() => {
+            this.setState({submitNote: false});
+          });
     }
   };
   handleCloseHoardingVerification = (url, data, template) => {
-    this.setState({ openHoardingVerification: false });
+    this.setState({openHoardingVerification: false});
     if (url && data && template) {
-      this.setState({ submitNote: true });
+      this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-        errorMessage => this.setState({ errorMessage }),
-        successMessage => this.setState({ successMessage }))
-        .finally(() => this.setState({ submitNote: false }));
+          errorMessage => this.setState({errorMessage}),
+          successMessage => this.setState({successMessage}))
+          .finally(() => this.setState({submitNote: false}));
     }
   };
   handleCloseKioskVerification = (url, data, template) => {
-    this.setState({ openKioskVerification: false });
+    this.setState({openKioskVerification: false});
     if (url && data && template) {
-      this.setState({ submitNote: true });
+      this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-        errorMessage => this.setState({ errorMessage }),
-        successMessage => this.setState({ successMessage }))
-        .finally(() => this.setState({ submitNote: false }));
+          errorMessage => this.setState({errorMessage}),
+          successMessage => this.setState({successMessage}))
+          .finally(() => this.setState({submitNote: false}));
     }
   };
   handleCloseShopVerification = (url, data, template) => {
-    this.setState({ openShopVerification: false });
+    this.setState({openShopVerification: false});
     if (url && data && template) {
-      this.setState({ submitNote: true });
+      this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-        errorMessage => this.setState({ errorMessage }),
-        successMessage => this.setState({ successMessage }))
-        .finally(() => this.setState({ submitNote: false }));
+          errorMessage => this.setState({errorMessage}),
+          successMessage => this.setState({successMessage}))
+          .finally(() => this.setState({submitNote: false}));
     }
   };
   handleCloseHotelVerification = (url, data, template) => {
-    this.setState({ openHotelVerification: false });
+    this.setState({openHotelVerification: false});
     if (url && data && template) {
-      this.setState({ submitNote: true });
+      this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-        errorMessage => this.setState({ errorMessage }),
-        successMessage => this.setState({ successMessage }))
-        .finally(() => this.setState({ submitNote: false }));
+          errorMessage => this.setState({errorMessage}),
+          successMessage => this.setState({successMessage}))
+          .finally(() => this.setState({submitNote: false}));
     }
   };
-  closeDialog = (key) => this.setState({ [key]: false });
+  closeDialog = (key) => this.setState({[key]: false});
 
   sendFile = (id, recipient_id) => {
-    axios.post(FILE_SEND(id), { recipient_id })
-      .then(res => this.processSendResponse(res))
-      .catch(err => this.setState({ errorMessage: err.toString() }));
+    axios.post(FILE_SEND(id), {recipient_id})
+        .then(res => this.processSendResponse(res))
+        .catch(err => this.setState({errorMessage: err.toString()}));
   };
 
   processSendResponse = (res) => {
     if (res.data.status) this.processSendResponseSuccess();
-    else this.setState({ errorMessage: res.data.messages });
+    else this.setState({errorMessage: res.data.messages});
   };
 
   processSendResponseSuccess = () => {
-    this.setState({ successMessage: "File sent successfully", errorMessage: "", openAssignment: false });
+    this.setState({successMessage: "File sent successfully", errorMessage: "", openAssignment: false});
     setTimeout(() => this.props.history.push(DESK), 2000);
   };
 
@@ -276,12 +276,12 @@ class FileView extends Component {
     }
   };
 
-  updateStatus = (status) => axios.post(FILE_STATUS_UPDATE(this.state.file.id), { status: status });
+  updateStatus = (status) => axios.post(FILE_STATUS_UPDATE(this.state.file.id), {status: status});
 
   confirmStatusUdpate = (status) => {
     this.updateStatus(status)
-      .then(res => this.processStatusResponse(res, status))
-      .catch(err => this.setState({ errorMessage: err.toString() }));
+        .then(res => this.processStatusResponse(res, status))
+        .catch(err => this.setState({errorMessage: err.toString()}));
   };
 
   processStatusResponse = (res, status) => {
@@ -300,111 +300,112 @@ class FileView extends Component {
       });
       setTimeout(() => this.props.history.push(DESK), 1000);
     } else {
-      this.setState({ errorMessage: res.data.messages });
+      this.setState({errorMessage: res.data.messages});
     }
   };
 
   render() {
-    const { classes } = this.props;
-    const { loading, openDraft, openDraftPermit, openNote, file, submitNote, successMessage, errorMessage, menus } = this.state;
-    const { openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog, openDraftLicense } = this.state;
-    const { moduleName, openDraftReject, openDraftCancel, openHoardingVerification, openKioskVerification, openHotelVerification, openShopVerification } = this.state;
+    const {classes} = this.props;
+    const {loading, openDraft, openDraftPermit, openNote, file, submitNote, successMessage, errorMessage, menus} = this.state;
+    const {openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog, openDraftLicense} = this.state;
+    const {moduleName, openDraftReject, openDraftCancel, openHoardingVerification, openKioskVerification, openHotelVerification, openShopVerification} = this.state;
 
     const view = (
-      <>
-        <div className={classes.hide}>
-          <FileMenuLeft click={this.handleItemClick} menus={menus}/>
-          <FileMenuRight click={this.handleItemClick} menus={menus}/>
-        </div>
-        <main className={classes.content}>
-          <Grid item xs={12} md={12} lg={12}>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/details"}
-                   render={(props) => <FileDetails {...props} file={file}/>}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/notesheets"}
-                   render={(props) => <NoteSheetView {...props} file={file}/>}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/notesheets/drafts"}
-                   render={(props) => <NoteSheetDraftView {...props} file={file}/>}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/movements"}
-                   render={(props) => <FileMovements {...props} file={file}/>}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/enclosures"}
-                   render={(props) => <FileEnclosures {...props} file={file}/>}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/drafts"}
-                   render={(props) => <FileDrafts {...props} file={file}/>}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/application-details"}
-                   render={(props) => <FileApplicationDetails {...props} file={file}/>}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/site-verifications"}
-                   render={(props) => <FileSiteVerifications type={moduleName} {...props} file={file}/>}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-licenses"}
-                   render={(props) => <FileDraftLicenses {...props} file={file}/>}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-permits"}
-                   render={(props) => <FileDraftPermits {...props} file={file}/>}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-rejects"}
-                   render={(props) => <FileDraftRejects {...props} file={file}/>}/>
-            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-cancels"}
-                   render={(props) => <FileDraftCancels {...props} file={file}/>}/>
-            <Route path={OfficeRoutes.FILE_DETAIL + "/draft"}
-                   render={(props) => <DraftPermit {...props} file={file}/>}/>
-            <Route path={OfficeRoutes.FILE_DETAIL + "/reject"}
-                   render={(props) => <DraftLetter {...props} file={file}/>}/>
-            <Route path={OfficeRoutes.FILE_DETAIL + "/send"}
-                   render={(props) => <FileSend {...props} doLoad={this.props.doLoad} file={file}/>}/>
-            <Route path={OfficeRoutes.FILE_DETAIL} exact
-                   render={(props) => <NoteSheetView {...props} file={file}/>}/>
-          </Grid>
-        </main>
-      </>
+        <>
+          <div className={classes.hide}>
+            <FileMenuLeft click={this.handleItemClick} menus={menus}/>
+            <FileMenuRight click={this.handleItemClick} menus={menus}/>
+          </div>
+          <main className={classes.content}>
+            <Grid item xs={12} md={12} lg={12}>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/details"}
+                     render={(props) => <FileDetails {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/notesheets"}
+                     render={(props) => <NoteSheetView {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/notesheets/drafts"}
+                     render={(props) => <NoteSheetDraftView {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/movements"}
+                     render={(props) => <FileMovements {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/enclosures"}
+                     render={(props) => <FileEnclosures {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/drafts"}
+                     render={(props) => <FileDrafts {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/application-details"}
+                     render={(props) => <FileApplicationDetails {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/site-verifications"}
+                     render={(props) => <FileSiteVerifications type={moduleName} {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-licenses"}
+                     render={(props) => <FileDraftLicenses {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-permits"}
+                     render={(props) => <FileDraftPermits {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-rejects"}
+                     render={(props) => <FileDraftRejects {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-cancels"}
+                     render={(props) => <FileDraftCancels {...props} file={file}/>}/>
+              <Route path={OfficeRoutes.FILE_DETAIL + "/draft"}
+                     render={(props) => <DraftPermit {...props} file={file}/>}/>
+              <Route path={OfficeRoutes.FILE_DETAIL + "/reject"}
+                     render={(props) => <DraftLetter {...props} file={file}/>}/>
+              <Route path={OfficeRoutes.FILE_DETAIL + "/send"}
+                     render={(props) => <FileSend {...props} doLoad={this.props.doLoad} file={file}/>}/>
+              <Route path={OfficeRoutes.FILE_DETAIL} exact
+                     render={(props) => <NoteSheetView {...props} file={file}/>}/>
+            </Grid>
+          </main>
+        </>
     );
     return (
-      <Grid container className={classes.container}>
-        <div className={classes.root}>{loading ? <LoadingView/> : view}</div>
+        <Grid container className={classes.container}>
+          <div className={classes.root}>{loading ? <LoadingView/> : view}</div>
 
-        {openFileCloseDialog &&
-        <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileCloseDialog")}
-                       open={openFileCloseDialog} onConfirm={this.confirmStatusChange.bind(this, "close")}
-                       message="Are you sure you want to close this file?"/>}
-        {openFileArchiveDialog &&
-        <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileArchiveDialog")}
-                       open={openFileArchiveDialog} onConfirm={this.confirmStatusChange.bind(this, "archive")}
-                       message="Are you sure you want to archive this file?"/>}
-        {openFileReOpenDialog &&
-        <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileReOpenDialog")}
-                       open={openFileReOpenDialog} onConfirm={this.confirmStatusChange.bind(this, "re-open")}
-                       message="Are you sure you want to Re-Open this file?"/>}
-        {openAssignment &&
-        <FileSendDialog onSend={this.sendFile.bind(this)} staffs={staffs} open={openAssignment}
-                        onClose={this.closeDialog.bind(this, "openAssignment")} file={file}
-                        props={this.props} actionText="Send File"/>}
+          {openFileCloseDialog &&
+          <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileCloseDialog")}
+                         open={openFileCloseDialog} onConfirm={this.confirmStatusChange.bind(this, "close")}
+                         message="Are you sure you want to close this file?"/>}
+          {openFileArchiveDialog &&
+          <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileArchiveDialog")}
+                         open={openFileArchiveDialog} onConfirm={this.confirmStatusChange.bind(this, "archive")}
+                         message="Are you sure you want to archive this file?"/>}
+          {openFileReOpenDialog &&
+          <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileReOpenDialog")}
+                         open={openFileReOpenDialog} onConfirm={this.confirmStatusChange.bind(this, "re-open")}
+                         message="Are you sure you want to Re-Open this file?"/>}
+          {openAssignment &&
+          <FileSendDialog onSend={this.sendFile.bind(this)} staffs={staffs} open={openAssignment}
+                          onClose={this.closeDialog.bind(this, "openAssignment")} file={file}
+                          props={this.props} actionText="Send File"/>}
 
-        {openNote && <CreateNoteDialog file={file} open={openNote} onClose={this.handleCloseCreateNote}/>}
-        {openHoardingVerification && <HoardingSiteVerificationDialog file={file} open={openHoardingVerification}
-                                                                     onClose={this.handleCloseHoardingVerification}/>}
-        {openKioskVerification && <KioskSiteVerificationDialog file={file} open={openKioskVerification}
-                                                               onClose={this.handleCloseKioskVerification}/>}
-        {openShopVerification && <ShopSiteVerificationDialog file={file} open={openShopVerification}
-                                                             onClose={this.handleCloseShopVerification}/>}
-        {openHotelVerification && <HotelSiteVerificationDialog file={file} open={openHotelVerification}
-                                                               onClose={this.handleCloseHotelVerification}/>}
+          {openNote && <CreateNoteDialog file={file} open={openNote} onClose={this.handleCloseCreateNote}/>}
+          {openHoardingVerification && <HoardingSiteVerificationDialog file={file} open={openHoardingVerification}
+                                                                       onClose={this.handleCloseHoardingVerification}/>}
+          {openKioskVerification && <KioskSiteVerificationDialog file={file} open={openKioskVerification}
+                                                                 onClose={this.handleCloseKioskVerification}/>}
+          {openShopVerification && <ShopSiteVerificationDialog file={file} open={openShopVerification}
+                                                               onClose={this.handleCloseShopVerification}/>}
+          {openHotelVerification && <HotelSiteVerificationDialog file={file} open={openHotelVerification}
+                                                                 onClose={this.handleCloseHotelVerification}/>}
 
-        {openDraft &&
-        <FileDraftDialog module={moduleName}  file={file} open={openDraft} onClose={this.closeDialog.bind(this, "openDraft")}/>}
+          {openDraft &&
+          <FileDraftDialog module={moduleName} file={file} open={openDraft}
+                           onClose={this.closeDialog.bind(this, "openDraft")}/>}
 
-        {openDraftPermit && <FileDraftPermitDialog module={moduleName} file={file} open={openDraftPermit}
-                                                   onClose={this.closeDialog.bind(this, "openDraftPermit")}/>}
-        {openDraftLicense && <FileDraftLicenseDialog module={moduleName} file={file} open={openDraftLicense}
-                                                     onClose={this.closeDialog.bind(this, "openDraftLicense")}/>}
-        {openDraftReject && <FileDraftRejectDialog module={moduleName} file={file} open={openDraftReject}
-                                                   onClose={this.closeDialog.bind(this, "openDraftReject")}/>}
-        {openDraftCancel && <FileDraftCancelDialog module={moduleName} file={file} open={openDraftCancel}
-                                                   onClose={this.closeDialog.bind(this, "openDraftCancel")}/>}
+          {openDraftPermit && <FileDraftPermitDialog module={moduleName} file={file} open={openDraftPermit}
+                                                     onClose={this.closeDialog.bind(this, "openDraftPermit")}/>}
+          {openDraftLicense && <FileDraftLicenseDialog module={moduleName} file={file} open={openDraftLicense}
+                                                       onClose={this.closeDialog.bind(this, "openDraftLicense")}/>}
+          {openDraftReject && <FileDraftRejectDialog module={moduleName} file={file} open={openDraftReject}
+                                                     onClose={this.closeDialog.bind(this, "openDraftReject")}/>}
+          {openDraftCancel && <FileDraftCancelDialog module={moduleName} file={file} open={openDraftCancel}
+                                                     onClose={this.closeDialog.bind(this, "openDraftCancel")}/>}
 
-        {submitNote &&
-        <SubmitDialog open={submitNote} title="Create Notesheet" text="Note is Creating ... Please wait"/>}
+          {submitNote &&
+          <SubmitDialog open={submitNote} title="Create Notesheet" text="Note is Creating ... Please wait"/>}
 
-        <OfficeSnackbar variant={"success"} onClose={() => this.setState({ successMessage: "" })}
-                        open={Boolean(successMessage)} message={successMessage}/>
-        <OfficeSnackbar variant={"error"} onClose={() => this.setState({ errorMessage: "" })}
-                        open={Boolean(errorMessage)} message={errorMessage}/>
-      </Grid>
+          <OfficeSnackbar variant={"success"} onClose={() => this.setState({successMessage: ""})}
+                          open={Boolean(successMessage)} message={successMessage}/>
+          <OfficeSnackbar variant={"error"} onClose={() => this.setState({errorMessage: ""})}
+                          open={Boolean(errorMessage)} message={errorMessage}/>
+        </Grid>
     );
   }
 }

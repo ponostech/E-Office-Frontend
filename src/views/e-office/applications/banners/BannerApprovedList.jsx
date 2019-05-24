@@ -34,14 +34,14 @@ class BannerApprovedList extends React.Component {
   componentDidMount() {
     this.props.doLoad(true);
     this.getData();
-    this.getStaffs();
+    this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
   }
   getData = () => axios.get(BANNER_LIST, {params: {status: 'approve'}})
     .then(res => this.processResult(res))
     .catch(err => this.setState({errorMsg: err.toString()}))
     .then(() => this.doLoad(false));
 
-  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
+  getStaffs = () => axios.get(GET_STAFF);
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, banners: res.data.data.banners});

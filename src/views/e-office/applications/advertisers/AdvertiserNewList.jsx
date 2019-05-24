@@ -3,13 +3,13 @@ import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
-import {Icon, IconButton, Grid} from "@material-ui/core";
+import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
 import {ADVERTISER_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
 import AdvertiserViewDialog from "./common/AdvertiserViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
+import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 
 const styles = {
@@ -53,6 +53,8 @@ class AdvertiserNewList extends React.Component {
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, advertiser: data});
+
+  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
 
@@ -109,18 +111,30 @@ class AdvertiserNewList extends React.Component {
             let data = advertisers[rowIndex];
             return (
                 <div>
-                  <IconButton color="primary" size="small"
-                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                    <Icon fontSize="small">remove_red_eye</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="secondary"
-                              size="small" onClick={this.openAssignment.bind(this, data)}>
-                    <Icon fontSize="small">send</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="primary"
-                              size="small" onClick={this.takeFile.bind(this, data)}>
-                    <Icon fontSize="small">desktop_mac</Icon>
-                  </IconButton>
+                  <Tooltip title="View File">
+                    <IconButton color="primary" size="small"
+                                aria-label="View File" onClick={this.viewFile.bind(this, data)}>
+                      <Icon fontSize="small">folder</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="View Details">
+                    <IconButton color="primary" size="small"
+                                aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                      <Icon fontSize="small">remove_red_eye</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Assign File">
+                    <IconButton variant="contained" color="secondary"
+                                size="small" onClick={this.openAssignment.bind(this, data)}>
+                      <Icon fontSize="small">send</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Take File">
+                    <IconButton variant="contained" color="primary"
+                                size="small" onClick={this.takeFile.bind(this, data)}>
+                      <Icon fontSize="small">desktop_mac</Icon>
+                    </IconButton>
+                  </Tooltip>
                 </div>
             );
           }
