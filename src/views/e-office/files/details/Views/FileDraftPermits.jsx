@@ -27,7 +27,7 @@ class FileDraftPermitList extends Component {
           if (res.data.status) this.setState({loading: false, data: res.data.data.drafts});
           else this.setState({errorMsg: res.data.messages});
         })
-        .catch(err => this.setState({errorMsg: 'Network Error!'}))
+        .catch(err => this.setState({errorMsg: err.toString()}))
   };
 
   formatCreated = (value) => "Created by - " + value.creator.staff.name + " (" + value.creator.staff.designation + ")" +

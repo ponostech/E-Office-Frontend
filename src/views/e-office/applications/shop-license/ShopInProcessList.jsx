@@ -39,7 +39,7 @@ class ShopInProcessList extends React.Component {
   getData = () => axios.get(SHOP_LIST, {params: {status: 'in-process'}})
     .then(res => this.processResult(res))
     .catch(err => this.setState({errorMsg: err.toString()}))
-    .then(() => this.doLoad(false));
+    .then(() => this.props.doLoad(false));
 
   getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
 

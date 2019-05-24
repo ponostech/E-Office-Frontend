@@ -127,6 +127,7 @@ class FileView extends Component {
       this.setState({ loading: false, errorMessage: "Data Error" });
   };
 
+
   handleItemClick = (url, mode = null, name = null, moduleName = null) => {
     this.setState({ moduleName: moduleName });
     if (mode === "modal")
