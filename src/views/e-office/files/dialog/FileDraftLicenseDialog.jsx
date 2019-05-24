@@ -81,7 +81,7 @@ class FileDraftLicenseDialog extends Component {
     const content =
         <Grid container>
           <Grid item lg={12}>
-            <Editor onChange={this.editorChange} default={this.state.content} height={1000}/>
+            <Editor onChange={this.editorChange} default={this.state.content} height={600}/>
           </Grid>
         </Grid>;
 

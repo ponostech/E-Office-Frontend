@@ -80,7 +80,7 @@ class FileDraftPermitDialog extends Component {
     const content =
         <Grid container>
           <Grid item lg={12}>
-            <Editor onChange={this.editorChange} default={this.state.content} height={800}/>
+            <Editor onChange={this.editorChange} default={this.state.content} height={600}/>
           </Grid>
         </Grid>;
 
