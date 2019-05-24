@@ -26,12 +26,12 @@ type it...
 
 const draftPermit = (props) => {
   return (
-    <>
+      <>
         <CardHeader title={"File No.: " + props.file.number} subheader={"Subject: " + props.file.subject}/>
-      <Editor data={data}/>
-      <Button variant="outlined" color="primary">Save</Button>
-      <Button variant="outlined" color="secondary">Cancel</Button>
-    </>
+        <Editor data={data}/>
+        <Button variant="outlined" color="primary">Save</Button>
+        <Button variant="outlined" color="secondary">Cancel</Button>
+      </>
   );
 };
 export default draftPermit;

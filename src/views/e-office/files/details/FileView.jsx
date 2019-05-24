@@ -19,6 +19,7 @@ import FileDrafts from "./Views/FileDrafts";
 import FileApplicationDetails from "./Views/FileApplicationDetails";
 import FileSiteVerifications from "./Views/FileSiteVerifications";
 import FileDraftPermits from "./Views/FileDraftPermits";
+import FileDraftLicenses from "./Views/FileDraftLicenses";
 import FileDraftRejects from "./Views/FileDraftRejects";
 import FileDraftCancels from "./Views/FileDraftCancels";
 import NoteSheetDraftView from "../notesheet/NotesheetDraftView";
@@ -334,6 +335,8 @@ class FileView extends Component {
             <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/site-verifications"}
                    render={(props) => <FileSiteVerifications type={moduleName} {...props} file={file}/>}/>
             <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-licenses"}
+                   render={(props) => <FileDraftLicenses {...props} file={file}/>}/>
+            <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-permits"}
                    render={(props) => <FileDraftPermits {...props} file={file}/>}/>
             <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-rejects"}
                    render={(props) => <FileDraftRejects {...props} file={file}/>}/>
@@ -383,7 +386,7 @@ class FileView extends Component {
                                                                onClose={this.handleCloseHotelVerification}/>}
 
         {openDraft &&
-        <FileDraftDialog file={file} open={openDraft} onClose={this.closeDialog.bind(this, "openDraft")}/>}
+        <FileDraftDialog module={moduleName}  file={file} open={openDraft} onClose={this.closeDialog.bind(this, "openDraft")}/>}
 
         {openDraftPermit && <FileDraftPermitDialog module={moduleName} file={file} open={openDraftPermit}
                                                    onClose={this.closeDialog.bind(this, "openDraftPermit")}/>}

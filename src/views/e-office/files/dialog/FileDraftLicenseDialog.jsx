@@ -8,6 +8,7 @@ import Editor from "../draft/Editor";
 import {DRAFT_CREATE, GET_LICENSE_TEMPLATE, FILE_DRAFT_PERMIT_VIEW} from "../../../../config/ApiRoutes";
 import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
 import SubmitDialog from "../../../../components/SubmitDialog";
+import {FILE_DETAIL_ROUTE} from "../../../../config/routes-constant/OfficeRoutes";
 
 const styles = {};
 
@@ -35,16 +36,17 @@ class FileDraftLicenseDialog extends Component {
 
   editorChange = (e) => this.setState({content: e.target.getContent()});
 
-  result = (fileId) => {
-    this.setState({successMsg: 'Submitted Successfully'});
-    setTimeout(() => {
-      window.location.replace(FILE_DRAFT_PERMIT_VIEW(fileId))
-    }, 1000);
+  processResponse = (res, fileId) => {
+    if (res.data.status) this.result(res, fileId);
+    else this.setState({loading: false, submit: false, errorMsg: res.data.messages});
   };
 
-  processResponse = (res, fileId) => {
-    if (res.data.status) this.result(fileId);
-    else this.setState({loading: false, submit: false, errorMsg: res.data.messages});
+  result = (res, fileId) => {
+    this.setState({successMsg: res.data.messages});
+    setTimeout(() => {
+      this.props.onClose();
+      this.props.history.push(FILE_DETAIL_ROUTE(fileId) + "/view/draft-licenses")
+    }, 1000);
   };
 
   storeData = () => {

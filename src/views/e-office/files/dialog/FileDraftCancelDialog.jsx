@@ -50,12 +50,12 @@ class FileDraftCancelDialog extends Component {
   };
 
   processResponse = (res, fileId) => {
-    if (res.data.status) this.result(fileId);
+    if (res.data.status) this.result(res, fileId);
     else this.setState({loading: false, submit: false, errorMsg: res.data.messages});
   };
 
-  result = (fileId) => {
-    this.setState({successMsg: 'Submitted Successfully', loading: false, submit: false, });
+  result = (res, fileId) => {
+    this.setState({successMsg: res.data.messages, loading: false, submit: false, });
     setTimeout(() => {this.props.onClose(); this.props.history.push(FILE_DETAIL_ROUTE(fileId) + "/view/draft-cancels")}, 1000);
   };
 
