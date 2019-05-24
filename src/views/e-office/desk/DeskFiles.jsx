@@ -30,7 +30,7 @@ class DeskFiles extends Component {
   getFiles = () => {
     axios.get(ApiRoutes.DESK)
         .then(res => this.processResult(res))
-        .catch(err => this.setState({errorMsg: "Network Error", loading: false}))
+        .catch(err => this.setState({errorMsg: err.toString(), loading: false}))
         .then(() => this.doLoad(false));
   };
 
