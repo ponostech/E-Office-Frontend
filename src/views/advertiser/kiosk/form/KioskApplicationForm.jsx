@@ -142,7 +142,7 @@ class KioskApplicationForm extends Component {
 
   isInvalid = () => {
     return this.state.pretine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
-      || !!this.categoryError || !!this.state.displayTypeError;
+      || !!this.categoryError || !!this.state.displayTypeError || !this.validateDocument();
   };
 
   handleOfficeSelect = (identifier, value) => {
@@ -214,6 +214,23 @@ class KioskApplicationForm extends Component {
       default:
         break;
     }
+  };
+  validateDocument=()=>{
+    const { documents, uploadDocuments } = this.state;
+    let docCount=0;
+    let uploadCount = 0;
+
+    documents.forEach(function(item, index) {
+      if (item.mandatory) {
+        docCount++;
+      }
+    });
+    uploadDocuments.forEach(function(doc) {
+      if (doc.mandatory) {
+        uploadCount++;
+      }
+    });
+    return uploadCount === docCount;
   };
 
   handleBlur = (e) => {
@@ -494,6 +511,7 @@ class KioskApplicationForm extends Component {
                       onUploadSuccess={(data) => {
                         this.setState(state => {
                           let temp = {
+                            mandatory:doc.mandatory,
                             document_id: doc.id,
                             name: doc.name,
                             path: data.location
@@ -522,14 +540,13 @@ class KioskApplicationForm extends Component {
                   <Button disabled={
                     !this.state.agree ||
                     this.state.prestine ||
-                    Boolean(this.state.localCouncilError) ||
-                    Boolean(this.state.addressError) ||
-                    Boolean(this.state.lengthError) ||
-                    Boolean(this.state.heightError) ||
-                    Boolean(this.state.displayTypeError) ||
-                    Boolean(this.state.coordinateError)
-                  } name={"submit"} variant={"outlined"}
-                          color={"primary"}
+                    !Boolean(this.state.localCouncil) ||
+                    !Boolean(this.state.address) ||
+                    !Boolean(this.state.length) ||
+                    !Boolean(this.state.height) ||
+                    !Boolean(this.state.displayType) ||
+                    !Boolean(this.state.coordinate)
+                  } name={"submit"} variant={"outlined"} color={"primary"}
                           onClick={this.doSubmit.bind(this)}>Submit</Button>
                   {"\u00A0 "}
                   {"\u00A0 "}

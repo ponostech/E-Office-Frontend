@@ -23,6 +23,8 @@ import AddressField from "../../components/AddressField";
 
 import DateFnsUtils from '@date-io/date-fns';
 import {DatePicker, MuiPickersUtilsProvider} from 'material-ui-pickers';
+import OfficeSelect from "../../components/OfficeSelect";
+import { BannerViewModel } from "../model/BannerViewModel";
 
 
 const style = {
@@ -36,29 +38,46 @@ class BannerDetail extends Component {
     state = {
         length: "",
         height: "",
-        locations: "",
+        localCouncil: undefined,
         from: new Date(),
         to: new Date(),
 
         lengthError: "",
         heightError: "",
-        locationsError: "",
+        localCouncilError: "",
         fromError: "",
         toError: "",
 
         detailList: [],
+        localCouncils:[],
 
         valid: false,
         errorMessage: ""
     };
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        this.setState({localCouncils:nextProps.localCouncils})
+    }
 
     handleChange = (e) => {
         const {name, value} = e.target;
         this.setState({
             [name]: value
         });
+        this.handleBlur(e)
     };
 
+    handleSelect=(id,val)=>{
+        this.setState({localCouncil:val})
+        this.handleSelectBlur(val)
+    }
+    handleSelectBlur=(val)=>{
+        if (this.state.localCouncil) {
+            this.setState({ localCouncilError: ""})
+        }else {
+            this.setState({localCouncilError:"Local council is required"})
+        }
+    }
     getBannerDetails = () => {
         return this.state.detailList;
     };
@@ -71,9 +90,6 @@ class BannerDetail extends Component {
                 break;
             case "height":
                 value.length === 0 ? this.setState({heightError: "Height is required"}) : this.setState({heightError: ""});
-                break;
-            case "locations":
-                value.length === 0 ? this.setState({locationsError: "Locations is required"}) : this.setState({locationsError: ""});
                 break;
             case "from":
                 value.length === 0 ? this.setState({fromError: "From field is required"}) : this.setState({fromError: ""});
@@ -94,7 +110,7 @@ class BannerDetail extends Component {
 
     handleAdd = (e) => {
         const {onDetailAdd} = this.props;
-        const {length, height, locations, from, to} = this.state;
+        const {length, height, localCouncil, from, to} = this.state;
 
         const fromDate = moment(from);
         const toDate = moment(to);
@@ -106,7 +122,7 @@ class BannerDetail extends Component {
 
         this.clear();
         let temp = {
-            length, height, locations, from, to
+            length, height, localCouncil:localCouncil.label, from, to
         };
         let list = this.state.detailList;
         list.push(temp);
@@ -131,7 +147,7 @@ class BannerDetail extends Component {
         this.setState({
             length: "",
             height: "",
-            locations: "",
+            localCouncil: undefined,
             from: new Date(),
             to: new Date()
         });
@@ -163,7 +179,7 @@ class BannerDetail extends Component {
                                    required={true}
                                    error={!!this.state.lengthError}
                                    helperText={this.state.lengthError}
-                                   label={"Length (Meter)"}
+                                   label={"Length (Feet)"}
                                    variant={"outlined"}
                                    value={this.state.length}
                                    onBlur={this.handleBlur.bind(this)}
@@ -184,7 +200,7 @@ class BannerDetail extends Component {
                                    required={true}
                                    error={!!this.state.heightError}
                                    helperText={this.state.heightError}
-                                   label={"Height (Meter)"}
+                                   label={"Height (Feet)"}
                                    variant={"outlined"}
                                    value={this.state.height}
                                    onBlur={this.handleBlur.bind(this)}
@@ -194,30 +210,19 @@ class BannerDetail extends Component {
                     </GridItem>
 
                     <GridItem className={classes.item} sm={12} md={3}>
-                        <AddressField
-                            name={"locations"}
-                            textFieldProps={{
-                                name: "locations",
-                                fullWidth: true,
-                                required: true,
-                                placeholder: "Locations",
-                                error: !!this.state.locationsError,
-                                helperText: this.state.locationsError,
-                                label: "Location",
-                                variant: "outlined",
-                                value: this.state.locations,
-                                onBlur: this.handleBlur.bind(this),
-                                onChange: this.handleChange.bind(this),
-                                margin: "dense"
-                            }}
-                            onPlaceSelect={(place) => {
-                                if (place) {
-                                    let name = place.name;
-                                    let address = place.formatted_address;
-                                    let complete_address = address.includes(name) ? address : `${name} ${address}`;
-                                    this.setState({locations: complete_address});
-                                }
-                            }}/>
+                        <OfficeSelect
+                          value={this.state.localCouncil}
+                          label={"Local Council"}
+                          name={"localCouncil"}
+                          variant={"outlined"}
+                          margin={"dense"}
+                          fullWidth={true}
+                          required={true}
+                          error={Boolean(this.state.localCouncilError)}
+                          helperText={this.state.localCouncilError}
+                          onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
+                          onChange={this.handleSelect.bind(this, "localCouncil")}
+                          options={this.state.localCouncils}/>
                     </GridItem>
 
                     <GridItem className={classes.item} sm={12} md={2}>
@@ -283,7 +288,7 @@ class BannerDetail extends Component {
                     </GridItem>
                     <GridItem className={classes.item} sm={12} md={1}>
                         <IconButton
-                            disabled={this.state.length.length === 0 || this.state.height.length === 0 || this.state.locations.length === 0 || this.state.from.length === 0 || this.state.to.length === 0
+                            disabled={this.state.length.length === 0 || this.state.height.length === 0 || !Boolean(this.state.localCouncil) || this.state.from.length === 0 || this.state.to.length === 0
                             } onClick={this.handleAdd.bind(this)} color={"primary"}>
                             <AddIcon fontSize={"large"} color={"inherit"}/>
                         </IconButton>
@@ -302,7 +307,7 @@ class BannerDetail extends Component {
                                 <TableRow>
                                     <TableCell>Length</TableCell>
                                     <TableCell>Height</TableCell>
-                                    <TableCell>Locations</TableCell>
+                                    <TableCell>Local Council</TableCell>
                                     <TableCell>From</TableCell>
                                     <TableCell>To</TableCell>
                                     <TableCell>Delete</TableCell>
@@ -315,7 +320,7 @@ class BannerDetail extends Component {
                                             <TableRow>
                                                 <TableCell>{item.length}</TableCell>
                                                 <TableCell>{item.height}</TableCell>
-                                                <TableCell>{item.locations}</TableCell>
+                                                <TableCell>{item.localCouncil}</TableCell>
                                                 <TableCell>{moment(item.from).format("DD/MM/YYYY")}</TableCell>
                                                 <TableCell>{moment(item.to).format("DD/MM/YYYY")}</TableCell>
                                                 <TableCell>

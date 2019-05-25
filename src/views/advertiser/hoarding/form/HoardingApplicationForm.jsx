@@ -138,7 +138,24 @@ class HoardingApplicationForm extends Component {
 
   invalid = () => {
     return this.state.prestine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
-      || !!this.state.displayTypeError || !!this.state.coordinateError;
+      || !!this.state.displayTypeError || !!this.state.coordinateError || !this.validateDocument();
+  };
+  validateDocument=()=>{
+    const { documents, uploadDocuments } = this.state;
+    let docCount=0;
+    let uploadCount = 0;
+
+    documents.forEach(function(item, index) {
+      if (item.mandatory) {
+        docCount++;
+      }
+    });
+    uploadDocuments.forEach(function(doc) {
+      if (doc.mandatory) {
+        uploadCount++;
+      }
+    });
+    return uploadCount === docCount;
   };
 
   handleOfficeSelect = (identifier, value) => {
@@ -150,7 +167,7 @@ class HoardingApplicationForm extends Component {
     const { history } = this.props;
 
     if (this.invalid()) {
-      this.setState({ errorMessage: "Please fill all the required \nfields" });
+      this.setState({ errorMessage: "Please fill all the required fields" });
       return;
     }
     this.setState({ submit: true });
@@ -471,10 +488,12 @@ class HoardingApplicationForm extends Component {
                 {this.state.documents.map((doc, index) => {
                   return <GridItem className={classes.root} key={index} xs={12} sm={12} md={12}>
                     <FileUpload
+                      required={Boolean(doc.mandatory)}
                       applicationName={APPLICATION_NAME.HOARDING}
                       onUploadSuccess={(data) => {
                         this.setState(state => {
                           let temp = {
+                            mandatory:Boolean(doc.mandatory),
                             document_id: doc.id,
                             name: doc.name,
                             path: data.location
@@ -500,12 +519,12 @@ class HoardingApplicationForm extends Component {
               <Button disabled={
                 !this.state.agree ||
                 this.state.prestine ||
-                Boolean(this.state.localCouncilError) ||
-                Boolean(this.state.addressError) ||
-                Boolean(this.state.lengthError) ||
-                Boolean(this.state.heightError) ||
-                Boolean(this.state.displayTypeError) ||
-                Boolean(this.state.coordinateError)
+                !Boolean(this.state.localCouncil) ||
+                !Boolean(this.state.address) ||
+                !Boolean(this.state.length) ||
+                !Boolean(this.state.height) ||
+                !Boolean(this.state.displayType) ||
+                !Boolean(this.state.coordinate)
               } name={"submit"} variant={"outlined"} color={"primary"}
                       onClick={this.doSubmit.bind(this)}>Submit</Button>
               {"\u00A0 "}

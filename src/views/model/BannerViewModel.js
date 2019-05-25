@@ -23,5 +23,6 @@ export class BannerViewModel {
   static DISPLAY_TYPE_REQUIRED = "Type of display is required";
   static ACKNOWLEDGEMENT=" I have read carefully the Rules and Regulations and have compiled with all the conditions." +
     " I accept that, in the event the information submitted by me is found false, I am liable for all such penal actions as prescribed under the law";
+  static WORDING="Wording";
 
 }

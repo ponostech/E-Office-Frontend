@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
-import { ErrorToString } from "../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 import React from "react";
 
 export class BannerService {
@@ -16,6 +16,7 @@ export class BannerService {
       advertisement_count: state.bannerDetails.length,
       address: state.address,
       details: state.details,
+      content:state.content,
       status: "new",
       signature: state.signature.path,
       documents: state.uploadDocuments
@@ -23,12 +24,7 @@ export class BannerService {
     try {
       let res = await axios.post(ApiRoutes.CREATE_BANNER, data);
       if (res.data.status) {
-        let msgs = [];
-        res.data.messages.forEach(function(msg) {
-          let temp = <p>{`${msg}.`}</p>;
-          msgs.push(temp);
-        });
-        successCallback(msgs);
+        successCallback(ArrayToString(res.data.messages));
       } else {
         errorCallback(ErrorToString(res.data.messages));
       }

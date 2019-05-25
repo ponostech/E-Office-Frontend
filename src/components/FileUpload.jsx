@@ -78,7 +78,7 @@ class FileUpload extends Component {
             // let imageUpload = document.getElementById(file.id);
             // imageUpload.click();
           }}
-          required={file.mandatory !== 0}
+          required={Boolean(file.mandatory)}
 
           name={file.name}
           variant={"outlined"}

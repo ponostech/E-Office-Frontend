@@ -137,8 +137,22 @@ class ShopApplication extends Component {
       .finally(function() {
         setTimeout(function() {
           doLoadFinish();
-        }, 4000);
+        }, 2000);
       });
+  }
+  validateDocument=()=>{
+    const { documents, uploadDocuments } = this.state;
+    let docCount = 0;
+    let uploadCount = 0;
+    for (let i = 0; i < documents.length; i++) {
+      if (documents[i].mandatory)
+        docCount++;
+    }
+    for (let i = 0; i < uploadDocuments.length; i++) {
+      if (uploadDocuments[i].mandatory)
+        uploadCount++;
+    }
+    return uploadCount===docCount
   }
 
   sendOtp = () => {
@@ -241,7 +255,7 @@ class ShopApplication extends Component {
   onSubmit = (e) => {
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
       || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined;
+      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined || !this.validateDocument();
 
     if (!invalid) {
       this.sendOtp();
@@ -257,31 +271,6 @@ class ShopApplication extends Component {
 
   handleSaveDraft = (e) => {
 
-  };
-
-  handleClear = (e) => {
-
-    this.setState({
-      name: "",
-      phone: "",
-      type: "",
-      email: "",
-      address: "",
-      places: "",
-      tradeName: "",
-      shopName: "",
-      coordinate: undefined,
-      businessDetail: "",
-      estd: undefined,
-      tinNo: "",
-      cstNo: "",
-      gstNo: "",
-      panNo: "",
-      premised: "Owned",
-      displayType: undefined,
-
-      uploadDocuments: []
-    });
   };
 
   handleSelectBlur = (identifier, e) => {
@@ -457,7 +446,7 @@ class ShopApplication extends Component {
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <OfficeSelect
                       value={this.state.localCouncil}
-                      label={"Select Local Council"}
+                      label={"Local Council"}
                       name={"localCouncil"}
                       variant={"outlined"}
                       margin={"dense"}
@@ -510,7 +499,7 @@ class ShopApplication extends Component {
                       fullWidth={true}
                       error={Boolean(this.state.coordinateError)}
                       helperText={this.state.coordinateError}
-                      label={ShopLicenseViewModel.ADDRESS}
+                      label={"Location of Purposed Shop"}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position={"end"}>
@@ -646,7 +635,7 @@ class ShopApplication extends Component {
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <FileUpload required={true}
-                                document={{ id: 122, name: "Passport", mime: "image/*" }}
+                                document={{ id: 122, name: "Passport size photo", mime: "image/*" }}
                                 onUploadSuccess={(data) => {
                                   this.setState(state => {
                                     state.passport = {
@@ -680,6 +669,7 @@ class ShopApplication extends Component {
                                 onUploadSuccess={(data) => {
                                   this.setState(state => {
                                     state.signature = {
+                                      id:data.id,
                                       name: "signature",
                                       path: data.location
                                     };
@@ -704,6 +694,7 @@ class ShopApplication extends Component {
                           applicationName={APPLICATION_NAME.SHOP}
                           key={index} document={doc} onUploadSuccess={(data) => {
                           let temp = {
+                            mandatory:doc.mandatory,
                             document_id: doc.id,
                             name: doc.name,
                             path: data.location
@@ -742,8 +733,8 @@ class ShopApplication extends Component {
                 <GridContainer justify={"flex-end"}>
                   <GridItem>
                     <Button name={"primary"} disabled={
-                      Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
-                      || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
+                      !Boolean(this.state.name) || !Boolean(this.state.type) || !Boolean(this.state.address)
+                      || !Boolean(this.state.coordinate) || !Boolean(this.state.phone) || !Boolean(this.state.shopName)
                       || Boolean(this.state.prestine) || this.state.signature === undefined ||
                       !this.state.agree || this.state.passport === undefined
                     }
@@ -766,7 +757,7 @@ class ShopApplication extends Component {
                     <Button name={"secondary"}
                             color={"secondary"}
                             variant={"outlined"}
-                            onClick={this.handleClear.bind(this)}>
+                            onClick={e=>window.location.reload()}>
                       {ShopLicenseViewModel.SECONDARY_TEXT}
                     </Button>
                   </GridItem>
