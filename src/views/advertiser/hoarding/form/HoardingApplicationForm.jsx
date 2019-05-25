@@ -107,6 +107,7 @@ class HoardingApplicationForm extends Component {
     Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
       .then(function([cats, locs, docs]) {
         doLoadFinish();
+        window.scrollTo(0,0)
       });
 
   }

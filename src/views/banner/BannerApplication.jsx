@@ -104,6 +104,7 @@ class BannerApplication extends Component {
 
     doLoad();
     this.fetchLocalCouncil();
+    window.scrollTo(0,0)
   }
 
   sendOtp = () => {
