@@ -53,6 +53,7 @@ class BannerApplication extends Component {
     address: "",
     localCouncil: undefined,
     details: "",
+    content: "",
     displayType: undefined,
     signature: undefined,
     uploadDocuments: [],
@@ -124,34 +125,17 @@ class BannerApplication extends Component {
 
   handleChange = (e) => {
     const { name, value } = e.target;
-    switch (name) {
-      case "phone":
-        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: "Phone number must be 10 digit number" }) : this.setState({ phoneError: "" });
-        break;
-      default:
-        break;
-    }
     this.setState({
       [name]: value
     });
     this.setState({ prestine: false });
+    this.validateTextField(name,value)
   };
 
   handleSelect = (identifier, value) => {
-    switch (identifier) {
-      case "type":
-        this.setState({ type: value });
-        break;
-      case "localCouncil":
-        this.setState({ localCouncil: value });
-        break;
-      case "displayType":
-        this.setState({ displayType: value });
-        break;
-      default:
-        break;
-    }
+   this.setState({[identifier]:value})
     this.setState({ prestine: false });
+    this.validateSelect(identifier, value);
   };
 
   onVerifiedOtp = (verified) => {
@@ -195,24 +179,36 @@ class BannerApplication extends Component {
   };
 
   onClear = () => {
-    this.setState({
-      name: "",
-      address: "",
-      phone_no: "",
-      blood: "",
-      signature: undefined
-    });
+    window.location.reload()
     // this.bannerRef.current.doReset();
   };
 
+  validateTextField = (type, value) => {
+    switch (type) {
+      case "phone":
+        if (value === "")
+          this.setState({ phoneError: "Phone no is required" });
+        else if (!Validators.PHONE_REGEX.test(value))
+          this.setState({ phoneError: "Phone number must be 10 digit number" });
+        else
+          this.setState({ phoneError: "" });
+        break;
+      case "name":
+        (value === "") ? this.setState({ nameError: "Name is required" }) : this.setState({ nameError: "" });
+        break;
+        case "address":
+        (value === "") ? this.setState({ addressError: "Address of applicant is required" }) : this.setState({ addressError: "" });
+        break;
+    }
+  };
 
-  handleSelectBlur = (identifier, e) => {
-    switch (identifier) {
+  validateSelect = (id, val) => {
+    switch (id) {
       case "type":
-        this.state.type === undefined ? this.setState({ typeError: BannerViewModel.TYPE_REQUIRED }) : this.setState({ typeError: "" });
+        this.state.type ? this.setState({ typeError: "" }) : this.setState({ typeError: "Type of applicant is required" });
         break;
       case "localCouncil":
-        this.state.localCouncil === undefined ? this.setState({ localCouncilError: BannerViewModel.LOCALCOUNCIL_REQUIRED }) : this.setState({ localCouncilError: "" });
+        this.state.localCouncil ? this.setState({ localCouncilError: "" }) : this.setState({ localCouncilError: "Local Council is required" });
         break;
       case "displayType":
         this.state.displayType === undefined ? this.setState({ displayTypeError: BannerViewModel.DISPLAY_TYPE_REQUIRED }) : this.setState({ displayTypeError: "" });
@@ -221,22 +217,11 @@ class BannerApplication extends Component {
         break;
     }
   };
+
+
   handleBlur = (e) => {
     const { name, value } = e.target;
-
-    switch (name) {
-      case "name":
-        value.length === 0 ? this.setState({ nameError: BannerViewModel.NAME_REQUIRED }) : this.setState({ nameError: "" });
-        break;
-      case "address":
-        value.length === 0 ? this.setState({ addressError: BannerViewModel.ADDRESS_REQUIRED }) : this.setState({ addressError: "" });
-        break;
-      case "phone":
-        value.length === 0 ? this.setState({ phoneError: BannerViewModel.PHONE_REQUIRED }) : this.setState({ phoneError: "" });
-        break;
-      default:
-        break;
-    }
+    this.validateTextField(name,value)
   };
 
 
@@ -304,7 +289,7 @@ class BannerApplication extends Component {
                       required={true}
                       error={Boolean(this.state.typeError)}
                       helperText={this.state.typeError}
-                      onBlur={this.handleSelectBlur.bind(this, "type")}
+                      onBlur={this.validateSelect.bind(this, "type")}
                       onChange={this.handleSelect.bind(this, "type")}
                       options={this.state.types}/>
                   </GridItem>
@@ -350,7 +335,7 @@ class BannerApplication extends Component {
                       fullWidth={true}
                       error={Boolean(this.state.localCouncilError)}
                       helperText={this.state.localCouncilError}
-                      onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
+                      onBlur={this.validateSelect.bind(this, "localCouncil")}
                       onChange={this.handleSelect.bind(this, "localCouncil")}
                       options={this.state.localCouncils}/>
                   </GridItem>
@@ -364,13 +349,13 @@ class BannerApplication extends Component {
                       name={"displayType"}
                       error={!!this.state.displayTypeError}
                       helperText={this.state.displayTypeError}
-                      onBlur={this.handleSelectBlur.bind(this, "displayType")}
+                      onBlur={this.validateSelect.bind(this, "displayType")}
                       onChange={this.handleSelect.bind(this, "displayType")}
                       ClearAble={true}
                       label={BannerViewModel.DISPLAY_TYPE}
                       options={this.state.display_types}/>
                   </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <TextField
                       value={this.state.details}
                       name={"details"}
@@ -382,6 +367,34 @@ class BannerApplication extends Component {
                       onBlur={this.handleBlur.bind(this)}
                       onChange={this.handleChange.bind(this)}
                       label={BannerViewModel.DETAILS}/>
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.content}
+                      name={"content"}
+                      multiline={true}
+                      rows={3}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onBlur={this.handleBlur.bind(this)}
+                      onChange={this.handleChange.bind(this)}
+                      label={BannerViewModel.WORDING}/>
+                  </GridItem>
+                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                    <FileUpload applicationName={APPLICATION_NAME.BANNER}
+                                document={{ id: 1, name: "Signature of applicant", mandatory: 1, mime: "image/*" }}
+                                onUploadSuccess={(data) => {
+                                  let temp = {
+                                    name: "signature",
+                                    path: data.location
+                                  };
+                                  this.setState({
+                                    signature: temp
+                                  });
+                                }} onUploadFailure={(err) => {
+                      console.log(err);
+                    }}/>
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={12}>
                     <Typography style={{ marginTop: 20 }} variant={"h7"}> Details of Advertisement</Typography>
@@ -399,6 +412,7 @@ class BannerApplication extends Component {
                                       state.bannerDetails = result;
                                     });
                                   }}
+                                  localCouncils={this.state.localCouncils}
                                   onDetailAdd={(item) => {
                                     console.log("Item is added");
                                     this.state.bannerDetails.push(item);
@@ -412,21 +426,7 @@ class BannerApplication extends Component {
                                       label={BannerViewModel.ACKNOWLEDGEMENT}/>
                   </GridItem>
 
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload applicationName={APPLICATION_NAME.BANNER}
-                                document={{ id: 1, name: "Signature of applicant", mandatory: 1, mime: "image/*" }}
-                                onUploadSuccess={(data) => {
-                                  let temp = {
-                                    name: "signature",
-                                    path: data.location
-                                  };
-                                  this.setState({
-                                    signature: temp
-                                  });
-                                }} onUploadFailure={(err) => {
-                      console.log(err);
-                    }}/>
-                  </GridItem>
+
                 </GridContainer>
               </CardContent>
               <CardActions style={{ justifyContent: "flex-end" }}>
@@ -440,11 +440,12 @@ class BannerApplication extends Component {
                   <Button name={"primary"}
                           disabled={
                             this.state.prestine ||
-                            Boolean(this.state.nameError) ||
-                            Boolean(this.state.phoneError) ||
-                            Boolean(this.state.addressError) ||
-                            Boolean(this.state.localCouncilError) ||
-                            Boolean(this.state.displayTypeError) ||
+                            Boolean(this.state.name === "") ||
+                            Boolean(this.state.phone === "") ||
+                            Boolean(this.state.address === "") ||
+                            Boolean(this.state.localCouncil === undefined) ||
+                            Boolean(this.state.displayType === undefined) ||
+                            Boolean(this.state.signature === undefined) ||
                             !this.state.agree
                           }
                           color={"primary"} variant={"outlined"}

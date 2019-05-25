@@ -98,7 +98,7 @@ class AdvertiserApplication extends Component {
 
     isInvalid = () => {
         return this.state.prestine || !!this.state.nameError || !!this.state.emailError || !!this.state.addressError || !!this.state.passwordError || !!this.state.confirmPasswordError
-            || !!this.state.phoneError || this.state.signature === undefined || this.state.type === undefined;
+            || !!this.state.phoneError || this.state.signature === undefined || this.state.type === undefined || !this.validateDocument()
     };
 
     submit = (e) => {
@@ -109,6 +109,21 @@ class AdvertiserApplication extends Component {
         this.setState({submit: true});
         this.insertData();
     };
+
+    validateDocument=()=>{
+        const { documents, documentsUpload } = this.state;
+        let docCount = 0;
+        let uploadCount = 0;
+        for (let i = 0; i < documents.length; i++) {
+            if (documents[i].mandatory)
+                docCount++;
+        }
+        for (let i = 0; i < documentsUpload.length; i++) {
+            if (documentsUpload[i].mandatory)
+                uploadCount++;
+        }
+        return uploadCount===docCount
+    }
 
     insertData() {
         const { history } = this.props;
@@ -401,6 +416,7 @@ class AdvertiserApplication extends Component {
                                         <FileUpload document={doc}
                                                     onUploadSuccess={(data) => {
                                                         let temp = {
+                                                            mandatory:doc.mandatory,
                                                             document_id: doc.id,
                                                             name: doc.name,
                                                             path: data.location

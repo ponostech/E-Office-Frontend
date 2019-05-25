@@ -207,6 +207,20 @@ class HotelApplication extends Component {
 
     this.setState({ prestine: false });
   };
+  validateDocument = () => {
+    const { documents, uploadDocuments } = this.state;
+    let docCount = 0;
+    let uploadCount = 0;
+    for (let i = 0; i < documents.length; i++) {
+      if (documents[i].mandatory)
+        docCount++;
+    }
+    for (let i = 0; i < uploadDocuments.length; i++) {
+      if (uploadDocuments[i].mandatory)
+        uploadCount++;
+    }
+    return uploadCount === docCount;
+  };
 
   handleSelect = (identifier, value) => {
     switch (identifier) {
@@ -235,12 +249,13 @@ class HotelApplication extends Component {
   onSubmit = (e) => {
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
       || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined;
+      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined
+      || !this.validateDocument();
 
     if (!invalid) {
       this.sendOtp();
     } else {
-      this.setState({ errorMessage: "Please fill out the required fields" });
+      this.setState({ errorMessage: "Please fill all the required fields" });
     }
   };
   handleRadio = (e) => {
@@ -253,32 +268,6 @@ class HotelApplication extends Component {
 
   };
 
-  handleClick = (e) => {
-    const name = e.target.name;
-
-    this.setState({
-      name: "",
-      phone: "",
-      type: "",
-      email: "",
-      address: "",
-      places: "",
-      tradeName: "",
-      shopName: "",
-      coordinate: undefined,
-      businessDetail: "",
-      estd: undefined,
-      tinNo: "",
-      cstNo: "",
-      gstNo: "",
-      panNo: "",
-      premised: "Owned",
-      displayType: undefined,
-
-      uploadDocuments: []
-    });
-
-  };
 
   handleSelectBlur = (identifier, e) => {
 
@@ -709,7 +698,7 @@ class HotelApplication extends Component {
                   </GridItem>
                   <GridItem className={classes.root} xs={12} sm={12} md={6}>
                     <FileUpload required={true}
-                                document={{ id: 122, name: "Passport", mime: "image/*" }}
+                                document={{ id: 122, name: "Passport size photo", mime: "image/*" }}
                                 onUploadSuccess={(data) => {
                                   this.setState(state => {
                                     state.passport = {
@@ -729,6 +718,7 @@ class HotelApplication extends Component {
                       onUploadSuccess={(data) => {
                         this.setState(state => {
                           state.signature = {
+                            id:doc.id,
                             name: "signature",
                             path: data.location
                           };
@@ -752,6 +742,7 @@ class HotelApplication extends Component {
 
                         <FileUpload key={index} document={doc} onUploadSuccess={(data) => {
                           let temp = {
+                            mandatory: doc.mandatory,
                             document_id: doc.id,
                             name: doc.name,
                             path: data.location
@@ -790,9 +781,9 @@ class HotelApplication extends Component {
                 <GridContainer justify={"flex-end"}>
                   <GridItem>
                     <Button name={"primary"} disabled={
-                      Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
-                      || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-                      || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined ||
+                      !Boolean(this.state.name) || !Boolean(this.state.type) || !Boolean(this.state.address)
+                      || !Boolean(this.state.coordinate) || !Boolean(this.state.phone) || !Boolean(this.state.shopName)
+                      || !Boolean(this.state.estd) || !Boolean(this.state.prestine) || this.state.signature === undefined ||
                       !this.state.agree || this.state.passport === undefined
                     }
                             color={"primary"} variant={"outlined"}
