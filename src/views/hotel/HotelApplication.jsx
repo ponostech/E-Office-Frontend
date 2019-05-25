@@ -144,6 +144,7 @@ class HotelApplication extends Component {
       Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
         .then(function([values]) {
           doLoadFinish();
+          window.scrollTo(0,0)
         });
     }, 4000);
   }
@@ -702,6 +703,7 @@ class HotelApplication extends Component {
                                 onUploadSuccess={(data) => {
                                   this.setState(state => {
                                     state.passport = {
+                                      id:122,
                                       name: "passport",
                                       path: data.location
                                     };
@@ -718,7 +720,7 @@ class HotelApplication extends Component {
                       onUploadSuccess={(data) => {
                         this.setState(state => {
                           state.signature = {
-                            id:doc.id,
+                            id:344,
                             name: "signature",
                             path: data.location
                           };

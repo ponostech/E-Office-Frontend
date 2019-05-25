@@ -83,6 +83,7 @@ class AdvertiserApplication extends Component {
 
     componentDidMount() {
         this.retrieveDocuments();
+        window.scrollTo(0,0)
     }
 
     retrieveDocuments = () => {

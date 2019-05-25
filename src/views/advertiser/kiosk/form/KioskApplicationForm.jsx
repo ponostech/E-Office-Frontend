@@ -111,6 +111,7 @@ class KioskApplicationForm extends Component {
           // self.setState({ loading: false });
         });
       doLoadFinish();
+      window.scrollTo(0,0)
     }, 6000);
     //
   }

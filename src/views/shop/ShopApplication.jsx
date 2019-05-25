@@ -137,6 +137,7 @@ class ShopApplication extends Component {
       .finally(function() {
         setTimeout(function() {
           doLoadFinish();
+          window.scrollTo(0,0)
         }, 2000);
       });
   }
