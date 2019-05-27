@@ -11,7 +11,7 @@ class FileSiteVerifications extends Component {
   state={
     data:[],
     loading:true,
-    errorMessage:""
+    errorMessage:"",
   }
 
   componentDidMount() {

@@ -75,6 +75,8 @@ class HoardingSiteVerificationDialog extends Component {
       element.value = event.target.checked;
     } else if (element.elementType === WidgetConstant.ADDRESS) {
       element.value = event;
+    }else if (element.elementType === WidgetConstant.FILE_UPLOAD) {
+      element.value = event;
     } else {
       element.value = event.target.value;
     }
