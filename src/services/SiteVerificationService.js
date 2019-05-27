@@ -47,7 +47,7 @@ export class SiteVerificationService {
   }
   async all(url,errorCallback,successCallback){
     try{
-      let res=await axios.get(url)
+      let res=await axios.get(url);
       console.log(res);
       if (res.data.status) {
         // let verificationData =[]

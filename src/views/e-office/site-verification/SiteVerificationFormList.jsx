@@ -9,7 +9,8 @@ import {
   Fab,
   IconButton,
   List,
-  ListItem, ListItemIcon,
+  ListItem,
+  ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
   Tooltip
@@ -23,17 +24,20 @@ import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import ViewIcon from "@material-ui/icons/RemoveRedEye";
 import EditIcon from "@material-ui/icons/Edit";
+import SiteVerificationFormPreviewDialog
+  from "../../../components/form-builder/preview/SiteVerificationFormPreviewDialog";
 
 class SiteVerificationFormList extends Component {
   siteVerificationService = new SiteVerificationService();
   state = {
     templates: [],
-    selectedData: null,
+    template: null,
 
     openDelete: false,
-    loading: false,
+    openPreview: false,
 
-    errorMessage: ""
+    errorMessage: "",
+    loading: false
   };
 
   componentDidMount() {
@@ -43,8 +47,8 @@ class SiteVerificationFormList extends Component {
       .finally(() => this.props.doLoad(false));
   }
 
-  viewDetails = (data) => {
-
+  handlePreview = (template) => {
+    this.setState({openPreview:true, template });
   };
   edit = (data) => {
 
@@ -71,7 +75,7 @@ class SiteVerificationFormList extends Component {
                   <List>
                     {this.state.templates.map((item, index) => (
                       <ListItem>
-                        <ListItemIcon color={"primary"} >
+                        <ListItemIcon color={"primary"}>
                           {index}
                         </ListItemIcon>
                         <ListItemText primary={"Type of Site verification (" + item.type + ")"}
@@ -79,7 +83,7 @@ class SiteVerificationFormList extends Component {
                         <ListItemSecondaryAction>
                           <>
                             <Tooltip title={"View form"}>
-                              <IconButton>
+                              <IconButton onClick={this.handlePreview.bind(this, item)}>
                                 <ViewIcon fontSize={"small"} color={"action"}/>
                               </IconButton>
                             </Tooltip>
@@ -109,6 +113,10 @@ class SiteVerificationFormList extends Component {
                         onClose={e => this.setState({ errorMessage: "" })}/>
         <ConfirmDialog onCancel={e => this.setState({ openDelete: false })} open={this.state.openDelete}
                        onConfirm={this.confirmDelete.bind(this)}/>
+
+        <SiteVerificationFormPreviewDialog open={this.state.openPreview}
+                                           onClose={e => this.setState({ openPreview: false })}
+                                           template={this.state.template}/>
       </div>
     );
   }

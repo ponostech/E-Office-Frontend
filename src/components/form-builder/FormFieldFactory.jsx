@@ -16,6 +16,8 @@ import * as HoardingApplicationFormModel from "../../views/model/HoardingApplica
 import MapIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import GMapDialog from "../GmapDialog";
 import GridContainer from "../Grid/GridContainer";
+import FileUpload from "../FileUpload";
+import { APPLICATION_NAME } from "../../utils/Util";
 
 class FormFieldFactory extends Component {
 state={
@@ -180,6 +182,23 @@ openMap:false
 
             </RadioGroup>
           </FormControl>
+        );
+        break;
+        case WidgetConstant.FILE_UPLOAD:
+        this.inputElement = (
+          <FileUpload document={{id:989898,name:"file upload",mandatory:validation.required,mime:"application/pdf"}}
+                      onUploadSuccess={(data) => {
+                        let temp = {
+                          mandatory:validation.required,
+                          document_id: 989898,
+                          name:"file upload",
+                          path: data.location
+                        };
+                        changed(temp,index)
+
+                      }}
+                      onUploadFailure={(err) => console.error(err)}
+                      applicationName={"site verification"}/>
         );
         break;
 

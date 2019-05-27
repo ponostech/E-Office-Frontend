@@ -113,7 +113,7 @@ class BannerApplication extends Component {
       otpMessage => {
         this.setState({ otpMessage, openOtp: true });
       })
-      .finally(() => console.log("Otp send successfully"));
+      .finally(() => console.log("Otp send request complete"));
   };
 
   fetchLocalCouncil = () => {

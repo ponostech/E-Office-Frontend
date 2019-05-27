@@ -5,6 +5,7 @@ import {
   Divider,
   Icon,
   IconButton,
+  InputAdornment,
   List,
   ListItem,
   ListItemIcon,
@@ -20,6 +21,8 @@ import TextFieldDialog from "./config-dialog/TextFieldDialog";
 import NumberFieldDialog from "./config-dialog/NumberFieldDialog";
 import WidgetConstant from "./WidgetConstant";
 import PatternFieldDialog from "./config-dialog/PatternFieldDialog";
+import SearchIcon from "@material-ui/icons/Search";
+import FileUploadFieldDialog from "./config-dialog/FileUploadFieldDialog";
 
 const widgets = [
   { name: WidgetConstant.TEXTFIELD, icon: "keyboard_arrow_right" },
@@ -30,7 +33,9 @@ const widgets = [
   { name: "Coordinate", icon: "donut_small" },
   { name: WidgetConstant.RADIO, icon: "radio_button_checked" },
   { name: WidgetConstant.CHECKBOX, icon: "checked" },
-  { name: WidgetConstant.SELECT, icon: "list" }
+  { name: WidgetConstant.SELECT, icon: "list" },
+  { name: WidgetConstant.FILE_UPLOAD, icon: "attach_file" },
+  { name: WidgetConstant.IMAGE_UPLOAD, icon: "picture_in_picture" }
 ];
 
 class FormBuilderContainer extends Component {
@@ -43,12 +48,16 @@ class FormBuilderContainer extends Component {
       openNumberDialog: false,
       openSelectDialog: false,
       openPatternDialog: false,
+      openFileDialog: false,
       selectedWidget: null,
 
       formElements: []
     };
   }
 
+  clear=()=>{
+    this.setState({formElements:[]})
+  }
   handleClick = (identifier, event) => {
     switch (identifier.name) {
       case WidgetConstant.TEXTFIELD :
@@ -75,6 +84,9 @@ class FormBuilderContainer extends Component {
       case WidgetConstant.NUMBER:
         this.setState({ selectedWidget: identifier, openNumberDialog: true });
         break;
+      case WidgetConstant.FILE_UPLOAD:
+        this.setState({ selectedWidget: identifier, openFileDialog: true });
+        break;
       default:
         this.setState({ selectedWidget: identifier, openTextDialog: true });
         break;
@@ -87,7 +99,8 @@ class FormBuilderContainer extends Component {
       openNumberDialog: false,
       openSelectDialog: false,
       openPatternDialog: false,
-      openTextDialog: false
+      openTextDialog: false,
+      openFileDialog: false
     });
     if (!key || !config) {
       return;
@@ -106,7 +119,13 @@ class FormBuilderContainer extends Component {
         <GridContainer>
           <GridItem md={3} lg={3}>
             <Typography variant={"h6"}>Add New Widget</Typography>
-            <TextField margin={"dense"} variant={"outlined"} fullWidth={true} placeholder={"Search"}/>
+            <TextField style={{ background: "#f3f3f3" }}
+                       InputProps={{
+                         endAdornment: <InputAdornment position={"end"}>
+                           <SearchIcon color={"action"}/>
+                         </InputAdornment>
+                       }}
+                       margin={"dense"} variant={"outlined"} fullWidth={true} placeholder={"Search"}/>
             <Divider/>
             <List>
               {
@@ -134,10 +153,13 @@ class FormBuilderContainer extends Component {
           <GridItem md={9} lg={9}>
 
             <Card style={{ padding: 20 }}>
-              <DynamicFormPreview formElements={this.state.formElements}/>
+              <DynamicFormPreview clear={this.clear} formElements={this.state.formElements}/>
             </Card>
 
           </GridItem>
+
+          <FileUploadFieldDialog  widget={this.state.selectedWidget} open={this.state.openFileDialog}
+                           onClose={this.addWidget.bind(this)}/>
 
           <TextFieldDialog widget={this.state.selectedWidget} open={this.state.openTextDialog}
                            onClose={this.addWidget.bind(this)}/>

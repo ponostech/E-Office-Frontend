@@ -5,15 +5,18 @@ import FormFieldFactory from "./FormFieldFactory";
 import TrashIcon from "@material-ui/icons/DeleteForeverOutlined";
 import OfficeSelect from "../OfficeSelect";
 import GridContainer from "../Grid/GridContainer";
-import SiteVerificationFormList from "../../views/e-office/site-verification/SiteVerificationFormList";
 import { SiteVerificationService } from "../../services/SiteVerificationService";
+import OfficeSnackbar from "../OfficeSnackbar";
+import SubmitDialog from "../SubmitDialog";
+import { withRouter } from "react-router-dom";
 
-const options= [
+const options = [
   { value: "hoarding", label: "Hoarding site verification" },
   { value: "kiosk", label: "Kiosk site verification" },
   { value: "shop", label: "Shop site verification" },
   { value: "hotel", label: "Hotel site verification" }
-]
+];
+
 class DynamicFormPreview extends Component {
 
   siteVerificationService = new SiteVerificationService();
@@ -23,22 +26,32 @@ class DynamicFormPreview extends Component {
     subTitle: "Subtitle",
     formElements: [],
 
-    selectedType:{value:"hoarding", label:"Hoarding site verification"},
+    selectedType: { value: "hoarding", label: "Hoarding site verification" },
 
+    errorMessage: "",
+    successMessage: "",
+    submit:false
   };
   submitHandler = event => {
 
     let type = this.state.selectedType.value;
-    let formElements=[];
-    this.state.formElements.forEach(item=>{
-      formElements.push(item.config)
+    let formElements = [];
+    this.state.formElements.forEach(item => {
+      formElements.push(item.config);
+    });
+    let data = {
+      title: this.state.title,
+      subTitle: this.state.subTitle,
+      formElements: formElements
+    };
+    this.setState({ submit: true });
+    this.siteVerificationService.createTemplate(type, data,
+      errorMessage => this.setState({ errorMessage }),
+      successMessage => {
+        this.setState({ successMessage,formElements:[] })
+        this.props.clear();
     })
-    let data={
-      title:this.state.title,
-      subTitle:this.state.subTitle,
-      formElements:formElements
-    }
-    this.siteVerificationService.createTemplate(type,data,errorMessage=>console.log(errorMessage),successMessage=>console.log(successMessage))
+      .finally(() => this.setState({ submit: false }));
   };
 
   removeItem = (index, e) => {
@@ -87,7 +100,8 @@ class DynamicFormPreview extends Component {
     );
     return (
       <Card>
-        <CardHeader contentEditable={true} onChange={event => console.log(event)} title={"title"} subheader={"subheader"} action={
+        <CardHeader contentEditable={true} onChange={event => console.log(event)} title={"title"}
+                    subheader={"subheader"} action={
           <OfficeSelect
             label={"Type of site verification"}
             variant={"outlined"}
@@ -99,21 +113,27 @@ class DynamicFormPreview extends Component {
         }/>
         <Divider/>
         <CardContent>
-          <GridContainer justify={"flex-start"} alignItems={"flex-start"}>
+          <GridContainer style={{ height: "60vh" }} justify={"flex-start"} alignItems={"flex-start"}>
 
-          {form}
+            {form}
 
           </GridContainer>
         </CardContent>
         <Divider/>
-        <CardActions style={{justifyContent:"flex-end"}}>
+        <CardActions style={{ justifyContent: "flex-end" }}>
           <Button onClick={this.submitHandler} variant={"outlined"} color={"primary"}>Save</Button>
           <Button onClick={e => this.setState({ formElements: [] })} variant={"outlined"}
                   color={"secondary"}>Reset</Button>
         </CardActions>
+
+        <SubmitDialog open={this.state.submit} title={"Site verification"} text={"Submitting ..."}/>
+        <OfficeSnackbar variant={"error"} message={this.state.errorMessage} open={Boolean(this.state.errorMessage)}
+                        onClose={e => this.setState({ errorMessage: "" })}/>
+        <OfficeSnackbar variant={"success"} message={this.state.successMessage}
+                        open={Boolean(this.state.successMessage)} onClose={e => this.setState({ successMessage: "" })}/>
       </Card>
-    )
+    );
   };
 }
 
-export default DynamicFormPreview;
+export default withRouter(DynamicFormPreview);
