@@ -3,13 +3,13 @@ import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
-import {Icon, IconButton, Grid} from "@material-ui/core";
+import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
 import { BANNER_LIST, FILE_TAKE, GET_STAFF } from "../../../../config/ApiRoutes";
 import BannerViewDialog from "./common/BannerViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
+import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
 
@@ -39,7 +39,7 @@ class BannerApprovedList extends React.Component {
   getData = () => axios.get(BANNER_LIST, {params: {status: 'approve'}})
     .then(res => this.processResult(res))
     .catch(err => this.setState({errorMsg: err.toString()}))
-    .then(() => this.doLoad(false));
+    .then(() => this.props.doLoad(false));
 
   getStaffs = () => axios.get(GET_STAFF);
 
@@ -51,6 +51,7 @@ class BannerApprovedList extends React.Component {
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, banner: data});
+  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
 
@@ -124,6 +125,12 @@ class BannerApprovedList extends React.Component {
             let data = banners[rowIndex];
             return (
               <div>
+                <Tooltip title="View File">
+                  <IconButton color="primary" size="small"
+                              aria-label="View File" onClick={this.viewFile.bind(this, data)}>
+                    <Icon fontSize="small">folder</Icon>
+                  </IconButton>
+                </Tooltip>
                 <IconButton color="primary" size="small"
                             aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                   <Icon fontSize="small">remove_red_eye</Icon>
