@@ -3,13 +3,13 @@ import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
-import {Icon, IconButton, Grid} from "@material-ui/core";
+import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
 import {HOARDING_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
 import HoardingViewDialog from "./common/HoardingViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
+import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 
 const styles = {
@@ -48,6 +48,7 @@ class HoardingApprovedList extends React.Component {
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
+  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
 
@@ -114,6 +115,12 @@ class HoardingApprovedList extends React.Component {
             let data = tableData[rowIndex];
             return (
                 <div>
+                  <Tooltip title="View File">
+                    <IconButton color="primary" size="small"
+                                aria-label="View File" onClick={this.viewFile.bind(this, data)}>
+                      <Icon fontSize="small">folder</Icon>
+                    </IconButton>
+                  </Tooltip>
                   <IconButton color="primary" size="small"
                               aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                     <Icon fontSize="small">remove_red_eye</Icon>
