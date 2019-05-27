@@ -9,7 +9,7 @@ export class NotesheetService {
     try {
       let res = await axios.post(ApiRoutes.NOTESHEET, note);
       if (res.data.status) {
-        successCallback("New note is created");
+        successCallback(ArrayToString(res.data.messages));
       } else {
         errorCallback(ErrorToString(res.data.messages));
       }

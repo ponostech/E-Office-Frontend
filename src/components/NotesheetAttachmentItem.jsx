@@ -1,11 +1,19 @@
 import React, { Component } from "react";
-import { IconButton, ListItem, ListItemSecondaryAction, ListItemText, TextField, Tooltip } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/DeleteForever";
 import PropTypes from "prop-types";
 import S3FileUpload from "react-s3";
 import { BUCKET_NAME, REGION, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY } from "../Configuration";
-import path from "path";
+import moment from "moment";
+import {
+  IconButton,
+  LinearProgress,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  TextField
+} from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/DeleteForeverOutlined";
 
+var uniqid = require("uniqid");
 const config = {
   bucketName: BUCKET_NAME,
   dirName: "office/notesheet", /* optional */
@@ -16,27 +24,42 @@ const config = {
 
 class NotesheetAttachmentItem extends Component {
   state = {
-    id:"",
+    notesheet_id: "",
     name: "",
-    dirName: "",
-    file: {},
     location: "",
 
-    loading:true
+    file: null,
+    loading: true
   };
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    this.setState({
-      id:nextProps.file.id,
-      name:nextProps.file.name,
-      dirName:nextProps.file.dirName,
-      file:nextProps.file.file,
-      location:nextProps.file.location,
-    })
+  componentDidMount() {
+    let { file } = this.props;
+
+    let blob = file.slice(0, file.size, file.type);
+    let newName = new Date().getMilliseconds() + "-" + uniqid() + file.name;
+    let newFile = new File([blob], newName, { type: file.type });
+
+    let loc = moment().format("MM-YYYY");
+    config.dirName += "/" + loc;
+
+    this.setState({ file: newFile });
+
+    S3FileUpload.uploadFile(newFile, config)
+      .then(data => {
+        this.setState({
+          name: file.name,
+          location: data.location,
+          loading: false
+        });
+        this.props.addItem({name:file.name,location:data.location})
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
-  handleItemDelete=(e)=>{
-    // const file=this.state.file
+  handleItemDelete = (e) => {
+    const file=this.state.file
     // config.dirName = this.state.dirName;
     //
     //  S3FileUpload.deleteFile(file.name,config)
@@ -44,39 +67,47 @@ class NotesheetAttachmentItem extends Component {
     //       this.props.onDelete(this.state)
     //    })
     //    .catch(err=>console.log(err))
-    this.props.onDelete(this.state)
-  }
+    this.props.onDelete(this.props.index);
+  };
 
-  handleChange=(e)=>{
+  handleChange = (e) => {
+    const { index } = this.props;
+    let { name, value } = e.target;
     this.setState({
-      name:e.target.value
-    })
-    this.props.onNameChanged(e.target.value)
-  }
+      name: e.target.value
+    });
+    if (value) {
+      value+="noteSheetAttachment"
+    }
+      this.props.onNameChanged(value,index);
+
+  };
+
   render() {
+    const { loading } = this.state;
+    let view = loading ? <LinearProgress variant={"indeterminate"} color={"primary"}/> :
+      <ListItem>
+        <ListItemText>
+          <TextField InputProps={{disableUnderline:true}} value={this.state.name} onChange={this.handleChange.bind(this)} fullWidth={true}/>
+        </ListItemText>
+        <ListItemSecondaryAction>
+          <IconButton onClick={this.handleItemDelete.bind(this)} >
+            <DeleteIcon color={"secondary"}/>
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>;
     return (
-      <>
-        <ListItem>
-          <ListItemText primary={
-            <TextField InputProps={{disableUnderline:true}} fullWidth={true} value={this.state.name} onChange={e=>this.setState({name:e.target.value})}  />
-          }  secondary={"Size : "+Math.round(this.state.file.size / 1024) + " Kb"} color={"primary"}/>
-          <ListItemSecondaryAction>
-            <Tooltip title={"Click here to delete"}>
-              <IconButton onClick={this.handleItemDelete.bind(this)}>
-                <DeleteIcon color={"error"}/>
-              </IconButton>
-            </Tooltip>
-          </ListItemSecondaryAction>
-        </ListItem>
-      </>
+      view
     );
+
   }
 }
 
-NotesheetAttachmentItem.propTypes={
-  onDelete:PropTypes.func.isRequired,
-  onNameChanged:PropTypes.func.isRequired,
-  file:PropTypes.object.isRequired,
-}
+NotesheetAttachmentItem.propTypes = {
+  onDelete: PropTypes.func.isRequired,
+  onNameChanged: PropTypes.func.isRequired,
+  addItem: PropTypes.func.isRequired,
+  file: PropTypes.object.isRequired
+};
 
 export default NotesheetAttachmentItem;
