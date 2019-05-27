@@ -63,7 +63,7 @@ export const ShopLicensing = (props) => {
                         <StoreMallDirectory color="primary"/>
                     </div>
                     <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
-                        Application for Shop Licensing
+                        Application for <br/>Shop Licensing
                     </h4>
                     <p className={props.classes.cardDescription}>
                     </p>
@@ -88,7 +88,7 @@ export const ApplyHotel = (props) => {
                         <StoreMallDirectory color="primary"/>
                     </div>
                     <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
-                        Application for Hotel/Lodging Licensing
+                        Application for <br/>Hotel/Lodging Licensing
                     </h4>
                     <p className={props.classes.cardDescription}>
 

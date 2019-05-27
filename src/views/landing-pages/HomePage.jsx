@@ -161,37 +161,37 @@ class HomePage extends Component {
                                 <br/>
                                 <Typography variant="h6" align="center">Hoarding & Advertisement</Typography>
                             </GridItem>
-                            <GridItem xs={12} sm={12} md={3}>
+                            <GridItem xs={12} sm={12} md={4}>
                                 <ApplyHoarding classes={classes} click={this.handleLink}/>
                             </GridItem>
-                            <GridItem xs={12} sm={12} md={3}>
+                            <GridItem xs={12} sm={12} md={4}>
                                 <ApplyKiosk classes={classes} click={this.handleLink}/>
                             </GridItem>
-                            <GridItem xs={12} sm={12} md={3}>
+                            <GridItem xs={12} sm={12} md={4}>
                                 <ApplyBanner classes={classes} click={this.handleLink}/>
                             </GridItem>
-                            <GridItem xs={12} sm={12} md={3}>
+                            {/*<GridItem xs={12} sm={12} md={4}>
                                 <ApplyAdvertiser classes={classes} click={this.handleLink}/>
-                            </GridItem>
+                            </GridItem>*/}
                             <GridItem xs={12} sm={12} md={12}>
                                 <Typography variant="h6" align="center">Shop Licensing</Typography>
                             </GridItem>
-                            <GridItem xs={12} sm={12} md={3}>
+                            <GridItem xs={12} sm={12} md={4}>
                                 <ShopLicensing classes={classes} click={this.handleLink}/>
                             </GridItem>
-                            <GridItem xs={12} sm={12} md={3}>
+                            <GridItem xs={12} sm={12} md={4}>
                                 <ApplyHotel classes={classes} click={this.handleLink}/>
                             </GridItem>
                             <GridItem xs={12} sm={12} md={12}>
                                 <Typography variant="h6" align="center">Others</Typography>
                             </GridItem>
-                            <GridItem xs={12} sm={12} md={3}>
+                            <GridItem xs={12} sm={12} md={4}>
                                 <BuildingPermission classes={classes} click={this.handleLink}/>
                             </GridItem>
-                            <GridItem xs={12} sm={12} md={3}>
+                            <GridItem xs={12} sm={12} md={4}>
                                 <Grievance classes={classes} click={this.handleLink}/>
                             </GridItem>
-                            <GridItem xs={12} sm={12} md={3}>
+                            <GridItem xs={12} sm={12} md={4}>
                                 <CheckLicense classes={classes} click={this.handleLink}/>
                             </GridItem>
                         </GridContainer>
