@@ -48,6 +48,7 @@ class HotelNewList extends React.Component {
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, hotel: data});
+
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
@@ -56,8 +57,7 @@ class HotelNewList extends React.Component {
 
   takeFile = (data) => this.setState({hotel: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id))
-      .then(res => this.props.history.push(DESK));
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id)).then(res => this.props.history.push(DESK));
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
@@ -77,8 +77,8 @@ class HotelNewList extends React.Component {
         label: "APPLICANT",
       },
       {
-        name: "owner_address",
-        label: "OWNER ADDRESS",
+        name: "phone",
+        label: "Contact",
       },
       {
         name: "name",

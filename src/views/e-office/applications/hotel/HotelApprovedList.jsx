@@ -81,8 +81,8 @@ class HotelApprovedList extends React.Component {
         label: "APPLICANT",
       },
       {
-        name: "owner_address",
-        label: "OWNER ADDRESS",
+        name: "phone",
+        label: "CONTACT",
       },
       {
         name: "name",
