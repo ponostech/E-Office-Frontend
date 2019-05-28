@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {withStyles} from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import {withStyles, Grid} from "@material-ui/core";
 import FileMenuLeft from "./Menu/FileMenuLeft";
 import FileMenuRight from "./Menu/FileMenuRight";
 import {Route, withRouter} from "react-router-dom";
@@ -41,7 +40,7 @@ import {SiteVerificationService} from "../../../../services/SiteVerificationServ
 import ShopSiteVerificationDialog from "../site-verification/ShopSiteVerificationDialog";
 import HotelSiteVerificationDialog from "../site-verification/HotelSiteVerificationDialog";
 import HoardingSiteVerificationDialog from "../site-verification/HoardingSiteVerificationDialog";
-import { LoginService } from "../../../../services/LoginService";
+import {LoginService} from "../../../../services/LoginService";
 
 const styles = theme => ({
   root: {
@@ -115,7 +114,7 @@ class FileView extends Component {
         .then(axios.spread((file, staffs) => this.processDataResponse(file, staffs)))
         .then(res => this.setState({loading: false}))
         .then(() => this.doLoad(false))
-        .catch(err => this.setState({errorMessage: "Network Error!", loading: false}));
+        .catch(err => this.setState({errorMessage: err.toString(), loading: false}));
   }
 
   getFileData = (id) => axios.get(ApiRoutes.FILE_DETAIL + "/" + id);
@@ -132,11 +131,8 @@ class FileView extends Component {
 
   handleItemClick = (url, mode = null, name = null, moduleName = null) => {
     this.setState({moduleName: moduleName});
-    if (mode === "modal")
-      this.openDialog(name, moduleName);
-    else{
-      this.props.history.push("/e-office/file/" + this.state.file.id + "/" + url);
-    }
+    if (mode === "modal") this.openDialog(name, moduleName);
+    else this.props.history.push("/e-office/file/" + this.state.file.id + "/" + url);
   };
 
   openDialog = (name, moduleName) => {
@@ -203,6 +199,7 @@ class FileView extends Component {
           });
     }
   };
+
   handleCloseHoardingVerification = (url, data, template) => {
     this.setState({openHoardingVerification: false});
     if (url && data && template) {
@@ -213,6 +210,7 @@ class FileView extends Component {
           .finally(() => this.setState({submitNote: false}));
     }
   };
+
   handleCloseKioskVerification = (url, data, template) => {
     this.setState({openKioskVerification: false});
     if (url && data && template) {
@@ -223,6 +221,7 @@ class FileView extends Component {
           .finally(() => this.setState({submitNote: false}));
     }
   };
+
   handleCloseShopVerification = (url, data, template) => {
     this.setState({openShopVerification: false});
     if (url && data && template) {
@@ -233,6 +232,7 @@ class FileView extends Component {
           .finally(() => this.setState({submitNote: false}));
     }
   };
+
   handleCloseHotelVerification = (url, data, template) => {
     this.setState({openHotelVerification: false});
     if (url && data && template) {
@@ -243,6 +243,7 @@ class FileView extends Component {
           .finally(() => this.setState({submitNote: false}));
     }
   };
+
   closeDialog = (key) => this.setState({[key]: false});
 
   sendFile = (id, recipient_id) => {
@@ -264,13 +265,13 @@ class FileView extends Component {
   confirmStatusChange = (status) => {
     switch (status) {
       case "close":
-        this.confirmStatusUdpate("closed");
+        this.confirmStatusUpdate("closed");
         break;
       case "archive":
-        this.confirmStatusUdpate("archived");
+        this.confirmStatusUpdate("archived");
         break;
       case "re-open":
-        this.confirmStatusUdpate("re-open");
+        this.confirmStatusUpdate("re-open");
         break;
       default:
         alert("not match");
@@ -280,7 +281,7 @@ class FileView extends Component {
 
   updateStatus = (status) => axios.post(FILE_STATUS_UPDATE(this.state.file.id), {status: status});
 
-  confirmStatusUdpate = (status) => {
+  confirmStatusUpdate = (status) => {
     this.updateStatus(status)
         .then(res => this.processStatusResponse(res, status))
         .catch(err => this.setState({errorMessage: err.toString()}));
@@ -312,21 +313,21 @@ class FileView extends Component {
     const {openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog, openDraftLicense} = this.state;
     const {moduleName, openDraftReject, openDraftCancel, openHoardingVerification, openKioskVerification, openHotelVerification, openShopVerification} = this.state;
 
-    let allowed=LoginService.getCurrentUser().id===file.current_user_id;
-    let contentStyle={
-        flexGrow: 1,
-        padding: "0 20px 10px",
-        marginRight: "220px"
+    let allowed = LoginService.getCurrentUser().id === file.current_user_id;
+    let contentStyle = {
+      flexGrow: 1,
+      padding: "0 20px 10px",
+      marginRight: "220px"
     };
     if (!allowed) {
-      contentStyle.marginRight="20px";
+      contentStyle.marginRight = "20px";
     }
     const view = (
         <>
           <div className={classes.hide}>
             <FileMenuLeft click={this.handleItemClick} menus={menus}/>
             {
-              allowed? <FileMenuRight click={this.handleItemClick} menus={menus}/>:null
+              allowed ? <FileMenuRight click={this.handleItemClick} menus={menus}/> : null
             }
           </div>
           <main style={contentStyle}>

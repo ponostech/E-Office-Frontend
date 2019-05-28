@@ -170,9 +170,9 @@ class HomePage extends Component {
                             <GridItem xs={12} sm={12} md={4}>
                                 <ApplyBanner classes={classes} click={this.handleLink}/>
                             </GridItem>
-                            {/*<GridItem xs={12} sm={12} md={4}>
+                            <GridItem xs={12} sm={12} md={4}>
                                 <ApplyAdvertiser classes={classes} click={this.handleLink}/>
-                            </GridItem>*/}
+                            </GridItem>
                             <GridItem xs={12} sm={12} md={12}>
                                 <Typography variant="h6" align="center">Shop Licensing</Typography>
                             </GridItem>

@@ -21,6 +21,7 @@ import ForgotPassword from "../views/common/ForgotPassword";
 // import Form from "../views/Form";
 import FormBuilderContainer from "../components/form-builder/FormBuilderContainer";
 import HoardingSiteVerification from "../views/e-office/site-verification/HoardingSiteVerification";
+import GrievanceCreate from '../views/grievance/GrievanceCreate';
 
 class LayoutLanding extends React.Component {
   constructor(props) {
@@ -81,6 +82,8 @@ class LayoutLanding extends React.Component {
                 return <BannerApplicationForm doLoad={this.doLoad.bind(this)}
                                               doLoadFinish={this.doLoadFinish.bind(this)}/>;
               }}/>
+
+              <Route exact={true} path={OfficeRoutes.GRIEVANCE_CREATE} render={() => <GrievanceCreate/>}/>
 
             </Switch>
           </div>
