@@ -26,6 +26,7 @@ const styles = theme => ({
     backgroundColor: "#1890ff"
   },
   tabRoot: {
+    padding:"3px",
     textTransform: "initial",
     minWidth: 60,
     fontWeight: theme.typography.fontWeightRegular,
