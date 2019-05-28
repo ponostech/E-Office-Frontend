@@ -91,6 +91,13 @@ class HoardingNewList extends React.Component {
         }
       },
       {
+        name: "applicant",
+        label: "CONTACT",
+        options: {
+          customBodyRender: value => value.phone_no
+        }
+      },
+      {
         name: 'created_at',
         label: 'APPLICATION DATE',
         options: {

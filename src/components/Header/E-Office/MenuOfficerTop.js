@@ -9,7 +9,7 @@ import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
 const menu = (props) => {
   const {history} = props;
   const currentUser = JSON.parse(localStorage.getItem('current_user'));
-
+  const newAppsText = <span style={{fontWeight: 'bold'}}>New Application</span>;
   return (
       <>
         <div style={{display: "flex", alignItems: "center"}}>
@@ -50,7 +50,22 @@ const menu = (props) => {
                 {title: "Hotel & Lodging", link: OfficeRoutes.NEW_HOTELLICENSE},
               ]}
               linkClick={props.linkClick}
-              buttonText="New Application"
+              buttonText={newAppsText}
+              buttonProps={{color: "transparent"}}/>
+
+          <CustomDropdown
+              dropdownList={[
+                {title: "New Hoarding Proposal", link: OfficeRoutes.ADVERTISER_NEW_LIST},
+                {title: "Under Process Hoarding Proposal", link: OfficeRoutes.ADVERTISER_NEW_LIST},
+                {title: "Approved Hoarding Proposal", link: OfficeRoutes.ADVERTISER_NEW_LIST},
+                {title: "Rejected Hoarding Proposal", link: OfficeRoutes.ADVERTISER_NEW_LIST},
+                {title: "New Kiosk Proposal", link: OfficeRoutes.NEW_HOARDINGS},
+                {title: "Under Process Kiosk Proposal", link: OfficeRoutes.NEW_HOARDINGS},
+                {title: "Approved Kiosk Proposal", link: OfficeRoutes.NEW_HOARDINGS},
+                {title: "Rejected Kiosk Proposal", link: OfficeRoutes.NEW_HOARDINGS},
+              ]}
+              linkClick={props.linkClick}
+              buttonText="Proposal"
               buttonProps={{color: "transparent"}}/>
 
           <CustomDropdown
