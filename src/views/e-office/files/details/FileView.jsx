@@ -41,6 +41,7 @@ import {SiteVerificationService} from "../../../../services/SiteVerificationServ
 import ShopSiteVerificationDialog from "../site-verification/ShopSiteVerificationDialog";
 import HotelSiteVerificationDialog from "../site-verification/HotelSiteVerificationDialog";
 import HoardingSiteVerificationDialog from "../site-verification/HoardingSiteVerificationDialog";
+import { LoginService } from "../../../../services/LoginService";
 
 const styles = theme => ({
   root: {
@@ -311,13 +312,24 @@ class FileView extends Component {
     const {openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog, openDraftLicense} = this.state;
     const {moduleName, openDraftReject, openDraftCancel, openHoardingVerification, openKioskVerification, openHotelVerification, openShopVerification} = this.state;
 
+    let allowed=LoginService.getCurrentUser().id===file.current_user_id;
+    let contentStyle={
+        flexGrow: 1,
+        padding: "0 20px 10px",
+        marginRight: "220px"
+    };
+    if (!allowed) {
+      contentStyle.marginRight="20px";
+    }
     const view = (
         <>
           <div className={classes.hide}>
             <FileMenuLeft click={this.handleItemClick} menus={menus}/>
-            <FileMenuRight click={this.handleItemClick} menus={menus}/>
+            {
+              allowed? <FileMenuRight click={this.handleItemClick} menus={menus}/>:null
+            }
           </div>
-          <main className={classes.content}>
+          <main style={contentStyle}>
             <Grid item xs={12} md={12} lg={12}>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/details"}
                      render={(props) => <FileDetails {...props} file={file}/>}/>
