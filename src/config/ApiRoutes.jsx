@@ -101,6 +101,7 @@ export class ApiRoutes {
   static GET_LICENSE_TEMPLATE = (module) => {
     return `license-templates/${module}`;
   };
+  static DELETE_SITE_VERIFICATION="site-verification-templates";
 
   static UPDATE_LICENSE_TEMPLATE(id) {
     return `/license-templates/${id}`;
@@ -127,5 +128,9 @@ export class ApiRoutes {
 
   static GET_SITE_VERIFICATION_TEMPLATE(module) {
     return 	`site-verification-templates/${module}`
+  }
+
+  static GET_SITE_VERIFICATION(id) {
+    return `site-verifications/${id}`;
   }
 }

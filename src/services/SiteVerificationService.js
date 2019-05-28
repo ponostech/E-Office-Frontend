@@ -45,6 +45,22 @@ export class SiteVerificationService {
       errorCallback(error.toString())
     }
   }
+  async getVerification(id,errorCallback,successCallback) {
+
+    try {
+        const res = await axios.get(ApiRoutes.GET_SITE_VERIFICATION(id));
+      if (res.data.status) {
+        console.log(res.data.data.template.data)
+        successCallback(res.data.data.template.data)
+      }else {
+        errorCallback(ArrayToString(res.data.messages))
+      }
+
+    } catch (error) {
+      console.error(error);
+      errorCallback(error.toString())
+    }
+  }
   async all(url,errorCallback,successCallback){
     try{
       let res=await axios.get(url);
@@ -64,11 +80,28 @@ export class SiteVerificationService {
     }
   }
 
-
-  async createSiteVerification(url, formData,template,errorCallback,successCallback) {
+  async updateSiteVerification(url, data,template,errorCallback,successCallback) {
     try {
       const res = await axios.post(url,{
-        data:formData,
+        data,
+        template,
+        draft:0
+      });
+      if (res.data.status) {
+        successCallback(ArrayToString(res.data.messages))
+      }else {
+        errorCallback(ArrayToString(res.data.messages))
+      }
+
+    } catch (error) {
+      console.error(error);
+      errorCallback(error.toString())
+    }
+  }
+  async createSiteVerification(url, data,template,errorCallback,successCallback) {
+    try {
+      const res = await axios.post(url,{
+        data,
         template,
         draft:0
       });
@@ -90,6 +123,19 @@ export class SiteVerificationService {
       let res=await axios.get(ApiRoutes.GET_ALL_SITE_VERIFICATION_TEMPLATE)
       if (res.data.status) {
         successCallback(res.data.data.templates)
+      }else{
+        errorCallback(ArrayToString(res.data.messages))
+      }
+    }catch (e) {
+      console.error(e);
+      errorCallback(e.toString)
+    }
+  }
+  async delete(data,errorCallback, successCallback) {
+    try{
+      let res=await axios.get(ApiRoutes.DELETE_SITE_VERIFICATION+'/id');
+      if (res.data.status) {
+        successCallback(ArrayToString(res.data.messages))
       }else{
         errorCallback(ArrayToString(res.data.messages))
       }
