@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {AppBar, Toolbar, IconButton, withStyles} from "@material-ui/core";
+import {AppBar, Toolbar, IconButton, withStyles, Grid} from "@material-ui/core";
 import {Button, List, Typography, Card, DialogContent, DialogActions, Dialog, Slide} from "@material-ui/core";
 import DetailViewRow from "../../../common/DetailViewRow";
-import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
+import {ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
+import {AttachFile, Close} from "@material-ui/icons";
 
 const styles = {
   appBar: {
@@ -14,6 +15,14 @@ const styles = {
   },
   editor: {
     minHeight: 200
+  },
+  docsItem: {
+    cursor: 'pointer',
+  },
+  bigAvatar: {
+    width: 200,
+    height: 'auto',
+    textAlign: 'center',
   }
 };
 
@@ -22,9 +31,20 @@ function Transition(props) {
 }
 
 class HotelViewDialog extends Component {
+  openDocs = (url) => {
+    window.open(url).focus();
+  };
+
   render() {
-    console.log(this.props);
     const {classes, data} = this.props;
+    const list = data.documents.map(val =>
+        <ListItem className={classes.docsItem} onClick={() => this.openDocs(val.path)}>
+          <ListItemIcon>
+            <AttachFile/>
+          </ListItemIcon>
+          <ListItemText primary={val.name}/>
+        </ListItem>);
+
     return (
         <Dialog
             fullScreen
@@ -35,7 +55,7 @@ class HotelViewDialog extends Component {
           <AppBar className={classes.appBar}>
             <Toolbar>
               <IconButton color="inherit" onClick={this.props.close} aria-label="Close">
-                <CloseIcon/>
+                <Close/>
               </IconButton>
               <Typography variant="subtitle2" color="inherit" className={classes.flex}>
                 View Hotel/Lodging Application
@@ -46,19 +66,33 @@ class HotelViewDialog extends Component {
             </Toolbar>
           </AppBar>
           <DialogContent>
-            <List>
-              <Card>
-                <DetailViewRow primary="Name of Applicant" secondary={data.owner} />
-                <DetailViewRow primary="Type of Applicant" secondary={data.type.toUpperCase()} />
-                <DetailViewRow primary="Owner Address" secondary={data.owner_address} />
-                <DetailViewRow primary="Mobile" secondary={data.phone} />
-                <DetailViewRow primary="Shop Name" secondary={data.name} />
-                <DetailViewRow primary="Proposed Location" secondary={data.address} />
-                <DetailViewRow primary="Details of Business" secondary={data.details} />
-                <DetailViewRow primary="Date of Application" secondary={moment(data.created_at).format("Do MMMM YYYY")} />
-                <DetailViewRow primary="Status" secondary={data.status.toUpperCase()} />
-              </Card>
-            </List>
+            <Grid container spacing={16}>
+              <Grid item xs>
+                <List>
+                  <Card>
+                    <DetailViewRow primary="Name of Applicant" secondary={data.owner}/>
+                    <DetailViewRow primary="Type of Applicant" secondary={data.type.toUpperCase()}/>
+                    <DetailViewRow primary="Owner Address" secondary={data.owner_address}/>
+                    <DetailViewRow primary="Mobile" secondary={data.phone}/>
+                    <DetailViewRow primary="Shop Name" secondary={data.name}/>
+                    <DetailViewRow primary="Proposed Location" secondary={data.address}/>
+                    <DetailViewRow primary="Details of Business" secondary={data.details}/>
+                    <DetailViewRow primary="Date of Application"
+                                   secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
+                    <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
+                  </Card>
+                </List>
+              </Grid>
+              <Grid item xs>
+                <ListItem>
+                  <Typography variant="subtitle1">Documents</Typography>
+                </ListItem>
+                <ListItem>
+                  <img alt="Photo of Applicant" src={data.passport} className={classes.bigAvatar}/>
+                </ListItem>
+                {list.length ? list : <ListItem><ListItemText primary="No Documents"/></ListItem>}
+              </Grid>
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button color="secondary" onClick={this.props.close}>Close</Button>
