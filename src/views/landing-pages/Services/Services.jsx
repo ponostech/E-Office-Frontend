@@ -8,6 +8,8 @@ import StoreMallDirectory from "@material-ui/icons/StoreMallDirectory";
 import {Airplay, Gradient} from "@material-ui/icons";
 
 export const BuildingPermission = (props) => {
+    let click = (url) => window.open(url).focus();
+
     return (
         <div className={props.classes.card}>
             <Card pricing raised>
@@ -19,7 +21,7 @@ export const BuildingPermission = (props) => {
                     <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
                         Building Permission
                     </h4>
-                    <Button color="primary" round onClick={props.click(OfficeRoutes.OBPAS)}>
+                    <Button color="primary" round onClick={() => click('https://obpas.amcmizoram.com')}>
                         Apply
                     </Button>
                 </CardBody>
@@ -193,7 +195,7 @@ export const Grievance = (props) => {
 
                     </p>
                     <Button color="primary" round
-                                onClick={props.click(OfficeRoutes.APPLY_ADVERTISER)}>
+                                onClick={props.click(OfficeRoutes.GRIEVANCE_CREATE)}>
                         Submit
                     </Button>
                 </CardBody>
