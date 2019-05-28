@@ -12,6 +12,7 @@ import {FILE_NOTESHEET} from "../../../../config/ApiRoutes";
 import {NotesheetService} from "../../../../services/NotesheetService";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
+import { LoginService } from "../../../../services/LoginService";
 
 class NotesheetView extends Component {
   noteService = new NotesheetService();
@@ -81,6 +82,7 @@ class NotesheetView extends Component {
       if (this.state.note.length) noteList = <Timeline simple stories={this.state.note}/>;
       else noteList = <div style={{padding: 20}}>New File. Note not available.</div>;
 
+    let allowed=LoginService.getCurrentUser().id===this.props.file.current_user_id;
     return (
         <>
           <CardHeader title={"File No.: " + this.props.file.number}
@@ -88,7 +90,7 @@ class NotesheetView extends Component {
           <Divider/>
           <br/>
           {noteList}
-          {loading ? "" : <CreateNoteButton click={this.handleOpenCreateNote}/>}
+          {loading  ? "" : allowed? <CreateNoteButton click={this.handleOpenCreateNote}/>:""}
 
           <CreateNoteDialog file={this.props.file} open={this.state.openDialog} onClose={this.handleCloseCreateNote}/>
 

@@ -22,6 +22,7 @@ import ConfirmDialog from "../../../../../components/ConfirmDialog";
 import SubmitDialog from "../../../../../components/SubmitDialog";
 import SiteVerificationEditDialog from "../../site-verification/SiteVerificationEditDialog";
 import SiteVerificationDetailDialog from "../../site-verification/SiteVerificationDetailDialog";
+import { LoginService } from "../../../../../services/LoginService";
 
 class FileSiteVerifications extends Component {
   siteVerificationService = new SiteVerificationService();
@@ -91,6 +92,8 @@ class FileSiteVerifications extends Component {
     const { loading } = this.state;
     const { file, type } = this.props;
     const self = this;
+    let allowed = LoginService.getCurrentUser().id === file.current_user_id;
+
     return (
       <>
         {
@@ -109,16 +112,16 @@ class FileSiteVerifications extends Component {
                           <ListItemText primary={`Created on:${moment(item.created_at).format("Do-MMMM-YYYY")}`}
                                         secondary={"Created by :"}/>
                           <ListItemSecondaryAction>
-                            <Tooltip title={"edit"}>
+                            {allowed && <Tooltip title={"edit"}>
                               <IconButton onClick={self.edit.bind(this, item)}>
                                 <EditIcon color={"primary"}/>
                               </IconButton>
-                            </Tooltip>
-                            <Tooltip title={"Delete"}>
+                            </Tooltip>}
+                            {allowed && <Tooltip title={"Delete"}>
                               <IconButton onClick={self.delete.bind(this, item)}>
                                 <DeleteIcon color={"secondary"}/>
                               </IconButton>
-                            </Tooltip>
+                            </Tooltip>}
                           </ListItemSecondaryAction>
                         </ListItem>
                         <Divider/>
