@@ -133,8 +133,9 @@ class FileView extends Component {
     this.setState({moduleName: moduleName});
     if (mode === "modal")
       this.openDialog(name, moduleName);
-    else
+    else{
       this.props.history.push("/e-office/file/" + this.state.file.id + "/" + url);
+    }
   };
 
   openDialog = (name, moduleName) => {
