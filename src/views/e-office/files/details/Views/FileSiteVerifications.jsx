@@ -23,6 +23,7 @@ import SubmitDialog from "../../../../../components/SubmitDialog";
 import SiteVerificationEditDialog from "../../site-verification/SiteVerificationEditDialog";
 import SiteVerificationDetailDialog from "../../site-verification/SiteVerificationDetailDialog";
 import { LoginService } from "../../../../../services/LoginService";
+import LoadingView from "../../../../common/LoadingView";
 
 class FileSiteVerifications extends Component {
   siteVerificationService = new SiteVerificationService();
@@ -43,6 +44,16 @@ class FileSiteVerifications extends Component {
     submitMessage: ""
   };
 
+  componentDidMount() {
+    const { type, file } = this.props;
+    if (type) {
+      let url = `/site-verifications/${type}/${file.fileable_id}`;
+      this.siteVerificationService.all(url,
+        errorMessage => this.setState({ errorMessage }),
+        data => this.setState({ data }))
+        .finally(() => this.setState({ loading: false }));
+    }
+  }
   edit = (selectedVerification) => {
     const { type } = this.props;
     this.setState({ selectedVerification, edit: true });
@@ -77,17 +88,6 @@ class FileSiteVerifications extends Component {
       .finally(() => this.setState({ submit: false }));
   };
 
-  componentDidMount() {
-    const { type, file } = this.props;
-    if (type) {
-      let url = `/site-verifications/${type}/${file.fileable_id}`;
-      this.siteVerificationService.all(url,
-        errorMessage => this.setState({ errorMessage }),
-        data => this.setState({ data }))
-        .finally(() => this.setState({ loading: false }));
-    }
-  }
-
   render() {
     const { loading } = this.state;
     const { file, type } = this.props;
@@ -97,7 +97,7 @@ class FileSiteVerifications extends Component {
     return (
       <>
         {
-          type ? (<Card>
+          loading ? <LoadingView/> : (<Card>
             <CardHeader title={file ?`FILE NO : ${file.number}` : ""} subheader={file ? "Site verification of " + file.subject : ""}/>
             <Divider/>
             <CardContent>
@@ -148,7 +148,7 @@ class FileSiteVerifications extends Component {
             <OfficeSnackbar variant={"success"} open={Boolean(this.state.successMessage)}
                             message={this.state.successMessage}
                             onClose={e => this.setState({ successMessage: "" })}/>
-          </Card>) : <Typography variant={"h6"}>No site verification is needed</Typography>
+          </Card>)
         }
       </>
     );

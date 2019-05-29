@@ -19,9 +19,7 @@ import CheckLicense from "../views/landing-pages/license-checking/CheckLicense";
 import { LoginService } from "../services/LoginService";
 import ForgotPassword from "../views/common/ForgotPassword";
 // import Form from "../views/Form";
-import FormBuilderContainer from "../components/form-builder/FormBuilderContainer";
-import HoardingSiteVerification from "../views/e-office/site-verification/HoardingSiteVerification";
-import GrievanceCreate from '../views/grievance/GrievanceCreate';
+import GrievanceCreate from "../views/grievance/GrievanceCreate";
 
 class LayoutLanding extends React.Component {
   constructor(props) {
@@ -75,8 +73,6 @@ class LayoutLanding extends React.Component {
               <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} render={() => <AdvertiserLogin/>}/>
 
               <Route exact={true} path={OfficeRoutes.CHECK_LICENSE} render={() => <CheckLicense/>}/>
-              <Route exact={true} path={"/test"} render={() => <FormBuilderContainer/>}/>
-              <Route exact={true} path={"/hoarding"} render={() => <HoardingSiteVerification/>}/>
 
               <Route exact={true} path={OfficeRoutes.APPLY_BANNER} render={(e) => {
                 return <BannerApplicationForm doLoad={this.doLoad.bind(this)}
