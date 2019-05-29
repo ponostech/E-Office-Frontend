@@ -24,6 +24,12 @@ class NotesheetAttachment extends Component {
     };
   }
 
+  componentDidMount() {
+    this.setState({
+      attachments:this.props.value
+    })
+  }
+
   handleNameChanged = (name, index) => {
     const { attachments } = this.state;
     let items = [];
@@ -94,10 +100,14 @@ class NotesheetAttachment extends Component {
             {
               this.state.files.map((value, index) => {
                 return (
-                  <NotesheetAttachmentItem addItem={this.addItem} onNameChanged={this.handleNameChanged}
+                  <NotesheetAttachmentItem  addItem={this.addItem} onNameChanged={this.handleNameChanged}
                                            onDelete={this.deleteItem} file={value} index={index}/>
                 );
               })
+            }
+            {
+              this.props.value.map((val,index)=><NotesheetAttachmentItem index={index} addItem={this.addItem} onNameChanged={this.handleNameChanged} onDelete={this.deleteItem}
+              file={null} attachment={val}/>)
             }
           </List>
         </div>
@@ -108,10 +118,12 @@ class NotesheetAttachment extends Component {
 
 //
 NotesheetAttachment.defaultProps = {
-  acceptedFiles: "image/*,application/pdf"
+  acceptedFiles: "image/*,application/pdf",
+  value:[],
 };
 NotesheetAttachment.propTypes = {
   onSuccess: PropTypes.func.isRequired,
+  value: PropTypes.array,
   acceptedFiles: PropTypes.string
 };
 export default NotesheetAttachment;
