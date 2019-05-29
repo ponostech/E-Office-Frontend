@@ -103,6 +103,7 @@ class FileSiteVerifications extends Component {
             <CardContent>
               <List>
                 {
+                  Boolean(this.state.data)?
                   this.state.data.map(function(item, index) {
                     return (
                       <>
@@ -128,6 +129,7 @@ class FileSiteVerifications extends Component {
                       </>
                     );
                   })
+                    :"No site verification"
                 }
               </List>
 

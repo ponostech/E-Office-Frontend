@@ -10,28 +10,37 @@ import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
 import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 import ConfirmDialog from "../../../components/ConfirmDialog";
+import LoadingView from "../../common/LoadingView";
 
 class HoardingProposedList extends Component {
   hoardingService = new HoardingService();
   state = {
     hoarding: null,
     hoardings: [],
+
     openDetail: false,
     openWithdraw: false,
-    errorMessage: ""
+    errorMessage: "",
+
+    loading: true
   };
 
 
-  withdraw=(e)=>{
-    console.log(e)
-  }
+  withdraw = (e) => {
+    console.log(e);
+  };
+
   componentDidMount() {
     document.title = "e-AMC | List of hoarding application";
     const { doLoad, doLoadFinish } = this.props;
+    const self = this;
     doLoad();
     this.hoardingService.fetchAdvertiserHoarding(errorMessage => this.setState({ errorMessage }),
       hoardings => this.setState({ hoardings }))
-      .finally(() => doLoadFinish());
+      .finally(() => {
+        self.setState({ loading: false });
+        doLoadFinish();
+      });
   }
 
 
@@ -127,22 +136,28 @@ class HoardingProposedList extends Component {
 
     return (
       <>
-        <Grid item sm={12} xs={12} md={12}>
-          <MUIDataTable
-            title={"Hoarding: List of applications"}
-            data={this.state.hoardings}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-          <HoardingApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.hoarding}
-                                     onClose={e => this.setState({ openDetail: false })}/>
+        {
+          this.state.loading ? <LoadingView/> :
+            <Grid item sm={12} xs={12} md={12}>
+              <MUIDataTable
+                title={"Hoarding: List of applications"}
+                data={this.state.hoardings}
+                columns={tableColumns}
+                options={tableOptions}
+              />
+              <HoardingApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.hoarding}
+                                         onClose={e => this.setState({ openDetail: false })}/>
 
-          <ConfirmDialog message={"Do you want to withdraw application?"} onCancel={() => this.setState({ openWithdraw: false })} open={this.state.openWithdraw}
-                         onConfirm={this.withdraw.bind(this)}/>
+              <ConfirmDialog message={"Do you want to withdraw application?"}
+                             onCancel={() => this.setState({ openWithdraw: false })} open={this.state.openWithdraw}
+                             onConfirm={this.withdraw.bind(this)}/>
 
-          <OfficeSnackbar open={Boolean(this.state.errorMessage)} onClose={() => this.setState({ errorMessage: "" })}
-                          variant={"error"} message={this.state.errorMessage}/>
-        </Grid>
+              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
+                              onClose={() => this.setState({ errorMessage: "" })}
+                              variant={"error"} message={this.state.errorMessage}/>
+            </Grid>
+        }
+
 
       </>
     );

@@ -105,17 +105,14 @@ class KioskApplicationForm extends Component {
   componentDidMount() {
 
     const { doLoad, doLoadFinish } = this.props;
+    window.scrollTo(0,0);
     var self = this;
     doLoad();
     timeout = setTimeout(function(handler) {
       Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
-        .then(function([cats, locs, docs]) {
-          // self.setState({ loading: false });
-        });
       doLoadFinish();
       self.setState({loading:false})
-      window.scrollTo(0,0)
-    }, 6000);
+    }, 2000);
     //
   }
 
@@ -357,7 +354,7 @@ class KioskApplicationForm extends Component {
                                  fullWidth={true}
                                  variant={"outlined"}
                                  onChange={this.handleChange.bind(this)}
-                                 label={"Length"}
+                                 label={"Length(Feet)"}
                                  required={true}
                                  onBlur={this.handleBlur.bind(this)}
                                  error={Boolean(this.state.lengthError)}
@@ -377,7 +374,7 @@ class KioskApplicationForm extends Component {
                                  fullWidth={true}
                                  variant={"outlined"}
                                  onChange={this.handleChange.bind(this)}
-                                 label={"Height"}
+                                 label={"Height(Feet)"}
                                  required={true}
                                  onBlur={this.handleBlur.bind(this)}
                                  error={Boolean(this.state.heightError)}
@@ -534,8 +531,9 @@ class KioskApplicationForm extends Component {
                       <FormControlLabel control={
                         <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
                       }
-                                        label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoarding Regulations 2013," +
-                                        " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
+                                        label={"I have read carefully the Rules and Regulations and have complied with all" +
+                                        "the conditions. I accept that, in the event the information submitted by me is found false, I" +
+                                        "am liable for all such penal actions as prescribed under the law"}/>
                     </GridItem>
                   </GridContainer>
 

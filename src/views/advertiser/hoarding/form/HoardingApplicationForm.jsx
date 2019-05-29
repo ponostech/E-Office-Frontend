@@ -37,13 +37,14 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { ADVERTISER_PROPOSED_HOARDING } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { APPLICATION_NAME } from "../../../../utils/Util";
+import LoadingView from "../../../common/LoadingView";
 
 const style = {
   root: {
     padding: "10px 15px !important"
   }
 };
-
+var timeout;
 class HoardingApplicationForm extends Component {
   constructor(props) {
     super(props);
@@ -89,7 +90,8 @@ class HoardingApplicationForm extends Component {
       agree: false,
 
       success: null,
-      submit: false
+      submit: false,
+      loading: true
     };
 
     this.localCouncilservice = new LocalCouncilService();
@@ -98,29 +100,31 @@ class HoardingApplicationForm extends Component {
     this.categoryService = new CategoryServices();
   }
 
-
   componentDidMount() {
-    var self = this;
     const { doLoad, doLoadFinish } = this.props;
-
+    window.scrollTo(0,0);
+    var self = this;
     doLoad();
-    Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
-      .then(function([cats, locs, docs]) {
-        doLoadFinish();
-        window.scrollTo(0,0)
-      });
-
+    timeout = setTimeout(function(handler) {
+      Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
+        .then(function([cats, locs, docs]) {
+          // self.setState({ loading: false });
+        });
+      doLoadFinish();
+      self.setState({loading:false})
+    }, 2000);
+    //
   }
 
   componentWillUnmount() {
-    // clearTimeout(timeout);
+    clearTimeout(timeout);
   }
 
   fetchLocalCouncil = () => {
     this.localCouncilservice.fetch(
       errorMessage => this.setState({ errorMessage }),
       localCouncils => this.setState({ localCouncils }))
-      .finally(() => console.info("Local council fetch successfully"));
+      .finally(() => console.info("Local council request has been made"));
   };
 
   fetchCategory = () => {
@@ -141,9 +145,9 @@ class HoardingApplicationForm extends Component {
     return this.state.prestine || !!this.state.localCouncilError || !!this.state.addressError || !!this.state.lengthError || !!this.state.heightError
       || !!this.state.displayTypeError || !!this.state.coordinateError || !this.validateDocument();
   };
-  validateDocument=()=>{
+  validateDocument = () => {
     const { documents, uploadDocuments } = this.state;
-    let docCount=0;
+    let docCount = 0;
     let uploadCount = 0;
 
     documents.forEach(function(item, index) {
@@ -261,305 +265,312 @@ class HoardingApplicationForm extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <GridContainer justify={"flex-start"}>
-        <GridItem style={{ padding: "4px!important" }} xs={12} sm={12} md={10}>
-          <Card>
-            <CardContent>
-              <GridContainer>
-                <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                  <Typography variant={"h5"}>{HoardingApplicationFormModel.TITLE}</Typography>
-                  <Typography variant={"subtitle1"}>{HoardingApplicationFormModel.SUBTITLE}</Typography>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={12}>
-                  <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <OfficeSelect
-                    value={this.state.localCouncil}
-                    defaultValues={this.state.localCouncils[0]}
-                    label={HoardingApplicationFormModel.LOCAL_COUNCILS}
-                    name={"localCouncil"}
-                    variant={"outlined"}
-                    margin={"dense"}
-                    fullWidth={true}
-                    required={true}
-                    helperText={this.state.localCouncilError}
-                    error={Boolean(this.state.localCouncilError)}
-                    onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
-                    onChange={this.handleOfficeSelect.bind(this, "localCouncil")}
-                    options={this.state.localCouncils}/>
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <OfficeSelect value={this.state.category}
-                                label={HoardingApplicationFormModel.CATEGORY}
-                                name={"category"}
-                                variant={"outlined"}
-                                margin={"dense"}
-                                required={true}
-                                fullWidth={true}
-                                helperText={this.state.categoryError}
-                                error={Boolean(this.state.categoryError)}
-                                onBlur={this.handleSelectBlur.bind(this, "category")}
-                                onChange={this.handleOfficeSelect.bind(this, "category")}
-                                options={this.state.categories}/>
-                </GridItem>
+      <>
+        {
+          this.state.loading ? <LoadingView/> :
+            <GridContainer justify={"flex-start"}>
+              <GridItem style={{ padding: "4px!important" }} xs={12} sm={12} md={10}>
+                <Card>
+                  <CardContent>
+                    <GridContainer>
+                      <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                        <Typography variant={"h5"}>{HoardingApplicationFormModel.TITLE}</Typography>
+                        <Typography variant={"subtitle1"}>{HoardingApplicationFormModel.SUBTITLE}</Typography>
+                      </GridItem>
+                      <GridItem xs={12} sm={12} md={12}>
+                        <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+                      </GridItem>
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                        <OfficeSelect
+                          value={this.state.localCouncil}
+                          defaultValues={this.state.localCouncils[0]}
+                          label={HoardingApplicationFormModel.LOCAL_COUNCILS}
+                          name={"localCouncil"}
+                          variant={"outlined"}
+                          margin={"dense"}
+                          fullWidth={true}
+                          required={true}
+                          helperText={this.state.localCouncilError}
+                          error={Boolean(this.state.localCouncilError)}
+                          onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
+                          onChange={this.handleOfficeSelect.bind(this, "localCouncil")}
+                          options={this.state.localCouncils}/>
+                      </GridItem>
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                        <OfficeSelect value={this.state.category}
+                                      label={HoardingApplicationFormModel.CATEGORY}
+                                      name={"category"}
+                                      variant={"outlined"}
+                                      margin={"dense"}
+                                      required={true}
+                                      fullWidth={true}
+                                      helperText={this.state.categoryError}
+                                      error={Boolean(this.state.categoryError)}
+                                      onBlur={this.handleSelectBlur.bind(this, "category")}
+                                      onChange={this.handleOfficeSelect.bind(this, "category")}
+                                      options={this.state.categories}/>
+                      </GridItem>
 
-                <GridItem className={classes.root} xs={12} sm={12} md={3}>
-                  <TextField name={"length"}
-                             InputProps={{
-                               inputProps: {
-                                 min: 0
-                               }
-                             }}
-                             type={"number"}
-                             value={this.state.length}
-                             margin={"dense"}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             onChange={this.handleChange.bind(this)}
-                             label={"Length"}
-                             required={true}
-                             onBlur={this.handleBlur.bind(this)}
-                             error={Boolean(this.state.lengthError)}
-                             helperText={this.state.lengthError}
-                  />
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={3}>
-                  <TextField name={"height"}
-                             InputProps={{
-                               inputProps: {
-                                 min: 0
-                               }
-                             }}
-                             value={this.state.height}
-                             type={"number"}
-                             margin={"dense"}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             onChange={this.handleChange.bind(this)}
-                             label={"Height"}
-                             required={true}
-                             onBlur={this.handleBlur.bind(this)}
-                             error={Boolean(this.state.heightError)}
-                             helperText={this.state.heightError}
-                  />
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <AddressField
-                    onPlaceSelect={(place) => {
-                      if (place) {
-                        let name = place.name;
-                        let address = place.formatted_address;
-                        let complete_address = address.includes(name) ? address : `${name} ${address}`;
-                        this.setState({ address: complete_address });
-                      }
-                    }}
-                    textFieldProps={{
-                      required: true,
-                      error: Boolean(this.state.addressError),
-                      helperText: this.state.addressError,
-                      onBlur: this.handleBlur.bind(this),
-                      name: "address",
-                      placeholder: "Address",
-                      value: this.state.address,
-                      margin: "dense",
-                      fullWidth: true,
-                      variant: "outlined",
-                      onChange: this.handleChange.bind(this),
-                      label: HoardingApplicationFormModel.ADDRESS
-                    }}
-                  />
-                </GridItem>
+                      <GridItem className={classes.root} xs={12} sm={12} md={3}>
+                        <TextField name={"length"}
+                                   InputProps={{
+                                     inputProps: {
+                                       min: 0
+                                     }
+                                   }}
+                                   type={"number"}
+                                   value={this.state.length}
+                                   margin={"dense"}
+                                   fullWidth={true}
+                                   variant={"outlined"}
+                                   onChange={this.handleChange.bind(this)}
+                                   label={"Length(Feet)"}
+                                   required={true}
+                                   onBlur={this.handleBlur.bind(this)}
+                                   error={Boolean(this.state.lengthError)}
+                                   helperText={this.state.lengthError}
+                        />
+                      </GridItem>
+                      <GridItem className={classes.root} xs={12} sm={12} md={3}>
+                        <TextField name={"height"}
+                                   InputProps={{
+                                     inputProps: {
+                                       min: 0
+                                     }
+                                   }}
+                                   value={this.state.height}
+                                   type={"number"}
+                                   margin={"dense"}
+                                   fullWidth={true}
+                                   variant={"outlined"}
+                                   onChange={this.handleChange.bind(this)}
+                                   label={"Height(Feet)"}
+                                   required={true}
+                                   onBlur={this.handleBlur.bind(this)}
+                                   error={Boolean(this.state.heightError)}
+                                   helperText={this.state.heightError}
+                        />
+                      </GridItem>
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                        <AddressField
+                          onPlaceSelect={(place) => {
+                            if (place) {
+                              let name = place.name;
+                              let address = place.formatted_address;
+                              let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                              this.setState({ address: complete_address });
+                            }
+                          }}
+                          textFieldProps={{
+                            required: true,
+                            error: Boolean(this.state.addressError),
+                            helperText: this.state.addressError,
+                            onBlur: this.handleBlur.bind(this),
+                            name: "address",
+                            placeholder: "Address",
+                            value: this.state.address,
+                            margin: "dense",
+                            fullWidth: true,
+                            variant: "outlined",
+                            onChange: this.handleChange.bind(this),
+                            label: HoardingApplicationFormModel.ADDRESS
+                          }}
+                        />
+                      </GridItem>
 
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <OfficeSelect
-                    required={true}
-                    name={"displayType"}
-                    value={this.state.displayType}
-                    error={Boolean(this.state.displayTypeError)}
-                    helperText={this.state.displayTypeError}
-                    onBlur={this.handleSelectBlur.bind(this, "displayType")}
-                    variant={"outlined"}
-                    placeHolder={"Type of Display"}
-                    margin={"dense"}
-                    onChange={this.handleOfficeSelect.bind(this, "displayType")}
-                    fullWidth={true}
-                    options={this.state.displayTypes}
-                    label={"Type of Display"}
-                  />
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <TextField
-                    value={this.state.coordinate}
-                    name={"coordinate"}
-                    margin={"dense"}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    required={true}
-                    onChange={e => {
-                    }}
-                    onClick={() => this.setState({ openMap: true })}
-                    helperText={this.state.coordinateError}
-                    error={Boolean(this.state.coordinateError)}
-                    label={HoardingApplicationFormModel.COORDINATE}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position={"end"}>
-                          <Tooltip title={"Click here to see the map"}>
-                            <IconButton onClick={(e) => {
-                              this.setState({ openMap: true });
-                            }}>
-                              <MapIcon color={"action"}/>
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </GridItem>
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                        <OfficeSelect
+                          required={true}
+                          name={"displayType"}
+                          value={this.state.displayType}
+                          error={Boolean(this.state.displayTypeError)}
+                          helperText={this.state.displayTypeError}
+                          onBlur={this.handleSelectBlur.bind(this, "displayType")}
+                          variant={"outlined"}
+                          placeHolder={"Type of Display"}
+                          margin={"dense"}
+                          onChange={this.handleOfficeSelect.bind(this, "displayType")}
+                          fullWidth={true}
+                          options={this.state.displayTypes}
+                          label={"Type of Display"}
+                        />
+                      </GridItem>
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                        <TextField
+                          value={this.state.coordinate}
+                          name={"coordinate"}
+                          margin={"dense"}
+                          fullWidth={true}
+                          variant={"outlined"}
+                          required={true}
+                          onChange={e => {
+                          }}
+                          onClick={() => this.setState({ openMap: true })}
+                          helperText={this.state.coordinateError}
+                          error={Boolean(this.state.coordinateError)}
+                          label={HoardingApplicationFormModel.COORDINATE}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position={"end"}>
+                                <Tooltip title={"Click here to see the map"}>
+                                  <IconButton onClick={(e) => {
+                                    this.setState({ openMap: true });
+                                  }}>
+                                    <MapIcon color={"action"}/>
+                                  </IconButton>
+                                </Tooltip>
+                              </InputAdornment>
+                            )
+                          }}
+                        />
+                      </GridItem>
 
 
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <TextField name={"roadDetail"}
-                             value={this.state.roadDetail}
-                             margin={"dense"}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             label={HoardingApplicationFormModel.ROAD_DETAIL}
-                             onChange={this.handleChange.bind(this)}
-                  />
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <FormControl margin={"dense"}>
-                    <FormControlLabel onChange={this.handleSwitch.bind(this)}
-                                      name={"bothSide"}
-                                      control={
-                                        <Switch
-                                          color={"primary"}
-                                          value={this.state.bothSide}
-                                          checked={this.state.bothSide}
-                                          required={true}/>
-                                      }
-                                      label={"Both Sided?"}/>
-                  </FormControl>
-                </GridItem>
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                        <TextField name={"roadDetail"}
+                                   value={this.state.roadDetail}
+                                   margin={"dense"}
+                                   fullWidth={true}
+                                   variant={"outlined"}
+                                   label={HoardingApplicationFormModel.ROAD_DETAIL}
+                                   onChange={this.handleChange.bind(this)}
+                        />
+                      </GridItem>
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                        <FormControl margin={"dense"}>
+                          <FormControlLabel onChange={this.handleSwitch.bind(this)}
+                                            name={"bothSide"}
+                                            control={
+                                              <Switch
+                                                color={"primary"}
+                                                value={this.state.bothSide}
+                                                checked={this.state.bothSide}
+                                                required={true}/>
+                                            }
+                                            label={"Both Sided?"}/>
+                        </FormControl>
+                      </GridItem>
 
-                <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                  <TextField name={"clearance"}
-                             value={this.state.clearance}
-                             margin={"dense"}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             label={HoardingApplicationFormModel.CLEARANCE}
-                             onChange={this.handleChange.bind(this)}
-                  />
-                </GridItem>
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <TextField name={"landLord"}
-                             margin={"dense"}
-                             value={this.state.landLord}
-                             fullWidth={true}
-                             variant={"outlined"}
-                             label={"Name of the Landlord/Land Owner"}
-                             onChange={this.handleChange.bind(this)}
-                  />
-                </GridItem>
+                      <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                        <TextField name={"clearance"}
+                                   value={this.state.clearance}
+                                   margin={"dense"}
+                                   fullWidth={true}
+                                   variant={"outlined"}
+                                   label={HoardingApplicationFormModel.CLEARANCE}
+                                   onChange={this.handleChange.bind(this)}
+                        />
+                      </GridItem>
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                        <TextField name={"landLord"}
+                                   margin={"dense"}
+                                   value={this.state.landLord}
+                                   fullWidth={true}
+                                   variant={"outlined"}
+                                   label={"Name of the Landlord/Land Owner"}
+                                   onChange={this.handleChange.bind(this)}
+                        />
+                      </GridItem>
 
-                <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                  <FormControl fullWidth={true} margin={"dense"}>
-                    <FormLabel>Type of Landlord/ Land owner</FormLabel>
-                    <RadioGroup
-                      defaultValue={"0"}
-                      value={this.state.landLordType}
-                      name={"landlordType"}
-                      row={true}
-                      onChange={this.handleRadio.bind(this)}
-                    >
-                      <FormControlLabel value={"0"} control={<Radio color={"primary"}/>}
-                                        label={"Private"}/>
-                      <FormControlLabel value={"1"} control={<Radio color={"primary"}/>}
-                                        label={"Public"}/>
-                    </RadioGroup>
-                  </FormControl>
-                </GridItem>
-                {/*//Document upload*/}
-                <GridItem xs={12} sm={12} md={12}>
-                  <Typography variant={"headline"}>Upload Document(s)</Typography>
-                </GridItem>
-                {this.state.documents.map((doc, index) => {
-                  return <GridItem className={classes.root} key={index} xs={12} sm={12} md={12}>
-                    <FileUpload
-                      required={Boolean(doc.mandatory)}
-                      applicationName={APPLICATION_NAME.HOARDING}
-                      onUploadSuccess={(data) => {
-                        this.setState(state => {
-                          let temp = {
-                            mandatory:Boolean(doc.mandatory),
-                            document_id: doc.id,
-                            name: doc.name,
-                            path: data.location
-                          };
-                          state.uploadDocuments.push(temp);
-                        });
-                      }} onUploadFailure={(e) => {
-                      console.log(e);
-                    }} document={doc}/>
-                  </GridItem>;
-                })}
-                <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                  <FormControlLabel control={
-                    <Checkbox color={"primary"}
-                              onChange={(val, checked) => this.setState({ agree: checked })}/>
-                  }
-                                    label={"I hereby pledge that i will abide the AMC Display of Advertisement and Hoarding Regulations 2013," +
-                                    " with specific reference of Regulation 7, Regulation 28 and Regulation 32, failing which i would be liable to get my registration / License cancelled"}/>
-                </GridItem>
-              </GridContainer>
-            </CardContent>
-            <CardActions style={{ justifyContent: "flex-end" }}>
-              <Button disabled={
-                !this.state.agree ||
-                this.state.prestine ||
-                !Boolean(this.state.localCouncil) ||
-                !Boolean(this.state.address) ||
-                !Boolean(this.state.length) ||
-                !Boolean(this.state.height) ||
-                !Boolean(this.state.displayType) ||
-                !Boolean(this.state.coordinate)
-              } name={"submit"} variant={"outlined"} color={"primary"}
-                      onClick={this.doSubmit.bind(this)}>Submit</Button>
-              {"\u00A0 "}
-              {"\u00A0 "}
-              {"\u00A0 "}
-              {"\u00A0 "}
-              <Button name={"reset"} variant={"outlined"} color={"secondary"}
-                      onClick={(e) => window.location.reload()}>Reset</Button>
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                        <FormControl fullWidth={true} margin={"dense"}>
+                          <FormLabel>Type of Landlord/ Land owner</FormLabel>
+                          <RadioGroup
+                            defaultValue={"0"}
+                            value={this.state.landLordType}
+                            name={"landlordType"}
+                            row={true}
+                            onChange={this.handleRadio.bind(this)}
+                          >
+                            <FormControlLabel value={"0"} control={<Radio color={"primary"}/>}
+                                              label={"Private"}/>
+                            <FormControlLabel value={"1"} control={<Radio color={"primary"}/>}
+                                              label={"Public"}/>
+                          </RadioGroup>
+                        </FormControl>
+                      </GridItem>
+                      {/*//Document upload*/}
+                      <GridItem xs={12} sm={12} md={12}>
+                        <Typography variant={"headline"}>Upload Document(s)</Typography>
+                      </GridItem>
+                      {this.state.documents.map((doc, index) => {
+                        return <GridItem className={classes.root} key={index} xs={12} sm={12} md={12}>
+                          <FileUpload
+                            required={Boolean(doc.mandatory)}
+                            applicationName={APPLICATION_NAME.HOARDING}
+                            onUploadSuccess={(data) => {
+                              this.setState(state => {
+                                let temp = {
+                                  mandatory: Boolean(doc.mandatory),
+                                  document_id: doc.id,
+                                  name: doc.name,
+                                  path: data.location
+                                };
+                                state.uploadDocuments.push(temp);
+                              });
+                            }} onUploadFailure={(e) => {
+                            console.log(e);
+                          }} document={doc}/>
+                        </GridItem>;
+                      })}
+                      <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                        <FormControlLabel control={
+                          <Checkbox color={"primary"}
+                                    onChange={(val, checked) => this.setState({ agree: checked })}/>
+                        } label={"I have read carefully the Rules and Regulations and have complied with all" +
+                        "the conditions. I accept that, in the event the information submitted by me is found false, I" +
+                        "am liable for all such penal actions as prescribed under the law"}/>
 
-            </CardActions>
-          </Card>
-        </GridItem>
-        <Divider/>
+                      </GridItem>
+                    </GridContainer>
+                  </CardContent>
+                  <CardActions style={{ justifyContent: "flex-end" }}>
+                    <Button disabled={
+                      !this.state.agree ||
+                      this.state.prestine ||
+                      !Boolean(this.state.localCouncil) ||
+                      !Boolean(this.state.address) ||
+                      !Boolean(this.state.length) ||
+                      !Boolean(this.state.height) ||
+                      !Boolean(this.state.displayType) ||
+                      !Boolean(this.state.coordinate)
+                    } name={"submit"} variant={"outlined"} color={"primary"}
+                            onClick={this.doSubmit.bind(this)}>Submit</Button>
+                    {"\u00A0 "}
+                    {"\u00A0 "}
+                    {"\u00A0 "}
+                    {"\u00A0 "}
+                    <Button name={"reset"} variant={"outlined"} color={"secondary"}
+                            onClick={(e) => window.location.reload()}>Reset</Button>
 
-        <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
-          this.setState({
-            openMap: false,
-            latitude: lat,
-            longitude: lng
-          });
-          this.setState({
-            coordinate: `Latitude: ${lat} , Longitude: ${lng}`
-          });
-        }} fullScreen={true} isMarkerShown={true}/>
+                  </CardActions>
+                </Card>
+              </GridItem>
+              <Divider/>
 
-        <OfficeSnackbar open={Boolean(this.state.errorMessage)} variant={"error"}
-                        message={this.state.errorMessage}
-                        onClose={() => {
-                          this.setState({ errorMessage: "" });
-                        }}/>
-        <SubmitDialog open={this.state.submit} text={"Your application is submitting ..."}/>
-        {this.state.success}
+              <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
+                this.setState({
+                  openMap: false,
+                  latitude: lat,
+                  longitude: lng
+                });
+                this.setState({
+                  coordinate: `Latitude: ${lat} , Longitude: ${lng}`
+                });
+              }} fullScreen={true} isMarkerShown={true}/>
 
-      </GridContainer>
+              <OfficeSnackbar open={Boolean(this.state.errorMessage)} variant={"error"}
+                              message={this.state.errorMessage}
+                              onClose={() => {
+                                this.setState({ errorMessage: "" });
+                              }}/>
+              <SubmitDialog open={this.state.submit} text={"Your application is submitting ..."}/>
+              {this.state.success}
+
+            </GridContainer>
+        }
+      </>
+
     );
   }
 }

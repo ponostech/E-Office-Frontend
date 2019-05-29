@@ -30,6 +30,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { APPLICATION_NAME } from "../../utils/Util";
+import LoadingView from "../common/LoadingView";
 
 const style = {
   root: {
@@ -88,9 +89,10 @@ class BannerApplication extends Component {
     submit: false,
     complete: false,
     prestine: true,
-    loading: false,
     openOtp: false,
-    otpMessage: ""
+    otpMessage: "",
+
+    loading: true
   };
 
   componentWillUnmount() {
@@ -104,7 +106,7 @@ class BannerApplication extends Component {
 
     doLoad();
     this.fetchLocalCouncil();
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
   }
 
   sendOtp = () => {
@@ -120,7 +122,10 @@ class BannerApplication extends Component {
     this.localCouncilservice.fetch(
       errorMessage => this.setState({ errorMessage }),
       localCouncils => this.setState({ localCouncils }))
-      .finally(() => this.props.doLoadFinish());
+      .finally(() => {
+        this.setState({ loading: false });
+        this.props.doLoadFinish();
+      });
   };
 
 
@@ -130,11 +135,11 @@ class BannerApplication extends Component {
       [name]: value
     });
     this.setState({ prestine: false });
-    this.validateTextField(name,value)
+    this.validateTextField(name, value);
   };
 
   handleSelect = (identifier, value) => {
-   this.setState({[identifier]:value})
+    this.setState({ [identifier]: value });
     this.setState({ prestine: false });
     this.validateSelect(identifier, value);
   };
@@ -175,12 +180,8 @@ class BannerApplication extends Component {
 
   };
 
-  saveDraft = (e) => {
-
-  };
-
   onClear = () => {
-    window.location.reload()
+    window.location.reload();
     // this.bannerRef.current.doReset();
   };
 
@@ -197,7 +198,7 @@ class BannerApplication extends Component {
       case "name":
         (value === "") ? this.setState({ nameError: "Name is required" }) : this.setState({ nameError: "" });
         break;
-        case "address":
+      case "address":
         (value === "") ? this.setState({ addressError: "Address of applicant is required" }) : this.setState({ addressError: "" });
         break;
     }
@@ -222,274 +223,285 @@ class BannerApplication extends Component {
 
   handleBlur = (e) => {
     const { name, value } = e.target;
-    this.validateTextField(name,value)
+    this.validateTextField(name, value);
   };
 
 
   render() {
     const { classes } = this.props;
     return (
+      <>
+        {
+          this.state.loading ? <LoadingView/> :
+            <GridContainer justify="flex-start">
+              <GridItem xs={12} sm={12} md={10}>
+                <form>
+                  <Card>
+                    <CardContent>
+                      <GridContainer>
+                        <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                          <Typography variant={"h5"}>
+                            {BannerViewModel.TITLE}
+                          </Typography>
+                          <Typography variant={"subtitle1"}>
+                            {BannerViewModel.SUB_TITLE}
+                          </Typography>
+                        </GridItem>
+                        <GridItem xs={12} sm={12} md={12}>
+                          <Typography variant="h7">
+                            Applicant Details
+                          </Typography>
+                          <Divider/>
+                        </GridItem>
+                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <TextField
+                            value={this.state.name}
+                            name={"name"}
+                            onBlur={this.handleBlur.bind(this)}
+                            required={true}
+                            variant={"outlined"}
+                            margin={"dense"}
+                            fullWidth={true}
+                            onChange={this.handleChange.bind(this)}
+                            label={BannerViewModel.NAME}
+                            error={Boolean(this.state.nameError)}
+                            helperText={this.state.nameError}
+                          />
+                        </GridItem>
+                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <TextField
+                            value={this.state.phone}
+                            onBlur={this.handleBlur.bind(this)}
+                            required={true}
+                            name={"phone"}
+                            variant={"outlined"}
+                            margin={"dense"}
+                            fullWidth={true}
+                            onChange={this.handleChange.bind(this)}
+                            error={Boolean(this.state.phoneError)}
+                            helperText={this.state.phoneError}
+                            label={BannerViewModel.PHONE_NO}/>
+                        </GridItem>
+                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <OfficeSelect
+                            value={this.state.type}
+                            label={BannerViewModel.APPLICANT_TYPE}
+                            name={"type"}
+                            variant={"outlined"}
+                            margin={"dense"}
+                            fullWidth={true}
+                            required={true}
+                            error={Boolean(this.state.typeError)}
+                            helperText={this.state.typeError}
+                            onBlur={this.validateSelect.bind(this, "type")}
+                            onChange={this.handleSelect.bind(this, "type")}
+                            options={this.state.types}/>
+                        </GridItem>
+                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <AddressField
+                            textFieldProps={{
+                              placeholder: "Address",
+                              value: this.state.address,
+                              name: "address",
+                              required: true,
+                              variant: "outlined",
+                              margin: "dense",
+                              fullWidth: true,
+                              error: Boolean(this.state.addressError),
+                              helperText: this.state.addressError,
+                              onBlur: this.handleBlur.bind(this),
+                              onChange: this.handleChange.bind(this),
+                              label: BannerViewModel.ADDRESS
+                            }}
+                            onPlaceSelect={(place) => {
+                              if (place) {
+                                let name = place.name;
+                                let address = place.formatted_address;
+                                let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                                this.setState({ address: complete_address });
+                              }
+                            }}
+                          />
+                        </GridItem>
+                        <GridItem xs={12} sm={12} md={12}>
+                          <Typography variant="h7">
+                            Banner/Poster Details
+                          </Typography>
+                          <Divider/>
+                        </GridItem>
+                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <OfficeSelect
+                            value={this.state.localCouncil}
+                            label={BannerViewModel.LOCALCOUNCIL}
+                            name={"localCouncil"}
+                            variant={"outlined"}
+                            margin={"dense"}
+                            fullWidth={true}
+                            error={Boolean(this.state.localCouncilError)}
+                            helperText={this.state.localCouncilError}
+                            onBlur={this.validateSelect.bind(this, "localCouncil")}
+                            onChange={this.handleSelect.bind(this, "localCouncil")}
+                            options={this.state.localCouncils}/>
+                        </GridItem>
+                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <OfficeSelect
+                            required={true}
+                            variant={"outlined"}
+                            margin={"dense"}
+                            value={this.state.displayType}
+                            fullWidth={true}
+                            name={"displayType"}
+                            error={!!this.state.displayTypeError}
+                            helperText={this.state.displayTypeError}
+                            onBlur={this.validateSelect.bind(this, "displayType")}
+                            onChange={this.handleSelect.bind(this, "displayType")}
+                            ClearAble={true}
+                            label={BannerViewModel.DISPLAY_TYPE}
+                            options={this.state.display_types}/>
+                        </GridItem>
+                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <TextField
+                            value={this.state.details}
+                            name={"details"}
+                            multiline={true}
+                            rows={3}
+                            variant={"outlined"}
+                            margin={"dense"}
+                            fullWidth={true}
+                            onBlur={this.handleBlur.bind(this)}
+                            onChange={this.handleChange.bind(this)}
+                            label={BannerViewModel.DETAILS}/>
+                        </GridItem>
+                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <TextField
+                            value={this.state.content}
+                            name={"content"}
+                            multiline={true}
+                            rows={3}
+                            variant={"outlined"}
+                            margin={"dense"}
+                            fullWidth={true}
+                            onBlur={this.handleBlur.bind(this)}
+                            onChange={this.handleChange.bind(this)}
+                            label={BannerViewModel.WORDING}/>
+                        </GridItem>
+                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <FileUpload applicationName={APPLICATION_NAME.BANNER}
+                                      document={{
+                                        id: 1,
+                                        name: "Signature of applicant",
+                                        mandatory: 1,
+                                        mime: "image/*"
+                                      }}
+                                      onUploadSuccess={(data) => {
+                                        let temp = {
+                                          name: "signature",
+                                          path: data.location
+                                        };
+                                        this.setState({
+                                          signature: temp
+                                        });
+                                      }} onUploadFailure={(err) => {
+                            console.log(err);
+                          }}/>
+                        </GridItem>
+                        <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                          <Typography style={{ marginTop: 20 }} variant={"h7"}> Details of Advertisement</Typography>
+                          <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+                          <BannerDetail ref={this.bannerRef}
+                                        onRemoveDetail={(index) => {
+                                          console.log("item is removed " + index);
+                                          let list = this.state.bannerDetails;
+                                          let result = list.filter((item, i) => {
+                                            if (index !== i) {
+                                              return item;
+                                            }
+                                          });
+                                          this.setState(state => {
+                                            state.bannerDetails = result;
+                                          });
+                                        }}
+                                        localCouncils={this.state.localCouncils}
+                                        onDetailAdd={(item) => {
+                                          console.log("Item is added");
+                                          this.state.bannerDetails.push(item);
+                                        }}/>
+                        </GridItem>
 
-      <GridContainer justify="flex-start">
-        <GridItem xs={12} sm={12} md={10}>
-          <form>
-            <Card>
-              <CardContent>
-                <GridContainer>
-                  <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                    <Typography variant={"h5"}>
-                      {BannerViewModel.TITLE}
-                    </Typography>
-                    <Typography variant={"subtitle1"}>
-                      {BannerViewModel.SUB_TITLE}
-                    </Typography>
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <Typography variant="h7">
-                      Applicant Details
-                    </Typography>
-                    <Divider/>
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <TextField
-                      value={this.state.name}
-                      name={"name"}
-                      onBlur={this.handleBlur.bind(this)}
-                      required={true}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      label={BannerViewModel.NAME}
-                      error={Boolean(this.state.nameError)}
-                      helperText={this.state.nameError}
-                    />
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <TextField
-                      value={this.state.phone}
-                      onBlur={this.handleBlur.bind(this)}
-                      required={true}
-                      name={"phone"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onChange={this.handleChange.bind(this)}
-                      error={Boolean(this.state.phoneError)}
-                      helperText={this.state.phoneError}
-                      label={BannerViewModel.PHONE_NO}/>
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <OfficeSelect
-                      value={this.state.type}
-                      label={BannerViewModel.APPLICANT_TYPE}
-                      name={"type"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      required={true}
-                      error={Boolean(this.state.typeError)}
-                      helperText={this.state.typeError}
-                      onBlur={this.validateSelect.bind(this, "type")}
-                      onChange={this.handleSelect.bind(this, "type")}
-                      options={this.state.types}/>
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <AddressField
-                      textFieldProps={{
-                        placeholder: "Address",
-                        value: this.state.address,
-                        name: "address",
-                        required: true,
-                        variant: "outlined",
-                        margin: "dense",
-                        fullWidth: true,
-                        error: Boolean(this.state.addressError),
-                        helperText: this.state.addressError,
-                        onBlur: this.handleBlur.bind(this),
-                        onChange: this.handleChange.bind(this),
-                        label: BannerViewModel.ADDRESS
-                      }}
-                      onPlaceSelect={(place) => {
-                        if (place) {
-                          let name = place.name;
-                          let address = place.formatted_address;
-                          let complete_address = address.includes(name) ? address : `${name} ${address}`;
-                          this.setState({ address: complete_address });
-                        }
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <Typography variant="h7">
-                      Banner/Poster Details
-                    </Typography>
-                    <Divider/>
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <OfficeSelect
-                      value={this.state.localCouncil}
-                      label={BannerViewModel.LOCALCOUNCIL}
-                      name={"localCouncil"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      error={Boolean(this.state.localCouncilError)}
-                      helperText={this.state.localCouncilError}
-                      onBlur={this.validateSelect.bind(this, "localCouncil")}
-                      onChange={this.handleSelect.bind(this, "localCouncil")}
-                      options={this.state.localCouncils}/>
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <OfficeSelect
-                      required={true}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      value={this.state.displayType}
-                      fullWidth={true}
-                      name={"displayType"}
-                      error={!!this.state.displayTypeError}
-                      helperText={this.state.displayTypeError}
-                      onBlur={this.validateSelect.bind(this, "displayType")}
-                      onChange={this.handleSelect.bind(this, "displayType")}
-                      ClearAble={true}
-                      label={BannerViewModel.DISPLAY_TYPE}
-                      options={this.state.display_types}/>
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <TextField
-                      value={this.state.details}
-                      name={"details"}
-                      multiline={true}
-                      rows={3}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onBlur={this.handleBlur.bind(this)}
-                      onChange={this.handleChange.bind(this)}
-                      label={BannerViewModel.DETAILS}/>
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <TextField
-                      value={this.state.content}
-                      name={"content"}
-                      multiline={true}
-                      rows={3}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      fullWidth={true}
-                      onBlur={this.handleBlur.bind(this)}
-                      onChange={this.handleChange.bind(this)}
-                      label={BannerViewModel.WORDING}/>
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                    <FileUpload applicationName={APPLICATION_NAME.BANNER}
-                                document={{ id: 1, name: "Signature of applicant", mandatory: 1, mime: "image/*" }}
-                                onUploadSuccess={(data) => {
-                                  let temp = {
-                                    name: "signature",
-                                    path: data.location
-                                  };
-                                  this.setState({
-                                    signature: temp
-                                  });
-                                }} onUploadFailure={(err) => {
-                      console.log(err);
-                    }}/>
-                  </GridItem>
-                  <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                    <Typography style={{ marginTop: 20 }} variant={"h7"}> Details of Advertisement</Typography>
-                    <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-                    <BannerDetail ref={this.bannerRef}
-                                  onRemoveDetail={(index) => {
-                                    console.log("item is removed " + index);
-                                    let list = this.state.bannerDetails;
-                                    let result = list.filter((item, i) => {
-                                      if (index !== i) {
-                                        return item;
-                                      }
-                                    });
-                                    this.setState(state => {
-                                      state.bannerDetails = result;
-                                    });
-                                  }}
-                                  localCouncils={this.state.localCouncils}
-                                  onDetailAdd={(item) => {
-                                    console.log("Item is added");
-                                    this.state.bannerDetails.push(item);
-                                  }}/>
-                  </GridItem>
-
-                  <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                    <FormControlLabel control={
-                      <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
-                    }
-                                      label={BannerViewModel.ACKNOWLEDGEMENT}/>
-                  </GridItem>
-
-
-                </GridContainer>
-              </CardContent>
-              <CardActions style={{ justifyContent: "flex-end" }}>
-                nameError: "",
-                phoneError: "",
-                typeError: "",
-                addressError: "",
-                localCouncilError: "",
-                displayTypeError: "",
-                <div>
-                  <Button name={"primary"}
-                          disabled={
-                            this.state.prestine ||
-                            Boolean(this.state.name === "") ||
-                            Boolean(this.state.phone === "") ||
-                            Boolean(this.state.address === "") ||
-                            Boolean(this.state.localCouncil === undefined) ||
-                            Boolean(this.state.displayType === undefined) ||
-                            Boolean(this.state.signature === undefined) ||
-                            !this.state.agree
+                        <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                          <FormControlLabel control={
+                            <Checkbox color={"primary"} onChange={(val, checked) => this.setState({ agree: checked })}/>
                           }
-                          color={"primary"} variant={"outlined"}
-                          onClick={this.onSubmit.bind(this)}>
-                    {BannerViewModel.PRIMARY_TEXT}
-                  </Button>
-                  {"\u00A0 "}
-                  {/*{"\u00A0 "}*/}
-                  {/*<Button name={"secondary"}*/}
-                  {/*        color={"primary"}*/}
-                  {/*        variant={"outlined"}*/}
-                  {/*        onClick={this.saveDraft.bind(this)}>*/}
-                  {/*  {BannerViewModel.DRAFT}*/}
-                  {/*</Button>*/}
-                  {"\u00A0 "}
-                  {"\u00A0 "}
-                  <Button name={"secondary"}
-                          color={"secondary"}
-                          variant={"outlined"}
-                          onClick={this.onClear.bind(this)}>
-                    {BannerViewModel.SECONDARY_TEXT}
-                  </Button>
-                </div>
-              </CardActions>
+                                            label={BannerViewModel.ACKNOWLEDGEMENT}/>
+                        </GridItem>
 
-            </Card>
-          </form>
-        </GridItem>
 
-        <SubmitDialog open={this.state.submit} text={BannerViewModel.SUBMIT}/>
+                      </GridContainer>
+                    </CardContent>
+                    <CardActions style={{ justifyContent: "flex-end" }}>
+                      nameError: "",
+                      phoneError: "",
+                      typeError: "",
+                      addressError: "",
+                      localCouncilError: "",
+                      displayTypeError: "",
+                      <div>
+                        <Button name={"primary"}
+                                disabled={
+                                  this.state.prestine ||
+                                  Boolean(this.state.name === "") ||
+                                  Boolean(this.state.phone === "") ||
+                                  Boolean(this.state.address === "") ||
+                                  Boolean(this.state.localCouncil === undefined) ||
+                                  Boolean(this.state.displayType === undefined) ||
+                                  Boolean(this.state.signature === undefined) ||
+                                  !this.state.agree
+                                }
+                                color={"primary"} variant={"outlined"}
+                                onClick={this.onSubmit.bind(this)}>
+                          {BannerViewModel.PRIMARY_TEXT}
+                        </Button>
+                        {"\u00A0 "}
+                        {/*{"\u00A0 "}*/}
+                        {/*<Button name={"secondary"}*/}
+                        {/*        color={"primary"}*/}
+                        {/*        variant={"outlined"}*/}
+                        {/*        onClick={this.saveDraft.bind(this)}>*/}
+                        {/*  {BannerViewModel.DRAFT}*/}
+                        {/*</Button>*/}
+                        {"\u00A0 "}
+                        {"\u00A0 "}
+                        <Button name={"secondary"}
+                                color={"secondary"}
+                                variant={"outlined"}
+                                onClick={this.onClear.bind(this)}>
+                          {BannerViewModel.SECONDARY_TEXT}
+                        </Button>
+                      </div>
+                    </CardActions>
 
-        <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
-                        message={this.state.errorMessage}
-                        onClose={(e) => this.setState({ errorMessage: "" })}/>
-        <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
-                   purposed={"Banner Application"}
-                   onClose={(value) => {
-                     this.setState({ openOtp: false });
-                     this.onVerifiedOtp(value);
-                   }}/>
+                  </Card>
+                </form>
+              </GridItem>
 
-        {this.state.success}
-      </GridContainer>
+              <SubmitDialog open={this.state.submit} text={BannerViewModel.SUBMIT}/>
+
+              <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
+                              message={this.state.errorMessage}
+                              onClose={(e) => this.setState({ errorMessage: "" })}/>
+              <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
+                         purposed={"Banner Application"}
+                         onClose={(value) => {
+                           this.setState({ openOtp: false });
+                           this.onVerifiedOtp(value);
+                         }}/>
+
+              {this.state.success}
+            </GridContainer>
+
+        }
+      </>
+
 
     );
   }

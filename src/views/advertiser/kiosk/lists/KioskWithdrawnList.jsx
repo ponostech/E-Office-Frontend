@@ -8,6 +8,7 @@ import moment from "moment";
 import { KioskService } from "../../../../services/KioskService";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
+import LoadingView from "../../../common/LoadingView";
 
 class KioskWithdrawnList extends Component {
   kioskService = new KioskService();
@@ -17,7 +18,9 @@ class KioskWithdrawnList extends Component {
     kiosks: [],
     openDetail: false,
     openApply: false,
-    errorMessage: ""
+    errorMessage: "",
+
+    loading:true
   };
 
   componentDidMount() {
@@ -27,7 +30,10 @@ class KioskWithdrawnList extends Component {
     this.kioskService.fetchAdvertiserKiosk(
       errorMessage => this.setState({ errorMessage }),
       kiosks => this.setState({ kiosks }))
-      .finally(() => doLoadFinish());
+      .finally(() => {
+        this.setState({loading:false});
+        doLoadFinish()
+      });
   }
 
 
@@ -121,20 +127,22 @@ class KioskWithdrawnList extends Component {
 
     return (
       <>
-        <Grid item sm={12} xs={12} md={12}>
-          <MUIDataTable
-            title={"KIOSK: List of Withdrawn Application"}
-            data={this.state.kiosks}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-          <KioskApplicationDialog open={Boolean(this.state.kiosk)} application={this.state.kiosk}
-                                  onClose={e => this.setState({ kiosk: null })}/>
-          <OfficeSnackbar open={Boolean(this.state.errorMessage)}
-                          onClose={() => this.setState({ errorMessage: "" })}
-                          variant={"error"} message={this.state.errorMessage}/>
-        </Grid>
-
+        {
+          this.state.loading ? <LoadingView/> :
+            <Grid item sm={12} xs={12} md={12}>
+              <MUIDataTable
+                title={"KIOSK: List of Withdrawn Application"}
+                data={this.state.kiosks}
+                columns={tableColumns}
+                options={tableOptions}
+              />
+              <KioskApplicationDialog open={Boolean(this.state.kiosk)} application={this.state.kiosk}
+                                      onClose={e => this.setState({ kiosk: null })}/>
+              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
+                              onClose={() => this.setState({ errorMessage: "" })}
+                              variant={"error"} message={this.state.errorMessage}/>
+            </Grid>
+        }
       </>
     );
   }
