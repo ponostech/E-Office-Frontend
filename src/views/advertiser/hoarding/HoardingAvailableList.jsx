@@ -11,10 +11,11 @@ import moment from "moment";
 import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 import HoardingApplyDialog from "./form/HoardingApplyDialog";
 import { DocumentService } from "../../../services/DocumentService";
+import LoadingView from "../../common/LoadingView";
 
 class HoardingAvailableList extends Component {
   hoardingService = new HoardingService();
-  documentService=new DocumentService();
+  documentService = new DocumentService();
   state = {
     hoarding: null,
     hoardings: [],
@@ -24,23 +25,29 @@ class HoardingAvailableList extends Component {
     successMessage: "",
 
     openApply: false,
-    advertiserDocuments:[]
+    advertiserDocuments: [],
+    loading: true
   };
 
 
   componentDidMount() {
     document.title = "e-AMC | List of hoarding application";
     const { doLoad, doLoadFinish } = this.props;
+    const self = this;
     doLoad();
-    Promise.all([this.fetchHoardings(),this.fetchDocument()])
+    Promise.all([this.fetchHoardings(), this.fetchDocument()])
       .then(function(values) {
-        doLoadFinish();
-      });
+        console.log(values)
+      }).finally(()=>{
+      doLoadFinish();
+      self.setState({ loading: false });
+    });
   }
-  fetchHoardings=()=>{
+
+  fetchHoardings = () => {
     this.hoardingService.fetchAdvertiserHoarding(errorMessage => this.setState({ errorMessage }),
-      hoardings => this.setState({ hoardings }))
-  }
+      hoardings => this.setState({ hoardings }));
+  };
   fetchDocument = () => {
     this.documentService.fetch("advertiser",
       errorMessage => this.setState({ errorMessage }),
@@ -56,7 +63,7 @@ class HoardingAvailableList extends Component {
 
   render() {
     const tableColumns = [
-       {
+      {
         name: "file",
         label: "FILE ID",
         options: {
@@ -88,12 +95,12 @@ class HoardingAvailableList extends Component {
           customBodyRender: (hoarding, tableMeta, updateValue) => {
             const { rowIndex } = tableMeta;
             const file = this.state.hoardings[rowIndex];
-            let view=(
+            let view = (
               <>
                 <ul>
                   <li><strong>LOCATION</strong> {hoarding.address}</li>
                 </ul>
-                </>
+              </>
             );
 
             return (view);
@@ -137,7 +144,7 @@ class HoardingAvailableList extends Component {
       filterType: "checkbox",
       rowsPerPage: 15,
       serverSide: false,
-      selectableRows:false,
+      selectableRows: false,
       customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
         return false;
       },
@@ -147,23 +154,30 @@ class HoardingAvailableList extends Component {
 
     return (
       <>
-        <Grid item sm={12} xs={12} md={12}>
-          <MUIDataTable
-            title={"Hoarding: List of Available Hoardings"}
-            data={this.state.hoardings}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-          <HoardingApplyDialog documents={this.state.advertiserDocuments} open={this.state.openApply} onClose={() => this.setState({ openApply: false })}
-                               onConfirm={this.applyHoarding.bind(this)} application={this.state.hoarding}/>
-          <HoardingApplicationDialog open={this.state.openDetail} application={this.state.hoarding}
-                                     onClose={e => this.setState({ hoarding: null,openDetail:false })}/>
+        {
+          this.state.loading ? <LoadingView/> :
+            <Grid item sm={12} xs={12} md={12}>
+              <MUIDataTable
+                title={"Hoarding: List of Available Hoardings"}
+                data={this.state.hoardings}
+                columns={tableColumns}
+                options={tableOptions}
+              />
+              <HoardingApplyDialog documents={this.state.advertiserDocuments} open={this.state.openApply}
+                                   onClose={() => this.setState({ openApply: false })}
+                                   onConfirm={this.applyHoarding.bind(this)} application={this.state.hoarding}/>
+              <HoardingApplicationDialog open={this.state.openDetail} application={this.state.hoarding}
+                                         onClose={e => this.setState({ hoarding: null, openDetail: false })}/>
 
-          <OfficeSnackbar open={Boolean(this.state.errorMessage)} onClose={() => this.setState({ errorMessage: "" })}
-                          variant={"error"} message={this.state.errorMessage}/>
-          <OfficeSnackbar open={Boolean(this.state.successMessage)} onClose={() => this.setState({ succesMessage: "" })}
-                          variant={"success"} message={this.state.successMessage}/>
-        </Grid>
+              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
+                              onClose={() => this.setState({ errorMessage: "" })}
+                              variant={"error"} message={this.state.errorMessage}/>
+              <OfficeSnackbar open={Boolean(this.state.successMessage)}
+                              onClose={() => this.setState({ succesMessage: "" })}
+                              variant={"success"} message={this.state.successMessage}/>
+            </Grid>
+        }
+
 
       </>
     );

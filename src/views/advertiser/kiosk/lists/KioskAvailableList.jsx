@@ -11,10 +11,11 @@ import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 import CheckIcon from "@material-ui/icons/CheckBox";
 import KioskApplyDialog from "../KioskApplyDialog";
 import { DocumentService } from "../../../../services/DocumentService";
+import LoadingView from "../../../common/LoadingView";
 
 class KioskAvailableList extends Component {
   kioskService = new KioskService();
- documentService=new DocumentService();
+  documentService = new DocumentService();
   state = {
     kiosk: null,
     kiosks: [],
@@ -24,38 +25,44 @@ class KioskAvailableList extends Component {
     advertiserDocuments: [],
 
     errorMessage: "",
-    successMessage: ""
+    successMessage: "",
+
+    loading: true
   };
 
   componentDidMount() {
     document.title = "e-AMC | List of Kiosk application";
     const { doLoad, doLoadFinish } = this.props;
     doLoad();
-    Promise.all([this.fetchKiosk(),this.fetchDocument()])
+    Promise.all([this.fetchKiosk(), this.fetchDocument()])
       .then(function(values) {
+        console.log(values);
+      })
+      .finally(() => {
+        this.setState({ loading: false });
         doLoadFinish();
       });
   }
-  fetchKiosk=()=>{
+
+  fetchKiosk = () => {
     this.kioskService.fetchAdvertiserKiosk(
       errorMessage => this.setState({ errorMessage }),
-      kiosks => this.setState({ kiosks }))
-  }
+      kiosks => this.setState({ kiosks }));
+  };
   fetchDocument = () => {
     this.documentService.fetch("advertiser",
       errorMessage => this.setState({ errorMessage }),
       advertiserDocuments => this.setState({ advertiserDocuments }))
-      .finally(() => console.info("Document attachment fetch successfully"));
   };
 
-  applyKiosk=(data)=>{
-    this.setState({openApply:false})
-    this.setState({successMessage:"You have applied kiosk"})
-  }
+  applyKiosk = (data) => {
+    this.setState({ openApply: false });
+    this.setState({ successMessage: "You have applied kiosk" });
+  };
 
   render() {
     const tableColumns = [
-       {
+      {
         name: "file",
         label: "FILE NUMBER",
         options: {
@@ -116,7 +123,7 @@ class KioskAvailableList extends Component {
               <>
                 <Tooltip title={"Click here to view details"}>
                   <IconButton onClick={(e) => {
-                    this.setState({ openDetail:true,kiosk: file });
+                    this.setState({ openDetail: true, kiosk: file });
                   }}>
                     <EyeIcon/>
                   </IconButton>
@@ -141,7 +148,7 @@ class KioskAvailableList extends Component {
       filterType: "checkbox",
       rowsPerPage: 15,
       serverSide: false,
-      selectableRows:false,
+      selectableRows: false,
       responsive: "scroll",
       customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
         return false;
@@ -152,22 +159,25 @@ class KioskAvailableList extends Component {
 
     return (
       <>
-        <Grid item sm={12} xs={12} md={12}>
-          <MUIDataTable
-            title={"KIOSK: List of Available Kiosks"}
-            data={this.state.kiosks}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-         <KioskApplyDialog documents={this.state.advertiserDocuments} onClose={()=>this.setState({openApply:false})} open={this.state.openApply}
-                           onConfirm={this.applyKiosk.bind(this)} application={this.state.kiosk}/>
-          <KioskApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.kiosk}
-                                  onClose={e => this.setState({ openDetail:false,kiosk: null })}/>
-          <OfficeSnackbar open={Boolean(this.state.errorMessage)}
-                          onClose={() => this.setState({ errorMessage: "" })}
-                          variant={"error"} message={this.state.errorMessage}/>
-        </Grid>
-
+        {
+          this.state.loading ? <LoadingView/> :
+            <Grid item sm={12} xs={12} md={12}>
+              <MUIDataTable
+                title={"KIOSK: List of Available Kiosks"}
+                data={this.state.kiosks}
+                columns={tableColumns}
+                options={tableOptions}
+              />
+              <KioskApplyDialog documents={this.state.advertiserDocuments}
+                                onClose={() => this.setState({ openApply: false })} open={this.state.openApply}
+                                onConfirm={this.applyKiosk.bind(this)} application={this.state.kiosk}/>
+              <KioskApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.kiosk}
+                                      onClose={e => this.setState({ openDetail: false, kiosk: null })}/>
+              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
+                              onClose={() => this.setState({ errorMessage: "" })}
+                              variant={"error"} message={this.state.errorMessage}/>
+            </Grid>
+        }
       </>
     );
   }

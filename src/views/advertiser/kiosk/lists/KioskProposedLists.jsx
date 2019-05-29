@@ -10,6 +10,7 @@ import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 import CloseIcon from "@material-ui/icons/Close";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
+import LoadingView from "../../../common/LoadingView";
 
 class KioskProposedLists extends Component {
   kioskService = new KioskService();
@@ -23,7 +24,8 @@ class KioskProposedLists extends Component {
     errorMessage: "",
     successMessage: "",
 
-    openWithdraw: false
+    openWithdraw: false,
+    loading: true
   };
 
   componentDidMount() {
@@ -33,15 +35,19 @@ class KioskProposedLists extends Component {
     this.kioskService.fetchAdvertiserKiosk(
       errorMessage => this.setState({ errorMessage }),
       kiosks => this.setState({ kiosks }))
-      .finally(() => doLoadFinish());
+      .finally(() => {
+        this.setState({ loading: false });
+        doLoadFinish();
+      });
   }
+
   withdraw = (data) => {
     this.setState({ openWithdraw: false });
   };
 
   render() {
     const tableColumns = [
-     {
+      {
         name: "file",
         label: "FILE NUMBER",
         options: {
@@ -103,7 +109,7 @@ class KioskProposedLists extends Component {
               <>
                 <Tooltip title={"Click here to view details"}>
                   <IconButton onClick={(e) => {
-                    this.setState({ kiosk: file,openDetail:true });
+                    this.setState({ kiosk: file, openDetail: true });
                   }}>
                     <EyeIcon/>
                   </IconButton>
@@ -128,7 +134,7 @@ class KioskProposedLists extends Component {
       filterType: "checkbox",
       rowsPerPage: 15,
       serverSide: false,
-      selectableRows:false,
+      selectableRows: false,
       customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
         return false;
       },
@@ -138,27 +144,31 @@ class KioskProposedLists extends Component {
 
     return (
       <>
-        <Grid item sm={12} xs={12} md={12}>
-          <MUIDataTable
-            title={"KIOSK: List of Proposed"}
-            data={this.state.kiosks}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-          <KioskApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.kiosk}
-                                  onClose={e => this.setState({ kiosk: null,openDetail:false })}/>
+        {
+          this.state.loading ? <LoadingView/> :
+            <Grid item sm={12} xs={12} md={12}>
+              <MUIDataTable
+                title={"KIOSK: List of Proposed"}
+                data={this.state.kiosks}
+                columns={tableColumns}
+                options={tableOptions}
+              />
+              <KioskApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.kiosk}
+                                      onClose={e => this.setState({ kiosk: null, openDetail: false })}/>
 
-          <ConfirmDialog onCancel={() => this.setState({ openWithdraw: false })} open={this.state.openWithdraw}
-                         onConfirm={this.withdraw.bind(this)}
-                         message={"Do you want to withdraw application?"}/>
+              <ConfirmDialog onCancel={() => this.setState({ openWithdraw: false })} open={this.state.openWithdraw}
+                             onConfirm={this.withdraw.bind(this)}
+                             message={"Do you want to withdraw application?"}/>
 
-          <OfficeSnackbar open={Boolean(this.state.errorMessage)}
-                          onClose={() => this.setState({ errorMessage: "" })}
-                          variant={"error"} message={this.state.errorMessage}/>
-          <OfficeSnackbar open={Boolean(this.state.successMessage)}
-                          onClose={() => this.setState({ successMessage: "" })}
-                          variant={"error"} message={this.state.successMessage}/>
-        </Grid>
+              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
+                              onClose={() => this.setState({ errorMessage: "" })}
+                              variant={"error"} message={this.state.errorMessage}/>
+              <OfficeSnackbar open={Boolean(this.state.successMessage)}
+                              onClose={() => this.setState({ successMessage: "" })}
+                              variant={"error"} message={this.state.successMessage}/>
+            </Grid>
+        }
+
 
       </>
     );
