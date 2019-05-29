@@ -157,11 +157,7 @@ class FormBuilderContainer extends Component {
             </List>
           </GridItem>
           <GridItem md={9} lg={9}>
-
-            <Card style={{ padding: 20 }}>
               <DynamicFormPreview clear={this.clear} formElements={this.state.formElements}/>
-            </Card>
-
           </GridItem>
 
           <FileUploadFieldDialog widget={this.state.selectedWidget} open={this.state.openFileDialog}
