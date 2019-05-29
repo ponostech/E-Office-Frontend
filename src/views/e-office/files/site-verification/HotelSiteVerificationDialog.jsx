@@ -77,7 +77,9 @@ class HotelSiteVerificationDialog extends Component {
       element.value = event;
     }else if (element.elementType === WidgetConstant.FILE_UPLOAD) {
       element.value = event;
-    }else {
+    }else if (element.elementType === WidgetConstant.IMAGE_UPLOAD) {
+      element.value = event;
+    }  else {
       element.value = event.target.value;
     }
     element.valid = this.checkValidity(element.value, element.validation);

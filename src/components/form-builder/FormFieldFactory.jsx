@@ -18,6 +18,7 @@ import GMapDialog from "../GmapDialog";
 import GridContainer from "../Grid/GridContainer";
 import FileUpload from "../FileUpload";
 import { APPLICATION_NAME } from "../../utils/Util";
+import NotesheetAttachment from "../NotesheetAttachment";
 
 class FormFieldFactory extends Component {
 state={
@@ -199,6 +200,14 @@ openMap:false
                       }}
                       onUploadFailure={(err) => console.error(err)}
                       applicationName={"site verification"}/>
+        );
+        break;
+        case WidgetConstant.IMAGE_UPLOAD:
+        this.inputElement = (
+          <FormControl>
+            <FormLabel htmlFor={"image"}>{elementConfig.label}</FormLabel>
+            <NotesheetAttachment value={value} id={"image"} onSuccess={items=>changed(items)} acceptedFiles={"image/*"}/>
+          </FormControl>
         );
         break;
 

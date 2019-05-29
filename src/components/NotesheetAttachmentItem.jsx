@@ -33,29 +33,40 @@ class NotesheetAttachmentItem extends Component {
   };
 
   componentDidMount() {
-    let { file } = this.props;
+    let { file,attachment } = this.props;
 
-    let blob = file.slice(0, file.size, file.type);
-    let newName = new Date().getMilliseconds() + "-" + uniqid() + file.name;
-    let newFile = new File([blob], newName, { type: file.type });
-
-    let loc = moment().format("MM-YYYY");
-    config.dirName += "/" + loc;
-
-    this.setState({ file: newFile });
-
-    S3FileUpload.uploadFile(newFile, config)
-      .then(data => {
-        this.setState({
-          name: file.name,
-          location: data.location,
-          loading: false
-        });
-        this.props.addItem({name:file.name,location:data.location})
+    if (attachment) {
+      this.setState({
+        name:attachment.name,
+        location:attachment.location,
+        loading:false
       })
-      .catch(err => {
-        console.error(err);
-      });
+    }
+
+    if (file) {
+      let blob = file.slice(0, file.size, file.type);
+      let newName = new Date().getMilliseconds() + "-" + uniqid() + file.name;
+      let newFile = new File([blob], newName, { type: file.type });
+
+      let loc = moment().format("MM-YYYY");
+      config.dirName += "/" + loc;
+
+      this.setState({ file: newFile });
+
+      S3FileUpload.uploadFile(newFile, config)
+        .then(data => {
+          this.setState({
+            name: file.name,
+            location: data.location,
+            loading: false
+          });
+          this.props.addItem({name:file.name,location:data.location})
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+
   }
 
   handleItemDelete = (e) => {
@@ -76,8 +87,8 @@ class NotesheetAttachmentItem extends Component {
     this.setState({
       name: e.target.value
     });
-    if (value) {
-      value+="noteSheetAttachment"
+    if (!value) {
+      value="noteSheetAttachment"
     }
       this.props.onNameChanged(value,index);
 
@@ -107,7 +118,8 @@ NotesheetAttachmentItem.propTypes = {
   onDelete: PropTypes.func.isRequired,
   onNameChanged: PropTypes.func.isRequired,
   addItem: PropTypes.func.isRequired,
-  file: PropTypes.object.isRequired
+  file: PropTypes.object.isRequired,
+  attachment: PropTypes.object
 };
 
 export default NotesheetAttachmentItem;

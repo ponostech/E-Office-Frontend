@@ -23,6 +23,7 @@ import WidgetConstant from "./WidgetConstant";
 import PatternFieldDialog from "./config-dialog/PatternFieldDialog";
 import SearchIcon from "@material-ui/icons/Search";
 import FileUploadFieldDialog from "./config-dialog/FileUploadFieldDialog";
+import ImageUploadFieldDialog from "./config-dialog/ImageUploadFieldDialog";
 
 const widgets = [
   { name: WidgetConstant.TEXTFIELD, icon: "keyboard_arrow_right" },
@@ -49,15 +50,16 @@ class FormBuilderContainer extends Component {
       openSelectDialog: false,
       openPatternDialog: false,
       openFileDialog: false,
+      openImageDialog: false,
       selectedWidget: null,
 
       formElements: []
     };
   }
 
-  clear=()=>{
-    this.setState({formElements:[]})
-  }
+  clear = () => {
+    this.setState({ formElements: [] });
+  };
   handleClick = (identifier, event) => {
     switch (identifier.name) {
       case WidgetConstant.TEXTFIELD :
@@ -87,6 +89,9 @@ class FormBuilderContainer extends Component {
       case WidgetConstant.FILE_UPLOAD:
         this.setState({ selectedWidget: identifier, openFileDialog: true });
         break;
+      case WidgetConstant.IMAGE_UPLOAD:
+        this.setState({ selectedWidget: identifier, openImageDialog: true });
+        break;
       default:
         this.setState({ selectedWidget: identifier, openTextDialog: true });
         break;
@@ -100,7 +105,8 @@ class FormBuilderContainer extends Component {
       openSelectDialog: false,
       openPatternDialog: false,
       openTextDialog: false,
-      openFileDialog: false
+      openFileDialog: false,
+      openImageDialog: false
     });
     if (!key || !config) {
       return;
@@ -158,8 +164,10 @@ class FormBuilderContainer extends Component {
 
           </GridItem>
 
-          <FileUploadFieldDialog  widget={this.state.selectedWidget} open={this.state.openFileDialog}
-                           onClose={this.addWidget.bind(this)}/>
+          <FileUploadFieldDialog widget={this.state.selectedWidget} open={this.state.openFileDialog}
+                                 onClose={this.addWidget.bind(this)}/>
+          <ImageUploadFieldDialog widget={this.state.selectedWidget} open={this.state.openImageDialog}
+                                 onClose={this.addWidget.bind(this)}/>
 
           <TextFieldDialog widget={this.state.selectedWidget} open={this.state.openTextDialog}
                            onClose={this.addWidget.bind(this)}/>
