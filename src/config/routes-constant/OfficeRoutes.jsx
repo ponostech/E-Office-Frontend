@@ -108,10 +108,8 @@ export const CANCELLED_TEMPLATE = "/e-office/admin/cancelled-template";
 // site verification
 export const SITE_VERIFICATION = "/e-office/admin/site-verification";
 export const SITE_VERIFICATION_LIST = "/e-office/admin/site-verification/list";
-export const HOARDING_SITE_VERIFICATION = "/e-office/admin/site-verification/hoarding";
-export const KIOSK_SITE_VERIFICATION = "/e-office/admin/site-verification/kiosk";
-export const SHOP_SITE_VERIFICATION = "/e-office/admin/site-verification/shop";
-export const HOTEL_SITE_VERIFICATION = "/e-office/admin/site-verification/hotel";
+export const SITE_VERIFICATION_EDIT = module => `/e-office/admin/site-verification/${module}/edit`;
+
 
 export const SETTING = "/e-office/setting";
 export const BRANCHES = "/setting/branches";

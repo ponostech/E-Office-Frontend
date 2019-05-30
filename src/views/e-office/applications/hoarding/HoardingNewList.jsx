@@ -1,15 +1,15 @@
 import React from "react";
-import axios from 'axios';
-import {withRouter} from "react-router-dom";
+import axios from "axios";
+import { withRouter } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import {withStyles} from "@material-ui/core/styles";
-import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import { Grid, Icon, IconButton, Tooltip } from "@material-ui/core";
 import moment from "moment";
-import {HOARDING_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
+import { FILE_TAKE, GET_STAFF, HOARDING_LIST } from "../../../../config/ApiRoutes";
 import HoardingViewDialog from "./common/HoardingViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
+import { DESK, FILE_DETAIL_ROUTE, FILE_SEND } from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 
 const styles = {
@@ -27,7 +27,7 @@ class HoardingNewList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-    loading: true,
+    loading: true
   };
 
   componentDidMount() {
@@ -36,41 +36,40 @@ class HoardingNewList extends React.Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(HOARDING_LIST, {params: {status: 'new'}}).then(res => this.processResult(res));
+  getData = () => axios.get(HOARDING_LIST, { params: { status: "new" } }).then(res => this.processResult(res));
 
   processResult = (res) => {
-    if (res.data.status) this.setState({loading: false, tableData: res.data.data.hoarding_applications});
+    if (res.data.status) this.setState({ loading: false, tableData: res.data.data.hoarding_applications });
     this.doLoad(false);
   };
 
-  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
+  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({ staffs: res.data.data.staffs }));
 
-  closeViewDialog = () => this.setState({openViewDialog: false});
+  closeViewDialog = () => this.setState({ openViewDialog: false });
 
-  viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
+  viewDetails = (data) => this.setState({ openViewDialog: true, singleData: data });
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
-  openAssignment = (data) => this.setState({file: data, openAssignment: true});
+  openAssignment = (data) => this.setState({ file: data, openAssignment: true });
 
-  closeAssignment = () => this.setState({file: null, openAssignment: false});
+  closeAssignment = () => this.setState({ file: null, openAssignment: false });
 
-  takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
+  takeFile = (data) => this.setState({ singleData: data, openTakeFile: true });
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
-      .then(res => {
-        this.setState({openTakeFile: false});
-        this.props.history.push(DESK);
-      });
+    .then(res => {
+      this.setState({ openTakeFile: false });
+      this.props.history.push(DESK);
+    });
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), { recipient_id }).then(res => window.location.reload());
 
   render() {
-    const {loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
+    const { loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
       rowsPerPage: 8,
-      serverSide: false,
     };
 
     const tableColumns = [
@@ -78,9 +77,11 @@ class HoardingNewList extends React.Component {
         name: "applicant",
         label: "APPLICANT",
         options: {
-          customBodyRender: function (value) {
+          customBodyRender: function(value) {
             return value.advertiser.name;
-          }
+          },
+          filter: true,
+          sort: true
         }
       },
       {
@@ -88,20 +89,26 @@ class HoardingNewList extends React.Component {
         label: "APPLICANT TYPE",
         options: {
           customBodyRender: value => value.advertiser.type.toUpperCase()
-        }
+        },
+        filter: true,
+        sort: true
       },
       {
         name: "applicant",
         label: "CONTACT",
         options: {
-          customBodyRender: value => value.phone_no
+          customBodyRender: value => value.phone_no,
+          filter: true,
+          sort: true
         }
       },
       {
-        name: 'created_at',
-        label: 'APPLICATION DATE',
+        name: "created_at",
+        label: "APPLICATION DATE",
         options: {
-          customBodyRender: value => moment(value).format("Do MMMM YYYY")
+          customBodyRender: value => moment(value).format("Do MMMM YYYY"),
+          filter: true,
+          sort: true
         }
       },
       {
@@ -111,60 +118,60 @@ class HoardingNewList extends React.Component {
           filter: false,
           sort: false,
           customBodyRender: (value, tableMeta) => {
-            const {rowIndex} = tableMeta;
+            const { rowIndex } = tableMeta;
             let data = tableData[rowIndex];
             return (
-                <div>
-                  <Tooltip title="View File">
-                    <IconButton color="primary" size="small"
-                                aria-label="View File" onClick={this.viewFile.bind(this, data)}>
-                      <Icon fontSize="small">folder</Icon>
-                    </IconButton>
-                  </Tooltip>
+              <div>
+                <Tooltip title="View File">
                   <IconButton color="primary" size="small"
-                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                    <Icon fontSize="small">remove_red_eye</Icon>
+                              aria-label="View File" onClick={this.viewFile.bind(this, data)}>
+                    <Icon fontSize="small">folder</Icon>
                   </IconButton>
-                  <IconButton variant="contained" color="secondary"
-                              size="small" onClick={this.openAssignment.bind(this, data)}>
-                    <Icon fontSize="small">send</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="primary"
-                              size="small" onClick={this.takeFile.bind(this, data)}>
-                    <Icon fontSize="small">desktop_mac</Icon>
-                  </IconButton>
-                </div>
+                </Tooltip>
+                <IconButton color="primary" size="small"
+                            aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                  <Icon fontSize="small">remove_red_eye</Icon>
+                </IconButton>
+                <IconButton variant="contained" color="secondary"
+                            size="small" onClick={this.openAssignment.bind(this, data)}>
+                  <Icon fontSize="small">send</Icon>
+                </IconButton>
+                <IconButton variant="contained" color="primary"
+                            size="small" onClick={this.takeFile.bind(this, data)}>
+                  <Icon fontSize="small">desktop_mac</Icon>
+                </IconButton>
+              </div>
             );
           }
         }
-      },
+      }
     ];
 
     return (
-        <>
-          {loading ? <LoadingView/> : <Grid item xs={12}>
-            <MUIDataTable
-                title={"Hoarding: List of New Application"}
-                data={tableData}
-                columns={tableColumns}
-                options={tableOptions}
-            />
-          </Grid>}
+      <>
+        {loading ? <LoadingView/> : <Grid item xs={12}>
+          <MUIDataTable
+            title={"Hoarding: List of New Application"}
+            data={tableData}
+            columns={tableColumns}
+            options={tableOptions}
+          />
+        </Grid>}
 
-          {openViewDialog &&
-          <HoardingViewDialog open={openViewDialog} close={this.closeViewDialog}
-                              data={singleData}/>}
+        {openViewDialog &&
+        <HoardingViewDialog open={openViewDialog} close={this.closeViewDialog}
+                            data={singleData}/>}
 
-          {openAssignment && staffs &&
-          <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
-                          onClose={this.closeAssignment} file={file}
-                          props={this.props}/>}
+        {openAssignment && staffs &&
+        <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                        onClose={this.closeAssignment} file={file}
+                        props={this.props}/>}
 
-          {openTakeFile &&
-          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
-                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
-                         onConfirm={this.confirmTakeFile}/>}
-        </>
+        {openTakeFile &&
+        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                       onCancel={() => this.setState({ openTakeFile: false })} open={openTakeFile}
+                       onConfirm={this.confirmTakeFile}/>}
+      </>
     );
   }
 }

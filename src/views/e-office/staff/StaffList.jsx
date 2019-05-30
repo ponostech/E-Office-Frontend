@@ -33,9 +33,6 @@ class StaffList extends React.Component {
         const {doLoad} = this.props;
         doLoad(true);
         Promise.all([this.getStaff(),this.getBranches(),this.getRoles()])
-          .then(function(val) {
-              console.log(val)
-          })
           .finally(()=>{
               this.setState({loading:false})
               doLoad(false)
@@ -43,19 +40,19 @@ class StaffList extends React.Component {
 
     }
 
-    getStaff=()=>{
-        this.staffService.fetch(errorMessage => this.setState({errorMessage}), staffs => this.setState({staffs}))
+    getStaff= async ()=>{
+        await this.staffService.fetch(errorMessage => this.setState({errorMessage}), staffs => this.setState({staffs}))
           .finally(() => {
               console.info("Staff list request complete")
           });
     }
-    getRoles=()=>{
-        this.staffService.getRoles(errorMessage=>this.setState({errorMessage}),
+    getRoles= async ()=>{
+        await this.staffService.getRoles(errorMessage=>this.setState({errorMessage}),
           roles=>this.setState({roles}))
           .finally(()=>console.info("roles request completed"))
     }
-    getBranches=()=>{
-        this.staffService.getBranch(errorMessage=>this.setState({errorMessage}),
+    getBranches= async ()=>{
+        await this.staffService.getBranch(errorMessage=>this.setState({errorMessage}),
           branches=>this.setState({branches}))
           .finally(()=>console.info("Branches request completed"))
     }
@@ -94,16 +91,6 @@ class StaffList extends React.Component {
             }, {
                 name: "phone_no",
                 label: "PHONE"
-            }, {
-                name: "staff",
-                label: "DESIGNATION",
-                options: {
-                    customBodyRender: (staff, tableMeta, updateValue) => {
-                        return (
-                            staff.designation
-                        );
-                    }
-                }
             },
             {
                 name: "staff",
@@ -145,23 +132,26 @@ class StaffList extends React.Component {
         ];
 
         return (
-            <>
-                {loading ? <LoadingView/> : <Grid item xs={12}>
-                    <MUIDataTable
-                        title={"STAFF: List of Staff"}
-                        data={staffs}
-                        columns={tableColumns}
-                        options={tableOptions}
-                    />
-                </Grid>}
+          <>
+              {loading ? <LoadingView/> : <Grid item xs={12}>
+                  <MUIDataTable
+                    title={"STAFF: List of Staff"}
+                    data={staffs}
+                    columns={tableColumns}
+                    options={tableOptions}
+                    filter={true}
+                    sort={true}
+                  />
+              </Grid>}
 
-                <StaffEditDialog staff={this.state.staff} open={Boolean(this.state.staff)} onClose={this.handleEdit} roles={this.state.roles} branches={this.state.branches} />
-                <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
-                                onClose={e => this.setState({takeMessage: ""})} open={Boolean(this.state.takeMessage)}/>
-                <OfficeSnackbar variant={"error"} message={this.state.errorMessage}
-                                onClose={e => this.setState({errorMessage: ""})}
-                                open={Boolean(this.state.errorMessage)}/>
-            </>
+              <StaffEditDialog staff={this.state.staff} open={Boolean(this.state.staff)} onClose={this.handleEdit}
+                               roles={this.state.roles} branches={this.state.branches}/>
+              <OfficeSnackbar variant={"success"} message={this.state.takeMessage}
+                              onClose={e => this.setState({ takeMessage: "" })} open={Boolean(this.state.takeMessage)}/>
+              <OfficeSnackbar variant={"error"} message={this.state.errorMessage}
+                              onClose={e => this.setState({ errorMessage: "" })}
+                              open={Boolean(this.state.errorMessage)}/>
+          </>
         );
     }
 }

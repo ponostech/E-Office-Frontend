@@ -56,6 +56,7 @@ import CancelTemplate from "../../views/e-office/admin/templates/CancelTemplate"
 import RejectTemplate from "../../views/e-office/admin/templates/RejectTemplate";
 import FormBuilderContainer from "../../components/form-builder/FormBuilderContainer";
 import SiteVerificationFormList from "../../views/e-office/site-verification/SiteVerificationFormList";
+import EditSiteVerificationTemplate from "../../components/form-builder/EditSiteVerificationTemplate";
 
 const routes = (props) => {
   return (
@@ -165,10 +166,13 @@ const routes = (props) => {
              render={e => <StaffList doLoad={props.doLoad}/>}/>
 
       {/*site verification*/}
+      <Route exact path={OfficeRoutes.SITE_VERIFICATION + "/:module/edit"}
+             render={e => <EditSiteVerificationTemplate doLoad={props.doLoad}/>}/>
       <Route exact path={OfficeRoutes.SITE_VERIFICATION_LIST}
              render={e => <SiteVerificationFormList doLoad={props.doLoad}/>}/>
       <Route exact path={OfficeRoutes.SITE_VERIFICATION}
              render={e => <FormBuilderContainer doLoad={props.doLoad}/>}/>
+
 
       <Route exact path={OfficeRoutes.PERMIT_TEMPLATE}
              render={e => <PermitTemplates doLoad={props.doLoad}/>}/>

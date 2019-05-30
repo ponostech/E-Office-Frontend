@@ -133,4 +133,8 @@ export class ApiRoutes {
   static GET_SITE_VERIFICATION(id) {
     return `site-verifications/${id}`;
   }
+
+  static EDIT_SITE_VERIFICATION_TEMPLATE(id) {
+    return `/site-verification-templates/${id}`;
+  }
 }

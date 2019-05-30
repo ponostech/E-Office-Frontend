@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import moment from "moment";
 import {
+  Avatar,
   Card,
   CardActions,
   CardContent,
@@ -26,7 +27,7 @@ import ConfirmDialog from "../../../components/ConfirmDialog";
 import SiteVerificationFormPreviewDialog
   from "../../../components/form-builder/preview/SiteVerificationFormPreviewDialog";
 import AddIcon from "@material-ui/icons/Add";
-import { SITE_VERIFICATION } from "../../../config/routes-constant/OfficeRoutes";
+import { SITE_VERIFICATION, SITE_VERIFICATION_EDIT } from "../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 
 class SiteVerificationFormList extends Component {
@@ -55,7 +56,9 @@ class SiteVerificationFormList extends Component {
   handlePreview = (template) => {
     this.setState({ openPreview: true, template });
   };
-  edit = (data) => {
+  edit = (template) => {
+    const{history}=this.props;
+    history.push(SITE_VERIFICATION_EDIT(template.type))
 
   };
   confirmDelete = (data) => {
@@ -71,7 +74,7 @@ class SiteVerificationFormList extends Component {
     return (
       <>
         {
-          this.state.loading ? <LoadingView/> :
+          loading ? <LoadingView/> :
             <Card>
               <CardHeader title={"List of site verification templates"} subheader={"Be careful to edit and create"}/>
               <Divider/>
@@ -84,7 +87,7 @@ class SiteVerificationFormList extends Component {
                         {this.state.templates.map((item, index) => (
                           <ListItem>
                             <ListItemIcon color={"primary"}>
-                              {index}
+                              <Avatar style={{margin:10}}>{index}</Avatar>
                             </ListItemIcon>
                             <ListItemText primary={"Type of Site verification (" + item.type + ")"}
                                           secondary={"Created at :" + moment(item.created_at).format("Do-MMMM-YYYY")}/>
@@ -96,7 +99,7 @@ class SiteVerificationFormList extends Component {
                                   </IconButton>
                                 </Tooltip>
                                 <Tooltip title={"Edit"}>
-                                  <IconButton>
+                                  <IconButton onClick={this.edit.bind(this,item)}>
                                     <EditIcon fontSize={"small"} color={"action"}/>
                                   </IconButton>
                                 </Tooltip>
@@ -113,7 +116,7 @@ class SiteVerificationFormList extends Component {
               <CardActions>
 
               </CardActions>
-              < Fab style={{ position: "absolute", bottom: 60, right: 60 }} onClick={e=>history.push(SITE_VERIFICATION)}
+              < Fab style={{ position: "absolute", bottom: 90, right: 90 }} onClick={e=>history.push(SITE_VERIFICATION)}
                     color={"primary"}><AddIcon /></Fab>
             </Card>
 

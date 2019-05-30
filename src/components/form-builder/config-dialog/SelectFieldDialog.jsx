@@ -6,13 +6,15 @@ import {
   DialogActions,
   DialogContent,
   Divider,
+  FormControl,
   FormControlLabel,
   IconButton,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
   Switch,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   TextField,
   Typography
 } from "@material-ui/core";
@@ -23,36 +25,39 @@ import PropTypes from "prop-types";
 
 class SelectFieldDialog extends Component {
   state = {
+    name: "",
+    label: "",
+    placeholder: "",
+    required: false,
+    options: [],
+
     elementType: "Select",
     elementConfig: {
       name: "name",
       label: "Name",
       placeholder: "placeholder",
-      options:[]
+      options: []
     },
     validation: {
       required: false
     },
-    valid: false,
+    valid: false
   };
 
 
   addItem = () => {
-    let options = this.state.elementConfig.options;
+    let options = this.state.options;
     options.push({ name: "unique_name", value: "Value", label: "Display Name" });
-    let elementConfig=this.state.elementConfig;
-    elementConfig.options = options;
-
-    this.setState({ elementConfig });
+    this.setState({ options });
   };
   handleDelete = (index, event) => {
-    let elementConfig = [this.state.elementConfig];
-    elementConfig.options.slice(index, 1);
-    this.setState({ elementConfig });
+    let options = [this.state.options];
+     options.slice(index, 1);
+    this.setState({ options });
   };
 
   handleItemChange = (index, e) => {
-    let item = this.state.elementConfig.options[index];
+    let item = this.state.options[index];
     let temp = {};
     const { value, name } = e.target;
     switch (name) {
@@ -75,22 +80,22 @@ class SelectFieldDialog extends Component {
       case "save":
         const config = {
           elementType: widget.name,
-          elementConfig:{
-            name: this.state.elementConfig.name,
-            label: this.state.elementConfig.label,
-            placeholder: this.state.elementConfig.placeholder,
-            options:this.state.elementConfig.options
+          elementConfig: {
+            name: this.state.name,
+            label: this.state.label,
+            placeholder: this.state.placeholder,
+            options: this.state.options
           },
-          validation:{
-            required: this.state.validation.required
+          validation: {
+            required: this.state.required
           },
-          valid:false,
-          value: null,
+          valid: false,
+          value: null
         };
-        onClose(this.state.elementConfig.name,config);
+        onClose(this.state.name, config);
         break;
       case "close":
-        onClose(null,null);
+        onClose(null, null);
         break;
       default:
         break;
@@ -98,42 +103,26 @@ class SelectFieldDialog extends Component {
   };
   handleChange = (e) => {
     const { name, value } = e.target;
-    switch (name) {
-      case "name":
-        this.setState(state => {
-          state.elementConfig.name = value;
-        });
-        break;
-      case "label":
-        this.setState(state => {
-          state.elementConfig.label = value;
-        });
-        break;
-      case "placeholder":
-        this.setState(state => {
-          state.elementConfig.placeholder = value;
-        });
-        break;
-    }
+    this.setState({ [name]: value });
   };
   handleRadio = event => {
-    const validation = {
+    const required = {
       required: event.target.checked
     };
     this.setState({
-      validation
+      required
     });
   };
 
   render() {
-    const { open, onClose,widget } = this.props;
+    const { open, onClose, widget } = this.props;
 
     const self = this;
     return (
-      <Dialog open={open} onClose={this.handleClick.bind(this,"close")} fullWidth={true} maxWidth={"md"}>
+      <Dialog open={open} onClose={this.handleClick.bind(this, "close")} fullWidth={true} maxWidth={"md"}>
 
-        <CardHeader title={`Configuration (${widget?widget.name:""})`} action={
-          <IconButton onClick={this.handleClick.bind(this,"close")}>
+        <CardHeader title={`Configuration (${widget ? widget.name : ""})`} action={
+          <IconButton onClick={this.handleClick.bind(this, "close")}>
             <CloseIcon color={"action"}/>
           </IconButton>
         }/>
@@ -141,58 +130,84 @@ class SelectFieldDialog extends Component {
         <DialogContent>
 
           <GridContainer spacing={16}>
-            <TextField name={"name"} value={this.state.name} onChange={this.handleChange.bind(this)}
+            <TextField required={true} name={"name"} value={this.state.name} onChange={this.handleChange.bind(this)}
                        variant={"outlined"} margin={"dense"} label={"Name"} fullWidth={true}/>
-            <TextField name={"label"} value={this.state.label} onChange={this.handleChange.bind(this)}
+            <TextField required={true} name={"label"} value={this.state.label} onChange={this.handleChange.bind(this)}
                        variant={"outlined"} margin={"dense"} label={"Label"} fullWidth={true}/>
             <TextField name={"placeholder"} value={this.state.placeholder} onChange={this.handleChange.bind(this)}
                        variant={"outlined"} margin={"dense"} label={"Place Holder"} fullWidth={true}/>
 
-            <FormControlLabel
-              control={
-                <Switch
-                  onChange={this.handleRadio.bind(this)}
-                  value={this.state.required}
-                  color="primary"
-                />
-              }
-              label="Required?"
-            />
-            <Typography variant={"subtitle2"}>Options</Typography>
-            <List>
-              {
-                this.state.elementConfig.options.map(function(item, index) {
-                  return (
-                    <div key={index}>
-                      <ListItem>
-                        <ListItemText>
+            <FormControl fullWidth={true} margin={"dense"}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    onChange={this.handleRadio.bind(this)}
+                    value={this.state.required}
+                    color="primary"
+                  />
+                }
+                label="Required?"
+              />
+            </FormControl>
+            <Divider/>
+            <br/>
+            <Typography variant={"h6"}>Options : </Typography>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name/Key</TableCell>
+                  <TableCell>Value</TableCell>
+                  <TableCell>Label</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {
+                  this.state.options.map(function(item, index) {
+                    return (
+                      <TableRow key={index}>
+                        {/*<ListItemText>*/}
+                        <TableCell>
                           <TextField
                             variant={"outlined"} margin={"dense"} name={"name"} required={true}
                             onChange={self.handleItemChange.bind(this, index)} label={"Name"}/>
+                        </TableCell>
+                        <TableCell>
+
                           <TextField
                             variant={"outlined"} margin={"dense"} name={"value"} required={true}
                             onChange={self.handleItemChange.bind(this, index)} label={"Value"}/>
+                        </TableCell>
+                        <TableCell>
+
                           <TextField
                             variant={"outlined"} margin={"dense"} name={"label"} required={true}
                             onChange={self.handleItemChange.bind(this, index)} label={"Label"}/>
-                        </ListItemText>
-                        <ListItemSecondaryAction>
+                        </TableCell>
+                        <TableCell>
+                          {/*</ListItemText>*/}
                           <IconButton onClick={self.handleDelete.bind(this, index)}>
                             <TrashIcon color={"secondary"}/>
                           </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    </div>
-                  );
-                })
-              }
-            </List>
-            <Button onClick={this.addItem.bind(this)} variant={"outlined"} color={"primary"}>ADD</Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                }
+              </TableBody>
+            </Table>
+            <Button onClick={this.addItem.bind(this)} variant={"outlined"}
+                    color={"primary"}>ADD</Button>
           </GridContainer>
 
         </DialogContent>
         <DialogActions>
-          <Button variant={"outlined"} color={"primary"} onClick={this.handleClick.bind(this, "save")}>Save</Button>
+          <Button disabled={!Boolean(this.state.name) ||
+          !Boolean(this.state.label) ||
+            this.state.options.length===0
+          }
+                  variant={"outlined"} color={"primary"}
+                  onClick={this.handleClick.bind(this, "save")}>Save</Button>
           <Button variant={"outlined"} color={"secondary"} onClick={this.handleClick.bind(this, "close")}>Close</Button>
         </DialogActions>
       </Dialog>

@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { Button, CardHeader, Dialog, DialogActions, DialogContent, Divider, IconButton } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  CardHeader,
+  Dialog,
+  DialogActions,
+  DialogContent, DialogTitle,
+  Divider,
+  IconButton, Toolbar
+} from "@material-ui/core";
 import PropTypes from "prop-types";
 import CloseIcon from "@material-ui/icons/CloseOutlined";
 import GridItem from "../../Grid/GridItem";
@@ -32,7 +41,7 @@ class SiteVerificationFormPreviewDialog extends Component {
     let title = "Site verification form";
     let subheader = template ? template.type : "unknown";
     return (
-      <Dialog open={open} onClose={onClose} maxWidth={"md"} fullWidth={true}>
+      <Dialog  open={open} onClose={onClose} maxWidth={"md"} fullWidth={true}>
 
         <CardHeader title={title} subheader={subheader} action={
           <IconButton onClick={onClose}>
