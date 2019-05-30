@@ -77,7 +77,8 @@
   "devDependencies": {
     "axios": "^0.18.0",
     "eslint-config-prettier": "4.0.0",
-    "eslint-plugin-prettier": "3.0.1"
+    "eslint-plugin-prettier": "3.0.1",
+    "react-to-print": "^2.1.2"
   },
   "browserslist": [
     ">0.2%",

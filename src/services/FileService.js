@@ -62,4 +62,19 @@ export class FileService {
     }
 
   }
+
+  getApplication(id, errorCallback, successCallback) {
+    try {
+      let res =  axios.get(FILE_TAKE(id) );
+      if (res.data.status) {
+        successCallback(res.data.data.application);
+      } else {
+        errorCallback(ArrayToString(res.data.messages));
+      }
+    } catch (e) {
+      console.error(e);
+      errorCallback(e.toString());
+    }
+
+  }
 }
