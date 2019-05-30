@@ -36,20 +36,18 @@ class HoardingAvailableList extends Component {
     const self = this;
     doLoad();
     Promise.all([this.fetchHoardings(), this.fetchDocument()])
-      .then(function(values) {
-        console.log(values)
-      }).finally(()=>{
+      .finally(()=>{
       doLoadFinish();
       self.setState({ loading: false });
     });
   }
 
-  fetchHoardings = () => {
-    this.hoardingService.fetchAdvertiserHoarding(errorMessage => this.setState({ errorMessage }),
+  fetchHoardings = async () => {
+    await this.hoardingService.fetchAdvertiserHoarding(errorMessage => this.setState({ errorMessage }),
       hoardings => this.setState({ hoardings }));
   };
-  fetchDocument = () => {
-    this.documentService.fetch("advertiser",
+  fetchDocument = async () => {
+    await this.documentService.fetch("advertiser",
       errorMessage => this.setState({ errorMessage }),
       advertiserDocuments => this.setState({ advertiserDocuments }))
       .finally(() => console.info("Document attachment fetch successfully"));

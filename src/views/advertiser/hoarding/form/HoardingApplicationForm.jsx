@@ -45,6 +45,7 @@ const style = {
   }
 };
 var timeout;
+
 class HoardingApplicationForm extends Component {
   constructor(props) {
     super(props);
@@ -102,40 +103,36 @@ class HoardingApplicationForm extends Component {
 
   componentDidMount() {
     const { doLoad, doLoadFinish } = this.props;
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     var self = this;
     doLoad();
-    timeout = setTimeout(function(handler) {
-      Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
-        .then(function([cats, locs, docs]) {
-          // self.setState({ loading: false });
-        });
-      doLoadFinish();
-      self.setState({loading:false})
-    }, 2000);
-    //
+    Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
+      .finally(() => {
+        doLoadFinish();
+        self.setState({ loading: false });
+      });
   }
 
   componentWillUnmount() {
-    clearTimeout(timeout);
+    // clearTimeout(timeout);
   }
 
-  fetchLocalCouncil = () => {
-    this.localCouncilservice.fetch(
+  fetchLocalCouncil = async () => {
+    await this.localCouncilservice.fetch(
       errorMessage => this.setState({ errorMessage }),
       localCouncils => this.setState({ localCouncils }))
       .finally(() => console.info("Local council request has been made"));
   };
 
-  fetchCategory = () => {
-    this.categoryService.fetch(
+  fetchCategory = async () => {
+    await this.categoryService.fetch(
       errorMessage => this.setState({ errorMessage }),
       categories => this.setState({ categories }))
       .finally(() => console.info("Areas categories fetch successfully"));
   };
 
-  fetchDocument = () => {
-    this.documentService.fetch("hoarding_kiosk",
+  fetchDocument = async () => {
+    await this.documentService.fetch("hoarding_kiosk",
       errorMessage => this.setState({ errorMessage }),
       documents => this.setState({ documents }))
       .finally(() => console.info("Document attachment fetch successfully"));

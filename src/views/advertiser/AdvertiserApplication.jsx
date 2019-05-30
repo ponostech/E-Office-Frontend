@@ -402,7 +402,7 @@ class AdvertiserApplication extends Component {
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <FileUpload applicationName={APPLICATION_NAME.ADVERTISER}
-                                    document={{ id: 40, name: "Signature", mime: "image/*", mandatory: 1 }}
+                                    document={{ id: 40, name: "Signature of Applicant", mime: "image/*", mandatory: 1 }}
                                     onUploadSuccess={(data) => {
                                       let temp = {
                                         document_id: 1,

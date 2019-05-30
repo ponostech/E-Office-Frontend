@@ -150,7 +150,7 @@ class FileUpload extends Component {
                   }}
                 />
                 <label htmlFor={file.id}>
-                  <Button size={"small"} variant="outlined" component="span">
+                  <Button size={"small"} variant="outlined" component="button">
                     Upload
                   </Button>
                 </label>

@@ -35,22 +35,19 @@ class KioskAvailableList extends Component {
     const { doLoad, doLoadFinish } = this.props;
     doLoad();
     Promise.all([this.fetchKiosk(), this.fetchDocument()])
-      .then(function(values) {
-        console.log(values);
-      })
       .finally(() => {
         this.setState({ loading: false });
         doLoadFinish();
       });
   }
 
-  fetchKiosk = () => {
-    this.kioskService.fetchAdvertiserKiosk(
+  fetchKiosk = async () => {
+    await this.kioskService.fetchAdvertiserKiosk(
       errorMessage => this.setState({ errorMessage }),
       kiosks => this.setState({ kiosks }));
   };
-  fetchDocument = () => {
-    this.documentService.fetch("advertiser",
+  fetchDocument = async () => {
+    await this.documentService.fetch("advertiser",
       errorMessage => this.setState({ errorMessage }),
       advertiserDocuments => this.setState({ advertiserDocuments }))
   };
