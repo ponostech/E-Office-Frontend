@@ -16,6 +16,7 @@ import { StaffViewModel } from "../../model/StaffViewModel";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Validators } from "../../../utils/Validators";
+import LoadingView from "../../common/LoadingView";
 
 const style = {
   item: {
@@ -60,27 +61,33 @@ class StaffRegistration extends Component {
 
     prestine: true,
     submit: false,
-    showPassword: true
+    showPassword: true,
+    loading: true
   };
 
   componentDidMount() {
-
-    this.fetchRole();
-    this.fetchBranches();
+    window.scrollTo(0, 0);
+    window.document.title = "e-AMC Staff Registration";
+    this.props.doLoad(true);
+    Promise.all([this.fetchRole(), this.fetchBranches()])
+      .then(value => console.log(value))
+      .finally(() => {
+        this.setState({ loading: false });
+        this.props.doLoad(false);
+      });
   }
 
   handleShowPassword = (e) => {
     this.setState({ showPassword: !this.state.showPassword });
   };
 
-  fetchBranches = () => {
-    this.props.doLoad(true);
-    this.staffService.getBranch((errorMessage) => this.setState({ errorMessage }), (branches) => this.setState({ branches }))
+  fetchBranches = async () => {
+    await this.staffService.getBranch((errorMessage) => this.setState({ errorMessage }), (branches) => this.setState({ branches }))
       .finally(() => this.props.doLoad(false));
   };
 
-  fetchRole = () => {
-    this.staffService.getRoles(errorMessage => this.setState({ errorMessage }), roles => this.setState({ roles }));
+  fetchRole = async () => {
+    await this.staffService.getRoles(errorMessage => this.setState({ errorMessage }), roles => this.setState({ roles }));
   };
 
   handleChange = (e) => {
@@ -186,269 +193,276 @@ class StaffRegistration extends Component {
     const { classes } = this.props;
 
     return (
-      <GridContainer justify="flex-start">
-        <GridItem xs={12} sm={12} md={10}>
-          <GridContainer>
-            <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <Typography variant={"h5"}>{StaffViewModel.TILE}</Typography>
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <Divider/>
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <TextField
-                name={"name"}
-                value={this.state.name}
-                ref={"nameRef"}
-                onBlur={this.handleBlur.bind(this)}
-                required={true}
-                variant={"outlined"}
-                margin={"dense"}
-                fullWidth={true}
-                onChange={this.handleChange.bind(this)}
-                label={StaffViewModel.NAME}
-                error={Boolean(this.state.nameError)}
-                helperText={this.state.nameError}
-              />
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <TextField
-                name={"email"}
-                type={"email"}
-                value={this.state.email}
-                onBlur={this.handleBlur.bind(this)}
-                required={true}
-                variant={"outlined"}
-                margin={"dense"}
-                fullWidth={true}
-                onChange={this.handleChange.bind(this)}
-                label={StaffViewModel.EMAIL}
-                error={Boolean(this.state.emailError)}
-                helperText={this.state.emailError}
-              />
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <TextField
-                name={"phone"}
-                value={this.state.phone}
-                ref={"nameRef"}
-                onBlur={this.handleBlur.bind(this)}
-                required={true}
-                variant={"outlined"}
-                margin={"dense"}
-                fullWidth={true}
-                onChange={this.handleChange.bind(this)}
-                label={StaffViewModel.PHONE}
-                error={Boolean(this.state.phoneError)}
-                helperText={this.state.phoneError}
-              />
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <TextField
-                name={"designation"}
-                variant={"outlined"}
-                margin={"dense"}
-                value={this.state.designation}
-                fullWidth={true}
-                onBlur={this.handleBlur.bind(this)}
-                onChange={this.handleChange.bind(this)}
-                required={true}
-                error={Boolean(this.state.designationError)}
-                helperText={this.state.designationError}
-                label={StaffViewModel.DESIGNATION}/>
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <TextField
-                label={StaffViewModel.PASSWORD}
-                placeholder={StaffViewModel.PASSWORD}
-                required={true}
-                value={this.state.password}
-                onChange={this.handleChange.bind(this)}
-                onBlur={this.handleBlur.bind(this)}
-                error={Boolean(this.state.passwordError)}
-                helperText={this.state.passwordError}
-                type={this.state.showPassword ? "password" : "text"}
-                name={"password"}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position={"end"}>
-                      <IconButton tabIndex={-1} onClick={this.handleShowPassword.bind(this)}>
-                        {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }}
-                variant={"outlined"} margin={"dense"} fullWidth={true}/>
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <TextField
-                label={StaffViewModel.CONFIRM_PASSWORD}
-                placeholder={StaffViewModel.CONFIRM_PASSWORD}
-                value={this.state.confirmPassword}
-                required={true}
-                onChange={this.handleChange.bind(this)}
-                onBlur={this.handleBlur.bind(this)}
-                error={Boolean(this.state.confirmPasswordError)}
-                helperText={this.state.confirmPasswordError}
-                type={this.state.showPassword ? "password" : "text"}
-                name={"confirmPassword"}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position={"end"}>
-                      <IconButton tabIndex={-1} onClick={this.handleShowPassword.bind(this)}>
-                        {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }}
-                variant={"outlined"} margin={"dense"} fullWidth={true}/>
-            </GridItem>
+      <>
+        {
+          this.state.loading ? <LoadingView/> :
+            <GridContainer justify="flex-start">
+              <GridItem xs={12} sm={12} md={10}>
+                <GridContainer>
+                  <GridItem className={classes.item} xs={12} sm={12} md={12}>
+                    <Typography variant={"h5"}>{StaffViewModel.TILE}</Typography>
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={12}>
+                    <Divider/>
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <TextField
+                      name={"name"}
+                      value={this.state.name}
+                      ref={"nameRef"}
+                      onBlur={this.handleBlur.bind(this)}
+                      required={true}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleChange.bind(this)}
+                      label={StaffViewModel.NAME}
+                      error={Boolean(this.state.nameError)}
+                      helperText={this.state.nameError}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <TextField
+                      name={"email"}
+                      type={"email"}
+                      value={this.state.email}
+                      onBlur={this.handleBlur.bind(this)}
+                      required={true}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleChange.bind(this)}
+                      label={StaffViewModel.EMAIL}
+                      error={Boolean(this.state.emailError)}
+                      helperText={this.state.emailError}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <TextField
+                      name={"phone"}
+                      value={this.state.phone}
+                      ref={"nameRef"}
+                      onBlur={this.handleBlur.bind(this)}
+                      required={true}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleChange.bind(this)}
+                      label={StaffViewModel.PHONE}
+                      error={Boolean(this.state.phoneError)}
+                      helperText={this.state.phoneError}
+                    />
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <TextField
+                      name={"designation"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      value={this.state.designation}
+                      fullWidth={true}
+                      onBlur={this.handleBlur.bind(this)}
+                      onChange={this.handleChange.bind(this)}
+                      required={true}
+                      error={Boolean(this.state.designationError)}
+                      helperText={this.state.designationError}
+                      label={StaffViewModel.DESIGNATION}/>
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <TextField
+                      label={StaffViewModel.PASSWORD}
+                      placeholder={StaffViewModel.PASSWORD}
+                      required={true}
+                      value={this.state.password}
+                      onChange={this.handleChange.bind(this)}
+                      onBlur={this.handleBlur.bind(this)}
+                      error={Boolean(this.state.passwordError)}
+                      helperText={this.state.passwordError}
+                      type={this.state.showPassword ? "password" : "text"}
+                      name={"password"}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position={"end"}>
+                            <IconButton tabIndex={-1} onClick={this.handleShowPassword.bind(this)}>
+                              {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                      variant={"outlined"} margin={"dense"} fullWidth={true}/>
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <TextField
+                      label={StaffViewModel.CONFIRM_PASSWORD}
+                      placeholder={StaffViewModel.CONFIRM_PASSWORD}
+                      value={this.state.confirmPassword}
+                      required={true}
+                      onChange={this.handleChange.bind(this)}
+                      onBlur={this.handleBlur.bind(this)}
+                      error={Boolean(this.state.confirmPasswordError)}
+                      helperText={this.state.confirmPasswordError}
+                      type={this.state.showPassword ? "password" : "text"}
+                      name={"confirmPassword"}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position={"end"}>
+                            <IconButton tabIndex={-1} onClick={this.handleShowPassword.bind(this)}>
+                              {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                      variant={"outlined"} margin={"dense"} fullWidth={true}/>
+                  </GridItem>
 
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <AddressField
-                textFieldProps={{
-                  placeholder: "Address",
-                  value: this.state.address,
-                  onChange: this.handleChange.bind(this),
-                  onBlur: this.handleBlur.bind(this),
-                  error: Boolean(this.state.addressError),
-                  helperText: this.state.addressError,
-                  margin: "dense",
-                  variant: "outlined",
-                  fullWidth: true,
-                  name: "address",
-                  required: true,
-                  label: "Address"
-                }}
-                onPlaceSelect={(place) => {
-                  if (place) {
-                    let name = place.name;
-                    let address = place.formatted_address;
-                    let complete_address = address.includes(name) ? address : `${name} ${address}`;
-                    this.setState({ address: complete_address });
-                  }
-                }}/>
-            </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <AddressField
+                      textFieldProps={{
+                        placeholder: "Address",
+                        value: this.state.address,
+                        onChange: this.handleChange.bind(this),
+                        onBlur: this.handleBlur.bind(this),
+                        error: Boolean(this.state.addressError),
+                        helperText: this.state.addressError,
+                        margin: "dense",
+                        variant: "outlined",
+                        fullWidth: true,
+                        name: "address",
+                        required: true,
+                        label: "Address"
+                      }}
+                      onPlaceSelect={(place) => {
+                        if (place) {
+                          let name = place.name;
+                          let address = place.formatted_address;
+                          let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                          this.setState({ address: complete_address });
+                        }
+                      }}/>
+                  </GridItem>
 
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <OfficeSelect value={this.state.branch}
-                            label={StaffViewModel.BRANCH}
-                            name={"branch"}
-                            required={true}
-                            variant={"outlined"}
-                            margin={"dense"}
-                            fullWidth={true}
-                            helperText={this.state.branchError}
-                            error={Boolean(this.state.branchError)}
-                            onBlur={this.handleSelectBlur.bind(this, "branch")}
-                            onChange={this.handleSelect.bind(this, "branch")}
-                            options={this.state.branches}/>
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <OfficeSelect value={this.state.role}
-                            label={StaffViewModel.ROLE}
-                            name={"role"}
-                            required={true}
-                            variant={"outlined"}
-                            margin={"dense"}
-                            fullWidth={true}
-                            helperText={this.state.roleError}
-                            error={Boolean(this.state.roleError)}
-                            onBlur={this.handleSelectBlur.bind(this, "role")}
-                            onChange={this.handleSelect.bind(this, "role")}
-                            options={this.state.roles}/>
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  required={true}
-                  fullWidth={true}
-                  error={!!this.state.dobError}
-                  helperText={this.state.dobError}
-                  margin="dense"
-                  name={"dob"}
-                  variant="outlined"
-                  label="Date of birth"
-                  value={this.state.dob}
-                  onChange={(val) => this.setState({ dob: val })}
-                  format={"dd/MM/yyyy"}
-                />
-              </MuiPickersUtilsProvider>
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <TextField
-                value={this.state.blood}
-                ref={"bloodRef"}
-                name={"blood"}
-                variant={"outlined"}
-                margin={"dense"}
-                fullWidth={true}
-                onChange={this.handleChange.bind(this)}
-                label={StaffViewModel.BLOOD}/>
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <FileUpload document={{ id: 0, name: "Passport photocopy", mime: "image/*", mandatory: 1 }}
-                          onUploadSuccess={(data) => {
-                            let temp = {
-                              document_id: 0,
-                              name: "passport photo",
-                              path: data.location
-                            };
-                            this.setState({ passport: temp });
-                          }} onUploadFailure={(data) => {
-                console.error(data);
-              }}/>
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={6}>
-              <FileUpload document={{ id: 1, name: "Signature", mime: "image/*", mandatory: 1 }}
-                          onUploadSuccess={(data) => {
-                            let temp = {
-                              document_id: 0,
-                              name: "signature",
-                              path: data.location
-                            };
-                            this.setState({ signature: temp });
-                          }} onUploadFailure={(data) => {
-                console.error(data);
-              }}/>
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <GridContainer alignItems={"flex-end"}>
-                <div>
-                  <Button name={"primary"} disabled={this.state.submit}
-                          color={"primary"} variant={"outlined"}
-                          onClick={this.handleSave}>
-                    {StaffViewModel.PRIMARY_TEXT}
-                  </Button>
-                  {"\u00A0 "}
-                  {"\u00A0 "}
-                  {"\u00A0 "}
-                  <Button name={"secondary"}
-                          color={"secondary"}
-                          variant={"outlined"}
-                          onClick={this.handleClear.bind(this)}>
-                    {StaffViewModel.SECONDARY_TEXT}
-                  </Button>
-                </div>
-              </GridContainer>
-            </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <OfficeSelect value={this.state.branch}
+                                  label={StaffViewModel.BRANCH}
+                                  name={"branch"}
+                                  required={true}
+                                  variant={"outlined"}
+                                  margin={"dense"}
+                                  fullWidth={true}
+                                  helperText={this.state.branchError}
+                                  error={Boolean(this.state.branchError)}
+                                  onBlur={this.handleSelectBlur.bind(this, "branch")}
+                                  onChange={this.handleSelect.bind(this, "branch")}
+                                  options={this.state.branches}/>
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <OfficeSelect value={this.state.role}
+                                  label={StaffViewModel.ROLE}
+                                  name={"role"}
+                                  required={true}
+                                  variant={"outlined"}
+                                  margin={"dense"}
+                                  fullWidth={true}
+                                  helperText={this.state.roleError}
+                                  error={Boolean(this.state.roleError)}
+                                  onBlur={this.handleSelectBlur.bind(this, "role")}
+                                  onChange={this.handleSelect.bind(this, "role")}
+                                  options={this.state.roles}/>
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <DatePicker
+                        required={true}
+                        fullWidth={true}
+                        error={!!this.state.dobError}
+                        helperText={this.state.dobError}
+                        margin="dense"
+                        name={"dob"}
+                        variant="outlined"
+                        label="Date of birth"
+                        value={this.state.dob}
+                        onChange={(val) => this.setState({ dob: val })}
+                        format={"dd/MM/yyyy"}
+                      />
+                    </MuiPickersUtilsProvider>
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <TextField
+                      value={this.state.blood}
+                      ref={"bloodRef"}
+                      name={"blood"}
+                      variant={"outlined"}
+                      margin={"dense"}
+                      fullWidth={true}
+                      onChange={this.handleChange.bind(this)}
+                      label={StaffViewModel.BLOOD}/>
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <FileUpload document={{ id: 0, name: "Passport photocopy", mime: "image/*", mandatory: 1 }}
+                                onUploadSuccess={(data) => {
+                                  let temp = {
+                                    document_id: 0,
+                                    name: "passport photo",
+                                    path: data.location
+                                  };
+                                  this.setState({ passport: temp });
+                                }} onUploadFailure={(data) => {
+                      console.error(data);
+                    }}/>
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={6}>
+                    <FileUpload document={{ id: 1, name: "Signature", mime: "image/*", mandatory: 1 }}
+                                onUploadSuccess={(data) => {
+                                  let temp = {
+                                    document_id: 0,
+                                    name: "signature",
+                                    path: data.location
+                                  };
+                                  this.setState({ signature: temp });
+                                }} onUploadFailure={(data) => {
+                      console.error(data);
+                    }}/>
+                  </GridItem>
+                  <GridItem className={classes.item} xs={12} sm={12} md={12}>
+                    <GridContainer alignItems={"flex-end"}>
+                      <div>
+                        <Button name={"primary"} disabled={this.state.submit}
+                                color={"primary"} variant={"outlined"}
+                                onClick={this.handleSave}>
+                          {StaffViewModel.PRIMARY_TEXT}
+                        </Button>
+                        {"\u00A0 "}
+                        {"\u00A0 "}
+                        {"\u00A0 "}
+                        <Button name={"secondary"}
+                                color={"secondary"}
+                                variant={"outlined"}
+                                onClick={this.handleClear.bind(this)}>
+                          {StaffViewModel.SECONDARY_TEXT}
+                        </Button>
+                      </div>
+                    </GridContainer>
+                  </GridItem>
 
-            {/*{this.getAttachmentView()}*/}
+                  {/*{this.getAttachmentView()}*/}
 
-            {/*<DocumentsDropzone documents={[*/}
-            {/*{ name: "Staff signature", fileName: "signature" }*/}
-            {/*]}*/}
-            {/*openDialog={this.state.openDialog} onCloseHandler={this.handleDocuments.bind(this)}*/}
-            {/*acceptedFiles={Constraint.ACCEPTED_IMAGES}/>*/}
+                  {/*<DocumentsDropzone documents={[*/}
+                  {/*{ name: "Staff signature", fileName: "signature" }*/}
+                  {/*]}*/}
+                  {/*openDialog={this.state.openDialog} onCloseHandler={this.handleDocuments.bind(this)}*/}
+                  {/*acceptedFiles={Constraint.ACCEPTED_IMAGES}/>*/}
 
-          </GridContainer>
-        </GridItem>
-        <SubmitDialog open={this.state.submit} title={StaffViewModel.SUBMIT_TITLE} text={StaffViewModel.PLEASE_WAIT}/>
-        <OfficeSnackbar onClose={() => this.setState({ errorMessage: "" })} variant={"error"}
-                        open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
-        <OfficeSnackbar onClose={() => this.setState({ successMessage: "" })} variant={"success"}
-                        open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
-      </GridContainer>
+                </GridContainer>
+              </GridItem>
+              <SubmitDialog open={this.state.submit} title={StaffViewModel.SUBMIT_TITLE}
+                            text={StaffViewModel.PLEASE_WAIT}/>
+              <OfficeSnackbar onClose={() => this.setState({ errorMessage: "" })} variant={"error"}
+                              open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
+              <OfficeSnackbar onClose={() => this.setState({ successMessage: "" })} variant={"success"}
+                              open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
+            </GridContainer>
+        }
+      </>
+
     );
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import GridItem from "../Grid/GridItem";
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, IconButton } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, IconButton } from "@material-ui/core";
 import FormFieldFactory from "./FormFieldFactory";
 import TrashIcon from "@material-ui/icons/DeleteForeverOutlined";
 import OfficeSelect from "../OfficeSelect";
@@ -9,6 +9,7 @@ import { SiteVerificationService } from "../../services/SiteVerificationService"
 import OfficeSnackbar from "../OfficeSnackbar";
 import SubmitDialog from "../SubmitDialog";
 import { withRouter } from "react-router-dom";
+import { SITE_VERIFICATION_LIST } from "../../config/routes-constant/OfficeRoutes";
 
 const options = [
   { value: "hoarding", label: "Hoarding site verification" },
@@ -30,11 +31,18 @@ class DynamicFormPreview extends Component {
 
     errorMessage: "",
     successMessage: "",
-    submit:false
+    submit: false
   };
+
+  componentDidMount() {
+    const { edit, selectedType } = this.props;
+    if (edit)
+    this.setState({ selectedType });
+  }
+
   submitHandler = event => {
 
-    let type = this.state.selectedType.value;
+    const { edit, selectedType } = this.props;
     let formElements = [];
     this.state.formElements.forEach(item => {
       formElements.push(item.config);
@@ -45,13 +53,28 @@ class DynamicFormPreview extends Component {
       formElements: formElements
     };
     this.setState({ submit: true });
-    this.siteVerificationService.createTemplate(type, data,
-      errorMessage => this.setState({ errorMessage }),
-      successMessage => {
-        this.setState({ successMessage,formElements:[] })
-        this.props.clear();
-    })
-      .finally(() => this.setState({ submit: false }));
+    if (edit) {
+      const id = this.props.id;
+      this.siteVerificationService.editTemplate(id, {
+        type:selectedType.value,
+        data
+        },
+        errorMessage => this.setState({ errorMessage }),
+        successMessage => {
+          this.setState({ successMessage, formElements: [] });
+          this.props.history.push(SITE_VERIFICATION_LIST);
+        })
+        .finally(() => this.setState({ submit: false }));
+    } else {
+      let type = this.state.selectedType.value;
+      this.siteVerificationService.createTemplate(type, data,
+        errorMessage => this.setState({ errorMessage }),
+        successMessage => {
+          this.setState({ successMessage, formElements: [] });
+          this.props.clear();
+        })
+        .finally(() => this.setState({ submit: false }));
+    }
   };
 
   removeItem = (index, e) => {
@@ -102,22 +125,23 @@ class DynamicFormPreview extends Component {
       <Card>
         <CardHeader contentEditable={true} onChange={event => console.log(event)} title={"title"}
                     subheader={"subheader"} action={
-          <OfficeSelect
-            label={"Type of site verification"}
-            variant={"outlined"}
-            margin={"dense"}
-            value={this.state.selectedType}
-            onChange={val => this.setState({ selectedType: val })}
-            options={options}
-          />
+          this.props.edit ? "" :
+            <OfficeSelect
+              label={"Type of site verification"}
+              variant={"outlined"}
+              margin={"dense"}
+              value={this.state.selectedType}
+              onChange={val => this.setState({ selectedType: val })}
+              options={options}
+            />
         }/>
         <Divider/>
         <CardContent>
-          <GridContainer style={{ height: "60vh" }} justify={"flex-start"} alignItems={"flex-start"}>
+          <Grid container={true}  style={{ height: "60vh" }} justify={"flex-start"} alignItems={"flex-start"}>
 
             {form}
 
-          </GridContainer>
+          </Grid>
         </CardContent>
         <Divider/>
         <CardActions style={{ justifyContent: "flex-end" }}>

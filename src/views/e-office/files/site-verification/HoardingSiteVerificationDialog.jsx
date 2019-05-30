@@ -19,9 +19,9 @@ class HoardingSiteVerificationDialog extends Component {
   componentDidMount() {
     this.siteVerification.getTemplate("hoarding", errorMessage =>this.setState({errorMessage}), template => {
       this.setState({
-        title: template.title,
-        subTitle: template.subTitle,
-        formElements: template.formElements
+        title: template.data.title,
+        subTitle: template.data.subTitle,
+        formElements: template.data.formElements
       });
     })
       .finally(() => this.setState({loading:false}));

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import GridContainer from "../Grid/GridContainer";
 import GridItem from "../Grid/GridItem";
 import {
+  Card,
   Divider,
   Icon,
   IconButton,
@@ -14,16 +15,18 @@ import {
   TextField,
   Typography
 } from "@material-ui/core";
-import Card from "../Card/Card";
-import SelectFieldDialog from "./config-dialog/SelectFieldDialog";
+import OfficeSnackbar from "../OfficeSnackbar";
 import DynamicFormPreview from "./DynamicFormPreview";
-import TextFieldDialog from "./config-dialog/TextFieldDialog";
-import NumberFieldDialog from "./config-dialog/NumberFieldDialog";
-import WidgetConstant from "./WidgetConstant";
-import PatternFieldDialog from "./config-dialog/PatternFieldDialog";
-import SearchIcon from "@material-ui/icons/Search";
 import FileUploadFieldDialog from "./config-dialog/FileUploadFieldDialog";
 import ImageUploadFieldDialog from "./config-dialog/ImageUploadFieldDialog";
+import TextFieldDialog from "./config-dialog/TextFieldDialog";
+import PatternFieldDialog from "./config-dialog/PatternFieldDialog";
+import NumberFieldDialog from "./config-dialog/NumberFieldDialog";
+import SelectFieldDialog from "./config-dialog/SelectFieldDialog";
+import { SiteVerificationService } from "../../services/SiteVerificationService";
+import WidgetConstant from "./WidgetConstant";
+import SearchIcon from '@material-ui/icons/Search'
+import { withRouter } from "react-router-dom";
 
 const widgets = [
   { name: WidgetConstant.TEXTFIELD, icon: "keyboard_arrow_right" },
@@ -39,12 +42,14 @@ const widgets = [
   { name: WidgetConstant.IMAGE_UPLOAD, icon: "picture_in_picture" }
 ];
 
-class FormBuilderContainer extends Component {
+class EditSiteVerificationTemplate extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
+      id:null,
+
       openTextDialog: false,
       openNumberDialog: false,
       openSelectDialog: false,
@@ -53,12 +58,31 @@ class FormBuilderContainer extends Component {
       openImageDialog: false,
       selectedWidget: null,
 
-      formElements: []
+      formElements: [],
+      selectedType:undefined
     };
+    this.siteVerificationService = new SiteVerificationService();
   }
 
   componentDidMount() {
-    window.document.title="e-AMC Site verification template"
+    window.document.title = "e-AMC Site verification template";
+
+    this.props.doLoad(true);
+    const self = this;
+    const module = this.props.match.params.module;
+    this.setState({selectedType:{ value: module,label:module}});
+    this.siteVerificationService.getTemplate(module,
+      errorMessage => this.setState({ errorMessage }),
+      template => {
+        this.setState({id:template.id});
+        template.data.formElements.forEach(function(item, index) {
+          self.addWidget(item.elementConfig.name, item);
+        })
+      })
+      .finally(() => {
+        this.props.doLoad(false);
+        this.setState({ loading: false });
+      });
   }
 
   clear = () => {
@@ -161,13 +185,14 @@ class FormBuilderContainer extends Component {
             </List>
           </GridItem>
           <GridItem md={9} lg={9}>
-              <DynamicFormPreview edit={false}  clear={this.clear} formElements={this.state.formElements}/>
+            <DynamicFormPreview id={this.state.id} edit={true} selectedType={this.state.selectedType} clear={this.clear}
+                                formElements={this.state.formElements}/>
           </GridItem>
 
           <FileUploadFieldDialog widget={this.state.selectedWidget} open={this.state.openFileDialog}
                                  onClose={this.addWidget.bind(this)}/>
           <ImageUploadFieldDialog widget={this.state.selectedWidget} open={this.state.openImageDialog}
-                                 onClose={this.addWidget.bind(this)}/>
+                                  onClose={this.addWidget.bind(this)}/>
 
           <TextFieldDialog widget={this.state.selectedWidget} open={this.state.openTextDialog}
                            onClose={this.addWidget.bind(this)}/>
@@ -177,6 +202,9 @@ class FormBuilderContainer extends Component {
                              onClose={this.addWidget.bind(this)}/>
           <SelectFieldDialog widget={this.state.selectedWidget} open={this.state.openSelectDialog}
                              onClose={this.addWidget.bind(this)}/>
+
+          <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}
+                          onClose={e => this.setState({ errorMessage: "" })}/>
         </GridContainer>
       </Card>
 
@@ -184,4 +212,4 @@ class FormBuilderContainer extends Component {
   }
 }
 
-export default FormBuilderContainer;
+export default withRouter(EditSiteVerificationTemplate);

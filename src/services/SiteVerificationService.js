@@ -19,6 +19,19 @@ export class SiteVerificationService {
       errorCallback(e.toString())
     }
   }
+  async editTemplate(id,data,errorCallback,successCallback){
+    try{
+      let res=await axios.post(ApiRoutes.EDIT_SITE_VERIFICATION_TEMPLATE(id),data);
+      if (res.data.status) {
+          successCallback(ArrayToString(res.data.messages))
+      }else{
+        errorCallback(ArrayToString(res.data.messages))
+      }
+    }catch (e) {
+      console.error(e)
+      errorCallback(e.toString())
+    }
+  }
 
   async fetch(type,data,template,errorCallback,successCallback){
     try{
@@ -34,8 +47,8 @@ export class SiteVerificationService {
     try {
         const res = await axios.get(ApiRoutes.GET_SITE_VERIFICATION_TEMPLATE(module));
       if (res.data.status) {
-        console.log(res.data.data.template.data)
-        successCallback(res.data.data.template.data)
+        console.log(res)
+        successCallback(res.data.data.template)
       }else {
         errorCallback(ArrayToString(res.data.messages))
       }
@@ -144,4 +157,6 @@ export class SiteVerificationService {
       errorCallback(e.toString)
     }
   }
+
+
 }
