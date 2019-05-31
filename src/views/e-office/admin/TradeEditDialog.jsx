@@ -4,7 +4,7 @@ import {
   CardHeader,
   Dialog,
   DialogActions,
-  DialogContent,
+  DialogContent, DialogTitle, Divider,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -86,17 +86,16 @@ class TradeEditDialog extends Component {
     const { open, onClose,classes } = this.props;
     return (
       <Dialog fullWidth={true} maxWidth={"sm"} open={open} onClose={onClose}>
-        <DialogContent>
-          <Card>
-        <CardHeader title={"Edit Trade"} action={
-          <>
-            <Tooltip title={"Close"}>
-              <IconButton onClick={onClose}> <CloseIcon/> </IconButton>
-            </Tooltip>
-          </>
-        }/>
+          <CardHeader title={"Edit Trade"} action={
+            <>
+              <Tooltip title={"Close"}>
+                <IconButton onClick={onClose}> <CloseIcon/> </IconButton>
+              </Tooltip>
+            </>
+          }/>
 
-        <CardContent>
+        <Divider/>
+        <DialogContent>
           <GridContainer justify={"center"}>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <TextField variant={"outlined"}
@@ -141,15 +140,13 @@ class TradeEditDialog extends Component {
               </FormControl>
             </GridItem>
           </GridContainer>
-          </CardContent>
-          <CardActions style={{justifyContent:"flex-end"}}>
-            <Button variant={"outlined"} color={"primary"} onClick={this.handleEdit.bind(this)}>Update</Button>
-            <Button variant={"outlined"} color={"secondary"} onClick={this.close.bind(this)}>Close</Button>
-          </CardActions>
-          </Card>
-        </DialogContent>
-        <DialogActions>
 
+        </DialogContent>
+
+        <Divider/>
+        <DialogActions>
+          <Button variant={"outlined"} color={"primary"} onClick={this.handleEdit.bind(this)}>Update</Button>
+          <Button variant={"outlined"} color={"secondary"} onClick={this.close.bind(this)}>Close</Button>
         </DialogActions>
       </Dialog>
     );

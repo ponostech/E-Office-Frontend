@@ -1,6 +1,16 @@
 import React, { Component } from "react";
 import GridItem from "../Grid/GridItem";
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, IconButton } from "@material-ui/core";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  IconButton,
+  Typography
+} from "@material-ui/core";
 import FormFieldFactory from "./FormFieldFactory";
 import TrashIcon from "@material-ui/icons/DeleteForeverOutlined";
 import OfficeSelect from "../OfficeSelect";
@@ -125,7 +135,7 @@ class DynamicFormPreview extends Component {
       <Card>
         <CardHeader contentEditable={true} onChange={event => console.log(event)} title={"title"}
                     subheader={"subheader"} action={
-          this.props.edit ? "" :
+          this.props.edit ?<Typography variant={"subtitle1"}> EDIT SITE VERIFICATION ( {this.props.selectedType?this.props.selectedType.value:""})</Typography> :
             <OfficeSelect
               label={"Type of site verification"}
               variant={"outlined"}
