@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import {
   Button,
-  Card,
-  CardContent,
   CardHeader,
-  Chip,
   Dialog,
   DialogActions,
   DialogContent,
   Divider,
-  Grid,
   IconButton,
   List,
   ListItem,
@@ -18,13 +14,14 @@ import {
   Typography
 } from "@material-ui/core";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import GridItem from "../../components/Grid/GridItem";
 import GridContainer from "../../components/Grid/GridContainer";
 import PropTypes from "prop-types";
+import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import CloseIcon from "@material-ui/icons/Close";
-import PrintIcon from "@material-ui/icons/Print";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
+import PrintIcon from "@material-ui/icons/Print";
+import moment from "moment";
 
 const style = {
   item: {
@@ -42,198 +39,96 @@ class KioskApplicationDialog extends Component {
     console.log(this.props.application);
   }
 
-  getField = (model) => {
-    let view = undefined;
-
-    for (const [key, value] of Object.entries(model)) {
-      console.log(value);
-      view +=
-        (
-          <>
-            <GridItem md={4}>
-              <Typography variant={"textPrimary"}>
-                {key}
-              </Typography>
-            </GridItem>
-            <GridItem md={8}>
-              <Typography variant={"textSecondary"}>
-                {value}
-              </Typography>
-            </GridItem>
-          </>
-        );
-    }
-    return view;
-  };
-
   getView = () => {
     const { open, onClose, application, classes } = this.props;
     console.log(application);
     const { file, kiosk, applicant, documents } = application;
     return (
       <>
+        <GridContainer>
 
-        <CardContent>
-          <GridContainer>
-
-            <GridItem xs={12} sm={12} md={6}>
-              <Grid container={true} spacing={16} justify={"center"}>
-
-                <GridItem className={classes.item} xs={12} sm={12} md={12}>
-                  <Typography variant={"h5"}>Details of application</Typography>
-                </GridItem>
-
-                <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                  <Typography variant={"subtitle1"}>
-                    Address
-                  </Typography>
-                </GridItem>
-                <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                  <Typography variant={"subtitle2"}>
-                    {": " + kiosk.address}
-                  </Typography>
-                </GridItem>
-
-                <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                  <Typography variant={"subtitle1"}>
-                    Road detail
-                  </Typography>
-                </GridItem>
-                <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                  <Typography variant={"subtitle2"}>
-                    {": " + kiosk.road_detail}
-                  </Typography>
-                </GridItem>
-
-                <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                  <Typography variant={"subtitle1"}>
-                    Length
-                  </Typography>
-                </GridItem>
-                <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                  <Typography variant={"subtitle2"}>
-                    {": " + kiosk.length}
-                  </Typography>
-                </GridItem>
-
-                <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                  <Typography variant={"subtitle1"}>
-                    height
-                  </Typography>
-                </GridItem>
-                <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                  <Typography variant={"subtitle2"}>
-                    {":" + kiosk.height}
-                  </Typography>
-                </GridItem>
-
-                <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                  <Typography variant={"subtitle1"}>
-                    Ground Clearance
-                  </Typography>
-                </GridItem>
-                <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                  <Typography variant={"subtitle2"}>
-                    {": " + kiosk.ground_clearance}
-                  </Typography>
-                </GridItem>
-
-                <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                  <Typography variant={"subtitle1"}>
-                    Type of display
-                  </Typography>
-                </GridItem>
-                <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                  <Typography variant={"subtitle2"}>
-                    {": " + kiosk.display_type}
-                  </Typography>
-                </GridItem>
-
-                <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                  <Typography variant={"subtitle1"}>
-                    Is Both sided ?
-                  </Typography>
-                </GridItem>
-                <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                  <Typography variant={"subtitle2"}>
-                    {kiosk.both_side ? ": Yes" : ": No"}
-                  </Typography>
-                </GridItem>
-
-                <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                  <Typography variant={"subtitle1"}>
-                    Is Collapsible ?
-                  </Typography>
-                </GridItem>
-                <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                  <Typography variant={"subtitle2"}>
-                    {kiosk.collapsible ? ": Yes" : ": No"}
-                  </Typography>
-                </GridItem>
-
-                <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                  <Typography variant={"subtitle1"}>
-                    Landlord/Landowner
-                  </Typography>
-                </GridItem>
-                <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                  <Typography variant={"subtitle2"}>
-                    {": " + kiosk.land_owner_name}
-                  </Typography>
-                </GridItem>
-
-                <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                  <Typography variant={"subtitle1"}>
-                    Type of Landlord/Landowner
-                  </Typography>
-                </GridItem>
-                <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                  <Typography variant={"subtitle2"}>
-                    {": " + kiosk.land_owner_type ? ": Private" : ": Public"}
-                  </Typography>
-                </GridItem>
-
-                <GridItem className={classes.item} xs={4} sm={4} md={4}>
-                  <Typography variant={"subtitle1"}>
-                    Status
-                  </Typography>
-                </GridItem>
-                <GridItem className={classes.item} xs={8} sm={8} md={8}>
-                  <Chip color={"primary"} label={file.status}/>
-                </GridItem>
-              </Grid>
+          <GridItem xs={12} sm={12} md={5}>
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
+              <Typography variant={"h6"}>Details of Kiosk</Typography>
             </GridItem>
-            <GridItem xs={12} sm={12} md={6}>
-              <GridItem className={classes.item} xs={12} sm={12} md={12}>
-                <Typography variant={"h5"}>Uploaded Documents</Typography>
-              </GridItem>
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <List dense={false}>
-                {
-                  documents.map(function(doc, index) {
-                    return (
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Date of Application"} secondary={moment(kiosk.created_at).format("Do MMM YYYY")}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Purposed Location"} secondary={kiosk.address}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Local Council"} secondary={kiosk.local_council.name}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Length"} secondary={kiosk.length+" ft"}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Height"} secondary={kiosk.height+" ft"}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Type of Display"} secondary={kiosk.display_type}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Both Sided"} secondary={kiosk.both_side ? "Yes" : "No"}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Collapsible"} secondary={kiosk.collapsible ? "Yes" : "No"}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Details of Road"}
+                                secondary={kiosk.road_detail ? kiosk.road_detail : "N/A"}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Ground Clearance"} secondary={kiosk.ground_clearance?kiosk.ground_clearance:"NA"}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Landlord / Land owner"} secondary={kiosk.land_owner_name}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                  <ListItemText primary={"Type of Landlord / Landowner"}
+                                secondary={kiosk.land_owner_type ? "Public" : "Private"}/>
+                </ListItem>
+              </List>
+            </GridItem>
+          </GridItem>
+
+          <GridItem xs={12} sm={12} md={7}>
+
+            <GridItem className={classes.item} xs={12} sm={12} md={12}>
+              <Typography variant={"h6"}>Uploaded Documents</Typography>
+            </GridItem>
+
+            <List>
+              {
+                documents.map(function(doc, index) {
+                  return (
+                    <>
                       <ListItem key={index}>
                         <ListItemText primary={doc.name}/>
                         <ListItemSecondaryAction>
                           <IconButton target={"_blank"} href={doc.path}>
-                            <EyeIcon/>
+                            <EyeIcon fontSize={"small"} color={"primary"}/>
                           </IconButton>
                         </ListItemSecondaryAction>
                       </ListItem>
-                    );
-                  })
-                }
-              </List>
-            </GridItem>
-          </GridContainer>
-        </CardContent>
+                    </>
+                  );
+                })
+              }
+            </List>
+          </GridItem>
+        </GridContainer>
       </>
     );
   };
 
   render() {
     const { open, onClose, application } = this.props;
-    const number=application ? application.file.number : "";
-    const subject=application ? application.file.subject : "";
+    const number = application ? application.file.number : "";
+    const subject = application ? application.file.subject : "";
     let self = this;
     return (
 
@@ -251,7 +146,6 @@ class KioskApplicationDialog extends Component {
                         <IconButton onClick={onClose}>
                           <CloseIcon/>
                         </IconButton>
-
                       </>
                     }/>
         <Divider/>
@@ -260,7 +154,7 @@ class KioskApplicationDialog extends Component {
             application ? self.getView() : undefined
           }
         </DialogContent>
-          <Divider/>
+        <Divider/>
         <DialogActions>
           <Button variant={"outlined"} color={"secondary"} onClick={e => onClose()}>Close</Button>
         </DialogActions>
