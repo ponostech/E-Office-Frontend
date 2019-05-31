@@ -1,7 +1,8 @@
 import axios from "axios";
 import { ApiRoutes, FILE_TAKE } from "../config/ApiRoutes";
 import { FILE_SEND } from "../config/routes-constant/OfficeRoutes";
-import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
+import { ArrayToString } from "../utils/ErrorUtil";
+import { FILEABLE_TYPE } from "../views/e-office/files/details/Views/FileApplicationDetails";
 
 
 export class FileService {
@@ -13,29 +14,30 @@ export class FileService {
     return res.data.data;
   }
 
-  async fetch(status,errorCallback,successCallback){
+  async fetch(status, errorCallback, successCallback) {
     let config = {
-      params: {status}
+      params: { status }
     };
-    let files=[]
-    try{
-     let res =await axios.get(ApiRoutes.FILE, config)
+    let files = [];
+    try {
+      let res = await axios.get(ApiRoutes.FILE, config);
       if (res.data.status) {
-        successCallback(res.data.data.files)
-      }else{
-        errorCallback(ArrayToString(res.data.messages))
+        successCallback(res.data.data.files);
+      } else {
+        errorCallback(ArrayToString(res.data.messages));
       }
-    }catch (e) {
-      errorCallback(e.toString())
-      console.error(e)
+    } catch (e) {
+      errorCallback(e.toString());
+      console.error(e);
     }
 
   }
+
   async sendFile(file_id, recipient_id, errorCallback, successCallback) {
 
     try {
       let res = await axios.post(FILE_SEND(file_id), { recipient_id });
-      console.log(res)
+      console.log(res);
       if (res.data.status) {
         successCallback("File has been moved");
       } else {
@@ -47,10 +49,11 @@ export class FileService {
     }
 
   }
+
   async takeFile(file_id, errorCallback, successCallback) {
 
     try {
-      let res = await axios.post(FILE_TAKE(file_id) );
+      let res = await axios.post(FILE_TAKE(file_id));
       if (res.data.status) {
         successCallback("You have taken the file");
       } else {
@@ -63,11 +66,48 @@ export class FileService {
 
   }
 
-  getApplication(id, errorCallback, successCallback) {
+  async getApplication(id, type, errorCallback, successCallback) {
+    let url = "";
+    switch (type) {
+      case FILEABLE_TYPE.KIOSK:
+        url = `/kiosks/${id}`;
+        break;
+      case FILEABLE_TYPE.HOARDING:
+        url = `/hoardings/${id}`;
+        break;
+      case FILEABLE_TYPE.BANNER:
+        url = `/banners/${id}`;
+        break;
+      case FILEABLE_TYPE.SHOP:
+        url = `/shops/${id}`;
+        break;
+      case FILEABLE_TYPE.HOTEL:
+        url = `/hotels/${id}`;
+        break;
+      default:
+        break;
+    }
     try {
-      let res =  axios.get(FILE_TAKE(id) );
+      let res = await axios.get(url);
+        console.log(res);
       if (res.data.status) {
-        successCallback(res.data.data.application);
+        switch (type) {
+          case FILEABLE_TYPE.KIOSK:
+            successCallback(res.data.data.kiosk);
+            break;
+          case FILEABLE_TYPE.HOARDING:
+            successCallback(res.data.data.hoarding);
+            break;
+          case FILEABLE_TYPE.BANNER:
+            successCallback(res.data.data.banner);
+            break;
+          case FILEABLE_TYPE.SHOP:
+            successCallback(res.data.data.shop);
+            break;
+          case FILEABLE_TYPE.HOTEL:
+            successCallback(res.data.data.hotel);
+            break;
+        }
       } else {
         errorCallback(ArrayToString(res.data.messages));
       }

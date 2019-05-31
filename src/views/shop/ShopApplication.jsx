@@ -99,14 +99,6 @@ class ShopApplication extends Component {
     localCouncilError: "",
     ownerAddressError: "",
 
-    display_types: [
-      { value: "vehicle", label: "Vehicle" },
-      { value: "umbrella", label: "Umbrella" },
-      { value: "balloons", label: "Balloons" },
-      { value: "video", label: "Video" },
-      { value: "audio/sound", label: "Audio/Sound" },
-      { value: "others", label: "Others" }
-    ],
     types: [
       { value: "proprietor", label: "Proprietor" },
       { value: "partnership", label: "Partnership" },
