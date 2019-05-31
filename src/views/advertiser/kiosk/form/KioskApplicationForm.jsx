@@ -79,11 +79,7 @@ class KioskApplicationForm extends Component {
 
       localCouncils: [],
       categories: [],
-      displayTypes: [
-        { value: "ILLUMINATED", label: "ILLUMINATED" },
-        { value: "NON-ILLUMINATED", label: "NON ILLUMINATED" },
-        { value: "FLICKERING_LIGHT", label: "FLICKERING LIGHT" }
-      ],
+
       documents: [],
       errorMessage: "",
       prestine: true,
@@ -406,7 +402,7 @@ class KioskApplicationForm extends Component {
                                               checked={this.state.collapsible}
                                               required={true}/>
                                           }
-                                          label={"Is collapsible?"}/>
+                                          label={"Is Collapsible?"}/>
                       </FormControl>
                     </GridItem>
 

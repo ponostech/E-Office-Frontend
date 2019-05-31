@@ -21,6 +21,7 @@ import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import CloseIcon from "@material-ui/icons/Close";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import PrintIcon from "@material-ui/icons/Print";
+import moment from "moment";
 
 const style = {
   item: {
@@ -38,30 +39,6 @@ class HoardingApplicationDialog extends Component {
     console.log(this.props.application);
   }
 
-  getField = (model) => {
-    let view = undefined;
-
-    for (const [key, value] of Object.entries(model)) {
-      console.log(value);
-      view +=
-        (
-          <>
-            <GridItem md={4}>
-              <Typography variant={"h5"}>
-                {key}
-              </Typography>
-            </GridItem>
-            <GridItem md={8}>
-              <Typography variant={"h6"}>
-                {value}
-              </Typography>
-            </GridItem>
-          </>
-        );
-    }
-    return view;
-  };
-
   getView = () => {
     const { open, onClose, application, classes } = this.props;
     console.log(application);
@@ -77,13 +54,19 @@ class HoardingApplicationDialog extends Component {
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <List dense={false}>
                 <ListItem button={true} dense={false}>
-                  <ListItemText primary={"Location"} secondary={hoarding.address}/>
+                  <ListItemText primary={"Date of Application"} secondary={moment(hoarding.created_at).format("Do MMM YYYY")}/>
                 </ListItem>
                 <ListItem button={true} dense={false}>
-                <ListItemText primary={"Length"} secondary={hoarding.length}/>
+                  <ListItemText primary={"Purposed Location"} secondary={hoarding.address}/>
                 </ListItem>
                 <ListItem button={true} dense={false}>
-                <ListItemText primary={"Height"} secondary={hoarding.height}/>
+                  <ListItemText primary={"Local Council"} secondary={hoarding.local_council.name}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                <ListItemText primary={"Length"} secondary={hoarding.length+" ft"}/>
+                </ListItem>
+                <ListItem button={true} dense={false}>
+                <ListItemText primary={"Height"} secondary={hoarding.height+" ft"}/>
                 </ListItem>
                 <ListItem button={true} dense={false}>
                 <ListItemText primary={"Type of Display"} secondary={hoarding.display_type}/>
@@ -96,7 +79,7 @@ class HoardingApplicationDialog extends Component {
                                 secondary={hoarding.road_detail ? hoarding.road_detail : "N/A"}/>
                 </ListItem>
                 <ListItem button={true} dense={false}>
-                <ListItemText primary={"Ground Clearance"} secondary={hoarding.ground_clearance}/>
+                <ListItemText primary={"Ground Clearance"} secondary={hoarding.ground_clearance?hoarding.ground_clearance:"NA"}/>
                 </ListItem>
                 <ListItem button={true} dense={false}>
                 <ListItemText primary={"Landlord / Land owner"} secondary={hoarding.land_owner_name}/>
@@ -124,7 +107,7 @@ class HoardingApplicationDialog extends Component {
                       <ListItemText primary={doc.name}/>
                       <ListItemSecondaryAction>
                         <IconButton target={"_blank"} href={doc.path}>
-                          <EyeIcon/>
+                          <EyeIcon fontSize={"small"} color={"primary"}/>
                         </IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
