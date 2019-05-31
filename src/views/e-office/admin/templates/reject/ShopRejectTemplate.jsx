@@ -23,7 +23,6 @@ class ShopRejectTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.rejectTemplateService.get("shop",
       errorMessage => this.setState({ errorMessage }),
       template => {

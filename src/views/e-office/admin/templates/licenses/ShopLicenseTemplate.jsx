@@ -23,7 +23,6 @@ class ShopLicenseTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.licenseTemplateService.get("shop",
       errorMessage => this.setState({ errorMessage }),
       template => {

@@ -23,7 +23,6 @@ class HoardingPermitTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.permitTemplateService.get("hoarding",
       errorMessage => this.setState({ errorMessage }),
       template => {

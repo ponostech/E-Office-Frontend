@@ -103,14 +103,14 @@ class HoardingProposedList extends Component {
                   <IconButton onClick={(e) => {
                     this.setState({ openDetail: true, hoarding: file });
                   }}>
-                    <EyeIcon/>
+                    <EyeIcon fontSize={"small"} color={"primary"}/>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Click here to withdraw application"}>
                   <IconButton onClick={(e) => {
                     this.setState({ openWithdraw: true, hoarding: file });
                   }}>
-                    <CloseIcon color={"secondary"}/>
+                    <CloseIcon fontSize={"small"} color={"secondary"}/>
                   </IconButton>
                 </Tooltip>
               </>

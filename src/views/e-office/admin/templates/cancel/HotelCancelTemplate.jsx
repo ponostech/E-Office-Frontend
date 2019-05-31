@@ -23,7 +23,6 @@ class HotelCancelTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.cancelTemplateService.get("hotel",
       errorMessage => this.setState({ errorMessage }),
       template => {

@@ -23,7 +23,6 @@ class KioskRejectTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.rejectTemplateService.get("kiosk",
       errorMessage => this.setState({ errorMessage }),
       template => {

@@ -23,7 +23,6 @@ class KioskPermitTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.permitTemplateService.get("kiosk",
       errorMessage => this.setState({ errorMessage }),
       template => {

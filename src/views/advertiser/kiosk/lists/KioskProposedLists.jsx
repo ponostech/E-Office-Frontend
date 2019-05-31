@@ -111,14 +111,14 @@ class KioskProposedLists extends Component {
                   <IconButton onClick={(e) => {
                     this.setState({ kiosk: file, openDetail: true });
                   }}>
-                    <EyeIcon/>
+                    <EyeIcon color={"primary"} fontSize={"small"}/>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Click here to withdraw application"}>
                   <IconButton onClick={(e) => {
                     this.setState({ openWithdraw: true, kiosk: file });
                   }}>
-                    <CloseIcon color={"secondary"}/>
+                    <CloseIcon fontSize={"small"} color={"secondary"}/>
                   </IconButton>
                 </Tooltip>
               </>

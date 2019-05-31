@@ -72,9 +72,9 @@ class CancelTemplate extends Component {
     const { value } = this.state;
 
     return (
-      <Card style={{ padding: 20 }}>
-        <CardHeader title={"CANCELLED TEMPLATE"}/>
-        <CardContent>
+      <Card>
+        <CardHeader style={{padding:"5px 16px"}} title={"CANCELLED TEMPLATE"}/>
+        <CardContent style={{padding:"5px 16px"}}>
           <Tabs
             value={value}
             onChange={this.handleChange}
@@ -114,7 +114,7 @@ class CancelTemplate extends Component {
 
           </Tabs>
         </CardContent>
-        <div style={{ marginTop: 20 }}>
+        <div>
           {value === "advertiser" && <AdvertiserCancelTemplate doLoad={this.props.doLoad}/>}
           {value === "hotel" && <HotelCancelTemplate doLoad={this.props.doLoad}/>}
           {value === "shop" && <ShopCancelTemplate doLoad={this.props.doLoad}/>}

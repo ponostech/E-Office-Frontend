@@ -23,7 +23,6 @@ class BannerRejectTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.rejectTemplateService.get("banner",
       errorMessage => this.setState({ errorMessage }),
       template => {

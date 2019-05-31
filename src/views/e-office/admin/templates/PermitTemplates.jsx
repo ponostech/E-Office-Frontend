@@ -75,9 +75,9 @@ class PermitTemplates extends Component {
     const {value} = this.state;
 
     return (
-      <Card style={{padding: 20}}>
-        <CardHeader title={"PERMIT TEMPLATE"}/>
-        <CardContent>
+      <Card >
+        <CardHeader style={{padding:"5px 16px"}} title={"PERMIT TEMPLATE"}/>
+        <CardContent style={{padding:"5px 16px"}}>
           <Tabs
             value={value}
             onChange={this.handleChange}
@@ -97,7 +97,7 @@ class PermitTemplates extends Component {
 
           </Tabs>
         </CardContent>
-        <div style={{marginTop: 20}}>
+        <div>
           {value === "hoarding" && <HoardingPermitTemplate doLoad={this.props.doLoad}/>}
           {value === "kiosk" && <KioskPermitTemplate doLoad={this.props.doLoad}/>}
           {value === "banner" && <BannerPermitTemplate doLoad={this.props.doLoad}/>}

@@ -72,9 +72,9 @@ class RejectTemplate extends Component {
     const { value } = this.state;
 
     return (
-      <Card style={{ padding: 20 }}>
-        <CardHeader title={"REJECTED TEMPLATE"}/>
-        <CardContent>
+      <Card>
+        <CardHeader style={{padding:"5px 16px"}} title={"REJECTED TEMPLATE"}/>
+        <CardContent style={{padding:"5px 16px"}}>
           <Tabs
             value={value}
             onChange={this.handleChange}
@@ -114,7 +114,7 @@ class RejectTemplate extends Component {
 
           </Tabs>
         </CardContent>
-        <div style={{ marginTop: 20 }}>
+        <div>
           {value === "advertiser" && <AdvertiserRejectTemplate doLoad={this.props.doLoad}/>}
           {value === "hotel" && <HotelRejectTemplate doLoad={this.props.doLoad}/>}
           {value === "shop" && <ShopRejectTemplate doLoad={this.props.doLoad}/>}

@@ -98,7 +98,7 @@ class HoardingActiveList extends Component {
                 <Tooltip title="View File">
                   <IconButton color="primary" size="small"
                               aria-label="View File" onClick={this.viewFile.bind(this, hoarding)}>
-                    <Icon fontSize="small">folder</Icon>
+                    <Icon fontSize="small" color={"primary"}>folder</Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Click here to view details"}>
@@ -106,7 +106,7 @@ class HoardingActiveList extends Component {
                     this.setState({ hoarding: file });
                     this.setState({ openDetail: true });
                   }}>
-                    <EyeIcon/>
+                    <EyeIcon fontSize={"small"} color={"primary"}/>
                   </IconButton>
                 </Tooltip>
               </>

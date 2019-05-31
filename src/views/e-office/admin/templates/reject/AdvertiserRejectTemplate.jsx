@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import TextEditor from "../../../files/draft/Editor";
 import { Button, Card, CardActions, CardContent } from "@material-ui/core";
-import LicenseTemplateService from "../../../../../services/LicenseTemplateService";
 import SubmitDialog from "../../../../../components/SubmitDialog";
 import OfficeSnackbar from "../../../../../components/OfficeSnackbar";
-import CancelTemplateService from "../../../../../services/CancelTemplateService";
 import RejectTemplateService from "../../../../../services/RejectTemplateService";
 
 class AdvertiserRejectTemplate extends Component {
@@ -12,7 +10,7 @@ class AdvertiserRejectTemplate extends Component {
   rejectTemplateService = new RejectTemplateService();
 
   state = {
-    id:null,
+    id: null,
     content: "",
     type: "advertiser",
 
@@ -25,48 +23,47 @@ class AdvertiserRejectTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.rejectTemplateService.get("advertiser",
       errorMessage => this.setState({ errorMessage }),
       template => {
         if (template)
-          this.setState({ content:template.content,id:template.id,type:template.type, edit: true })
+          this.setState({ content: template.content, id: template.id, type: template.type, edit: true });
       })
       .finally(() => this.props.doLoad(false));
   }
 
   doUpdate = () => {
-    let template={
-      id:this.state.id,
-      content:this.state.content,
-      type:this.state.type
-    }
-    this.setState({submit:true})
-    this.rejectTemplateService.update(template,errorMessage=>this.setState({errorMessage}),
-      successMessage=>this.setState({successMessage}))
-      .finally(()=>this.setState({submit:false}))
+    let template = {
+      id: this.state.id,
+      content: this.state.content,
+      type: this.state.type
+    };
+    this.setState({ submit: true });
+    this.rejectTemplateService.update(template, errorMessage => this.setState({ errorMessage }),
+      successMessage => this.setState({ successMessage }))
+      .finally(() => this.setState({ submit: false }));
   };
   doSave = () => {
-    let data={
-      content:this.state.content,
-      type:"advertiser"
-    }
-    this.setState({submit:true})
-    this.rejectTemplateService.create(data,errorMessage=>this.setState({errorMessage}),
-      (successMessage,id) => this.setState({ successMessage ,edit:true,id}))
-      .finally(()=>this.setState({submit:false}))
+    let data = {
+      content: this.state.content,
+      type: "advertiser"
+    };
+    this.setState({ submit: true });
+    this.rejectTemplateService.create(data, errorMessage => this.setState({ errorMessage }),
+      (successMessage, id) => this.setState({ successMessage, edit: true, id }))
+      .finally(() => this.setState({ submit: false }));
   };
   handleClick = (identifier) => {
     switch (identifier) {
       case "save":
         if (this.state.edit) {
-          this.doUpdate()
+          this.doUpdate();
         } else {
-          this.doSave()
+          this.doSave();
         }
         break;
       case "reset":
-        this.setState({content:""});
+        this.setState({ content: "" });
         break;
       default:
         break;
