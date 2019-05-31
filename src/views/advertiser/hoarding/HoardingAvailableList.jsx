@@ -118,7 +118,7 @@ class HoardingAvailableList extends Component {
                     this.setState({ hoarding: file });
                     this.setState({ openDetail: true });
                   }}>
-                    <EyeIcon/>
+                    <EyeIcon color={"primary"} fontSize={"small"}/>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Click here to apply hoarding"}>
@@ -126,7 +126,7 @@ class HoardingAvailableList extends Component {
                     this.setState({ openApply: true, hoarding: file });
                   }}>
 
-                    <CheckIcon color={"primary"}/>
+                    <CheckIcon fontSize={"small"} color={"primary"}/>
                   </IconButton>
                 </Tooltip>
               </>

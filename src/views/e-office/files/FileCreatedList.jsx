@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Card, CardContent} from "@material-ui/core";
 import ReceiptListDialog from "../receipt/ReceiptListDialog";
-import FileMovementDialog from "./movements/FileMovementDialog";
 import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
@@ -126,7 +125,6 @@ class FileCreatedList extends Component {
                     </Card>
                 </Grid>
                 <ReceiptListDialog open={this.state.openAttachDialog} onClose={this.onReceiptSelect}/>
-                <FileMovementDialog open={this.state.openSend} onClose={this.handleClosed.bind(this)}/>
             </Grid>
         );
     }

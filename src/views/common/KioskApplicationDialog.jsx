@@ -18,7 +18,7 @@ import {
   Typography
 } from "@material-ui/core";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import EyeIcon from "@material-ui/icons/PanoramaFishEyeOutlined";
+import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import GridItem from "../../components/Grid/GridItem";
 import GridContainer from "../../components/Grid/GridContainer";
 import PropTypes from "prop-types";

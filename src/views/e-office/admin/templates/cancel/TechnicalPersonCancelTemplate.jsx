@@ -23,7 +23,6 @@ class TechnicalPersonCancelTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.cancelTemplateService.get("technical-person",
       errorMessage => this.setState({ errorMessage }),
       template => {

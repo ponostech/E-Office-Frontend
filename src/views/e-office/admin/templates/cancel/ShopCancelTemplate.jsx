@@ -23,7 +23,6 @@ class ShopCancelTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.cancelTemplateService.get("shop",
       errorMessage => this.setState({ errorMessage }),
       template => {

@@ -23,7 +23,6 @@ class AdvertiserLicenseTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.licenseTemplateService.get("advertiser",
       errorMessage => this.setState({ errorMessage }),
       template => {

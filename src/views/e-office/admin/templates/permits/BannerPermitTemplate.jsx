@@ -23,7 +23,6 @@ class BannerPermitTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.permitTemplateService.get("banner",
       errorMessage => this.setState({ errorMessage }),
       template => {

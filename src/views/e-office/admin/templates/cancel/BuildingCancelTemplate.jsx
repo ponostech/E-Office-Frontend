@@ -23,7 +23,6 @@ class BuildingCancelTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.cancelTemplateService.get("building",
       errorMessage => this.setState({ errorMessage }),
       template => {

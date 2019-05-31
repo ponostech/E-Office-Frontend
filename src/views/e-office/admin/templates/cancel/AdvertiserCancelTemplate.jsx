@@ -23,7 +23,6 @@ class AdvertiserCancelTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.cancelTemplateService.get("advertiser",
       errorMessage => this.setState({ errorMessage }),
       template => {

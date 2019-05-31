@@ -71,9 +71,9 @@ class LicenseTemplate extends Component {
     const {value} = this.state;
 
     return (
-      <Card style={{padding: 20}}>
-        <CardHeader title={"LICENSE TEMPLATE"}/>
-        <CardContent>
+      <Card >
+        <CardHeader style={{padding:"5px 16px"}} title={"LICENSE TEMPLATE"}/>
+        <CardContent style={{padding:"5px 16px"}}>
           <Tabs
             value={value}
             onChange={this.handleChange}
@@ -96,7 +96,7 @@ class LicenseTemplate extends Component {
 
           </Tabs>
         </CardContent>
-        <div style={{marginTop: 20}}>
+        <div>
           {value === "hotel" && <HotelLicenseTemplate doLoad={this.props.doLoad}/>}
           {value === "shop" && <ShopLicenseTemplate doLoad={this.props.doLoad}/>}
           {value === "advertiser" && <AdvertiserLicenseTemplate doLoad={this.props.doLoad}/>}

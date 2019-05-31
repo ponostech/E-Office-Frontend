@@ -23,7 +23,6 @@ class HotelLicenseTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.licenseTemplateService.get("hotel",
       errorMessage => this.setState({ errorMessage }),
       template => {

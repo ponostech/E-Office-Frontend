@@ -122,14 +122,14 @@ class KioskAvailableList extends Component {
                   <IconButton onClick={(e) => {
                     this.setState({ openDetail: true, kiosk: file });
                   }}>
-                    <EyeIcon/>
+                    <EyeIcon color={"primary"} fontSize={"small"}/>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Click here to apply hoarding"}>
                   <IconButton onClick={(e) => {
                     this.setState({ openApply: true, kiosk: file });
                   }}>
-                    <CheckIcon color={"primary"}/>
+                    <CheckIcon fontSize={"small"} color={"primary"}/>
                   </IconButton>
                 </Tooltip>
               </>

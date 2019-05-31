@@ -23,7 +23,6 @@ class TechnicalPersonLicenseTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.licenseTemplateService.get("technical-person",
       errorMessage => this.setState({ errorMessage }),
       template => {

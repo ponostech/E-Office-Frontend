@@ -107,7 +107,7 @@ class HoardingWithdrawnList extends Component {
                   this.setState({ hoarding: file });
                   this.setState({ openDetail: true });
                 }}>
-                  <EyeIcon/>
+                  <EyeIcon fontSize={"small"} color={"primary"}/>
                 </IconButton>
               </Tooltip>
             );

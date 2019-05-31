@@ -23,7 +23,6 @@ class HoardingRejectTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.rejectTemplateService.get("hoarding",
       errorMessage => this.setState({ errorMessage }),
       template => {

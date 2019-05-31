@@ -102,7 +102,7 @@ class KioskWithdrawnList extends Component {
                 <IconButton onClick={(e) => {
                   this.setState({ kiosk: file });
                 }}>
-                  <EyeIcon/>
+                  <EyeIcon color={"primary"} fontSize={"small"}/>
                 </IconButton>
               </Tooltip>
             );

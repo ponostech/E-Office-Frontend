@@ -23,7 +23,6 @@ class KioskCancelTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.cancelTemplateService.get("kiosk",
       errorMessage => this.setState({ errorMessage }),
       template => {

@@ -23,7 +23,6 @@ class BuildingRejectTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.rejectTemplateService.get("building",
       errorMessage => this.setState({ errorMessage }),
       template => {

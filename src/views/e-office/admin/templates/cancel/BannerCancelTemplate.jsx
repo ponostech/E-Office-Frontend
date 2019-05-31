@@ -23,7 +23,6 @@ class BannerCancelTemplate extends Component {
 
 
   componentDidMount() {
-    this.props.doLoad(true);
     this.cancelTemplateService.get("banner",
       errorMessage => this.setState({ errorMessage }),
       template => {
