@@ -74,12 +74,26 @@ class HotelViewDialog extends Component {
                     <DetailViewRow primary="Type of Applicant" secondary={data.type.toUpperCase()}/>
                     <DetailViewRow primary="Owner Address" secondary={data.owner_address}/>
                     <DetailViewRow primary="Mobile" secondary={data.phone}/>
+                    <DetailViewRow primary="Owner Type" secondary={data.type}/>
                     <DetailViewRow primary="Shop Name" secondary={data.name}/>
                     <DetailViewRow primary="Proposed Location" secondary={data.address}/>
-                    <DetailViewRow primary="Details of Business" secondary={data.details}/>
                     <DetailViewRow primary="Date of Application"
                                    secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
+                    <DetailViewRow primary="Details of Business" secondary={data.details}/>
+                    <DetailViewRow primary="Email" secondary={data.email}/>
+                    <DetailViewRow primary="CST No" secondary={data.cst_no}/>
+                    <DetailViewRow primary="GST No" secondary={data.gst_no}/>
+                    <DetailViewRow primary="TIN No" secondary={data.tin_no}/>
+                    <DetailViewRow primary="PAN No" secondary={data.pan_no}/>
+                    <DetailViewRow primary="Premise Type" secondary={data.premise_type}/>
+                    <DetailViewRow primary="No. of AC Room" secondary={data.ac_rooms}/>
+                    <DetailViewRow primary="No. of Non AC Room" secondary={data.non_ac_rooms}/>
+                    <DetailViewRow primary="Year of Establishment" secondary={data.estd}/>
+                    <DetailViewRow primary="No. of Banquet Hall" secondary={data.banquet_halls}/>
+                    <DetailViewRow primary="No. of Conference Hall" secondary={data.conference_halls}/>
+                    <DetailViewRow primary="Any other facilities" secondary={data.other_facilities}/>
                     <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
+
                   </Card>
                 </List>
               </Grid>
