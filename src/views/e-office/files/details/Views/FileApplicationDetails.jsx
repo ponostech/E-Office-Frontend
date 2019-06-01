@@ -206,7 +206,7 @@ class FileApplicationDetails extends React.Component {
                             </>
                           }/>
               <Divider/>
-              <CardContent>
+              <div>
                 {
                   this.state.rows.map((item,index)=> <DetailViewRow key={index} primary={item.name} secondary={item.value}/>)
                 }
@@ -240,7 +240,7 @@ class FileApplicationDetails extends React.Component {
                     </Table>
                     </>: ""
                 }
-              </CardContent>
+              </div>
 
               <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)}
                               message={this.state.errorMessage}
