@@ -10,7 +10,7 @@ import UserIcon from "@material-ui/icons/AccountCircleRounded";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingIcon from "@material-ui/icons/Settings";
 // core components
-import { Button, IconButton, LinearProgress, Typography, withStyles } from "@material-ui/core";
+import { Button, CardActions, IconButton, LinearProgress, Typography, withStyles } from "@material-ui/core";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
 import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
@@ -18,7 +18,11 @@ import Icon from "@material-ui/core/es/Icon";
 import { LoginService } from "../../services/LoginService";
 import AdvertiserMobileMenu from "./AdvertiserMobileMenu";
 
-const styles = {};
+const styles = {
+  menuLink:{
+    color:"#333"
+  }
+};
 
 class AdvertiserHeader extends React.Component {
   loginService = new LoginService();
@@ -50,9 +54,25 @@ class AdvertiserHeader extends React.Component {
     let menuItems = (
       <GridContainer justify={"space-between"}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <NavLink className={classes.menuLink} to={OfficeRoutes.ADVERTISER_DASHBOARD}><IconButton
-            color="primary"><Icon>dashboard</Icon></IconButton></NavLink>
-
+          <NavLink className={classes.menuLink} to={OfficeRoutes.ADVERTISER_DASHBOARD}>
+            <IconButton
+            color="primary"><Icon>dashboard</Icon>
+            </IconButton>
+          </NavLink>
+          {"\u00A0 "}
+          {"\u00A0 "}
+          <NavLink className={classes.menuLink} to={OfficeRoutes.ADVERTISER_AVAILABLE_HOARDING}>
+            <Button style={{padding:10, textTransform: "capitalize", fontSize: 14}}
+                    variant={"contained"} color={"primary"}>Available hoarding</Button>
+          </NavLink>
+          {"\u00A0 "}
+          {"\u00A0 "}
+          <NavLink className={classes.menuLink} to={OfficeRoutes.ADVERTISER_AVAILABLE_KIOSK}>
+            <Button style={{padding:10, textTransform: "capitalize", fontSize: 14}}
+                    variant={"contained"}  color={"secondary"}>Available Kiosk</Button>
+          </NavLink>
+          {"\u00A0 "}
+          {"\u00A0 "}
           <CustomDropdown
             dropdownList={[
               { title: "New hoarding", link: OfficeRoutes.ADVERTISER_NEW_HOARDING },
@@ -76,6 +96,8 @@ class AdvertiserHeader extends React.Component {
             linkClick={this.handleKiosk.bind(this)}
             buttonText={"Kiosk"}
             buttonProps={{ color: "transparent" }}/>
+
+
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Typography variant={"caption"}

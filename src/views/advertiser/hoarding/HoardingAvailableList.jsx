@@ -62,8 +62,16 @@ class HoardingAvailableList extends Component {
   render() {
     const tableColumns = [
       {
+        name: "created_at",
+        label: "DATE",
+        options: {
+          customBodyRender: (date) => {
+            return  moment(date).format("Do MMM YYYY");
+          }
+        }
+      }, {
         name: "file",
-        label: "FILE ID",
+        label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             return (value.number);
@@ -78,33 +86,22 @@ class HoardingAvailableList extends Component {
           }
         }
       }, {
-        name: "created_at",
-        label: "Date",
+        name: "hoarding",
+        label: "PURPOSED LOCATION",
         options: {
-          customBodyRender: (date) => {
-            const d = moment(date).format("DD/MM/YYYY");
-            return d.toString();
+          customBodyRender: (hoarding, tableMeta, updateValue) => {
+            return (hoarding.address);
           }
         }
       }, {
         name: "hoarding",
-        label: "DETAILS",
+        label: "LOCAL COUNCIL",
         options: {
           customBodyRender: (hoarding, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
-            const file = this.state.hoardings[rowIndex];
-            let view = (
-              <>
-                <ul>
-                  <li><strong>LOCATION</strong> {hoarding.address}</li>
-                </ul>
-              </>
-            );
-
-            return (view);
+            return (hoarding.local_council.name);
           }
         }
-      }, {
+      },{
         name: "hoarding",
         label: "ACTIONS",
         options: {

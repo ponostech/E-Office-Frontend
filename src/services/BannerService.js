@@ -16,17 +16,18 @@ export class BannerService {
       advertisement_count: state.bannerDetails.length,
       address: state.address,
       details: state.details,
-      content:state.content,
       status: "new",
-      signature: state.signature.path,
-      documents: state.uploadDocuments
     };
     try {
       let res = await axios.post(ApiRoutes.CREATE_BANNER, data);
       if (res.data.status) {
         successCallback(ArrayToString(res.data.messages));
       } else {
-        errorCallback(ErrorToString(res.data.messages));
+        if (res.data.validation_error) {
+          errorCallback(ErrorToString(res.data.messages));
+        } else {
+          errorCallback(ArrayToString(res.data.messages))
+        }
       }
     } catch (e) {
       console.error("Error " + e);

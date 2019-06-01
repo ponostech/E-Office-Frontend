@@ -2,7 +2,7 @@ import axios from "axios";
 import React from 'react';
 import { ApiRoutes } from "../config/ApiRoutes";
 import moment from "moment";
-import { ErrorToString } from "../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
 export class ShopService {
 
@@ -34,15 +34,13 @@ export class ShopService {
     try {
       let res=await axios.post(ApiRoutes.CREATE_SHOP_LICENSE, data);
       if (res.data.status) {
-        let msgs = [];
-        res.data.messages.forEach(function(msg) {
-          let temp=<p>{`${msg}.`}</p>
-          msgs.push(temp)
-        });
-        successCallback(msgs)
+        successCallback(ArrayToString(res.data.messages));
       }else{
-        let msg=ErrorToString(res.data.messages)
-        errorCallback(msg)
+        if (res.data.validation_error) {
+          errorCallback(ErrorToString(res.data.messages));
+        } else {
+          errorCallback(ArrayToString(res.data.messages))
+        }
       }
     } catch (e) {
       console.error(e)
