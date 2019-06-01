@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {CardHeader} from "@material-ui/core";
+import {CardHeader, List} from "@material-ui/core";
 import LoadingView from "../../../../common/LoadingView";
 import {FILE_DRAFT_LIST} from "../../../../../config/ApiRoutes";
 import DetailViewRow from "../../../common/DetailViewRow";
@@ -55,7 +55,7 @@ class FileDraftRejects extends React.Component {
     return (
         <>
           <CardHeader title="List of Drafts Reject" subheader="click on the list item to see details"/>
-          {loading ? <LoadingView align="left"/> : content}
+          {loading ? <LoadingView align="left"/> : <List>{content}</List>}
           {errorMsg && <ErrorHandler messages={this.state.errorMsg}/>}
           {showDetails && singleData &&
           <DraftSingleViewDialog data={singleData} open={showDetails} onClose={this.closeDetails}/>}

@@ -103,7 +103,7 @@ const styles = theme => ({
 
 class FileMenuLeft extends React.Component {
   state = {
-    open: false,
+    open: true,
   };
 
   componentDidMount() {

@@ -5,7 +5,7 @@ import LoadingView from "../../../../common/LoadingView";
 import {FILE_DRAFT_LIST} from "../../../../../config/ApiRoutes";
 import ErrorHandler from "../../../../common/StatusHandler";
 import moment from "moment";
-import {CardHeader} from "@material-ui/core";
+import {CardHeader, List} from "@material-ui/core";
 
 class FileDrafts extends Component {
   state = {
@@ -41,14 +41,13 @@ class FileDrafts extends Component {
 
   render() {
     const {loading, errorMsg, data} = this.state;
-    const content = data.length === 0 ? "No draft" : data.map(value => <DetailViewRow value={value}
-                                                                                      click={this.singleRowClicked}
-                                                                                      primary={"Draft No. " + value.id}
-                                                                                      secondary={this.formatCreated(value)}/>);
+    const content = data.length === 0 ? "No draft" :
+        data.map(value => <DetailViewRow value={value} click={this.singleRowClicked}
+                                         primary={"Draft No. " + value.id} secondary={this.formatCreated(value)}/>);
     return (
         <>
           <CardHeader title="List of Drafts" subheader="See details below"/>
-          {loading ? <LoadingView align="left"/> : content}
+          {loading ? <LoadingView align="left"/> : <List>{content}</List>}
           {errorMsg && <ErrorHandler messages={this.state.errorMsg}/>}
         </>
     )

@@ -5,7 +5,7 @@ import {
   CardContent,
   CardHeader,
   Divider,
-  IconButton,
+  IconButton, List,
   Table, TableBody, TableCell,
   TableHead,
   TableRow,
@@ -176,7 +176,6 @@ class FileApplicationDetails extends React.Component {
           { name: "No of Banquet", value:application.banquet_halls },
           { name: "Facilities", value:application.facilities?application.facilities:"NA" },
           { name: "Type of Premised", value:application.premise_type },
-
         );
         break;
 
@@ -206,7 +205,7 @@ class FileApplicationDetails extends React.Component {
                             </>
                           }/>
               <Divider/>
-              <CardContent>
+              <List>
                 {
                   this.state.rows.map((item,index)=> <DetailViewRow key={index} primary={item.name} secondary={item.value}/>)
                 }
@@ -240,7 +239,7 @@ class FileApplicationDetails extends React.Component {
                     </Table>
                     </>: ""
                 }
-              </CardContent>
+              </List>
 
               <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)}
                               message={this.state.errorMessage}
