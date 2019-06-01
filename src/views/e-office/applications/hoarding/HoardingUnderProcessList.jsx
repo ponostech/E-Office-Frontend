@@ -12,6 +12,7 @@ import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
+import ErrorHandler from "../../../common/StatusHandler";
 
 const styles = {
   button: {},
@@ -30,6 +31,7 @@ class HoardingUnderProcessList extends React.Component {
     openViewDialog: false,
     loading: true,
     openMap: false,
+    errorMsg: '',
   };
 
   componentDidMount() {
@@ -39,12 +41,15 @@ class HoardingUnderProcessList extends React.Component {
   }
 
   getData = () => {
-    axios.get(HOARDING_LIST, {params: {status: 'in-process'}}).then(res => this.processResult(res));
+    axios.get(HOARDING_LIST, {params: {status: 'in-process'}})
+        .then(res => this.processResult(res))
+        .catch(err => this.setState({errorMsg: err.toString()}))
+        .then(res => {this.setState({loading: false}); this.doLoad(false)})
   };
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, tableData: res.data.data.hoarding_applications});
-    this.doLoad(false);
+    else this.setState({errorMsg: res.data.messages});
   };
 
   getStaffs = () => {
@@ -73,6 +78,7 @@ class HoardingUnderProcessList extends React.Component {
   render() {
     const {classes} = this.props;
     const {loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
+    const {errorMsg} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -180,6 +186,7 @@ class HoardingUnderProcessList extends React.Component {
           <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                          onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                          onConfirm={this.confirmTakeFile}/>}
+          {errorMsg && <ErrorHandler messages={errorMsg} onClose={this.closeStatus}/>}
         </>
     );
   }
