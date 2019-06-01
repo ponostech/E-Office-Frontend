@@ -7,8 +7,8 @@ import {Route, withRouter} from "react-router-dom";
 import * as OfficeRoutes from "../../../../config/routes-constant/OfficeRoutes";
 import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import NoteSheetView from "../notesheet/NotesheetView";
-import DraftPermit from "../draft/DraftPermit";
-import DraftLetter from "../draft/DraftLetter";
+// import DraftPermit from "../draft/DraftPermit";
+// import DraftLetter from "../draft/DraftLetter";
 import FileSend from "../FileSend";
 import LoadingView from "../../../common/LoadingView";
 import FileDetails from "./Views/FileDetails";
@@ -356,10 +356,6 @@ class FileView extends Component {
                      render={(props) => <FileDraftRejects {...props} file={file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-cancels"}
                      render={(props) => <FileDraftCancels {...props} file={file}/>}/>
-              <Route path={OfficeRoutes.FILE_DETAIL + "/draft"}
-                     render={(props) => <DraftPermit {...props} file={file}/>}/>
-              <Route path={OfficeRoutes.FILE_DETAIL + "/reject"}
-                     render={(props) => <DraftLetter {...props} file={file}/>}/>
               <Route path={OfficeRoutes.FILE_DETAIL + "/send"}
                      render={(props) => <FileSend {...props} doLoad={this.props.doLoad} file={file}/>}/>
               <Route path={OfficeRoutes.FILE_DETAIL} exact
