@@ -1,25 +1,20 @@
-import React, {Component} from 'react';
+import React, {Component} from 'reactn';
 import OfficeSnackbar from "../../components/OfficeSnackbar";
 
 class ErrorHandler extends Component {
-  state = {
-    open: true,
-    errorMessage: null,
-  };
+  /*
+    componentDidMount() {
+      this.setState({errorMessage: this.props.messages});
+    }
+    componentWillUpdate(nextProps, nextState, nextContext) {
+      if (this.state.open === false) this.setState({open: true, errorMessage: nextProps.messages});
+    }
+  */
 
-  componentDidMount() {
-    this.setState({errorMessage: this.props.messages});
-  }
-
-  componentWillUpdate(nextProps, nextState, nextContext) {
-    if (this.state.open === false) this.setState({open: true, errorMessage: nextProps.messages});
-  }
-
-  onClose = () => {this.setState({open: false, errorMessage: null})};
+  onClose = () => this.setGlobal({errorMsg: ''});
 
   render() {
-    const {open, errorMessage} = this.state;
-    return <OfficeSnackbar open={open} onClose={this.onClose} variant="error" message={errorMessage}/>;
+    return <OfficeSnackbar open={Boolean(this.global.errorMsg)} onClose={this.onClose} variant="error" message={this.global.errorMsg}/>;
   };
 }
 

@@ -1,11 +1,11 @@
-import React from "react";
+import React, {setGlobal} from 'reactn';
 import ReactDOM from "react-dom";
 import axios from "axios";
 import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
-import { MuiThemeProvider } from "@material-ui/core/styles";
+import {MuiThemeProvider} from "@material-ui/core/styles";
 import theme from "./assets/office/theme";
 import App from "./App";
-import { ApiRoutes } from "./config/ApiRoutes";
+import {ApiRoutes} from "./config/ApiRoutes";
 
 axios.defaults.baseURL = ApiRoutes.BASE_URL;
 axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
@@ -21,9 +21,15 @@ if (token) {
   };
 }
 
+setGlobal({
+  errorMsg: '',
+  successMsg: '',
+  loading: true,
+});
+
 ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <App/>
-  </MuiThemeProvider>,
-  document.getElementById("root")
+    <MuiThemeProvider theme={theme}>
+      <App/>
+    </MuiThemeProvider>,
+    document.getElementById("root")
 );
