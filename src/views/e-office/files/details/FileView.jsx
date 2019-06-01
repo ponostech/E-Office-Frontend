@@ -16,6 +16,7 @@ import FileMovements from "./Views/FileMovements";
 import FileEnclosures from "./Views/FileEnclosures";
 import FileDrafts from "./Views/FileDrafts";
 import FileApplicationDetails from "./Views/FileApplicationDetails";
+import FileApplications from "./Views/FileApplications";
 import FileSiteVerifications from "./Views/FileSiteVerifications";
 import FileDraftPermits from "./Views/FileDraftPermits";
 import FileDraftLicenses from "./Views/FileDraftLicenses";
@@ -346,6 +347,8 @@ class FileView extends Component {
                      render={(props) => <FileDrafts {...props} file={file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/application-details"}
                      render={(props) => <FileApplicationDetails {...props} file={file}/>}/>
+              <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/applications"}
+                     render={(props) => <FileApplications {...props} file={file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/site-verifications"}
                      render={(props) => <FileSiteVerifications type={moduleName} {...props} file={file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-licenses"}
