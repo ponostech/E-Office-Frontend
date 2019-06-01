@@ -11,6 +11,8 @@ import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import { DESK, FILE_DETAIL_ROUTE, FILE_SEND } from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
+import GMapDialog from "../../../../components/GmapDialog";
+
 
 const styles = {
   button: {},
@@ -27,7 +29,8 @@ class HoardingNewList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-    loading: true
+    loading: true,
+    openMap: false,
   };
 
   componentDidMount() {
@@ -65,7 +68,8 @@ class HoardingNewList extends React.Component {
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), { recipient_id }).then(res => window.location.reload());
 
   render() {
-    const { loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file } = this.state;
+    const {classes} = this.props;
+    const { loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -74,6 +78,7 @@ class HoardingNewList extends React.Component {
 
     const tableColumns = [
       {
+
         name: "applicant",
         label: "APPLICANT",
         options: {
@@ -120,6 +125,8 @@ class HoardingNewList extends React.Component {
           customBodyRender: (value, tableMeta) => {
             const { rowIndex } = tableMeta;
             let data = tableData[rowIndex];
+            const lat = Number(data.latitude);
+            const lng = Number(data.longitude);
             return (
               <div>
                 <Tooltip title="View File">
@@ -128,6 +135,9 @@ class HoardingNewList extends React.Component {
                     <Icon fontSize="small">folder</Icon>
                   </IconButton>
                 </Tooltip>
+                <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                  <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
+                </IconButton>
                 <IconButton color="primary" size="small"
                             aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                   <Icon fontSize="small">remove_red_eye</Icon>
@@ -161,6 +171,10 @@ class HoardingNewList extends React.Component {
         {openViewDialog &&
         <HoardingViewDialog open={openViewDialog} close={this.closeViewDialog}
                             data={singleData}/>}
+        {openMap && <GMapDialog viewMode={true} open={openMap} lat={this.state.lat} lng={this.state.lng}
+                                onClose={() => this.setState({openMap: false})}
+                                isMarkerShown={true}
+        />}
 
         {openAssignment && staffs &&
         <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}

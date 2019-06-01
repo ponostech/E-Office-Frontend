@@ -73,11 +73,20 @@ class HoardingViewDialog extends Component {
                                    secondary={data.applicant.advertiser.type.toUpperCase()}/>
                     <DetailViewRow primary="Address of Applicant" secondary={data.applicant.advertiser.address}/>
                     <DetailViewRow primary="Phone No. of Applicant" secondary={data.applicant.phone_no}/>
+                    <DetailViewRow primary="Local Council" secondary={data.hoarding.local_council.name}/>
                     <DetailViewRow primary="Email of Applicant" secondary={data.applicant.email}/>
                     <DetailViewRow primary="Photo of Applicant" secondary={data.applicant.photo}/>
                     <DetailViewRow primary="License No. of Applicant" secondary={data.applicant.advertiser.license_no}/>
                     <DetailViewRow primary="File Number" secondary={data.file.number}/>
                     <DetailViewRow primary="File Subject" secondary={data.file.subject}/>
+                    <DetailViewRow primary="Display Type" secondary={data.hoarding.display_type}/>
+                    <DetailViewRow primary="Whether Both Sided ?" secondary={data.hoarding.both_side==0 ? "No" : "Yes"}/>
+                    <DetailViewRow primary="Length (feet)" secondary={data.hoarding.length}/>
+                    <DetailViewRow primary="Height (feet)" secondary={data.hoarding.height}/>
+                    <DetailViewRow primary="Land Owner Name" secondary={data.hoarding.land_owner_name ? data.hoarding.land_owner_name : "NA"}/>
+                    <DetailViewRow primary="Land Owner Type" secondary={data.hoarding.land_owner_type==0 ? "Private" : "Public"} />
+                    <DetailViewRow primary="Road Detail" secondary={data.hoarding.road_detail}/>
+                    <DetailViewRow primary="Ground Clearance" secondary={data.hoarding.ground_clearance ? data.hoarding.ground_clearance : "NA"}/>
                     <DetailViewRow primary="Date of Application"
                                    secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
                     <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
