@@ -44,7 +44,10 @@ class HoardingUnderProcessList extends React.Component {
     axios.get(HOARDING_LIST, {params: {status: 'in-process'}})
         .then(res => this.processResult(res))
         .catch(err => this.setState({errorMsg: err.toString()}))
-        .then(res => {this.setState({loading: false}); this.doLoad(false)})
+        .then(res => {
+          this.setState({loading: false});
+          this.doLoad(false)
+        })
   };
 
   processResult = (res) => {
@@ -74,6 +77,8 @@ class HoardingUnderProcessList extends React.Component {
       });
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+
+  closeStatus = () => this.setState({errorMsg: ''});
 
   render() {
     const {classes} = this.props;
