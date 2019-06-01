@@ -4,7 +4,6 @@ import { createBrowserHistory } from "history";
 import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
 import { authContext, Provider } from "./context/AuthContext";
 import AdvertiserDashboard from "./layouts/LayoutAdvertiser";
-import { StaffRoute } from "./routes/StaffRoute";
 import OfficeDashboard from "./layouts/LayoutOffice";
 import LandingPage from "./layouts/LayoutLanding";
 import { AdvertiserRoute } from "./routes/AdvertiserRoute";
@@ -12,7 +11,7 @@ import { AdvertiserRoute } from "./routes/AdvertiserRoute";
 const hist = createBrowserHistory();
 
 class App extends Component {
-  constructor(props) {
+ /* constructor(props) {
     super(props);
     this.state = {
       currentUser: {},
@@ -31,7 +30,7 @@ class App extends Component {
 
   setToken = (token) => {
     this.setState({ token: token });
-  };
+  };*/
 
   render() {
     return (

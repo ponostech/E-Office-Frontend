@@ -1,4 +1,4 @@
-import React from "react";
+import React from "reactn";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
 // @material-ui/core components
@@ -39,7 +39,7 @@ class HeaderOffice extends React.Component {
     };
 
     render() {
-        const {classes, loading} = this.props;
+        const {classes} = this.props;
         let menu = null;
         let {role} = this.props;
         switch (role) {
@@ -110,7 +110,7 @@ class HeaderOffice extends React.Component {
                     </Hidden>
                 </Toolbar>
                 {
-                    loading ? <LinearProgress color={"primary"} variant={"indeterminate"}/> : undefined
+                    this.global.loading ? <LinearProgress color={"primary"} variant={"indeterminate"}/> : undefined
                 }
             </AppBar>
         );

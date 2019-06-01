@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component} from "reactn";
 import axios from "axios";
 import {withStyles, Grid} from "@material-ui/core";
 import FileMenuLeft from "./Menu/FileMenuLeft";
@@ -42,6 +42,7 @@ import ShopSiteVerificationDialog from "../site-verification/ShopSiteVerificatio
 import HotelSiteVerificationDialog from "../site-verification/HotelSiteVerificationDialog";
 import HoardingSiteVerificationDialog from "../site-verification/HoardingSiteVerificationDialog";
 import {LoginService} from "../../../../services/LoginService";
+import ErrorHandler from "../../../common/StatusHandler";
 
 const styles = theme => ({
   root: {
@@ -75,7 +76,6 @@ const styles = theme => ({
 });
 
 class FileView extends Component {
-  doLoad = this.props.doLoad;
   noteService = new NotesheetService();
   siteVerificationService = new SiteVerificationService();
   state = {
@@ -99,23 +99,19 @@ class FileView extends Component {
     openShopVerification: false,
     openHotelVerification: false,
 
-    errorMessage: "",
     successMessage: "",
     submitNote: false,
-    loading: true
   };
 
   componentDidMount() {
-    this.doLoad(true);
     this.getData(this.props.match.params.id);
   }
 
   getData(id) {
     axios.all([this.getFileData(id), this.getStaffs()])
         .then(axios.spread((file, staffs) => this.processDataResponse(file, staffs)))
-        .then(res => this.setState({loading: false}))
-        .then(() => this.doLoad(false))
-        .catch(err => this.setState({errorMessage: err.toString(), loading: false}));
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(res => this.setGlobal({loading: false}));
   }
 
   getFileData = (id) => axios.get(ApiRoutes.FILE_DETAIL + "/" + id);
@@ -126,7 +122,7 @@ class FileView extends Component {
     if (file.data.status && staffs.data.status)
       this.setState({file: file.data.data.file, menus: file.data.data.menus, staffs: staffs.data.data.staffs});
     else
-      this.setState({loading: false, errorMessage: "Data Error"});
+      this.setGlobal({errorMsg: file.data.messages});
   };
 
   handleItemClick = (url, mode = null, name = null, moduleName = null) => {
@@ -192,7 +188,7 @@ class FileView extends Component {
     if (data) {
       this.setState({submitNote: true});
       this.noteService.create(data,
-          errorMessage => this.setState({errorMessage}),
+          errorMessage => this.setGlobal({errorMsg: errorMessage}),
           successMessage => this.setState({successMessage}))
           .finally(() => {
             this.setState({submitNote: false});
@@ -205,7 +201,7 @@ class FileView extends Component {
     if (url && data && template) {
       this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-          errorMessage => this.setState({errorMessage}),
+          errorMessage => this.setGlobal({errorMsg: errorMessage}),
           successMessage => this.setState({successMessage}))
           .finally(() => this.setState({submitNote: false}));
     }
@@ -216,7 +212,7 @@ class FileView extends Component {
     if (url && data && template) {
       this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-          errorMessage => this.setState({errorMessage}),
+          errorMessage => this.setGlobal({errorMsg: errorMessage}),
           successMessage => this.setState({successMessage}))
           .finally(() => this.setState({submitNote: false}));
     }
@@ -227,7 +223,7 @@ class FileView extends Component {
     if (url && data && template) {
       this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-          errorMessage => this.setState({errorMessage}),
+          errorMessage => this.setGlobal({errorMsg: errorMessage}),
           successMessage => this.setState({successMessage}))
           .finally(() => this.setState({submitNote: false}));
     }
@@ -238,7 +234,7 @@ class FileView extends Component {
     if (url && data && template) {
       this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-          errorMessage => this.setState({errorMessage}),
+          errorMessage => this.setGlobal({errorMsg: errorMessage}),
           successMessage => this.setState({successMessage}))
           .finally(() => this.setState({submitNote: false}));
     }
@@ -249,16 +245,16 @@ class FileView extends Component {
   sendFile = (id, recipient_id) => {
     axios.post(FILE_SEND(id), {recipient_id})
         .then(res => this.processSendResponse(res))
-        .catch(err => this.setState({errorMessage: err.toString()}));
+        .catch(err => this.setGlobal({errorMsg: err.toString()}));
   };
 
   processSendResponse = (res) => {
     if (res.data.status) this.processSendResponseSuccess();
-    else this.setState({errorMessage: res.data.messages});
+    else this.setGlobal({errorMsg: res.data.messages});
   };
 
   processSendResponseSuccess = () => {
-    this.setState({successMessage: "File sent successfully", errorMessage: "", openAssignment: false});
+    this.setState({successMessage: "File sent successfully", openAssignment: false});
     setTimeout(() => this.props.history.push(DESK), 2000);
   };
 
@@ -284,7 +280,7 @@ class FileView extends Component {
   confirmStatusUpdate = (status) => {
     this.updateStatus(status)
         .then(res => this.processStatusResponse(res, status))
-        .catch(err => this.setState({errorMessage: err.toString()}));
+        .catch(err => this.setGlobal({errorMsg: err.toString()}));
   };
 
   processStatusResponse = (res, status) => {
@@ -303,13 +299,13 @@ class FileView extends Component {
       });
       setTimeout(() => this.props.history.push(DESK), 1000);
     } else {
-      this.setState({errorMessage: res.data.messages});
+      this.setGlobal({errorMsg: res.data.messages});
     }
   };
 
   render() {
     const {classes} = this.props;
-    const {loading, openDraft, openDraftPermit, openNote, file, submitNote, successMessage, errorMessage, menus} = this.state;
+    const {openDraft, openDraftPermit, openNote, file, submitNote, successMessage, menus} = this.state;
     const {openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog, openDraftLicense} = this.state;
     const {moduleName, openDraftReject, openDraftCancel, openHoardingVerification, openKioskVerification, openHotelVerification, openShopVerification} = this.state;
 
@@ -368,7 +364,7 @@ class FileView extends Component {
     );
     return (
         <Grid container className={classes.container}>
-          <div className={classes.root}>{loading ? <LoadingView/> : view}</div>
+          <div className={classes.root}>{this.global.loading ? <LoadingView/> : view}</div>
 
           {openFileCloseDialog &&
           <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileCloseDialog")}
@@ -415,8 +411,7 @@ class FileView extends Component {
 
           <OfficeSnackbar variant={"success"} onClose={() => this.setState({successMessage: ""})}
                           open={Boolean(successMessage)} message={successMessage}/>
-          <OfficeSnackbar variant={"error"} onClose={() => this.setState({errorMessage: ""})}
-                          open={Boolean(errorMessage)} message={errorMessage}/>
+          {this.global.errorMsg && <ErrorHandler variant={"error"} open={Boolean(this.global.errorMsg)}/>}
         </Grid>
     );
   }

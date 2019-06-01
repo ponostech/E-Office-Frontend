@@ -63,7 +63,7 @@ class LayoutOffice extends React.Component {
         return (
             <Grid container justify={"center"}>
                 <Grid item xs={12} sm={12} md={12}>
-                    <HeaderOffice role={data.role} loading={this.state.loading} color={"primary"}/>
+                    <HeaderOffice role={data.role} color={"primary"}/>
                 </Grid>
                 <Grid item style={{marginTop: 70, minHeight: "90vh", background: "white"}} xs={12} sm={12} md={12}>
                     {data.routeList}

@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component} from "reactn";
 import {withRouter} from "react-router-dom";
 import axios from 'axios';
 import moment from "moment";
@@ -10,34 +10,30 @@ import LoadingView from "../../common/LoadingView";
 import ErrorHandler from "../../common/StatusHandler";
 
 class DeskFiles extends Component {
-  doLoad = this.props.doLoad;
   state = {
     tableData: [],
-    loading: true,
-    errorMsg: "",
   };
 
   componentDidMount() {
-    this.doLoad(true);
     this.getFiles();
   }
-
-  processResult = (res) => {
-    if (res.data.status) this.setState({tableData: res.data.data.files, loading: false});
-    else this.setState({errorMsg: res.data.messages, loading: false});
-  };
 
   getFiles = () => {
     axios.get(ApiRoutes.DESK)
         .then(res => this.processResult(res))
-        .catch(err => this.setState({errorMsg: err.toString(), loading: false}))
-        .then(() => this.doLoad(false));
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}));
+  };
+
+  processResult = (res) => {
+    if (res.data.status) this.setState({tableData: res.data.data.files});
+    else this.setGlobal({errorMsg: res.data.messages});
   };
 
   viewDetail = (id) => this.props.history.push(FILE_DETAIL_ROUTE(id));
 
   render() {
-    const {tableData, loading, errorMsg} = this.state;
+    const {tableData, loading} = this.state;
 
     const tableOptions = {
       filterType: "checkbox",
@@ -95,8 +91,8 @@ class DeskFiles extends Component {
 
     return (
         <>
-          {loading ? <LoadingView/> : files}
-          {errorMsg && <ErrorHandler messages={errorMsg}/>}
+          {this.global.loading ? <LoadingView/> : files}
+          {this.global.errorMsg && <ErrorHandler/>}
         </>
     )
   }
