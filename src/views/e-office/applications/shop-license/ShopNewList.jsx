@@ -29,6 +29,9 @@ class ShopNewList extends React.Component {
     openTakeFile: false,
     openViewDialog: false,
     loading: true,
+
+    lat:0,
+    lng:0
   };
 
   componentDidMount() {

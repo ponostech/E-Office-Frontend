@@ -66,9 +66,21 @@ class GMapDialog extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    const lat = nextProps.lat;
-    const lng = nextProps.lng;
+  // componentWillReceiveProps(nextProps, nextContext) {
+  //   const lat = nextProps.lat;
+  //   const lng = nextProps.lng;
+  //   const center = {
+  //     lat,
+  //     lng
+  //   };
+  //   if (lat && lng) {
+  //     this.setState({lat,lng,center})
+  //   }
+  // }
+
+  componentDidMount() {
+    const lat = this.props.lat;
+    const lng = this.props.lng;
     const center = {
       lat,
       lng
@@ -77,6 +89,7 @@ class GMapDialog extends Component {
       this.setState({lat,lng,center})
     }
   }
+
 
   confirm = (e) => {
     console.log(e);
