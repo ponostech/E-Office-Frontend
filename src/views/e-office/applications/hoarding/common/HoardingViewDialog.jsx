@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {IconButton, DialogContent} from "@material-ui/core";
+import { IconButton, DialogContent, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import {Dialog, Slide, Grid, Card, Button, Toolbar, AppBar, Typography, List, DialogActions} from "@material-ui/core";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import DetailViewRow from "../../../common/DetailViewRow";
 import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
+import { AttachFile } from "@material-ui/icons";
 
 const styles = {
   appBar: {
@@ -12,6 +13,9 @@ const styles = {
   },
   flex: {
     flex: 1
+  },
+  docsItem: {
+    cursor: 'pointer',
   },
   editor: {
     minHeight: 200
@@ -23,9 +27,22 @@ function Transition(props) {
 }
 
 class HoardingViewDialog extends Component {
+  openDocs = (url) => {
+    window.open(url).focus();
+  };
+
   render() {
     console.log(this.props);
     const {classes, data} = this.props;
+
+    const list = data.documents.map(val =>
+      <ListItem className={classes.docsItem} onClick={() => this.openDocs(val.path)}>
+        <ListItemIcon>
+          <AttachFile/>
+        </ListItemIcon>
+        <ListItemText primary={val.name}/>
+      </ListItem>);
+
     return (
         <Dialog
             fullScreen
@@ -72,21 +89,10 @@ class HoardingViewDialog extends Component {
               <Grid item md>
                 <List>
                   <Card>
-                    <DetailViewRow primary="Name of Applicant" secondary={data.applicant.advertiser.name}/>
-                    <DetailViewRow primary="Type of Applicant"
-                                   secondary={data.applicant.advertiser.type.toUpperCase()}/>
-                    <DetailViewRow primary="Address of Applicant" secondary={data.applicant.advertiser.address}/>
-                    <DetailViewRow primary="Phone No. of Applicant" secondary={data.applicant.phone_no}/>
-                    <DetailViewRow primary="Email of Applicant" secondary={data.applicant.email}/>
-                    <DetailViewRow primary="Photo of Applicant" secondary={data.applicant.photo}/>
-                    <DetailViewRow primary="License No. of Applicant" secondary={data.applicant.advertiser.license_no}/>
-                    <DetailViewRow primary="File Number" secondary={data.file.number}/>
-                    <DetailViewRow primary="File Subject" secondary={data.file.subject}/>
-                    <DetailViewRow primary="Date of Application"
-                                   secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
-                    <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
-                    {data.file.desk && <DetailViewRow primary="File Location"
-                                                      secondary={data.file.desk.staff.name + " (" + data.file.desk.staff.designation + ")"}/>}
+                    <ListItem>
+                      <Typography variant="subtitle1">Documents</Typography>
+                    </ListItem>
+                   {list.length ? list : <ListItem><ListItemText primary="No Documents"/></ListItem>}
                   </Card>
                 </List>
               </Grid>

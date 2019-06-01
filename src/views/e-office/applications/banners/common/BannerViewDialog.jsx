@@ -93,8 +93,8 @@ class BannerViewDialog extends Component {
                             <TableCell>{item.length}</TableCell>
                             <TableCell>{item.height}</TableCell>
                             <TableCell>{item.locations}</TableCell>
-                            <TableCell>{item.from}</TableCell>
-                            <TableCell>{item.to}</TableCell>
+                            <TableCell>{moment(item.from).format("Do MMMM YYYY")}</TableCell>
+                            <TableCell>{moment(item.to).format("Do MMMM YYYY")}</TableCell>
                             <TableCell>
                               {diff}
                             </TableCell>
