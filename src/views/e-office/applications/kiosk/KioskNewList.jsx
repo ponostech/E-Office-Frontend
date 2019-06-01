@@ -5,12 +5,14 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import {KIOSK_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
+import { KIOSK_LIST, FILE_TAKE, GET_STAFF, HOARDING_LIST } from "../../../../config/ApiRoutes";
 import KioskViewDialog from "./common/KioskViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
+import GMapDialog from "../../../../components/GmapDialog";
+import ErrorHandler from "../../../common/StatusHandler";
 
 const styles = {
   button: {},
@@ -28,6 +30,8 @@ class KioskNewList extends React.Component {
     openTakeFile: false,
     openViewDialog: false,
     loading: true,
+    errorMsg: '',
+    openMap: false,
   };
 
   componentDidMount() {
@@ -36,15 +40,24 @@ class KioskNewList extends React.Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(KIOSK_LIST, {params: {status: 'new'}}).then(res => this.processResult(res));
+  getData = () => {
+    axios.get(KIOSK_LIST, {params: {status: 'new'}})
+      .then(res => this.processResult(res))
+      .catch(err => this.setState({errorMsg: err.toString()}))
+      .then(res => {
+        this.setState({loading: false});
+        this.doLoad(false)
+      })
+  };
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, tableData: res.data.data.kiosk_applications});
-    this.doLoad(false);
+    else this.setState({errorMsg: res.data.messages});
   };
 
-  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
-
+  getStaffs = () => {
+    axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
+  };
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
@@ -65,7 +78,9 @@ class KioskNewList extends React.Component {
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
   render() {
-    const {loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
+    const {classes} = this.props;
+    const {errorMsg} = this.state;
+    const {loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -98,6 +113,13 @@ class KioskNewList extends React.Component {
         }
       },
       {
+        name: 'file',
+        label: "FILE LOCATION",
+        options: {
+          customBodyRender: value => value.desk.staff.name + " (" + value.desk.staff.designation + ")"
+        }
+      },
+      {
         name: "id",
         label: "ACTION",
         options: {
@@ -106,6 +128,8 @@ class KioskNewList extends React.Component {
           customBodyRender: (value, tableMeta) => {
             const {rowIndex} = tableMeta;
             let data = tableData[rowIndex];
+            const lat = Number(data.kiosk.latitude);
+            const lng = Number(data.kiosk.longitude);
             return (
               <div>
                 <Tooltip title="View File">
@@ -114,6 +138,9 @@ class KioskNewList extends React.Component {
                     <Icon fontSize="small">folder</Icon>
                   </IconButton>
                 </Tooltip>
+                <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                  <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
+                </IconButton>
                 <IconButton color="primary" size="small"
                             aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                   <Icon fontSize="small">remove_red_eye</Icon>
@@ -137,7 +164,7 @@ class KioskNewList extends React.Component {
       <>
         {loading ? <LoadingView/> : <Grid item xs={12}>
           <MUIDataTable
-            title={"Hoarding: List of New Application"}
+            title={"Kiosk: List of New Application"}
             data={tableData}
             columns={tableColumns}
             options={tableOptions}
@@ -146,8 +173,12 @@ class KioskNewList extends React.Component {
 
         {openViewDialog &&
         <KioskViewDialog open={openViewDialog} close={this.closeViewDialog}
-                            data={singleData}/>}
+                         data={singleData}/>}
 
+        {openMap && <GMapDialog viewMode={true} open={openMap} lat={this.state.lat} lng={this.state.lng}
+                                onClose={() => this.setState({openMap: false})}
+                                isMarkerShown={true}
+        />}
         {openAssignment && staffs &&
         <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
                         onClose={this.closeAssignment} file={file}
@@ -157,6 +188,7 @@ class KioskNewList extends React.Component {
         <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                        onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                        onConfirm={this.confirmTakeFile}/>}
+        {errorMsg && <ErrorHandler messages={errorMsg} onClose={this.closeStatus}/>}
       </>
     );
   }
