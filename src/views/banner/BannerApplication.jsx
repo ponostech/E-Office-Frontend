@@ -56,8 +56,7 @@ class BannerApplication extends Component {
     details: "",
     content: "",
     displayType: undefined,
-    signature: undefined,
-    uploadDocuments: [],
+    design:undefined,
     bannerDetails: [],
 
     localCouncils: [],
@@ -169,13 +168,12 @@ class BannerApplication extends Component {
 
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.phoneError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
       || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine) ||
-      this.state.bannerDetails.length === 0 || this.state.signature === undefined;
+      this.state.bannerDetails.length === 0
 
     if (invalid) {
       this.setState({ errorMessage: "Please fill all the required fields" });
       return;
     }
-
     this.sendOtp();
 
   };
@@ -372,39 +370,7 @@ class BannerApplication extends Component {
                             onChange={this.handleChange.bind(this)}
                             label={BannerViewModel.DETAILS}/>
                         </GridItem>
-                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                          <TextField
-                            value={this.state.content}
-                            name={"content"}
-                            multiline={true}
-                            rows={3}
-                            variant={"outlined"}
-                            margin={"dense"}
-                            fullWidth={true}
-                            onBlur={this.handleBlur.bind(this)}
-                            onChange={this.handleChange.bind(this)}
-                            label={BannerViewModel.WORDING}/>
-                        </GridItem>
-                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                          <FileUpload applicationName={APPLICATION_NAME.BANNER}
-                                      document={{
-                                        id: 1,
-                                        name: "Signature of applicant",
-                                        mandatory: 1,
-                                        mime: "image/*"
-                                      }}
-                                      onUploadSuccess={(data) => {
-                                        let temp = {
-                                          name: "signature",
-                                          path: data.location
-                                        };
-                                        this.setState({
-                                          signature: temp
-                                        });
-                                      }} onUploadFailure={(err) => {
-                            console.log(err);
-                          }}/>
-                        </GridItem>
+
                         <GridItem className={classes.root} xs={12} sm={12} md={12}>
                           <Typography style={{ marginTop: 20 }} variant={"h7"}> Details of Advertisement</Typography>
                           <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
@@ -439,12 +405,6 @@ class BannerApplication extends Component {
                       </GridContainer>
                     </CardContent>
                     <CardActions style={{ justifyContent: "flex-end" }}>
-                      nameError: "",
-                      phoneError: "",
-                      typeError: "",
-                      addressError: "",
-                      localCouncilError: "",
-                      displayTypeError: "",
                       <div>
                         <Button name={"primary"}
                                 disabled={
@@ -454,7 +414,6 @@ class BannerApplication extends Component {
                                   Boolean(this.state.address === "") ||
                                   Boolean(this.state.localCouncil === undefined) ||
                                   Boolean(this.state.displayType === undefined) ||
-                                  Boolean(this.state.signature === undefined) ||
                                   !this.state.agree
                                 }
                                 color={"primary"} variant={"outlined"}

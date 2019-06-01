@@ -39,7 +39,7 @@ class App extends Component {
         <Router history={hist}>
           <Switch>
             <AdvertiserRoute path={"/dashboard/advertiser"} component={AdvertiserDashboard}/>
-            <StaffRoute path={"/e-office"} component={OfficeDashboard}/>
+            <Route path={"/e-office"} component={OfficeDashboard}/>
             <Route path={"/"} render={(e) => <LandingPage/>}/>
             {/*<Route path={"/dashboard/advertiser"} render={(e) => <AdvertiserDashboard setUser={this.setUser.bind(this)} currentUser={this.state.currentUser}/>}/>*/}
           </Switch>
