@@ -48,6 +48,15 @@ class KioskProposedLists extends Component {
   render() {
     const tableColumns = [
       {
+        name: "created_at",
+        label: "DATE",
+        options: {
+          customBodyRender: (date) => {
+            const d = moment(date).format("Do MMM YYY");
+            return d.toString();
+          }
+        }
+      }, {
         name: "file",
         label: "FILE NUMBER",
         options: {
@@ -63,41 +72,23 @@ class KioskProposedLists extends Component {
             return (value.subject);
           }
         }
-      }, {
+      },  {
         name: "kiosk",
-        label: "DETAILS",
+        label: "PURPOSED LOCATION",
         options: {
           customBodyRender: (kiosk, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
-            let view = (
-              <>
-                <ul>
-                  <li><strong>LOCATION</strong> {kiosk.address}</li>
-                </ul>
-              </>
-            );
-
-            return (view);
+            return (kiosk.address);
           }
         }
       }, {
         name: "kiosk",
-        label: "COLLAPSIBLE",
+        label: "LOCAL COUNCIL",
         options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return value ? "Yes" : "No";
+          customBodyRender: (kiosk, tableMeta, updateValue) => {
+            return (kiosk.local_council.name);
           }
         }
-      }, {
-        name: "created_at",
-        label: "DATE",
-        options: {
-          customBodyRender: (date) => {
-            const d = moment(date).format("DD/MM/YYYY");
-            return d.toString();
-          }
-        }
-      }, {
+      },  {
         name: "kiosk",
         label: "ACTIONS",
         options: {
@@ -131,7 +122,8 @@ class KioskProposedLists extends Component {
     ];
 
     const tableOptions = {
-      filterType: "checkbox",
+      filterType: "dropdown",
+      responsive: "scroll",
       rowsPerPage: 15,
       serverSide: false,
       selectableRows: false,

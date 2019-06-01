@@ -20,7 +20,7 @@ class KioskWithdrawnList extends Component {
     openApply: false,
     errorMessage: "",
 
-    loading:true
+    loading: true
   };
 
   componentDidMount() {
@@ -31,15 +31,24 @@ class KioskWithdrawnList extends Component {
       errorMessage => this.setState({ errorMessage }),
       kiosks => this.setState({ kiosks }))
       .finally(() => {
-        this.setState({loading:false});
-        doLoadFinish()
+        this.setState({ loading: false });
+        doLoadFinish();
       });
   }
 
 
   render() {
     const tableColumns = [
-       {
+      {
+        name: "created_at",
+        label: "DATE",
+        options: {
+          customBodyRender: (date) => {
+            const d = moment(date).format("Do MMM YYY");
+            return d.toString();
+          }
+        }
+      }, {
         name: "file",
         label: "FILE NUMBER",
         options: {
@@ -57,36 +66,18 @@ class KioskWithdrawnList extends Component {
         }
       }, {
         name: "kiosk",
-        label: "DETAILS",
+        label: "PURPOSED LOCATION",
         options: {
           customBodyRender: (kiosk, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
-            let view = (
-              <>
-                <ul>
-                  <li><strong>LOCATION</strong> {kiosk.address}</li>
-                </ul>
-              </>
-            );
-
-            return (view);
+            return (kiosk.address);
           }
         }
       }, {
         name: "kiosk",
-        label: "COLLAPSIBLE",
+        label: "LOCAL COUNCIL",
         options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return value ? "Yes" : "No";
-          }
-        }
-      }, {
-        name: "created_at",
-        label: "Date",
-        options: {
-          customBodyRender: (date) => {
-            const d = moment(date).format("DD/MM/YYYY");
-            return d.toString();
+          customBodyRender: (kiosk, tableMeta, updateValue) => {
+            return (kiosk.local_council.name);
           }
         }
       }, {
@@ -114,10 +105,11 @@ class KioskWithdrawnList extends Component {
     ];
 
     const tableOptions = {
-      filterType: "checkbox",
+      filterType: "dropdown",
+      responsive: "scroll",
       rowsPerPage: 15,
       serverSide: false,
-      selectableRows:false,
+      selectableRows: false,
       customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
         return false;
       },

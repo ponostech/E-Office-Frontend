@@ -240,7 +240,6 @@ class FileApplicationDetails extends React.Component {
                     </>: ""
                 }
               </List>
-
               <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)}
                               message={this.state.errorMessage}
                               onClose={e => this.setState({ errorMessage: "" })}/>

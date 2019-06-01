@@ -33,8 +33,8 @@ class DynamicFormPreview extends Component {
   siteVerificationService = new SiteVerificationService();
 
   state = {
-    title: "Title",
-    subTitle: "Subtitle",
+    title: "Site Verification Form Builder",
+    subTitle: "",
     formElements: [],
 
     selectedType: { value: "hoarding", label: "Hoarding site verification" },
@@ -133,8 +133,8 @@ class DynamicFormPreview extends Component {
     );
     return (
       <Card>
-        <CardHeader contentEditable={true} onChange={event => console.log(event)} title={"title"}
-                    subheader={"subheader"} action={
+        <CardHeader  onChange={event => console.log(event)} title={this.state.title}
+                    subheader={this.state.subTitle} action={
           this.props.edit ?<Typography variant={"subtitle1"}> EDIT SITE VERIFICATION ( {this.props.selectedType?this.props.selectedType.value:""})</Typography> :
             <OfficeSelect
               label={"Type of site verification"}

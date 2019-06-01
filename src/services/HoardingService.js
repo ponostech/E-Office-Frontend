@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
 import React from "react";
-import { ErrorToString } from "../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
 export class HoardingService {
 
@@ -30,14 +30,13 @@ export class HoardingService {
     try{
     let res = await axios.post(ApiRoutes.NEW_HOARDING, data, config);
       if (res.data.status) {
-        let msgs = [];
-        res.data.messages.forEach(function(msg) {
-          let temp = <p>{`${msg}.`}</p>;
-          msgs.push(temp);
-        });
-        successCallback(msgs);
+        successCallback(ArrayToString(res.data.messages));
       }else{
-        errorCallback(ErrorToString(res.data.messages));
+        if (res.data.validation_error) {
+          errorCallback(ErrorToString(res.data.messages));
+        } else {
+          errorCallback(ArrayToString(res.data.messages))
+        }
       }
     }catch (e) {
        console.error(e)

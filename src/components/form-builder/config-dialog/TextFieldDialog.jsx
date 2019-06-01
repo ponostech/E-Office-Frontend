@@ -19,15 +19,15 @@ class TextFieldDialog extends Component {
   state = {
     elementType: "Textfield",
     elementConfig:{
-      name: "name",
-      label: "Name",
-      placeholder: "placeholder",
+      name: "",
+      label: "",
+      placeholder: "",
     },
     validation:{
       required: true
     },
     valid:false,
-    value: "Default value",
+    value: "",
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {

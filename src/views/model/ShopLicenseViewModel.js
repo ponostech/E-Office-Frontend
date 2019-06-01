@@ -15,8 +15,8 @@ export class ShopLicenseViewModel {
   static EMAIL = "Email";
   static SHOP_NAME = "Name of Shop or Firm";
   static APPLICANT_TYPE = "Type of Applicant";
-  static TRADE_TYPE = "Name of trade";
-  static ADDRESS = "Place of proposed shop";
+  static TRADE_TYPE = "Name of Trade";
+  static ADDRESS = "Location of Proposed shop";
   static OWNER_ADDRESS = "Address of Applicant";
   static PHONE = "Mobile No";
   static DETAILS = "Details of Business";

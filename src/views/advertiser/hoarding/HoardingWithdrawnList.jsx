@@ -39,8 +39,17 @@ class HoardingWithdrawnList extends Component {
   render() {
     const tableColumns = [
       {
+        name: "created_at",
+        label: "DATE",
+        options: {
+          customBodyRender: (date) => {
+            const d = moment(date).format("Do MMM YYYY");
+            return d.toString();
+          }
+        }
+      }, {
         name: "file",
-        label: "FILE ID",
+        label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             return (value.number);
@@ -54,31 +63,20 @@ class HoardingWithdrawnList extends Component {
             return (value.subject);
           }
         }
-      }, {
+      },  {
         name: "hoarding",
-        label: "DETAILS",
+        label: "PURPOSED LOCATION",
         options: {
           customBodyRender: (hoarding, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
-            const file = this.state.hoardings[rowIndex];
-            let view = (
-              <>
-                <ul>
-                  <li><strong>LOCATION</strong> {hoarding.address}</li>
-                </ul>
-              </>
-            );
-
-            return (view);
+            return (hoarding.address);
           }
         }
       }, {
-        name: "created_at",
-        label: "DATE",
+        name: "hoarding",
+        label: "LOCAL COUNCIL",
         options: {
-          customBodyRender: (date) => {
-            const d = moment(date).format("DD/MM/YYYY");
-            return d.toString();
+          customBodyRender: (hoarding, tableMeta, updateValue) => {
+            return (hoarding.local_council.name);
           }
         }
       }, {
@@ -119,7 +117,7 @@ class HoardingWithdrawnList extends Component {
     ];
 
     const tableOptions = {
-      filterType: "checkbox",
+      filterType: "dropdown",
       rowsPerPage: 15,
       serverSide: false,
       responsive: "scroll",

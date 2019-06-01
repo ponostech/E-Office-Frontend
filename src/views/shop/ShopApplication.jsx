@@ -81,7 +81,6 @@ class ShopApplication extends Component {
     panNo: "",
     premised: "Owned",
     displayType: undefined,
-    signature: undefined,
     passport: undefined,
     latitude: undefined,
     longitude: undefined,
@@ -252,7 +251,7 @@ class ShopApplication extends Component {
   onSubmit = (e) => {
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
       || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined || !this.validateDocument();
+      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine)  || !this.validateDocument();
 
     if (!invalid) {
       this.sendOtp();
@@ -472,7 +471,7 @@ class ShopApplication extends Component {
                               error: Boolean(this.state.addressError),
                               helperText: this.state.addressError,
                               onChange: this.handleChange.bind(this),
-                              label: ShopLicenseViewModel.ADDRESS
+                              label: "Purposed Location of Shop"
                             }
                           }
 
@@ -498,7 +497,7 @@ class ShopApplication extends Component {
                           fullWidth={true}
                           error={Boolean(this.state.coordinateError)}
                           helperText={this.state.coordinateError}
-                          label={"Location of Purposed Shop"}
+                          label={"Coordinate of Purposed Location"}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment position={"end"}>
@@ -523,7 +522,7 @@ class ShopApplication extends Component {
                           onBlur={this.handleSelectBlur.bind(this, "trade")}
                           onChange={this.handleSelect.bind(this, "trade")}
                           ClearAble={true}
-                          label={ShopLicenseViewModel.TRADE_TYPE}
+                          label={"Name of Trade"}
                           options={this.state.trades}/>
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -633,8 +632,8 @@ class ShopApplication extends Component {
                         />
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                        <FileUpload required={true}
-                                    document={{ id: 122, name: "Passport size photo", mime: "image/*" }}
+                        <FileUpload applicationName={APPLICATION_NAME.SHOP}
+                                    document={{ id: 122, mandatory:1, name: "Passport size photo", mime: "image/*" }}
                                     onUploadSuccess={(data) => {
                                       this.setState(state => {
                                         state.passport = {
@@ -648,7 +647,7 @@ class ShopApplication extends Component {
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <FormControl fullWidth={true} margin={"dense"}>
-                          <FormLabel>Whether Premises owned or leased?</FormLabel>
+                          <FormLabel>Whether Premises Owned or Leased?</FormLabel>
                           <RadioGroup
                             name={"premised"}
                             row={true}
@@ -662,21 +661,7 @@ class ShopApplication extends Component {
                           </RadioGroup>
                         </FormControl>
                       </GridItem>
-                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                        <FileUpload required={true}
-                                    document={{ id: 344, name: "Signature", mime: "image/*" }}
-                                    onUploadSuccess={(data) => {
-                                      this.setState(state => {
-                                        state.signature = {
-                                          id: data.id,
-                                          name: "signature",
-                                          path: data.location
-                                        };
-                                      });
-                                    }} onUploadFailure={(err) => {
-                          console.log(err);
-                        }}/>
-                      </GridItem>
+
                       <GridItem className={classes.root} xs={12} sm={12} md={12}>
                         <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                       </GridItem>
@@ -734,7 +719,7 @@ class ShopApplication extends Component {
                         <Button name={"primary"} disabled={
                           !Boolean(this.state.name) || !Boolean(this.state.type) || !Boolean(this.state.address)
                           || !Boolean(this.state.coordinate) || !Boolean(this.state.phone) || !Boolean(this.state.shopName)
-                          || Boolean(this.state.prestine) || this.state.signature === undefined ||
+                          || Boolean(this.state.prestine)  ||
                           !this.state.agree || this.state.passport === undefined
                         }
                                 color={"primary"} variant={"outlined"}

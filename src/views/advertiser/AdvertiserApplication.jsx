@@ -48,7 +48,6 @@ class AdvertiserApplication extends Component {
       password: "",
       confirmPassword: "",
       address: "",
-      signature: undefined,
       documents: [],
       documentsUpload: [],
 
@@ -102,7 +101,7 @@ class AdvertiserApplication extends Component {
 
   isInvalid = () => {
     return this.state.prestine || !!this.state.nameError || !!this.state.emailError || !!this.state.addressError || !!this.state.passwordError || !!this.state.confirmPasswordError
-      || !!this.state.phoneError || this.state.signature === undefined || this.state.type === undefined || !this.validateDocument();
+      || !!this.state.phoneError  || this.state.type === undefined || !this.validateDocument();
   };
 
   submit = (e) => {
@@ -267,7 +266,7 @@ class AdvertiserApplication extends Component {
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <OfficeSelect value={this.state.type}
-                                      label={"Type of applicant"}
+                                      label={"Type of Applicant"}
                                       name={"type"}
                                       variant={"outlined"}
                                       margin={"dense"}
@@ -400,20 +399,7 @@ class AdvertiserApplication extends Component {
                             }
                           }}/>
                       </GridItem>
-                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                        <FileUpload applicationName={APPLICATION_NAME.ADVERTISER}
-                                    document={{ id: 40, name: "Signature of Applicant", mime: "image/*", mandatory: 1 }}
-                                    onUploadSuccess={(data) => {
-                                      let temp = {
-                                        document_id: 1,
-                                        name: "signature",
-                                        path: data.location
-                                      };
-                                      this.setState({ signature: temp });
-                                    }} onUploadFailure={(data) => {
-                          console.log(data);
-                        }}/>
-                      </GridItem>
+
                       <GridItem xs={12} sm={12} md={12}>
                         <Typography style={{ marginTop: 10, marginBottom: 10 }} variant={"h5"}>
                           Upload Document(s)
