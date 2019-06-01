@@ -134,7 +134,7 @@ class KioskAvailableList extends Component {
     ];
 
     const tableOptions = {
-      filterType: "checkbox",
+      filterType: "dropdown",
       rowsPerPage: 15,
       serverSide: false,
       selectableRows: false,

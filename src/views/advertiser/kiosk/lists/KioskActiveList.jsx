@@ -104,7 +104,8 @@ class KioskActiveList extends Component {
     ];
 
     const tableOptions = {
-      filterType: "checkbox",
+      filterType: "dropdown",
+      responsive: "scroll",
       rowsPerPage: 15,
       serverSide: false,
       selectableRows: false,

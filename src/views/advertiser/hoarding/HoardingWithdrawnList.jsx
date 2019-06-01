@@ -117,7 +117,7 @@ class HoardingWithdrawnList extends Component {
     ];
 
     const tableOptions = {
-      filterType: "checkbox",
+      filterType: "dropdown",
       rowsPerPage: 15,
       serverSide: false,
       responsive: "scroll",
