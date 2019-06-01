@@ -4,12 +4,12 @@ export const FILE_STATUS = {
   ACTIVE: "active"
 };
 export const APPLICATION_NAME = {
-  HOARDING: "hoarding",
-  KIOSK: "kiosk",
-  BANNER: "banner",
-  SHOP: "shop",
-  HOTEL: "hotel",
-  ADVERTISER: "advertiser"
+  HOARDING: "HOARDING",
+  KIOSK: "KIOSK",
+  BANNER: "BANNER",
+  SHOP: "SHOP",
+  HOTEL: "HOTEL",
+  ADVERTISER: "ADVERTISER"
 };
 export const FormatStaff = (staffs) => {
   const user_id = JSON.parse(localStorage.getItem('current_user')).id;
