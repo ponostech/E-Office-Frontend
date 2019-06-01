@@ -58,7 +58,7 @@ class ShopViewDialog extends Component {
               <Close/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-              View Hotel/Lodging Application
+              View Shop Application
             </Typography>
             <Button onClick={this.props.close} color="inherit">
               Close
@@ -73,6 +73,7 @@ class ShopViewDialog extends Component {
                   <DetailViewRow primary="Name of Applicant" secondary={data.owner}/>
                   <DetailViewRow primary="Type of Applicant" secondary={data.type.toUpperCase()}/>
                   <DetailViewRow primary="Owner Address" secondary={data.owner_address}/>
+                  <DetailViewRow primary="Local Council" secondary={data.local_council.name}/>
                   <DetailViewRow primary="Mobile" secondary={data.phone}/>
                   <DetailViewRow primary="Owner Type" secondary={data.type}/>
                   <DetailViewRow primary="Shop Name" secondary={data.name}/>
@@ -80,11 +81,11 @@ class ShopViewDialog extends Component {
                   <DetailViewRow primary="Date of Application"
                                  secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
                   <DetailViewRow primary="Details of Business" secondary={data.details}/>
-                  <DetailViewRow primary="Email" secondary={data.email}/>
-                  <DetailViewRow primary="CST No" secondary={data.cst_no}/>
-                  <DetailViewRow primary="GST No" secondary={data.gst_no}/>
-                  <DetailViewRow primary="TIN No" secondary={data.tin_no}/>
-                  <DetailViewRow primary="PAN No" secondary={data.pan_no}/>
+                  <DetailViewRow primary="Email" secondary={data.email ? data.email : "NA"}/>
+                  <DetailViewRow primary="CST No" secondary={data.cst_no ? data.cst_no : "NA"}/>
+                  <DetailViewRow primary="GST No" secondary={data.gst_no ? data.gst_no : "NA"}/>
+                  <DetailViewRow primary="TIN No" secondary={data.tin_no ? data.tin_no : "NA"}/>
+                  <DetailViewRow primary="PAN No" secondary={data.pan_no ? data.pan_no : "NA"}/>
                   <DetailViewRow primary="Premise Type" secondary={data.premise_type}/>
                   <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
 
