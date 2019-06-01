@@ -88,7 +88,6 @@ class HotelApplication extends Component {
     panNo: "",
     premised: "Owned",
     displayType: undefined,
-    signature: undefined,
     passport: undefined,
     latitude: undefined,
     longitude: undefined,
@@ -254,7 +253,7 @@ class HotelApplication extends Component {
   onSubmit = (e) => {
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
       || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || this.state.signature === undefined
+      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine)
       || !this.validateDocument();
 
     if (!invalid) {
@@ -471,7 +470,7 @@ class HotelApplication extends Component {
                                 error: Boolean(this.state.addressError),
                                 helperText: this.state.addressError,
                                 onChange: this.handleChange.bind(this),
-                                label: ShopLicenseViewModel.ADDRESS
+                                label: "Purposed Location of Hotel/Lodge"
                               }
                             }
 
@@ -497,7 +496,7 @@ class HotelApplication extends Component {
                             fullWidth={true}
                             error={Boolean(this.state.coordinateError)}
                             helperText={this.state.coordinateError}
-                            label={ShopLicenseViewModel.ADDRESS}
+                            label={"Coordinate of Purposed Location"}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position={"end"}>
@@ -688,7 +687,7 @@ class HotelApplication extends Component {
                         </GridItem>
                         <GridItem className={classes.root} xs={12} sm={12} md={6}>
                           <FormControl fullWidth={true} margin={"dense"}>
-                            <FormLabel>Whether Premises owned or leased?</FormLabel>
+                            <FormLabel>Whether Premises Owned or Leased?</FormLabel>
                             <RadioGroup
                               name={"premised"}
                               row={true}
@@ -703,8 +702,8 @@ class HotelApplication extends Component {
                           </FormControl>
                         </GridItem>
                         <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                          <FileUpload required={true}
-                                      document={{ id: 122, name: "Passport size photo", mime: "image/*" }}
+                          <FileUpload applicationName={APPLICATION_NAME.HOTEL}
+                                      document={{ id: 122,mandatory:1, name: "Passport size photo", mime: "image/*" }}
                                       onUploadSuccess={(data) => {
                                         this.setState(state => {
                                           state.passport = {
@@ -714,23 +713,6 @@ class HotelApplication extends Component {
                                           };
                                         });
                                       }} onUploadFailure={(err) => {
-                            console.log(err);
-                          }}/>
-                        </GridItem>
-                        <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                          <FileUpload
-                            applicationName={APPLICATION_NAME.HOTEL}
-                            required={true}
-                            document={{ id: 344, name: "Signature", mime: "image/*" }}
-                            onUploadSuccess={(data) => {
-                              this.setState(state => {
-                                state.signature = {
-                                  id: 344,
-                                  name: "signature",
-                                  path: data.location
-                                };
-                              });
-                            }} onUploadFailure={(err) => {
                             console.log(err);
                           }}/>
                         </GridItem>
@@ -790,7 +772,7 @@ class HotelApplication extends Component {
                           <Button name={"primary"} disabled={
                             !Boolean(this.state.name) || !Boolean(this.state.type) || !Boolean(this.state.address)
                             || !Boolean(this.state.coordinate) || !Boolean(this.state.phone) || !Boolean(this.state.shopName)
-                            || !Boolean(this.state.estd) || !Boolean(this.state.prestine) || this.state.signature === undefined ||
+                            || !Boolean(this.state.estd) || !Boolean(this.state.prestine)  ||
                             !this.state.agree || this.state.passport === undefined
                           }
                                   color={"primary"} variant={"outlined"}

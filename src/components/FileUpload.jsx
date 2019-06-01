@@ -106,7 +106,7 @@ class FileUpload extends Component {
                     let item = e.target.files[0];
 
                     let blob = item.slice(0, item.size, item.type);
-                    let newName = file.name.toLowerCase() + "-" + uniqid() ;
+                    let newName =applicationName+ Date.now()+ "-" + uniqid() ;
                     let newFile = new File([blob], newName, { type: item.type });
 
                     let temp = file;

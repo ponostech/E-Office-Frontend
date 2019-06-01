@@ -131,8 +131,8 @@ class HoardingUnderProcessList extends React.Component {
           customBodyRender: (value, tableMeta) => {
             const {rowIndex} = tableMeta;
             let data = tableData[rowIndex];
-            const lat = Number(data.latitude);
-            const lng = Number(data.longitude);
+            const lat = Number(data.hoarding.latitude);
+            const lng = Number(data.hoarding.longitude);
             return (
                 <div>
                   <Tooltip title="View File">

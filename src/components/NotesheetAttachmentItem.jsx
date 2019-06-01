@@ -16,12 +16,11 @@ import DeleteIcon from "@material-ui/icons/DeleteForeverOutlined";
 var uniqid = require("uniqid");
 const config = {
   bucketName: BUCKET_NAME,
-  dirName: "office/notesheet", /* optional */
+  dirName: "office/notesheet-attachments", /* optional */
   region: REGION,
   accessKeyId: S3_ACCESS_KEY,
   secretAccessKey: S3_SECRET_ACCESS_KEY
 };
-
 class NotesheetAttachmentItem extends Component {
   state = {
     notesheet_id: "",
@@ -45,11 +44,11 @@ class NotesheetAttachmentItem extends Component {
 
     if (file) {
       let blob = file.slice(0, file.size, file.type);
-      let newName = new Date().getMilliseconds() + "-" + uniqid() + file.name;
+      let newName = Date.now() + "-" + uniqid();
       let newFile = new File([blob], newName, { type: file.type });
 
       let loc = moment().format("MM-YYYY");
-      config.dirName += "/" + loc;
+      config.dirName=`office/notesheet-attachments/${loc}/`;
 
       this.setState({ file: newFile });
 

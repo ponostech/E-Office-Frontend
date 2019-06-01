@@ -39,8 +39,17 @@ class KioskActiveList extends Component {
   render() {
     const tableColumns = [
       {
+        name: "created_at",
+        label: "DATE",
+        options: {
+          customBodyRender: (date) => {
+            const d = moment(date).format("Do MMM YYY");
+            return d.toString();
+          }
+        }
+      }, {
         name: "file",
-        label: "FILE ID",
+        label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
             return (value.number);
@@ -54,29 +63,20 @@ class KioskActiveList extends Component {
             return (value.subject);
           }
         }
-      }, {
+      },  {
         name: "kiosk",
-        label: "DETAILS",
+        label: "PURPOSED LOCATION",
         options: {
           customBodyRender: (kiosk, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
-            let view = (
-              <>
-                <ul>
-                  <li><strong>LOCATION</strong> {kiosk.address}</li>
-                </ul>
-              </>
-            );
-            return (view);
+            return (kiosk.address);
           }
         }
       }, {
-        name: "created_at",
-        label: "Date",
+        name: "kiosk",
+        label: "LOCAL COUNCIL",
         options: {
-          customBodyRender: (date) => {
-            const d = moment(date).format("DD/MM/YYYY");
-            return d.toString();
+          customBodyRender: (kiosk, tableMeta, updateValue) => {
+            return (kiosk.local_council.name);
           }
         }
       }, {
@@ -104,7 +104,8 @@ class KioskActiveList extends Component {
     ];
 
     const tableOptions = {
-      filterType: "checkbox",
+      filterType: "dropdown",
+      responsive: "scroll",
       rowsPerPage: 15,
       serverSide: false,
       selectableRows: false,
