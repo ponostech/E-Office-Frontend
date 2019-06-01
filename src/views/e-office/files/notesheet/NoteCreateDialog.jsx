@@ -111,7 +111,7 @@ class NoteCreateDialog extends React.Component {
         action: this.state.action.value,
         priority: this.state.priority.value,
         draft: 1,
-        attachments: this.state.files
+        attachments: this.state.attachments
       };
 
       if (this.state.fixedDate) data.fixed_date = moment(this.state.fixedDate).format("YYYY-MM-DD");
