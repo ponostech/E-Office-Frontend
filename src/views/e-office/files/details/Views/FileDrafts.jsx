@@ -42,7 +42,7 @@ class FileDrafts extends Component {
   render() {
     const {loading, errorMsg, data} = this.state;
     const content = data.length === 0 ? "No draft" :
-        data.map(value => <DetailViewRow value={value} click={this.singleRowClicked}
+        data.map(value => <DetailViewRow actionIcon={true } value={value} click={this.singleRowClicked}
                                          primary={"Draft No. " + value.id} secondary={this.formatCreated(value)}/>);
     return (
         <>

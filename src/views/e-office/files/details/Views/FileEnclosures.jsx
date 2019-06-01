@@ -6,7 +6,7 @@ import {Attachment} from "@material-ui/icons";
 const fileEnclosures = (props) => {
   var fake = [];
   for (let i = 1; i <= 10; i++) {
-    fake.push(<DetailViewRow icon={<Attachment/>} primary={"Enclosure " + i} secondary="File No."/>);
+    fake.push(<DetailViewRow icon={<Attachment/>} actionIcon={true} primary={"Enclosure " + i} secondary="File No."/>);
   }
   return (
       <>

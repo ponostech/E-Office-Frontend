@@ -28,7 +28,7 @@ const ApplicationDetailsDialog = (props) => {
       <Grid container>
         <Grid item md>{leftRow}</Grid>
         <Grid item md>
-          <List subheader={<ListSubheader>Documents</ListSubheader>}>{documents}</List></Grid>
+          <List subheader={<ListSubheader>Documents</ListSubheader>}><Divider/>{documents}</List></Grid>
       </Grid>;
 
   return (
@@ -54,12 +54,15 @@ export const openDocs = (url) => window.open(url).focus();
 
 export const FileViewRow = (props) => {
   return (
-      <ListItem onClick={() => openDocs(props.data.path)}>
-        <ListItemIcon>
-          <AttachFile/>
-        </ListItemIcon>
-        <ListItemText primary={props.data.name}/>
-      </ListItem>
+      <>
+        <ListItem onClick={() => openDocs(props.data.path)}>
+          <ListItemIcon>
+            <AttachFile/>
+          </ListItemIcon>
+          <ListItemText primary={props.data.name}/>
+        </ListItem>
+        <Divider/>
+      </>
   )
 };
 

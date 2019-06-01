@@ -48,10 +48,10 @@ class fileDraftCancels extends React.Component {
 
   render() {
     const {loading, errorMsg, successMsg, data, showDetails, singleData} = this.state;
-    const content = data.length === 0 ? "No draft" : data.map(value => <DetailViewRow value={value}
-                                                                                      click={this.openDetails}
-                                                                                      primary={"Draft Cancellation Order No. " + value.id}
-                                                                                      secondary={this.formatCreated(value)}/>);
+    const content = data.length === 0 ? "No draft" :
+        data.map(value => <DetailViewRow value={value} click={this.openDetails} actionIcon={true}
+                                         primary={"Draft Cancellation Order No. " + value.id}
+                                         secondary={this.formatCreated(value)}/>);
     return (
         <>
           <CardHeader title="List of Drafts Cancellation" subheader="click on the list item to see details"/>
