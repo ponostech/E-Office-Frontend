@@ -32,7 +32,6 @@ export class HotelService {
       pan_no: state.panNo,
       premise_type: state.premised,
       display_type: state.displayType,
-      signature: state.signature.path,
       passport: state.passport.path,
       documents: state.uploadDocuments
     };

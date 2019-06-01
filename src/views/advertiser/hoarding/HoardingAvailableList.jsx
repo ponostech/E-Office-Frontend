@@ -136,9 +136,10 @@ class HoardingAvailableList extends Component {
     ];
 
     const tableOptions = {
-      filterType: "checkbox",
+      filterType: "dropdown",
       rowsPerPage: 15,
       serverSide: false,
+      resposive: "scroll",
       selectableRows: false,
       customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
         return false;
