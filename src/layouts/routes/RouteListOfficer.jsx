@@ -81,10 +81,10 @@ const routes = (props) => {
         <Route exact path={OfficeRoutes.ADVERTISER_CANCEL_LIST} render={e => <AdvertiserCanceledList/>}/>
 
         {/*Hoarding*/}
-        <Route exact path={OfficeRoutes.NEW_HOARDINGS} render={e => <HoardingApplications/>}/>
-        <Route exact path={OfficeRoutes.UNDER_PROCESS_HOARDINGS} render={e => <UnderProcessHoarding/>}/>
-        <Route exact path={OfficeRoutes.REJECTED_HOARDINGS} render={e => <RejectedHoardingApplications/>}/>
-        <Route exact path={OfficeRoutes.APPROVED_HOARDINGS} render={e => <ApprovedHoarding/>}/>
+        <Route exact path={OfficeRoutes.NEW_HOARDINGS} component={HoardingApplications}/>
+        <Route exact path={OfficeRoutes.UNDER_PROCESS_HOARDINGS} component={UnderProcessHoarding}/>
+        <Route exact path={OfficeRoutes.REJECTED_HOARDINGS} component={RejectedHoardingApplications}/>
+        <Route exact path={OfficeRoutes.APPROVED_HOARDINGS} component={ApprovedHoarding}/>
         <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
 
         {/*Kiosk*/}

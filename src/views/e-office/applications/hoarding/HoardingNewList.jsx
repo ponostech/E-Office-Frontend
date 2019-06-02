@@ -5,14 +5,14 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Grid, Icon, IconButton, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import {FILE_TAKE, GET_STAFF, HOARDING_LIST} from "../../../../config/ApiRoutes";
+import {FILE_CALL, FILE_TAKE, GET_STAFF, HOARDING_LIST} from "../../../../config/ApiRoutes";
 import HoardingViewDialog from "./common/HoardingViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
-import ErrorHandler from "../../../common/StatusHandler";
+import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
 
 const styles = {
   button: {},
@@ -20,6 +20,8 @@ const styles = {
 };
 
 class HoardingNewList extends Component {
+  source = axios.CancelToken.source();
+
   state = {
     tableData: [],
     staffs: null,
@@ -37,10 +39,17 @@ class HoardingNewList extends Component {
     this.getStaffs();
   }
 
+  componentWillUnmount() {
+    this.source.cancel('Api is being canceled');
+  }
+
   getData = () => {
-    axios.get(HOARDING_LIST, {params: {status: 'new'}})
+    axios.get(HOARDING_LIST, {params: {status: 'new'}, cancelToken: this.source.token})
         .then(res => this.processResult(res))
-        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .catch(err => {
+          if (axios.isCancel(err)) console.error('Request cancelled');
+          else this.setGlobal({errorMsg: err.toString()})
+        })
         .then(() => this.setGlobal({loading: false}))
   };
 
@@ -49,11 +58,13 @@ class HoardingNewList extends Component {
     else this.setGlobal({errorMsg: res.data.messages});
   };
 
-  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
+  getStaffs = () => axios.get(GET_STAFF, {cancelToken: this.source.token})
+      .then(res => this.setState({staffs: res.data.data.staffs}));
 
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
+
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
@@ -62,11 +73,21 @@ class HoardingNewList extends Component {
 
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
-      .then(res => {
-        this.setState({openTakeFile: false});
-        this.props.history.push(DESK);
-      });
+  confirmTakeFile = () => {
+    this.setState({openTakeFile: false});
+    this.confirmTakeCall();
+  };
+
+  confirmTakeCall = () => {
+    axios.post(FILE_CALL(this.state.singleData.file.id), {}, {cancelToken: this.source.token})
+        .then(() => {
+          this.setGlobal({successMsg: `File No. ${this.state.singleData.file.number} called successfully`})
+              .then(() => this.props.history.push(DESK))
+        })
+        .catch(err => {
+          if (!axios.isCancel(err)) this.setGlobal({errorMsg: err.toString()})
+        });
+  };
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
@@ -188,7 +209,6 @@ class HoardingNewList extends Component {
           <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                          onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                          onConfirm={this.confirmTakeFile}/>}
-          {this.global.errorMsg && <ErrorHandler/>}
         </>
     );
   }

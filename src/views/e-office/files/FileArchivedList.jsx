@@ -9,7 +9,6 @@ import FileSendDialog from "../../common/SendDialog";
 import moment from "moment";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import LoadingView from "../../common/LoadingView";
-import ErrorHandler, {SuccessHandler} from "../../common/StatusHandler";
 
 class FileNewList extends Component {
     state = {
@@ -76,8 +75,6 @@ class FileNewList extends Component {
             setTimeout(() => this.props.history.push(DESK), 2000);
         }
     };
-
-    onStatusClose = () => this.setState({successMsg: ''});
 
     render() {
         const {tableData, openAssignment, successMsg, openTakeFile, singleData, staffs} = this.state;
@@ -168,8 +165,6 @@ class FileNewList extends Component {
                                onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                                onConfirm={this.confirmTakeFile.bind(this)}/>}
 
-                {this.global.errorMsg && <ErrorHandler/>}
-                {successMsg && <SuccessHandler messages={successMsg} onClose={this.onStatusClose}/>}
             </>
         );
     }
