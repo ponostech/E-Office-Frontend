@@ -7,9 +7,10 @@ import {Grid, Icon, IconButton, Tooltip} from "@material-ui/core";
 import {ApiRoutes} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../common/LoadingView";
-import ErrorHandler from "../../common/StatusHandler";
 
 class DeskFiles extends Component {
+  source = axios.CancelToken.source();
+
   state = {
     tableData: [],
   };
@@ -19,10 +20,16 @@ class DeskFiles extends Component {
     this.getFiles();
   }
 
+  componentWillUnmount() {
+    this.source.cancel('Api is being canceled');
+  }
+
   getFiles = () => {
-    axios.get(ApiRoutes.DESK)
+    axios.get(ApiRoutes.DESK, {cancelToken: this.source.token})
         .then(res => this.processResult(res))
-        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .catch(err => {
+          if(!axios.isCancel(err)) this.setGlobal({errorMsg: err.toString()})
+        })
         .then(() => this.setGlobal({loading: false}));
   };
 
@@ -34,7 +41,7 @@ class DeskFiles extends Component {
   viewDetail = (id) => this.props.history.push(FILE_DETAIL_ROUTE(id));
 
   render() {
-    const {tableData, loading} = this.state;
+    const {tableData} = this.state;
 
     const tableOptions = {
       filterType: "checkbox",
@@ -93,7 +100,6 @@ class DeskFiles extends Component {
     return (
         <>
           {this.global.loading ? <LoadingView/> : files}
-          {this.global.errorMsg && <ErrorHandler/>}
         </>
     )
   }
