@@ -1,24 +1,22 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import {HOTEL_LIST, FILE_TAKE, GET_STAFF, ADVERTISER_LIST} from "../../../../config/ApiRoutes";
+import {HOTEL_LIST, FILE_TAKE, GET_STAFF} from "../../../../config/ApiRoutes";
 import HotelViewDialog from "./common/HotelViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
+import ErrorHandler from "../../../common/StatusHandler";
 
-const styles = {
-  button: {},
-  actionIcon: {}
-};
+const styles = {};
 
-class HotelRejectedList extends React.Component {
+class HotelRejectedList extends Component {
   state = {
     hotels: [],
     openMap: false,
@@ -28,30 +26,30 @@ class HotelRejectedList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-    loading: true,
   };
 
   componentDidMount() {
-    this.props.doLoad(true);
+    this.setGlobal({loading: true});
     this.getData();
     this.getStaffs();
   }
 
   getData = () => axios.get(HOTEL_LIST, {params: {status: 'approve'}})
       .then(res => this.processResult(res))
-      .catch(err => this.setState({errorMsg: err.toString()}))
-      .then(() => this.doLoad(false));
+      .catch(err => this.setGlobal({errorMsg: err.toString()}))
+      .then(() => this.setGlobal({loading: false}));
 
   getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, hotels: res.data.data.hotels});
-    this.props.doLoad(false);
+    else this.setGlobal({errorMsg: res.data.messages})
   };
 
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, hotel: data});
+
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
@@ -60,13 +58,12 @@ class HotelRejectedList extends React.Component {
 
   takeFile = (data) => this.setState({hotel: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id)).then(res => this.props.history.push(DESK));
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id)).then(() => this.props.history.push(DESK));
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
-    const {classes} = this.props;
-    const {loading, hotel, hotels, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
+    const {hotel, hotels, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -119,7 +116,7 @@ class HotelRejectedList extends React.Component {
                     </IconButton>
                   </Tooltip>
                   <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                    <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
+                    <Icon fontSize="small">pin_drop</Icon>
                   </IconButton>
                   <IconButton color="primary" size="small"
                               aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
@@ -142,7 +139,7 @@ class HotelRejectedList extends React.Component {
 
     return (
         <>
-          {loading ? <LoadingView/> : <Grid item xs={12}>
+          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
             <MUIDataTable
                 title={"HOTEL/LODGING: List of Rejected Applications"}
                 data={hotels}
@@ -150,23 +147,23 @@ class HotelRejectedList extends React.Component {
                 options={tableOptions}
             />
           </Grid>}
+
           <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
-                      onClose={() => this.setState({openMap: false})}
-                      isMarkerShown={true}
+                      onClose={() => this.setState({openMap: false})} isMarkerShown={true}
           />
           {openViewDialog &&
-          <HotelViewDialog open={openViewDialog} close={this.closeViewDialog}
-                           data={hotel}/>}
+          <HotelViewDialog open={openViewDialog} close={this.closeViewDialog} data={hotel}/>}
 
           {openAssignment && staffs &&
           <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
-                          onClose={this.closeAssignment} file={file}
-                          props={this.props}/>}
+                          onClose={this.closeAssignment} file={file} props={this.props}/>}
 
           {openTakeFile &&
           <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                          onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                          onConfirm={this.confirmTakeFile}/>}
+
+          {this.global.errorMsg && <ErrorHandler/>}
         </>
     );
   }

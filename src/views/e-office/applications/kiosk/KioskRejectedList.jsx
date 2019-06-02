@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -11,14 +11,14 @@ import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
+import ErrorHandler from "../../../common/StatusHandler";
 
 const styles = {
   button: {},
   actionIcon: {}
 };
 
-class KioskRejectedList extends React.Component {
-  doLoad = this.props.doLoad;
+class KioskRejectedList extends Component {
   state = {
     tableData: [],
     staffs: null,
@@ -27,27 +27,29 @@ class KioskRejectedList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-    loading: true,
   };
 
   componentDidMount() {
-    this.doLoad(true);
+    this.setGlobal({loading: true});
     this.getData();
     this.getStaffs();
   }
 
   getData = () => {
-    axios.get(KIOSK_LIST, {params: {status: 'reject'}}).then(res => this.processResult(res));
+    axios.get(KIOSK_LIST, {params: {status: 'reject'}})
+        .then(res => this.processResult(res))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}));
   };
 
   processResult = (res) => {
-    if (res.data.status) this.setState({loading: false, tableData: res.data.data.kiosk_applications});
-    this.doLoad(false);
+    if (res.data.status) this.setState({tableData: res.data.data.kiosk_applications});
   };
 
   getStaffs = () => {
     axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
   };
+
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
@@ -59,15 +61,15 @@ class KioskRejectedList extends React.Component {
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
-    .then(res => {
-      this.setState({openTakeFile: false});
-      this.props.history.push(DESK);
-    });
+      .then(res => {
+        this.setState({openTakeFile: false});
+        this.props.history.push(DESK);
+      });
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
-    const {loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
+    const {singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -116,20 +118,20 @@ class KioskRejectedList extends React.Component {
             const {rowIndex} = tableMeta;
             let data = tableData[rowIndex];
             return (
-              <div>
-                <IconButton color="primary" size="small"
-                            aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                  <Icon fontSize="small">remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, data)}>
-                  <Icon fontSize="small">send</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small">desktop_mac</Icon>
-                </IconButton>
-              </div>
+                <div>
+                  <IconButton color="primary" size="small"
+                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                    <Icon fontSize="small">remove_red_eye</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                    <Icon fontSize="small">send</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small">desktop_mac</Icon>
+                  </IconButton>
+                </div>
             );
           }
         }
@@ -137,30 +139,33 @@ class KioskRejectedList extends React.Component {
     ];
 
     return (
-      <>
-        {loading ? <LoadingView/> : <Grid item xs={12}>
-          <MUIDataTable
-            title={"Kiosk: List of Rejected Application"}
-            data={tableData}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-        </Grid>}
+        <>
+          {this.global.loading ? <LoadingView/> :
+              <Grid item xs={12}>
+                <MUIDataTable
+                    title={"Kiosk: List of Rejected Application"}
+                    data={tableData}
+                    columns={tableColumns}
+                    options={tableOptions}
+                />
+              </Grid>}
 
-        {openViewDialog &&
-        <KioskViewDialog open={openViewDialog} close={this.closeViewDialog}
-                         data={singleData}/>}
+          {openViewDialog &&
+          <KioskViewDialog open={openViewDialog} close={this.closeViewDialog}
+                           data={singleData}/>}
 
-        {openAssignment && staffs &&
-        <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
-                        onClose={this.closeAssignment} file={file}
-                        props={this.props}/>}
+          {openAssignment && staffs &&
+          <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                          onClose={this.closeAssignment} file={file}
+                          props={this.props}/>}
 
-        {openTakeFile &&
-        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
-                       onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
-                       onConfirm={this.confirmTakeFile}/>}
-      </>
+          {openTakeFile &&
+          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                         onConfirm={this.confirmTakeFile}/>}
+
+          {this.global.errorMsg && <ErrorHandler/>}
+        </>
     );
   }
 }

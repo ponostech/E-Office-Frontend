@@ -1,23 +1,15 @@
-import React from "react";
-import Grid from "@material-ui/core/Grid";
+import React, {Component} from "react";
+import {Grid, withStyles} from "@material-ui/core";
 import officeStyle from "../assets/jss/material-dashboard-pro-react/layouts/officeStyle.jsx";
-import withStyles from "@material-ui/core/styles/withStyles";
 import HeaderOffice from "../components/Header/HeaderOffice";
 import {LoginService} from "../services/LoginService";
 import RouteListAdministrator from './routes/RouteListAdministrator';
 import RouteListOfficer from './routes/RouteListOfficer';
 import RouteListInspector from './routes/RouteListInspector';
 import RouteListClerk from './routes/RouteListClerk';
+import {LOGIN} from "../config/routes-constant/OfficeRoutes";
 
-class LayoutOffice extends React.Component {
-    /*state = {
-        loading: false
-    };
-
-    doLoad = (val) => {
-        this.setState({loading: val});
-    };*/
-
+class LayoutOffice extends Component {
     getRoute = () => {
         let routeList = null;
         let role = LoginService.getRole();
@@ -43,9 +35,9 @@ class LayoutOffice extends React.Component {
             default:
                 this.clearLocalStorage();
                 routeList = <p>Route not Found!</p>;
+                // this.props.history.push(LOGIN);
                 break;
         }
-
         return {
             role: role,
             routeList: routeList
@@ -55,7 +47,6 @@ class LayoutOffice extends React.Component {
     clearLocalStorage = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('current_user');
-        // window.location.replace(LOGIN)
     };
 
     render() {
