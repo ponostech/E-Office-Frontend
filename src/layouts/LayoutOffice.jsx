@@ -10,35 +10,35 @@ import RouteListInspector from './routes/RouteListInspector';
 import RouteListClerk from './routes/RouteListClerk';
 
 class LayoutOffice extends React.Component {
-    state = {
+    /*state = {
         loading: false
     };
 
     doLoad = (val) => {
         this.setState({loading: val});
-    };
+    };*/
 
     getRoute = () => {
         let routeList = null;
         let role = LoginService.getRole();
         switch (role) {
             case 'commissioner':
-                routeList = <RouteListOfficer linkClick={this.handleLinkClick} doLoad={this.doLoad}/>;
+                routeList = <RouteListOfficer linkClick={this.handleLinkClick}/>;
                 break;
             case 'secretary':
-                routeList = <RouteListOfficer linkClick={this.handleLinkClick} doLoad={this.doLoad}/>;
+                routeList = <RouteListOfficer linkClick={this.handleLinkClick}/>;
                 break;
             case 'administrator':
-                routeList = <RouteListAdministrator linkClick={this.handleLinkClick} doLoad={this.doLoad}/>;
+                routeList = <RouteListAdministrator linkClick={this.handleLinkClick}/>;
                 break;
             case 'officer':
-                routeList = <RouteListOfficer linkClick={this.handleLinkClick} doLoad={this.doLoad}/>;
+                routeList = <RouteListOfficer linkClick={this.handleLinkClick}/>;
                 break;
             case 'inspector':
-                routeList = <RouteListInspector linkClick={this.handleLinkClick} doLoad={this.doLoad}/>;
+                routeList = <RouteListInspector linkClick={this.handleLinkClick}/>;
                 break;
             case 'clerk':
-                routeList = <RouteListClerk linkClick={this.handleLinkClick} doLoad={this.doLoad}/>;
+                routeList = <RouteListClerk linkClick={this.handleLinkClick}/>;
                 break;
             default:
                 this.clearLocalStorage();

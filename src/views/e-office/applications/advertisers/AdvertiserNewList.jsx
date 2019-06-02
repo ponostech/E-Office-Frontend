@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -11,13 +11,14 @@ import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
+import ErrorHandler from "../../../common/StatusHandler";
 
 const styles = {
   button: {},
   actionIcon: {}
 };
 
-class AdvertiserNewList extends React.Component {
+class AdvertiserNewList extends Component {
   state = {
     advertisers: [],
     staffs: null,
@@ -26,28 +27,27 @@ class AdvertiserNewList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-    loading: true,
   };
 
   componentDidMount() {
-    this.props.doLoad(true);
+    this.setGlobal({loading: true});
     this.getData();
     this.getStaffs();
   }
 
   getData = () => {
     axios.get(ADVERTISER_LIST).then(res => this.processResult(res))
-        .catch(err => this.setState({errorMsg: err.toString()}));
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}));
   };
 
   getStaffs = () => {
     axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}))
-        .catch(err => this.setState({errorMsg: err.toString()}));
+        .catch(err => this.setGlobal({errorMsg: err.toString()}));
   };
 
   processResult = (res) => {
-    if (res.data.status) this.setState({loading: false, advertisers: res.data.data.advertiser_applications});
-    this.props.doLoad(false);
+    if (res.data.status) this.setState({advertisers: res.data.data.advertiser_applications});
   };
 
   closeViewDialog = () => this.setState({openViewDialog: false});
@@ -63,9 +63,9 @@ class AdvertiserNewList extends React.Component {
   takeFile = (data) => this.setState({advertiser: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.advertiser.file.id))
-      .then(res => this.props.history.push(DESK));
+      .then(() => this.props.history.push(DESK));
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
     const {loading, advertiser, advertisers, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
@@ -144,7 +144,7 @@ class AdvertiserNewList extends React.Component {
 
     return (
         <>
-          {loading ? <LoadingView/> : <Grid item xs={12}>
+          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
             <MUIDataTable
                 title={"ADVERTISER: List of New Application"}
                 data={advertisers}
@@ -166,6 +166,8 @@ class AdvertiserNewList extends React.Component {
           <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                          onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                          onConfirm={this.confirmTakeFile}/>}
+
+          {this.global.errorMsg && <ErrorHandler/>}
         </>
     );
   }

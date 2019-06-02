@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
 import { HoardingService } from "../../../services/HoardingService";
-import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { Icon, IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
@@ -11,6 +10,7 @@ import ApplicationState from "../../../utils/ApplicationState";
 import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 import { FILE_DETAIL_ROUTE } from "../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../common/LoadingView";
+import ErrorHandler from "../../common/StatusHandler";
 
 class HoardingActiveList extends Component {
   hoardingService = new HoardingService();
@@ -18,27 +18,17 @@ class HoardingActiveList extends Component {
     hoarding: null,
     hoardings: [],
     openDetail: false,
-    errorMessage: "",
-
-    loading: true
   };
-
 
   componentDidMount() {
     document.title = "e-AMC | List of Active Hoarding";
-    const { doLoad, doLoadFinish } = this.props;
-    const self = this;
-    doLoad();
-    this.hoardingService.fetch(ApplicationState.APPROVED_APPLICATION, errorMessage => this.setState({ errorMessage }),
+    this.setGlobal({loading: true});
+    this.hoardingService.fetch(ApplicationState.APPROVED_APPLICATION, errorMsg => this.setGlobal({ errorMsg }),
       hoardings => this.setState({ hoardings }))
-      .finally(() => {
-        self.setState({ loading: false });
-        doLoadFinish();
-      });
+      .finally(() => this.setGlobal({ loading: false }));
   }
 
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
-
 
   render() {
     const tableColumns = [
@@ -131,7 +121,7 @@ class HoardingActiveList extends Component {
     return (
       <>
         {
-          this.state.loading ? <LoadingView/> :
+          this.global.loading ? <LoadingView/> :
             <Grid item sm={12} xs={12} md={12}>
               <MUIDataTable
                 title={"Hoarding: List of Active Hoardings"}
@@ -141,9 +131,8 @@ class HoardingActiveList extends Component {
               />
               <HoardingApplicationDialog open={Boolean(this.state.hoarding)} application={this.state.hoarding}
                                          onClose={e => this.setState({ hoarding: null })}/>
-              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
-                              onClose={() => this.setState({ errorMessage: "" })}
-                              variant={"error"} message={this.state.errorMessage}/>
+
+              {this.global.errorMsg && <ErrorHandler/>}
             </Grid>
         }
 
