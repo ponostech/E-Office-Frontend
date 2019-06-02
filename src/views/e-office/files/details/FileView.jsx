@@ -104,6 +104,7 @@ class FileView extends Component {
   };
 
   componentDidMount() {
+    this.setGlobal({loading: true});
     this.getData(this.props.match.params.id);
   }
 

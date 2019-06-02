@@ -27,7 +27,7 @@ import HotelNewList from "../../views/e-office/applications/hotel/HotelNewList";
 const routes = (props) => {
     return (
         <>
-            <Route exact path={OfficeRoutes.DESK} render={e => <DeskView doLoad={props.doLoad}/>}/>
+            <Route exact path={OfficeRoutes.DESK} render={e => <DeskView/>}/>
 
             {/*Receipt*/}
             <Route exact path={OfficeRoutes.NEW_RECEIPT} component={ReceiptStore}/>
@@ -36,45 +36,34 @@ const routes = (props) => {
             <Route exact path={OfficeRoutes.SENT_RECEIPT} component={ReceiptSentList}/>
 
             {/*File*/}
-            <Route exact path={OfficeRoutes.NEW_FILE} render={e => <FileCreate doLoad={props.doLoad}/>}/>
-            <Route path={OfficeRoutes.FILE_DETAIL}
-                   render={(e) => <FileDetail {...props} doLoad={props.doLoad}/>}/>
+            <Route exact path={OfficeRoutes.NEW_FILE} render={e => <FileCreate/>}/>
+            <Route path={OfficeRoutes.FILE_DETAIL} render={(e) => <FileDetail {...props}/>}/>
             <Route exact path={OfficeRoutes.CREATED_FILES} component={FileCreatedList}/>
             <Route exact path={OfficeRoutes.SENT_FILE} component={FileSentList}/>
-            <Route exact path={OfficeRoutes.FILE_ACTIVE_LIST}
-                   render={e => <FileActiveList {...props} doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.FILE_IN_ACTIVE_LIST}
-                   render={e => <FileInActiveList {...props} doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.FILE_CLOSED_LIST}
-                   render={e => <FileClosedList {...props} doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.FILE_ARCHIVED_LIST}
-                   render={e => <FileArchivedList {...props} doLoad={props.doLoad}/>}/>
+            <Route exact path={OfficeRoutes.FILE_ACTIVE_LIST} render={e => <FileActiveList {...props}/>}/>
+            <Route exact path={OfficeRoutes.FILE_IN_ACTIVE_LIST} render={e => <FileInActiveList {...props}/>}/>
+            <Route exact path={OfficeRoutes.FILE_CLOSED_LIST} render={e => <FileClosedList {...props}/>}/>
+            <Route exact path={OfficeRoutes.FILE_ARCHIVED_LIST} render={e => <FileArchivedList {...props}/>}/>
 
             {/*Advertiser*/}
             <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
-            <Route exact path={OfficeRoutes.ADVERTISER_NEW_LIST}
-                   render={e => <AdvertiserNewList doLoad={props.doLoad}/>}/>
+            <Route exact path={OfficeRoutes.ADVERTISER_NEW_LIST} render={e => <AdvertiserNewList/>}/>
 
             {/*Hoarding*/}
-            <Route exact path={OfficeRoutes.NEW_HOARDINGS}
-                   render={e => <HoardingApplications doLoad={props.doLoad}/>}/>
+            <Route exact path={OfficeRoutes.NEW_HOARDINGS} render={e => <HoardingApplications/>}/>
             <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
 
             {/*Kiosk*/}
-            <Route exact path={OfficeRoutes.NEW_KIOSKS}
-                   render={e => <NewKioskApplications doLoad={props.doLoad}/>}/>
+            <Route exact path={OfficeRoutes.NEW_KIOSKS} render={e => <NewKioskApplications/>}/>
 
             {/*Banner*/}
-            <Route exact path={OfficeRoutes.NEW_BANNER}
-                   render={e => <NewBannerApplications doLoad={props.doLoad}/>}/>
+            <Route exact path={OfficeRoutes.NEW_BANNER} render={e => <NewBannerApplications/>}/>
 
             {/*Shop Licensing*/}
-            <Route exact path={OfficeRoutes.NEW_SHOPLICENSE}
-                   render={e => <ShopNewList doLoad={props.doLoad}/>}/>
+            <Route exact path={OfficeRoutes.NEW_SHOPLICENSE} render={e => <ShopNewList/>}/>
 
             {/*Shop Licensing*/}
-            <Route exact path={OfficeRoutes.NEW_HOTELLICENSE}
-                   render={e => <HotelNewList doLoad={props.doLoad}/>}/>
+            <Route exact path={OfficeRoutes.NEW_HOTELLICENSE} render={e => <HotelNewList/>}/>
         </>
     )
 };

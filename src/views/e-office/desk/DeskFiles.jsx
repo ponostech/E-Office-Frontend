@@ -15,6 +15,7 @@ class DeskFiles extends Component {
   };
 
   componentDidMount() {
+    this.setGlobal({loading: true});
     this.getFiles();
   }
 

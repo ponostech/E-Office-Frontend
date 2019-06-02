@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component} from "reactn";
 import axios from "axios";
 import {Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
@@ -18,22 +18,19 @@ class FileNewList extends Component {
         singleData: [],
         openAssignment: false,
         openTakeFile: false,
-        loading: true,
-        errorMsg: '',
         successMsg: '',
     };
 
     componentDidMount() {
-        this.props.doLoad(true);
+        this.setGlobal({loading: true});
         this.getData();
     }
 
     getData = () => {
         axios.all([this.getTableData(), this.getStaffs()])
             .then(axios.spread((tableData, staffs) => this.processDataResponse(tableData, staffs)))
-            .then(res => this.setState({loading: false}))
-            .then(res => this.props.doLoad(false))
-            .catch(err => this.setState({errorMsg: err.toString()}))
+            .catch(err => this.setGlobal({errorMsg: err.toString()}))
+            .then(res => this.setGlobal({loading: false}))
     };
 
     getTableData = () => axios.get(ApiRoutes.FILE, {params: {status: 'archived'}});
@@ -41,7 +38,7 @@ class FileNewList extends Component {
     processDataResponse = (tableData, staffs) => {
         if (tableData.data.status && staffs.data.status)
             this.setState({tableData: tableData.data.data.files, staffs: staffs.data.data.staffs});
-        else this.setState({loading: false, errorMsg: "Data Error"})
+        else this.setGlobal({errorMsg: "Data Error"})
     };
 
     getStaffs = () => axios.get(ApiRoutes.GET_STAFF);
@@ -49,16 +46,16 @@ class FileNewList extends Component {
     sendFile = (id, recipient_id) => {
         axios.post(FILE_SEND(id), {recipient_id})
             .then(res => this.processSendResponse(res))
-            .catch(err => this.setState({errorMsg: err.toString()}));
+            .catch(err => this.setGlobal({errorMsg: err.toString()}));
     };
 
     processSendResponse = (res) => {
         if (res.data.status) this.processSendResponseSuccess();
-        else this.setState({errorMsg: res.data.messages});
+        else this.setGlobal({errorMsg: res.data.messages});
     };
 
     processSendResponseSuccess = () => {
-        this.setState({successMsg: 'File sent successfully', errorMsg: '', openAssignment: false});
+        this.setState({successMsg: 'File sent successfully', openAssignment: false});
         this.getTableData().then(res => this.setState({tableData: res.data.data.files}));
     };
 
@@ -80,10 +77,10 @@ class FileNewList extends Component {
         }
     };
 
-    onStatusClose = () => this.setState({errorMsg: '', successMsg: ''});
+    onStatusClose = () => this.setState({successMsg: ''});
 
     render() {
-        const {tableData, loading, openAssignment, errorMsg, successMsg, openTakeFile, singleData, staffs} = this.state;
+        const {tableData, openAssignment, successMsg, openTakeFile, singleData, staffs} = this.state;
 
         const tableOptions = {
             filterType: "checkbox",
@@ -159,7 +156,7 @@ class FileNewList extends Component {
 
         return (
             <>
-                {loading ? <LoadingView/> : files}
+                {this.global.loading ? <LoadingView/> : files}
 
                 {openAssignment &&
                 <FileSendDialog onSend={this.sendFile.bind(this)} staffs={staffs} open={openAssignment}
@@ -171,7 +168,7 @@ class FileNewList extends Component {
                                onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                                onConfirm={this.confirmTakeFile.bind(this)}/>}
 
-                {errorMsg && <ErrorHandler messages={errorMsg} onClose={this.onStatusClose}/>}
+                {this.global.errorMsg && <ErrorHandler/>}
                 {successMsg && <SuccessHandler messages={successMsg} onClose={this.onStatusClose}/>}
             </>
         );

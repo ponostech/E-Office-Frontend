@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -19,8 +19,7 @@ const styles = {
   actionIcon: {}
 };
 
-class HoardingUnderProcessList extends React.Component {
-  doLoad = this.props.doLoad;
+class HoardingUnderProcessList extends Component {
   state = {
     tableData: [],
     staffs: null,
@@ -29,13 +28,11 @@ class HoardingUnderProcessList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-    loading: true,
     openMap: false,
-    errorMsg: '',
   };
 
   componentDidMount() {
-    this.doLoad(true);
+    this.setGlobal({loading: true});
     this.getData();
     this.getStaffs();
   }
@@ -43,16 +40,13 @@ class HoardingUnderProcessList extends React.Component {
   getData = () => {
     axios.get(HOARDING_LIST, {params: {status: 'in-process'}})
         .then(res => this.processResult(res))
-        .catch(err => this.setState({errorMsg: err.toString()}))
-        .then(res => {
-          this.setState({loading: false});
-          this.doLoad(false)
-        })
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}))
   };
 
   processResult = (res) => {
-    if (res.data.status) this.setState({loading: false, tableData: res.data.data.hoarding_applications});
-    else this.setState({errorMsg: res.data.messages});
+    if (res.data.status) this.setState({tableData: res.data.data.hoarding_applications});
+    else this.setGlobal({errorMsg: res.data.messages});
   };
 
   getStaffs = () => {
@@ -62,6 +56,7 @@ class HoardingUnderProcessList extends React.Component {
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
+
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
@@ -71,19 +66,16 @@ class HoardingUnderProcessList extends React.Component {
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
-      .then(res => {
+      .then(() => {
         this.setState({openTakeFile: false});
         this.props.history.push(DESK);
       });
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
-
-  closeStatus = () => this.setState({errorMsg: ''});
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
     const {classes} = this.props;
     const {loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
-    const {errorMsg} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -165,7 +157,7 @@ class HoardingUnderProcessList extends React.Component {
 
     return (
         <>
-          {loading ? <LoadingView/> : <Grid item xs={12}>
+          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
             <MUIDataTable
                 title={"Hoarding: List of Under Process Application"}
                 data={tableData}
@@ -191,7 +183,8 @@ class HoardingUnderProcessList extends React.Component {
           <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                          onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                          onConfirm={this.confirmTakeFile}/>}
-          {errorMsg && <ErrorHandler messages={errorMsg} onClose={this.closeStatus}/>}
+
+          {this.global.errorMsg && <ErrorHandler/>}
         </>
     );
   }

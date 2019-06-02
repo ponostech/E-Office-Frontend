@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
@@ -17,34 +17,31 @@ const styles = {
     actionIcon: {}
 };
 
-class AdvertiserApprovedList extends React.Component {
-    doLoad = this.props.doLoad;
+class AdvertiserApprovedList extends Component {
     state = {
         advertisers: [],
         staffs: null,
         advertiser: null,
         openTakeFile: false,
         openViewDialog: false,
-        loading: true,
-        errorMsg: null,
     };
 
     componentDidMount() {
-        this.doLoad(true);
+        this.setGlobal({loading: true});
         this.getData();
         this.getStaffs();
     }
 
     getData = () => axios.get(ADVERTISER_LIST, {params: {status: 'approve'}})
         .then(res => this.processResult(res))
-        .catch(err => this.setState({errorMsg: err.toString()}))
-        .then(() => this.doLoad(false));
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}));
 
     getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
 
     processResult = (res) => {
         if (res.data.status) this.setState({loading: false, advertisers: res.data.data.advertiser_applications});
-        else this.setState({errorMsg: res.data.messages})
+        else this.setGlobal({errorMsg: res.data.messages})
     };
 
     closeViewDialog = () => this.setState({openViewDialog: false});
@@ -57,15 +54,15 @@ class AdvertiserApprovedList extends React.Component {
 
     processConfirmTakeResponse = (res) => {
         if (res.data.status) this.props.history.push(DESK);
-        else this.setState({errorMsg: res.data.messages});
+        else this.setGlobal({errorMsg: res.data.messages});
     };
 
     confirmTakeFile = () => axios.post(FILE_CALL(this.state.advertiser.file.id))
         .then(res => this.processConfirmTakeResponse(res))
-        .catch(err => this.setState({errorMsg: err.toString()}));
+        .catch(err => this.setGlobal({errorMsg: err.toString()}));
 
     render() {
-        const {loading, advertiser, advertisers, openTakeFile, openViewDialog, errorMsg} = this.state;
+        const {loading, advertiser, advertisers, openTakeFile, openViewDialog} = this.state;
         const tableOptions = {
             filterType: "checkbox",
             responsive: "scroll",
@@ -133,7 +130,7 @@ class AdvertiserApprovedList extends React.Component {
 
         return (
             <>
-                {loading ?
+                {this.global.loading ?
                     <LoadingView/> : <Grid item xs={12}>
                         <MUIDataTable
                             title={"ADVERTISER: List of Under Process Application"}
@@ -152,7 +149,7 @@ class AdvertiserApprovedList extends React.Component {
                                onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                                onConfirm={this.confirmTakeFile}/>}
 
-                {errorMsg && <ErrorHandler messages={errorMsg}/>}
+                {this.global.errorMsg && <ErrorHandler/>}
             </>
         );
     }

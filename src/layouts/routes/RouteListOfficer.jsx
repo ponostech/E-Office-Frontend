@@ -49,111 +49,77 @@ import AdvertiserCanceledList from "../../views/e-office/applications/advertiser
 import TradeList from "../../views/e-office/admin/TradeList";
 
 const routes = (props) => {
-    return (
-        <>
-            <Route exact path={OfficeRoutes.DESK} render={e => <DeskView doLoad={props.doLoad}/>}/>
+  return (
+      <>
+        <Route exact path={OfficeRoutes.DESK} render={e => <DeskView/>}/>
 
-            {/*Receipt*/}
-            <Route exact path={OfficeRoutes.NEW_RECEIPT} component={ReceiptStore}/>
-            <Route exact path={OfficeRoutes.RECEIPT_DETAIL} component={ReceiptShow}/>
-            <Route exact path={OfficeRoutes.CREATED_RECEIPT} component={ReceiptList}/>
-            <Route exact path={OfficeRoutes.SENT_RECEIPT} component={ReceiptSentList}/>
+        {/*Receipt*/}
+        <Route exact path={OfficeRoutes.NEW_RECEIPT} component={ReceiptStore}/>
+        <Route exact path={OfficeRoutes.RECEIPT_DETAIL} component={ReceiptShow}/>
+        <Route exact path={OfficeRoutes.CREATED_RECEIPT} component={ReceiptList}/>
+        <Route exact path={OfficeRoutes.SENT_RECEIPT} component={ReceiptSentList}/>
 
-            {/*File*/}
-            <Route exact path={OfficeRoutes.NEW_FILE} render={e => <FileCreate doLoad={props.doLoad}/>}/>
-            <Route path={OfficeRoutes.FILE_DETAIL}
-                   render={(e) => <FileDetail {...props} doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.CREATED_FILES} component={FileCreatedList}/>
-            <Route exact path={OfficeRoutes.SENT_FILE} component={FileSentList}/>
-            <Route exact path={OfficeRoutes.FILE_ACTIVE_LIST}
-                   render={e => <FileActiveList {...props} doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.FILE_IN_ACTIVE_LIST}
-                   render={e => <FileInActiveList {...props} doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.FILE_CLOSED_LIST}
-                   render={e => <FileClosedList {...props} doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.FILE_ARCHIVED_LIST}
-                   render={e => <FileArchivedList {...props} doLoad={props.doLoad}/>}/>
+        {/*File*/}
+        <Route exact path={OfficeRoutes.NEW_FILE} render={e => <FileCreate/>}/>
+        <Route path={OfficeRoutes.FILE_DETAIL} render={(e) => <FileDetail {...props}/>}/>
+        <Route exact path={OfficeRoutes.CREATED_FILES} component={FileCreatedList}/>
+        <Route exact path={OfficeRoutes.SENT_FILE} component={FileSentList}/>
+        <Route exact path={OfficeRoutes.FILE_ACTIVE_LIST} render={e => <FileActiveList {...props}/>}/>
+        <Route exact path={OfficeRoutes.FILE_IN_ACTIVE_LIST} render={e => <FileInActiveList {...props}/>}/>
+        <Route exact path={OfficeRoutes.FILE_CLOSED_LIST} render={e => <FileClosedList {...props}/>}/>
+        <Route exact path={OfficeRoutes.FILE_ARCHIVED_LIST} render={e => <FileArchivedList {...props}/>}/>
 
-            {/*OBPAS*/}
-            <Route exact path={OfficeRoutes.OBPAS} component={FileCreate}/>
+        {/*OBPAS*/}
+        <Route exact path={OfficeRoutes.OBPAS} component={FileCreate}/>
 
-            {/*Advertiser*/}
-            <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
-            <Route exact path={OfficeRoutes.ADVERTISER_NEW_LIST}
-                   render={e => <AdvertiserNewList doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.ADVERTISER_IN_PROCESS_LIST}
-                   render={e => <AdvertiserInProcessList doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.ADVERTISER_APPROVE_LIST}
-                   render={e => <AdvertiserApprovedList doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.ADVERTISER_REJECT_LIST}
-                   render={e => <AdvertiserRejectedList doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.ADVERTISER_CANCEL_LIST}
-                   render={e => <AdvertiserCanceledList doLoad={props.doLoad}/>}/>
+        {/*Advertiser*/}
+        <Route exact path={OfficeRoutes.ADVERTISER_DETAIL} component={AdvertiserDetails}/>
+        <Route exact path={OfficeRoutes.ADVERTISER_NEW_LIST} render={e => <AdvertiserNewList/>}/>
+        <Route exact path={OfficeRoutes.ADVERTISER_IN_PROCESS_LIST} render={e => <AdvertiserInProcessList/>}/>
+        <Route exact path={OfficeRoutes.ADVERTISER_APPROVE_LIST} render={e => <AdvertiserApprovedList/>}/>
+        <Route exact path={OfficeRoutes.ADVERTISER_REJECT_LIST} render={e => <AdvertiserRejectedList/>}/>
+        <Route exact path={OfficeRoutes.ADVERTISER_CANCEL_LIST} render={e => <AdvertiserCanceledList/>}/>
 
-            {/*Hoarding*/}
-            <Route exact path={OfficeRoutes.NEW_HOARDINGS}
-                   render={e => <HoardingApplications doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.UNDER_PROCESS_HOARDINGS}
-                   render={e => <UnderProcessHoarding doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.REJECTED_HOARDINGS}
-                   render={e => <RejectedHoardingApplications doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.APPROVED_HOARDINGS}
-                   render={e => <ApprovedHoarding doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
+        {/*Hoarding*/}
+        <Route exact path={OfficeRoutes.NEW_HOARDINGS} render={e => <HoardingApplications/>}/>
+        <Route exact path={OfficeRoutes.UNDER_PROCESS_HOARDINGS} render={e => <UnderProcessHoarding/>}/>
+        <Route exact path={OfficeRoutes.REJECTED_HOARDINGS} render={e => <RejectedHoardingApplications/>}/>
+        <Route exact path={OfficeRoutes.APPROVED_HOARDINGS} render={e => <ApprovedHoarding/>}/>
+        <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
 
-            {/*Kiosk*/}
-            <Route exact path={OfficeRoutes.NEW_KIOSKS}
-                   render={e => <NewKioskApplications doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.UNDER_PROCESS_KIOSKS}
-                   render={e => <UnderProcessKiosks doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.APPROVED_KIOSKS}
-                   render={e => <ApprovedKiosks doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.REJECTED_KIOSKS}
-                   render={e => <RejectedKiosks doLoad={props.doLoad}/>}/>
+        {/*Kiosk*/}
+        <Route exact path={OfficeRoutes.NEW_KIOSKS} render={e => <NewKioskApplications/>}/>
+        <Route exact path={OfficeRoutes.UNDER_PROCESS_KIOSKS} render={e => <UnderProcessKiosks/>}/>
+        <Route exact path={OfficeRoutes.APPROVED_KIOSKS} render={e => <ApprovedKiosks/>}/>
+        <Route exact path={OfficeRoutes.REJECTED_KIOSKS} render={e => <RejectedKiosks/>}/>
 
-            {/*Banner*/}
-            <Route exact path={OfficeRoutes.NEW_BANNER}
-                   render={e => <NewBannerApplications doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.UNDER_PROCESS_BANNER}
-                   render={e => <UnderProcessBanner doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.APPROVED_BANNER}
-                   render={e => <BannerGrantedList doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.REJECTED_BANNER}
-                   render={e => <BannerRejectedList doLoad={props.doLoad}/>}/>
+        {/*Banner*/}
+        <Route exact path={OfficeRoutes.NEW_BANNER} render={e => <NewBannerApplications/>}/>
+        <Route exact path={OfficeRoutes.UNDER_PROCESS_BANNER} render={e => <UnderProcessBanner/>}/>
+        <Route exact path={OfficeRoutes.APPROVED_BANNER} render={e => <BannerGrantedList/>}/>
+        <Route exact path={OfficeRoutes.REJECTED_BANNER} render={e => <BannerRejectedList/>}/>
 
 
-            {/*Shop Licensing*/}
-            <Route exact path={OfficeRoutes.NEW_SHOPLICENSE}
-                   render={e => <ShopNewList doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.UNDER_PROCESS_SHOPLICENSE}
-                   render={e => <UnderProcessShopLicense doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.APPROVED_SHOPLICENSE}
-                   render={e => <ApprovedShopLicense doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.REJECTED_SHOPLICENSE}
-                   render={e => <RejectedShopLicense doLoad={props.doLoad}/>}/>
+        {/*Shop Licensing*/}
+        <Route exact path={OfficeRoutes.NEW_SHOPLICENSE} render={e => <ShopNewList/>}/>
+        <Route exact path={OfficeRoutes.UNDER_PROCESS_SHOPLICENSE} render={e => <UnderProcessShopLicense/>}/>
+        <Route exact path={OfficeRoutes.APPROVED_SHOPLICENSE} render={e => <ApprovedShopLicense/>}/>
+        <Route exact path={OfficeRoutes.REJECTED_SHOPLICENSE} render={e => <RejectedShopLicense/>}/>
 
-            {/*Shop Licensing*/}
-            <Route exact path={OfficeRoutes.NEW_HOTELLICENSE}
-                   render={e => <HotelNewList doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.UNDER_PROCESS_HOTELLICENSE}
-                   render={e => <HotelUnderProcessList doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.APPROVED_HOTELLICENSE}
-                   render={e => <HotelApprovedList doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.REJECTED_HOTELLICENSE}
-                   render={e => <HotelRejectedList doLoad={props.doLoad}/>}/>
-            {/*Admin*/}
-            <Route exact path={OfficeRoutes.TRADE_NEW}
-                   render={e => <TradeNew doLoad={props.doLoad}/>}/>
-            {/*Admin*/}
-            <Route exact path={OfficeRoutes.TRADE_LIST}
-                   render={e => <TradeList doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.STAFF_REGISTRATION}
-                   render={e => <StaffRegistration doLoad={props.doLoad}/>}/>
-            <Route exact path={OfficeRoutes.STAFF_LIST}
-                   render={e => <StaffList doLoad={props.doLoad}/>}/>
-            <Route path={OfficeRoutes.SETTING} component={Settings}/>
-        </>
-    )
+        {/*Shop Licensing*/}
+        <Route exact path={OfficeRoutes.NEW_HOTELLICENSE} render={e => <HotelNewList/>}/>
+        <Route exact path={OfficeRoutes.UNDER_PROCESS_HOTELLICENSE} render={e => <HotelUnderProcessList/>}/>
+        <Route exact path={OfficeRoutes.APPROVED_HOTELLICENSE} render={e => <HotelApprovedList/>}/>
+        <Route exact path={OfficeRoutes.REJECTED_HOTELLICENSE} render={e => <HotelRejectedList/>}/>
+        {/*Admin*/}
+        <Route exact path={OfficeRoutes.TRADE_NEW} render={e => <TradeNew/>}/>
+        {/*Admin*/}
+        <Route exact path={OfficeRoutes.TRADE_LIST} render={e => <TradeList/>}/>
+        <Route exact path={OfficeRoutes.STAFF_REGISTRATION} render={e => <StaffRegistration/>}/>
+        <Route exact path={OfficeRoutes.STAFF_LIST} render={e => <StaffList/>}/>
+        <Route path={OfficeRoutes.SETTING} component={Settings}/>
+      </>
+  )
 };
 
 export default withRouter(routes);

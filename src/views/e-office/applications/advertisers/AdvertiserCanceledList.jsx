@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
@@ -13,149 +13,146 @@ import {withRouter} from "react-router-dom";
 import ErrorHandler from "../../../common/StatusHandler";
 
 const styles = {
-    button: {},
-    actionIcon: {}
+  button: {},
+  actionIcon: {}
 };
 
-class AdvertiserCancelledList extends React.Component {
-    doLoad = this.props.doLoad;
-    state = {
-        advertisers: [],
-        staffs: null,
-        advertiser: null,
-        openTakeFile: false,
-        openViewDialog: false,
-        loading: true,
-        errorMsg: null,
+class AdvertiserCancelledList extends Component {
+  state = {
+    advertisers: [],
+    staffs: null,
+    advertiser: null,
+    openTakeFile: false,
+    openViewDialog: false,
+  };
+
+  componentDidMount() {
+    this.setGlobal({loading: true});
+    this.getData();
+    this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
+  }
+
+  getData = () => axios.get(ADVERTISER_LIST, {params: {status: 'cancel'}})
+      .then(res => this.processResult(res))
+      .catch(err => this.setGlobal({errorMsg: err.toString()}))
+      .then(() => this.setGlobal({loading: false}));
+
+  getStaffs = () => axios.get(GET_STAFF);
+
+  processResult = (res) => {
+    if (res.data.status) this.setState({dvertisers: res.data.data.advertiser_applications});
+    else this.setGlobal({errorMsg: res.data.messages})
+  };
+
+  closeViewDialog = () => this.setState({openViewDialog: false});
+
+  viewDetails = (data) => this.setState({openViewDialog: true, advertiser: data});
+
+  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
+
+  takeFile = (data) => this.setState({advertiser: data, openTakeFile: true});
+
+  processConfirmTakeResponse = (res) => {
+    if (res.data.status) this.props.history.push(DESK);
+    else this.setGlobal({errorMsg: res.data.messages});
+  };
+
+  confirmTakeFile = () => axios.post(FILE_CALL(this.state.advertiser.file.id))
+      .then(res => this.processConfirmTakeResponse(res))
+      .catch(err => this.setGlobal({errorMsg: err.toString()}));
+
+  render() {
+    const {loading, advertiser, advertisers, openTakeFile, openViewDialog} = this.state;
+    const tableOptions = {
+      filterType: "checkbox",
+      responsive: "scroll",
+      rowsPerPage: 8,
+      serverSide: false,
     };
 
-    componentDidMount() {
-        this.doLoad(true);
-        this.getData();
-        this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
-    }
+    const tableColumns = [
+      {
+        name: "name",
+        label: "APPLICANT",
+      },
+      {
+        name: "type",
+        label: "APPLICANT TYPE",
+        options: {
+          customBodyRender: (value) => value.toUpperCase(),
+        }
+      },
+      {
+        name: "address",
+        label: "ADDRESS",
+      },
+      {
+        name: "created_at",
+        label: "DATE OF APPLICATION",
+        options: {
+          filter: false,
+          customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
+        }
+      },
+      {
+        name: "id",
+        label: "ACTION",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta) => {
+            const {rowIndex} = tableMeta;
+            let data = advertisers[rowIndex];
+            return (
+                <div>
+                  <Tooltip title="View File">
+                    <IconButton color="primary" size="small"
+                                aria-label="View Details" onClick={this.viewFile.bind(this, data)}>
+                      <Icon fontSize="small">folder</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="View Details">
+                    <IconButton color="primary" size="small"
+                                aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                      <Icon fontSize="small">remove_red_eye</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <IconButton variant="contained" color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small">desktop_mac</Icon>
+                  </IconButton>
+                </div>
+            );
+          }
+        }
+      },
+    ];
 
-    getData = () => axios.get(ADVERTISER_LIST, {params: {status: 'cancel'}})
-        .then(res => this.processResult(res))
-        .catch(err => this.setState({errorMsg: err.toString()}))
-        .then(() => this.doLoad(false));
+    return (
+        <>
+          {this.global.loading ?
+              <LoadingView/> : <Grid item xs={12}>
+                <MUIDataTable
+                    title={"ADVERTISER: List of Under Process Application"}
+                    data={advertisers}
+                    columns={tableColumns}
+                    options={tableOptions}
+                />
+              </Grid>}
 
-    getStaffs = () => axios.get(GET_STAFF);
+          {openViewDialog &&
+          <AdvertiserViewDialog open={openViewDialog} close={this.closeViewDialog}
+                                data={advertiser}/>}
 
-    processResult = (res) => {
-        if (res.data.status) this.setState({loading: false, advertisers: res.data.data.advertiser_applications});
-        else this.setState({errorMsg: res.data.messages})
-    };
+          {openTakeFile &&
+          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                         onConfirm={this.confirmTakeFile}/>}
 
-    closeViewDialog = () => this.setState({openViewDialog: false});
-
-    viewDetails = (data) => this.setState({openViewDialog: true, advertiser: data});
-
-    viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
-
-    takeFile = (data) => this.setState({advertiser: data, openTakeFile: true});
-
-    processConfirmTakeResponse = (res) => {
-        if (res.data.status) this.props.history.push(DESK);
-        else this.setState({errorMsg: res.data.messages});
-    };
-
-    confirmTakeFile = () => axios.post(FILE_CALL(this.state.advertiser.file.id))
-        .then(res => this.processConfirmTakeResponse(res))
-        .catch(err => this.setState({errorMsg: err.toString()}));
-
-    render() {
-        const {loading, advertiser, advertisers, openTakeFile, openViewDialog, errorMsg} = this.state;
-        const tableOptions = {
-            filterType: "checkbox",
-            responsive: "scroll",
-            rowsPerPage: 8,
-            serverSide: false,
-        };
-
-        const tableColumns = [
-            {
-                name: "name",
-                label: "APPLICANT",
-            },
-            {
-                name: "type",
-                label: "APPLICANT TYPE",
-                options: {
-                    customBodyRender: (value) => value.toUpperCase(),
-                }
-            },
-            {
-                name: "address",
-                label: "ADDRESS",
-            },
-            {
-                name: "created_at",
-                label: "DATE OF APPLICATION",
-                options: {
-                    filter: false,
-                    customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
-                }
-            },
-            {
-                name: "id",
-                label: "ACTION",
-                options: {
-                    filter: false,
-                    sort: false,
-                    customBodyRender: (value, tableMeta) => {
-                        const {rowIndex} = tableMeta;
-                        let data = advertisers[rowIndex];
-                        return (
-                            <div>
-                                <Tooltip title="View File">
-                                    <IconButton color="primary" size="small"
-                                                aria-label="View Details" onClick={this.viewFile.bind(this, data)}>
-                                        <Icon fontSize="small">folder</Icon>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="View Details">
-                                    <IconButton color="primary" size="small"
-                                                aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                                        <Icon fontSize="small">remove_red_eye</Icon>
-                                    </IconButton>
-                                </Tooltip>
-                                <IconButton variant="contained" color="primary"
-                                            size="small" onClick={this.takeFile.bind(this, data)}>
-                                    <Icon fontSize="small">desktop_mac</Icon>
-                                </IconButton>
-                            </div>
-                        );
-                    }
-                }
-            },
-        ];
-
-        return (
-            <>
-                {loading ?
-                    <LoadingView/> : <Grid item xs={12}>
-                        <MUIDataTable
-                            title={"ADVERTISER: List of Under Process Application"}
-                            data={advertisers}
-                            columns={tableColumns}
-                            options={tableOptions}
-                        />
-                    </Grid>}
-
-                {openViewDialog &&
-                <AdvertiserViewDialog open={openViewDialog} close={this.closeViewDialog}
-                                      data={advertiser}/>}
-
-                {openTakeFile &&
-                <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
-                               onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
-                               onConfirm={this.confirmTakeFile}/>}
-
-                {errorMsg && <ErrorHandler messages={errorMsg}/>}
-            </>
-        );
-    }
+          {this.global.errorMsg && <ErrorHandler/>}
+        </>
+    );
+  }
 }
 
 export default withRouter(withStyles(styles)(AdvertiserCancelledList));
