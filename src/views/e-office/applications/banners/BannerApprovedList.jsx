@@ -1,24 +1,22 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import { BANNER_LIST, FILE_TAKE, GET_STAFF } from "../../../../config/ApiRoutes";
+import {BANNER_LIST, FILE_TAKE, GET_STAFF} from "../../../../config/ApiRoutes";
 import BannerViewDialog from "./common/BannerViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
+import ErrorHandler from "../../../common/StatusHandler";
 
-const styles = {
-  button: {},
-  actionIcon: {}
-};
+const styles = {};
 
-class BannerApprovedList extends React.Component {
+class BannerApprovedList extends Component {
   state = {
     banners: [],
     openMap: false,
@@ -28,29 +26,30 @@ class BannerApprovedList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-    loading: true,
   };
 
   componentDidMount() {
-    this.props.doLoad(true);
+    this.setGlobal({loading: true});
     this.getData();
     this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
   }
+
   getData = () => axios.get(BANNER_LIST, {params: {status: 'approve'}})
-    .then(res => this.processResult(res))
-    .catch(err => this.setState({errorMsg: err.toString()}))
-    .then(() => this.props.doLoad(false));
+      .then(res => this.processResult(res))
+      .catch(err => this.setGlobal({errorMsg: err.toString()}))
+      .then(() => this.setGlobal({loading: false}));
 
   getStaffs = () => axios.get(GET_STAFF);
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, banners: res.data.data.banners});
-    this.props.doLoad(false);
+    else this.setGlobal({errorMsg: res.data.messages})
   };
 
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, banner: data});
+
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
@@ -60,12 +59,11 @@ class BannerApprovedList extends React.Component {
   takeFile = (data) => this.setState({banner: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.banner.file.id))
-    .then(res => this.props.history.push(DESK));
+      .then(() => this.props.history.push(DESK));
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
-    const {classes} = this.props;
     const {loading, banner, banners, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
@@ -99,9 +97,9 @@ class BannerApprovedList extends React.Component {
         name: "local_council",
         label: "LOCAL COUNCIL.",
         options: {
-          customBodyRender: (local_council, tableMeta, updateValue) => {
+          customBodyRender: (local_council) => {
             return (
-              local_council.name
+                local_council.name
             );
           }
         }
@@ -124,26 +122,26 @@ class BannerApprovedList extends React.Component {
             const {rowIndex} = tableMeta;
             let data = banners[rowIndex];
             return (
-              <div>
-                <Tooltip title="View File">
+                <div>
+                  <Tooltip title="View File">
+                    <IconButton color="primary" size="small"
+                                aria-label="View File" onClick={this.viewFile.bind(this, data)}>
+                      <Icon fontSize="small">folder</Icon>
+                    </IconButton>
+                  </Tooltip>
                   <IconButton color="primary" size="small"
-                              aria-label="View File" onClick={this.viewFile.bind(this, data)}>
-                    <Icon fontSize="small">folder</Icon>
+                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                    <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
-                </Tooltip>
-                <IconButton color="primary" size="small"
-                            aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                  <Icon fontSize="small">remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, data)}>
-                  <Icon fontSize="small">send</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small">desktop_mac</Icon>
-                </IconButton>
-              </div>
+                  <IconButton variant="contained" color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                    <Icon fontSize="small">send</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small">desktop_mac</Icon>
+                  </IconButton>
+                </div>
             );
           }
         }
@@ -151,33 +149,36 @@ class BannerApprovedList extends React.Component {
     ];
 
     return (
-      <>
-        {loading ? <LoadingView/> : <Grid item xs={12}>
-          <MUIDataTable
-            title={"Banner: List of Approved Application"}
-            data={banners}
-            columns={tableColumns}
-            options={tableOptions}
+        <>
+          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+            <MUIDataTable
+                title={"Banner: List of Approved Application"}
+                data={banners}
+                columns={tableColumns}
+                options={tableOptions}
+            />
+          </Grid>}
+
+          <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
+                      onClose={() => this.setState({openMap: false})}
+                      isMarkerShown={true}
           />
-        </Grid>}
-        <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
-                    onClose={() => this.setState({openMap: false})}
-                    isMarkerShown={true}
-        />
-        {openViewDialog &&
-        <BannerViewDialog open={openViewDialog} close={this.closeViewDialog}
-                          data={banner}/>}
+          {openViewDialog &&
+          <BannerViewDialog open={openViewDialog} close={this.closeViewDialog}
+                            data={banner}/>}
 
-        {openAssignment && staffs &&
-        <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
-                        onClose={this.closeAssignment} file={file}
-                        props={this.props}/>}
+          {openAssignment && staffs &&
+          <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                          onClose={this.closeAssignment} file={file}
+                          props={this.props}/>}
 
-        {openTakeFile &&
-        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
-                       onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
-                       onConfirm={this.confirmTakeFile}/>}
-      </>
+          {openTakeFile &&
+          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                         onConfirm={this.confirmTakeFile}/>}
+
+          {this.global.errorMsg && <ErrorHandler/>}
+        </>
     );
   }
 }

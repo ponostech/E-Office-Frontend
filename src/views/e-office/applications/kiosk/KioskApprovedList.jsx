@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -11,14 +11,14 @@ import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
+import ErrorHandler from "../../../common/StatusHandler";
 
 const styles = {
     button: {},
     actionIcon: {}
 };
 
-class KioskApprovedList extends React.Component {
-    doLoad = this.props.doLoad;
+class KioskApprovedList extends Component {
     state = {
         tableData: [],
         staffs: null,
@@ -31,26 +31,30 @@ class KioskApprovedList extends React.Component {
     };
 
     componentDidMount() {
-        this.doLoad(true);
+        this.setGlobal({loading: true});
         this.getData();
         this.getStaffs();
     }
 
     getData = () => {
-        axios.get(KIOSK_LIST, {params: {status: 'approve'}}).then(res => this.processResult(res));
+        axios.get(KIOSK_LIST, {params: {status: 'approve'}})
+            .then(res => this.processResult(res))
+            .catch(err => this.setGlobal({errorMsg: err.toString()}))
+            .then(() => this.setGlobal({loading: false}))
     };
 
     processResult = (res) => {
-        if (res.data.status) this.setState({loading: false, tableData: res.data.data.kiosk_applications});
-        this.doLoad(false);
+        if (res.data.status) this.setState({tableData: res.data.data.kiosk_applications});
     };
 
     getStaffs = () => {
         axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
     };
+
     closeViewDialog = () => this.setState({openViewDialog: false});
 
     viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
+
     viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
     openAssignment = (data) => this.setState({file: data, openAssignment: true});
@@ -60,15 +64,15 @@ class KioskApprovedList extends React.Component {
     takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
     confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
-      .then(res => {
+      .then(() => {
           this.setState({openTakeFile: false});
           this.props.history.push(DESK);
       });
 
-    sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+    sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
     render() {
-        const {loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
+        const {singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
         const tableOptions = {
             filterType: "checkbox",
             responsive: "scroll",
@@ -145,7 +149,7 @@ class KioskApprovedList extends React.Component {
 
         return (
           <>
-              {loading ? <LoadingView/> : <Grid item xs={12}>
+              {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
                   <MUIDataTable
                     title={"Kiosk: List of Approved Application"}
                     data={tableData}
@@ -167,6 +171,8 @@ class KioskApprovedList extends React.Component {
               <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                              onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                              onConfirm={this.confirmTakeFile}/>}
+
+              {this.global.errorMsg && <ErrorHandler/>}
           </>
         );
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -12,13 +12,11 @@ import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
+import ErrorHandler from "../../../common/StatusHandler";
 
-const styles = {
-  button: {},
-  actionIcon: {}
-};
+const styles = {};
 
-class BannerRejectedList extends React.Component {
+class BannerRejectedList extends Component {
   state = {
     banners: [],
     openMap: false,
@@ -28,29 +26,30 @@ class BannerRejectedList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-    loading: true,
   };
 
   componentDidMount() {
-    this.props.doLoad(true);
+    this.setGlobal({loading: true});
     this.getData();
     this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
   }
+
   getData = () => axios.get(BANNER_LIST, {params: {status: 'reject'}})
     .then(res => this.processResult(res))
-    .catch(err => this.setState({errorMsg: err.toString()}))
-    .then(() => this.props.doLoad(false));
+    .catch(err => this.setGlobal({errorMsg: err.toString()}))
+    .then(() => this.setGlobal({loading: false}));
 
   getStaffs = () => axios.get(GET_STAFF);
 
   processResult = (res) => {
-    if (res.data.status) this.setState({loading: false, banners: res.data.data.banners});
-    this.props.doLoad(false);
+    if (res.data.status) this.setState({banners: res.data.data.banners});
+    else this.setGlobal({errorMsg: res.data.messages})
   };
 
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, banner: data});
+
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
@@ -60,13 +59,12 @@ class BannerRejectedList extends React.Component {
   takeFile = (data) => this.setState({banner: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.banner.file.id))
-    .then(res => this.props.history.push(DESK));
+    .then(() => this.props.history.push(DESK));
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
-    const {classes} = this.props;
-    const {loading, banner, banners, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
+    const {banner, banners, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -83,10 +81,6 @@ class BannerRejectedList extends React.Component {
         name: "address",
         label: "APPLICANT ADDRESS",
       },
-      /*{
-        name: "applicant_type",
-        label: "APPLICANT TYPE",
-      },*/
       {
         name: "advertisement_type",
         label: "TYPE",
@@ -104,7 +98,7 @@ class BannerRejectedList extends React.Component {
         name: "local_council",
         label: "LOCAL COUNCIL.",
         options: {
-          customBodyRender: (local_council, tableMeta, updateValue) => {
+          customBodyRender: (local_council) => {
             return (
               local_council.name
             );
@@ -157,7 +151,7 @@ class BannerRejectedList extends React.Component {
 
     return (
       <>
-        {loading ? <LoadingView/> : <Grid item xs={12}>
+        {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
           <MUIDataTable
             title={"Banner: List of Rejected Application"}
             data={banners}
@@ -165,10 +159,12 @@ class BannerRejectedList extends React.Component {
             options={tableOptions}
           />
         </Grid>}
+
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                     onClose={() => this.setState({openMap: false})}
                     isMarkerShown={true}
         />
+
         {openViewDialog &&
         <BannerViewDialog open={openViewDialog} close={this.closeViewDialog}
                           data={banner}/>}
@@ -182,6 +178,8 @@ class BannerRejectedList extends React.Component {
         <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                        onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                        onConfirm={this.confirmTakeFile}/>}
+
+        {this.global.errorMsg && <ErrorHandler/>}
       </>
     );
   }

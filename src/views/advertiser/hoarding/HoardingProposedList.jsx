@@ -21,7 +21,6 @@ class HoardingProposedList extends Component {
     openDetail: false,
     openWithdraw: false,
     errorMessage: "",
-
     loading: true
   };
 

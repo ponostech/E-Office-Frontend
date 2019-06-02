@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -12,13 +12,11 @@ import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
+import ErrorHandler from "../../../common/StatusHandler";
 
-const styles = {
-  button: {},
-  actionIcon: {}
-};
+const styles = {};
 
-class HotelNewList extends React.Component {
+class HotelNewList extends Component {
   state = {
     hotels: [],
     openMap: false,
@@ -28,19 +26,24 @@ class HotelNewList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-    loading: true,
   };
 
   componentDidMount() {
-    this.props.doLoad(true);
-    this.getData().then(res => this.processResult(res)).then(res => this.props.doLoad(false));
+    this.setGlobal({loading: true});
+    this.getData();
     this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
   }
 
-  getData = () => axios.get(HOTEL_LIST);
+  getData = () => {
+    axios.get(HOTEL_LIST)
+        .then(res => this.processResult(res))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}))
+  };
 
   processResult = (res) => {
-    if (res.data.status) this.setState({loading: false, hotels: res.data.data.hotels});
+    if (res.data.status) this.setState({hotels: res.data.data.hotels});
+    else this.setGlobal({errorMsg: res.data.messages})
   };
 
   getStaffs = () => axios.get(GET_STAFF);
@@ -57,13 +60,12 @@ class HotelNewList extends React.Component {
 
   takeFile = (data) => this.setState({hotel: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id)).then(res => this.props.history.push(DESK));
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id)).then(() => this.props.history.push(DESK));
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
-    const {classes} = this.props;
-    const {loading, hotel, hotels, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
+    const {hotel, hotels, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -116,7 +118,7 @@ class HotelNewList extends React.Component {
                     </IconButton>
                   </Tooltip>
                   <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                    <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
+                    <Icon fontSize="small">pin_drop</Icon>
                   </IconButton>
                   <IconButton color="primary" size="small"
                               aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
@@ -139,7 +141,7 @@ class HotelNewList extends React.Component {
 
     return (
         <>
-          {loading ? <LoadingView/> : <Grid item xs={12}>
+          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
             <MUIDataTable
                 title={"HOTEL/LODGING: List of New Application"}
                 data={hotels}
@@ -147,23 +149,23 @@ class HotelNewList extends React.Component {
                 options={tableOptions}
             />
           </Grid>}
+
           {openMap && <GMapDialog viewMode={true} open={openMap} lat={this.state.lat} lng={this.state.lng}
-                                  onClose={() => this.setState({openMap: false})}
-                                  isMarkerShown={true}
-          />}
+                                  onClose={() => this.setState({openMap: false})} isMarkerShown={true}/>}
+
           {openViewDialog &&
-          <HotelViewDialog open={openViewDialog} close={this.closeViewDialog}
-                           data={hotel}/>}
+          <HotelViewDialog open={openViewDialog} close={this.closeViewDialog} data={hotel}/>}
 
           {openAssignment && staffs &&
           <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
-                          onClose={this.closeAssignment} file={file}
-                          props={this.props}/>}
+                          onClose={this.closeAssignment} file={file} props={this.props}/>}
 
           {openTakeFile &&
           <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                          onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                          onConfirm={this.confirmTakeFile}/>}
+
+          {this.global.errorMsg && <ErrorHandler/>}
         </>
     );
   }

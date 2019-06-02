@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -11,13 +11,11 @@ import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
+import ErrorHandler from "../../../common/StatusHandler";
 
-const styles = {
-  button: {},
-  actionIcon: {}
-};
+const styles = {};
 
-class BannerNewList extends React.Component {
+class BannerNewList extends Component {
   state = {
     banners: [],
     openMap: false,
@@ -27,16 +25,20 @@ class BannerNewList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-    loading: true,
   };
 
   componentDidMount() {
-    this.props.doLoad(true);
-    this.getData().then(res => this.processResult(res)).then(res => this.props.doLoad(false));
+    this.setGlobal({loading: true});
+    this.getData();
     this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
   }
 
-  getData = () => axios.get(BANNER_LIST);
+  getData = () => {
+    axios.get(BANNER_LIST)
+        .then(res => this.processResult(res))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}));
+  };
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, banners: res.data.data.banners});
@@ -47,6 +49,7 @@ class BannerNewList extends React.Component {
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, banner: data});
+
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
@@ -56,13 +59,12 @@ class BannerNewList extends React.Component {
   takeFile = (data) => this.setState({banner: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.banner.file.id))
-    .then(res => this.props.history.push(DESK));
+      .then(() => this.props.history.push(DESK));
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
-    const {classes} = this.props;
-    const {loading, banner, banners, staffs, openTakeFile, openAssignment, openViewDialog, file,} = this.state;
+    const {banner, banners, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -97,7 +99,7 @@ class BannerNewList extends React.Component {
         options: {
           customBodyRender: (local_council, tableMeta, updateValue) => {
             return (
-              local_council.name
+                local_council.name
             );
           }
         }
@@ -120,26 +122,26 @@ class BannerNewList extends React.Component {
             const {rowIndex} = tableMeta;
             let data = banners[rowIndex];
             return (
-              <div>
-                <Tooltip title="View File">
+                <div>
+                  <Tooltip title="View File">
+                    <IconButton color="primary" size="small"
+                                aria-label="View File" onClick={this.viewFile.bind(this, data)}>
+                      <Icon fontSize="small">folder</Icon>
+                    </IconButton>
+                  </Tooltip>
                   <IconButton color="primary" size="small"
-                              aria-label="View File" onClick={this.viewFile.bind(this, data)}>
-                    <Icon fontSize="small">folder</Icon>
+                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                    <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
-                </Tooltip>
-                <IconButton color="primary" size="small"
-                            aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                  <Icon fontSize="small">remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, data)}>
-                  <Icon fontSize="small">send</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small">desktop_mac</Icon>
-                </IconButton>
-              </div>
+                  <IconButton variant="contained" color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                    <Icon fontSize="small">send</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small">desktop_mac</Icon>
+                  </IconButton>
+                </div>
             );
           }
         }
@@ -147,30 +149,32 @@ class BannerNewList extends React.Component {
     ];
 
     return (
-      <>
-        {loading ? <LoadingView/> : <Grid item xs={12}>
-          <MUIDataTable
-            title={"Banner: List of New Application"}
-            data={banners}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-        </Grid>}
+        <>
+          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+            <MUIDataTable
+                title={"Banner: List of New Application"}
+                data={banners}
+                columns={tableColumns}
+                options={tableOptions}
+            />
+          </Grid>}
 
-        {openViewDialog &&
-        <BannerViewDialog open={openViewDialog} close={this.closeViewDialog}
-                        data={banner}/>}
+          {openViewDialog &&
+          <BannerViewDialog open={openViewDialog} close={this.closeViewDialog}
+                            data={banner}/>}
 
-        {openAssignment && staffs &&
-        <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
-                        onClose={this.closeAssignment} file={file}
-                        props={this.props}/>}
+          {openAssignment && staffs &&
+          <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                          onClose={this.closeAssignment} file={file}
+                          props={this.props}/>}
 
-        {openTakeFile &&
-        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
-                       onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
-                       onConfirm={this.confirmTakeFile}/>}
-      </>
+          {openTakeFile &&
+          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                         onConfirm={this.confirmTakeFile}/>}
+
+          {this.global.errorMsg && <ErrorHandler/>}
+        </>
     );
   }
 }

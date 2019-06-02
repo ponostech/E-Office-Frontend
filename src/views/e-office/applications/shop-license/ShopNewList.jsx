@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -12,13 +12,11 @@ import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
+import ErrorHandler from "../../../common/StatusHandler";
 
-const styles = {
-  button: {},
-  actionIcon: {}
-};
+const styles = {};
 
-class ShopNewList extends React.Component {
+class ShopNewList extends Component {
   state = {
     shops: [],
     openMap: false,
@@ -28,19 +26,22 @@ class ShopNewList extends React.Component {
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
-    loading: true,
-
-    lat:0,
-    lng:0
+    lat: 0,
+    lng: 0
   };
 
   componentDidMount() {
-    this.props.doLoad(true);
-    this.getData().then(res => this.processResult(res)).then(res => this.props.doLoad(false));
+    this.setGlobal({loading: true});
+    this.getData();
     this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
   }
 
-  getData = () => axios.get(SHOP_LIST);
+  getData = () => {
+    axios.get(SHOP_LIST)
+        .then(res => this.processResult(res))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}));
+  };
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, shops: res.data.data.shops});
@@ -51,6 +52,7 @@ class ShopNewList extends React.Component {
   closeViewDialog = () => this.setState({openViewDialog: false});
 
   viewDetails = (data) => this.setState({openViewDialog: true, shop: data});
+
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
@@ -60,13 +62,12 @@ class ShopNewList extends React.Component {
   takeFile = (data) => this.setState({shop: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.shop.file.id))
-    .then(res => this.props.history.push(DESK));
+      .then(() => this.props.history.push(DESK));
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
-    const {classes} = this.props;
-    const {loading, shop, shops, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
+    const {shop, shops, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -111,29 +112,29 @@ class ShopNewList extends React.Component {
             const lat = Number(data.latitude);
             const lng = Number(data.longitude);
             return (
-              <div>
-                <Tooltip title="View File">
+                <div>
+                  <Tooltip title="View File">
+                    <IconButton color="primary" size="small"
+                                aria-label="View File" onClick={this.viewFile.bind(this, data)}>
+                      <Icon fontSize="small">folder</Icon>
+                    </IconButton>
+                  </Tooltip>
                   <IconButton color="primary" size="small"
-                              aria-label="View File" onClick={this.viewFile.bind(this, data)}>
-                    <Icon fontSize="small">folder</Icon>
+                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                    <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
-                </Tooltip>
-                <IconButton color="primary" size="small"
-                            aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                  <Icon fontSize="small">remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, data)}>
-                  <Icon fontSize="small">send</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small">desktop_mac</Icon>
-                </IconButton>
-                <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                  <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
-                </IconButton>
-              </div>
+                  <IconButton variant="contained" color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                    <Icon fontSize="small">send</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small">desktop_mac</Icon>
+                  </IconButton>
+                  <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                    <Icon fontSize="small">pin_drop</Icon>
+                  </IconButton>
+                </div>
             );
           }
         }
@@ -141,33 +142,33 @@ class ShopNewList extends React.Component {
     ];
 
     return (
-      <>
-        {loading ? <LoadingView/> : <Grid item xs={12}>
-          <MUIDataTable
-            title={"SHOP: List of New Application"}
-            data={shops}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-        </Grid>}
-        {openMap && <GMapDialog viewMode={true} open={openMap} lat={this.state.lat} lng={this.state.lng}
-                                onClose={() => this.setState({openMap: false})}
-                                isMarkerShown={true}
-        />}
-        {openViewDialog &&
-        <ShopViewDialog open={openViewDialog} close={this.closeViewDialog}
-                         data={shop}/>}
+        <>
+          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+            <MUIDataTable
+                title={"SHOP: List of New Application"}
+                data={shops}
+                columns={tableColumns}
+                options={tableOptions}
+            />
+          </Grid>}
 
-        {openAssignment && staffs &&
-        <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
-                        onClose={this.closeAssignment} file={file}
-                        props={this.props}/>}
+          {openMap && <GMapDialog viewMode={true} open={openMap} lat={this.state.lat} lng={this.state.lng}
+                                  onClose={() => this.setState({openMap: false})} isMarkerShown={true}/>}
 
-        {openTakeFile &&
-        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
-                       onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
-                       onConfirm={this.confirmTakeFile}/>}
-      </>
+          {openViewDialog &&
+          <ShopViewDialog open={openViewDialog} close={this.closeViewDialog} data={shop}/>}
+
+          {openAssignment && staffs &&
+          <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                          onClose={this.closeAssignment} file={file} props={this.props}/>}
+
+          {openTakeFile &&
+          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                         onConfirm={this.confirmTakeFile}/>}
+
+          {this.global.errorMsg && <ErrorHandler/>}
+        </>
     );
   }
 }
