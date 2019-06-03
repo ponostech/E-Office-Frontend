@@ -22,7 +22,7 @@ import {
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import OfficeSelect from "../../../../components/OfficeSelect";
-import Editor from "../draft/Editor";
+import Editor from "../../common/Editor";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { FILE_ACTION_TYPES, FILE_PRIORITIES } from "../../../../config/ApiRoutes";

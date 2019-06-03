@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Grid, Card, CardHeader, CardContent, CardActions, Divider, Button} from "@material-ui/core";
 import {TextField, withStyles} from "@material-ui/core"
-import Editor from '../e-office/files/draft/Editor';
+import Editor from '../e-office/common/Editor';
 import ErrorHandler, {SuccessHandler} from "../common/StatusHandler";
 import LoadingView from "../common/LoadingView";
 

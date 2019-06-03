@@ -42,7 +42,7 @@ import ShopSiteVerificationDialog from "../site-verification/ShopSiteVerificatio
 import HotelSiteVerificationDialog from "../site-verification/HotelSiteVerificationDialog";
 import HoardingSiteVerificationDialog from "../site-verification/HoardingSiteVerificationDialog";
 import {LoginService} from "../../../../services/LoginService";
-import ErrorHandler from "../../../common/StatusHandler";
+import FileApproveDialog from '../dialog/FileApproveDialog';
 
 const styles = theme => ({
   root: {
@@ -98,9 +98,8 @@ class FileView extends Component {
     openKioskVerification: false,
     openShopVerification: false,
     openHotelVerification: false,
-
-    successMessage: "",
     submitNote: false,
+    openApproveDialog: false,
   };
 
   componentDidMount() {
@@ -177,6 +176,9 @@ class FileView extends Component {
       case "Re-Open":
         this.setState({openFileReOpenDialog: true});
         break;
+      case 'Approve':
+        this.setState({openApproveDialog: true});
+        break;
       default:
         alert(name);
         break;
@@ -189,8 +191,8 @@ class FileView extends Component {
     if (data) {
       this.setState({submitNote: true});
       this.noteService.create(data,
-          errorMessage => this.setGlobal({errorMsg: errorMessage}),
-          successMessage => this.setState({successMessage}))
+          errorMsg => this.setGlobal({errorMsg}),
+          successMsg => this.setGlobal({successMsg}))
           .finally(() => {
             this.setState({submitNote: false});
           });
@@ -202,8 +204,8 @@ class FileView extends Component {
     if (url && data && template) {
       this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-          errorMessage => this.setGlobal({errorMsg: errorMessage}),
-          successMessage => this.setState({successMessage}))
+          errorMsg => this.setGlobal({errorMsg}),
+          successMsg => this.setGlobal({successMsg}))
           .finally(() => this.setState({submitNote: false}));
     }
   };
@@ -213,8 +215,8 @@ class FileView extends Component {
     if (url && data && template) {
       this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-          errorMessage => this.setGlobal({errorMsg: errorMessage}),
-          successMessage => this.setState({successMessage}))
+          errorMsg => this.setGlobal({errorMsg}),
+          successMsg => this.setGlobal({successMsg}))
           .finally(() => this.setState({submitNote: false}));
     }
   };
@@ -224,8 +226,8 @@ class FileView extends Component {
     if (url && data && template) {
       this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-          errorMessage => this.setGlobal({errorMsg: errorMessage}),
-          successMessage => this.setState({successMessage}))
+          errorMsg => this.setGlobal({errorMsg}),
+          successMsg => this.setGlobal({successMsg}))
           .finally(() => this.setState({submitNote: false}));
     }
   };
@@ -235,8 +237,8 @@ class FileView extends Component {
     if (url && data && template) {
       this.setState({submitNote: true});
       this.siteVerificationService.createSiteVerification(url, data, template,
-          errorMessage => this.setGlobal({errorMsg: errorMessage}),
-          successMessage => this.setState({successMessage}))
+          errorMsg => this.setGlobal({errorMsg}),
+          successMsg => this.setGlobal({successMsg}))
           .finally(() => this.setState({submitNote: false}));
     }
   };
@@ -255,8 +257,9 @@ class FileView extends Component {
   };
 
   processSendResponseSuccess = () => {
-    this.setState({successMessage: "File sent successfully", openAssignment: false});
-    setTimeout(() => this.props.history.push(DESK), 2000);
+    this.setState({openAssignment: false});
+    this.setGlobal({successMsg: "File sent successfully"})
+        .then(() => this.props.history.push(DESK));
   };
 
   confirmStatusChange = (status) => {
@@ -286,19 +289,17 @@ class FileView extends Component {
 
   processStatusResponse = (res, status) => {
     if (res.data.status) {
-      if (status === "closed") this.setState({
-        successMessage: "File closed successfully",
-        openFileCloseDialog: false
-      });
-      else if (status === "archived") this.setState({
-        successMessage: "File archive successfully",
-        openFileArchiveDialog: false
-      });
-      else if (status === "re-open") this.setState({
-        successMessage: "File re-opened successfully",
-        openFileReOpenDialog: false
-      });
-      setTimeout(() => this.props.history.push(DESK), 1000);
+      if (status === "closed") {
+        this.setState({openFileCloseDialog: false});
+        this.setGlobal({successMsg: "File closed successfully"})
+      } else if (status === "archived") {
+        this.setState({openFileArchiveDialog: false});
+        this.setGlobal({successMsg: "File archive successfully"})
+      } else if (status === "re-open") {
+        this.setState({openFileReOpenDialog: false});
+        this.setGlobal({successMsg: "File re-opened successfully"})
+      }
+      setTimeout(() => this.props.history.push(DESK), 100);
     } else {
       this.setGlobal({errorMsg: res.data.messages});
     }
@@ -306,9 +307,10 @@ class FileView extends Component {
 
   render() {
     const {classes} = this.props;
-    const {openDraft, openDraftPermit, openNote, file, submitNote, successMessage, menus} = this.state;
+    const {openDraft, openDraftPermit, openNote, file, submitNote, menus} = this.state;
     const {openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog, openDraftLicense} = this.state;
     const {moduleName, openDraftReject, openDraftCancel, openHoardingVerification, openKioskVerification, openHotelVerification, openShopVerification} = this.state;
+    const {openApproveDialog} = this.state;
 
     let allowed = LoginService.getCurrentUser().id === file.current_user_id;
     let contentStyle = {
@@ -344,7 +346,8 @@ class FileView extends Component {
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/application-details"}
                      render={(props) => <FileApplicationDetails {...props} file={file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/applications"}
-                     render={(props) => <FileApplications {...props} file={file} menus={menus} url="view/applications"/>}/>
+                     render={(props) => <FileApplications {...props} file={file} menus={menus}
+                                                          url="view/applications"/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/site-verifications"}
                      render={(props) => <FileSiteVerifications type={moduleName} {...props} file={file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-licenses"}
@@ -406,13 +409,10 @@ class FileView extends Component {
                                                      onClose={this.closeDialog.bind(this, "openDraftReject")}/>}
           {openDraftCancel && <FileDraftCancelDialog module={moduleName} file={file} open={openDraftCancel}
                                                      onClose={this.closeDialog.bind(this, "openDraftCancel")}/>}
-
+          {openApproveDialog && <FileApproveDialog module={moduleName} file={file} open={openApproveDialog}
+                                                   onClose={this.closeDialog.bind(this, "openApproveDialog")}/>}
           {submitNote &&
           <SubmitDialog open={submitNote} title="Create Notesheet" text="Note is Creating ... Please wait"/>}
-
-          <OfficeSnackbar variant={"success"} onClose={() => this.setState({successMessage: ""})}
-                          open={Boolean(successMessage)} message={successMessage}/>
-          {this.global.errorMsg && <ErrorHandler variant={"error"} open={Boolean(this.global.errorMsg)}/>}
         </Grid>
     );
   }

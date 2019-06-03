@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import TextEditor from "../../../files/draft/Editor";
+import TextEditor from "../../../common/Editor";
 import { Button, Card, CardActions, CardContent } from "@material-ui/core";
 import SubmitDialog from "../../../../../components/SubmitDialog";
 import OfficeSnackbar from "../../../../../components/OfficeSnackbar";
