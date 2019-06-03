@@ -23,7 +23,9 @@ export class SuccessHandler extends Component {
   }
   onClose = () => this.setState({open: false, successMessage: null});*/
 
-  onClose = () => {this.setGlobal({successMsg: ''})};
+  onClose = () => {
+    if (this.global.successMsg) this.setGlobal({successMsg: ''})
+  };
 
   render() {
     return <OfficeSnackbar open={Boolean(this.global.successMsg)} onClose={this.onClose} variant="success"

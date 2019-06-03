@@ -59,8 +59,8 @@ class LayoutOffice extends Component {
           <Grid item style={{marginTop: 70, minHeight: "90vh", background: "white"}} xs={12} sm={12} md={12}>
             {data.routeList}
           </Grid>
-          {this.global.errorMsg && <ErrorHandler/>}
-          {this.global.successMsg && <SuccessHandler/>}
+          <ErrorHandler/>
+          <SuccessHandler/>
         </Grid>
     );
   }
