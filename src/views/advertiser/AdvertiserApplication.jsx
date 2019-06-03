@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
@@ -86,11 +86,9 @@ class AdvertiserApplication extends Component {
   }
 
   retrieveDocuments = () => {
-    const { doLoad, doLoadFinish } = this.props;
-    doLoad();
     this.documentService.fetch("advertiser", errorMessage => this.setState({ errorMessage }), documents => this.setState({ documents }))
       .finally(() => {
-        doLoadFinish();
+        this.setGlobal({loading: false});
         this.setState({ loading: false });
       });
   };

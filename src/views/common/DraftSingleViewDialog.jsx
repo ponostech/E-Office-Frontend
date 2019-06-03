@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {Button, DialogActions} from "@material-ui/core";
 import {withStyles} from "@material-ui/core/styles";
 import {GET_DRAFT} from "../../config/ApiRoutes";
-import Editor from "../e-office/files/draft/Editor"
+import Editor from "../e-office/common/Editor"
 import DialogWrapper from "../e-office/files/dialog/common/DialogWrapper";
 
 const styles = {

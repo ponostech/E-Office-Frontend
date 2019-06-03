@@ -15,7 +15,7 @@ import DialogActions from "@material-ui/core/DialogActions/index";
 import Toolbar from "@material-ui/core/Toolbar";
 import {Card, CardContent, CardHeader, InputAdornment} from "@material-ui/core";
 import OfficeSelect from "../../../../components/OfficeSelect";
-import Editor from "../draft/Editor";
+import Editor from "../../common/Editor";
 import {DatePicker, MuiPickersUtilsProvider} from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import Grid from "@material-ui/core/Grid";

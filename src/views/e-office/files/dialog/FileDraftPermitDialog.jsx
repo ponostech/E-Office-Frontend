@@ -4,7 +4,7 @@ import {Button, Card, CardHeader, Grid, Divider} from "@material-ui/core";
 import LoadingView from "../../../common/LoadingView";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import DialogWrapper from './common/DialogWrapper';
-import Editor from "../draft/Editor";
+import Editor from "../../common/Editor";
 import {DRAFT_CREATE, GET_PERMIT_TEMPLATE, FILE_DRAFT_PERMIT_VIEW} from "../../../../config/ApiRoutes";
 import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
 import SubmitDialog from "../../../../components/SubmitDialog";

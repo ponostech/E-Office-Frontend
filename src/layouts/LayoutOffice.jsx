@@ -8,6 +8,7 @@ import RouteListOfficer from './routes/RouteListOfficer';
 import RouteListInspector from './routes/RouteListInspector';
 import RouteListClerk from './routes/RouteListClerk';
 import ErrorHandler, {SuccessHandler} from "../views/common/StatusHandler";
+import {LOGIN} from "../config/routes-constant/OfficeRoutes";
 
 class LayoutOffice extends Component {
   getRoute = () => {
@@ -35,7 +36,7 @@ class LayoutOffice extends Component {
       default:
         this.clearLocalStorage();
         routeList = <p>Route not Found!</p>;
-        // this.props.history.push(LOGIN);
+        this.props.history.push(LOGIN);
         break;
     }
     return {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 // import Editor from "nib-core";
 import {Editor} from '@tinymce/tinymce-react';
-import LoadingView from "../../../common/LoadingView";
+import LoadingView from "../../common/LoadingView";
 
 class TextEditor extends Component {
   state = {
