@@ -325,9 +325,7 @@ class FileView extends Component {
         <>
           <div className={classes.hide}>
             <FileMenuLeft click={this.handleItemClick} menus={menus}/>
-            {
-              allowed ? <FileMenuRight click={this.handleItemClick} menus={menus}/> : null
-            }
+            {allowed ? <FileMenuRight click={this.handleItemClick} menus={menus}/> : null}
           </div>
           <main style={contentStyle}>
             <Grid item xs={12} md={12} lg={12}>

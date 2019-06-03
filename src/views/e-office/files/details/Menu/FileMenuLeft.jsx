@@ -108,7 +108,7 @@ class FileMenuLeft extends React.Component {
 
   componentDidMount() {
     let open = localStorage.getItem("open_drawer");
-    this.setState({open: JSON.parse(open)})
+    if (open) this.setState({open: JSON.parse(open)})
   }
 
   toggleDrawer = () => {
