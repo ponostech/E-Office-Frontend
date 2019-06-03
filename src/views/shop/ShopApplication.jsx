@@ -570,22 +570,6 @@ class ShopApplication extends Component {
                             format={"dd/MM/yyyy"}
                           />
                         </MuiPickersUtilsProvider>
-                        {/*  <TextField name={"estd"}
-                               value={this.state.estd}
-                               variant={"outlined"}
-                               margin={"dense"}
-                               required={true}
-                               onBlur={this.handleBlur.bind(this)}
-                               fullWidth={true}
-                               onChange={this.handleChange.bind(this)}
-                               type={"date"}
-                               InputLabelProps={
-                                 { shrink: true }
-                               }
-                               label={"Date of Establishment"}
-                               error={Boolean(this.state.estdError)}
-                               helperText={this.state.estdError}
-                    /> */}
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <TextField
@@ -751,10 +735,11 @@ class ShopApplication extends Component {
               </form>
             </GridItem>
 
-            <SubmitDialog open={this.state.submit} text={"Your Application is submitting, Please wait"}/>
+            <SubmitDialog open={this.state.submit} text={"Your Application is submitting, Please wait..."}/>
 
-            <OfficeSnackbar open={!!this.state.errorMessage} variant={"error"} message={this.state.errorMessage}
-                            onClose={() => this.setState({ errorMessage: "" })}/>
+            {/*<OfficeSnackbar open={!!this.state.errorMessage} variant={"error"} message={this.state.errorMessage}*/}
+            {/*                onClose={() => this.setState({ errorMessage: "" })}/>*/}
+
 
             <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
               let msg = `Latitude: ${lat} , Longitude: ${lng}`;

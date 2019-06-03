@@ -199,7 +199,7 @@ class NoteCreateDialog extends React.Component {
           <br/>
         </Grid>
         <Grid item={true} lg={6}>
-          <Typography variant={"h6"}>Notesheet Attachment</Typography>
+          <Typography style={{textTransform:"capitalize"}} variant={"h6"}>Notesheet Attachment</Typography>
           <NotesheetAttachment value={[]} onSuccess={this.onSuccess}/>
         </Grid>
       </Grid>

@@ -13,6 +13,10 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/DeleteForeverOutlined";
 
+const inputProps = {
+  step: 300,
+};
+
 var uniqid = require("uniqid");
 const config = {
   bucketName: BUCKET_NAME,
@@ -44,11 +48,11 @@ class NotesheetAttachmentItem extends Component {
 
     if (file) {
       let blob = file.slice(0, file.size, file.type);
-      let newName = Date.now() + "-" + uniqid();
+      let newName = "notesheet_attachment_"+Date.now() + "-" + uniqid();
       let newFile = new File([blob], newName, { type: file.type });
 
       let loc = moment().format("MM-YYYY");
-      config.dirName=`office/notesheet-attachments/${loc}/`;
+      // config.dirName=`office/notesheet-attachments/${loc}/`;
 
       this.setState({ file: newFile });
 
@@ -90,7 +94,6 @@ class NotesheetAttachmentItem extends Component {
       value="noteSheetAttachment"
     }
       this.props.onNameChanged(value,index);
-
   };
 
   render() {
@@ -98,7 +101,7 @@ class NotesheetAttachmentItem extends Component {
     let view = loading ? <LinearProgress variant={"indeterminate"} color={"primary"}/> :
       <ListItem>
         <ListItemText>
-          <TextField InputProps={{disableUnderline:true}} value={this.state.name} onChange={this.handleChange.bind(this)} fullWidth={true}/>
+          <TextField inputProps={inputProps}  variant={"outlined"}  value={this.state.name} onChange={this.handleChange.bind(this)} fullWidth={true}/>
         </ListItemText>
         <ListItemSecondaryAction>
           <IconButton onClick={this.handleItemDelete.bind(this)} >

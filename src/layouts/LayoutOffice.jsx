@@ -7,7 +7,6 @@ import RouteListAdministrator from './routes/RouteListAdministrator';
 import RouteListOfficer from './routes/RouteListOfficer';
 import RouteListInspector from './routes/RouteListInspector';
 import RouteListClerk from './routes/RouteListClerk';
-import {LOGIN} from "../config/routes-constant/OfficeRoutes";
 import ErrorHandler, {SuccessHandler} from "../views/common/StatusHandler";
 
 class LayoutOffice extends Component {

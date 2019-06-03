@@ -1,4 +1,4 @@
-import React from "react";
+import React from "reactn";
 import { Route, Switch } from "react-router-dom";
 
 import * as  OfficeRoutes from "../config/routes-constant/OfficeRoutes";
@@ -13,20 +13,16 @@ import ShopApplication from "../views/shop/ShopApplication";
 import BannerApplicationForm from "../views/banner/BannerApplication";
 import AdvertiserLogin from "../views/common/LoginView";
 import AdvertiserApplication from "../views/advertiser/AdvertiserApplication";
-import ShopRenewal from "../views/shop/ShopRenewal";
 import HotelApplication from "../views/hotel/HotelApplication";
 import CheckLicense from "../views/landing-pages/license-checking/CheckLicense";
 import { LoginService } from "../services/LoginService";
 import ForgotPassword from "../views/common/ForgotPassword";
-// import Form from "../views/Form";
 import GrievanceCreate from "../views/grievance/GrievanceCreate";
+import ErrorHandler from "../views/common/StatusHandler";
 
 class LayoutLanding extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: false
-    };
     if (LoginService.hasRole("administrator")) window.location.replace(E_OFFICE);
     else if (LoginService.isStaff()) window.location.replace(DESK);
     else if (LoginService.isAdvertiser()) window.location.replace(ADVERTISER_DASHBOARD);
@@ -35,54 +31,33 @@ class LayoutLanding extends React.Component {
 
   }
 
-  doLoad = () => {
-    this.setState({ loading: true });
-  };
-
-  doLoadFinish = () => {
-    this.setState({ loading: false });
-  };
-
   render() {
     const { classes, ...rest } = this.props;
 
     return (
       <div className={classes.wrapper}>
-        <AuthNavbar loading={this.state.loading} color={"primary"} brandText="AIZAWL MUNICIPAL CORP0RATION"
+        <AuthNavbar color={"primary"} brandText="AIZAWL MUNICIPAL CORP0RATION"
                     OfficeRoutes={OfficeRoutes} {...rest} />
         <div className={classes.fullPage}>
           <div className={classes.container}>
             <Switch>
               <Route exact={true} path={OfficeRoutes.ROOT} component={HomePage}/>
               <Route exact={true} path={OfficeRoutes.FORGOT_PASSWORD} component={ForgotPassword}/>
+              <Route exact={true} path={OfficeRoutes.APPLY_HOTEL_LICENSE} component={HotelApplication}/>
+              <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopApplication}/>
+              <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserApplication}/>
 
-              <Route exact={true} path={OfficeRoutes.APPLY_HOTEL_LICENSE}
-                     render={() => <HotelApplication doLoad={this.doLoad.bind(this)}
-                                                     doLoadFinish={this.doLoadFinish.bind(this)}/>}/>
-              <Route exact={true} path={OfficeRoutes.RENEW_SHOP_LICENSE}
-                     component={ShopRenewal}/>
-              <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE}
-                     render={() => <ShopApplication doLoad={this.doLoad.bind(this)}
-                                                    doLoadFinish={this.doLoadFinish.bind(this)}/>}/>
-              <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER}
-                     render={(e) => {
-                       return <AdvertiserApplication doLoad={this.doLoad.bind(this)}
-                                                     doLoadFinish={this.doLoadFinish.bind(this)}/>;
-                     }}
-              />
-              <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} render={() => <AdvertiserLogin/>}/>
+              <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
 
-              <Route exact={true} path={OfficeRoutes.CHECK_LICENSE} render={() => <CheckLicense/>}/>
+              <Route exact={true} path={OfficeRoutes.CHECK_LICENSE}  component={CheckLicense}/>
 
-              <Route exact={true} path={OfficeRoutes.APPLY_BANNER} render={(e) => {
-                return <BannerApplicationForm doLoad={this.doLoad.bind(this)}
-                                              doLoadFinish={this.doLoadFinish.bind(this)}/>;
-              }}/>
+              <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
 
-              <Route exact={true} path={OfficeRoutes.GRIEVANCE_CREATE} render={() => <GrievanceCreate/>}/>
+              <Route exact={true} path={OfficeRoutes.GRIEVANCE_CREATE} component={GrievanceCreate}/>
 
             </Switch>
           </div>
+          {this.global.errorMsg && <ErrorHandler/>}
         </div>
         <Footer/>
       </div>

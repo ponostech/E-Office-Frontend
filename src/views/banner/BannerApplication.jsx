@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import {
   Button,
   Card,
@@ -16,10 +16,8 @@ import GridItem from "../../components/Grid/GridItem";
 import OfficeSelect from "../../components/OfficeSelect";
 import GridContainer from "../../components/Grid/GridContainer";
 import SubmitDialog from "../../components/SubmitDialog";
-import OfficeSnackbar from "../../components/OfficeSnackbar";
 import BannerDetail from "./BannerDetail";
 import { LocalCouncilService } from "../../services/LocalCouncilService";
-import FileUpload from "../../components/FileUpload";
 import { BannerService } from "../../services/BannerService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../components/AddressField";
@@ -29,8 +27,8 @@ import { OtpService } from "../../services/OtpService";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
-import { APPLICATION_NAME } from "../../utils/Util";
 import LoadingView from "../common/LoadingView";
+import ErrorHandler from "../common/StatusHandler";
 
 const style = {
   root: {
@@ -56,7 +54,7 @@ class BannerApplication extends Component {
     details: "",
     content: "",
     displayType: undefined,
-    design:undefined,
+    design: undefined,
     bannerDetails: [],
 
     localCouncils: [],
@@ -89,9 +87,8 @@ class BannerApplication extends Component {
     complete: false,
     prestine: true,
     openOtp: false,
-    otpMessage: "",
+    otpMessage: ""
 
-    loading: true
   };
 
   componentWillUnmount() {
@@ -99,18 +96,16 @@ class BannerApplication extends Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     document.title = "e-AMC | Banners/Posters Application Form";
 
-    const { doLoad, doLoadFinish } = this.props;
-
-    doLoad();
+    this.setGlobal({ loading: true });
     this.fetchLocalCouncil();
-    window.scrollTo(0, 0);
   }
 
   sendOtp = () => {
     this.otpService.requestOtp(this.state.phone, "Banner Advertisement Application",
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       otpMessage => {
         this.setState({ otpMessage, openOtp: true });
       })
@@ -122,8 +117,7 @@ class BannerApplication extends Component {
       errorMessage => this.setState({ errorMessage }),
       localCouncils => this.setState({ localCouncils }))
       .finally(() => {
-        this.setState({ loading: false });
-        this.props.doLoadFinish();
+        this.setGlobal({ loading: false });
       });
   };
 
@@ -167,8 +161,7 @@ class BannerApplication extends Component {
   onSubmit = (e) => {
 
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.phoneError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
-      || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine) ||
-      this.state.bannerDetails.length === 0
+      || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine);
 
     if (invalid) {
       this.setState({ errorMessage: "Please fill all the required fields" });
@@ -230,7 +223,7 @@ class BannerApplication extends Component {
     return (
       <>
         {
-          this.state.loading ? <LoadingView/> :
+          this.global.loading ? <LoadingView/> :
             <GridContainer justify="flex-start">
               <GridItem xs={12} sm={12} md={10}>
                 <form>
@@ -376,7 +369,6 @@ class BannerApplication extends Component {
                           <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                           <BannerDetail ref={this.bannerRef}
                                         onRemoveDetail={(index) => {
-                                          console.log("item is removed " + index);
                                           let list = this.state.bannerDetails;
                                           let result = list.filter((item, i) => {
                                             if (index !== i) {
@@ -445,9 +437,6 @@ class BannerApplication extends Component {
 
               <SubmitDialog open={this.state.submit} text={BannerViewModel.SUBMIT}/>
 
-              <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
-                              message={this.state.errorMessage}
-                              onClose={(e) => this.setState({ errorMessage: "" })}/>
               <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
                          purposed={"Banner Application"}
                          onClose={(value) => {

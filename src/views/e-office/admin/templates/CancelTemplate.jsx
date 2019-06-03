@@ -84,7 +84,7 @@ class CancelTemplate extends Component {
             <Tab value={"advertiser"}
                  disableRipple
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Advertising "}/>
+                 label={"Advertiser "}/>
             <Tab disableRipple value={"shop"}
                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                  label={"Shop "}/>
