@@ -28,7 +28,7 @@ import {
   ADVERTISER_WITHDRAWN_KIOSK
 } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
-import { Avatar, Divider, Grid } from "@material-ui/core";
+import { Avatar, CardActions, Divider, Grid } from "@material-ui/core";
 
 
 function AdvertiserMobileMenu(props) {
@@ -190,7 +190,11 @@ function AdvertiserMobileMenu(props) {
           <ListItemText primary="Setting"/>
         </ListItem>
 
-        <div style={{ flexWrap: "wrap" }}>
+        <div style={{ flex: 1 }}>
+          {"\u00A0 "}
+          {"\u00A0 "}
+          {"\u00A0 "}
+
         </div>
 
         <ListItem button onClick={e => {

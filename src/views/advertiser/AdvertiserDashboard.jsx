@@ -1,62 +1,11 @@
 import React, { Component } from "reactn";
-import { CardContent, Grid, Icon } from "@material-ui/core";
-import Card from "../../components/Card/Card";
-import CardHeader from "../../components/Card/CardHeader";
-import CardIcon from "../../components/Card/CardIcon";
-import CardFooter from "../../components/Card/CardFooter";
-
-import { containerFluid, drawerMiniWidth, drawerWidth, transition } from "assets/jss/material-dashboard-pro-react.jsx";
-import withStyles from "@material-ui/core/es/styles/withStyles";
-import ChartistGraph from "react-chartist";
+import { Grid } from "@material-ui/core";
 import InfoView from "./widgets/InfoView";
+import ChartistGraph from "react-chartist";
+import Card from "../../components/Card/Card";
 
-const appStyle = theme => ({
-  wrapper: {
-    position: "relative",
-    top: "0",
-    height: "100vh",
-    "&:after": {
-      display: "table",
-      clear: "both",
-      content: "\" \""
-    }
-  },
-  mainPanel: {
-    transitionProperty: "top, bottom, width",
-    transitionDuration: ".2s, .2s, .35s",
-    transitionTimingFunction: "linear, linear, ease",
-    [theme.breakpoints.up("md")]: {
-      width: `calc(100% - ${drawerWidth}px)`
-    },
-    overflow: "auto",
-    position: "relative",
-    float: "right",
-    ...transition,
-    maxHeight: "100%",
-    width: "100%",
-    overflowScrolling: "touch"
-  },
-  content: {
-    marginTop: "70px",
-    padding: "30px 15px",
-    minHeight: "calc(100vh - 123px)"
-  },
-  container: {
-    ...containerFluid,
-    position: "relative"
-  },
-  map: {
-    marginTop: "70px"
-  },
-  mainPanelSidebarMini: {
-    [theme.breakpoints.up("md")]: {
-      width: `calc(100% - ${drawerMiniWidth}px)`
-    }
-  },
-  mainPanelWithPerfectScrollbar: {
-    overflow: "hidden !important"
-  }
-});
+
+
 var simpleLineChartData = {
   labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
   series: [
@@ -69,6 +18,7 @@ var simpleLineChartData = {
     [17, 3, 4, 56, 89]
   ]
 };
+
 var options = {
   height: "400px",
   high: 100,
@@ -83,11 +33,11 @@ var options = {
 class AdvertiserDashboard extends Component {
 
   componentDidMount() {
-    let self=this;
-    this.setGlobal({loading:true })
+    let self = this;
+    this.setGlobal({ loading: true });
     setTimeout(function(handler) {
-      self.setGlobal({loading:false})
-    },4000)
+      self.setGlobal({ loading: false });
+    }, 4000);
   }
 
   render() {
@@ -95,83 +45,20 @@ class AdvertiserDashboard extends Component {
     return (
       <Grid spacing={16} container={true}>
         {/*<p>Advertiser dashboard</p>*/}
-        <Grid item={true} xs={12} sm={12} md={3}>
-         <InfoView onLinkClick={e=>console.log("rest")}/>
+        <Grid item={true} xs={12} sm={12} md={4}>
+          <InfoView onLinkClick={e => console.log("rest")}/>
         </Grid>
-        <Grid item={true} xs={12} sm={12} md={3}>
-          <Card raised={true}>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>content_copy</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  Get more space
-                </a>
-              </div>
-            </CardFooter>
-          </Card>
+        <Grid item={true} xs={12} sm={12} md={4}>
+          <InfoView onLinkClick={e => console.log("rest")}/>
         </Grid>
-        <Grid item={true} xs={12} sm={12} md={3}>
-          <Card raised={true}>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>content_copy</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  Get more space
-                </a>
-              </div>
-            </CardFooter>
-          </Card>
+        <Grid item={true} xs={12} sm={12} md={4}>
+          <InfoView onLinkClick={e => console.log("rest")}/>
         </Grid>
-        <Grid item={true} xs={12} sm={12} md={3}>
-          <Card raised={true}>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>content_copy</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  Get more space
-                </a>
-              </div>
-            </CardFooter>
-          </Card>
-        </Grid>
-        <Grid xs={12} sm={12} md={12}>
-          <Card raised={true}>
-            <CardHeader stats icon>
-              <CardIcon color="success">
-                <Icon>table_chart</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Chart of something</p>
 
-            </CardHeader>
-            <CardContent>
-              <ChartistGraph data={simpleLineChartData} options={options} type={"Line"}/>
-            </CardContent>
+        <Grid item={true} xs={12} sm={12} md={12}>
+          <Card  raised={true}>
+            <ChartistGraph data={simpleLineChartData} options={options} type={"Bar"}/>
           </Card>
-
         </Grid>
 
       </Grid>
@@ -179,4 +66,4 @@ class AdvertiserDashboard extends Component {
   }
 }
 
-export default withStyles(appStyle)(AdvertiserDashboard);
+export default (AdvertiserDashboard);
