@@ -72,8 +72,6 @@ class AdvertiserApplication extends Component {
       ],
       submit: false,
       prestine: true,
-
-      loading: true
     };
 
     this.documentService = new DocumentService();
@@ -86,10 +84,11 @@ class AdvertiserApplication extends Component {
   }
 
   retrieveDocuments = () => {
-    this.documentService.fetch("advertiser", errorMessage => this.setState({ errorMessage }), documents => this.setState({ documents }))
+    this.documentService.fetch("advertiser",
+        errorMsg => this.setGlobal({ errorMsg }),
+        documents => this.setState({ documents }))
       .finally(() => {
         this.setGlobal({loading: false});
-        this.setState({ loading: false });
       });
   };
 
@@ -128,8 +127,9 @@ class AdvertiserApplication extends Component {
 
   insertData() {
     const { history } = this.props;
-    this.advertiserService.create(this.state, errorMessage => this.setState({ errorMessage }),
-      successMessage => {
+    this.advertiserService.create(this.state,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMessage => {
         this.setState({
           successMessage: (
             <SweetAlert
@@ -234,7 +234,7 @@ class AdvertiserApplication extends Component {
     return (
       <>
         {
-          this.state.loading ? <LoadingView/> :
+          this.global.loading ? <LoadingView/> :
             <GridContainer visbility="false" justify="flex-start">
               <GridItem xs={12} sm={12} md={10}>
                 <Card>

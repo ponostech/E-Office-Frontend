@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
 import { HoardingService } from "../../../services/HoardingService";
-import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
@@ -16,22 +15,18 @@ class HoardingWithdrawnList extends Component {
   state = {
     hoarding: null,
     hoardings: [],
-    openDetail: false,
-    errorMessage: "",
-    loading: true
+    openDetail: false
   };
 
 
   componentDidMount() {
     document.title = "e-AMC | List of hoarding application";
-    const { doLoad, doLoadFinish } = this.props;
     const self = this;
-    doLoad();
-    this.hoardingService.fetch(ApplicationState.APPROVED_APPLICATION, errorMessage => this.setState({ errorMessage }),
+    self.setGlobal({ loading: true });
+    this.hoardingService.fetch(ApplicationState.APPROVED_APPLICATION, errorMsg => this.setGlobal({ errorMsg }),
       hoardings => this.setState({ hoardings }))
       .finally(() => {
-        doLoadFinish();
-        self.setState({ loading: false });
+        self.setGlobal({ loading: false });
       });
   }
 
@@ -63,7 +58,7 @@ class HoardingWithdrawnList extends Component {
             return (value.subject);
           }
         }
-      },  {
+      }, {
         name: "hoarding",
         label: "PURPOSED LOCATION",
         options: {
@@ -86,19 +81,7 @@ class HoardingWithdrawnList extends Component {
           customBodyRender: (hoarding, tableMeta, updateValue) => {
             const { rowIndex } = tableMeta;
             const file = this.state.hoardings[rowIndex];
-            // switch (data.status) {
-            //   case ApplicationState.NEW_APPLICATION:
-            //     viewBtn=undefined
-            //     break;
-            //   case ApplicationState.UNDER_PROCESS_APPLICATION:
-            //     break;
-            //   case ApplicationState.REJECTED_APPLICATION:
-            //     break;
-            //   case ApplicationState.APPROVED_APPLICATION:
-            //     break;
-            //   default:
-            //     break;
-            // }
+
             let viewBtn = (
               <Tooltip title={"Click here to view details"}>
                 <IconButton onClick={(e) => {
@@ -131,7 +114,7 @@ class HoardingWithdrawnList extends Component {
     return (
       <>
         {
-          this.state.loading ? <LoadingView/> :
+          this.global.loading ? <LoadingView/> :
             <Grid item sm={12} xs={12} md={12}>
               <MUIDataTable
                 title={"Hoarding: List of withdrawn Applications"}
@@ -141,9 +124,6 @@ class HoardingWithdrawnList extends Component {
               />
               <HoardingApplicationDialog open={Boolean(this.state.hoarding)} application={this.state.hoarding}
                                          onClose={e => this.setState({ hoarding: null })}/>
-              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
-                              onClose={() => this.setState({ errorMessage: "" })}
-                              variant={"error"} message={this.state.errorMessage}/>
             </Grid>
         }
 

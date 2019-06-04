@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import {
   Button,
   Card,
@@ -28,7 +28,6 @@ import MapIcon from "@material-ui/icons/PinDrop";
 import { DocumentService } from "../../../../services/DocumentService";
 import { KioskService } from "../../../../services/KioskService";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import GMapDialog from "../../../../components/GmapDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { CategoryServices } from "../../../../services/CategoryServices";
@@ -88,8 +87,7 @@ class KioskApplicationForm extends Component {
       agree: false,
 
       success: "",
-      submit: false,
-      loading:true,
+      submit: false
     };
 
     this.localCouncilservice = new LocalCouncilService();
@@ -99,40 +97,33 @@ class KioskApplicationForm extends Component {
   }
 
   componentDidMount() {
-
-    const { doLoad, doLoadFinish } = this.props;
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     var self = this;
-    doLoad();
-    timeout = setTimeout(function(handler) {
-      Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
-      doLoadFinish();
-      self.setState({loading:false})
-    }, 2000);
+    self.setGlobal({loading:true});
+    Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
+      .finally(() => {
+        self.setGlobal({ loading: false });
+      });
     //
   }
 
-  componentWillUnmount() {
-    clearTimeout(timeout);
-  }
-
-  fetchLocalCouncil = () => {
-    this.localCouncilservice.fetch(
-      errorMessage => this.setState({ errorMessage }),
+  fetchLocalCouncil = async () => {
+    await this.localCouncilservice.fetch(
+      errorMsg => this.setGlobal({ errorMsg }),
       localCouncils => this.setState({ localCouncils }))
       .finally(() => console.info("Local council fetch successfully"));
   };
 
-  fetchCategory = () => {
-    this.categoryService.fetch(
-      errorMessage => this.setState({ errorMessage }),
+  fetchCategory = async () => {
+    await this.categoryService.fetch(
+      errorMsg => this.setGlobal({ errorMsg }),
       categories => this.setState({ categories }))
       .finally(() => console.info("Areas categories fetch successfully"));
   };
 
-  fetchDocument = () => {
-    this.documentService.fetch("hoarding_kiosk",
-      errorMessage => this.setState({ errorMessage }),
+  fetchDocument = async () => {
+    await this.documentService.fetch("hoarding_kiosk",
+      errorMsg => this.setGlobal({ errorMsg }),
       documents => this.setState({ documents }))
       .finally(() => console.info("Document attachment fetch successfully"));
   };
@@ -159,7 +150,7 @@ class KioskApplicationForm extends Component {
     }
     this.setState({ submit: true });
     this.kioskService.create(this.state,
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setState({ errorMsg }),
       successMessage => {
         this.setState({
           success: (
@@ -212,9 +203,9 @@ class KioskApplicationForm extends Component {
         break;
     }
   };
-  validateDocument=()=>{
+  validateDocument = () => {
     const { documents, uploadDocuments } = this.state;
-    let docCount=0;
+    let docCount = 0;
     let uploadCount = 0;
 
     documents.forEach(function(item, index) {
@@ -268,7 +259,7 @@ class KioskApplicationForm extends Component {
     const { classes } = this.props;
     return (
       <>
-        {this.state.loading ?<LoadingView/>:
+        {this.global.loading ? <LoadingView/> :
           <GridContainer justify={"flex-start"}>
             <GridItem xs={12} sm={12} md={10}>
               <Card>
@@ -510,7 +501,7 @@ class KioskApplicationForm extends Component {
                           onUploadSuccess={(data) => {
                             this.setState(state => {
                               let temp = {
-                                mandatory:doc.mandatory,
+                                mandatory: doc.mandatory,
                                 document_id: doc.id,
                                 name: doc.name,
                                 path: data.location
@@ -560,7 +551,6 @@ class KioskApplicationForm extends Component {
                 </CardActions>
               </Card>
             </GridItem>
-            {this.state.success}
             <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
               this.setState({
                 openMap: false,
@@ -572,19 +562,13 @@ class KioskApplicationForm extends Component {
               });
             }} fullScreen={true} isMarkerShown={true}/>
 
-            <OfficeSnackbar
-              open={Boolean(this.state.errorMessage)}
-              variant={"error"}
-              message={this.state.errorMessage}
-              onClose={() => {
-                this.setState({ errorMessage: "" });
-              }
-              }/>
+
             <SubmitDialog open={this.state.submit} text={"Your application is submitting ..."}/>
+            {this.state.success}
 
           </GridContainer>
         }
-        </>
+      </>
 
     );
   }

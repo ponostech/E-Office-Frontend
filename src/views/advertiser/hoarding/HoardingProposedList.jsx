@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
 import { HoardingService } from "../../../services/HoardingService";
-import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import CloseIcon from "@material-ui/icons/Close";
@@ -20,8 +19,6 @@ class HoardingProposedList extends Component {
 
     openDetail: false,
     openWithdraw: false,
-    errorMessage: "",
-    loading: true
   };
 
 
@@ -31,21 +28,19 @@ class HoardingProposedList extends Component {
 
   componentDidMount() {
     document.title = "e-AMC | List of hoarding application";
-    const { doLoad, doLoadFinish } = this.props;
     const self = this;
-    doLoad();
-    this.hoardingService.fetchAdvertiserHoarding(errorMessage => this.setState({ errorMessage }),
+    self.setGlobal({ loading: true });
+    this.hoardingService.fetchAdvertiserHoarding(errorMsg => this.setState({ errorMsg }),
       hoardings => this.setState({ hoardings }))
       .finally(() => {
-        self.setState({ loading: false });
-        doLoadFinish();
+        self.setGlobal({ loading: false });
       });
   }
 
 
   render() {
     const tableColumns = [
-       {
+      {
         name: "created_at",
         label: "DATE",
         options: {
@@ -78,7 +73,7 @@ class HoardingProposedList extends Component {
             return (hoarding.address);
           }
         }
-      },{
+      }, {
         name: "hoarding",
         label: "LOCAL COUNCIL",
         options: {
@@ -134,7 +129,7 @@ class HoardingProposedList extends Component {
     return (
       <>
         {
-          this.state.loading ? <LoadingView/> :
+          this.global.loading ? <LoadingView/> :
             <Grid item sm={12} xs={12} md={12}>
               <MUIDataTable
                 title={"Hoarding: List of applications"}
@@ -149,9 +144,6 @@ class HoardingProposedList extends Component {
                              onCancel={() => this.setState({ openWithdraw: false })} open={this.state.openWithdraw}
                              onConfirm={this.withdraw.bind(this)}/>
 
-              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
-                              onClose={() => this.setState({ errorMessage: "" })}
-                              variant={"error"} message={this.state.errorMessage}/>
             </Grid>
         }
 

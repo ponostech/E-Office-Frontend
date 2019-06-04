@@ -10,7 +10,6 @@ import ApplicationState from "../../../utils/ApplicationState";
 import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 import { FILE_DETAIL_ROUTE } from "../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../common/LoadingView";
-import ErrorHandler from "../../common/StatusHandler";
 
 class HoardingActiveList extends Component {
   hoardingService = new HoardingService();
@@ -132,7 +131,6 @@ class HoardingActiveList extends Component {
               <HoardingApplicationDialog open={Boolean(this.state.hoarding)} application={this.state.hoarding}
                                          onClose={e => this.setState({ hoarding: null })}/>
 
-              {this.global.errorMsg && <ErrorHandler/>}
             </Grid>
         }
 

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
@@ -18,20 +18,17 @@ class KioskActiveList extends Component {
     kiosks: [],
     openDetail: false,
     openApply: false,
-    errorMessage: "",
-    loading: true
   };
 
   componentDidMount() {
     document.title = "e-AMC | List of kiosk application";
     const { doLoad, doLoadFinish } = this.props;
-    doLoad();
+    this.setGlobal({loading:true});
     this.kioskService.fetchAdvertiserKiosk(
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       kiosks => this.setState({ kiosks }))
       .finally(() => {
-        this.setState({ loading: false });
-        doLoadFinish();
+        this.setGlobal({ loading: false });
       });
   }
 
@@ -119,7 +116,7 @@ class KioskActiveList extends Component {
     return (
       <>
         {
-          this.state.loading ? <LoadingView/> :
+          this.global.loading ? <LoadingView/> :
             <Grid item sm={12} xs={12} md={12}>
               <MUIDataTable
                 title={"KIOSK: List of Active Kiosk"}
@@ -129,9 +126,6 @@ class KioskActiveList extends Component {
               />
               <KioskApplicationDialog open={Boolean(this.state.kiosk)} application={this.state.kiosk}
                                       onClose={e => this.setState({ kiosk: null })}/>
-              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
-                              onClose={() => this.setState({ errorMessage: "" })}
-                              variant={"error"} message={this.state.errorMessage}/>
             </Grid>
         }
       </>

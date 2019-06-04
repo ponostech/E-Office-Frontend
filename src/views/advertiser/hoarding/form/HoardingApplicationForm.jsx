@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import {
   Button,
   Card,
@@ -84,7 +84,6 @@ class HoardingApplicationForm extends Component {
         { value: "FLICKERING_LIGHT", label: "FLICKERING LIGHT" }
       ],
       documents: [],
-      errorMessage: "",
       prestine: true,
       openMap: false,
 
@@ -92,7 +91,6 @@ class HoardingApplicationForm extends Component {
 
       success: null,
       submit: false,
-      loading: true
     };
 
     this.localCouncilservice = new LocalCouncilService();
@@ -102,14 +100,12 @@ class HoardingApplicationForm extends Component {
   }
 
   componentDidMount() {
-    const { doLoad, doLoadFinish } = this.props;
     window.scrollTo(0, 0);
     var self = this;
-    doLoad();
+    this.setGlobal({loading:true})
     Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
       .finally(() => {
-        doLoadFinish();
-        self.setState({ loading: false });
+        self.setGlobal({ loading: false });
       });
   }
 
@@ -119,21 +115,21 @@ class HoardingApplicationForm extends Component {
 
   fetchLocalCouncil = async () => {
     await this.localCouncilservice.fetch(
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       localCouncils => this.setState({ localCouncils }))
       .finally(() => console.info("Local council request has been made"));
   };
 
   fetchCategory = async () => {
     await this.categoryService.fetch(
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       categories => this.setState({ categories }))
       .finally(() => console.info("Areas categories fetch successfully"));
   };
 
   fetchDocument = async () => {
     await this.documentService.fetch("hoarding_kiosk",
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       documents => this.setState({ documents }))
       .finally(() => console.info("Document attachment fetch successfully"));
   };
@@ -169,12 +165,12 @@ class HoardingApplicationForm extends Component {
     const { history } = this.props;
 
     if (this.invalid()) {
-      this.setState({ errorMessage: "Please fill all the required fields" });
+      this.setGlobal({ errorMsg: "Please fill all the required fields" });
       return;
     }
     this.setState({ submit: true });
     this.hoardingService.create(this.state,
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       successMessage => {
         this.setState({
           success: (
@@ -264,7 +260,7 @@ class HoardingApplicationForm extends Component {
     return (
       <>
         {
-          this.state.loading ? <LoadingView/> :
+          this.global.loading ? <LoadingView/> :
             <GridContainer justify={"flex-start"}>
               <GridItem style={{ padding: "4px!important" }} xs={12} sm={12} md={10}>
                 <Card>

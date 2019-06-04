@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component} from "reactn";
 import GridContainer from "../components/Grid/GridContainer";
 import GridItem from "../components/Grid/GridItem";
 import {Route} from "react-router-dom";
@@ -19,6 +19,7 @@ import HoardingWithdrawnList from "../views/advertiser/hoarding/HoardingWithdraw
 import KioskAvailableList from "../views/advertiser/kiosk/lists/KioskAvailableList";
 import KioskActiveList from "../views/advertiser/kiosk/lists/KioskActiveList";
 import KioskWithdrawnList from "../views/advertiser/kiosk/lists/KioskWithdrawnList";
+import ErrorHandler, { SuccessHandler } from "../views/common/StatusHandler";
 
 
 const style = {
@@ -33,20 +34,13 @@ const style = {
 class LayoutAdvertiser extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: false
-    };
 
     this.loginService = new LoginService();
-    this.doLoad = this.doLoad.bind(this);
     this.idleTimer = null;
     this.onAction = this.onAction.bind(this);
     this.onActive = this.onActive.bind(this);
     this.onIdle = this.onIdle.bind(this);
   }
-
-  doLoad = () => this.setState({loading: true});
-  doLoadFinish = () => this.setState({loading: false});
 
   onAction(e) {
   }
@@ -79,49 +73,37 @@ class LayoutAdvertiser extends Component {
 
           <GridContainer justify={"center"} className={classes.container}>
             <GridItem xs={12} sm={12} md={12}>
-              <AdvertiserHeader color={"primary"} loading={this.state.loading}/>
+              <AdvertiserHeader color={"primary"}/>
             </GridItem>
             <GridItem style={{marginTop: 70}} xs={12} sm={12} md={12}>
               <GridContainer justify={"center"}>
                 <Route exact path={OfficeRoutes.ADVERTISER_DASHBOARD}
                        render={(e) => {
-                         return <AdvertiserDashboard doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
-                       }}/>
-                <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING}
-                       render={(e) => {
-                         return <HoardingApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
+                         return <AdvertiserDashboard/>;
                        }}/>
 
                 {/*Hoarding routes list*/}
-                <Route exact path={OfficeRoutes.ADVERTISER_PROPOSED_HOARDING}
-                       render={p => <HoardingProposedList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
-                <Route exact path={OfficeRoutes.ADVERTISER_AVAILABLE_HOARDING}
-                       render={p => <HoardingAvailableList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
-                <Route exact path={OfficeRoutes.ADVERTISER_ACTIVE_HOARDING}
-                       render={p => <HoardingActiveList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
-                <Route exact path={OfficeRoutes.ADVERTISER_WITHDRAWN_HOARDING}
-                       render={p => <HoardingWithdrawnList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
+                <Route exact path={OfficeRoutes.ADVERTISER_NEW_HOARDING} component={HoardingApplicationForm}/>
+                <Route exact path={OfficeRoutes.ADVERTISER_PROPOSED_HOARDING} component={HoardingProposedList}/>
+                <Route exact path={OfficeRoutes.ADVERTISER_AVAILABLE_HOARDING} component={HoardingAvailableList}/>
+                <Route exact path={OfficeRoutes.ADVERTISER_ACTIVE_HOARDING} component={HoardingActiveList}/>
+                <Route exact path={OfficeRoutes.ADVERTISER_WITHDRAWN_HOARDING} component={HoardingWithdrawnList}/>
 
                 {/*Kiosk routes list*/}
 
-                <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK}
-                       render={(e) => {
-                         return <KioskApplicationForm doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>;
-                       }}/>
-                <Route exact path={OfficeRoutes.ADVERTISER_PROPOSED_KIOSK}
-                       render={p => <KioskProposedLists doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
-                <Route exact path={OfficeRoutes.ADVERTISER_AVAILABLE_KIOSK}
-                       render={p => <KioskAvailableList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
-                <Route exact path={OfficeRoutes.ADVERTISER_ACTIVE_KIOSK}
-                       render={p => <KioskActiveList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
-                <Route exact path={OfficeRoutes.ADVERTISER_WITHDRAWN_KIOSK}
-                       render={p => <KioskWithdrawnList doLoad={this.doLoad} doLoadFinish={this.doLoadFinish}/>}/>
-
+                <Route exact path={OfficeRoutes.ADVERTISER_NEW_KIOSK} component={KioskApplicationForm}/>
+                <Route exact path={OfficeRoutes.ADVERTISER_PROPOSED_KIOSK}  component={KioskProposedLists}/>
+                <Route exact path={OfficeRoutes.ADVERTISER_AVAILABLE_KIOSK} component={KioskAvailableList}/>
+                <Route exact path={OfficeRoutes.ADVERTISER_ACTIVE_KIOSK} component={KioskActiveList}/>
+                <Route exact path={OfficeRoutes.ADVERTISER_WITHDRAWN_KIOSK} component={KioskWithdrawnList}/>
 
                 {/*<Redirect from={OfficeRoutes.ADVERTISERS} to={OfficeRoutes.ADVERTISER_DASHBOARD}/>*/}
                 <Route exact path={OfficeRoutes.ADVERTISER_PROFILE} component={ProfileLayout}/>
               </GridContainer>
             </GridItem>
+            {this.global.errorMsg && <ErrorHandler/>}
+            {this.global.successMsg && <SuccessHandler/>}
+
           </GridContainer>
         </div>
     );

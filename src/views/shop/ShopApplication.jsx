@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import {
   Button,
   Card,
@@ -23,7 +23,6 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import { ShopLicenseViewModel } from "../model/ShopLicenseViewModel";
 import OfficeSelect from "../../components/OfficeSelect";
 import SubmitDialog from "../../components/SubmitDialog";
-import OfficeSnackbar from "../../components/OfficeSnackbar";
 import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
 import { ShopService } from "../../services/ShopService";
@@ -113,25 +112,20 @@ class ShopApplication extends Component {
     noFlaDocuments: [],
     openMap: false,
     prestine: true,
-    errorMessage: "",
     openOtp: false,
     otpMessage: "",
 
-    loading: true
   };
 
   componentDidMount() {
     document.title = "e-AMC | Shop License Application Form";
     window.scrollTo(0, 0);
     var self = this;
-    const { doLoad, doLoadFinish } = this.props;
-
-    doLoad();
+    this.setGlobal({loading:true});
     Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
       .finally(function() {
         setTimeout(function() {
-          doLoadFinish();
-          self.setState({ loading: false });
+          self.setGlobal({ loading: false });
         }, 2000);
       });
   }
@@ -154,8 +148,8 @@ class ShopApplication extends Component {
   sendOtp = () => {
     var self = this;
     this.otpService.requestOtp(this.state.phone, "Shop License Application",
-      errorMessage => {
-        this.setState({ errorMessage });
+      errorMsg => {
+        this.setGlobal({ errorMsg });
       },
       otpMessage => {
         this.setState({ openOtp: true });
@@ -173,7 +167,7 @@ class ShopApplication extends Component {
     if (verified) {
       this.setState({ submit: true });
       this.shopService.create(this.state,
-        errorMessage => this.setState({ errorMessage }),
+        errorMsg => this.setGlobal({ errorMsg }),
         msg => {
           this.setState({
             success: (
@@ -191,10 +185,13 @@ class ShopApplication extends Component {
     }
   };
   fetchLocalCouncil = () => {
-    this.localCouncilService.fetch(errorMessage => this.setState({ errorMessage }), localCouncils => this.setState({ localCouncils }));
+    this.localCouncilService.fetch(errorMsg => this.setGlobal({ errorMsg }),
+        localCouncils => this.setState({ localCouncils }));
   };
   fetchDocuments = () => {
-    this.documentService.fetch("shop", errorMessage => this.setState({ errorMessage }), docs => {
+    this.documentService.fetch("shop",
+        errorMsg => this.setGlobal({ errorMsg }),
+        docs => {
       this.setState({
         flaDocuments: docs,
         noFlaDocuments: docs.filter((item, index) => index !== docs.length - 1),
@@ -204,7 +201,7 @@ class ShopApplication extends Component {
 
   };
   fetchTrades = () => {
-    this.tradeService.fetch((errorMessage) => this.setState({ errorMessage })
+    this.tradeService.fetch((errorMsg) => this.setGlobal({ errorMsg })
       , (trades) => this.setState({ trades }));
   };
   handleChange = (e) => {
@@ -251,12 +248,12 @@ class ShopApplication extends Component {
   onSubmit = (e) => {
     const invalid = Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
       || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine)  || !this.validateDocument();
+      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || !this.validateDocument();
 
     if (!invalid) {
       this.sendOtp();
     } else {
-      this.setState({ errorMessage: "Please fill out the required fields" });
+      this.setState({ errorMsg: "Please fill all the required fields" });
     }
   };
   handleRadio = (e) => {
@@ -328,7 +325,7 @@ class ShopApplication extends Component {
     return (
 
       <>
-        {this.state.loading ? <LoadingView/> :
+        {this.global.loading ? <LoadingView/> :
           <GridContainer justify="flex-start">
             <GridItem xs={12} sm={12} md={10}>
               <form>
@@ -617,7 +614,7 @@ class ShopApplication extends Component {
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <FileUpload applicationName={APPLICATION_NAME.SHOP}
-                                    document={{ id: 122, mandatory:1, name: "Passport size photo", mime: "image/*" }}
+                                    document={{ id: 122, mandatory: 1, name: "Passport size photo", mime: "image/*" }}
                                     onUploadSuccess={(data) => {
                                       this.setState(state => {
                                         state.passport = {
@@ -703,7 +700,7 @@ class ShopApplication extends Component {
                         <Button name={"primary"} disabled={
                           !Boolean(this.state.name) || !Boolean(this.state.type) || !Boolean(this.state.address)
                           || !Boolean(this.state.coordinate) || !Boolean(this.state.phone) || !Boolean(this.state.shopName)
-                          || Boolean(this.state.prestine)  ||
+                          || Boolean(this.state.prestine) ||
                           !this.state.agree || this.state.passport === undefined
                         }
                                 color={"primary"} variant={"outlined"}

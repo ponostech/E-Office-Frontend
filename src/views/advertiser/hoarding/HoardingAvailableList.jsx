@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
 import { HoardingService } from "../../../services/HoardingService";
-import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import CheckIcon from "@material-ui/icons/CheckBox";
@@ -20,42 +19,34 @@ class HoardingAvailableList extends Component {
     hoarding: null,
     hoardings: [],
     openDetail: false,
-
-    errorMessage: "",
-    successMessage: "",
-
     openApply: false,
     advertiserDocuments: [],
-    loading: true
   };
 
 
   componentDidMount() {
     document.title = "e-AMC | List of hoarding application";
-    const { doLoad, doLoadFinish } = this.props;
     const self = this;
-    doLoad();
     Promise.all([this.fetchHoardings(), this.fetchDocument()])
-      .finally(()=>{
-      doLoadFinish();
-      self.setState({ loading: false });
-    });
+      .finally(() => {
+        self.setGlobal({ loading: false });
+      });
   }
 
   fetchHoardings = async () => {
-    await this.hoardingService.fetchAdvertiserHoarding(errorMessage => this.setState({ errorMessage }),
+    await this.hoardingService.fetchAdvertiserHoarding(errorMsg => this.setGlobal({ errorMsg }),
       hoardings => this.setState({ hoardings }));
   };
   fetchDocument = async () => {
     await this.documentService.fetch("advertiser",
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       advertiserDocuments => this.setState({ advertiserDocuments }))
       .finally(() => console.info("Document attachment fetch successfully"));
   };
   applyHoarding = (data) => {
     this.setState({ openApply: false });
     //TODO:: business logic to apply hoarding
-    this.setState({ successMessage: "You have applied hoarding successfully" });
+    this.setGlobal({ successMsg: "You have applied hoarding successfully" });
 
   };
 
@@ -66,7 +57,7 @@ class HoardingAvailableList extends Component {
         label: "DATE",
         options: {
           customBodyRender: (date) => {
-            return  moment(date).format("Do MMM YYYY");
+            return moment(date).format("Do MMM YYYY");
           }
         }
       }, {
@@ -101,7 +92,7 @@ class HoardingAvailableList extends Component {
             return (hoarding.local_council.name);
           }
         }
-      },{
+      }, {
         name: "hoarding",
         label: "ACTIONS",
         options: {
@@ -151,7 +142,7 @@ class HoardingAvailableList extends Component {
     return (
       <>
         {
-          this.state.loading ? <LoadingView/> :
+          this.global.loading ? <LoadingView/> :
             <Grid item sm={12} xs={12} md={12}>
               <MUIDataTable
                 title={"Hoarding: List of Available Hoardings"}
@@ -165,12 +156,6 @@ class HoardingAvailableList extends Component {
               <HoardingApplicationDialog open={this.state.openDetail} application={this.state.hoarding}
                                          onClose={e => this.setState({ hoarding: null, openDetail: false })}/>
 
-              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
-                              onClose={() => this.setState({ errorMessage: "" })}
-                              variant={"error"} message={this.state.errorMessage}/>
-              <OfficeSnackbar open={Boolean(this.state.successMessage)}
-                              onClose={() => this.setState({ succesMessage: "" })}
-                              variant={"success"} message={this.state.successMessage}/>
             </Grid>
         }
 

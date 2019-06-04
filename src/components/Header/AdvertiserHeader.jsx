@@ -1,4 +1,4 @@
-import React from "react";
+import React from "reactn";
 import { NavLink, withRouter } from "react-router-dom";
 // @material-ui/core components
 import AppBar from "@material-ui/core/AppBar";
@@ -109,7 +109,6 @@ class AdvertiserHeader extends React.Component {
             <SettingIcon/>
           </IconButton>
           <IconButton onClick={this.logout.bind(this)} color="error"><Icon>power_settings_new</Icon></IconButton>
-          <NavLink to={OfficeRoutes.HOME}><IconButton color="default"><Icon>apps</Icon></IconButton></NavLink>
         </div>
       </GridContainer>
     );
@@ -154,7 +153,7 @@ class AdvertiserHeader extends React.Component {
           </Hidden>
         </Toolbar>
         {
-          loading ? <LinearProgress color={"primary"} variant={"indeterminate"}/> : undefined
+          this.global.loading ? <LinearProgress color={"primary"} variant={"indeterminate"}/> : undefined
         }
 
       </AppBar>

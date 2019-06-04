@@ -13,7 +13,6 @@ export class AdvertiserService {
             password: state.password,
             address: state.address,
             registered: 1,
-            signature: state.signature.path,
             documents: state.documentsUpload
         };
 

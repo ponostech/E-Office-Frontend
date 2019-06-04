@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
@@ -6,7 +6,6 @@ import { IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
 import { KioskService } from "../../../../services/KioskService";
-import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 import CloseIcon from "@material-ui/icons/Close";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -30,14 +29,12 @@ class KioskProposedLists extends Component {
 
   componentDidMount() {
     document.title = "e-AMC | List of kiosk application";
-    const { doLoad, doLoadFinish } = this.props;
-    doLoad();
+    this.setGlobal({ loading: true });
     this.kioskService.fetchAdvertiserKiosk(
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setState({ errorMsg }),
       kiosks => this.setState({ kiosks }))
       .finally(() => {
-        this.setState({ loading: false });
-        doLoadFinish();
+        this.setGlobal({ loading: false });
       });
   }
 
@@ -72,7 +69,7 @@ class KioskProposedLists extends Component {
             return (value.subject);
           }
         }
-      },  {
+      }, {
         name: "kiosk",
         label: "PURPOSED LOCATION",
         options: {
@@ -88,7 +85,7 @@ class KioskProposedLists extends Component {
             return (kiosk.local_council.name);
           }
         }
-      },  {
+      }, {
         name: "kiosk",
         label: "ACTIONS",
         options: {
@@ -137,7 +134,7 @@ class KioskProposedLists extends Component {
     return (
       <>
         {
-          this.state.loading ? <LoadingView/> :
+          this.global.loading ? <LoadingView/> :
             <Grid item sm={12} xs={12} md={12}>
               <MUIDataTable
                 title={"KIOSK: List of Proposed"}
@@ -151,13 +148,6 @@ class KioskProposedLists extends Component {
               <ConfirmDialog onCancel={() => this.setState({ openWithdraw: false })} open={this.state.openWithdraw}
                              onConfirm={this.withdraw.bind(this)}
                              message={"Do you want to withdraw application?"}/>
-
-              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
-                              onClose={() => this.setState({ errorMessage: "" })}
-                              variant={"error"} message={this.state.errorMessage}/>
-              <OfficeSnackbar open={Boolean(this.state.successMessage)}
-                              onClose={() => this.setState({ successMessage: "" })}
-                              variant={"error"} message={this.state.successMessage}/>
             </Grid>
         }
 

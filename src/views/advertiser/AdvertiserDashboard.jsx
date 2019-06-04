@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import { CardContent, Grid, Icon } from "@material-ui/core";
 import Card from "../../components/Card/Card";
 import CardHeader from "../../components/Card/CardHeader";
@@ -8,6 +8,7 @@ import CardFooter from "../../components/Card/CardFooter";
 import { containerFluid, drawerMiniWidth, drawerWidth, transition } from "assets/jss/material-dashboard-pro-react.jsx";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import ChartistGraph from "react-chartist";
+import InfoView from "./widgets/InfoView";
 
 const appStyle = theme => ({
   wrapper: {
@@ -80,30 +81,22 @@ var options = {
 };
 
 class AdvertiserDashboard extends Component {
+
+  componentDidMount() {
+    let self=this;
+    this.setGlobal({loading:true })
+    setTimeout(function(handler) {
+      self.setGlobal({loading:false})
+    },4000)
+  }
+
   render() {
     const { classes } = this.props;
     return (
       <Grid spacing={16} container={true}>
         {/*<p>Advertiser dashboard</p>*/}
         <Grid item={true} xs={12} sm={12} md={3}>
-          <Card raised={true}>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>content_copy</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                Under Process Applications
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  view detail
-                </a>
-              </div>
-            </CardFooter>
-          </Card>
+         <InfoView onLinkClick={e=>console.log("rest")}/>
         </Grid>
         <Grid item={true} xs={12} sm={12} md={3}>
           <Card raised={true}>

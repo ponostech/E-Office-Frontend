@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
@@ -6,7 +6,6 @@ import { IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
 import { KioskService } from "../../../../services/KioskService";
-import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 import CheckIcon from "@material-ui/icons/CheckBox";
 import KioskApplyDialog from "../KioskApplyDialog";
@@ -22,34 +21,27 @@ class KioskAvailableList extends Component {
     openDetail: false,
     openApply: false,
 
-    advertiserDocuments: [],
-
-    errorMessage: "",
-    successMessage: "",
-
-    loading: true
+    advertiserDocuments: []
   };
 
   componentDidMount() {
     document.title = "e-AMC | List of Kiosk application";
-    const { doLoad, doLoadFinish } = this.props;
-    doLoad();
+    this.setGlobal({ loading: true });
     Promise.all([this.fetchKiosk(), this.fetchDocument()])
       .finally(() => {
-        this.setState({ loading: false });
-        doLoadFinish();
+        this.setGlobal({ loading: false });
       });
   }
 
   fetchKiosk = async () => {
     await this.kioskService.fetchAdvertiserKiosk(
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setState({ errorMsg }),
       kiosks => this.setState({ kiosks }));
   };
   fetchDocument = async () => {
     await this.documentService.fetch("advertiser",
-      errorMessage => this.setState({ errorMessage }),
-      advertiserDocuments => this.setState({ advertiserDocuments }))
+      errorMsg => this.setState({ errorMsg }),
+      advertiserDocuments => this.setState({ advertiserDocuments }));
   };
 
   applyKiosk = (data) => {
@@ -84,7 +76,7 @@ class KioskAvailableList extends Component {
             return (value.subject);
           }
         }
-      },  {
+      }, {
         name: "kiosk",
         label: "PURPOSED LOCATION",
         options: {
@@ -100,7 +92,7 @@ class KioskAvailableList extends Component {
             return (kiosk.local_council.name);
           }
         }
-      },  {
+      }, {
         name: "kiosk",
         label: "ACTIONS",
         options: {
@@ -149,7 +141,7 @@ class KioskAvailableList extends Component {
     return (
       <>
         {
-          this.state.loading ? <LoadingView/> :
+          this.global.loading ? <LoadingView/> :
             <Grid item sm={12} xs={12} md={12}>
               <MUIDataTable
                 title={"KIOSK: List of Available Kiosks"}
@@ -162,9 +154,6 @@ class KioskAvailableList extends Component {
                                 onConfirm={this.applyKiosk.bind(this)} application={this.state.kiosk}/>
               <KioskApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.kiosk}
                                       onClose={e => this.setState({ openDetail: false, kiosk: null })}/>
-              <OfficeSnackbar open={Boolean(this.state.errorMessage)}
-                              onClose={() => this.setState({ errorMessage: "" })}
-                              variant={"error"} message={this.state.errorMessage}/>
             </Grid>
         }
       </>

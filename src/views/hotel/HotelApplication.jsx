@@ -139,6 +139,7 @@ class HotelApplication extends Component {
     document.title = "e-AMC | Shop License Application Form";
     window.scrollTo(0, 0);
     const self = this;
+    self.setGlobal({loading:true});
     timeout = setTimeout(function (handler) {
       Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
           .then(function ([values]) {
@@ -149,7 +150,7 @@ class HotelApplication extends Component {
 
   sendOtp = () => {
     this.otpService.requestOtp(this.state.phone, "Hotel & Lodging License Application",
-        errorMessage => this.setState(errorMessage),
+        errorMsg => this.setGlobal({errorMsg}),
         otpMessage => this.setState({otpMessage, openOtp: true}))
         .finally(() => console.info("otp request has been made"));
   };
@@ -157,7 +158,7 @@ class HotelApplication extends Component {
     const {history} = this.props;
     if (verified) {
       this.setState({submit: true});
-      this.hotelService.create(this.state, errorMessage => this.setState({errorMessage}),
+      this.hotelService.create(this.state, errorMsg => this.setGlobal({errorMsg}),
           successMessage => this.setState({
             success: (
                 <SweetAlert
@@ -174,10 +175,10 @@ class HotelApplication extends Component {
   };
 
   fetchLocalCouncil = () => {
-    this.localCouncilService.fetch(errorMessage => this.setState({errorMessage}), localCouncils => this.setState({localCouncils}));
+    this.localCouncilService.fetch(errorMsg => this.setState({errorMsg}), localCouncils => this.setState({localCouncils}));
   };
   fetchDocuments = () => {
-    this.documentService.fetch("shop", errorMessage => this.setState({errorMessage}), docs => {
+    this.documentService.fetch("shop", errorMsg => this.setState({errorMsg}), docs => {
       this.setState({
         flaDocuments: docs,
         noFlaDocuments: docs.filter((item, index) => index !== docs.length - 1),
@@ -187,7 +188,7 @@ class HotelApplication extends Component {
 
   };
   fetchTrades = () => {
-    this.tradeService.fetch((errorMessage) => this.setState({errorMessage})
+    this.tradeService.fetch((errorMsg) => this.setState({errorMsg})
         , (trades) => this.setState({trades}));
   };
   handleChange = (e) => {
