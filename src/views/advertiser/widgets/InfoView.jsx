@@ -43,6 +43,6 @@ InfoView.propTypes={
   icon:PropTypes.string,
   message:PropTypes.string,
   link:PropTypes.string,
-  onLinkClick:PropTypes.string
+  onLinkClick:PropTypes.string.isRequired
 }
 export default withStyles(dashboardStyle)(InfoView);
