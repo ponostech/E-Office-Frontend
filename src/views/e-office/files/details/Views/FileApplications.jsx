@@ -23,6 +23,7 @@ class FileApplications extends Component {
     singleData: [],
     loading: true,
     openDetails: false,
+    tabValue: 0,
     err: '',
   };
   function;
@@ -55,12 +56,11 @@ class FileApplications extends Component {
     return apiUrl;
   };
 
-  getGroupData = (data, group = "1") => {
-    let temp = [];
-    Object.keys(data).forEach((key) => {
-      if (key === group) temp = data[key];
-    });
-    return temp;
+  getByStatus = (data, status = 'new') => {
+    return data.filter((val) => {
+      if (val.status === status) return true;
+    }).map(val => <DetailViewRow key={val.id} primary={val.applicant.advertiser.name}
+                                 secondary={val.status.toUpperCase()} click={this.viewDetails} value={val}/>);
   };
 
   handleTabChange = (event, newValue) => this.setState({tabValue: newValue});
@@ -75,7 +75,11 @@ class FileApplications extends Component {
 
   render() {
     const {data, loading, tabValue, err, openDetails, singleData} = this.state;
-    const groupOne = this.getGroupData(data);
+    const newList = this.getByStatus(data);
+    const inProcessList = this.getByStatus(data, 'in-process');
+    const rejectedList = this.getByStatus(data, 'rejected');
+    const cancelledList = this.getByStatus(data, 'cancelled');
+    const approvedList = this.getByStatus(data, 'approved');
 
     const tabBar =
         <AppBar position="static" color="default">
@@ -94,20 +98,17 @@ class FileApplications extends Component {
           </Tabs>
         </AppBar>;
 
-    let list = groupOne.map(val =>
-        <DetailViewRow key={val.id} primary={val.applicant.advertiser.name}
-                       secondary={val.status.toUpperCase()} click={this.viewDetails} value={val}/>);
-
     let tabContent =
         <SwipeableViews
             axis={'x'}
             index={tabValue}
             onChangeIndex={this.handleTabChangeIndex}
         >
-          <TabContainer>{loading ? <LoadingView/> : <List>{list}</List>}</TabContainer>
-          <TabContainer>{loading ? <LoadingView/> : <List>{list}</List>}</TabContainer>
-          <TabContainer>{loading ? <LoadingView/> : <List>{list}</List>}</TabContainer>
-          <TabContainer>{loading ? <LoadingView/> : <List>{list}</List>}</TabContainer>
+          <TabContainer>{loading ? <LoadingView/> : <List>{newList.length ? newList : 'Not Available'}</List>}</TabContainer>
+          <TabContainer>{loading ? <LoadingView/> : <List>{inProcessList.length ? inProcessList : 'Not Available'}</List>}</TabContainer>
+          <TabContainer>{loading ? <LoadingView/> : <List>{rejectedList.length ? rejectedList : 'Not Available'}</List>}</TabContainer>
+          <TabContainer>{loading ? <LoadingView/> : <List>{cancelledList.length ? cancelledList : 'Not Available'}</List>}</TabContainer>
+          <TabContainer>{loading ? <LoadingView/> : <List>{approvedList.length ? approvedList : 'Not Available'}</List>}</TabContainer>
         </SwipeableViews>;
 
     return <>

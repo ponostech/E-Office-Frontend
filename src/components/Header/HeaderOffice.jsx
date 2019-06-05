@@ -29,11 +29,6 @@ class HeaderOffice extends React.Component {
         open: false
     };
 
-    handleLinkClick = (link) => {
-        const {history} = this.props;
-        history.push(link);
-    };
-
     handleDrawerToggle = () => {
         this.setState(state => !state.open);
     };

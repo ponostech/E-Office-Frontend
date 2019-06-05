@@ -38,7 +38,6 @@ const menu = (props) => {
             { title: "List Archived", link: OfficeRoutes.FILE_ARCHIVED_LIST },
             { title: "List Active", link: OfficeRoutes.FILE_ACTIVE_LIST }
           ]}
-          linkClick={props.linkClick}
           buttonText={"File"}
           buttonProps={{ color: "transparent" }}/>
 
@@ -50,7 +49,6 @@ const menu = (props) => {
             { title: "List Closed", link: OfficeRoutes.CLOSE_RECEIPT },
             { title: "Single Receipt", link: OfficeRoutes.RECEIPT_DETAIL }
           ]}
-          linkClick={props.linkClick}
           buttonText={"Receipt"}
           buttonProps={{ color: "transparent" }}/>
 
@@ -62,7 +60,6 @@ const menu = (props) => {
             { title: "Rejected List", link: OfficeRoutes.ADVERTISER_REJECT_LIST },
             { title: "Cancelled List", link: OfficeRoutes.ADVERTISER_CANCEL_LIST }
           ]}
-          linkClick={props.linkClick}
           buttonText={"Advertiser"}
           buttonProps={{ color: "transparent" }}/>
 
@@ -73,7 +70,6 @@ const menu = (props) => {
             { title: "Approved List", link: OfficeRoutes.APPROVED_HOARDINGS },
             { title: "Reject List", link: OfficeRoutes.REJECTED_HOARDINGS }
           ]}
-          linkClick={props.linkClick}
           buttonText={"Hoarding"}
           buttonProps={{ color: "transparent" }}/>
         <CustomDropdown
@@ -84,7 +80,6 @@ const menu = (props) => {
             { title: "Reject List", link: OfficeRoutes.REJECTED_KIOSKS }
 
           ]}
-          linkClick={props.linkClick}
           buttonText={"Kiosk"}
           buttonProps={{ color: "transparent" }}/>
 
@@ -96,7 +91,6 @@ const menu = (props) => {
             { title: "Reject List", link: OfficeRoutes.REJECTED_BANNER }
 
           ]}
-          linkClick={props.linkClick}
           buttonText={"Banner"}
           buttonProps={{ color: "transparent" }}/>
         <CustomDropdown
@@ -108,7 +102,6 @@ const menu = (props) => {
             { title: "Cancelled List", link: OfficeRoutes.CANCELLED_SHOPLICENSE }
 
           ]}
-          linkClick={props.linkClick}
           buttonText={"Shop License"}
           buttonProps={{ color: "transparent" }}/>
         <CustomDropdown
@@ -120,7 +113,6 @@ const menu = (props) => {
             { title: "Cancelled List", link: OfficeRoutes.CANCELLED_HOTELLICENSE }
 
           ]}
-          linkClick={props.linkClick}
           buttonText={"Hotel & Lodging"}
           buttonProps={{ color: "transparent" }}/>
 
@@ -137,7 +129,6 @@ const menu = (props) => {
             { title: "Site Verifications", link: OfficeRoutes.SITE_VERIFICATION_LIST }
 
           ]}
-          linkClick={props.linkClick}
           buttonText={"Admin Control"}
           buttonProps={{ color: "transparent" }}/>
 
@@ -146,7 +137,6 @@ const menu = (props) => {
             { title: "Report One", link: OfficeRoutes.OBPAS },
             { title: "Report Two", link: OfficeRoutes.OBPAS }
           ]}
-          linkClick={props.linkClick}
           buttonText={"Report"}
           buttonProps={{ color: "transparent" }}/>
       </div>
