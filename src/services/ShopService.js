@@ -3,6 +3,8 @@ import React from 'react';
 import { ApiRoutes } from "../config/ApiRoutes";
 import moment from "moment";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
+import DetailViewRow from "../views/common/HoardingApplicationDialog";
+import { Card } from "@material-ui/core";
 
 export class ShopService {
 
