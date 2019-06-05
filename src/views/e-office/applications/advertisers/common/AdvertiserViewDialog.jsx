@@ -50,13 +50,13 @@ class AdvertiserViewDialog extends Component {
   render() {
     console.log(this.props);
     const {classes, data} = this.props;
-    const list = data.documents.map(val =>
-      <ListItem className={classes.docsItem} onClick={() => this.openDocs(val.path)}>
-        <ListItemIcon>
-          <AttachFile/>
-        </ListItemIcon>
-        <ListItemText primary={val.name}/>
-      </ListItem>);
+    // const list = data.documents.map(val =>
+    //   <ListItem className={classes.docsItem} onClick={() => this.openDocs(val.path)}>
+    //     <ListItemIcon>
+    //       <AttachFile/>
+    //     </ListItemIcon>
+    //     <ListItemText primary={val.name}/>
+    //   </ListItem>);
 
     return (
         <Dialog
@@ -83,25 +83,25 @@ class AdvertiserViewDialog extends Component {
               <Grid item md>
                 <List>
                   <Card>
-                    <ListItem>
-                      <Typography variant="subtitle1">Documents</Typography>
-                    </ListItem>
-                    <ListItem>
-                      <img alt="Photo of Applicant" src={data.passport} className={classes.bigAvatar}/>
-                    </ListItem>
-                    {list.length ? list : <ListItem><ListItemText primary="No Documents"/></ListItem>}
-                  </Card>
-                </List>
-              </Grid>
-              <Grid item md>
-                <List>
-                  <Card>
                     <DetailViewRow primary="Name of Applicant" secondary={data.name}/>
                     <DetailViewRow primary="Type of Applicant" secondary={data.type.toUpperCase()}/>
                     <DetailViewRow primary="Address of Applicant" secondary={data.address}/>
                     <DetailViewRow primary="Date of Application"
                                    secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
                     <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
+                  </Card>
+                </List>
+              </Grid>
+              <Grid item md>
+                <List>
+                  <Card>
+                    <ListItem>
+                      <Typography variant="subtitle1">Documents</Typography>
+                    </ListItem>
+                    {/*<ListItem>*/}
+                    {/*<img alt="Photo of Applicant" src={data.passport} className={classes.bigAvatar}/>*/}
+                    {/*</ListItem>*/}
+                    {/*{list.length ? list : <ListItem><ListItemText primary="No Documents"/></ListItem>}*/}
                   </Card>
                 </List>
               </Grid>

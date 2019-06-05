@@ -50,26 +50,26 @@ class SendDialog extends React.Component {
   };
 
   getFileDetail = () => {
-    return (
+       return (
         <>
           <ListItem button>
             <ListItemText primary="Computer File. No." secondary={this.props.file.id}/>
           </ListItem>
           <Divider/>
           <ListItem button>
-            <ListItemText primary="File No." secondary={this.props.file.number}/>
+            <ListItemText primary="File No." secondary={this.props.file.file.number}/>
           </ListItem>
           <Divider/>
           <ListItem button>
-            <ListItemText primary="Subject: " secondary={this.props.file.subject}/>
+            <ListItemText primary="Subject: " secondary={this.props.file.file.subject}/>
           </ListItem>
           <Divider/>
           <ListItem button>
-            <ListItemText primary="Branch: " secondary={this.props.file.branch}/>
+            <ListItemText primary="Branch: " secondary={this.props.file.file.branch}/>
           </ListItem>
           <Divider/>
           <ListItem button>
-            <ListItemText primary="Classification: " secondary={this.props.file.classification}/>
+            <ListItemText primary="Classification: " secondary={this.props.file.file.classification}/>
           </ListItem>
           <Divider/>
           <ListItem button>
@@ -80,7 +80,7 @@ class SendDialog extends React.Component {
   };
 
   render() {
-    // console.log("File",this.props.file);
+     //console.log("File",this.props.file);
     const {classes} = this.props;
     let self = this;
     return (
