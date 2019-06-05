@@ -36,7 +36,7 @@ const fileDetails = (props) => {
             <>
               <ListItem button>
                 <ListItemText primary="Current Location"
-                              secondary={file.desk.staff.name + " (" + file.desk.staff.designation + ")"}/>
+                              secondary={file.desk ? `${file.desk.staff.name} (${file.desk.staff.designation})` : ''}/>
               </ListItem>
               <Divider/>
             </> : null
