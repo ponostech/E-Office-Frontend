@@ -1,6 +1,6 @@
 import React, {Component} from "reactn";
 import axios from "axios";
-import {Grid, Icon, IconButton} from "@material-ui/core";
+import {CardContent, Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {ApiRoutes, FILE_TAKE} from "../../../config/ApiRoutes";
@@ -146,10 +146,10 @@ class FileNewList extends Component {
         ];
 
         const files =
-            <Grid item xs={12}>
+            <CardContent>
                 <MUIDataTable title={"File: List of New Files"} data={tableData} columns={tableColumns}
                               options={tableOptions}/>
-            </Grid>;
+            </CardContent>;
 
         return (
             <>

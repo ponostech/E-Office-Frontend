@@ -156,7 +156,7 @@ class FileCreate extends Component {
                     <Card>
                         <CardHeader title={NewFileViewModel.TITLE} subheader={NewFileViewModel.SUBTITLE}/>
                         <CardContent>
-                            <Grid container xs={12} spacing={16}>
+                            <Grid container xs={12} spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <OfficeSelect
                                   required={true}

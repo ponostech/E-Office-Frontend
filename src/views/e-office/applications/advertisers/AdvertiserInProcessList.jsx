@@ -11,6 +11,7 @@ import {DESK, FILE_DETAIL_ROUTE} from "../../../../config/routes-constant/Office
 import LoadingView from "../../../common/LoadingView";
 import {withRouter} from "react-router-dom";
 import ErrorHandler from "../../../common/StatusHandler";
+import CardContent from "@material-ui/core/CardContent"
 
 const styles = {
   button: {},
@@ -131,14 +132,14 @@ class AdvertiserInProcessListList extends Component {
     return (
         <>
           {this.global.loading ?
-              <LoadingView/> : <Grid item xs={12}>
+              <LoadingView/> : <CardContent>
                 <MUIDataTable
                     title={"ADVERTISER: List of Under Process Application"}
                     data={advertisers}
                     columns={tableColumns}
                     options={tableOptions}
                 />
-              </Grid>}
+              </CardContent>}
 
           {openViewDialog &&
           <AdvertiserViewDialog open={openViewDialog} close={this.closeViewDialog}
