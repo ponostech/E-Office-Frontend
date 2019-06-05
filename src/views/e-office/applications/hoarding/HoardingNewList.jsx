@@ -65,7 +65,7 @@ class HoardingNewList extends Component {
 
   viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
 
-  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
+  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.hoarding.file.id));
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
 
