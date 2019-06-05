@@ -86,8 +86,10 @@ class FileApplications extends Component {
               textColor="primary"
               variant="fullWidth"
           >
-            <Tab label="Active Applications"/>
+            <Tab label="New Applications"/>
+            <Tab label="In Process Applications"/>
             <Tab label="Rejected Applications"/>
+            <Tab label="Cancelled Applications"/>
             <Tab label="Approved Applications"/>
           </Tabs>
         </AppBar>;
@@ -102,6 +104,7 @@ class FileApplications extends Component {
             index={tabValue}
             onChangeIndex={this.handleTabChangeIndex}
         >
+          <TabContainer>{loading ? <LoadingView/> : <List>{list}</List>}</TabContainer>
           <TabContainer>{loading ? <LoadingView/> : <List>{list}</List>}</TabContainer>
           <TabContainer>{loading ? <LoadingView/> : <List>{list}</List>}</TabContainer>
           <TabContainer>{loading ? <LoadingView/> : <List>{list}</List>}</TabContainer>
