@@ -1,25 +1,32 @@
-import React from "react";
+import React, {Component} from "reactn";
+import axios from 'axios';
 import {
-  withStyles,
+  AppBar,
   Button,
   Dialog,
+  DialogActions,
+  DialogContent,
+  Grid,
+  IconButton,
   List,
   ListItem,
   ListItemText,
-  AppBar,
+  ListSubheader,
+  Slide,
   Toolbar,
-  ListSubheader
+  Typography,
+  withStyles
 } from "@material-ui/core";
-import {IconButton, Typography, Slide, DialogActions, Grid, DialogContent} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import PropTypes from "prop-types";
 import OfficeSelect from "../../../../components/OfficeSelect";
 import Editor from "../../common/Editor";
 import Divider from "@material-ui/core/Divider";
-import CardContent from "@material-ui/core/CardContent";
 import Card from "../../../../components/Card/Card";
 import Paper from "@material-ui/core/Paper";
-import {KeyboardArrowRight} from "@material-ui/icons";
+import {FILE_DRAFT_LIST} from "../../../../config/ApiRoutes";
+import {DESK} from "../../../../config/routes-constant/OfficeRoutes";
+import {withRouter} from "react-router-dom";
 
 const styles = {
   appBar: {
@@ -34,29 +41,99 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class FileApproveDialog extends React.Component {
+class FileApproveDialog extends Component {
   state = {
-    application: [],
-    permit: [],
-    applicationOptions: [
-      {label: 'One', value: 'one'},
-      {label: 'Two', value: 'Two'},
-      {label: 'Three', value: 'Three'},
-    ],
-    draftOptions: [
-      {label: 'Draft One', value: 'Draft one'},
-      {label: 'Draft Two', value: 'Draft Two'},
-      {label: 'Draft Three', value: 'Draft Three'},],
+    application: '',
+    permit: '',
+    applicationOptions: [],
+    draftOptions: [],
+    editorContent: '',
+    loading: true,
   };
 
-  handleOfficeSelect = (identifier, value) => this.setState({[identifier]: value});
+  componentDidMount() {
+    this.getData()
+  }
+
+  getData = () => {
+    axios.all([this.getPermitDrafts(), this.getActiveApplications()])
+        .then(axios.spread((permit, applications) => {
+          if (permit.data.status) this.setState({draftOptions: this.formatDrafts(permit.data.data.drafts)});
+          else this.setGlobal({errorMsg: 'Permit list cannot be loaded'});
+          if (applications.data.status) this.setState({applicationOptions: this.formatApplications(applications.data.data.applications)});
+          else this.setGlobal({errorMsg: 'Application list cannot be loaded'});
+        }))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setState({loading: false}));
+  };
+
+  formatDrafts = (drafts) => {
+    return drafts.map(val => {
+      let temp = {};
+      temp['value'] = val;
+      temp['label'] = "Draft No. " + val.id;
+      return temp;
+    });
+  };
+
+  formatApplications = (applications) => {
+    return applications.map(val => {
+      let temp = {};
+      temp['value'] = val;
+      temp['label'] = "Applicant Name: " + val.applicant.advertiser.name;
+      return temp;
+    });
+  };
+
+  getActiveApplications = () => axios.get('/files/' + this.props.file.id + '/applications', {params: {status: 'active'}});
+
+  getPermitDrafts = () => axios.get(FILE_DRAFT_LIST(this.props.file.id, 'permit'));
+
+  handleApplicationChange = (application) => this.setState({application});
+
+  handlePermitChange = (permit) => this.setState({permit: permit, editorContent: permit.value.content});
+
+  editorChange = (e) => this.setState({editorContent: e.target.getContent()});
 
   handleSubmit = () => {
-    alert("submit")
+    if (this.valid()) this.submit();
+  };
+
+  submit = () => {
+    this.submitApproval()
+        .then(res => {
+          if (res.data.status) {
+            this.setGlobal({successMsg: res.data.messages});
+            this.props.history.push(DESK);
+          } else {
+            this.setGlobal({errorMsg: res.data.messages})
+          }
+        })
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+  };
+
+  submitApproval = () => axios.post('/files/' + this.props.file.id + '/application/' + this.state.application.value.id + '/approve',
+      {permit: this.state.editorContent});
+
+  valid = () => {
+    const {loading, content, application, editorContent} = this.state;
+    if (loading) {
+      this.setGlobal({errorMsg: "Cannot submit while loading"});
+      return false;
+    }
+
+    if (content === '' || application === '' || editorContent === '') {
+      this.setGlobal({errorMsg: 'Enter all the required fields'});
+      return false;
+    }
+    return true
   };
 
   render() {
+    // console.log(this.state);
     const {classes} = this.props;
+    const {loading, editorContent, application} = this.state;
+
     const dialogHead =
         <AppBar className={classes.appBar}>
           <Toolbar>
@@ -74,9 +151,48 @@ class FileApproveDialog extends React.Component {
 
     const dialogAction =
         <>
-          <Button color="primary" onClick={this.handleSubmit.bind(this, 'approve_sign')}>Approve & Sign</Button>
+          <Button color="primary" onClick={this.handleSubmit.bind(this, 'approve_sign')} disabled={loading}>Approve &
+            Sign</Button>
           <Button color="secondary" onClick={this.props.onClose}>Cancel</Button>
         </>;
+
+    const applicationDetails = () => <Card>
+      <Paper>
+        <Grid container spacing={16}>
+          <Grid md item>
+            <List subheader={<ListSubheader color={"primary"}>Details of Application Selected</ListSubheader>} dense>
+              <Divider component="li"/>
+              <ListItem>
+                <ListItemText primary={"Name of Applicant"} secondary={application.value.applicant.advertiser.name}/>
+              </ListItem>
+              <Divider component="li"/>
+              <ListItem>
+                <ListItemText primary={"Application Type"}
+                              secondary={application.value.applicant.advertiser.type.toUpperCase()}/>
+              </ListItem>
+              <Divider component="li"/>
+              <ListItem>
+                <ListItemText primary={"Application Type"} secondary={'Hoarding'}/>
+              </ListItem>
+            </List>
+          </Grid>
+          <Grid md item>
+            <List subheader={<ListSubheader>&nbsp;</ListSubheader>} dense>
+              <Divider component="li"/>
+              <ListItem>
+                <ListItemText primary={"Address of Applicant"}
+                              secondary={application.value.applicant.advertiser.address}/>
+              </ListItem>
+              <Divider component="li"/>
+              <ListItem>
+                {application.value.applicant.photo ?
+                    <img src={application.value.applicant.photo} alt="Photo"/> : "NO PHOTOGRAPH UPLOADED"}
+              </ListItem>
+            </List>
+          </Grid>
+        </Grid>
+      </Paper>
+    </Card>;
 
     return (
         <Dialog
@@ -102,10 +218,12 @@ class FileApproveDialog extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                       <OfficeSelect
-                          value={this.state.application} name={"application"} label={"Select Application"}
+                          value={this.state.application} name={"application"}
+                          label={"Select Application to be Approved"}
                           variant={"outlined"} margin={"dense"} required={true} fullWidth={true}
                           options={this.state.applicationOptions}
-                          onChange={this.handleOfficeSelect.bind(this, "application")}/>
+                          placeHolder='Select Application to be Approved'
+                          onChange={this.handleApplicationChange}/>
                     </Grid>
                     <Grid item md={12}>
                       <List dense>
@@ -118,56 +236,17 @@ class FileApproveDialog extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                       <OfficeSelect
-                          value={this.state.permit} name={"permit"} label={"Select Draft Permit"}
+                          value={this.state.permit} name={"permit"} label={"Select Draft Permit to be Approved"}
                           variant={"outlined"} margin={"dense"} required={true} fullWidth={true}
                           options={this.state.draftOptions}
-                          onChange={this.handleOfficeSelect.bind(this, "permit")}/>
+                          onChange={this.handlePermitChange}/>
                     </Grid>
                   </Grid>
-                  <Grid md={8} item>
-                    <Card>
-                      <Paper>
-                        <Grid container spacing={16}>
-                          <Grid md item>
-                            <List subheader={<ListSubheader color={"primary"}>Details of Application Selected</ListSubheader>} dense>
-                              <Divider component="li"/>
-                              <ListItem>
-                                <ListItemText primary={"Name of Applicant"} secondary={'Lala'}/>
-                              </ListItem>
-                              <Divider component="li"/>
-                              <ListItem>
-                                <ListItemText primary={"Application Type"} secondary={'Hoarding'}/>
-                              </ListItem>
-                              <Divider component="li"/>
-                              <ListItem>
-                                <ListItemText primary={"Application Type"} secondary={'Hoarding'}/>
-                              </ListItem>
-                            </List>
-                          </Grid>
-                          <Grid md item>
-                            <List subheader={<ListSubheader>&nbsp;</ListSubheader>} dense>
-                              <Divider component="li"/>
-                              <ListItem>
-                                <ListItemText primary={"Address of Applicant"} secondary={'Electric Veng'}/>
-                              </ListItem>
-                              <Divider component="li"/>
-                              <ListItem>
-                                <ListItemText primary={"Photo"} secondary={'Photo'}/>
-                              </ListItem>
-                              <Divider component="li"/>
-                              <ListItem>
-                                <ListItemText primary={"Photo"} secondary={'Photo'}/>
-                              </ListItem>
-                            </List>
-                          </Grid>
-                        </Grid>
-                      </Paper>
-                    </Card>
-                  </Grid>
+                  <Grid md={8} item>{application.value && applicationDetails()}</Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12}>
-                <Editor/>
+                <Editor default={editorContent} onChange={this.editorChange}/>
               </Grid>
             </Grid>
           </DialogContent>
@@ -183,5 +262,5 @@ FileApproveDialog.propTypes = {
   file: PropTypes.any
 };
 
-export default withStyles(styles)(FileApproveDialog);
+export default withRouter(withStyles(styles)(FileApproveDialog));
 

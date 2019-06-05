@@ -26,7 +26,7 @@ class FileDraftPermitList extends Component {
   }
 
   getData = (id) => {
-    axios.get(FILE_DRAFT_LIST(id, 'permit'))
+    axios.get(FILE_DRAFT_LIST(id, 't'))
         .then(res => {
           if (res.data.status) this.setState({loading: false, data: res.data.data.drafts});
           else this.setState({errorMsg: res.data.messages});

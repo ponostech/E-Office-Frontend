@@ -126,8 +126,7 @@ class FileNewList extends Component {
           filter: false,
           sort: false,
           customBodyRender: (value, tableMeta) => {
-            let {rowIndex} = tableMeta;
-            let data = this.state.tableData[rowIndex];
+            let data = tableMeta.rowData;
             return (
                 <>
                   <IconButton color="primary" size="small"

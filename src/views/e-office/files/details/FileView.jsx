@@ -26,7 +26,6 @@ import NoteSheetDraftView from "../notesheet/NotesheetDraftView";
 import {CREATE_NAME} from "../../../../utils/FileDetailConstant";
 import CreateNoteDialog from "../notesheet/NoteCreateDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
-import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import {NotesheetService} from "../../../../services/NotesheetService";
 import FileDraftDialog from "../dialog/FileDraftDialog";
 import FileDraftPermitDialog from "../dialog/FileDraftPermitDialog";
@@ -43,6 +42,7 @@ import HotelSiteVerificationDialog from "../site-verification/HotelSiteVerificat
 import HoardingSiteVerificationDialog from "../site-verification/HoardingSiteVerificationDialog";
 import {LoginService} from "../../../../services/LoginService";
 import FileApproveDialog from '../dialog/FileApproveDialog';
+import UsersMessageDialog from "../../common/UsersMessageDialog";
 
 const styles = theme => ({
   root: {
@@ -100,6 +100,7 @@ class FileView extends Component {
     openHotelVerification: false,
     submitNote: false,
     openApproveDialog: false,
+    openMessageDialog: false,
   };
 
   componentDidMount() {
@@ -178,6 +179,9 @@ class FileView extends Component {
         break;
       case 'Approve':
         this.setState({openApproveDialog: true});
+        break;
+      case 'Send back Applicant':
+        this.setState({openMessageDialog: true});
         break;
       default:
         alert(name);
@@ -309,8 +313,8 @@ class FileView extends Component {
     const {classes} = this.props;
     const {openDraft, openDraftPermit, openNote, file, submitNote, menus} = this.state;
     const {openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog, openDraftLicense} = this.state;
-    const {moduleName, openDraftReject, openDraftCancel, openHoardingVerification, openKioskVerification, openHotelVerification, openShopVerification} = this.state;
-    const {openApproveDialog} = this.state;
+    const {moduleName, openDraftReject, openDraftCancel, openHoardingVerification, openKioskVerification, openHotelVerification, } = this.state;
+    const {openShopVerification, openApproveDialog, openMessageDialog} = this.state;
 
     let allowed = LoginService.getCurrentUser().id === file.current_user_id;
     let contentStyle = {
@@ -411,6 +415,8 @@ class FileView extends Component {
                                                    onClose={this.closeDialog.bind(this, "openApproveDialog")}/>}
           {submitNote &&
           <SubmitDialog open={submitNote} title="Create Notesheet" text="Note is Creating ... Please wait"/>}
+
+          {openMessageDialog && <UsersMessageDialog open={openMessageDialog} sendTo={"lala"} onClose={this.closeDialog.bind(this, 'openMessageDialog')}/>}
         </Grid>
     );
   }
