@@ -16,22 +16,22 @@ class LayoutOffice extends Component {
     let role = LoginService.getRole();
     switch (role) {
       case 'commissioner':
-        routeList = <RouteListOfficer linkClick={this.handleLinkClick}/>;
+        routeList = <RouteListOfficer/>;
         break;
       case 'secretary':
-        routeList = <RouteListOfficer linkClick={this.handleLinkClick}/>;
+        routeList = <RouteListOfficer/>;
         break;
       case 'administrator':
-        routeList = <RouteListAdministrator linkClick={this.handleLinkClick}/>;
+        routeList = <RouteListAdministrator/>;
         break;
       case 'officer':
-        routeList = <RouteListOfficer linkClick={this.handleLinkClick}/>;
+        routeList = <RouteListOfficer/>;
         break;
       case 'inspector':
-        routeList = <RouteListInspector linkClick={this.handleLinkClick}/>;
+        routeList = <RouteListInspector/>;
         break;
       case 'clerk':
-        routeList = <RouteListClerk linkClick={this.handleLinkClick}/>;
+        routeList = <RouteListClerk/>;
         break;
       default:
         this.clearLocalStorage();

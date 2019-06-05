@@ -18,6 +18,7 @@ import Popper from "@material-ui/core/Popper";
 import Button from "components/CustomButtons/Button.jsx";
 
 import customDropdownStyle from "assets/jss/material-dashboard-pro-react/components/customDropdownStyle.jsx";
+import {withRouter} from "react-router-dom"
 
 class CustomDropdown extends React.Component {
   constructor(props) {
@@ -25,10 +26,19 @@ class CustomDropdown extends React.Component {
     this.state = {
       open: false
     };
-    this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.handleCloseMenu = this.handleCloseMenu.bind(this);
+    // this.handleCloseMenu = this.handleCloseMenu.bind(this);
+    this.handleLinkClick = this.handleLinkClick.bind(this);
   }
+
+  handleLinkClick = (link) => {
+    if (this.anchorEl.contains(link.target)) {
+      return;
+    }
+    this.setState({ open: false });
+    const {history} = this.props;
+    history.push(link);
+  };
 
   handleClick = () => {
     this.setState(state => ({ open: !state.open }));
@@ -100,10 +110,10 @@ class CustomDropdown extends React.Component {
             return (
               <MenuItem
                 key={key}
+                onClick={() => this.handleLinkClick(prop.link)}
                 className={dropdownItem}
                 style={{ overflow: "visible", padding: 0 }}
-                onMouseUp={() => this.handleCloseMenu(prop)}
-                onClick={this.props.linkClick.bind(this, prop.link)}
+                // onMouseUp={() => this.handleCloseMenu(prop)}
               >
                 {prop.title}
               </MenuItem>
@@ -112,9 +122,9 @@ class CustomDropdown extends React.Component {
           return (
             <MenuItem
               key={key}
+              onClick={() => this.handleLinkClick(prop.link)}
               className={dropdownItem}
-              onMouseUp={() => this.handleCloseMenu(prop)}
-              onClick={this.props.linkClick.bind(this, prop.link)}
+              // onMouseUp={() => this.handleCloseMenu(prop)}
             >
               {prop.title}
             </MenuItem>
@@ -169,7 +179,7 @@ class CustomDropdown extends React.Component {
                 {innerDropDown ? (
                   dropDownMenu
                 ) : (
-                  <ClickAwayListener onClickAway={this.handleClose} ref="cacat">
+                  <ClickAwayListener onClickAway={this.handleClose}>
                     {dropDownMenu}
                   </ClickAwayListener>
                 )}
@@ -228,4 +238,4 @@ CustomDropdown.propTypes = {
   onClick: PropTypes.func,
 };
 
-export default withStyles(customDropdownStyle)(CustomDropdown);
+export default withRouter(withStyles(customDropdownStyle)(CustomDropdown));
