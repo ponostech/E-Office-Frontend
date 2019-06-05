@@ -12,6 +12,7 @@ import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import ErrorHandler from "../../../common/StatusHandler";
+import CardContent from "@material-ui/core/CardContent"
 
 const styles = {
   button: {},
@@ -144,14 +145,14 @@ class AdvertiserNewList extends Component {
 
     return (
         <>
-          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+          {this.global.loading ? <LoadingView/> : <CardContent>
             <MUIDataTable
                 title={"ADVERTISER: List of New Application"}
                 data={advertisers}
                 columns={tableColumns}
                 options={tableOptions}
             />
-          </Grid>}
+          </CardContent>}
 
           {openViewDialog &&
           <AdvertiserViewDialog open={openViewDialog} close={this.closeViewDialog}

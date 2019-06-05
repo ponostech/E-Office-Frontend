@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core";
+import {createMuiTheme} from "@material-ui/core";
 
 export default createMuiTheme({
   typography: {
@@ -15,21 +15,18 @@ export default createMuiTheme({
       contrastText: "#fff"
     }
   },
-  spacing: [4, 8, 12, 16, 20],
+  // spacing: [4, 8, 12, 16, 20],
   // shadows:["none"],
   props: {
-
     MuiAppBar: {
       elevation: 2
     },
-
     MuiCard: {
       raised: false,
       elevation: 0
     },
-    MuiInputBase:{
-      fullWidth:true,
-      margin:"dense"
+    MuiInputBase: {
+      margin: "dense"
     },
     MuiInput: {
       color: "#26B99A"
