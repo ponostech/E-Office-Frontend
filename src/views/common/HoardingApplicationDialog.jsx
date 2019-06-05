@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  Card,
   Button,
   CardHeader,
   Dialog,
@@ -22,6 +23,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import PrintIcon from "@material-ui/icons/Print";
 import moment from "moment";
+import DetailViewRow from "../e-office/common/DetailViewRow";
 
 const style = {
   item: {
@@ -52,52 +54,31 @@ class HoardingApplicationDialog extends Component {
               <Typography variant={"h6"}>Details of Hoarding</Typography>
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
+
               <List dense={false}>
-                <ListItem button={true} dense={false}>
-                  <ListItemText primary={"Date of Application"} secondary={moment(hoarding.created_at).format("Do MMM YYYY")}/>
-                </ListItem>
-                <ListItem button={true} dense={false}>
-                  <ListItemText primary={"Purposed Location"} secondary={hoarding.address}/>
-                </ListItem>
-                <ListItem button={true} dense={false}>
-                  <ListItemText primary={"Local Council"} secondary={hoarding.local_council.name}/>
-                </ListItem>
-                <ListItem button={true} dense={false}>
-                <ListItemText primary={"Length"} secondary={hoarding.length+" ft"}/>
-                </ListItem>
-                <ListItem button={true} dense={false}>
-                <ListItemText primary={"Height"} secondary={hoarding.height+" ft"}/>
-                </ListItem>
-                <ListItem button={true} dense={false}>
-                <ListItemText primary={"Type of Display"} secondary={hoarding.display_type}/>
-                </ListItem>
-                <ListItem button={true} dense={false}>
-                <ListItemText primary={"Is Both Sided"} secondary={hoarding.both_side ? "Yes" : "No"}/>
-                </ListItem>
-                <ListItem button={true} dense={false}>
-                <ListItemText primary={"Details of Road"}
+                    <Card>
+                      <DetailViewRow primary={"Date of Application"} secondary={moment(hoarding.created_at).format("Do MMM YYYY")}/>
+                      <DetailViewRow primary={"Proposed Location"} secondary={hoarding.address}/>
+                      <DetailViewRow primary={"Local Council"} secondary={hoarding.local_council.name}/>
+                      <DetailViewRow primary={"Length"} secondary={hoarding.length+" ft"}/>
+                      <DetailViewRow primary={"Height"} secondary={hoarding.height+" ft"}/>
+                      <DetailViewRow primary={"Type of Display"} secondary={hoarding.display_type}/>
+                      <DetailViewRow primary={"Is Both Sided"} secondary={hoarding.both_side ? "Yes" : "No"}/>
+                      <DetailViewRow primary={"Details of Road"}
                                 secondary={hoarding.road_detail ? hoarding.road_detail : "N/A"}/>
-                </ListItem>
-                <ListItem button={true} dense={false}>
-                <ListItemText primary={"Ground Clearance"} secondary={hoarding.ground_clearance?hoarding.ground_clearance:"NA"}/>
-                </ListItem>
-                <ListItem button={true} dense={false}>
-                <ListItemText primary={"Landlord / Land owner"} secondary={hoarding.land_owner_name}/>
-                </ListItem>
-                <ListItem button={true} dense={false}>
-                <ListItemText primary={"Type of Landlord / Landowner"}
+                      <DetailViewRow primary={"Ground Clearance"} secondary={hoarding.ground_clearance?hoarding.ground_clearance:"NA"}/>
+                      <DetailViewRow primary={"Landlord / Land owner"} secondary={hoarding.land_owner_name}/>
+                       <DetailViewRow primary={"Type of Landlord / Landowner"}
                                 secondary={hoarding.land_owner_type ? "Public" : "Private"}/>
-                </ListItem>
+                </Card>
               </List>
-            </GridItem>
           </GridItem>
 
-          <GridItem xs={12} sm={12} md={7}>
+
 
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <Typography variant={"h6"}>Uploaded Documents</Typography>
             </GridItem>
-
             <List>
               {
                 documents.map(function(doc, index) {
