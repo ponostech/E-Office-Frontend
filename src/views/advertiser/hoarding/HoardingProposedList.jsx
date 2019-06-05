@@ -40,6 +40,7 @@ class HoardingProposedList extends Component {
 
   render() {
     const tableColumns = [
+
       {
         name: "created_at",
         label: "DATE",
@@ -49,23 +50,28 @@ class HoardingProposedList extends Component {
             return d.toString();
           }
         }
-      }, {
-        name: "file",
-        label: "FILE NUMBER",
+      },
+      {
+        name: 'hoarding',
+        label: 'FILE',
         options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.number);
+          customBodyRender: (hoarding, tableMeta) => {
+            return hoarding.file.number
           }
+
         }
-      }, {
-        name: "file",
-        label: "SUBJECT",
+      },
+      {
+        name: 'hoarding',
+        label: 'FILE SUBJECT',
         options: {
-          customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.subject);
+          customBodyRender: (hoarding, tableMeta) => {
+            return hoarding.file.subject
           }
+
         }
-      }, {
+      },
+      {
         name: "hoarding",
         label: "PURPOSED LOCATION",
         options: {
@@ -73,7 +79,8 @@ class HoardingProposedList extends Component {
             return (hoarding.address);
           }
         }
-      }, {
+      },
+      {
         name: "hoarding",
         label: "LOCAL COUNCIL",
         options: {

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  Card,
   Button,
   CardHeader,
   Dialog,
@@ -12,11 +11,10 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Typography
+  Typography,
+  Grid
 } from "@material-ui/core";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import GridItem from "../../components/Grid/GridItem";
-import GridContainer from "../../components/Grid/GridContainer";
 import PropTypes from "prop-types";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import CloseIcon from "@material-ui/icons/Close";
@@ -47,66 +45,57 @@ class HoardingApplicationDialog extends Component {
     const { file, hoarding, applicant, documents } = application;
     return (
       <>
-        <GridContainer>
-
-          <GridItem xs={12} sm={12} md={5}>
-            <GridItem className={classes.item} xs={12} sm={12} md={12}>
+        <Grid container spacing={16}>
+          <Grid item xs>
               <Typography variant={"h6"}>Details of Hoarding</Typography>
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={12}>
-
-              <List dense={false}>
-                    <Card>
-                      <DetailViewRow primary={"Date of Application"} secondary={moment(hoarding.created_at).format("Do MMM YYYY")}/>
-                      <DetailViewRow primary={"Proposed Location"} secondary={hoarding.address}/>
-                      <DetailViewRow primary={"Local Council"} secondary={hoarding.local_council.name}/>
-                      <DetailViewRow primary={"Length"} secondary={hoarding.length+" ft"}/>
-                      <DetailViewRow primary={"Height"} secondary={hoarding.height+" ft"}/>
-                      <DetailViewRow primary={"Type of Display"} secondary={hoarding.display_type}/>
-                      <DetailViewRow primary={"Is Both Sided"} secondary={hoarding.both_side ? "Yes" : "No"}/>
-                      <DetailViewRow primary={"Details of Road"}
-                                secondary={hoarding.road_detail ? hoarding.road_detail : "N/A"}/>
-                      <DetailViewRow primary={"Ground Clearance"} secondary={hoarding.ground_clearance?hoarding.ground_clearance:"NA"}/>
-                      <DetailViewRow primary={"Landlord / Land owner"} secondary={hoarding.land_owner_name}/>
-                       <DetailViewRow primary={"Type of Landlord / Landowner"}
-                                secondary={hoarding.land_owner_type ? "Public" : "Private"}/>
-                </Card>
+              <List>
+                <DetailViewRow primary={"Date of Application"}
+                               secondary={moment(hoarding.created_at).format("Do MMM YYYY")}/>
+                <DetailViewRow primary={"Proposed Location"} secondary={hoarding.address}/>
+                <DetailViewRow primary={"Local Council"} secondary={hoarding.local_council.name}/>
+                <DetailViewRow primary={"Length"} secondary={hoarding.length + " ft"}/>
+                <DetailViewRow primary={"Height"} secondary={hoarding.height + " ft"}/>
+                <DetailViewRow primary={"Type of Display"} secondary={hoarding.display_type}/>
+                <DetailViewRow primary={"Is Both Sided"} secondary={hoarding.both_side ? "Yes" : "No"}/>
+                <DetailViewRow primary={"Details of Road"}
+                               secondary={hoarding.road_detail ? hoarding.road_detail : "N/A"}/>
+                <DetailViewRow primary={"Ground Clearance"}
+                               secondary={hoarding.ground_clearance ? hoarding.ground_clearance : "NA"}/>
+                <DetailViewRow primary={"Landlord / Land owner"} secondary={hoarding.land_owner_name}/>
+                <DetailViewRow primary={"Type of Landlord / Landowner"}
+                               secondary={hoarding.land_owner_type ? "Public" : "Private"}/>
               </List>
-          </GridItem>
-
-
-
-            <GridItem className={classes.item} xs={12} sm={12} md={12}>
+          </Grid>
+            <Grid item xs>
               <Typography variant={"h6"}>Uploaded Documents</Typography>
-            </GridItem>
             <List>
               {
                 documents.map(function(doc, index) {
                   return (
                     <>
-                    <ListItem key={index}>
-                      <ListItemText primary={doc.name}/>
-                      <ListItemSecondaryAction>
-                        <IconButton target={"_blank"} href={doc.path}>
-                          <EyeIcon fontSize={"small"} color={"primary"}/>
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
+                      <ListItem key={index}>
+                        <ListItemText primary={doc.name}/>
+                        <ListItemSecondaryAction>
+                          <IconButton target={"_blank"} href={doc.path}>
+                            <EyeIcon fontSize={"small"} color={"primary"}/>
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
                     </>
                   );
                 })
               }
             </List>
-          </GridItem>
-        </GridContainer>
+            </Grid>
+        </Grid>
       </>
     );
   };
 
   render() {
     const { open, onClose, application } = this.props;
-    const number = application ? application.file.number : "";
-    const subject = application ? application.file.subject : "";
+    const number = application ? application.hoarding.file.number : "";
+    const subject = application ? application.hoarding.file.subject : "";
     let self = this;
     return (
 

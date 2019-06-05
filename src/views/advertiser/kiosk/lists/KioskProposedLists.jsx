@@ -71,7 +71,7 @@ class KioskProposedLists extends Component {
         }
       }, {
         name: "kiosk",
-        label: "PURPOSED LOCATION",
+        label: "PROPOSED LOCATION",
         options: {
           customBodyRender: (kiosk, tableMeta, updateValue) => {
             return (kiosk.address);
