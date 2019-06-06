@@ -13,6 +13,7 @@ import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-cons
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
+import CardContent from "@material-ui/core/CardContent"
 
 const styles = {};
 
@@ -146,14 +147,14 @@ class BannerUnderProcessList extends Component {
 
     return (
       <>
-        {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+        {this.global.loading ? <LoadingView/> : <CardContent>
           <MUIDataTable
             title={"Banner: List of Under Process Application"}
             data={banners}
             columns={tableColumns}
             options={tableOptions}
           />
-        </Grid>}
+        </CardContent>}
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                     onClose={() => this.setState({openMap: false})}
                     isMarkerShown={true}

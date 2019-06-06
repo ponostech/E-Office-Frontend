@@ -7,6 +7,7 @@ import {Grid, Icon, IconButton, Tooltip} from "@material-ui/core";
 import {ApiRoutes} from "../../../config/ApiRoutes";
 import {FILE_DETAIL_ROUTE} from "../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../common/LoadingView";
+import CardContent from "@material-ui/core/CardContent"
 
 class DeskFiles extends Component {
   source = axios.CancelToken.source();
@@ -28,7 +29,7 @@ class DeskFiles extends Component {
     axios.get(ApiRoutes.DESK, {cancelToken: this.source.token})
         .then(res => this.processResult(res))
         .catch(err => {
-          if(!axios.isCancel(err)) this.setGlobal({errorMsg: err.toString()})
+          if (!axios.isCancel(err)) this.setGlobal({errorMsg: err.toString()})
         })
         .then(() => this.setGlobal({loading: false}));
   };
@@ -93,8 +94,10 @@ class DeskFiles extends Component {
     ];
 
     const files =
-        <Grid item xs={12}>
-          <MUIDataTable title={"Desk: List of Files"} data={tableData} columns={tableColumns} options={tableOptions}/>
+        <Grid item xs>
+          <CardContent>
+            <MUIDataTable title={"Desk: List of Files"} data={tableData} columns={tableColumns} options={tableOptions}/>
+          </CardContent>
         </Grid>;
 
     return (

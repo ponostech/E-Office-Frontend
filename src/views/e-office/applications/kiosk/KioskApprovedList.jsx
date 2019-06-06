@@ -12,11 +12,9 @@ import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import ErrorHandler from "../../../common/StatusHandler";
+import CardContent from "@material-ui/core/CardContent"
 
-const styles = {
-    button: {},
-    actionIcon: {}
-};
+const styles = {};
 
 class KioskApprovedList extends Component {
     state = {
@@ -121,7 +119,7 @@ class KioskApprovedList extends Component {
                         const {rowIndex} = tableMeta;
                         let data = tableData[rowIndex];
                         return (
-                          <div>
+                          <>
                               <Tooltip title="View File">
                                   <IconButton color="primary" size="small"
                                               aria-label="View File" onClick={this.viewFile.bind(this, data)}>
@@ -140,7 +138,7 @@ class KioskApprovedList extends Component {
                                           size="small" onClick={this.takeFile.bind(this, data)}>
                                   <Icon fontSize="small">desktop_mac</Icon>
                               </IconButton>
-                          </div>
+                          </>
                         );
                     }
                 }
@@ -149,14 +147,14 @@ class KioskApprovedList extends Component {
 
         return (
           <>
-              {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+              {this.global.loading ? <LoadingView/> : <CardContent>
                   <MUIDataTable
                     title={"Kiosk: List of Approved Application"}
                     data={tableData}
                     columns={tableColumns}
                     options={tableOptions}
                   />
-              </Grid>}
+              </CardContent>}
 
               {openViewDialog &&
               <KioskViewDialog open={openViewDialog} close={this.closeViewDialog}

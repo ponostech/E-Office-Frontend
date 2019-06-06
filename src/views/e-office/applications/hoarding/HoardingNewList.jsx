@@ -5,14 +5,14 @@ import MUIDataTable from "mui-datatables";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Icon, IconButton, Tooltip } from "@material-ui/core";
 import moment from "moment";
-import { FILE_CALL, FILE_TAKE, GET_STAFF, HOARDING_LIST } from "../../../../config/ApiRoutes";
+import { FILE_CALL, GET_STAFF, HOARDING_LIST } from "../../../../config/ApiRoutes";
 import HoardingViewDialog from "./common/HoardingViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import { DESK, FILE_DETAIL_ROUTE, FILE_SEND } from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
-import ErrorHandler, { SuccessHandler } from "../../../common/StatusHandler";
+import CardContent from "@material-ui/core/CardContent"
 
 const styles = {
   button: {},
@@ -156,7 +156,7 @@ class HoardingNewList extends Component {
             const lat = Number(data.hoarding.latitude);
             const lng = Number(data.hoarding.longitude);
             return (
-              <div>
+              <>
                 <Tooltip title="View File">
                   <IconButton color="primary" size="small"
                               aria-label="View File" onClick={this.viewFile.bind(this, data)}>
@@ -178,7 +178,7 @@ class HoardingNewList extends Component {
                              size="small" onClick={this.takeFile.bind(this, data)}>
                   <Icon fontSize="small">desktop_mac</Icon>
                 </IconButton>
-              </div>
+              </>
             );
           }
         }
@@ -187,14 +187,14 @@ class HoardingNewList extends Component {
 
     return (
       <>
-        {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+        {this.global.loading ? <LoadingView/> : <CardContent>
           <MUIDataTable
             title={"Hoarding: List of New Application"}
             data={tableData}
             columns={tableColumns}
             options={tableOptions}
           />
-        </Grid>}
+        </CardContent>}
 
         {openViewDialog &&
         <HoardingViewDialog open={openViewDialog} close={this.closeViewDialog}

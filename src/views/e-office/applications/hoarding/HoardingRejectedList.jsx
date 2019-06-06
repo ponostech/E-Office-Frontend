@@ -14,10 +14,7 @@ import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
 
-const styles = {
-  button: {},
-  actionIcon: {}
-};
+const styles = {};
 
 class HoardingRejectedList extends Component {
   doLoad = this.props.doLoad;
@@ -40,9 +37,9 @@ class HoardingRejectedList extends Component {
 
   getData = () => {
     axios.get(HOARDING_LIST, {params: {status: 'reject'}})
-      .then(res => this.processResult(res))
-      .catch(err => this.setGlobal({errorMsg: err.toString()}))
-      .then(res => this.setGlobal({loading: false}))
+        .then(res => this.processResult(res))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(res => this.setGlobal({loading: false}))
   };
 
   processResult = (res) => {
@@ -67,17 +64,16 @@ class HoardingRejectedList extends Component {
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
-    .then(res => {
-      this.setState({openTakeFile: false});
-      this.props.history.push(DESK);
-    });
+      .then(res => {
+        this.setState({openTakeFile: false});
+        this.props.history.push(DESK);
+      });
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
 
 
   render() {
-    const {classes} = this.props;
-    const {loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
+    const {singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -110,10 +106,10 @@ class HoardingRejectedList extends Component {
         }
       },
       {
-        name: 'file',
+        name: 'hoarding',
         label: "FILE LOCATION",
         options: {
-          customBodyRender: value => value.desk.staff.name + " (" + value.desk.staff.designation + ")"
+          customBodyRender: ({desk}) => desk ? desk.staff.name + " (" + desk.staff.designation + ")" : 'Not on any desk'
         }
       },
       {
@@ -128,29 +124,29 @@ class HoardingRejectedList extends Component {
             const lat = Number(data.hoarding.latitude);
             const lng = Number(data.hoarding.longitude);
             return (
-              <div>
-                <Tooltip title="View File">
-                  <IconButton color="primary" size="small"
-                              aria-label="View File" onClick={this.viewFile.bind(this, data)}>
-                    <Icon fontSize="small">folder</Icon>
+                <>
+                  <Tooltip title="View File">
+                    <IconButton color="primary" size="small"
+                                aria-label="View File" onClick={this.viewFile.bind(this, data)}>
+                      <Icon fontSize="small">folder</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <IconButton size='small' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                    <Icon fontSize="small">pin_drop</Icon>
                   </IconButton>
-                </Tooltip>
-                <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                  <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
-                </IconButton>
-                <IconButton color="primary" size="small"
-                            aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                  <Icon fontSize="small">remove_red_eye</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, data)}>
-                  <Icon fontSize="small">send</Icon>
-                </IconButton>
-                <IconButton variant="contained" color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
-                  <Icon fontSize="small">desktop_mac</Icon>
-                </IconButton>
-              </div>
+                  <IconButton color="primary" size="small"
+                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                    <Icon fontSize="small">remove_red_eye</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="secondary"
+                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                    <Icon fontSize="small">send</Icon>
+                  </IconButton>
+                  <IconButton variant="contained" color="primary"
+                              size="small" onClick={this.takeFile.bind(this, data)}>
+                    <Icon fontSize="small">desktop_mac</Icon>
+                  </IconButton>
+                </>
             );
           }
         }
@@ -158,35 +154,35 @@ class HoardingRejectedList extends Component {
     ];
 
     return (
-      <>
-        {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
-          <MUIDataTable
-            title={"Hoarding: List of Rejected Application"}
-            data={tableData}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-        </Grid>}
+        <>
+          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+            <MUIDataTable
+                title={"Hoarding: List of Rejected Application"}
+                data={tableData}
+                columns={tableColumns}
+                options={tableOptions}
+            />
+          </Grid>}
 
-        {openViewDialog &&
-        <HoardingViewDialog open={openViewDialog} close={this.closeViewDialog}
-                            data={singleData}/>}
-        {openMap && <GMapDialog viewMode={true} open={openMap} lat={this.state.lat} lng={this.state.lng}
-                                onClose={() => this.setState({openMap: false})}
-                                isMarkerShown={true}
-        />}
+          {openViewDialog &&
+          <HoardingViewDialog open={openViewDialog} close={this.closeViewDialog}
+                              data={singleData}/>}
+          {openMap && <GMapDialog viewMode={true} open={openMap} lat={this.state.lat} lng={this.state.lng}
+                                  onClose={() => this.setState({openMap: false})}
+                                  isMarkerShown={true}
+          />}
 
-        {openAssignment && staffs &&
-        <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
-                        onClose={this.closeAssignment} file={file}
-                        props={this.props}/>}
+          {openAssignment && staffs &&
+          <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                          onClose={this.closeAssignment} file={file}
+                          props={this.props}/>}
 
-        {openTakeFile &&
-        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
-                       onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
-                       onConfirm={this.confirmTakeFile}/>}
-        {this.global.errorMsg && <ErrorHandler/>}
-      </>
+          {openTakeFile &&
+          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
+                         onConfirm={this.confirmTakeFile}/>}
+          {this.global.errorMsg && <ErrorHandler/>}
+        </>
     );
   }
 }

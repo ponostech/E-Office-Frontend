@@ -13,6 +13,7 @@ import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-cons
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
+import CardContent from "@material-ui/core/CardContent"
 
 const styles = {
   button: {},
@@ -125,14 +126,14 @@ class KioskUnderProcessList extends Component {
             const lat = Number(data.kiosk.latitude);
             const lng = Number(data.kiosk.longitude);
             return (
-                <div>
+                <>
                   <Tooltip title="View File">
                     <IconButton color="primary" size="small"
                                 aria-label="View File" onClick={this.viewFile.bind(this, data)}>
                       <Icon fontSize="small">folder</Icon>
                     </IconButton>
                   </Tooltip>
-                  <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                  <IconButton size='small' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
                     <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
                   </IconButton>
                   <IconButton color="primary" size="small"
@@ -147,7 +148,7 @@ class KioskUnderProcessList extends Component {
                               size="small" onClick={this.takeFile.bind(this, data)}>
                     <Icon fontSize="small">desktop_mac</Icon>
                   </IconButton>
-                </div>
+                </>
             );
           }
         }
@@ -156,14 +157,14 @@ class KioskUnderProcessList extends Component {
 
     return (
         <>
-          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+          {this.global.loading ? <LoadingView/> : <CardContent>
             <MUIDataTable
                 title={"Kiosk: List of Under Process Application"}
                 data={tableData}
                 columns={tableColumns}
                 options={tableOptions}
             />
-          </Grid>}
+          </CardContent>}
 
           {openViewDialog &&
           <KioskViewDialog open={openViewDialog} close={this.closeViewDialog}

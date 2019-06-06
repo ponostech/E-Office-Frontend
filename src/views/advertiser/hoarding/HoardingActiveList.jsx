@@ -10,6 +10,7 @@ import ApplicationState from "../../../utils/ApplicationState";
 import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 import { FILE_DETAIL_ROUTE } from "../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../common/LoadingView";
+import CardContent from "@material-ui/core/CardContent"
 
 class HoardingActiveList extends Component {
   hoardingService = new HoardingService();
@@ -89,7 +90,7 @@ class HoardingActiveList extends Component {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Click here to view details"}>
-                  <IconButton onClick={(e) => {
+                  <IconButton size='small ' onClick={(e) => {
                     this.setState({ hoarding: file });
                     this.setState({ openDetail: true });
                   }}>
@@ -121,7 +122,7 @@ class HoardingActiveList extends Component {
       <>
         {
           this.global.loading ? <LoadingView/> :
-            <Grid item sm={12} xs={12} md={12}>
+            <CardContent>
               <MUIDataTable
                 title={"Hoarding: List of Active Hoardings"}
                 data={this.state.hoardings}
@@ -131,7 +132,7 @@ class HoardingActiveList extends Component {
               <HoardingApplicationDialog open={Boolean(this.state.hoarding)} application={this.state.hoarding}
                                          onClose={e => this.setState({ hoarding: null })}/>
 
-            </Grid>
+            </CardContent>
         }
 
 

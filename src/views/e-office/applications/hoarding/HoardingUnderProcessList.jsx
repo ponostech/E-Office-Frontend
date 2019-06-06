@@ -13,11 +13,9 @@ import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-cons
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
+import CardContent from "@material-ui/core/CardContent"
 
-const styles = {
-  button: {},
-  actionIcon: {}
-};
+const styles = {};
 
 class HoardingUnderProcessList extends Component {
   state = {
@@ -47,6 +45,7 @@ class HoardingUnderProcessList extends Component {
   processResult = (res) => {
     if (res.data.status) this.setState({tableData: res.data.data.hoarding_applications});
     else this.setGlobal({errorMsg: res.data.messages});
+    console.log(res)
   };
 
   getStaffs = () => {
@@ -74,8 +73,7 @@ class HoardingUnderProcessList extends Component {
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
-    const {classes} = this.props;
-    const {loading, singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
+    const {singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -108,10 +106,10 @@ class HoardingUnderProcessList extends Component {
         }
       },
       {
-        name: 'file',
+        name: 'hoarding',
         label: "FILE LOCATION",
         options: {
-          customBodyRender: value => value.desk.staff.name + " (" + value.desk.staff.designation + ")"
+          customBodyRender: ({desk}) => desk ? desk.staff.name + " (" + desk.staff.designation + ")" : 'Not on any desk'
         }
       },
       {
@@ -126,15 +124,15 @@ class HoardingUnderProcessList extends Component {
             const lat = Number(data.hoarding.latitude);
             const lng = Number(data.hoarding.longitude);
             return (
-                <div>
+                <>
                   <Tooltip title="View File">
                     <IconButton color="primary" size="small"
                                 aria-label="View File" onClick={this.viewFile.bind(this, data)}>
                       <Icon fontSize="small">folder</Icon>
                     </IconButton>
                   </Tooltip>
-                  <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                    <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
+                  <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})} size="small">
+                    <Icon fontSize="small">pin_drop</Icon>
                   </IconButton>
                   <IconButton color="primary" size="small"
                               aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
@@ -148,7 +146,7 @@ class HoardingUnderProcessList extends Component {
                               size="small" onClick={this.takeFile.bind(this, data)}>
                     <Icon fontSize="small">desktop_mac</Icon>
                   </IconButton>
-                </div>
+                </>
             );
           }
         }
@@ -157,14 +155,14 @@ class HoardingUnderProcessList extends Component {
 
     return (
         <>
-          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+          {this.global.loading ? <LoadingView/> : <CardContent>
             <MUIDataTable
                 title={"Hoarding: List of Under Process Application"}
                 data={tableData}
                 columns={tableColumns}
                 options={tableOptions}
             />
-          </Grid>}
+          </CardContent>}
 
           {openViewDialog &&
           <HoardingViewDialog open={openViewDialog} close={this.closeViewDialog}

@@ -13,6 +13,7 @@ import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-cons
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
+import CardContent from "@material-ui/core/CardContent"
 
 const styles = {};
 
@@ -141,14 +142,14 @@ class HotelNewList extends Component {
 
     return (
         <>
-          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+          {this.global.loading ? <LoadingView/> : <CardContent>
             <MUIDataTable
                 title={"HOTEL/LODGING: List of New Application"}
                 data={hotels}
                 columns={tableColumns}
                 options={tableOptions}
             />
-          </Grid>}
+          </CardContent>}
 
           {openMap && <GMapDialog viewMode={true} open={openMap} lat={this.state.lat} lng={this.state.lng}
                                   onClose={() => this.setState({openMap: false})} isMarkerShown={true}/>}
