@@ -74,8 +74,8 @@ DialogWrapper.defaultProps = {
 DialogWrapper.propTypes = {
   open: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
-  content: PropTypes.array.isRequired,
-  action: PropTypes.array.isRequired,
+  content: PropTypes.object.isRequired,
+  action: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(DialogWrapper);

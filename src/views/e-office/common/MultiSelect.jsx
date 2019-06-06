@@ -1,4 +1,3 @@
-/*
 import React from 'react';
 import clsx from 'clsx';
 import Select from 'react-select';
@@ -12,52 +11,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import PropTypes from 'prop-types';
-import { Theme } from '@material-ui/core/styles/createMuiTheme';
-
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
-  { label: 'Andorra' },
-  { label: 'Angola' },
-  { label: 'Anguilla' },
-  { label: 'Antarctica' },
-  { label: 'Antigua and Barbuda' },
-  { label: 'Argentina' },
-  { label: 'Armenia' },
-  { label: 'Aruba' },
-  { label: 'Australia' },
-  { label: 'Austria' },
-  { label: 'Azerbaijan' },
-  { label: 'Bahamas' },
-  { label: 'Bahrain' },
-  { label: 'Bangladesh' },
-  { label: 'Barbados' },
-  { label: 'Belarus' },
-  { label: 'Belgium' },
-  { label: 'Belize' },
-  { label: 'Benin' },
-  { label: 'Bermuda' },
-  { label: 'Bhutan' },
-  { label: 'Bolivia, Plurinational State of' },
-  { label: 'Bonaire, Sint Eustatius and Saba' },
-  { label: 'Bosnia and Herzegovina' },
-  { label: 'Botswana' },
-  { label: 'Bouvet Island' },
-  { label: 'Brazil' },
-  { label: 'British Indian Ocean Territory' },
-  { label: 'Brunei Darussalam' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    height: 250,
   },
   input: {
     display: 'flex',
@@ -204,20 +161,6 @@ Placeholder.propTypes = {
   selectProps: PropTypes.object.isRequired,
 };
 
-function SingleValue(props) {
-  return (
-      <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
-        {props.children}
-      </Typography>
-  );
-}
-
-SingleValue.propTypes = {
-  children: PropTypes.node,
-  innerProps: PropTypes.object,
-  selectProps: PropTypes.object.isRequired,
-};
-
 function ValueContainer(props) {
   return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
 }
@@ -269,22 +212,22 @@ const components = {
   NoOptionsMessage,
   Option,
   Placeholder,
-  SingleValue,
   ValueContainer,
 };
 
-function IntegrationReactSelect() {
+const MultiSelect = (props) => {
+  const suggestions = props.suggestions.map(suggestion => ({
+    value: suggestion.value,
+    label: suggestion.label,
+  }));
+
   const classes = useStyles();
   const theme = useTheme();
-  const [single, setSingle] = React.useState(null);
   const [multi, setMulti] = React.useState(null);
-
-  function handleChangeSingle(value) {
-    setSingle(value);
-  }
 
   function handleChangeMulti(value) {
     setMulti(value);
+    props.onChange(value);
   }
 
   const selectStyles = {
@@ -300,35 +243,18 @@ function IntegrationReactSelect() {
   return (
       <div className={classes.root}>
         <NoSsr>
-          <Select
-              classes={classes}
-              styles={selectStyles}
-              inputId="react-select-single"
-              TextFieldProps={{
-                label: 'Country',
-                InputLabelProps: {
-                  htmlFor: 'react-select-single',
-                  shrink: true,
-                },
-                placeholder: 'Search a country (start with a)',
-              }}
-              options={suggestions}
-              components={components}
-              value={single}
-              onChange={handleChangeSingle}
-          />
           <div className={classes.divider} />
           <Select
               classes={classes}
               styles={selectStyles}
-              inputId="react-select-multiple"
+              inputId="recipient"
               TextFieldProps={{
-                label: 'Countries',
+                label: 'Send Message to',
                 InputLabelProps: {
-                  htmlFor: 'react-select-multiple',
+                  htmlFor: 'recipient',
                   shrink: true,
                 },
-                placeholder: 'Select multiple countries',
+                placeholder: 'Select Recipient(s)',
               }}
               options={suggestions}
               components={components}
@@ -341,4 +267,9 @@ function IntegrationReactSelect() {
   );
 }
 
-export default IntegrationReactSelect;*/
+MultiSelect.propTypes = {
+  suggestions: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
+}
+
+export default MultiSelect;
