@@ -12,11 +12,9 @@ import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import ErrorHandler from "../../../common/StatusHandler";
+import CardContent from "@material-ui/core/CardContent"
 
-const styles = {
-  button: {},
-  actionIcon: {}
-};
+const styles = {};
 
 class KioskRejectedList extends Component {
   state = {
@@ -118,7 +116,7 @@ class KioskRejectedList extends Component {
             const {rowIndex} = tableMeta;
             let data = tableData[rowIndex];
             return (
-                <div>
+                <>
                   <IconButton color="primary" size="small"
                               aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                     <Icon fontSize="small">remove_red_eye</Icon>
@@ -131,7 +129,7 @@ class KioskRejectedList extends Component {
                               size="small" onClick={this.takeFile.bind(this, data)}>
                     <Icon fontSize="small">desktop_mac</Icon>
                   </IconButton>
-                </div>
+                </>
             );
           }
         }
@@ -141,14 +139,14 @@ class KioskRejectedList extends Component {
     return (
         <>
           {this.global.loading ? <LoadingView/> :
-              <Grid item xs={12}>
+              <CardContent>
                 <MUIDataTable
                     title={"Kiosk: List of Rejected Application"}
                     data={tableData}
                     columns={tableColumns}
                     options={tableOptions}
                 />
-              </Grid>}
+              </CardContent>}
 
           {openViewDialog &&
           <KioskViewDialog open={openViewDialog} close={this.closeViewDialog}

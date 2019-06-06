@@ -13,6 +13,7 @@ import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-cons
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
+import CardContent from "@material-ui/core/CardContent"
 
 const styles = {};
 
@@ -63,7 +64,7 @@ class ShopInProcessList extends Component {
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
-    const {loading, shop, shops, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
+    const {shop, shops, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -108,7 +109,7 @@ class ShopInProcessList extends Component {
             const lat = Number(data.latitude);
             const lng = Number(data.longitude);
             return (
-                <div>
+                <>
                   <Tooltip title="View File">
                     <IconButton color="primary" size="small"
                                 aria-label="View File" onClick={this.viewFile.bind(this, data)}>
@@ -127,10 +128,10 @@ class ShopInProcessList extends Component {
                               size="small" onClick={this.takeFile.bind(this, data)}>
                     <Icon fontSize="small">desktop_mac</Icon>
                   </IconButton>
-                  <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                  <IconButton size='small' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
                     <Icon fontSize="small">pin_drop</Icon>
                   </IconButton>
-                </div>
+                </>
             );
           }
         }
@@ -139,14 +140,14 @@ class ShopInProcessList extends Component {
 
     return (
         <>
-          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+          {this.global.loading ? <LoadingView/> : <CardContent>
             <MUIDataTable
                 title={"SHOP: List of Rejected Applications"}
                 data={shops}
                 columns={tableColumns}
                 options={tableOptions}
             />
-          </Grid>}
+          </CardContent>}
 
           <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                       onClose={() => this.setState({openMap: false})} isMarkerShown={true}/>

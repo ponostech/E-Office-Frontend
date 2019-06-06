@@ -12,6 +12,7 @@ import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
+import CardContent from "@material-ui/core/CardContent"
 
 const styles = {
   button: {},
@@ -110,8 +111,8 @@ class ShopCancelledList extends React.Component {
             const lat = Number(data.latitude);
             const lng = Number(data.longitude);
             return (
-              <div>
-                <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+              <>
+                <IconButton size='small' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
                   <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
                 </IconButton>
                 <IconButton color="primary" size="small"
@@ -126,7 +127,7 @@ class ShopCancelledList extends React.Component {
                             size="small" onClick={this.takeFile.bind(this, data)}>
                   <Icon fontSize="small">desktop_mac</Icon>
                 </IconButton>
-              </div>
+              </>
             );
           }
         }
@@ -135,14 +136,14 @@ class ShopCancelledList extends React.Component {
 
     return (
       <>
-        {loading ? <LoadingView/> : <Grid item xs={12}>
+        {loading ? <LoadingView/> : <CardContent>
           <MUIDataTable
             title={"SHOP: List of Cancelled Applications"}
             data={shops}
             columns={tableColumns}
             options={tableOptions}
           />
-        </Grid>}
+        </CardContent>}
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                     onClose={() => this.setState({openMap: false})}
                     isMarkerShown={true}

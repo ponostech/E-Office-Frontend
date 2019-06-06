@@ -22,8 +22,8 @@ const styles = theme => ({
   },
   input: {
     display: 'flex',
-    paddingTop:8,
-    paddingBottom:8,
+    paddingTop:14,
+    paddingBottom:16,
     paddingLeft:14,
   },
   valueContainer: {

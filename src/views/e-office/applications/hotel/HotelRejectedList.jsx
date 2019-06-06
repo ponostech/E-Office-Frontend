@@ -13,6 +13,7 @@ import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-cons
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
+import CardContent from "@material-ui/core/CardContent"
 
 const styles = {};
 
@@ -108,14 +109,14 @@ class HotelRejectedList extends Component {
             const lat = Number(data.latitude);
             const lng = Number(data.longitude);
             return (
-                <div>
+                <>
                   <Tooltip title="View File">
                     <IconButton color="primary" size="small"
                                 aria-label="View File" onClick={this.viewFile.bind(this, data)}>
                       <Icon fontSize="small">folder</Icon>
                     </IconButton>
                   </Tooltip>
-                  <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                  <IconButton size='small' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
                     <Icon fontSize="small">pin_drop</Icon>
                   </IconButton>
                   <IconButton color="primary" size="small"
@@ -130,7 +131,7 @@ class HotelRejectedList extends Component {
                               size="small" onClick={this.takeFile.bind(this, data)}>
                     <Icon fontSize="small">desktop_mac</Icon>
                   </IconButton>
-                </div>
+                </>
             );
           }
         }
@@ -139,14 +140,14 @@ class HotelRejectedList extends Component {
 
     return (
         <>
-          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
+          {this.global.loading ? <LoadingView/> : <CardContent>
             <MUIDataTable
                 title={"HOTEL/LODGING: List of Rejected Applications"}
                 data={hotels}
                 columns={tableColumns}
                 options={tableOptions}
             />
-          </Grid>}
+          </CardContent>}
 
           <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
                       onClose={() => this.setState({openMap: false})} isMarkerShown={true}
