@@ -1,12 +1,36 @@
 import React, { Component } from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider, IconButton,
+  Slide, Toolbar,
+  Typography, withStyles
+} from "@material-ui/core";
 import { SiteVerificationService } from "../../../../services/SiteVerificationService";
 import WidgetConstant from "../../../../components/form-builder/WidgetConstant";
 import GridItem from "../../../../components/Grid/GridItem";
 import FormFieldFactory from "../../../../components/form-builder/FormFieldFactory";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import PropTypes from "prop-types";
+import CloseIcon from "@material-ui/icons/Close";
 
+
+const styles = {
+  appBar: {
+    position: "relative"
+  },
+  flex: {
+    flex: 1
+  },
+};
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
 
 class HotelSiteVerificationDialog extends Component {
   siteVerification = new SiteVerificationService();
@@ -89,7 +113,7 @@ class HotelSiteVerificationDialog extends Component {
 
   render() {
     const { formElements, loading, errorMessage } = this.state;
-    const { open, onClose, file } = this.props;
+    const { open, onClose, file,classes } = this.props;
 
     let form = (<p>No site verification is generated</p>);
     if (formElements) {
@@ -113,13 +137,21 @@ class HotelSiteVerificationDialog extends Component {
       );
     }
     return (
-      <Dialog fullWidth={true} maxWidth={"lg"} open={open}>
-        <DialogTitle title={"title"}>
-          <Typography variant={"title"}>FILE NO: {file.number}</Typography>
-          <Typography variant={"subtitle1"}>SITE VERIFICATION OF {file.subject}</Typography>
-          <Typography hidden={Boolean(errorMessage)} color={"secondary"} variant={"caption"}>{errorMessage}</Typography>
-        </DialogTitle>
-        <Divider/>
+      <Dialog TransitionComponent={Transition}  fullScreen={true} fullWidth={true} maxWidth={"lg"} open={open}>
+        <AppBar className={classes.appBar}>
+
+          <Toolbar>
+            <IconButton  href={"#"} color="inherit" onClick={e=>onClose(null,null,null)} aria-label="Close">
+              <CloseIcon/>
+            </IconButton>
+            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+              Create Site verification
+            </Typography>
+            <Button href={"#"} onClick={e=>onClose(null,null,null)} color="inherit">
+              Close
+            </Button>
+          </Toolbar>
+        </AppBar>
 
         <DialogContent>
           <GridContainer justify={"flex-start"}>
@@ -128,7 +160,7 @@ class HotelSiteVerificationDialog extends Component {
         </DialogContent>
         <Divider/>
         <DialogActions>
-          <Button variant={"outlined"} onClick={this.onSubmit.bind(this)} color={"primary"}> Submit</Button>
+          <Button variant={"outlined"} onClick={this.onSubmit.bind(this)} color={"primary"}> Save</Button>
           {"\u00A0 "}
           {"\u00A0 "}
           {"\u00A0 "}
@@ -146,4 +178,4 @@ HotelSiteVerificationDialog.propTypes = {
   file: PropTypes.object.isRequired
 };
 
-export default HotelSiteVerificationDialog;
+export default withStyles(styles)(HotelSiteVerificationDialog);

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import PropTypes from "prop-types";
 import { SiteVerificationService } from "../../../../../services/SiteVerificationService";
 import {
@@ -37,7 +37,6 @@ class FileSiteVerifications extends Component {
     openConfirm: false,
     loading: true,
 
-    errorMessage: "",
     successMessage: "",
 
     submitTitle: "",
@@ -47,9 +46,9 @@ class FileSiteVerifications extends Component {
   componentDidMount() {
     const { type, file } = this.props;
     if (type) {
-      let url = `/site-verifications/${type}/${file.fileable_id}`;
+      let url = `files/${file.id}/site-verifications`;
       this.siteVerificationService.all(url,
-        errorMessage => this.setState({ errorMessage }),
+        errorMsg => this.setGlobal({ errorMsg }),
         data => this.setState({ data }))
         .finally(() => this.setState({ loading: false }));
     }
@@ -67,7 +66,7 @@ class FileSiteVerifications extends Component {
     if (url && data && template) {
       this.setState({ submit: true, submitTitle: "Update Site Verification", submitMessage: "Please wait..." });
       this.siteVerificationService.updateSiteVerification(url, data, template,
-        errorMessage => this.setState({ errorMessage }),
+        errorMsg => this.setGlobal({ errorMsg }),
         successMessage => this.setState({ successMessage }))
         .finally(() => this.setState({ submit: false }));
     }
@@ -83,7 +82,7 @@ class FileSiteVerifications extends Component {
       submitMessage: "Please wait..."
     });
     this.siteVerificationService.delete(this.state.selectedVerification.id,
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       successMessage => this.setState({ successMessage }))
       .finally(() => this.setState({ submit: false }));
   };
@@ -97,17 +96,17 @@ class FileSiteVerifications extends Component {
     return (
       <>
         {
-          loading ? <LoadingView/> : (<Card>
+          loading ? <LoadingView/> : (<>
             <CardHeader title={file ?`FILE NO : ${file.number}` : ""} subheader={file ? "Site verification of " + file.subject : ""}/>
-            <Divider/>
+            <Divider component={"li"}/>
             <CardContent>
-              <List>
+              <List component={"ul"}>
                 {
                   Boolean(this.state.data)?
                   this.state.data.map(function(item, index) {
                     return (
                       <>
-                        <ListItem button={true} title={"Click here to view details"}
+                        <ListItem component={"li"} button={true} title={"Click here to view details"}
                                   onClick={self.view.bind(this, item)} key={index}>
 
                           <ListItemText primary={`Created on:${moment(item.created_at).format("Do-MMMM-YYYY")}`}
@@ -125,11 +124,11 @@ class FileSiteVerifications extends Component {
                             </Tooltip>}
                           </ListItemSecondaryAction>
                         </ListItem>
-                        <Divider/>
+                        <Divider component={"li"}/>
                       </>
                     );
                   })
-                    :"No site verification"
+                    :"No site verification is generated"
                 }
               </List>
 
@@ -143,12 +142,11 @@ class FileSiteVerifications extends Component {
                                         open={this.state.edit} onClose={this.updateVerification}
                                         file={file}/>
             <SubmitDialog open={this.state.submit} text={this.state.submitMessage} title={this.state.submitTitle}/>
-            <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}
-                            onClose={e => this.setState({ errorMessage: "" })}/>
+
             <OfficeSnackbar variant={"success"} open={Boolean(this.state.successMessage)}
                             message={this.state.successMessage}
                             onClose={e => this.setState({ successMessage: "" })}/>
-          </Card>)
+          </>)
         }
       </>
     );

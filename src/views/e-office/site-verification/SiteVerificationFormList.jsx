@@ -39,16 +39,13 @@ class SiteVerificationFormList extends Component {
     openDelete: false,
     openPreview: false,
 
-    errorMessage: "",
-    loading: true
   };
 
   componentDidMount() {
     this.setGlobal({loading: true});
-    this.siteVerificationService.allTemplate(errorMessage => this.setState({errorMessage}),
+    this.siteVerificationService.allTemplate(errorMsg => this.setState({errorMsg}),
         templates => this.setState({templates}))
         .finally(() => {
-          this.setState({loading: false});
           this.setGlobal({loading: false})
         });
   }
@@ -68,39 +65,38 @@ class SiteVerificationFormList extends Component {
   };
 
   render() {
-    const {templates, loading} = this.state;
     const {history} = this.props;
 
     return (
         <>
           {
-            loading ? <LoadingView/> :
+            this.global.loading ? <LoadingView/> :
                 <Card>
                   <CardHeader title={"List of site verification templates"}
                               subheader={"Be careful to edit and create"}/>
-                  <Divider/>
+                  <Divider component={"hr"}/>
                   <CardContent>
 
                     <GridContainer justify={"center"}>
                       <GridItem md={8}>
                         <GridItem md={12}>
-                          <List>
+                          <List component={"div"}>
                             {this.state.templates.map((item, index) => (
-                                <ListItem>
+                                <ListItem component={"div"}>
                                   <ListItemIcon color={"primary"}>
-                                    <Avatar style={{margin: 10}}>{index}</Avatar>
+                                    <Avatar component={"div"} style={{margin: 10}}>{index}</Avatar>
                                   </ListItemIcon>
                                   <ListItemText primary={"Type of Site verification (" + item.type + ")"}
                                                 secondary={"Created at :" + moment(item.created_at).format("Do-MMMM-YYYY")}/>
                                   <ListItemSecondaryAction>
                                     <>
                                       <Tooltip title={"View form"}>
-                                        <IconButton onClick={this.handlePreview.bind(this, item)}>
+                                        <IconButton href={"#"} onClick={this.handlePreview.bind(this, item)}>
                                           <ViewIcon fontSize={"small"} color={"action"}/>
                                         </IconButton>
                                       </Tooltip>
                                       <Tooltip title={"Edit"}>
-                                        <IconButton onClick={this.edit.bind(this, item)}>
+                                        <IconButton href={"#"} onClick={this.edit.bind(this, item)}>
                                           <EditIcon fontSize={"small"} color={"action"}/>
                                         </IconButton>
                                       </Tooltip>
@@ -125,8 +121,6 @@ class SiteVerificationFormList extends Component {
 
           }
 
-          <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}
-                          onClose={e => this.setState({errorMessage: ""})}/>
           <ConfirmDialog onCancel={e => this.setState({openDelete: false})} open={this.state.openDelete}
                          onConfirm={this.confirmDelete.bind(this)}/>
 

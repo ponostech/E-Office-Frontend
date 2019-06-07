@@ -27,7 +27,6 @@ class SelectFieldDialog extends Component {
   state = {
     name: "",
     label: "",
-    placeholder: "",
     required: false,
     options: [],
 
@@ -122,11 +121,11 @@ class SelectFieldDialog extends Component {
       <Dialog open={open} onClose={this.handleClick.bind(this, "close")} fullWidth={true} maxWidth={"md"}>
 
         <CardHeader title={`Configuration (${widget ? widget.name : ""})`} action={
-          <IconButton onClick={this.handleClick.bind(this, "close")}>
+          <IconButton onClick={this.handleClick.bind(this, "close")} href={"#"}>
             <CloseIcon color={"action"}/>
           </IconButton>
         }/>
-        <Divider/>
+        <Divider component={"li"}/>
         <DialogContent>
 
           <GridContainer spacing={16}>
@@ -134,10 +133,8 @@ class SelectFieldDialog extends Component {
                        variant={"outlined"} margin={"dense"} label={"Name"} fullWidth={true}/>
             <TextField required={true} name={"label"} value={this.state.label} onChange={this.handleChange.bind(this)}
                        variant={"outlined"} margin={"dense"} label={"Label"} fullWidth={true}/>
-            <TextField name={"placeholder"} value={this.state.placeholder} onChange={this.handleChange.bind(this)}
-                       variant={"outlined"} margin={"dense"} label={"Place Holder"} fullWidth={true}/>
 
-            <FormControl fullWidth={true} margin={"dense"}>
+            <FormControl component={"div"} fullWidth={true} margin={"dense"}>
               <FormControlLabel
                 control={
                   <Switch
@@ -149,7 +146,7 @@ class SelectFieldDialog extends Component {
                 label="Required?"
               />
             </FormControl>
-            <Divider/>
+            <Divider component={"li"}/>
             <br/>
             <Typography variant={"h6"}>Options : </Typography>
             <Table>
@@ -196,7 +193,7 @@ class SelectFieldDialog extends Component {
                 }
               </TableBody>
             </Table>
-            <Button onClick={this.addItem.bind(this)} variant={"outlined"}
+            <Button  onClick={this.addItem.bind(this)} variant={"outlined"}
                     color={"primary"}>ADD</Button>
           </GridContainer>
 

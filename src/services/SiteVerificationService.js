@@ -32,15 +32,15 @@ export class SiteVerificationService {
       errorCallback(e.toString())
     }
   }
-
-  async fetch(type,data,template,errorCallback,successCallback){
-    try{
-       let res=await axios.post(ApiRoutes.CREATE_HOARDING_VERIFICATION)
-    }catch (error) {
-      console.error(error);
-      errorCallback(errorCallback.toString())
-    }
-  }
+  //
+  // async fetch(type,data,template,errorCallback,successCallback){
+  //   try{
+  //      let res=await axios.post(ApiRoutes.CREATE_HOARDING_VERIFICATION)
+  //   }catch (error) {
+  //     console.error(error);
+  //     errorCallback(errorCallback.toString())
+  //   }
+  // }
 
   async getTemplate(module,errorCallback,successCallback) {
 

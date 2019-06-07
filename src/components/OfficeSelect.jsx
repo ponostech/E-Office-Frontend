@@ -190,7 +190,7 @@ class OfficeSelect extends React.Component {
   };
 
   render() {
-    const {required, name,classes, theme, onChange,options,value,isClearable,label,placeholder,variant,margin,fullWidth,error,helperText,onBlur,...rest} = this.props;
+    const {required, name,classes, theme, onChange,options,value,isClearable,label,placeholder,variant,margin,fullWidth,error,helperText,onBlur,isMulti,...rest} = this.props;
 
     const selectStyles = {
       input: base => ({
@@ -225,6 +225,7 @@ class OfficeSelect extends React.Component {
                 shrink: Boolean(value),
               }
             }}
+            isMulti={isMulti}
             placeholder={placeholder}
             isClearable={isClearable}
             {...rest}
