@@ -74,7 +74,7 @@ class ShopSiteVerificationDialog extends Component {
     if (!valid) {
       this.setState({ errorMessage: "Please fill all the required field" });
     } else {
-      let url = "site-verifications/shop/" + file.fileable_id;
+      let url = "site-verifications/" + file.id;
       let template = {
         title: this.state.title,
         subTitle: this.state.subTitle,

@@ -78,9 +78,13 @@ class KioskApplicationForm extends Component {
 
       localCouncils: [],
       categories: [],
+      displayTypes: [
+        { value: "ILLUMINATED", label: "ILLUMINATED" },
+        { value: "NON-ILLUMINATED", label: "NON ILLUMINATED" },
+        { value: "FLICKERING_LIGHT", label: "FLICKERING LIGHT" }
+      ],
 
       documents: [],
-      errorMessage: "",
       prestine: true,
       openMap: false,
 
@@ -369,7 +373,7 @@ class KioskApplicationForm extends Component {
                       />
                     </GridItem>
                     <GridItem className={classes.root} xs={12} sm={12} md={3}>
-                      <FormControl margin={"dense"}>
+                      <FormControl component={"div"} margin={"dense"}>
                         <FormControlLabel onChange={this.handleSwitch.bind(this)}
                                           name={"bothSide"}
                                           control={
@@ -383,7 +387,7 @@ class KioskApplicationForm extends Component {
                       </FormControl>
                     </GridItem>
                     <GridItem className={classes.root} xs={12} sm={12} md={3}>
-                      <FormControl margin={"dense"}>
+                      <FormControl component={"div"} margin={"dense"}>
                         <FormControlLabel onChange={this.handleSwitch.bind(this)}
                                           name={"collapsible"}
                                           control={
@@ -477,8 +481,8 @@ class KioskApplicationForm extends Component {
                       />
                     </GridItem>
                     <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                      <FormControl fullWidth={true} margin={"dense"}>
-                        <FormLabel>Type of Landlord/ Land owner</FormLabel>
+                      <FormControl component={"div"} fullWidth={true} margin={"dense"}>
+                        <FormLabel component={"label"}>Type of Landlord/ Land owner</FormLabel>
                         <RadioGroup
                           defaultValue={"0"}
                           value={this.state.landLordType}

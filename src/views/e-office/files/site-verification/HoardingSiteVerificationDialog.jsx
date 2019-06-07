@@ -75,7 +75,7 @@ class HoardingSiteVerificationDialog extends Component {
     if (!valid) {
       this.setState({ errorMessage: "Please fill all the required field" });
     } else {
-      let url = "site-verifications/hoarding/" + file.fileable_id;
+      let url = "site-verifications/" + file.id;
       let template = {
         title: this.state.title,
         subTitle: this.state.subTitle,
@@ -151,11 +151,11 @@ class HoardingSiteVerificationDialog extends Component {
           </Toolbar>
         </AppBar>
 
-        {/*<DialogTitle title={"title"}>*/}
-        {/*  <Typography variant={"title"}>FILE NO: {file.number}</Typography>*/}
-        {/*  <Typography variant={"subtitle1"}>SITE VERIFICATION OF {file.subject}</Typography>*/}
-        {/*  /!*<Typography hidden={!Boolean(errorMessage)} color={"secondary"} variant={"caption"}>{errorMessage}</Typography>*!/*/}
-        {/*</DialogTitle>*/}
+        <DialogTitle title={"title"}>
+          {/*<Typography variant={"title"}>FILE NO: {file.number}</Typography>*/}
+          {/*<Typography variant={"subtitle1"}>SITE VERIFICATION OF {file.subject}</Typography>*/}
+          <Typography hidden={!Boolean(errorMessage)} color={"secondary"} variant={"caption"}>{errorMessage}</Typography>
+        </DialogTitle>
         <Divider component={"li"}/>
 
         <DialogContent>
