@@ -10,7 +10,7 @@ import {ApiRoutes} from "./config/ApiRoutes";
 axios.defaults.baseURL = ApiRoutes.BASE_URL;
 axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8";
-axios.defaults.headers.get["Access-Control-Allow-Origin"] = "http://127.0.0.1:8000/";
+axios.defaults.headers.get["Access-Control-Allow-Origin"] = "http://127.0.0.1:3000/";
 axios.defaults.timeout = 20000;
 
 const token = localStorage.getItem("access_token");
