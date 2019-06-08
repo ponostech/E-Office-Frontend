@@ -46,7 +46,7 @@ class FileCreate extends Component {
         this.handleSelect = this.handleSelect.bind(this);
     }
     componentDidMount() {
-        document.title = "e-AMC | New File Form";
+        document.title = "e-AMC | New File Formsss";
         // var self = this;
         // const { doLoad, doLoadFinish } = this.props;
         //
