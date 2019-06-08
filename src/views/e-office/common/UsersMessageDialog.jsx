@@ -34,7 +34,7 @@ class UsersMessageDialog extends Component {
     </>;
 
     return (
-        <DialogWrapper open={this.props.open} action={dialogActions} content={dialogContent}
+        <DialogWrapper open={this.props.open} action={dialogActions} title='Send Message' content={dialogContent}
                        onClose={this.props.onClose}/>
     );
   }

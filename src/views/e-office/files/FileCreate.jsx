@@ -6,9 +6,7 @@ import {NewFileViewModel} from "../../model/NewFileViewModel";
 import OfficeSelect from "../../../components/OfficeSelect";
 import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
 import Grid from "@material-ui/core/Grid";
-import SingletonAuth from "../../../utils/SingletonAuth";
 
-var timeout = null;
 class FileCreate extends Component {
     constructor(props) {
         super(props);
