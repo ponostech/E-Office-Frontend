@@ -47,7 +47,6 @@ export class SiteVerificationService {
     try {
         const res = await axios.get(ApiRoutes.GET_SITE_VERIFICATION_TEMPLATE(module));
       if (res.data.status) {
-        console.log(res)
         successCallback(res.data.data.template)
       }else {
         errorCallback(ArrayToString(res.data.messages))

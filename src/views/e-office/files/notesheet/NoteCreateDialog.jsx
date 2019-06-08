@@ -135,7 +135,7 @@ class NoteCreateDialog extends Component {
     const { classes, open, edit } = this.props;
     const { loading, errorMsg } = this.state;
     let content = <CardContent>
-      <Grid container spacing={16}>
+      <Grid container spacing={6}>
         <Grid item lg={12}>
           <Editor onChange={this.editorChange} default={this.state.content}/>
         </Grid>
@@ -250,7 +250,7 @@ class NoteCreateDialog extends Component {
             </List>
             {errorMsg && <ErrorHandler messages={errorMsg}/>}
           </DialogContent>
-          <Divider/>
+          <Divider component={"li"}/>
           {loading ? "" : (edit ? editActionList : addActionList)}
         </Dialog>
       </>
