@@ -71,7 +71,7 @@ class FileApproveDialog extends Component {
     return drafts.map(val => {
       let temp = {};
       temp['value'] = val;
-      temp['label'] = "Draft No. " + val.id;
+      temp['label'] = "Permit Draft No. " + val.id;
       return temp;
     });
   };
