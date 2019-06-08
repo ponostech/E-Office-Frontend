@@ -85,6 +85,7 @@ export class FileService {
         url = `/hotels/${id}`;
         break;
       default:
+        alert(type)
         break;
     }
     try {
