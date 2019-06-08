@@ -1,26 +1,76 @@
 import React, { Component } from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  IconButton,
+  Slide,
+  Toolbar,
+  Typography,
+  withStyles
+} from "@material-ui/core";
 import { SiteVerificationService } from "../../../../services/SiteVerificationService";
 import WidgetConstant from "../../../../components/form-builder/WidgetConstant";
-import GridItem from "../../../../components/Grid/GridItem";
 import FormFieldFactory from "../../../../components/form-builder/FormFieldFactory";
-import GridContainer from "../../../../components/Grid/GridContainer";
 import PropTypes from "prop-types";
+import CloseIcon from "@material-ui/icons/Close";
+import LoadingView from "../../../common/LoadingView";
+import Grid from "@material-ui/core/Grid";
 
+const styles = {
+  appBar: {
+    position: "relative"
+  },
+  flex: {
+    flex: 1
+  }
+};
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
 
 class SiteVerificationEditDialog extends Component {
   siteVerification = new SiteVerificationService();
   state = {
 
-    formElements:[],
+    formElements: [],
 
     loading: false,
     errorMessage: ""
   };
 
+  componentDidMount() {
+    const { type } = this.props;
+    this.setState({ loading: true });
+    this.siteVerification.getTemplate(type, errorMessage => this.setState({ errorMessage }), template => this.mergeFormElements(template.data.formElements))
+      .finally(() => this.setState({ loading: false }));
+  }
+
+  mergeFormElements = (newElements) => {
+    if (this.props.verification) {
+      const { formElements } = this.props.verification.template;
+      let res=newElements.concat(formElements);
+      let temp=[...Set(res.map(item=>item.elementConfig.name))];
+
+      console.log("temp")
+      console.log(temp)
+      this.setState({formElements:temp})
+    }
+    console.log("about to merge")
+  };
+
+  getElement=(element)=>{
+    const { formElements } = this.props.verification.template;
+
+  }
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.verification)
-    this.setState({formElements:nextProps.verification.template.formElements})
+      this.setState({ formElements: nextProps.verification.template.formElements });
   }
 
   checkValidity(value, validation) {
@@ -29,11 +79,12 @@ class SiteVerificationEditDialog extends Component {
     if (validation.required) {
       isValid = Boolean(value);
     } else if (validation.pattern) {
-      isValid = new RegExp(validation.pattern).test(value)
+      isValid = new RegExp(validation.pattern).test(value);
     }
 
     return isValid;
   }
+
   inputChangedHandler = (event, key) => {
     const newElements = [
       ...this.state.formElements
@@ -46,19 +97,19 @@ class SiteVerificationEditDialog extends Component {
       element.value = event.target.checked;
     } else if (element.elementType === WidgetConstant.ADDRESS) {
       element.value = event;
-    }else if (element.elementType === WidgetConstant.FILE_UPLOAD) {
+    } else if (element.elementType === WidgetConstant.FILE_UPLOAD) {
       element.value = event;
-    }else if (element.elementType === WidgetConstant.IMAGE_UPLOAD) {
+    } else if (element.elementType === WidgetConstant.IMAGE_UPLOAD) {
       element.value = event;
-    }  else {
+    } else {
       element.value = event.target.value;
     }
     element.valid = this.checkValidity(element.value, element.validation);
 
     this.setState({ formElements: newElements });
   };
-  onSubmit=(e)=>{
-    const { file,verification } = this.props;
+  onSubmit = (e) => {
+    const { file, verification } = this.props;
     const formData = {};
     const elements = this.state.formElements;
     let valid = true;
@@ -80,19 +131,18 @@ class SiteVerificationEditDialog extends Component {
 
       this.props.onClose(url, formData, template);
     }
-  }
+  };
 
   render() {
     const { formElements, loading, errorMessage } = this.state;
-    const { open, onClose, file } = this.props;
+    const { open, onClose, file, classes } = this.props;
 
-    let form = (<p>No site verification is generated</p>);
+    let form = (<p>No site verification form is generated</p>);
     if (formElements) {
       form = (
         <>
           {formElements.map((element, index) => (
-            <GridItem key={index} md={6}>
-
+            <Grid key={index} md={6}>
               <FormFieldFactory
                 key={index}
                 elementType={element.elementType}
@@ -101,34 +151,52 @@ class SiteVerificationEditDialog extends Component {
                 value={element.value}
                 changed={event => this.inputChangedHandler(event, index)}
               />
-            </GridItem>
+            </Grid>
           ))}
 
         </>
       );
     }
     return (
-      <Dialog fullWidth={true} maxWidth={"lg"} open={open}>
+      <Dialog TransitionComponent={Transition} fullScreen={true} fullWidth={true} maxWidth={"lg"} open={open}>
+        <AppBar className={classes.appBar}>
+
+          <Toolbar>
+            <IconButton href={"#"} color="inherit" onClick={e => onClose(null, null, null)} aria-label="Close">
+              <CloseIcon/>
+            </IconButton>
+            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+              Edit Site verification
+            </Typography>
+            <Button href={"#"} onClick={e => onClose(null, null, null)} color="inherit">
+              Close
+            </Button>
+          </Toolbar>
+        </AppBar>
+
         <DialogTitle title={"title"}>
           <Typography variant={"title"}>FILE NO: {file.number}</Typography>
-          <Typography variant={"subtitle1"}> SITE VERIFICATION OF {file.subject}</Typography>
-          <Typography hidden={!Boolean(errorMessage)} color={"secondary"} variant={"caption"}>{errorMessage}</Typography>
+          <Typography variant={"subtitle1"}>SITE VERIFICATION OF {file.subject}</Typography>
+          <Typography hidden={!Boolean(errorMessage)} color={"secondary"}
+                      variant={"caption"}>{errorMessage}</Typography>
         </DialogTitle>
-        <Divider/>
+
+        <Divider component={"li"}/>
 
         <DialogContent>
-          <GridContainer justify={"flex-start"}>
-            {loading ? "loading" : form}
-          </GridContainer>
+          <Grid container={true} justify={"flex-start"}>
+            {loading ? <LoadingView/> : form}
+          </Grid>
         </DialogContent>
-        <Divider/>
+        <Divider component={"li"}/>
         <DialogActions>
-          <Button variant={"outlined"} onClick={this.onSubmit.bind(this)} color={"primary"}> Update</Button>
+          <Button href={"#"} variant={"outlined"} onClick={this.onSubmit.bind(this)} color={"primary"}> Update</Button>
           {"\u00A0 "}
           {"\u00A0 "}
           {"\u00A0 "}
           {"\u00A0 "}
-          <Button variant={"outlined"} color={"secondary"} onClick={e => onClose(null,null,null)}> Close</Button>
+          <Button href={"#"} variant={"outlined"} color={"secondary"}
+                  onClick={e => onClose(null, null, null)}> Close</Button>
         </DialogActions>
       </Dialog>
     );
@@ -140,7 +208,7 @@ SiteVerificationEditDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   file: PropTypes.object.isRequired,
   verification: PropTypes.object.isRequired,
-  type: PropTypes.object.isRequired,
+  type: PropTypes.object.isRequired
 };
 
-export default SiteVerificationEditDialog;
+export default withStyles(styles)(SiteVerificationEditDialog);

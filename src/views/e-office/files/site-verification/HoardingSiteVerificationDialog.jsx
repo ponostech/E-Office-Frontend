@@ -33,7 +33,6 @@ function Transition(props) {
 class HoardingSiteVerificationDialog extends Component {
   siteVerification = new SiteVerificationService();
   state = {
-
     loading: true,
     errorMessage: ""
   };
@@ -152,8 +151,8 @@ class HoardingSiteVerificationDialog extends Component {
         </AppBar>
 
         <DialogTitle title={"title"}>
-          {/*<Typography variant={"title"}>FILE NO: {file.number}</Typography>*/}
-          {/*<Typography variant={"subtitle1"}>SITE VERIFICATION OF {file.subject}</Typography>*/}
+          <Typography variant={"title"}>FILE NO: {file.number}</Typography>
+          <Typography variant={"subtitle1"}>SITE VERIFICATION OF {file.subject}</Typography>
           <Typography hidden={!Boolean(errorMessage)} color={"secondary"} variant={"caption"}>{errorMessage}</Typography>
         </DialogTitle>
         <Divider component={"li"}/>
