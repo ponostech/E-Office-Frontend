@@ -1,11 +1,17 @@
 import React, { Component } from "react";
-import { List } from "@material-ui/core";
+import { CircularProgress, List } from "@material-ui/core";
 import { BUCKET_NAME, REGION, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY } from "../Configuration";
 import classNames from "classnames";
 import Dropzone from "react-dropzone";
 import PropTypes from "prop-types";
 import NotesheetAttachmentItem from "./NotesheetAttachmentItem";
 
+const dropZoneStyle={
+  padding:40,
+  border:5,
+  background:"#f8f8f8",
+  boxShadow: `2px 5px 2px #f0f0f0`,
+}
 const config = {
   bucketName: BUCKET_NAME,
   dirName: "office/notesheet", /* optional */
@@ -81,14 +87,14 @@ class NotesheetAttachment extends Component {
         <Dropzone multiple={false} accept={acceptedFiles} onDrop={this.onDrop}>
           {({ getRootProps, getInputProps, isDragActive }) => {
             return (
-              <div style={{ padding: 40, border: 5, background: "#f8f8f8" }}
+              <div style={dropZoneStyle}
                    {...getRootProps()}
                    className={classNames("dropzone", { "dropzone--isActive": isDragActive })}
               >
                 <input {...getInputProps()} />
                 {
                   isDragActive ?
-                    <p>Drop files here...</p> :
+                    <CircularProgress variant={"indeterminate"} color={"primary"}/> :
                     <p>Try dropping some files here, or click to select files to upload.</p>
                 }
               </div>

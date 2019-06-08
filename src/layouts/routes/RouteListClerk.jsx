@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import {Route, withRouter} from "react-router-dom";
-import ReceiptStore from "../../views/e-office/receipt/ReceiptStore";
+import ReceiptCreate from "../../views/e-office/receipt/ReceiptCreate";
 import FileCreate from "../../views/e-office/files/FileCreate";
 import ReceiptShow from "../../views/e-office/receipt/ReceiptShow";
 import ReceiptList from "../../views/e-office/receipt/ReceiptList";
@@ -30,7 +30,7 @@ const routes = (props) => {
             <Route exact path={OfficeRoutes.DESK} render={e => <DeskView/>}/>
 
             {/*Receipt*/}
-            <Route exact path={OfficeRoutes.NEW_RECEIPT} component={ReceiptStore}/>
+            <Route exact path={OfficeRoutes.NEW_RECEIPT} component={ReceiptCreate}/>
             <Route exact path={OfficeRoutes.RECEIPT_DETAIL} component={ReceiptShow}/>
             <Route exact path={OfficeRoutes.CREATED_RECEIPT} component={ReceiptList}/>
             <Route exact path={OfficeRoutes.SENT_RECEIPT} component={ReceiptSentList}/>
