@@ -20,8 +20,8 @@ import moment from "moment";
 import LoadingView from "../../../../common/LoadingView";
 
 export const FILEABLE_TYPE = {
-  KIOSK: "App\\KioskApplication",
-  HOARDING: "App\\HoardingApplication",
+  KIOSK: "App\\Kiosk",
+  HOARDING: "App\\Hoarding",
   BANNER: "App\\Banner",
   SHOP: "App\\Shop",
   HOTEL: "App\\Hotel"
