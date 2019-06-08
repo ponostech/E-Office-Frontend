@@ -146,12 +146,12 @@ class FileNewList extends Component {
                       <Icon fontSize="small">remove_red_eye</Icon>
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title='Send file to Officer/Staff'>
+                  {/*<Tooltip title='Send file to Officer/Staff'>
                     <IconButton variant="contained" color="primary"
                                 size="small" onClick={this.openAssignment.bind(this, data)}>
                       <Icon fontSize="small">send</Icon>
                     </IconButton>
-                  </Tooltip>
+                  </Tooltip>*/}
                   <Tooltip title='Call file'>
                     <IconButton variant="contained" color="primary"
                                 size="small" onClick={this.takeFile.bind(this, data)}>
