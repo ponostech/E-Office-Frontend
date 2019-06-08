@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "reactn";
 import PropTypes from "prop-types";
 import axios from "axios";
 import moment from "moment";
@@ -48,7 +48,7 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class NoteCreateDialog extends React.Component {
+class NoteCreateDialog extends Component {
   state = {
     content: "",
     action: null,
@@ -60,14 +60,13 @@ class NoteCreateDialog extends React.Component {
     attachments: [],
     hasError: false,
     errorMsg: "",
-    loading: true
   };
 
   componentDidMount() {
     axios.all([this.getFileActionTypes(), this.getFilePriorities()])
       .then(axios.spread((actions, priorities) => this.processResult(actions, priorities)))
-      .then(res => this.setState({ loading: false }))
-      .catch(err => this.setState({ errorMsg: err.toString() }));
+      .then(() => this.setGlobal({ loading: false }))
+      .catch(err => this.setGlobal({ errorMsg: err.toString() }));
   }
 
   processResult = (actions, priorities) => {
@@ -116,9 +115,11 @@ class NoteCreateDialog extends React.Component {
 
       if (this.state.fixedDate) data.fixed_date = moment(this.state.fixedDate).format("YYYY-MM-DD");
       if (action === "confirm") data.draft = 0;
-      this.props.onClose(data);
+
+      this.setGlobal({successMsg: 'File updated successfully'})
+      // this.props.onClose(data);
     } else {
-      this.setState({ errorMsg: "Please fill all the required field." });
+      this.setGlobal({ errorMsg: "Please fill all the required field." });
     }
   };
 

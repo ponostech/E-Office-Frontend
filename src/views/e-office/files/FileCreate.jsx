@@ -1,27 +1,36 @@
 import React, {Component} from "reactn";
+import axios from 'axios'
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import {Button, Card, CardActions, CardContent, CardHeader, TextField} from "@material-ui/core";
 import {NewFileViewModel} from "../../model/NewFileViewModel";
 import OfficeSelect from "../../../components/OfficeSelect";
-import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
 import Grid from "@material-ui/core/Grid";
 
 class FileCreate extends Component {
   state = {
-    fileNo: "",
-    subject: "",
-    dealingId: undefined,
+    groupHead: '',
+    mainHead: '',
+    subHead: '',
+    subject: '',
+    dealingId: null,
     category: undefined,
     classification: null,
     remark: "",
-    prevRef: null,
-    nextRef: null,
+    references: null,
 
     fileNoError: "",
     subjectError: "",
     dealingError: "",
     categoryError: "",
+
+    groupHeadOptions: [],
+    mainHeadOptions: [],
+    subHeadOptions: [
+      {value: "one", label: "One"},
+      {value: "two", label: "Two"},
+      {value: "three", label: "Three"}
+    ],
 
     classifications: [
       {value: "one", label: "One"},
@@ -45,58 +54,71 @@ class FileCreate extends Component {
   componentDidMount() {
     document.title = "e-AMC | New File Forms";
     this.setGlobal({loading: true})
-    this.setGlobal({loading: false})
+    this.getFileIndices()
   }
 
-  handleChange = (e) => {
-    const {name, value} = e.target;
-    this.setState({[name]: value});
-  };
+  getFileIndices = () => {
+    this.getGroup()
+        .then(res => {
+          if (res.data.status) this.successGroup(res.data);
+          else this.setGlobal({errorMsg: res.data.messages})
+        })
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}))
+  }
+
+  getGroup = () => axios.get('file-index/group-heads');
+
+  getMain = (id) => {
+    this.setGlobal({loading: true})
+    this.setState({mainHead: '', subHead: ''})
+    axios.get('file-index/main-heads/' + id)
+        .then(res => {
+          if (res.data.status) this.successMain(res.data)
+          else this.setGlobal({errorMsg: res.data.messages})
+        })
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}))
+  }
+
+  getSub = (id) => {
+    this.setGlobal({loading: true})
+    this.setState({subHead: ''})
+    axios.get('file-index/sub-heads/' + id)
+        .then(res => {
+          if (res.data.status) this.successSub(res.data)
+          else this.setGlobal({errorMsg: res.data.messages})
+        })
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}))
+  }
+
+  successGroup = ({data}) => this.setState({groupHeadOptions: data.group_heads})
+
+  successMain = ({data}) => this.setState({mainHeadOptions: data.main_heads})
+
+  successSub = ({data}) => this.setState({subHeadOptions: data.sub_heads})
+
+  handleChange = ({name, value}) => this.setState({[name]: value})
 
   handleSelectBlur = (identifier, value) => {
-    switch (identifier) {
-      case "dealingId":
-        Boolean(value) ? this.setState({dealingError: "Dealing hand is required"}) : this.setState({dealingError: ""});
-        break;
-      case "category":
-        Boolean(value) ? this.setState({categoryError: "Branch is required"}) : this.setState({categoryError: ""});
-        break;
-      default:
-        break;
-    }
+    if (identifier === "dealingId")
+      Boolean(value) ? this.setState({dealingError: "Dealing hand is required"}) : this.setState({dealingError: ""});
+    else if (identifier === "category")
+      Boolean(value) ? this.setState({categoryError: "Branch is required"}) : this.setState({categoryError: ""});
   };
 
-  handleSelect = (value, identifier) => {
-    switch (identifier.name) {
-      case "category":
-        this.setState({category: value});
-        break;
-      case "classification":
-        this.setState({classification: value});
-        break;
-      case "dealingId":
-        this.setState({dealingId: value});
-        break;
-      case "groupHead":
-        this.setState({dealingId: value});
-        break;
-      default:
-        break;
-    }
-  };
+  handleSelect = (name, value) => {
+    this.setState({[name]: value})
+    if (name === 'groupHead') this.getMain(value.id)
+    if (name === 'mainHead') this.getSub(value.id)
+  }
 
-  validateBlur = (e) => {
-    const {value, name} = e.target;
-    switch (name) {
-      case "fileNo":
-        value.length === 0 ? this.setState({fileNoError: NewFileViewModel.REQUIRED_FILENO}) : this.setState({fileNoError: ""});
-        break;
-      case "subject":
-        value.length === 0 ? this.setState({subjectError: NewFileViewModel.REQUIRED_SUBJECT}) : this.setState({subjectError: ""});
-        break;
-      default:
-        break
-    }
+  validateBlur = ({value, name}) => {
+    if (name === "fileNo")
+      value.length === 0 ? this.setState({fileNoError: NewFileViewModel.REQUIRED_FILENO}) : this.setState({fileNoError: ""});
+    else if (name === "subject")
+      value.length === 0 ? this.setState({subjectError: NewFileViewModel.REQUIRED_SUBJECT}) : this.setState({subjectError: ""});
   };
 
   submit = (e) => {
@@ -121,10 +143,10 @@ class FileCreate extends Component {
                         value={this.state.groupHead}
                         label={"Group Head"}
                         isClearable={true}
-                        name={"category"}
-                        options={this.state.groupHead}
+                        name={"group_head"}
+                        options={this.state.groupHeadOptions}
                         error={Boolean(this.state.groupHeadError)}
-                        helperText={this.state.categoryError}
+                        helperText={this.state.groupHeadError}
                         onBlur={this.handleSelectBlur.bind(this, "groupHead")}
                         onChange={this.handleSelect.bind(this, "groupHead")}/>
                   </Grid>
@@ -134,15 +156,15 @@ class FileCreate extends Component {
                         variant={"outlined"}
                         margin={"dense"}
                         fullWidth={true}
-                        value={this.state.category}
+                        value={this.state.mainHead}
                         label={"Main Head"}
                         isClearable={true}
                         name={"category"}
-                        options={this.state.categories}
-                        error={Boolean(this.state.categoryError)}
-                        helperText={this.state.categoryError}
-                        onBlur={this.handleSelectBlur.bind(this, "category")}
-                        onChange={this.handleSelect}/>
+                        options={this.state.mainHeadOptions}
+                        error={Boolean(this.state.mainHeadError)}
+                        helperText={this.state.mainHeadError}
+                        onBlur={this.handleSelectBlur.bind(this, "mainHead")}
+                        onChange={this.handleSelect.bind(this, "mainHead")}/>
                   </Grid>
                   <Grid item xs={12} sm={12} md={12}>
                     <OfficeSelect
@@ -150,15 +172,15 @@ class FileCreate extends Component {
                         variant={"outlined"}
                         margin={"dense"}
                         fullWidth={true}
-                        value={this.state.category}
+                        value={this.state.subHead}
                         label={"Sub Head"}
                         isClearable={true}
-                        name={"category"}
-                        options={this.state.categories}
-                        error={Boolean(this.state.categoryError)}
-                        helperText={this.state.categoryError}
-                        onBlur={this.handleSelectBlur.bind(this, "category")}
-                        onChange={this.handleSelect}/>
+                        name={"sub_head"}
+                        options={this.state.subHeadOptions}
+                        error={Boolean(this.state.subHeadError)}
+                        helperText={this.state.subHeadError}
+                        onBlur={this.handleSelectBlur.bind(this, "subHead")}
+                        onChange={this.handleSelect.bind(this, "subHead")}/>
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -171,6 +193,7 @@ class FileCreate extends Component {
                         variant={"outlined"}
                         onChange={this.handleChange}
                         name={"subject"}
+                        value={this.state.subject}
                         fullWidth={true}/>
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -187,7 +210,7 @@ class FileCreate extends Component {
                         helperText={this.state.dealingError}
                         onBlur={this.handleSelectBlur.bind(this, "dealingId")}
                         options={this.state.dealers}
-                        onChange={this.handleSelect}/>
+                        onChange={this.handleSelect.bind(this, "dealingId")}/>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <OfficeSelect
@@ -228,20 +251,11 @@ class FileCreate extends Component {
                         rows={3}
                         multiline={true}/>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12}>
                     <TextField
                         margin={"dense"}
                         label={NewFileViewModel.PREVIOUS_LABEL}
-                        name={"prevRef"}
-                        variant={"outlined"}
-                        onChange={this.handleChange}
-                        fullWidth={true}/>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                        margin={"dense"}
-                        label={NewFileViewModel.NEXT_LABEL}
-                        name={"nextRef"}
+                        name={"references"}
                         variant={"outlined"}
                         onChange={this.handleChange}
                         fullWidth={true}/>
@@ -249,12 +263,10 @@ class FileCreate extends Component {
                 </Grid>
               </CardContent>
               <CardActions style={{justifyContent: "flex-end"}}>
-                <Button variant="contained" color="primary" onClick={this.submit}>Save
-                </Button>
+                <Button variant="outlined" disabled={this.global.loading} color="primary"
+                        onClick={this.submit}>Create</Button>
                 {" "}
-                <Button style={{margin: 10}} variant="contained" color="secondary">
-                  Clear
-                </Button>
+                <Button style={{margin: 10}} variant="outlined" color="secondary">Clear</Button>
               </CardActions>
             </Card>
           </GridItem>
