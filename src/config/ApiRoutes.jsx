@@ -82,6 +82,7 @@ export class ApiRoutes {
   static LOGOUT_ROUTE = "/auth/logout";
   static GET_STAFF = "/staffs";
   static BRANCHES = "/setting/branches";
+  static CLASSIFICATIONS = "/setting/classifications";
   static STAFF_ROLE = "/setting/roles";
   static ADVERTISER_LIST = "/staff/advertiser/applications";
 
@@ -103,6 +104,7 @@ export class ApiRoutes {
     return `license-templates/${module}`;
   };
   static DELETE_SITE_VERIFICATION="site-verification-templates";
+  static CREATE_RECEIPT="/receipts";
 
   static UPDATE_LICENSE_TEMPLATE(id) {
     return `/license-templates/${id}`;

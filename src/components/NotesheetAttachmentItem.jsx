@@ -4,7 +4,7 @@ import S3FileUpload from "react-s3";
 import { BUCKET_NAME, REGION, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY } from "../Configuration";
 import moment from "moment";
 import {
-  IconButton,
+  IconButton, InputAdornment,
   LinearProgress,
   ListItem,
   ListItemSecondaryAction,
@@ -98,16 +98,20 @@ class NotesheetAttachmentItem extends Component {
 
   render() {
     const { loading } = this.state;
-    let view = loading ? <LinearProgress variant={"indeterminate"} color={"primary"}/> :
-      <ListItem>
-        <ListItemText>
-          <TextField inputProps={inputProps}  variant={"outlined"}  value={this.state.name} onChange={this.handleChange.bind(this)} fullWidth={true}/>
-        </ListItemText>
-        <ListItemSecondaryAction>
-          <IconButton onClick={this.handleItemDelete.bind(this)} >
-            <DeleteIcon color={"secondary"}/>
-          </IconButton>
-        </ListItemSecondaryAction>
+    let view = loading ?
+        <LinearProgress  variant={"indeterminate"} color={"primary"}/>
+      :
+      <ListItem component={"li"}>
+          <TextField inputProps={inputProps}  variant={"outlined"}  value={this.state.name} onChange={this.handleChange.bind(this)} fullWidth={true}
+           InputProps={{
+             endAdornment:
+               <InputAdornment position={"end"}>
+                 <IconButton href={"#"} onClick={this.handleItemDelete.bind(this)} >
+                   <DeleteIcon color={"secondary"}/>
+                 </IconButton>
+               </InputAdornment>
+           }}
+          />
       </ListItem>;
     return (
       view
