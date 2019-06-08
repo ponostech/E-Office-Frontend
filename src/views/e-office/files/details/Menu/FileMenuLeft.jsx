@@ -14,7 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Icon from "@material-ui/core/Icon";
 import Tooltip from "@material-ui/core/Tooltip";
 
-const drawerWidth = 220;
+const drawerWidth = 228;
 
 const styles = theme => ({
   root: {

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import { IconButton, DialogContent, ListItem, ListItemText, ListItemIcon } from "@material-ui/core";
+import {IconButton, DialogContent, ListItem, ListItemText, ListItemIcon} from "@material-ui/core";
 import {Dialog, Slide, Grid, Card, Button, Toolbar, AppBar, Typography, List, DialogActions} from "@material-ui/core";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import DetailViewRow from "../../../common/DetailViewRow";
 import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
-import { AttachFile } from "@material-ui/icons";
+import {AttachFile} from "@material-ui/icons";
 
 const styles = {
   appBar: {
@@ -27,17 +27,18 @@ class KioskViewDialog extends Component {
   openDocs = (url) => {
     window.open(url).focus();
   };
+
   render() {
     console.log(this.props);
     const {classes, data} = this.props;
 
     const list = data.documents.map(val =>
-      <ListItem className={classes.docsItem} onClick={() => this.openDocs(val.path)}>
-        <ListItemIcon>
-          <AttachFile/>
-        </ListItemIcon>
-        <ListItemText primary={val.name}/>
-      </ListItem>);
+        <ListItem className={classes.docsItem} onClick={() => this.openDocs(val.path)}>
+          <ListItemIcon>
+            <AttachFile/>
+          </ListItemIcon>
+          <ListItemText primary={val.name}/>
+        </ListItem>);
 
     return (
         <Dialog
@@ -77,13 +78,17 @@ class KioskViewDialog extends Component {
                     <DetailViewRow primary="Date of Application"
                                    secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
                     <DetailViewRow primary="Display Type" secondary={data.kiosk.display_type}/>
-                    <DetailViewRow primary="Whether Both Sided ?" secondary={data.kiosk.both_side==0 ? "No" : "Yes"}/>
+                    <DetailViewRow primary="Whether Both Sided ?" secondary={data.kiosk.both_side ? "No" : "Yes"}/>
                     <DetailViewRow primary="Length (feet)" secondary={data.kiosk.length}/>
                     <DetailViewRow primary="Height (feet)" secondary={data.kiosk.height}/>
-                    <DetailViewRow primary="Land Owner Name" secondary={data.kiosk.land_owner_name ? data.kiosk.land_owner_name : "NA"}/>
-                    <DetailViewRow primary="Land Owner Type" secondary={data.kiosk.land_owner_type==0 ? "Private" : "Public"} />
-                    <DetailViewRow primary="Road Detail" secondary={data.kiosk.road_detail ? data.kiosk.road_detail : "NA" }/>
-                    <DetailViewRow primary="Ground Clearance" secondary={data.kiosk.ground_clearance ? data.kiosk.ground_clearance : "NA"}/>
+                    <DetailViewRow primary="Land Owner Name"
+                                   secondary={data.kiosk.land_owner_name ? data.kiosk.land_owner_name : "NA"}/>
+                    <DetailViewRow primary="Land Owner Type"
+                                   secondary={data.kiosk.land_owner_type ? "Private" : "Public"}/>
+                    <DetailViewRow primary="Road Detail"
+                                   secondary={data.kiosk.road_detail ? data.kiosk.road_detail : "NA"}/>
+                    <DetailViewRow primary="Ground Clearance"
+                                   secondary={data.kiosk.ground_clearance ? data.kiosk.ground_clearance : "NA"}/>
                     <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
                     {data.file.desk && <DetailViewRow primary="File Location"
                                                       secondary={data.file.desk.staff.name + " (" + data.file.desk.staff.designation + ")"}/>}

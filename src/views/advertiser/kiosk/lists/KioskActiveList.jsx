@@ -6,13 +6,11 @@ import { IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
 import { KioskService } from "../../../../services/KioskService";
-import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 import LoadingView from "../../../common/LoadingView";
 
 class KioskActiveList extends Component {
   kioskService = new KioskService();
-
   state = {
     kiosk: null,
     kiosks: [],
@@ -22,7 +20,6 @@ class KioskActiveList extends Component {
 
   componentDidMount() {
     document.title = "e-AMC | List of kiosk application";
-    const { doLoad, doLoadFinish } = this.props;
     this.setGlobal({loading:true});
     this.kioskService.fetchAdvertiserKiosk(
       errorMsg => this.setGlobal({ errorMsg }),
