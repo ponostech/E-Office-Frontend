@@ -9,6 +9,7 @@ import FileSendDialog from "../../common/SendDialog";
 import moment from "moment";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import LoadingView from "../../common/LoadingView";
+import Tooltip from "@material-ui/core/Tooltip"
 
 class FileNewList extends Component {
   state = {
@@ -17,6 +18,8 @@ class FileNewList extends Component {
     singleData: [],
     openAssignment: false,
     openTakeFile: false,
+    openFileCloseDialog: false,
+    openFileArchiveDialog: false,
     successMsg: '',
   };
 
@@ -78,10 +81,18 @@ class FileNewList extends Component {
     }
   };
 
-  onStatusClose = () => this.setState({errorMsg: '', successMsg: ''});
+  archiveFile = () => this.setState({openFileArchiveDialog: true})
+
+  confirmedArchiveFile = () => {}
+
+  closeFile = () => this.setState({openFileCloseDialog: true})
+
+  confirmedCloseFile = () => {}
+
+  closeDialog = (key) => this.setState({[key]: false});
 
   render() {
-    const {tableData, openAssignment, successMsg, openTakeFile, singleData, staffs} = this.state;
+    const {tableData, openAssignment, openTakeFile, singleData, staffs, openFileArchiveDialog, openFileCloseDialog} = this.state;
 
     const tableOptions = {
       filterType: "checkbox",
@@ -129,18 +140,36 @@ class FileNewList extends Component {
             let data = tableMeta.rowData;
             return (
                 <>
-                  <IconButton color="primary" size="small"
-                              aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
-                    <Icon fontSize="small">remove_red_eye</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="secondary"
-                              size="small" onClick={this.openAssignment.bind(this, data)}>
-                    <Icon fontSize="small">send</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="primary"
-                              size="small" onClick={this.takeFile.bind(this, data)}>
-                    <Icon fontSize="small">desktop_mac</Icon>
-                  </IconButton>
+                  <Tooltip title='View File Details'>
+                    <IconButton color="primary" size="small"
+                                aria-label="View File Details" onClick={this.viewDetail.bind(this, value)}>
+                      <Icon fontSize="small">remove_red_eye</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Send file to Officer/Staff'>
+                    <IconButton variant="contained" color="primary"
+                                size="small" onClick={this.openAssignment.bind(this, data)}>
+                      <Icon fontSize="small">send</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Call file'>
+                    <IconButton variant="contained" color="primary"
+                                size="small" onClick={this.takeFile.bind(this, data)}>
+                      <Icon fontSize="small">desktop_mac</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Archive File'>
+                    <IconButton variant="contained" color="secondary"
+                                size="small" onClick={this.archiveFile.bind(this, data)}>
+                      <Icon fontSize="small">archive</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Close File'>
+                    <IconButton variant="contained" color="secondary"
+                                size="small" onClick={this.closeFile.bind(this, data)}>
+                      <Icon fontSize="small">close</Icon>
+                    </IconButton>
+                  </Tooltip>
                 </>
             );
           }
@@ -168,6 +197,14 @@ class FileNewList extends Component {
                          onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                          onConfirm={this.confirmTakeFile.bind(this)}/>}
 
+          {openFileCloseDialog &&
+          <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileCloseDialog")}
+                         open={openFileCloseDialog} onConfirm={this.confirmedCloseFile}
+                         message="Are you sure you want to close this file?"/>}
+          {openFileArchiveDialog &&
+          <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileArchiveDialog")}
+                         open={openFileArchiveDialog} onConfirm={this.confirmedArchiveFile}
+                         message="Are you sure you want to archive this file?"/>}
         </>
     );
   }

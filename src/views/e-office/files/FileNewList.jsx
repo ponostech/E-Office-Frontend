@@ -9,6 +9,7 @@ import FileSendDialog from "../../common/SendDialog";
 import moment from "moment";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import LoadingView from "../../common/LoadingView";
+import Tooltip from "@material-ui/core/Tooltip"
 
 class FileNewList extends Component {
   state = {
@@ -130,18 +131,24 @@ class FileNewList extends Component {
             let data = this.state.tableData[rowIndex];
             return (
                 <>
-                  <IconButton color="primary" size="small"
-                              aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
-                    <Icon fontSize="small">remove_red_eye</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="secondary"
-                              size="small" onClick={this.openAssignment.bind(this, data)}>
-                    <Icon fontSize="small">send</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="primary"
-                              size="small" onClick={this.takeFile.bind(this, data)}>
-                    <Icon fontSize="small">desktop_mac</Icon>
-                  </IconButton>
+                  <Tooltip title='View File Details'>
+                    <IconButton color="primary" size="small"
+                                aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
+                      <Icon fontSize="small">remove_red_eye</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Assign File to Officer/Staff'>
+                    <IconButton variant="contained" color="primary"
+                                size="small" onClick={this.openAssignment.bind(this, data)}>
+                      <Icon fontSize="small">send</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Call File'>
+                    <IconButton variant="contained" color="primary"
+                                size="small" onClick={this.takeFile.bind(this, data)}>
+                      <Icon fontSize="small">desktop_mac</Icon>
+                    </IconButton>
+                  </Tooltip>
                 </>
             );
           }

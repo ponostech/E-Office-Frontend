@@ -52,9 +52,9 @@ class SendDialog extends React.Component {
   getFileDetail = () => {
        return (
         <>
-          <ListItem button>
+          {/*<ListItem button>
             <ListItemText primary="Computer File. No." secondary={this.props.file.id}/>
-          </ListItem>
+          </ListItem>*/}
           <Divider/>
           <ListItem button>
             <ListItemText primary="File No." secondary={this.props.file.number}/>
