@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component} from "reactn";
 import axios from 'axios';
 import moment from 'moment';
 import {EventNote} from "@material-ui/icons";
@@ -9,7 +9,6 @@ import Loading from "../../../common/LoadingView"
 import {GET_NOTE, FILE_NOTESHEET, DELETE_NOTE_DRAFT} from "../../../../config/ApiRoutes";
 import CreateNoteDialog from "./NoteCreateDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import ErrorHandler, {SuccessHandler} from "../../../common/StatusHandler";
 
 class NotesheetDraftView extends Component {
   state = {
@@ -19,7 +18,6 @@ class NotesheetDraftView extends Component {
     openDialog: false,
     openConfirmDelete: false,
     editNote: false,
-    loading: true,
     loadingNoteDialog: true,
     currentNoteId: null,
     successMsg: '',
@@ -28,12 +26,15 @@ class NotesheetDraftView extends Component {
   this;
 
   componentDidMount() {
-    this.getNoteSheet(this.props.file.id);
+    this.setGlobal({loading: false})
+    this.getNoteSheet(this.props.file.id)
   }
 
   getNoteSheet = (id) => {
     this.setState({currentFile: id});
-    this.getData(id).then(res => this.processResponse(res)).then(res => this.setState({loading: false}));
+    this.getData(id)
+        .then(res => this.processResponse(res))
+        .then(() => this.setGlobal({loading: false}));
   };
 
   getData = (id) => axios.get(FILE_NOTESHEET(id) + "/drafts");
@@ -42,7 +43,7 @@ class NotesheetDraftView extends Component {
     if (res.data.status) this.formatNote(res.data.data.notesheet_drafts);
   };
 
-  handleCloseCreateNote = (data) => this.setState({openDialog: false});
+  handleCloseCreateNote = () => this.setState({openDialog: false});
 
   onCancelDelete = () => this.setState({openConfirmDelete: false});
 
@@ -71,40 +72,38 @@ class NotesheetDraftView extends Component {
     axios.delete(DELETE_NOTE_DRAFT(this.state.currentNoteId))
         .then(res => this.confirmDeleteResponse(res))
         .then(res => this.setState({openConfirmDelete: false, currentNoteId: null}))
-        .catch(err => this.setState({errorMsg: err.toString()}))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
   };
 
   confirmDeleteResponse = (res) => {
     if (res.data.status) {
       this.getNoteSheet(this.state.currentFile);
-      this.setState({successMsg: res.data.messages, loading: true});
+      this.setGlobal({successMsg: res.data.messages, loading: true});
     } else {
-      this.setState({errorMsg: res.data.message})
+      this.setGlobal({errorMsg: res.data.message})
     }
   };
 
   editNote = (id) => {
     this.getSingleNote(id)
         .then(res => this.getSingleNoteResponse(res))
-        .then(res => this.setState({loading: false}))
-        .catch(err => this.setState({errorMsg: err.toString()}));
+        .then(() => this.setGlobal({loading: false}))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}));
   };
 
   getSingleNote = (id) => axios.get(GET_NOTE(id));
 
   getSingleNoteResponse = (res) => {
     if (res.data.status) this.setState({singleNote: res.data.data.notesheet, openDialog: true, editNote: true});
-    else this.setState({errorMsg: res.data.messages});
+    else this.setGlobal({errorMsg: res.data.messages});
   };
 
-  closeStatusDialog = () => this.setState({errorMsg: '', successMsg: ''});
-
   render() {
-    const {loading, openDialog, openConfirmDelete, singleNote, editNote, successMsg, errorMsg} = this.state;
+    const {openDialog, openConfirmDelete, singleNote, editNote} = this.state;
     const {file} = this.props;
     let noteList = <Loading align="left" color="secondary"/>;
 
-    if (!loading)
+    if (!this.global.loading)
       if (this.state.note.length)
         noteList = <Timeline simple stories={this.state.note} onNoteDelete={this.deleteNote} onNoteEdit={this.editNote}
                              draft/>;
@@ -122,9 +121,6 @@ class NotesheetDraftView extends Component {
                             edit={editNote} onClose={this.handleCloseCreateNote}/>}
           {openConfirmDelete &&
           <ConfirmDialog onCancel={this.onCancelDelete} open={openConfirmDelete} onConfirm={this.onConfirmDelete}/>}
-
-          {errorMsg && <ErrorHandler messages={errorMsg} open={errorMsg} onClose={this.closeStatusDialog}/>}
-          {successMsg && <SuccessHandler messages={successMsg} open={successMsg} onClose={this.closeStatusDialog}/>}
         </>
     )
   };
