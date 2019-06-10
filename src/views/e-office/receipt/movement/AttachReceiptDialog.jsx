@@ -15,6 +15,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
 import { DetailViewRow } from "../../../common/ApplicationDetailsDialog";
+import moment from "moment";
 
 const styles = {
   appBar: {
@@ -36,30 +37,34 @@ class AttachReceiptDialog extends Component {
   }
 
 
-
-  handleClose = (e) => {
+  handleClose = (name) => {
     const { selectedFile } = this.state;
-    this.props.onClose(selectedFile.value);
+    const { receipt } = this.props;
+    if (name === "submit")
+      this.props.onClose(receipt.id, selectedFile.value);
+    else
+      this.props.onClose(null, null);
+
   };
   handleChange = (val) => {
     const { data } = this.state;
-    this.setState({selectedFile:val})
+    this.setState({ selectedFile: val });
   };
 
   render() {
-    const { open, classes,files } = this.props;
+    const { open, classes, files ,receipt, ...rest} = this.props;
     return (
-      <Dialog fullWidth={true} maxWidth={"sm"} open={open} onClose={e=>this.props.onClose(null)}>
+      <Dialog fullWidth={true} maxWidth={"sm"} open={open} onClose={e => this.props.onClose(null, null)} {...rest}>
 
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={e=>this.props.onClose(null)} aria-label="Close">
+            <IconButton href={"#"} color="inherit" onClick={e => this.props.onClose(null, null)} aria-label="Close">
               <CloseIcon/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
               Attach Receipt to : {this.state.selectedFile ? this.state.selectedFile.label : ""}
             </Typography>
-            <Button href={"#"} onClick={e=>this.props.onClose(null)} color="inherit">
+            <Button href={"#"} onClick={e => this.props.onClose(null, null)} color="inherit">
               Close
             </Button>
           </Toolbar>
@@ -77,21 +82,25 @@ class AttachReceiptDialog extends Component {
             onChange={this.handleChange.bind(this)}/>
 
           <Divider component={"li"} style={{ marginBottom: 10, marginTop: 10 }}/>
+          {
+            receipt?<>
+              <DetailViewRow primary={"Receipt No"} secondary={receipt.no}/>
+              <DetailViewRow primary={"Subject"} secondary={receipt.subject}/>
+              <DetailViewRow primary={"Branch"} secondary={receipt.branch}/>
+              <DetailViewRow primary={"Type"} secondary={receipt.type}/>
+              <DetailViewRow primary={"Letter Date"} secondary={moment(receipt.letter_date).format("Do MMM YYY")}/>
+              <DetailViewRow primary={"Received on"} secondary={moment(receipt.received_date).format("Do MMM YYY")}/>
+              </>:""
+          }
 
-          <DetailViewRow primary={"Receipt No"} secondary={""}/>
-          <DetailViewRow primary={"Subject"} secondary={""}/>
-          <DetailViewRow primary={"Branch"} secondary={""}/>
-          <DetailViewRow primary={"Type"} secondary={""}/>
-          <DetailViewRow primary={"Letter Date"} secondary={""}/>
-          <DetailViewRow primary={"Received on"} secondary={""}/>
         </DialogContent>
 
         <Divider component={"li"} style={{ marginBottom: 10, marginTop: 10 }}/>
         <DialogActions>
           <Button disabled={this.state.selectedFile === null}
-                  href={"#"} onClick={this.handleClose.bind(this)} color={"primary"}
+                  href={"#"} onClick={this.handleClose.bind(this, "submit")} color={"primary"}
                   variant={"text"}>Attach</Button>
-          <Button href={"#"} onClick={this.handleClose.bind(this)} color={"secondary"}
+          <Button href={"#"} onClick={this.handleClose.bind(this, "close")} color={"secondary"}
                   variant={"text"}>Close</Button>
         </DialogActions>
 
@@ -103,7 +112,8 @@ class AttachReceiptDialog extends Component {
 AttachReceiptDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  files: PropTypes.array.isRequired
+  files: PropTypes.array.isRequired,
+  receipt: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(AttachReceiptDialog);

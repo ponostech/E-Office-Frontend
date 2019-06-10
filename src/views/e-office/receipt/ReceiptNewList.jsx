@@ -10,6 +10,8 @@ import LoadingView from "../../common/LoadingView";
 import { FileService } from "../../../services/FileService";
 import AttachReceiptDialog from "./movement/AttachReceiptDialog";
 import { EDIT_RECEIPT } from "../../../config/routes-constant/OfficeRoutes";
+import SubmitDialog from "../../../components/SubmitDialog";
+import ReceiptDetailDialog from "./ReceiptDetailDialog";
 
 const styles = {};
 
@@ -22,7 +24,9 @@ class ReceiptNewList extends Component {
     receipt: null,
     files: [],
 
-    openAttach: false
+    openAttach: false,
+    view: false,
+    submit:false
 
   };
 
@@ -55,7 +59,7 @@ class ReceiptNewList extends Component {
 
 
   view = (receipt) => {
-
+      this.setState({receipt,view:true});
   };
   edit = (receipt) => {
     const { history } = this.props;
@@ -65,10 +69,16 @@ class ReceiptNewList extends Component {
     this.setState({ receipt, openAttach: true });
   };
 
-  handleAttach = (selectedFile) => {
-    this.setState({ openAttach: false });
-    this.receiptService.attachToFile(selectedFile, this.state.receipt);
-  };
+  handleAttach = (receipt_id,file_id) => {
+    if (receipt_id && file_id) {
+      this.setState({ openAttach: false, submit: true });
+      this.receiptService.attachToFile(receipt_id, file_id,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => this.setGlobal({ successMsg }))
+        .finally(() => this.setState({ submit: false }));
+    }
+    this.setState({ openAttach: false })
+  }
 
   render() {
     const { receipt, receipts } = this.state;
@@ -147,6 +157,8 @@ class ReceiptNewList extends Component {
           />
         </CardContent>}
 
+        <ReceiptDetailDialog open={this.state.view} onClose={e=>this.setState({view:false})} receipt={this.state.receipt}/>
+        <SubmitDialog open={this.state.submit} text={"Please wait ..."} title={"Receipt Attachment"}/>
         <AttachReceiptDialog onClose={this.handleAttach.bind(this)}
                              open={Boolean(this.state.openAttach)}
                              files={this.state.files}
