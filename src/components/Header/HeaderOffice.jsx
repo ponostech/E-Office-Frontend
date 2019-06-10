@@ -77,7 +77,7 @@ class HeaderOffice extends React.Component {
                         </Grid>
                     </Hidden>
                     <Hidden mdUp>
-                        <IconButton
+                        <IconButton href={"#"}
                             className={classes.sidebarButton}
                             aria-label="open drawer"
                             onClick={this.handleDrawerToggle}

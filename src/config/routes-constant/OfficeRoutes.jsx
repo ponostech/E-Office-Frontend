@@ -60,7 +60,8 @@ export const FILE_SEND = (id) => {
     return `/files/${id}/send`;
 };
 export const NEW_RECEIPT = "/e-office/receipt/new";
-export const CREATED_RECEIPT = "/e-office/receipt/created";
+export const EDIT_RECEIPT=(id) => `/e-office/receipt/${id}/edit`;
+export const RECEIPT_NEW_LIST = "/e-office/receipt/new-list";
 export const SENT_RECEIPT = "/e-office/receipt/sent";
 export const CLOSE_RECEIPT = "/e-office/receipt/close";
 export const RECEIPT_DETAIL = "/e-office/receipt/:id/details";

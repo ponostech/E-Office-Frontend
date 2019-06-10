@@ -12,8 +12,8 @@ import moment from "moment";
 import SubmitDialog from "../../../components/SubmitDialog";
 
 const delivery_modes = [
-  { value: "by hand", label: "By Hand" },
-  { value: "by post", label: "By Post" },
+  { value: "by Hand", label: "By Hand" },
+  { value: "by Post", label: "By Post" },
   { value: "by Courier", label: "By Courier" },
   { value: "by Diplomatic Bag", label: "By Diplomatic Bag" },
   { value: "by Email", label: "By Email" },
@@ -43,10 +43,11 @@ let types = [
   { value: "Others", label: "Others" }
 ];
 
-class ReceiptCreate extends Component {
+class ReceiptEdit extends Component {
 
   receiptService = new ReceiptService();
   state = {
+    id:null,
     subject: "",
     classification: undefined,
     language: "",
@@ -75,40 +76,69 @@ class ReceiptCreate extends Component {
   };
 
   componentDidMount() {
+    console.log();
     this.setGlobal({ loading: true });
-    this.receiptService.fetchResource(errorMsg => this.setGlobal({ errorMsg }),
+
+    Promise.all([this.getReceipt(),this.fetchResource()])
+      .finally(()=>this.setGlobal({loading:false}))
+  }
+
+  getReceipt = async () => {
+    const { id } = this.props.match.params;
+    await this.receiptService.get(id,
+      errorMsg => this.setGlobal({ errorMsg }),
+      receipt => {
+      this.setState({
+        id:receipt.id,
+        subject: receipt.subject,
+        classification: { value:receipt.classification,label:receipt.classification },
+        language: receipt.language,
+        delivery_mode: { value:receipt.delivery_mode,label:receipt.delivery_mode },
+        type: { value:receipt.type,label:receipt.type },
+        received_date: moment(receipt.received_date),
+        letter_date: moment(receipt.letter_date),
+        sender_type: receipt.sender_type,
+        sender_address: receipt.sender_address,
+        letter_ref_no: receipt.letter_ref_no,
+        branch: { value:receipt.branch,label:receipt.branch },
+        document: receipt.document,
+      })
+      });
+  };
+
+  fetchResource = async () => {
+    await this.receiptService.fetchResource(errorMsg => this.setGlobal({ errorMsg }),
       (b, c) => {
         branches = b;
         classifications = c;
       })
-      .finally(() => this.setGlobal({ loading: false }));
-  }
+  };
 
   handleRequired = (name, event) => {
     switch (name) {
       case "subject":
-        !Boolean(this.state.subject) ? this.setState({subjectError:"Subject is required"}): this.setState({subjectError:""});
+        !Boolean(this.state.subject) ? this.setState({ subjectError: "Subject is required" }) : this.setState({ subjectError: "" });
         break;
-        case "language":
-        !Boolean(this.state.language) ? this.setState({languageError:"Language is required"}): this.setState({languageError:""});
+      case "language":
+        !Boolean(this.state.language) ? this.setState({ languageError: "Language is required" }) : this.setState({ languageError: "" });
         break;
-        case "letter_date":
-        !Boolean(this.state.letter_date) ? this.setState({letterDateError:"Letter date is required"}): this.setState({letterDateError:""});
+      case "letter_date":
+        !Boolean(this.state.letter_date) ? this.setState({ letterDateError: "Letter date is required" }) : this.setState({ letterDateError: "" });
         break;
       case "received_date":
-        !Boolean(this.state.received_date) ? this.setState({receiveDateError:"Received date is required"}): this.setState({receiveDateError:""});
+        !Boolean(this.state.received_date) ? this.setState({ receiveDateError: "Received date is required" }) : this.setState({ receiveDateError: "" });
         break;
       case "branch":
-        this.state.branch===undefined? this.setState({branchError:"Branch is required"}):this.setState({branchError:""});
+        this.state.branch === undefined ? this.setState({ branchError: "Branch is required" }) : this.setState({ branchError: "" });
         break;
       case "classification":
-        this.state.classification===undefined? this.setState({classificationError:"Classification is required"}):this.setState({classificationError:""});
+        this.state.classification === undefined ? this.setState({ classificationError: "Classification is required" }) : this.setState({ classificationError: "" });
         break;
       case "type":
-        this.state.type===undefined? this.setState({typeError:"Type of receipt is required"}):this.setState({typeError:""});
+        this.state.type === undefined ? this.setState({ typeError: "Type of receipt is required" }) : this.setState({ typeError: "" });
         break;
       case "delivery_mode":
-        this.state.delivery_mode===undefined? this.setState({deliveryModeError:"Delivery mode is required"}):this.setState({deliveryModeError:""});
+        this.state.delivery_mode === undefined ? this.setState({ deliveryModeError: "Delivery mode is required" }) : this.setState({ deliveryModeError: "" });
         break;
       default:
         break;
@@ -124,16 +154,16 @@ class ReceiptCreate extends Component {
         this.setState({ received_date: event });
         break;
       case "branch":
-        this.setState({branch:event})
+        this.setState({ branch: event });
         break;
       case "classification":
-        this.setState({classification:event})
+        this.setState({ classification: event });
         break;
       case "type":
-        this.setState({type:event})
+        this.setState({ type: event });
         break;
       case "delivery_mode":
-        this.setState({delivery_mode:event})
+        this.setState({ delivery_mode: event });
         break;
       default:
         this.setState({ [name]: event.target.value });
@@ -141,40 +171,40 @@ class ReceiptCreate extends Component {
     }
   };
   handleClick = (name, event) => {
-        const { subject, classification, language, delivery_mode, type, received_date, letter_date, sender_address, sender_type, branch,document,letter_ref_no } = this.state;
+    const {id, subject, classification, language, delivery_mode, type, received_date, letter_date, sender_address, sender_type, branch, document, letter_ref_no } = this.state;
 
     switch (name) {
       case "submit":
-        let data={
-          receipt_no:Date.now(),
+        let data = {
+          receipt_no: Date.now(),
           subject,
-          classification:classification.value,
+          classification: classification.value,
           language,
-          branch:branch.value,
-          delivery_mode:delivery_mode.value,
-          type:type.value,
-          received_date:moment(received_date).format("Y-MM-DD"),
-          letter_date:moment(letter_date).format("Y-MM-DD"),
-          sender_address,sender_type,
+          branch: branch.value,
+          delivery_mode: delivery_mode.value,
+          type: type.value,
+          received_date: moment(received_date).format("Y-MM-DD"),
+          letter_date: moment(letter_date).format("Y-MM-DD"),
+          sender_address, sender_type,
           letter_ref_no,
           document
         };
-        this.setState({submit:true});
-        this.receiptService.create(data,errorMsg=>this.setGlobal({errorMsg}),
-          successMsg=>this.setGlobal({successMsg}))
-          .finally(()=>this.setState({submit:false}));
+        this.setState({submit:true})
+        this.receiptService.update(id,data, errorMsg => this.setGlobal({ errorMsg }),
+          successMsg => this.setGlobal({ successMsg }))
+          .finally(() => this.setState({ submit: false }));
         break;
       case "clear":
         window.location.reload();
         break;
       default:
-        break
+        break;
 
     }
   };
 
   render() {
-    const { subject, classification, language, delivery_mode, type, received_date, letter_date, sender_address, sender_type, branch ,letter_ref_no,document,submit} = this.state;
+    const { subject, classification, language, delivery_mode, type, received_date, letter_date, sender_address, sender_type, branch, letter_ref_no, document,submit } = this.state;
     const { subjectError, classificationError, languageError, deliveryModeError, typeError, receiveDateError, letterDateError, senderAddressError, senderTypeError, branchError } = this.state;
 
     let view = this.global.loading ? <LoadingView/> :
@@ -200,7 +230,7 @@ class ReceiptCreate extends Component {
           <Grid spacing={10} md={6} lg={6}>
 
             <Card>
-              <CardHeader title={"Receipt Entry"}/>
+              <CardHeader title={"Edit Receipt"}/>
               <Divider component={"li"}/>
               <CardContent>
                 <TextField
@@ -366,22 +396,22 @@ class ReceiptCreate extends Component {
               <CardActions>
                 <Button disabled={
                   !Boolean(subject) ||
-                    !Boolean(classification) ||
-                    !Boolean(language) ||
-                    !Boolean(delivery_mode) ||
-                    !Boolean(type) ||
-                    !Boolean(received_date) ||
-                    !Boolean(letter_date) ||
-                    !Boolean(branch) ||
-                    !Boolean(document)
+                  !Boolean(classification) ||
+                  !Boolean(language) ||
+                  !Boolean(delivery_mode) ||
+                  !Boolean(type) ||
+                  !Boolean(received_date) ||
+                  !Boolean(letter_date) ||
+                  !Boolean(branch) ||
+                  !Boolean(document)
                 } href={"#"} variant={"outlined"} color={"primary"}
-                        onClick={this.handleClick.bind(this, "submit")}>Save</Button>
+                        onClick={this.handleClick.bind(this, "submit")}>Update</Button>
                 <Button href={"#"} variant={"outlined"} color={"secondary"}
                         onClick={this.handleClick.bind(this, "clear")}>Reset</Button>
               </CardActions>
             </Card>
 
-            <SubmitDialog open={submit} title={"Create Receipt"} text={"Please wait ..."}/>
+            <SubmitDialog open={submit} text={"Please wait ... "} title={"Update Receipt"}/>
           </Grid>
         </Grid>
       );
@@ -392,4 +422,4 @@ class ReceiptCreate extends Component {
   }
 }
 
-export default ReceiptCreate;
+export default ReceiptEdit;

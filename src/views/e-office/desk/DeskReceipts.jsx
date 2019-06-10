@@ -15,7 +15,7 @@ import ReactTable from "react-table";
 import ReceiptListDialog from "../receipt/ReceiptListDialog";
 import { OfficeRoutes } from "../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
-import ReceiptMovementDialog from "../receipt/movement/ReceiptMovementDialog";
+import AttachReceiptDialog from "../receipt/movement/AttachReceiptDialog";
 import FileDialog from "../files/FileDialog";
 
 const columns = [
@@ -119,8 +119,8 @@ class DeskReceipts extends Component {
         <GridItem xs={12} sm={12} md={12}>
           <Chip label={"Important"}/>
         </GridItem>
-        <ReceiptMovementDialog open={this.state.openReceiptMovement} onClose={this.handleReceiptMove.bind(this)}
-                               receipt={this.state.receipt}/>
+        <AttachReceiptDialog open={this.state.openReceiptMovement} onClose={this.handleReceiptMove.bind(this)}
+                             receipt={this.state.receipt}/>
                                <FileDialog open={this.state.filesOpen} onClose={this.handleFileAttach.bind(this)}/>
       </GridContainer>
     );

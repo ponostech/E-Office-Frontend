@@ -20,7 +20,7 @@ import InboxIcon from "@material-ui/icons/Inbox";
 import CloseIcon from "@material-ui/icons/Close";
 import PrintIcon from "@material-ui/icons/Print";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
-import ReceiptMovementDialog from "./movement/ReceiptMovementDialog";
+import AttachReceiptDialog from "./movement/AttachReceiptDialog";
 import FileDialog from "../files/FileDialog";
 // import {Document,Page} from "react-pdf";
 
@@ -189,7 +189,7 @@ class ReceiptShow extends Component {
             </GridContainer>
           </Card>
         </GridItem>
-        <ReceiptMovementDialog open={this.state.openSentDialog} onClose={this.onMoveReceipt} receipt={{id:12312}}/>
+        <AttachReceiptDialog open={this.state.openSentDialog} onClose={this.onMoveReceipt} receipt={{id:12312}}/>
         <FileDialog open={this.state.openFileDialog} onClose={this.handleFileSelect}/>
       </GridContainer>
     );
