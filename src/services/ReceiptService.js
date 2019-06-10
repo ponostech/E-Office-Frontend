@@ -92,7 +92,21 @@ export default class ReceiptService {
     }
   }
 
-  attachToFile(selectedFile, receipt) {
-
+  async attachToFile(receiptId, fileId,errorCallback,successCallback) {
+    try{
+      let res=await axios.post(ApiRoutes.ATTACH_FILE(receiptId,fileId));
+      if (res.data.status) {
+        successCallback(ArrayToString(res.data.messages))
+      }else{
+        if (res.data.validation_error) {
+          errorCallback(ErrorToString(res.data.messages))
+        }else{
+          errorCallback(ArrayToString(res.data.messages))
+        }
+      }
+    }catch (e) {
+      console.error(e)
+      errorCallback(e.toString())
+    }
   }
 };

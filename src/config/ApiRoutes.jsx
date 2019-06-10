@@ -104,10 +104,13 @@ export class ApiRoutes {
     return `license-templates/${module}`;
   };
   static DELETE_SITE_VERIFICATION="site-verification-templates";
+
   static CREATE_RECEIPT="/receipts";
   static UPDATE_RECEIPT=(id)=>`/receipts/${id}`;
   static RETRIEVE_RECEIPT=(id) => `/receipts/${id}`;
   static LIST_RECEIPT="/receipts";
+  static ATTACH_FILE=(id,file_id)=>`receipts/${id}/attach/${file_id}`;
+
 
   static UPDATE_LICENSE_TEMPLATE(id) {
     return `/license-templates/${id}`;
