@@ -36,7 +36,7 @@ const menuItems = [
     }, {
         name: "receipt", label: "Receipt", menus: [
             {name: "New Receipt", route: OfficeRoute.NEW_RECEIPT},
-            {name: "Created Receipt", route: OfficeRoute.CREATED_RECEIPT},
+            {name: "List of new receipt", route: OfficeRoute.RECEIPT_NEW_LIST},
         ]
     }, {
         name: "hoarding", label: "Hoarding Application", menus: [

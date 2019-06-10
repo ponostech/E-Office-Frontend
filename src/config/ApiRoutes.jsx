@@ -105,6 +105,9 @@ export class ApiRoutes {
   };
   static DELETE_SITE_VERIFICATION="site-verification-templates";
   static CREATE_RECEIPT="/receipts";
+  static UPDATE_RECEIPT=(id)=>`/receipts/${id}`;
+  static RETRIEVE_RECEIPT=(id) => `/receipts/${id}`;
+  static LIST_RECEIPT="/receipts";
 
   static UPDATE_LICENSE_TEMPLATE(id) {
     return `/license-templates/${id}`;
@@ -140,4 +143,6 @@ export class ApiRoutes {
   static EDIT_SITE_VERIFICATION_TEMPLATE(id) {
     return `/site-verification-templates/${id}`;
   }
+
+
 }

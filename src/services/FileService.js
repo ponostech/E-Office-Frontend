@@ -20,7 +20,22 @@ export class FileService {
     };
     let files = [];
     try {
-      let res = await axios.get(ApiRoutes.FILE, config);
+      let res = status ? await axios.get(ApiRoutes.FILE, config): await axios.get(ApiRoutes.FILE);
+      if (res.data.status) {
+        successCallback(res.data.data.files);
+      } else {
+        errorCallback(ArrayToString(res.data.messages));
+      }
+    } catch (e) {
+      errorCallback(e.toString());
+      console.error(e);
+    }
+
+  }
+  async all( errorCallback, successCallback) {
+
+    try {
+      let res = await axios.get(ApiRoutes.FILE);
       if (res.data.status) {
         successCallback(res.data.data.files);
       } else {

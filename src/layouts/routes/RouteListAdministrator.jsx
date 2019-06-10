@@ -56,6 +56,8 @@ import RejectTemplate from "../../views/e-office/admin/templates/RejectTemplate"
 import FormBuilderContainer from "../../components/form-builder/FormBuilderContainer";
 import SiteVerificationFormList from "../../views/e-office/site-verification/SiteVerificationFormList";
 import EditSiteVerificationTemplate from "../../components/form-builder/EditSiteVerificationTemplate";
+import ReceiptNewList from "../../views/e-office/receipt/ReceiptNewList";
+import ReceiptEdit from "../../views/e-office/receipt/ReceiptEdit";
 
 const routes = (props) => {
   return (
@@ -65,8 +67,8 @@ const routes = (props) => {
 
       {/*Receipt*/}
       <Route exact path={OfficeRoutes.NEW_RECEIPT} component={ReceiptCreate}/>
-      <Route exact path={OfficeRoutes.RECEIPT_DETAIL} component={ReceiptShow}/>
-      <Route exact path={OfficeRoutes.CREATED_RECEIPT} component={ReceiptList}/>
+      <Route exact path={OfficeRoutes.EDIT_RECEIPT(":id")} component={ReceiptEdit}/>
+      <Route exact path={OfficeRoutes.RECEIPT_NEW_LIST} component={ReceiptNewList}/>
       <Route exact path={OfficeRoutes.SENT_RECEIPT} component={ReceiptSentList}/>
 
       {/*File*/}

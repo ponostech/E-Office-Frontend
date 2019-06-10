@@ -32,7 +32,7 @@ const menu = (props) => {
                 <CustomDropdown
                     dropdownList={[
                         {title: "Create New", link: OfficeRoutes.NEW_RECEIPT},
-                        {title: "List Created", link: OfficeRoutes.CREATED_RECEIPT},
+                        {title: "List New", link: OfficeRoutes.RECEIPT_NEW_LIST},
                         {title: "List Sent", link: OfficeRoutes.SENT_RECEIPT},
                         {title: "List Closed", link: OfficeRoutes.CLOSE_RECEIPT},
                         {title: "Single Receipt", link: OfficeRoutes.RECEIPT_DETAIL}
