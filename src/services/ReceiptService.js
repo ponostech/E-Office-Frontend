@@ -59,7 +59,7 @@ export default class ReceiptService {
   }
   async all( status,errorCallback, successCallback) {
     try{
-      let res=await axios.get(ApiRoutes.LIST_RECEIPT)
+      let res=await axios.get(ApiRoutes.LIST_RECEIPT,{params:{status:status}})
       if (res.data.status) {
         successCallback(res.data.data.receipts)
       }else{
@@ -103,6 +103,20 @@ export default class ReceiptService {
         }else{
           errorCallback(ArrayToString(res.data.messages))
         }
+      }
+    }catch (e) {
+      console.error(e)
+      errorCallback(e.toString())
+    }
+  }
+
+  async getByFileId(id, errorCallback, successCallback) {
+    try{
+      let res=await axios.get(ApiRoutes.FILE_ENCLOSURES(id));
+      if (res.data.status) {
+        successCallback(res.data.data.receipts)
+      }else {
+        errorCallback(ArrayToString(res.data.messages))
       }
     }catch (e) {
       console.error(e)

@@ -110,6 +110,7 @@ export class ApiRoutes {
   static RETRIEVE_RECEIPT=(id) => `/receipts/${id}`;
   static LIST_RECEIPT="/receipts";
   static ATTACH_FILE=(id,file_id)=>`receipts/${id}/attach/${file_id}`;
+  static FILE_ENCLOSURES=(id)=>`/files/${id}/receipts`;
 
 
   static UPDATE_LICENSE_TEMPLATE(id) {

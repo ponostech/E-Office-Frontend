@@ -35,7 +35,7 @@ export class FileService {
   async all( errorCallback, successCallback) {
 
     try {
-      let res = await axios.get(ApiRoutes.FILE);
+      let res = await axios.get(ApiRoutes.FILE,{params:{status:"all"}});
       if (res.data.status) {
         successCallback(res.data.data.files);
       } else {

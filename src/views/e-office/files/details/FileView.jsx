@@ -13,7 +13,6 @@ import FileSend from "../FileSend";
 import LoadingView from "../../../common/LoadingView";
 import FileDetails from "./Views/FileDetails";
 import FileMovements from "./Views/FileMovements";
-import FileEnclosures from "./Views/FileEnclosures";
 import FileDrafts from "./Views/FileDrafts";
 import FileApplicationDetails from "./Views/FileApplicationDetails";
 import FileApplications from "./Views/FileApplications";
@@ -43,6 +42,7 @@ import HoardingSiteVerificationDialog from "../site-verification/HoardingSiteVer
 import {LoginService} from "../../../../services/LoginService";
 import FileApproveDialog from '../dialog/FileApproveDialog';
 import UsersMessageDialog from "../../common/UsersMessageDialog";
+import FileEnClosures from "./Views/FileEnclosures";
 
 const styles = theme => ({
   root: {
@@ -342,7 +342,7 @@ class FileView extends Component {
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/movements"}
                      render={(props) => <FileMovements {...props} file={file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/enclosures"}
-                     render={(props) => <FileEnclosures {...props} file={file}/>}/>
+                     render={(props) => <FileEnClosures {...props} file={file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/drafts"}
                      render={(props) => <FileDrafts {...props} file={file}/>}/>
               <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/application-details"}

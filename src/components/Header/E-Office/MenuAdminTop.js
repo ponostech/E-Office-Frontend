@@ -44,10 +44,9 @@ const menu = (props) => {
         <CustomDropdown
           dropdownList={[
             { title: "Create New", link: OfficeRoutes.NEW_RECEIPT },
-            { title: "List Created", link: OfficeRoutes.RECEIPT_NEW_LIST },
-            { title: "List Sent", link: OfficeRoutes.SENT_RECEIPT },
-            { title: "List Closed", link: OfficeRoutes.CLOSE_RECEIPT },
-            { title: "Single Receipt", link: OfficeRoutes.RECEIPT_DETAIL }
+            {title: "List New", link: OfficeRoutes.RECEIPT_NEW_LIST},
+            {title: "List Attached", link: OfficeRoutes.RECEIPT_ATTACHED_LIST},
+
           ]}
           buttonText={"Receipt"}
           buttonProps={{ color: "transparent" }}/>
