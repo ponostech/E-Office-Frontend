@@ -1,17 +1,10 @@
 import React, { Component } from "react";
-import GridContainer from "../../../../components/Grid/GridContainer";
 import { Card, CardContent, CardHeader, withStyles } from "@material-ui/core";
-import { SettingViewModel } from "../../../model/SettingViewModel";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import HotelLicenseTemplate from "./licenses/HotelLicenseTemplate";
-import ShopLicenseTemplate from "./licenses/ShopLicenseTemplate";
-import AdvertiserLicenseTemplate from "./licenses/AdvertiserLicenseTemplate";
-import TechnicalPersonLicenseTemplate from "./licenses/TechnicalPersonLicenseTemplate";
 import HoardingPermitTemplate from "./permits/HoardingPermitTemplate";
 import KioskPermitTemplate from "./permits/KioskPermitTemplate";
 import BannerPermitTemplate from "./permits/BannerPermitTemplate";
-
 
 
 const styles = theme => ({
@@ -26,7 +19,7 @@ const styles = theme => ({
     backgroundColor: "#1890ff"
   },
   tabRoot: {
-    padding:"3px",
+    padding: "3px",
     textTransform: "initial",
     minWidth: 60,
     fontWeight: theme.typography.fontWeightRegular,
@@ -67,32 +60,32 @@ class PermitTemplates extends Component {
   };
 
   handleChange = (event, value) => {
-    this.setState({value});
+    this.setState({ value });
   };
 
   render() {
     const { classes } = this.props;
-    const {value} = this.state;
+    const { value } = this.state;
 
     return (
-      <Card >
-        <CardHeader style={{padding:"5px 16px"}} title={"PERMIT TEMPLATE"}/>
-        <CardContent style={{padding:"5px 16px"}}>
-          <Tabs
+      <Card>
+        <CardHeader style={{ padding: "5px 16px" }} title={"PERMIT TEMPLATE"}/>
+        <CardContent style={{ padding: "5px 16px" }}>
+          <Tabs component={"div"}
             value={value}
             onChange={this.handleChange}
-            classes={{root: classes.tabsRoot, indicator: classes.tabsIndicator}}
+            classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
           >
 
-            <Tab value={"hoarding"}
+            <Tab href={"#"} value={"hoarding"}
                  disableRipple
-                 classes={{root: classes.tabRoot, selected: classes.tabSelected}}
+                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                  label={"Hoarding"}/>
-            <Tab disableRipple value={"kiosk"}
-                 classes={{root: classes.tabRoot, selected: classes.tabSelected}}
+            <Tab href={"#"} disableRipple value={"kiosk"}
+                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                  label={"Kiosk"}/>
-            <Tab disableRipple value={"banner"}
-                 classes={{root: classes.tabRoot, selected: classes.tabSelected}}
+            <Tab href={"#"} disableRipple value={"banner"}
+                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                  label={"Banner"}/>
 
           </Tabs>

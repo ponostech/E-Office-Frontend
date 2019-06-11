@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import TextEditor from "../../../common/Editor";
 import { Button, Card, CardActions, CardContent } from "@material-ui/core";
 import SubmitDialog from "../../../../../components/SubmitDialog";
@@ -17,19 +17,18 @@ class HotelRejectTemplate extends Component {
     edit: false,
     submit: false,
 
-    errorMessage: "",
-    successMessage: ""
   };
 
 
   componentDidMount() {
+    this.setGlobal({loading:true})
     this.rejectTemplateService.get("hotel",
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       template => {
         if (template)
           this.setState({ content: template.content, id: template.id, type: template.type, edit: true });
       })
-      .finally(() => this.props.doLoad(false));
+      .finally(() => this.setGlobal({loading:false}));
   }
 
   doUpdate = () => {
@@ -39,8 +38,8 @@ class HotelRejectTemplate extends Component {
       type: this.state.type
     };
     this.setState({ submit: true });
-    this.rejectTemplateService.update(template, errorMessage => this.setState({ errorMessage }),
-      successMessage => this.setState({ successMessage }))
+    this.rejectTemplateService.update(template, errorMsg => this.setGlobal({ errorMsg }),
+      successMsg => this.setState({ successMsg }))
       .finally(() => this.setState({ submit: false }));
   };
   doSave = () => {
@@ -49,8 +48,8 @@ class HotelRejectTemplate extends Component {
       type:this.state.type
     };
     this.setState({ submit: true });
-    this.rejectTemplateService.create(data, errorMessage => this.setState({ errorMessage }),
-      (successMessage,id) => this.setState({ successMessage ,edit:true,id}))
+    this.rejectTemplateService.create(data, errorMsg => this.setGlobal({ errorMsg }),
+      (successMsg,id) => this.setState({ successMsg ,edit:true,id}))
       .finally(() => this.setState({ submit: false }));
   };
   handleClick = (identifier) => {
@@ -93,10 +92,6 @@ class HotelRejectTemplate extends Component {
         <SubmitDialog open={this.state.submit} title={"Submit Template"}
                       text={"Hote License template is submitting ..."}/>
 
-        <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}
-                        onClose={() => this.setState({ errorMessage: "" })}/>
-        <OfficeSnackbar variant={"success"} open={Boolean(this.state.successMessage)}
-                        message={this.state.successMessage} onClose={() => this.setState({ successMessage: "" })}/>
       </>
     );
   }

@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import TextEditor from "../../../common/Editor";
 import { Button, Card, CardActions, CardContent } from "@material-ui/core";
 import SubmitDialog from "../../../../../components/SubmitDialog";
-import OfficeSnackbar from "../../../../../components/OfficeSnackbar";
 import PermitTemplateService from "../../../../../services/PermitTemplateService";
 
 class KioskPermitTemplate extends Component {
@@ -15,21 +14,20 @@ class KioskPermitTemplate extends Component {
     type: "kiosk",
 
     edit: false,
-    submit: false,
+    submit: false
 
-    errorMessage: "",
-    successMessage: ""
   };
 
 
   componentDidMount() {
+    this.setGlobal({ loading: true });
     this.permitTemplateService.get("kiosk",
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       template => {
         if (template)
           this.setState({ content: template.content, id: template.id, type: template.type, edit: true });
       })
-      .finally(() => this.props.doLoad(false));
+      .finally(() => this.setGlobal({ loading: false }));
   }
 
   doUpdate = () => {
@@ -46,11 +44,14 @@ class KioskPermitTemplate extends Component {
   doSave = () => {
     let data = {
       content: this.state.content,
-      type:"kiosk"
+      type: "kiosk"
     };
     this.setState({ submit: true });
     this.permitTemplateService.create(data, errorMessage => this.setState({ errorMessage }),
-      (successMessage,id) => this.setState({ successMessage ,edit:true,id}))
+      (successMsg, id) => {
+        this.setState({ edit: true, id });
+        this.setGlobal({ successMsg });
+      })
       .finally(() => this.setState({ submit: false }));
   };
   handleClick = (identifier) => {
@@ -83,9 +84,9 @@ class KioskPermitTemplate extends Component {
           </CardContent>
 
           <CardActions style={{ justifyContent: "flex-end" }}>
-            <Button variant={"outlined"} color={"primary"}
+            <Button href={"#"} variant={"outlined"} color={"primary"}
                     onClick={this.handleClick.bind(this, "save")}>{edit ? "Update" : "Save"}</Button>
-            <Button variant={"outlined"} color={"secondary"}
+            <Button href={"#"} variant={"outlined"} color={"secondary"}
                     onClick={this.handleClick.bind(this, "reset")}>Reset</Button>
           </CardActions>
 
@@ -93,10 +94,6 @@ class KioskPermitTemplate extends Component {
         <SubmitDialog open={this.state.submit} title={"Submit Template"}
                       text={"Template of permit is submitting ..."}/>
 
-        <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}
-                        onClose={() => this.setState({ errorMessage: "" })}/>
-        <OfficeSnackbar variant={"success"} open={Boolean(this.state.successMessage)}
-                        message={this.state.successMessage} onClose={() => this.setState({ successMessage: "" })}/>
       </>
     );
   }
