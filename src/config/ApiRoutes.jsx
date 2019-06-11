@@ -112,6 +112,8 @@ export class ApiRoutes {
   static ATTACH_FILE=(id,file_id)=>`receipts/${id}/attach/${file_id}`;
   static FILE_ENCLOSURES=(id)=>`/files/${id}/receipts`;
 
+  static UPDATE_NOTESHEET=(id)=>`/notesheets/${id}`;
+
 
   static UPDATE_LICENSE_TEMPLATE(id) {
     return `/license-templates/${id}`;

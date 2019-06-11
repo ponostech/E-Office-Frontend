@@ -96,6 +96,15 @@ class ReceiptAttachedList extends Component {
       }, {
         name: "subject",
         label: "SUBJECT"
+      }, {
+        name: "file",
+        label: "FILE NO",
+        options:{
+          customBodyRender:(val)=>{
+            let msg=val?val.number:"NA"
+            return msg
+          }
+        }
       },{
         name: "classification",
         label: "CLASSIFICATION"

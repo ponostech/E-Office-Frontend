@@ -6,9 +6,11 @@ import {CardHeader, Divider, Icon, Tooltip, Fab} from "@material-ui/core";
 import Timeline from "../../../../components/Timeline/Timeline.jsx";
 import DefaultAvatar from "../../../../assets/img/default-avatar.png";
 import Loading from "../../../common/LoadingView"
-import {GET_NOTE, FILE_NOTESHEET, DELETE_NOTE_DRAFT} from "../../../../config/ApiRoutes";
+import { GET_NOTE, FILE_NOTESHEET, DELETE_NOTE_DRAFT, ApiRoutes } from "../../../../config/ApiRoutes";
 import CreateNoteDialog from "./NoteCreateDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
+import { ArrayToString } from "../../../../utils/ErrorUtil";
+import SubmitDialog from "../../../../components/SubmitDialog";
 
 class NotesheetDraftView extends Component {
   state = {
@@ -22,6 +24,8 @@ class NotesheetDraftView extends Component {
     currentNoteId: null,
     successMsg: '',
     errorMsg: '',
+
+    submit:false
   };
   this;
 
@@ -43,7 +47,25 @@ class NotesheetDraftView extends Component {
     if (res.data.status) this.formatNote(res.data.data.notesheet_drafts);
   };
 
-  handleCloseCreateNote = () => this.setState({openDialog: false});
+
+  handleCloseCreateNote = (data) => {
+    this.setState({ openDialog: false });
+    this.setState({submit:true});
+
+    axios.post(ApiRoutes.UPDATE_NOTESHEET(data.id),data)
+      .then(res=>{
+        if (res.data.status) {
+          this.getNoteSheet(this.state.currentFile);
+          this.setGlobal({successMsg:res.data.messages.join(" ")})
+        }else{
+          this.setGlobal({errorMsg:ArrayToString(res.data.messages)})
+        }
+      })
+      .catch(errorMsg=>this.setGlobal({errorMsg}))
+      .finally(()=>this.setState({submit:false}))
+  }
+
+
 
   onCancelDelete = () => this.setState({openConfirmDelete: false});
 
@@ -113,7 +135,7 @@ class NotesheetDraftView extends Component {
     return (
         <>
           <CardHeader title={"Draft Note for File No.: " + file.number} subheader={"Subject: " + file.subject}/>
-          <Divider/>
+          <Divider component={"li"}/>
           <br/>
           {noteList}
           {openDialog &&
@@ -121,6 +143,7 @@ class NotesheetDraftView extends Component {
                             edit={editNote} onClose={this.handleCloseCreateNote}/>}
           {openConfirmDelete &&
           <ConfirmDialog onCancel={this.onCancelDelete} open={openConfirmDelete} onConfirm={this.onConfirmDelete}/>}
+          <SubmitDialog open={this.state.submit} title={"Draft Update"} text={"Please wait..."}/>
         </>
     )
   };

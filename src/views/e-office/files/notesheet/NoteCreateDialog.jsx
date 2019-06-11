@@ -105,6 +105,7 @@ class NoteCreateDialog extends Component {
   onSubmitNote = (action) => {
     if (this.valid()) {
       let data = {
+        id:this.props.note.id,
         file_id: this.props.file.id,
         content: this.state.content,
         action: this.state.action.value,
@@ -116,8 +117,15 @@ class NoteCreateDialog extends Component {
       if (this.state.fixedDate) data.fixed_date = moment(this.state.fixedDate).format("YYYY-MM-DD");
       if (action === "confirm") data.draft = 0;
 
-      this.setGlobal({successMsg: 'File updated successfully'})
-      // this.props.onClose(data);
+      // //Edit
+      // if (this.props.editNote) {
+      //     this.props.onClose(data,"edit")
+      // }else{
+      //   //Create
+      //      this.props.onClose(data,"create");
+      // }
+      // this.setGlobal({successMsg: 'File updated successfully'});
+      this.props.onClose(data);
     } else {
       this.setGlobal({ errorMsg: "Please fill all the required field." });
     }
@@ -207,15 +215,15 @@ class NoteCreateDialog extends Component {
     </CardContent>;
 
     const addActionList = <DialogActions>
-      <Button color="primary" onClick={this.onSubmitNote.bind(this, "draft")}>Save Draft</Button>
-      <Button color="primary" onClick={this.onSubmitNote.bind(this, "confirm")}>Save</Button>
-      <Button color="secondary" onClick={this.handleClose.bind(this)}>Cancel</Button>
+      <Button href={"#"} color="primary" onClick={this.onSubmitNote.bind(this, "draft")}>Save Draft</Button>
+      <Button href={"#"} color="primary" onClick={this.onSubmitNote.bind(this, "confirm")}>Save</Button>
+      <Button href={"#"} color="secondary" onClick={this.handleClose.bind(this)}>Cancel</Button>
     </DialogActions>;
 
     const editActionList = <DialogActions>
-      <Button color="primary" onClick={this.onSubmitNote.bind(this, "draft")}>Save Draft</Button>
-      <Button color="primary" onClick={this.onSubmitNote.bind(this, "confirm")}>Confirm</Button>
-      <Button color="secondary" onClick={this.handleClose.bind(this)}>Cancel Edit</Button>
+      <Button href={"#"} color="primary" onClick={this.onSubmitNote.bind(this, "draft")}>Save Draft</Button>
+      <Button href={"#"} color="primary" onClick={this.onSubmitNote.bind(this, "confirm")}>Confirm</Button>
+      <Button href={"#"} color="secondary" onClick={this.handleClose.bind(this)}>Cancel Edit</Button>
     </DialogActions>;
 
     return (
@@ -228,13 +236,13 @@ class NoteCreateDialog extends Component {
         >
           <AppBar className={classes.appBar}>
             <Toolbar>
-              <IconButton color="inherit" onClick={this.handleClose.bind(this)} aria-label="Close">
+              <IconButton href={"#"} color="inherit" onClick={this.handleClose.bind(this)} aria-label="Close">
                 <CloseIcon/>
               </IconButton>
               <Typography variant="subtitle2" color="inherit" className={classes.flex}>
                 Create Note
               </Typography>
-              <Button onClick={this.handleClose.bind(this)} color="inherit">
+              <Button href={"#"} onClick={this.handleClose.bind(this)} color="inherit">
                 Close
               </Button>
             </Toolbar>
