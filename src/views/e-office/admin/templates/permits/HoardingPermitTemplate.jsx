@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import TextEditor from "../../../common/Editor";
 import { Button, Card, CardActions, CardContent } from "@material-ui/core";
 import SubmitDialog from "../../../../../components/SubmitDialog";
-import OfficeSnackbar from "../../../../../components/OfficeSnackbar";
 import PermitTemplateService from "../../../../../services/PermitTemplateService";
 
 class HoardingPermitTemplate extends Component {
@@ -15,21 +14,19 @@ class HoardingPermitTemplate extends Component {
     type: "hoarding",
 
     edit: false,
-    submit: false,
-
-    errorMessage: "",
-    successMessage: ""
+    submit: false
   };
 
 
   componentDidMount() {
+    this.setGlobal({ loading: true });
     this.permitTemplateService.get("hoarding",
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setState({ errorMsg }),
       template => {
         if (template)
           this.setState({ content: template.content, id: template.id, type: template.type, edit: true });
       })
-      .finally(() => this.props.doLoad(false));
+      .finally(() => this.setGlobal({ loading: false }));
   }
 
   doUpdate = () => {
@@ -39,18 +36,21 @@ class HoardingPermitTemplate extends Component {
       type: this.state.type
     };
     this.setState({ submit: true });
-    this.permitTemplateService.update(template, errorMessage => this.setState({ errorMessage }),
-      successMessage => this.setState({ successMessage }))
+    this.permitTemplateService.update(template, errorMsg => this.setGlobal({ errorMsg }),
+      successMsg => this.setGlobal({ successMsg }))
       .finally(() => this.setState({ submit: false }));
   };
   doSave = () => {
     let data = {
       content: this.state.content,
-      type:"hoarding"
+      type: "hoarding"
     };
     this.setState({ submit: true });
-    this.permitTemplateService.create(data, errorMessage => this.setState({ errorMessage }),
-      (successMessage,id) => this.setState({ successMessage ,edit:true,id}))
+    this.permitTemplateService.create(data, errorMsg => this.setState({ errorMsg }),
+      (successMsg, id) => {
+        this.setState({ edit: true, id });
+        this.setGlobal({ successMsg });
+      })
       .finally(() => this.setState({ submit: false }));
   };
   handleClick = (identifier) => {
@@ -83,9 +83,9 @@ class HoardingPermitTemplate extends Component {
           </CardContent>
 
           <CardActions style={{ justifyContent: "flex-end" }}>
-            <Button variant={"outlined"} color={"primary"}
+            <Button href={"#"} variant={"outlined"} color={"primary"}
                     onClick={this.handleClick.bind(this, "save")}>{edit ? "Update" : "Save"}</Button>
-            <Button variant={"outlined"} color={"secondary"}
+            <Button href={"#"} variant={"outlined"} color={"secondary"}
                     onClick={this.handleClick.bind(this, "reset")}>Reset</Button>
           </CardActions>
 
@@ -93,10 +93,6 @@ class HoardingPermitTemplate extends Component {
         <SubmitDialog open={this.state.submit} title={"Submit Template"}
                       text={"Template of permit is submitting ..."}/>
 
-        <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}
-                        onClose={() => this.setState({ errorMessage: "" })}/>
-        <OfficeSnackbar variant={"success"} open={Boolean(this.state.successMessage)}
-                        message={this.state.successMessage} onClose={() => this.setState({ successMessage: "" })}/>
       </>
     );
   }

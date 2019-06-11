@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import TextEditor from "../../../common/Editor";
 import { Button, Card, CardActions, CardContent } from "@material-ui/core";
 import SubmitDialog from "../../../../../components/SubmitDialog";
@@ -16,20 +16,18 @@ class BannerRejectTemplate extends Component {
 
     edit: false,
     submit: false,
-
-    errorMessage: "",
-    successMessage: ""
   };
 
 
   componentDidMount() {
+    this.setGlobal({loading:true});
     this.rejectTemplateService.get("banner",
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       template => {
         if (template)
           this.setState({ content: template.content, id: template.id, type: template.type, edit: true });
       })
-      .finally(() => this.props.doLoad(false));
+      .finally(() => this.setGlobal({loading:false}));
   }
 
   doUpdate = () => {
@@ -39,8 +37,8 @@ class BannerRejectTemplate extends Component {
       type: this.state.type
     };
     this.setState({ submit: true });
-    this.rejectTemplateService.update(template, errorMessage => this.setState({ errorMessage }),
-      successMessage => this.setState({ successMessage }))
+    this.rejectTemplateService.update(template, errorMsg => this.setGlobal({ errorMsg }),
+      successMsg => this.setGlobal({ successMsg }))
       .finally(() => this.setState({ submit: false }));
   };
   doSave = () => {
@@ -49,8 +47,11 @@ class BannerRejectTemplate extends Component {
       type:this.state.type
     };
     this.setState({ submit: true });
-    this.rejectTemplateService.create(data, errorMessage => this.setState({ errorMessage }),
-      (successMessage,id) => this.setState({ successMessage ,edit:true,id}))
+    this.rejectTemplateService.create(data, errorMsg => this.setGlobal({ errorMsg }),
+      (successMsg,id) => {
+      this.setGlobal({ successMsg});
+      this.setState({edit:true,id})
+      })
       .finally(() => this.setState({ submit: false }));
   };
   handleClick = (identifier) => {
@@ -83,20 +84,15 @@ class BannerRejectTemplate extends Component {
           </CardContent>
 
           <CardActions style={{ justifyContent: "flex-end" }}>
-            <Button variant={"outlined"} color={"primary"}
+            <Button href={"#"} variant={"outlined"} color={"primary"}
                     onClick={this.handleClick.bind(this, "save")}>{edit ? "Update" : "Save"}</Button>
-            <Button variant={"outlined"} color={"secondary"}
+            <Button href={"#"} variant={"outlined"} color={"secondary"}
                     onClick={this.handleClick.bind(this, "reset")}>Reset</Button>
           </CardActions>
 
         </Card>
         <SubmitDialog open={this.state.submit} title={"Submit Template"}
                       text={"Hote License template is submitting ..."}/>
-
-        <OfficeSnackbar variant={"error"} open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}
-                        onClose={() => this.setState({ errorMessage: "" })}/>
-        <OfficeSnackbar variant={"success"} open={Boolean(this.state.successMessage)}
-                        message={this.state.successMessage} onClose={() => this.setState({ successMessage: "" })}/>
       </>
     );
   }
