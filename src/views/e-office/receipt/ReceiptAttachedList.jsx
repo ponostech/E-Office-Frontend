@@ -15,7 +15,7 @@ import ReceiptDetailDialog from "./ReceiptDetailDialog";
 
 const styles = {};
 
-class ReceiptNewList extends Component {
+class ReceiptAttachedList extends Component {
   receiptService = new ReceiptService();
   fileService = new FileService();
 
@@ -37,7 +37,7 @@ class ReceiptNewList extends Component {
       .finally(() => this.setGlobal({ loading: false }));
   }
 
-  getReceipts = async () => await this.receiptService.all("new",
+  getReceipts = async () => await this.receiptService.all("attached",
     errorMsg => this.setGlobal({ errorMsg }),
     receipts => this.setState({ receipts }))
     .finally(() => console.log("list of receipt request complete"));
@@ -111,8 +111,8 @@ class ReceiptNewList extends Component {
           filter: false,
           customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
         }
-      }, {
-        name: "received_date",
+      },{
+        name: "received_on",
         label: "RECEIVED DATE",
         options: {
           filter: false,
@@ -142,12 +142,12 @@ class ReceiptNewList extends Component {
                     <Icon fontSize="small">edit</Icon>
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Attach to file">
-                  <IconButton href={"#"} variant="contained" color="primary"
-                              size="small" onClick={this.attach.bind(this, data)}>
-                    <Icon fontSize="small">attach_file</Icon>
-                  </IconButton>
-                </Tooltip>
+                {/*<Tooltip title="Attach to file">*/}
+                {/*  <IconButton href={"#"} variant="contained" color="primary"*/}
+                {/*              size="small" onClick={this.attach.bind(this, data)}>*/}
+                {/*    <Icon fontSize="small">attach_file</Icon>*/}
+                {/*  </IconButton>*/}
+                {/*</Tooltip>*/}
               </div>
             );
           }
@@ -159,7 +159,7 @@ class ReceiptNewList extends Component {
       <>
         {this.global.loading ? <LoadingView/> : <CardContent>
           <MUIDataTable
-            title={"Receipt: List of New Receipt"}
+            title={"Receipt: List of Attached Receipt"}
             data={receipts}
             columns={tableColumns}
             options={tableOptions}
@@ -177,4 +177,4 @@ class ReceiptNewList extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(ReceiptNewList));
+export default withRouter(withStyles(styles)(ReceiptAttachedList));
