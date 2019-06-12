@@ -6,8 +6,13 @@ import { Button, Card, CardActions, CardContent, CardHeader, TextField } from "@
 import { NewFileViewModel } from "../../model/NewFileViewModel";
 import OfficeSelect from "../../../components/OfficeSelect";
 import Grid from "@material-ui/core/Grid";
+import { FileService } from "../../../services/FileService";
+import SubmitDialog from "../../../components/SubmitDialog";
+import { FILE_DETAIL } from "../../../config/routes-constant/OfficeRoutes";
+import { ApiRoutes } from "../../../config/ApiRoutes";
 
 class FileCreate extends Component {
+  fileService = new FileService();
   state = {
     groupHead: "",
     mainHead: "",
@@ -16,15 +21,20 @@ class FileCreate extends Component {
     branch: "",
     classification: "",
     remark: "",
-    references: [],
-    fileNoError: "",
+    references: undefined,
+
+    groupHeadError: "",
+    mainHeadError: "",
+    subHeadError: "",
     subjectError: "",
     branchError: "",
+
     groupHeadOptions: [],
     mainHeadOptions: [],
     subHeadOptions: [],
     classifications: [],
     branches: [],
+    files:[],
     submit: false
   };
 
@@ -32,6 +42,7 @@ class FileCreate extends Component {
     document.title = "E-AMC | Create new File";
     this.getBranch();
     this.getClassifications();
+    this.getFiles();
     this.setGlobal({ loading: true });
     this.getFileIndices();
   }
@@ -45,6 +56,22 @@ class FileCreate extends Component {
       .catch(err => this.setGlobal({ errorMsg: err.toString() }))
       .then(() => this.setGlobal({ loading: false }));
   };
+
+  getFiles=()=>axios.get(ApiRoutes.FILE,{params:{status:"all"}})
+    .then(res=>{
+      let temp=[];
+      if (res.data.status) {
+        res.data.data.files.map(f=>{
+          temp.push({
+            id:f.id,
+            value:f.id,
+            label:f.number
+          })
+        })
+      }
+      this.setState({files:temp});
+    })
+    .catch(err=>this.setGlobal({errorMsg:err.toString()}))
 
   getGroup = () => axios.get("file-index/group-heads");
 
@@ -101,28 +128,80 @@ class FileCreate extends Component {
 
   successSub = ({ data }) => this.setState({ subHeadOptions: data.sub_heads });
 
-  handleChange = ({ name, value }) => this.setState({ [name]: value });
+  handleBlur = (identifier, value) => {
+    switch (identifier) {
+      case "groupHead":
+        !Boolean(this.state.groupHead) ? this.setState({ groupHeadError: "Group head is required" }) : this.setState({ groupHeadError: "" });
+        break;
+      case "mainHead":
+        !Boolean(this.state.mainHead) ? this.setState({ mainHeadError: "Main head is required" }) : this.setState({ mainHeadError: "" });
+        break;
+      case "subHead":
+        !Boolean(this.state.subHead) ? this.setState({ subHeadError: "Sub head is required" }) : this.setState({ subHeadError: "" });
+        break;
+      case "subject":
+        !Boolean(this.state.subject) ? this.setState({ subjectError: "Group head is required" }) : this.setState({ subjectError: "" });
+        break;
+      case "branch":
+        !Boolean(this.state.branch) ? this.setState({ branchError: "Branch is required" }) : this.setState({ branchError: "" });
+        break;
+      default:
+        break;
 
-  handleSelectBlur = (identifier, value) => {
-    if (identifier === "branch")
-      Boolean(value) ? this.setState({ branchError: "Branch is required" }) : this.setState({ branchError: "" });
+    }
   };
 
-  handleSelect = (name, value) => {
-    this.setState({ [name]: value });
-    if (name === "groupHead") this.getMain(value.id);
-    if (name === "mainHead") this.getSub(value.id);
+  handleChange = (isSelect, identifier, event) => {
+    if (isSelect) {
+      this.setState({ [identifier]: event });
+      switch (identifier) {
+        case "groupHead":
+          this.getMain(event.id);
+          break;
+        case "mainHead":
+          this.getSub(event.id);
+          break;
+        default:
+          break;
+      }
+    } else {
+      this.setState({ [identifier]: event.target.value });
+    }
   };
 
-  validateBlur = ({ value, name }) => {
-    if (name === "fileNo")
-      value.length === 0 ? this.setState({ fileNoError: NewFileViewModel.REQUIRED_FILENO }) : this.setState({ fileNoError: "" });
-    else if (name === "subject")
-      value.length === 0 ? this.setState({ subjectError: NewFileViewModel.REQUIRED_SUBJECT }) : this.setState({ subjectError: "" });
-  };
-
-  submit = (e) => {
+  doSubmit = () => {
+    const { groupHead, mainHead, subHead, subject, classification, branch, remark, references } = this.state;
     const { history } = this.props;
+    const file={
+      group_head: groupHead.value,
+      main_head:mainHead.value,
+      sub_head:subHead.value,
+      subject,
+      classification:classification?classification.value:null,
+      branch:branch.value,
+      short_name:branch.short_name,
+      remark,
+      references:references.map(ref=>ref.value)
+    }
+
+    this.setState({ submit: true });
+    this.fileService.create(file, errorMsg => this.setGlobal({ errorMsg }),
+      successMsg => {
+      this.setGlobal({ successMsg });
+      history.push(FILE_DETAIL);
+    })
+      .finally(() => this.setState({ submit: false }));
+  };
+
+
+  handleClick = (e) => {
+    const invalid = !Boolean(this.state.groupHead) || !Boolean(this.state.mainHead) || !Boolean(this.state.subHead) ||
+      !Boolean(this.state.subject) || !Boolean(this.state.branch);
+
+    if (invalid)
+      this.setGlobal({ errorMsg: "Please fill all the required field" });
+    else
+      this.doSubmit();
     // history.push(OfficeRoutes.FILE_DETAIL);
   };
 
@@ -143,12 +222,12 @@ class FileCreate extends Component {
                     value={this.state.groupHead}
                     label={"Group Head"}
                     isClearable={true}
-                    name={"group_head"}
+                    name={"groupHead"}
                     options={this.state.groupHeadOptions}
                     error={Boolean(this.state.groupHeadError)}
                     helperText={this.state.groupHeadError}
-                    onBlur={this.handleSelectBlur.bind(this, "groupHead")}
-                    onChange={this.handleSelect.bind(this, "groupHead")}/>
+                    onBlur={this.handleBlur.bind(this, "groupHead")}
+                    onChange={this.handleChange.bind(this, true, "groupHead")}/>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <OfficeSelect
@@ -159,12 +238,12 @@ class FileCreate extends Component {
                     value={this.state.mainHead}
                     label={"Main Head"}
                     isClearable={true}
-                    name={"category"}
+                    name={"mainHead"}
                     options={this.state.mainHeadOptions}
                     error={Boolean(this.state.mainHeadError)}
                     helperText={this.state.mainHeadError}
-                    onBlur={this.handleSelectBlur.bind(this, "mainHead")}
-                    onChange={this.handleSelect.bind(this, "mainHead")}/>
+                    onBlur={this.handleBlur.bind(this, "mainHead")}
+                    onChange={this.handleChange.bind(this, true, "mainHead")}/>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
                   <OfficeSelect
@@ -175,23 +254,23 @@ class FileCreate extends Component {
                     value={this.state.subHead}
                     label={"Sub Head"}
                     isClearable={true}
-                    name={"sub_head"}
+                    name={"subHead"}
                     options={this.state.subHeadOptions}
                     error={Boolean(this.state.subHeadError)}
                     helperText={this.state.subHeadError}
-                    onBlur={this.handleSelectBlur.bind(this, "subHead")}
-                    onChange={this.handleSelect.bind(this, "subHead")}/>
+                    onBlur={this.handleBlur.bind(this, "subHead")}
+                    onChange={this.handleChange.bind(this, true, "subHead")}/>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required={true}
                     error={Boolean(this.state.subjectError)}
                     helperText={this.state.subjectError}
-                    onBlur={this.validateBlur.bind(this)}
                     margin={"dense"}
                     label={NewFileViewModel.SUBJECT_LABEL}
                     variant={"outlined"}
-                    onChange={this.handleChange}
+                    onChange={this.handleChange.bind(this, false, "subject")}
+                    onBlur={this.handleBlur.bind(this, "subject")}
                     name={"subject"}
                     value={this.state.subject}
                     fullWidth={true}/>
@@ -210,8 +289,8 @@ class FileCreate extends Component {
                     options={this.state.branches}
                     error={Boolean(this.state.branchError)}
                     helperText={this.state.branchError}
-                    onBlur={this.handleSelectBlur.bind(this, "branch")}
-                    onChange={this.handleSelect}/>
+                    onBlur={this.handleBlur.bind(this, "branch")}
+                    onChange={this.handleChange.bind(this, true, "branch")}/>
                 </Grid>
                 <Grid item xs={12}>
                   <OfficeSelect
@@ -223,7 +302,18 @@ class FileCreate extends Component {
                     name={"classification"}
                     isClearable={true}
                     options={this.state.classifications}
-                    onChange={this.handleSelect}/>
+                    onChange={this.handleChange.bind(this, true, "classification")}/>
+                </Grid>
+                <Grid item xs={12}>
+                  <OfficeSelect
+                    isMulti={true}
+                    value={this.state.references}
+                    label={"File Reference(s)"}
+                    name={"references"}
+                    variant={"outlined"}
+                    onChange={this.handleChange.bind(this, true, "references")}
+                    options={this.state.files}
+                    fullWidth={true}/>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -231,30 +321,28 @@ class FileCreate extends Component {
                     label={NewFileViewModel.REMARK_LABEL}
                     name={"remark"}
                     variant={"outlined"}
-                    onChange={this.handleChange}
+                    onChange={this.handleChange.bind(this, false, "remark")}
                     fullWidth={true}
                     rows={3}
+                    value={this.state.remark}
                     multiline={true}/>
                 </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    margin={"dense"}
-                    label={"File Reference(s)"}
-                    name={"references"}
-                    variant={"outlined"}
-                    onChange={this.handleChange}
-                    fullWidth={true}/>
-                </Grid>
+
               </Grid>
             </CardContent>
             <CardActions style={{ justifyContent: "flex-end" }}>
-              <Button variant="outlined" disabled={this.global.loading} color="primary"
-                      onClick={this.submit}>Create</Button>
+              <Button
+                disabled={!Boolean(this.state.groupHead) || !Boolean(this.state.mainHead) || !Boolean(this.state.subHead) ||
+                !Boolean(this.state.subject) || !Boolean(this.state.branch)}
+                href={"#"} variant="outlined" color="primary"
+                      onClick={this.handleClick.bind("submit",this)}>Create</Button>
               {" "}
-              <Button style={{ margin: 10 }} variant="outlined" color="secondary">Clear</Button>
+              <Button onClick={e=>window.location.reload()} href={"#"} style={{ margin: 10 }} variant="outlined" color="secondary">Reset</Button>
             </CardActions>
           </Card>
         </GridItem>
+
+        <SubmitDialog open={this.state.submit} text={"Please wait..."} title={"Create General File"}/>
       </GridContainer>
     );
   }
