@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ApiRoutes, FILE_TAKE } from "../config/ApiRoutes";
 import { FILE_SEND } from "../config/routes-constant/OfficeRoutes";
-import { ArrayToString } from "../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 import { FILEABLE_TYPE } from "../views/e-office/files/details/Views/FileApplicationDetails";
 
 
@@ -13,6 +13,8 @@ export class FileService {
     let res = await axios.get(ApiRoutes.FILE_DETAIL, data, config);
     return res.data.data;
   }
+
+
 
   async fetch(status, errorCallback, successCallback) {
     let config = {
@@ -30,8 +32,26 @@ export class FileService {
       errorCallback(e.toString());
       console.error(e);
     }
-
   }
+  async create(file, errorCallback, successCallback) {
+
+    try {
+      let res = await axios.post(ApiRoutes.CREATE_FILE,file);
+      if (res.data.status) {
+        successCallback(ArrayToString(res.data.messages));
+      } else {
+        if (res.data.validation_error) {
+            errorCallback(ErrorToString(res.data.messages));
+        }else{
+          errorCallback(ArrayToString(res.data.messages));
+        }
+      }
+    } catch (e) {
+      errorCallback(e.toString());
+      console.error(e);
+    }
+  }
+
   async all( errorCallback, successCallback) {
 
     try {

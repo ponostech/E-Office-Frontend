@@ -113,6 +113,7 @@ export class ApiRoutes {
   static FILE_ENCLOSURES=(id)=>`/files/${id}/receipts`;
 
   static UPDATE_NOTESHEET=(id)=>`/notesheets/${id}`;
+  static CREATE_FILE="/files";
 
 
   static UPDATE_LICENSE_TEMPLATE(id) {
