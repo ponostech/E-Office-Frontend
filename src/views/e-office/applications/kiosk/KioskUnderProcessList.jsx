@@ -59,13 +59,13 @@ class KioskUnderProcessList extends Component {
 
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
-  openAssignment = (data) => this.setState({file: data, openAssignment: true});
+  openAssignment = (data) => this.setState({file: data.kiosk.file, openAssignment: true});
 
   closeAssignment = () => this.setState({file: null, openAssignment: false});
 
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.kiosk.file.id))
       .then(() => {
         this.setState({openTakeFile: false});
         this.props.history.push(DESK);
@@ -76,6 +76,7 @@ class KioskUnderProcessList extends Component {
   render() {
     const {classes} = this.props;
     const {singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
+
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -89,7 +90,7 @@ class KioskUnderProcessList extends Component {
         label: "APPLICANT",
         options: {
           customBodyRender: function (value) {
-            return value.advertiser.name;
+            return value? value.advertiser.name:"NA";
           }
         }
       },
@@ -97,21 +98,21 @@ class KioskUnderProcessList extends Component {
         name: "applicant",
         label: "APPLICANT TYPE",
         options: {
-          customBodyRender: value => value.advertiser.type.toUpperCase()
+          customBodyRender: value => value? value.advertiser.type.toUpperCase():"NA"
         }
       },
       {
         name: 'created_at',
         label: 'APPLICATION DATE',
         options: {
-          customBodyRender: value => moment(value).format("Do MMMM YYYY")
+          customBodyRender: value =>value? moment(value).format("Do MMMM YYYY"):"NA"
         }
       },
       {
-        name: 'file',
+        name: 'kiosk',
         label: "FILE LOCATION",
         options: {
-          customBodyRender: value => value.desk.staff.name + " (" + value.desk.staff.designation + ")"
+          customBodyRender: value => value.file.desk.staff.name + " (" + value.file.desk.staff.designation + ")"
         }
       },
       {

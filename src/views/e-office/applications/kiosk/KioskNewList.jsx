@@ -54,15 +54,15 @@ class KioskNewList extends Component {
 
   viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
 
-  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
+  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.kiosk.file.id));
 
-  openAssignment = (data) => this.setState({file: data, openAssignment: true});
+  openAssignment = (data) => this.setState({file: data.kiosk.file, openAssignment: true});
 
   closeAssignment = () => this.setState({file: null, openAssignment: false});
 
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.kiosk.file.id))
       .then(() => {
         this.setState({openTakeFile: false});
         this.props.history.push(DESK);
@@ -85,7 +85,7 @@ class KioskNewList extends Component {
         label: "APPLICANT",
         options: {
           customBodyRender: function (value) {
-            return value.advertiser.name;
+            return value ? value.advertiser.name:"NA";
           }
         }
       },
@@ -93,21 +93,21 @@ class KioskNewList extends Component {
         name: "applicant",
         label: "APPLICANT TYPE",
         options: {
-          customBodyRender: value => value.advertiser.type.toUpperCase()
+          customBodyRender: value => value ? value.advertiser.type.toUpperCase():"NA"
         }
       },
       {
         name: 'created_at',
         label: 'APPLICATION DATE',
         options: {
-          customBodyRender: value => moment(value).format("Do MMMM YYYY")
+          customBodyRender: value => value ? moment(value).format("Do MMMM YYYY"):"NA"
         }
       },
       {
         name: 'kiosk',
         label: "FILE LOCATION",
         options: {
-          customBodyRender: ({desk}) => desk ? desk.staff.name + " (" + desk.staff.designation + ")" : 'Not on any desk'
+          customBodyRender: (kiosk) => kiosk.file.desk ? kiosk.file.desk.staff.name + " (" + kiosk.file.desk.staff.designation + ")" : 'Not on any desk'
         }
       },
       {

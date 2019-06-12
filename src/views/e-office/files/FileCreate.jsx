@@ -171,7 +171,6 @@ class FileCreate extends Component {
 
   doSubmit = () => {
     const { groupHead, mainHead, subHead, subject, classification, branch, remark, references } = this.state;
-    const { history } = this.props;
     const file={
       group_head: groupHead.value,
       main_head:mainHead.value,
@@ -186,10 +185,7 @@ class FileCreate extends Component {
 
     this.setState({ submit: true });
     this.fileService.create(file, errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => {
-      this.setGlobal({ successMsg });
-      history.push(FILE_DETAIL);
-    })
+      successMsg => this.setGlobal({ successMsg }))
       .finally(() => this.setState({ submit: false }));
   };
 
@@ -197,12 +193,15 @@ class FileCreate extends Component {
   handleClick = (e) => {
     const invalid = !Boolean(this.state.groupHead) || !Boolean(this.state.mainHead) || !Boolean(this.state.subHead) ||
       !Boolean(this.state.subject) || !Boolean(this.state.branch);
+    const { history } = this.props;
 
     if (invalid)
       this.setGlobal({ errorMsg: "Please fill all the required field" });
-    else
+    else{
       this.doSubmit();
-    // history.push(OfficeRoutes.FILE_DETAIL);
+      history.push(FILE_DETAIL);
+    }
+
   };
 
   render() {

@@ -67,7 +67,7 @@ class HoardingNewList extends Component {
 
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.hoarding.file.id));
 
-  openAssignment = (data) => this.setState({ file: data, openAssignment: true });
+  openAssignment = (data) => this.setState({ file: data.hoarding.file, openAssignment: true });
 
   closeAssignment = () => this.setState({ file: null, openAssignment: false });
 
@@ -79,9 +79,9 @@ class HoardingNewList extends Component {
   };
 
   confirmTakeCall = () => {
-    axios.post(FILE_CALL(this.state.singleData.file.id), {}, { cancelToken: this.source.token })
+    axios.post(FILE_CALL(this.state.singleData.hoarding.file.id), {}, { cancelToken: this.source.token })
       .then(() => {
-        this.setGlobal({ successMsg: `File No. ${this.state.singleData.file.number} called successfully` })
+        this.setGlobal({ successMsg: `File No. ${this.state.singleData.hoarding.file.number} called successfully` })
           .then(() => this.props.history.push(DESK));
       })
       .catch(err => {

@@ -76,8 +76,8 @@ class HoardingViewDialog extends Component {
                     <DetailViewRow primary="Local Council" secondary={data.hoarding.local_council.name}/>
                     <DetailViewRow primary="Email of Applicant" secondary={data.applicant.email}/>
                     <DetailViewRow primary="License No. of Applicant" secondary={data.applicant.advertiser.license_no}/>
-                    <DetailViewRow primary="File Number" secondary={data.file.number}/>
-                    <DetailViewRow primary="File Subject" secondary={data.file.subject}/>
+                    <DetailViewRow primary="File Number" secondary={data.hoarding.file.number}/>
+                    <DetailViewRow primary="File Subject" secondary={data.hoarding.file.subject}/>
                     <DetailViewRow primary="Display Type" secondary={data.hoarding.display_type}/>
                     <DetailViewRow primary="Whether Both Sided ?" secondary={data.hoarding.both_side==0 ? "No" : "Yes"}/>
                     <DetailViewRow primary="Length (feet)" secondary={data.hoarding.length}/>
@@ -89,8 +89,8 @@ class HoardingViewDialog extends Component {
                     <DetailViewRow primary="Date of Application"
                                    secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
                     <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
-                    {data.file.desk && <DetailViewRow primary="File Location"
-                                                      secondary={data.file.desk.staff.name + " (" + data.file.desk.staff.designation + ")"}/>}
+                    {data.hoarding.file.desk && <DetailViewRow primary="File Location"
+                                                      secondary={data.hoarding.file.desk.staff.name + " (" + data.hoarding.file.desk.staff.designation + ")"}/>}
                   </Card>
                 </List>
               </Grid>

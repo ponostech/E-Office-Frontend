@@ -56,15 +56,15 @@ class HoardingUnderProcessList extends Component {
 
   viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
 
-  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
+  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.hoarding.file.id));
 
-  openAssignment = (data) => this.setState({file: data, openAssignment: true});
+  openAssignment = (data) => this.setState({file: data.hoarding.file, openAssignment: true});
 
   closeAssignment = () => this.setState({file: null, openAssignment: false});
 
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.hoarding.file.id))
       .then(() => {
         this.setState({openTakeFile: false});
         this.props.history.push(DESK);
@@ -109,7 +109,7 @@ class HoardingUnderProcessList extends Component {
         name: 'hoarding',
         label: "FILE LOCATION",
         options: {
-          customBodyRender: ({desk}) => desk ? desk.staff.name + " (" + desk.staff.designation + ")" : 'Not on any desk'
+          customBodyRender: (hoarding) => hoarding.file.desk ? hoarding.file.desk.staff.name + " (" + hoarding.file.desk.staff.designation + ")" : 'Not on any desk'
         }
       },
       {
