@@ -7,6 +7,7 @@ import LoadingView from "../../../../common/LoadingView";
 import ReceiptDetailDialog from "../../../receipt/ReceiptDetailDialog";
 import EyeIcon from '@material-ui/icons/RemoveRedEye'
 import IconButton from "@material-ui/core/IconButton";
+import Divider from "@material-ui/core/Divider";
 
 class FileEnclosures extends Component {
   receiptService = new ReceiptService();
@@ -38,6 +39,7 @@ class FileEnclosures extends Component {
     return (
       <>
         <CardHeader title='List of File Enclosures'/>
+        <Divider component={"li"} />
         {
           this.global.loading? <LoadingView/> :
             <List component={"div"}>

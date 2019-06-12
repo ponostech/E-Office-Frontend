@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import {HOARDING_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
+import { HOARDING_LIST, FILE_TAKE, GET_STAFF, FILE_CALL } from "../../../../config/ApiRoutes";
 import HoardingViewDialog from "./common/HoardingViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -64,7 +64,7 @@ class HoardingUnderProcessList extends Component {
 
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.hoarding.file.id))
+  confirmTakeFile = () => axios.post(FILE_CALL(this.state.singleData.hoarding.file.id))
       .then(() => {
         this.setState({openTakeFile: false});
         this.props.history.push(DESK);

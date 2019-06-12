@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Icon, IconButton, Tooltip } from "@material-ui/core";
 import moment from "moment";
-import { FILE_CALL, GET_STAFF, HOARDING_LIST } from "../../../../config/ApiRoutes";
+import { FILE_CALL, FILE_TAKE, GET_STAFF, HOARDING_LIST } from "../../../../config/ApiRoutes";
 import HoardingViewDialog from "./common/HoardingViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -79,7 +79,7 @@ class HoardingNewList extends Component {
   };
 
   confirmTakeCall = () => {
-    axios.post(FILE_CALL(this.state.singleData.hoarding.file.id), {}, { cancelToken: this.source.token })
+    axios.post(FILE_TAKE(this.state.singleData.hoarding.file.id), {}, { cancelToken: this.source.token })
       .then(() => {
         this.setGlobal({ successMsg: `File No. ${this.state.singleData.hoarding.file.number} called successfully` })
           .then(() => this.props.history.push(DESK));

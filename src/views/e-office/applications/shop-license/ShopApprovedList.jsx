@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import {SHOP_LIST, FILE_TAKE, GET_STAFF} from "../../../../config/ApiRoutes";
+import { SHOP_LIST, FILE_TAKE, GET_STAFF, FILE_CALL } from "../../../../config/ApiRoutes";
 import ShopViewDialog from "./common/ShopViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -59,7 +59,7 @@ class ShopInProcessList extends Component {
 
   takeFile = (data) => this.setState({shop: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.shop.file.id))
+  confirmTakeFile = () => axios.post(FILE_CALL(this.state.shop.shop.file.id))
       .then(() => this.props.history.push(DESK));
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());

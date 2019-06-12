@@ -139,7 +139,7 @@ class SiteVerificationEditDialog extends Component {
       form = (
         <>
           {formElements.map((element, index) => (
-            <Grid style={{margin:10}} sm={6} xs={6} key={index} md={6}>
+            <Grid style={{margin:10}} key={index} md={6}>
               <FormFieldFactory
                 key={index}
                 elementType={element.elementType}

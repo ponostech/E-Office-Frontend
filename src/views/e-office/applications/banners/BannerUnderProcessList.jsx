@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import { BANNER_LIST, FILE_TAKE, GET_STAFF } from "../../../../config/ApiRoutes";
+import { BANNER_LIST, FILE_CALL, FILE_TAKE, GET_STAFF } from "../../../../config/ApiRoutes";
 import BannerViewDialog from "./common/BannerViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -58,7 +58,7 @@ class BannerUnderProcessList extends Component {
 
   takeFile = (data) => this.setState({banner: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.banner.file.id))
+  confirmTakeFile = () => axios.post(FILE_CALL(this.state.banner.file.id))
     .then(() => this.props.history.push(DESK));
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
