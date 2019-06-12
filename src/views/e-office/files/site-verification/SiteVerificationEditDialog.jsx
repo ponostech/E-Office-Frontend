@@ -47,27 +47,24 @@ class SiteVerificationEditDialog extends Component {
   componentDidMount() {
     const { type } = this.props;
     this.setState({ loading: true });
-    this.siteVerification.getTemplate(type, errorMessage => this.setState({ errorMessage }), template => this.mergeFormElements(template.data.formElements))
+    this.siteVerification.getTemplate(type, errorMessage => this.setState({ errorMessage }), template => {
+      this.mergeFormElements(template.data.formElements)
+    })
       .finally(() => this.setState({ loading: false }));
   }
 
   mergeFormElements = (newElements) => {
     if (this.props.verification) {
       const { formElements } = this.props.verification.template;
-      let res=newElements.concat(formElements);
-      let temp=[...Set(res.map(item=>item.elementConfig.name))];
 
-      console.log("temp")
-      console.log(temp)
-      this.setState({formElements:temp})
+      let merge=this.merge(formElements,newElements);
+      this.setState({formElements:merge})
     }
     console.log("about to merge")
   };
 
-  getElement=(element)=>{
-    const { formElements } = this.props.verification.template;
+  merge = (a, b) => a.filter(elem => !b.find(subElem => subElem.elementConfig.name === elem.elementConfig.name)).concat(b);
 
-  }
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.verification)
       this.setState({ formElements: nextProps.verification.template.formElements });
@@ -142,7 +139,7 @@ class SiteVerificationEditDialog extends Component {
       form = (
         <>
           {formElements.map((element, index) => (
-            <Grid key={index} md={6}>
+            <Grid style={{margin:10}} sm={6} xs={6} key={index} md={6}>
               <FormFieldFactory
                 key={index}
                 elementType={element.elementType}
@@ -184,7 +181,7 @@ class SiteVerificationEditDialog extends Component {
         <Divider component={"li"}/>
 
         <DialogContent>
-          <Grid container={true} justify={"flex-start"}>
+          <Grid container={true} justify={"flex-start"} spacing={3}>
             {loading ? <LoadingView/> : form}
           </Grid>
         </DialogContent>

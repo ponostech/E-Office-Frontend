@@ -73,8 +73,8 @@ class KioskViewDialog extends Component {
                     <DetailViewRow primary="Local Council" secondary={data.kiosk.local_council.name}/>
                     <DetailViewRow primary="Email of Applicant" secondary={data.applicant.email}/>
                     <DetailViewRow primary="License No. of Applicant" secondary={data.applicant.advertiser.license_no}/>
-                    <DetailViewRow primary="File Number" secondary={data.file.number}/>
-                    <DetailViewRow primary="File Subject" secondary={data.file.subject}/>
+                    <DetailViewRow primary="File Number" secondary={data.kiosk.file.number}/>
+                    <DetailViewRow primary="File Subject" secondary={data.kiosk.file.subject}/>
                     <DetailViewRow primary="Date of Application"
                                    secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
                     <DetailViewRow primary="Display Type" secondary={data.kiosk.display_type}/>
@@ -90,8 +90,8 @@ class KioskViewDialog extends Component {
                     <DetailViewRow primary="Ground Clearance"
                                    secondary={data.kiosk.ground_clearance ? data.kiosk.ground_clearance : "NA"}/>
                     <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
-                    {data.file.desk && <DetailViewRow primary="File Location"
-                                                      secondary={data.file.desk.staff.name + " (" + data.file.desk.staff.designation + ")"}/>}
+                    {data.kiosk.file.desk && <DetailViewRow primary="File Location"
+                                                      secondary={data.kiosk.file.desk.staff.name + " (" + data.kiosk.file.desk.staff.designation + ")"}/>}
                   </Card>
                 </List>
               </Grid>

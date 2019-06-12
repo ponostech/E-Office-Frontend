@@ -71,6 +71,7 @@ class EditSiteVerificationTemplate extends Component {
     const self = this;
     const module = this.props.match.params.module;
     this.setState({selectedType: {value: module, label: module}});
+
     this.siteVerificationService.getTemplate(module,
         errorMessage => this.setState({errorMessage}),
         template => {
