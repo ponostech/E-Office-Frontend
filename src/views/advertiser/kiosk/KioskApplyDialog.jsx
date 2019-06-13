@@ -40,8 +40,8 @@ class KioskApplyDialog extends Component {
   render() {
     const { open, onClose, confirmBtnText, closeBtnText, application, rest } = this.props;
     // const { file, hoarding } = application;
-    let heading = application ? "FILE NUMBER : " + application.file.number : "";
-    let subheading = application ? "SUBJECT : " + application.file.subject : "";
+    let heading = application ? "FILE NUMBER : " + application.kiosk.file.number : "";
+    let subheading = application ? "SUBJECT : " + application.kiosk.file.subject : "";
     let detail = application ?
       (
         <List>

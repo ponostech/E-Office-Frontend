@@ -8,6 +8,7 @@ import moment from "moment";
 import { KioskService } from "../../../../services/KioskService";
 import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 import LoadingView from "../../../common/LoadingView";
+import KioskViewDialog from "../../../e-office/applications/kiosk/common/KioskViewDialog";
 
 class KioskWithdrawnList extends Component {
   kioskService = new KioskService();
@@ -43,19 +44,19 @@ class KioskWithdrawnList extends Component {
           }
         }
       }, {
-        name: "file",
+        name: "kiosk",
         label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.number);
+            return (value.file.number);
           }
         }
       }, {
-        name: "file",
+        name: "kiosk",
         label: "SUBJECT",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.subject);
+            return (value.file.subject);
           }
         }
       }, {
@@ -80,12 +81,12 @@ class KioskWithdrawnList extends Component {
         options: {
           customBodyRender: (kiosk, tableMeta, updateValue) => {
             const { rowIndex } = tableMeta;
-            const file = this.state.kiosks[rowIndex];
+            const data = this.state.kiosks[rowIndex];
 
             let viewBtn = (
               <Tooltip title={"Click here to view details"}>
                 <IconButton onClick={(e) => {
-                  this.setState({ kiosk: file });
+                  this.setState({ kiosk: data });
                 }}>
                   <EyeIcon color={"primary"} fontSize={"small"}/>
                 </IconButton>
@@ -122,8 +123,8 @@ class KioskWithdrawnList extends Component {
                 columns={tableColumns}
                 options={tableOptions}
               />
-              <KioskApplicationDialog open={Boolean(this.state.kiosk)} application={this.state.kiosk}
-                                      onClose={e => this.setState({ kiosk: null })}/>
+              <KioskViewDialog open={Boolean(this.state.kiosk)} data={this.state.kiosk}
+                                      close={e => this.setState({ kiosk: null })}/>
             </Grid>
         }
       </>

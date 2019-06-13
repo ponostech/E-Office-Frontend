@@ -37,8 +37,8 @@ class HoardingApplyDialog extends Component {
   render() {
     const { open, onClose,confirmBtnText,closeBtnText, application,rest } = this.props;
     // const { file, hoarding } = application;
-    let heading=application?"FILE NUMBER : "+application.file.number:"";
-    let subheading=application?"SUBJECT : "+application.file.subject:"";
+    let heading=application?"FILE NUMBER : "+application.hoarding.file.number:"";
+    let subheading=application?"SUBJECT : "+application.hoarding.file.subject:"";
     let detail=application?
       (
         <List>
