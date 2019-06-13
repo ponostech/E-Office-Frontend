@@ -42,7 +42,7 @@ var options = {
   }
 };
 
-const PieChartView = (props) => {
+const DonutChartView= (props) => {
   const { color, data, icon, head, title, caption, classes } = props;
   return (
     <Card raised={true}>
@@ -53,7 +53,7 @@ const PieChartView = (props) => {
         <h6 className={classes.head}>{head}</h6>
       </CardHeader>
       <CardBody>
-        <Pie data={data}/>
+        <Doughnut data={data}/>
       </CardBody>
       {/*<CardFooter stats>*/}
 
@@ -67,14 +67,14 @@ const PieChartView = (props) => {
     </Card>
   );
 };
-PieChartView.defaultProps = {
+DonutChartView.defaultProps = {
   color: "primary",
   icon: "info",
   caption: "Welcome",
   head: "Head",
   title: "Title"
 };
-PieChartView.propTypes = {
+DonutChartView.propTypes = {
   color: PropTypes.string,
   data: PropTypes.object.isRequired,
   icon: PropTypes.string,
@@ -82,4 +82,4 @@ PieChartView.propTypes = {
   head: PropTypes.string,
   title: PropTypes.string
 };
-export default withStyles(style)(PieChartView);
+export default withStyles(style)(DonutChartView);

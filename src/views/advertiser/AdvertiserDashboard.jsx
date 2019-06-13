@@ -4,6 +4,8 @@ import InfoView from "./widgets/InfoView";
 import ChartistGraph from "react-chartist";
 import Card from "../../components/Card/Card";
 import PieChartView from "./widgets/PieChartView";
+import LineChartView from "./widgets/LineChartView";
+import DonutChartView from "./widgets/DonutChartView";
 
 
 
@@ -19,18 +21,52 @@ var simpleLineChartData = {
     [17, 3, 4, 56, 89]
   ]
 };
-var pieData={
-  series:[50,50]
-}
-var options = {
-  height: "400px",
-  high: 100,
-  low: -10,
-  axisX: {
-    labelInterpolationFnc: function(value, index) {
-      return index % 2 === 0 ? value : null;
+const pieData = {
+  labels: [
+    'Red',
+    'Green',
+    'Yellow'
+  ],
+  datasets: [{
+    data: [300, 50, 100],
+    backgroundColor: [
+      '#FF6384',
+      '#36A2EB',
+      '#FFCE56'
+    ],
+    hoverBackgroundColor: [
+      '#FF6384',
+      '#36A2EB',
+      '#FFCE56'
+    ]
+  }]
+};
+
+const lineData = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  datasets: [
+    {
+      label: 'My First dataset',
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: 'rgba(75,192,192,0.4)',
+      borderColor: 'rgba(75,192,192,1)',
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: 'rgba(75,192,192,1)',
+      pointBackgroundColor: '#fff',
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [65, 59, 80, 81, 56, 55, 40]
     }
-  }
+  ]
 };
 
 class AdvertiserDashboard extends Component {
@@ -58,11 +94,7 @@ class AdvertiserDashboard extends Component {
           <InfoView onLinkClick={e => console.log("rest")}/>
         </Grid>
 
-        <Grid item={true} xs={12} sm={12} md={12}>
-          <Card  raised={true}>
-            <ChartistGraph data={simpleLineChartData} options={options} type={"Bar"}/>
-          </Card>
-        </Grid>
+
         <Grid item={true} xs={12} sm={12} md={4}>
             <PieChartView data={pieData}/>
         </Grid>
@@ -70,7 +102,11 @@ class AdvertiserDashboard extends Component {
           <PieChartView data={pieData}/>
         </Grid>
         <Grid item={true} xs={12} sm={12} md={4}>
-          <PieChartView data={pieData}/>
+          <DonutChartView data={pieData}/>
+        </Grid>
+
+        <Grid  item={true} xs={12} sm={12} md={12}>
+          <LineChartView data={lineData}/>
         </Grid>
 
       </Grid>

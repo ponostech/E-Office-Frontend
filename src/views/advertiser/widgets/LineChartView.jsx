@@ -1,12 +1,10 @@
 import React from "react";
 import Card from "../../../components/Card/Card";
 import CardHeader from "../../../components/Card/CardHeader";
-import CardIcon from "../../../components/Card/CardIcon";
-import { Icon } from "@material-ui/core";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import CardBody from "../../../components/Card/CardBody";
-import { Doughnut, Pie } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 
 const style = {
   title: {
@@ -15,34 +13,24 @@ const style = {
     fontWeight: "400"
   },
   head: {
-    margin:16,
-    padding:16,
+    margin: 16,
+    padding: 16,
     textAlign: "center",
     fontSize: "16px",
     fontWeight: "600",
-    color:"#727272"
+    color: "#727272"
   },
   caption: {
     textAlign: "center",
-    marginBottom:"14px",
+    marginBottom: "14px",
     fontSize: "14px",
     fontWeight: "300",
     color: "#727272"
   }
 };
 
-var options = {
-  height: 200,
-  high: 100,
-  low: -10,
-  axisX: {
-    labelInterpolationFnc: function(value, index) {
-      return index % 2 === 0 ? value : null;
-    }
-  }
-};
 
-const PieChartView = (props) => {
+const LineChartView = (props) => {
   const { color, data, icon, head, title, caption, classes } = props;
   return (
     <Card raised={true}>
@@ -53,7 +41,7 @@ const PieChartView = (props) => {
         <h6 className={classes.head}>{head}</h6>
       </CardHeader>
       <CardBody>
-        <Pie data={data}/>
+        <Line data={data}/>
       </CardBody>
       {/*<CardFooter stats>*/}
 
@@ -67,14 +55,14 @@ const PieChartView = (props) => {
     </Card>
   );
 };
-PieChartView.defaultProps = {
+LineChartView.defaultProps = {
   color: "primary",
   icon: "info",
-  caption: "Welcome",
+  caption: "",
   head: "Head",
-  title: "Title"
+  title: ""
 };
-PieChartView.propTypes = {
+LineChartView.propTypes = {
   color: PropTypes.string,
   data: PropTypes.object.isRequired,
   icon: PropTypes.string,
@@ -82,4 +70,4 @@ PieChartView.propTypes = {
   head: PropTypes.string,
   title: PropTypes.string
 };
-export default withStyles(style)(PieChartView);
+export default withStyles(style)(LineChartView);
