@@ -11,6 +11,7 @@ import CheckIcon from "@material-ui/icons/CheckBox";
 import KioskApplyDialog from "../KioskApplyDialog";
 import { DocumentService } from "../../../../services/DocumentService";
 import LoadingView from "../../../common/LoadingView";
+import KioskViewDialog from "../../../e-office/applications/kiosk/common/KioskViewDialog";
 
 class KioskAvailableList extends Component {
   kioskService = new KioskService();
@@ -61,19 +62,19 @@ class KioskAvailableList extends Component {
           }
         }
       }, {
-        name: "file",
+        name: "kiosk",
         label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return value?(value.number):"NA";
+            return value?(value.file.number):"NA";
           }
         }
       }, {
-        name: "file",
+        name: "kiosk",
         label: "SUBJECT",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return value? (value.subject):"NA";
+            return value? (value.file.subject):"NA";
           }
         }
       }, {
@@ -152,8 +153,8 @@ class KioskAvailableList extends Component {
               <KioskApplyDialog documents={this.state.advertiserDocuments}
                                 onClose={() => this.setState({ openApply: false })} open={this.state.openApply}
                                 onConfirm={this.applyKiosk.bind(this)} application={this.state.kiosk}/>
-              <KioskApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.kiosk}
-                                      onClose={e => this.setState({ openDetail: false, kiosk: null })}/>
+              <KioskViewDialog open={Boolean(this.state.openDetail)} data={this.state.kiosk}
+                                      close={e => this.setState({ openDetail: false, kiosk: null })}/>
             </Grid>
         }
       </>

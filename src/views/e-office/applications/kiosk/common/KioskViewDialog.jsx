@@ -32,13 +32,13 @@ class KioskViewDialog extends Component {
     console.log(this.props);
     const {classes, data} = this.props;
 
-    const list = data.documents.map(val =>
+    const list =data? data.documents.map(val =>
         <ListItem className={classes.docsItem} onClick={() => this.openDocs(val.path)}>
           <ListItemIcon>
             <AttachFile/>
           </ListItemIcon>
           <ListItemText primary={val.name}/>
-        </ListItem>);
+        </ListItem>):"";
 
     return (
         <Dialog
@@ -53,7 +53,7 @@ class KioskViewDialog extends Component {
                 <CloseIcon/>
               </IconButton>
               <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-                View Hoarding Application
+                View Kiosk Application
               </Typography>
               <Button onClick={this.props.close} color="inherit">
                 Close
@@ -64,7 +64,7 @@ class KioskViewDialog extends Component {
             <Grid container>
               <Grid item md>
                 <List>
-                  <Card>
+                 { data?<Card>
                     <DetailViewRow primary="Name of Applicant" secondary={data.applicant.advertiser.name}/>
                     <DetailViewRow primary="Type of Applicant"
                                    secondary={data.applicant.advertiser.type.toUpperCase()}/>
@@ -92,7 +92,7 @@ class KioskViewDialog extends Component {
                     <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
                     {data.kiosk.file.desk && <DetailViewRow primary="File Location"
                                                       secondary={data.kiosk.file.desk.staff.name + " (" + data.kiosk.file.desk.staff.designation + ")"}/>}
-                  </Card>
+                  </Card>:""}
                 </List>
               </Grid>
               <Grid item md>

@@ -32,16 +32,15 @@ class HoardingViewDialog extends Component {
   };
 
   render() {
-    console.log(this.props);
     const {classes, data} = this.props;
 
-    const list = data.documents.map(val =>
+    const list = data ? data.documents.map(val =>
       <ListItem className={classes.docsItem} onClick={() => this.openDocs(val.path)}>
         <ListItemIcon>
           <AttachFile/>
         </ListItemIcon>
         <ListItemText primary={val.name}/>
-      </ListItem>);
+      </ListItem>) : "";
 
     return (
         <Dialog
@@ -67,7 +66,7 @@ class HoardingViewDialog extends Component {
             <Grid container>
               <Grid item md>
                 <List>
-                  <Card>
+                  {data?<Card>
                     <DetailViewRow primary="Name of Applicant" secondary={data.applicant.advertiser.name}/>
                     <DetailViewRow primary="Type of Applicant"
                                    secondary={data.applicant.advertiser.type.toUpperCase()}/>
@@ -91,7 +90,7 @@ class HoardingViewDialog extends Component {
                     <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
                     {data.hoarding.file.desk && <DetailViewRow primary="File Location"
                                                       secondary={data.hoarding.file.desk.staff.name + " (" + data.hoarding.file.desk.staff.designation + ")"}/>}
-                  </Card>
+                  </Card>:""}
                 </List>
               </Grid>
               <Grid item md>

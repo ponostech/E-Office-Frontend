@@ -11,6 +11,8 @@ import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 import HoardingApplyDialog from "./form/HoardingApplyDialog";
 import { DocumentService } from "../../../services/DocumentService";
 import LoadingView from "../../common/LoadingView";
+import HoardingDetailDialog from "../../e-office/applications/hoarding/HoardingDetailDialog";
+import HoardingViewDialog from "../../e-office/applications/hoarding/common/HoardingViewDialog";
 
 class HoardingAvailableList extends Component {
   hoardingService = new HoardingService();
@@ -61,19 +63,19 @@ class HoardingAvailableList extends Component {
           }
         }
       }, {
-        name: "file",
+        name: "hoarding",
         label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.number);
+            return (value.file.number);
           }
         }
       }, {
-        name: "file",
+        name: "hoarding",
         label: "SUBJECT",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.subject);
+            return (value.file.subject);
           }
         }
       }, {
@@ -153,8 +155,9 @@ class HoardingAvailableList extends Component {
               <HoardingApplyDialog documents={this.state.advertiserDocuments} open={this.state.openApply}
                                    onClose={() => this.setState({ openApply: false })}
                                    onConfirm={this.applyHoarding.bind(this)} application={this.state.hoarding}/>
-              <HoardingApplicationDialog open={this.state.openDetail} application={this.state.hoarding}
-                                         onClose={e => this.setState({ hoarding: null, openDetail: false })}/>
+              {/*<HoardingApplicationDialog open={this.state.openDetail} application={this.state.hoarding}*/}
+              {/*                           onClose={e => this.setState({ hoarding: null, openDetail: false })}/>*/}
+              <HoardingViewDialog open={this.state.openDetail} data={this.state.hoarding} close={e=>this.setState({openDetail:false})}/>
 
             </Grid>
         }

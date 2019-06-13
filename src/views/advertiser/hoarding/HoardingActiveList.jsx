@@ -1,16 +1,14 @@
 import React, { Component } from "reactn";
-import Grid from "@material-ui/core/Grid";
 
 import MUIDataTable from "mui-datatables";
 import { HoardingService } from "../../../services/HoardingService";
-import { Icon, IconButton, Tooltip } from "@material-ui/core";
+import { Icon, IconButton, Tooltip,CardContent } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
 import ApplicationState from "../../../utils/ApplicationState";
-import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 import { FILE_DETAIL_ROUTE } from "../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../common/LoadingView";
-import CardContent from "@material-ui/core/CardContent"
+import HoardingViewDialog from "../../e-office/applications/hoarding/common/HoardingViewDialog";
 
 class HoardingActiveList extends Component {
   hoardingService = new HoardingService();
@@ -42,19 +40,19 @@ class HoardingActiveList extends Component {
           }
         }
       },{
-        name: "file",
+        name: "hoarding",
         label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.number);
+            return (value.file.number);
           }
         }
       }, {
-        name: "file",
+        name: "hoarding",
         label: "SUBJECT",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.subject);
+            return (value.file.subject);
           }
         }
       }, {
@@ -129,13 +127,13 @@ class HoardingActiveList extends Component {
                 columns={tableColumns}
                 options={tableOptions}
               />
-              <HoardingApplicationDialog open={Boolean(this.state.hoarding)} application={this.state.hoarding}
-                                         onClose={e => this.setState({ hoarding: null })}/>
+
 
             </CardContent>
         }
 
-
+        <HoardingViewDialog open={Boolean(this.state.hoarding)} data={this.state.hoarding}
+                            close={e => this.setState({ hoarding: null })}/>
       </>
     );
   }

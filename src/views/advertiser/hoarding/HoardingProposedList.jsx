@@ -10,6 +10,7 @@ import moment from "moment";
 import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import LoadingView from "../../common/LoadingView";
+import HoardingViewDialog from "../../e-office/applications/hoarding/common/HoardingViewDialog";
 
 class HoardingProposedList extends Component {
   hoardingService = new HoardingService();
@@ -144,8 +145,8 @@ class HoardingProposedList extends Component {
                 columns={tableColumns}
                 options={tableOptions}
               />
-              <HoardingApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.hoarding}
-                                         onClose={e => this.setState({ openDetail: false })}/>
+              <HoardingViewDialog open={Boolean(this.state.openDetail)} data={this.state.hoarding}
+                                         close={e => this.setState({ openDetail: false })}/>
 
               <ConfirmDialog message={"Do you want to withdraw application?"}
                              onCancel={() => this.setState({ openWithdraw: false })} open={this.state.openWithdraw}

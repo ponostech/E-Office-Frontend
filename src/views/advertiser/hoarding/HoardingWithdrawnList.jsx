@@ -9,6 +9,7 @@ import moment from "moment";
 import ApplicationState from "../../../utils/ApplicationState";
 import HoardingApplicationDialog from "../../common/HoardingApplicationDialog";
 import LoadingView from "../../common/LoadingView";
+import HoardingViewDialog from "../../e-office/applications/hoarding/common/HoardingViewDialog";
 
 class HoardingWithdrawnList extends Component {
   hoardingService = new HoardingService();
@@ -43,19 +44,19 @@ class HoardingWithdrawnList extends Component {
           }
         }
       }, {
-        name: "file",
+        name: "hoarding",
         label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.number);
+            return (value.file.number);
           }
         }
       }, {
-        name: "file",
+        name: "hoarding",
         label: "SUBJECT",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.subject);
+            return (value.file.subject);
           }
         }
       }, {
@@ -122,8 +123,8 @@ class HoardingWithdrawnList extends Component {
                 columns={tableColumns}
                 options={tableOptions}
               />
-              <HoardingApplicationDialog open={Boolean(this.state.hoarding)} application={this.state.hoarding}
-                                         onClose={e => this.setState({ hoarding: null })}/>
+              <HoardingViewDialog open={Boolean(this.state.hoarding)} data={this.state.hoarding}
+                                         close={e => this.setState({ hoarding: null })}/>
             </Grid>
         }
 

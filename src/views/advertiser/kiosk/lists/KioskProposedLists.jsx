@@ -10,6 +10,7 @@ import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 import CloseIcon from "@material-ui/icons/Close";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import LoadingView from "../../../common/LoadingView";
+import KioskViewDialog from "../../../e-office/applications/kiosk/common/KioskViewDialog";
 
 class KioskProposedLists extends Component {
   kioskService = new KioskService();
@@ -54,19 +55,19 @@ class KioskProposedLists extends Component {
           }
         }
       }, {
-        name: "file",
+        name: "kiosk",
         label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.number);
+            return (value.file.number);
           }
         }
       }, {
-        name: "file",
+        name: "kiosk",
         label: "SUBJECT",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.subject);
+            return (value.file.subject);
           }
         }
       }, {
@@ -142,8 +143,8 @@ class KioskProposedLists extends Component {
                 columns={tableColumns}
                 options={tableOptions}
               />
-              <KioskApplicationDialog open={Boolean(this.state.openDetail)} application={this.state.kiosk}
-                                      onClose={e => this.setState({ kiosk: null, openDetail: false })}/>
+              <KioskViewDialog open={Boolean(this.state.openDetail)} data={this.state.kiosk}
+                                      close={e => this.setState({ kiosk: null, openDetail: false })}/>
 
               <ConfirmDialog onCancel={() => this.setState({ openWithdraw: false })} open={this.state.openWithdraw}
                              onConfirm={this.withdraw.bind(this)}
