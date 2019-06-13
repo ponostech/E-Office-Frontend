@@ -82,7 +82,7 @@ class AdvertiserDashboard extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid spacing={4} container={true}>
+      <Grid spacing={3} container={true}>
         {/*<p>Advertiser dashboard</p>*/}
         <Grid item={true} xs={12} sm={12} md={4}>
           <InfoView onLinkClick={e => console.log("rest")}/>

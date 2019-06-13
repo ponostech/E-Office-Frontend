@@ -35,12 +35,12 @@ class KioskAvailableList extends Component {
 
   fetchKiosk = async () => {
     await this.kioskService.fetchAdvertiserKiosk(
-      errorMsg => this.setState({ errorMsg }),
+      errorMsg => this.setGlobal({ errorMsg }),
       kiosks => this.setState({ kiosks }));
   };
   fetchDocument = async () => {
     await this.documentService.fetch("advertiser",
-      errorMsg => this.setState({ errorMsg }),
+      errorMsg => this.setGlobal({ errorMsg }),
       advertiserDocuments => this.setState({ advertiserDocuments }));
   };
 
@@ -65,7 +65,7 @@ class KioskAvailableList extends Component {
         label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.number);
+            return value?(value.number):"NA";
           }
         }
       }, {
@@ -73,7 +73,7 @@ class KioskAvailableList extends Component {
         label: "SUBJECT",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.subject);
+            return value? (value.subject):"NA";
           }
         }
       }, {
