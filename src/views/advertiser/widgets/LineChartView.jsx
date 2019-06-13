@@ -41,7 +41,7 @@ const LineChartView = (props) => {
         <h6 className={classes.head}>{head}</h6>
       </CardHeader>
       <CardBody>
-        <Line data={data}/>
+        <Line data={data} height={100}/>
       </CardBody>
       {/*<CardFooter stats>*/}
 

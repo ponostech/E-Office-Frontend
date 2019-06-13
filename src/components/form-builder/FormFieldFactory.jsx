@@ -191,7 +191,7 @@ openMap:false
                       onUploadSuccess={(data) => {
                         let temp = {
                           mandatory:validation.required,
-                          document_id: 989898,
+                          document_id: Date.now(),
                           name:"file upload",
                           path: data.location
                         };

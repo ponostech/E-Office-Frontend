@@ -20,14 +20,13 @@ class FileEnclosures extends Component {
 
   componentDidMount() {
     const { file } = this.props;
-    console.log("how many times")
 
     // this.setGlobal({ loading: true });
 
     this.receiptService.getByFileId(file.id,
       errorMsg => this.setGlobal({ errorMsg }),
       receipts => this.setState({ receipts }))
-      // .finally(() => this.setGlobal({ loading: false }));
+      .finally(() => this.setGlobal({ loading: false }));
   }
 
   handleView=(receipt)=>{
@@ -44,6 +43,8 @@ class FileEnclosures extends Component {
           this.global.loading? <LoadingView/> :
             <List component={"div"}>
               {
+                receipts.length===0?
+                  <p>File enclosure not available</p> :
                 receipts.map(item =>
                   <DetailViewRow onClick={this.handleView.bind(this,item)} icon={<Attachment/>} actionIcon={true} primary={"Receipt No"} secondary={item.number}>
                     <IconButton href={"#"} onClick={this.handleView.bind(this,item)} >
