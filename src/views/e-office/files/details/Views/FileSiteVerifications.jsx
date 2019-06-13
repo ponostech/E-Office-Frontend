@@ -110,33 +110,15 @@ class FileSiteVerifications extends Component {
                                   <EditIcon color={"primary"}/>
                                 </IconButton>
                               </Tooltip>}
-                              {allowed && <Tooltip title={"Delete"}>
-                                <IconButton href={"#"} onClick={self.delete.bind(this, item)}>
-                                  <DeleteIcon color={"secondary"}/>
-                                </IconButton>
-                              </Tooltip>}
+                              {/*{allowed && <Tooltip title={"Delete"}>*/}
+                              {/*  <IconButton href={"#"} onClick={self.delete.bind(this, item)}>*/}
+                              {/*    <DeleteIcon color={"secondary"}/>*/}
+                              {/*  </IconButton>*/}
+                              {/*</Tooltip>}*/}
 
                             </>
                           </DetailViewRow>
-                          {/*<ListItem component={"li"} button={true} title={"Click here to view details"}*/}
-                          {/*          onClick={self.view.bind(this, item)} key={index}>*/}
 
-                          {/*  <ListItemText primary={`Created on:${moment(item.created_at).format("Do-MMMM-YYYY")}`}*/}
-                          {/*                secondary={"Created by :"}/>*/}
-                          {/*  <ListItemSecondaryAction>*/}
-                          {/*    {allowed && <Tooltip title={"edit"}>*/}
-                          {/*      <IconButton onClick={self.edit.bind(this, item)}>*/}
-                          {/*        <EditIcon color={"primary"}/>*/}
-                          {/*      </IconButton>*/}
-                          {/*    </Tooltip>}*/}
-                          {/*    {allowed && <Tooltip title={"Delete"}>*/}
-                          {/*      <IconButton onClick={self.delete.bind(this, item)}>*/}
-                          {/*        <DeleteIcon color={"secondary"}/>*/}
-                          {/*      </IconButton>*/}
-                          {/*    </Tooltip>}*/}
-                          {/*  </ListItemSecondaryAction>*/}
-                          {/*</ListItem>*/}
-                          {/*<Divider component={"li"}/>*/}
                         </>
                       );
                     })
