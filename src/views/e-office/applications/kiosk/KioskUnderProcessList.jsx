@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import {KIOSK_LIST, FILE_TAKE, GET_STAFF} from "../../../../config/ApiRoutes";
+import { KIOSK_LIST, FILE_TAKE, GET_STAFF, FILE_CALL } from "../../../../config/ApiRoutes";
 import KioskViewDialog from "./common/KioskViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -57,7 +57,7 @@ class KioskUnderProcessList extends Component {
 
   viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
 
-  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
+  viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.kiosk.file.id));
 
   openAssignment = (data) => this.setState({file: data.kiosk.file, openAssignment: true});
 
@@ -65,7 +65,7 @@ class KioskUnderProcessList extends Component {
 
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.kiosk.file.id))
+  confirmTakeFile = () => axios.post(FILE_CALL(this.state.singleData.kiosk.file.id))
       .then(() => {
         this.setState({openTakeFile: false});
         this.props.history.push(DESK);

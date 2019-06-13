@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import {HOTEL_LIST, FILE_TAKE, GET_STAFF} from "../../../../config/ApiRoutes";
+import { HOTEL_LIST, FILE_TAKE, GET_STAFF, FILE_CALL } from "../../../../config/ApiRoutes";
 import HotelViewDialog from "./common/HotelViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -59,7 +59,7 @@ class HotelInProcessList extends Component {
 
   takeFile = (data) => this.setState({hotel: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id))
+  confirmTakeFile = () => axios.post(FILE_CALL(this.state.hotel.file.id))
       .then(() => this.props.history.push(DESK));
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
