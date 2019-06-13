@@ -28,6 +28,7 @@ class FileUpload extends Component {
       file: data,
       uploadedFile: null
     };
+    this.inputRef=React.createRef();
   }
 
   getFilename = (file) => {
@@ -36,6 +37,15 @@ class FileUpload extends Component {
     }
     return undefined;
   };
+  doReset(){
+    let data = this.props.document;
+    document.getElementById("inputId").value=""
+    data.status = "prestine";
+    this.setState( {
+      file: data,
+      uploadedFile: null
+    });
+  }
 
   getUploadDocuments = () => {
     return this.state.neededDoc;
@@ -69,7 +79,10 @@ class FileUpload extends Component {
       <>
         <TextField
           {...rest}
-
+          inputProps={{
+            id:"inputId"
+          }}
+          ref={this.inputRef}
           onClick={() => {
             let imageUpload = document.getElementById(file.id);
             imageUpload.click();
