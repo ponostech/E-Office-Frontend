@@ -114,7 +114,7 @@ class BannerApplication extends Component {
 
   fetchLocalCouncil = () => {
     this.localCouncilservice.fetch(
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       localCouncils => this.setState({ localCouncils }))
       .finally(() => {
         this.setGlobal({ loading: false });
@@ -142,7 +142,7 @@ class BannerApplication extends Component {
 
     if (verified) {
       this.setState({ submit: true });
-      this.bannerService.create(this.state, errorMessage => this.setState(errorMessage),
+      this.bannerService.create(this.state, errorMsg => this.setGlobal({errorMsg}),
         successMessage => this.setState({
           success: (
             <SweetAlert
@@ -164,7 +164,7 @@ class BannerApplication extends Component {
       || Boolean(this.state.localCouncilError) || Boolean(this.state.displayTypeError) || Boolean(this.state.prestine);
 
     if (invalid) {
-      this.setState({ errorMessage: "Please fill all the required fields" });
+      this.setGlobal({ errorMsg: "Please fill all the required fields" });
       return;
     }
     this.sendOtp();
@@ -314,12 +314,7 @@ class BannerApplication extends Component {
                             }}
                           />
                         </GridItem>
-                        <GridItem xs={12} sm={12} md={12}>
-                          <Typography variant="h7">
-                            Banner/Poster Details
-                          </Typography>
-                          <Divider/>
-                        </GridItem>
+
                         <GridItem className={classes.root} xs={12} sm={12} md={6}>
                           <OfficeSelect
                             value={this.state.localCouncil}
@@ -328,6 +323,7 @@ class BannerApplication extends Component {
                             variant={"outlined"}
                             margin={"dense"}
                             fullWidth={true}
+                            required={true}
                             error={Boolean(this.state.localCouncilError)}
                             helperText={this.state.localCouncilError}
                             onBlur={this.validateSelect.bind(this, "localCouncil")}
@@ -366,7 +362,7 @@ class BannerApplication extends Component {
 
                         <GridItem className={classes.root} xs={12} sm={12} md={12}>
                           <Typography style={{ marginTop: 20 }} variant={"h7"}> Details of Advertisement</Typography>
-                          <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+                          <Divider component={"li"} style={{ marginTop: 10, marginBottom: 10 }}/>
                           <BannerDetail ref={this.bannerRef}
                                         onRemoveDetail={(index) => {
                                           let list = this.state.bannerDetails;

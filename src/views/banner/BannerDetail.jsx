@@ -38,6 +38,7 @@ const style = {
 
 class BannerDetail extends Component {
 
+  fileRef=React.createRef();
   state = {
     length: "",
     height: "",
@@ -56,7 +57,6 @@ class BannerDetail extends Component {
     localCouncils: [],
 
     valid: false,
-    errorMessage: ""
   };
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -73,7 +73,6 @@ class BannerDetail extends Component {
 
   handleSelect = (id, val) => {
     this.setState({ localCouncil: val });
-    this.handleSelectBlur(val);
   };
   handleSelectBlur = (val) => {
     if (this.state.localCouncil) {
@@ -114,7 +113,7 @@ class BannerDetail extends Component {
 
   handleAdd = (e) => {
     const { onDetailAdd } = this.props;
-    const { length, height, localCouncil, from, to } = this.state;
+    const { length, height, localCouncil,path, from, to } = this.state;
 
     const fromDate = moment(from);
     const toDate = moment(to);
@@ -124,15 +123,16 @@ class BannerDetail extends Component {
       return;
     }
 
-    this.clear();
     let temp = {
-      length, height, localCouncil: localCouncil.label, from, to
+      length, height, localCouncil: localCouncil.label,path, from, to
     };
     let list = this.state.detailList;
     list.push(temp);
     this.setState({ detailList: list });
 
     onDetailAdd(temp);
+    this.clear();
+
   };
 
   handleRemove = (index, e) => {
@@ -151,10 +151,12 @@ class BannerDetail extends Component {
     this.setState({
       length: "",
       height: "",
-      localCouncil: undefined,
+      localCouncil: null,
       from: new Date(),
-      to: new Date()
+      to: new Date(),
+      path:null
     });
+    this.fileRef.current.doReset()
   };
 
   doReset = () => {
@@ -227,7 +229,7 @@ class BannerDetail extends Component {
                 helperText={this.state.localCouncilError}
                 onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
                 onChange={this.handleSelect.bind(this, "localCouncil")}
-                options={this.state.localCouncils}/>
+                options={this.props.localCouncils}/>
             </GridItem>
 
             <GridItem className={classes.item} sm={12} md={3}>
@@ -279,7 +281,9 @@ class BannerDetail extends Component {
             />*/}
             </GridItem>
             <GridItem className={classes.root} xs={12} sm={12} md={5}>
-              <FileUpload applicationName={APPLICATION_NAME.BANNER}
+              <FileUpload
+                ref={this.fileRef}
+                applicationName={APPLICATION_NAME.BANNER}
                           document={{
                             id: 1,
                             name: "Photo of Banner design",
@@ -288,7 +292,7 @@ class BannerDetail extends Component {
                           }}
                           onUploadSuccess={(data) => {
                             this.setState({
-                              path: data.path
+                              path: data.location
                             });
                           }} onUploadFailure={(err) => {
                 console.log(err);
@@ -296,7 +300,12 @@ class BannerDetail extends Component {
             </GridItem>
             <GridItem className={classes.item} sm={12} md={1}>
               <Button variant={"contained"} fullWidth={true}
-                disabled={this.state.length.length === 0 || this.state.height.length === 0 || Boolean(this.state.path) || !Boolean(this.state.localCouncil) || this.state.from.length === 0 || this.state.to.length === 0
+                disabled={this.state.length.length === 0
+                || this.state.height.length === 0
+                || this.state.path===null
+                || this.state.localCouncil === null
+                || !Boolean(this.state.from)
+                || !Boolean(this.state.to)
                 } onClick={this.handleAdd.bind(this)} color={"primary"}>
                 <AddIcon fontSize={"large"} color={"white"}/>
               </Button>
@@ -332,15 +341,15 @@ class BannerDetail extends Component {
                         <TableCell>{item.length}</TableCell>
                         <TableCell>{item.height}</TableCell>
                         <TableCell>{item.localCouncil}</TableCell>
-                        <TableCell>{moment(item.from).format("DD/MM/YYYY")}</TableCell>
-                        <TableCell>{moment(item.to).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell>{moment(item.from).format("Do MMM YYYY")}</TableCell>
+                        <TableCell>{moment(item.to).format("Do MMM YYYY")}</TableCell>
                         <TableCell>
-                        <IconButton target={"_blank"} href={item.path}>
+                        <IconButton href={"#"} onClick={e=>window.open(item.path)}>
                           <ImageIcon color={"primary"}/>
                         </IconButton>
                         </TableCell>
                         <TableCell>
-                          <IconButton onClick={this.handleRemove.bind(this, index)}>
+                          <IconButton href={"#"} onClick={this.handleRemove.bind(this, index)}>
                             <DeleteIcon color={"error"}/>
                           </IconButton>
                         </TableCell>

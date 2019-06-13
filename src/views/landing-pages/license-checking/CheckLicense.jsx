@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import Card from "../../../components/Card/Card";
@@ -22,7 +22,6 @@ class CheckLicense extends Component {
     phoneError: "",
     typeError: "",
 
-    errorMessage: "",
     submit: false,
     prestine: true,
     options: [
@@ -31,6 +30,9 @@ class CheckLicense extends Component {
       { value: "banner", label: "Banner Application" }
     ]
   };
+componentDidMount() {
+  this.setGlobal({loading:false})
+}
 
   validatePhone = (e) => {
     if (e.target.value.length === 0) {
@@ -56,7 +58,7 @@ class CheckLicense extends Component {
     const { phone } = this.state;
 
     if (Boolean(this.state.phoneError) || Boolean(this.state.typeError) || this.state.prestine) {
-      this.setState({ errorMessage: "Please fill all the required field" });
+      this.setGlobal({ errorMsg: "Please fill all the required field" });
       return;
     }
 
@@ -87,12 +89,12 @@ class CheckLicense extends Component {
         <GridItem xs={12} sm={10} md={4}>
           <Card style={{ padding: "40px 20px" }} raised={true} pricing={true}>
             <CardContent>
-              <Grid container={true} direction={"column"} spacing={16}>
+              <Grid container={true} direction={"column"} spacing={3}>
                 <Grid item={true}>
                   <Typography color={"textPrimary"} variant={"h5"}>Check your application status</Typography>
                 </Grid>
                 <Grid item={true}>
-                  <Divider/>
+                  <Divider component={"li"}/>
                 </Grid>
                 <Grid item={true}>
                   <TextField fullWidth={true}
@@ -129,16 +131,14 @@ class CheckLicense extends Component {
               </Grid>
             </CardContent>
             <CardFooter>
-              <Button onClick={this.checkLicense} color={"primary"} variant={"outlined"} fullWidth={true}>Check</Button>
-              <Button onClick={e => history.push(HOME)} color={"primary"} variant={"text"} fullWidth={true}>Back to
+              <Button href={"#"} onClick={this.checkLicense} color={"primary"} variant={"outlined"} fullWidth={true}>Check</Button>
+              <Button href={"#"} onClick={e => history.push(HOME)} color={"primary"} variant={"text"} fullWidth={true}>Back to
                 home</Button>
             </CardFooter>
           </Card>
         </GridItem>
 
-        <SubmitDialog open={Boolean(this.state.submit)} text={"License Checking ..."} title={"Checking License"}/>
-        <OfficeSnackbar open={Boolean(this.state.errorMessage)} variant={"error"} message={this.state.errorMessage}
-                        onClose={() => this.setState({ errorMessage: "" })}/>
+        <SubmitDialog open={Boolean(this.state.submit)} text={"Please wait..."} title={"Checking License"}/>
 
       </GridContainer>
     );

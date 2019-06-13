@@ -197,12 +197,13 @@ class ReceiptCreate extends Component {
             </Paper>
           </Grid>
 
-          <Grid spacing={10} md={6} lg={6}>
+          <Grid  md={6} lg={6}>
 
             <Card>
               <CardHeader title={"Receipt Entry"}/>
               <Divider component={"li"}/>
               <CardContent>
+                <Grid spacing={3}>
                 <TextField
                   value={subject}
                   error={Boolean(subjectError)}
@@ -359,6 +360,8 @@ class ReceiptCreate extends Component {
                   onBlur={this.handleRequired.bind(this, "letter_ref_no")}
                   onChange={this.handleChanged.bind(this, "letter_ref_no")}
                 />
+                </Grid>
+
               </CardContent>
 
               <Divider component={"li"}/>
