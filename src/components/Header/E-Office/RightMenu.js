@@ -26,23 +26,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const logOut = (props) => {
-  new LoginService()
-      .logout(errorMessage => console.log(errorMessage), successMessage => props.history.push(OfficeRoutes.HOME))
-      .finally(() => console.log("log out request has been made"));
-}
-
 const SimplePopper = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const currentUser = JSON.parse(localStorage.getItem('current_user'));
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popper' : undefined;
 
   function toggleRightMenu(event) {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   }
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popper' : undefined;
+  function logOut () {
+    new LoginService()
+        .logout(errorMessage => console.log(errorMessage), successMessage => props.history.push(OfficeRoutes.HOME))
+        .finally(() => console.log("log out request has been made"));
+  }
 
   return (
       <div>
@@ -70,7 +69,7 @@ const SimplePopper = (props) => {
                       </MenuItem>
                       <MenuItem className={classes.menuList}>
                         Settings
-                      </MenuItem >
+                      </MenuItem>
                       <MenuItem onClick={() => logOut(props)} className={classes.menuList}>
                         Log Out <Icon className={classes.logOut}>power_settings_new</Icon>
                       </MenuItem>
@@ -85,47 +84,3 @@ const SimplePopper = (props) => {
 }
 
 export default withRouter(SimplePopper);
-
-
-    {/*<div>
-          <Button
-              aria-controls="menu-list-grow"
-              aria-haspopup="true"
-              onClick={toggleRightMenu}
-          >
-            <IconButton href={"#"}>
-              <Icon>account_circle_rounded</Icon>
-            </IconButton>
-          </Button>
-
-          <Popper
-              placement="left-start"
-              open={Boolean(openRightMenu)}
-              transition disablePortal>
-            {({TransitionProps, placement}) => (
-                <Grow
-                    {...TransitionProps}
-                    style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
-                >
-                  <Paper id="menu-list-grow">
-                    <ClickAwayListener onClickAway={handleClose}>
-                      <MenuList>
-                        <MenuItem
-                            onClick={handleClose}>Hello {currentUser.staff.name} ({currentUser.staff.designation})</MenuItem>
-                        <MenuItem onClick={handleClose}>My Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>
-                          <Tooltip title={"Click here to log user out"}>
-                            <IconButton style={{color: "red"}} onClick={() => logOut(props)} href={"#"}>
-                              <Icon>power_settings_new</Icon>
-                            </IconButton>
-                          </Tooltip>
-                        </MenuItem>
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-            )}
-          </Popper>
-        </div>*/
-}

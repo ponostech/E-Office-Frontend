@@ -2,7 +2,7 @@ import React, {Component} from "reactn";
 import axios from 'axios';
 import moment from 'moment';
 import {EventNote} from "@material-ui/icons";
-import {CardHeader, Divider, Icon, Tooltip, Fab} from "@material-ui/core";
+import {CardHeader, Divider, Icon, Tooltip, Fab, List} from "@material-ui/core";
 import Timeline from "../../../../components/Timeline/Timeline.jsx";
 import DefaultAvatar from "../../../../assets/img/default-avatar.png";
 import Loading from "../../../common/LoadingView"
@@ -128,16 +128,17 @@ class NotesheetDraftView extends Component {
     if (!this.global.loading)
       if (this.state.note.length)
         noteList = <Timeline simple stories={this.state.note} onNoteDelete={this.deleteNote} onNoteEdit={this.editNote}
-                             draft/>;
+                    draft/>;
       else
         noteList = <div style={{padding: 20}}>Draft Note not available.</div>;
 
     return (
         <>
           <CardHeader title={"Draft Note for File No.: " + file.number} subheader={"Subject: " + file.subject}/>
-          <Divider component={"li"}/>
-          <br/>
-          {noteList}
+          <List>
+            <Divider component={"li"}/>
+            {noteList}
+          </List>
           {openDialog &&
           <CreateNoteDialog file={file} note={singleNote} open={openDialog}
                             edit={editNote} onClose={this.handleCloseCreateNote}/>}
