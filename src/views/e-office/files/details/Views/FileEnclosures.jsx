@@ -38,7 +38,7 @@ class FileEnclosures extends Component {
     return (
       <>
         <CardHeader title='List of File Enclosures'/>
-        <Divider component={"li"} />
+        <Divider component={"div"} />
         {
           this.global.loading? <LoadingView/> :
             <List component={"div"}>
