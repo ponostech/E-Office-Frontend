@@ -85,7 +85,7 @@ class FileSiteVerifications extends Component {
       <>
         <CardHeader title={file ? `FILE NO : ${file.number}` : ""}
                     subheader={file ? "Site verification of " + file.subject : ""}/>
-        <Divider component={"li"}/>
+        <Divider component={"div"}/>
         {
           loading ? <LoadingView/> : (<>
 
