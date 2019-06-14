@@ -1,15 +1,13 @@
 import React from "react";
 import {NavLink, withRouter} from "react-router-dom";
-import {IconButton, Tooltip, Typography} from "@material-ui/core";
+import {IconButton} from "@material-ui/core";
 import CustomDropdown from "../../CustomDropdown/CustomDropdown";
 import Icon from "@material-ui/core/es/Icon/Icon";
-import {LoginService} from "../../../services/LoginService";
 import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
+import MenuRight from './RightMenu'
 
 const menu = (props) => {
-  const {history} = props;
-  const currentUser = JSON.parse(localStorage.getItem('current_user'));
-  const newAppsText = <span style={{fontWeight: 'bold'}}>New Application</span>;
+  const newAppsText = <span style={{color: 'red'}}>New</span>;
   return (
       <>
         <div style={{display: "flex", alignItems: "center"}}>
@@ -51,7 +49,7 @@ const menu = (props) => {
               buttonText={newAppsText}
               buttonProps={{color: "transparent"}}/>
 
-          <CustomDropdown
+          {/*<CustomDropdown
               dropdownList={[
                 {title: "New Hoarding Proposal", link: OfficeRoutes.ADVERTISER_NEW_LIST},
                 {title: "Under Process Hoarding Proposal", link: OfficeRoutes.ADVERTISER_NEW_LIST},
@@ -64,7 +62,7 @@ const menu = (props) => {
               ]}
               linkClick={props.linkClick}
               buttonText="Proposal"
-              buttonProps={{color: "transparent"}}/>
+              buttonProps={{color: "transparent"}}/>*/}
 
           <CustomDropdown
               dropdownList={[
@@ -149,26 +147,7 @@ const menu = (props) => {
               buttonText={"MIS"}
               buttonProps={{color: "transparent"}}/>
         </div>
-
-
-        <div style={{display: "flex", alignItems: "center"}}>
-          <Typography variant={"caption"}
-                      color={"textSecondary"}>Hello {currentUser.staff.name} ({currentUser.staff.designation})</Typography>
-          <IconButton><Icon>account_circle_rounded</Icon></IconButton>
-          <NavLink to={OfficeRoutes.SETTING}><IconButton><Icon>settings</Icon></IconButton></NavLink>
-
-          <Tooltip title={"Click here to log user out"}>
-            <IconButton style={{color: "red"}} onClick={
-              () => {
-                new LoginService()
-                    .logout(errorMessage => console.log(errorMessage), successMessage => history.push(OfficeRoutes.HOME))
-                    .finally(() => console.log("log out request has been made"));
-              }
-            }>
-              <Icon>power_settings_new</Icon>
-            </IconButton>
-          </Tooltip>
-        </div>
+        <MenuRight/>
       </>
   );
 };
