@@ -48,10 +48,11 @@ class FileDraftRejects extends React.Component {
 
   render() {
     const {loading, errorMsg, successMsg, data, showDetails, singleData} = this.state;
-    const content = data.length === 0 ? "No draft" : data.map(value => <DetailViewRow value={value}
-                                                                                      click={() => this.openDetails(value.id)}
-                                                                                      primary={"Draft Reject Order No. " + value.id}
-                                                                                      secondary={this.formatCreated(value)}/>);
+    const content = data.length === 0 ? "No draft" :
+        data.map(value => <DetailViewRow value={value}
+                                         click={() => this.openDetails(value.id)}
+                                         primary={"Draft Reject Order No. " + value.id}
+                                         secondary={this.formatCreated(value)}/>);
     return (
         <>
           <CardHeader title="List of Drafts Reject" subheader="click on the list item to see details"/>
