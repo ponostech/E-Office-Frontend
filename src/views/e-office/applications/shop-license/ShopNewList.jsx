@@ -34,7 +34,10 @@ class ShopNewList extends Component {
   componentDidMount() {
     this.setGlobal({loading: true});
     this.getData();
-    this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
+    this.getStaffs().then(res => {
+      if (res.data.status) this.setState({staffs: res.data.data.staffs})
+      else this.setGlobal({errorMsg: res.status.messages})
+    });
   }
 
   getData = () => {
@@ -46,6 +49,7 @@ class ShopNewList extends Component {
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, shops: res.data.data.shops});
+    console.log(res)
   };
 
   getStaffs = () => axios.get(GET_STAFF);
@@ -82,8 +86,11 @@ class ShopNewList extends Component {
         label: "APPLICANT",
       },
       {
-        name: "owner_address",
+        name: "local_council",
         label: "OWNER ADDRESS",
+        options: {
+          customBodyRender: (value) => value.name
+        }
       },
       {
         name: "name",
