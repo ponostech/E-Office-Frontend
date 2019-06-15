@@ -110,27 +110,29 @@ class ShopInProcessList extends Component {
             const lng = Number(data.longitude);
             return (
                 <>
+                  <Tooltip title='Location of Proposed Shop'>
+                    <IconButton size='small' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                      <Icon fontSize="small">pin_drop</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='View Details'>
+                    <IconButton color="primary" size="small"
+                                aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                      <Icon fontSize="small">remove_red_eye</Icon>
+                    </IconButton>
+                  </Tooltip>
                   <Tooltip title="View File">
                     <IconButton color="primary" size="small"
                                 aria-label="View File" onClick={this.viewFile.bind(this, data)}>
                       <Icon fontSize="small">folder</Icon>
                     </IconButton>
                   </Tooltip>
-                  <IconButton color="primary" size="small"
-                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                    <Icon fontSize="small">remove_red_eye</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="secondary"
-                              size="small" onClick={this.openAssignment.bind(this, data)}>
-                    <Icon fontSize="small">send</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="primary"
-                              size="small" onClick={this.takeFile.bind(this, data)}>
-                    <Icon fontSize="small">desktop_mac</Icon>
-                  </IconButton>
-                  <IconButton size='small' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                    <Icon fontSize="small">pin_drop</Icon>
-                  </IconButton>
+                  <Tooltip title='Call File'>
+                    <IconButton variant="contained" color="secondary"
+                                size="small" onClick={this.takeFile.bind(this, data)}>
+                      <Icon fontSize="small">desktop_mac</Icon>
+                    </IconButton>
+                  </Tooltip>
                 </>
             );
           }

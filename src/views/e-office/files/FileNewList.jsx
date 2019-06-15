@@ -132,20 +132,20 @@ class FileNewList extends Component {
             return (
                 <>
                   <Tooltip title='View File Details'>
-                    <IconButton color="primary" size="small"
+                    <IconButton color="primary" size="medium"
                                 aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
                       <Icon fontSize="small">remove_red_eye</Icon>
                     </IconButton>
                   </Tooltip>
                   <Tooltip title='Assign File to Officer/Staff'>
                     <IconButton variant="contained" color="primary"
-                                size="small" onClick={this.openAssignment.bind(this, data)}>
+                                size="medium" onClick={this.openAssignment.bind(this, data)}>
                       <Icon fontSize="small">send</Icon>
                     </IconButton>
                   </Tooltip>
                   <Tooltip title='Call File'>
                     <IconButton variant="contained" color="primary"
-                                size="small" onClick={this.takeFile.bind(this, data)}>
+                                size="medium" onClick={this.takeFile.bind(this, data)}>
                       <Icon fontSize="small">desktop_mac</Icon>
                     </IconButton>
                   </Tooltip>
