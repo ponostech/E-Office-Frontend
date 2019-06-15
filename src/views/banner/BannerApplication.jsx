@@ -28,7 +28,6 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import LoadingView from "../common/LoadingView";
-import ErrorHandler from "../common/StatusHandler";
 
 const style = {
   root: {
@@ -91,14 +90,9 @@ class BannerApplication extends Component {
 
   };
 
-  componentWillUnmount() {
-    //clearTimeout(timeout);
-  }
-
   componentDidMount() {
     window.scrollTo(0, 0);
     document.title = "e-AMC | Banners/Posters Application Form";
-
     this.setGlobal({ loading: true });
     this.fetchLocalCouncil();
   }
@@ -362,7 +356,7 @@ class BannerApplication extends Component {
 
                         <GridItem className={classes.root} xs={12} sm={12} md={12}>
                           <Typography style={{ marginTop: 20 }} variant={"h7"}> Details of Advertisement</Typography>
-                          <Divider component={"li"} style={{ marginTop: 10, marginBottom: 10 }}/>
+                          <Divider component={"div"} style={{ marginTop: 10, marginBottom: 10 }}/>
                           <BannerDetail ref={this.bannerRef}
                                         onRemoveDetail={(index) => {
                                           let list = this.state.bannerDetails;
