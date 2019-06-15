@@ -139,13 +139,13 @@ class HotelApplication extends Component {
     document.title = "e-AMC | Shop License Application Form";
     window.scrollTo(0, 0);
     const self = this;
-    self.setGlobal({loading:true});
-    timeout = setTimeout(function (handler) {
-      Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
-          .then(function ([values]) {
-            self.setGlobal({loading: false});
-          });
-    }, 4000);
+    self.setGlobal({loading: true});
+    // timeout = setTimeout(function (handler) {
+    Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
+        .then(function ([values]) {
+          self.setGlobal({loading: false});
+        });
+    // }, 4000);
   }
 
   sendOtp = () => {
@@ -173,7 +173,6 @@ class HotelApplication extends Component {
           .finally(() => this.setState({submit: false}));
     }
   };
-
   fetchLocalCouncil = () => {
     this.localCouncilService.fetch(errorMsg => this.setState({errorMsg}), localCouncils => this.setState({localCouncils}));
   };
@@ -203,8 +202,6 @@ class HotelApplication extends Component {
       default:
         break;
     }
-
-
     this.setState({prestine: false});
   };
   validateDocument = () => {
@@ -258,16 +255,12 @@ class HotelApplication extends Component {
       this.setState({errorMessage: "Please fill all the required fields"});
     }
   };
+
   handleRadio = (e) => {
     this.setState({
       premised: e.target.value
     });
   };
-
-  saveDraft = (e) => {
-
-  };
-
 
   handleSelectBlur = (identifier, e) => {
 
@@ -345,7 +338,6 @@ class HotelApplication extends Component {
                                 {ShopLicenseViewModel.SUBTITLE}
                               </Typography>
                             </GridItem>
-
                             <GridItem md={12} sm={12} xs={12}>
                               <Divider style={{marginBottom: 10, marginTop: 10}}/>
                             </GridItem>
@@ -406,9 +398,8 @@ class HotelApplication extends Component {
                                   onChange={this.handleChange.bind(this)}
                                   label={ShopLicenseViewModel.EMAIL}
                               />
-
                             </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                            <GridItem className={classes.root} xs={12} sm={12} md={12}>
                               <AddressField
                                   textFieldProps={
                                     {
@@ -426,7 +417,6 @@ class HotelApplication extends Component {
                                       label: ShopLicenseViewModel.OWNER_ADDRESS
                                     }
                                   }
-
                                   onPlaceSelect={(place) => {
                                     if (place) {
                                       let name = place.name;
@@ -437,71 +427,18 @@ class HotelApplication extends Component {
                                   }}/>
                             </GridItem>
                             <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                              <OfficeSelect
-                                  value={this.state.localCouncil}
-                                  label={"Select Local Council"}
-                                  name={"localCouncil"}
-                                  variant={"outlined"}
-                                  margin={"dense"}
-                                  fullWidth={true}
-                                  required={true}
-                                  helperText={this.state.localCouncilError}
-                                  error={Boolean(this.state.localCouncilError)}
-                                  onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
-                                  onChange={this.handleSelect.bind(this, "localCouncil")}
-                                  options={this.state.localCouncils}/>
-                            </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                              <AddressField
-                                  textFieldProps={
-                                    {
-                                      value: this.state.address,
-                                      name: "address",
-                                      placeholder: "Address",
-                                      onBlur: this.handleBlur.bind(this),
-                                      required: true,
-                                      variant: "outlined",
-                                      margin: "dense",
-                                      fullWidth: true,
-                                      error: Boolean(this.state.addressError),
-                                      helperText: this.state.addressError,
-                                      onChange: this.handleChange.bind(this),
-                                      label: "Purposed Location of Hotel/Lodge"
-                                    }
-                                  }
-
-                                  onPlaceSelect={(place) => {
-                                    if (place) {
-                                      let name = place.name;
-                                      let address = place.formatted_address;
-                                      let complete_address = address.includes(name) ? address : `${name} ${address}`;
-                                      this.setState({address: complete_address});
-                                    }
-                                  }}/>
-                            </GridItem>
-
-                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
                               <TextField
-                                  onClick={(e) => this.setState({openMap: true})}
-                                  value={this.state.coordinate}
-                                  name={"coordinate"}
+                                  value={this.state.shopName}
+                                  name={"shopName"}
                                   onBlur={this.handleBlur.bind(this)}
                                   required={true}
                                   variant={"outlined"}
                                   margin={"dense"}
                                   fullWidth={true}
-                                  error={Boolean(this.state.coordinateError)}
-                                  helperText={this.state.coordinateError}
-                                  label={"Coordinate of Purposed Location"}
-                                  InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position={"end"}>
-                                          <IconButton onClick={(e) => this.setState({openMap: true})}>
-                                            <PlaceIcon/>
-                                          </IconButton>
-                                        </InputAdornment>
-                                    )
-                                  }}
+                                  onChange={this.handleChange.bind(this)}
+                                  label={ShopLicenseViewModel.SHOP_NAME}
+                                  error={Boolean(this.state.shopNameError)}
+                                  helperText={this.state.shopNameError}
                               />
                             </GridItem>
                             <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -521,20 +458,70 @@ class HotelApplication extends Component {
                                   options={this.state.trades}/>
                             </GridItem>
                             <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                              <AddressField
+                                  textFieldProps={
+                                    {
+                                      value: this.state.address,
+                                      name: "address",
+                                      placeholder: "Address",
+                                      onBlur: this.handleBlur.bind(this),
+                                      required: true,
+                                      variant: "outlined",
+                                      margin: "dense",
+                                      fullWidth: true,
+                                      error: Boolean(this.state.addressError),
+                                      helperText: this.state.addressError,
+                                      onChange: this.handleChange.bind(this),
+                                      label: "Address of Proposed Hotel/Lodge"
+                                    }
+                                  }
+                                  onPlaceSelect={(place) => {
+                                    if (place) {
+                                      let name = place.name;
+                                      let address = place.formatted_address;
+                                      let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                                      this.setState({address: complete_address});
+                                    }
+                                  }}/>
+                            </GridItem>
+                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                              <OfficeSelect
+                                  value={this.state.localCouncil}
+                                  label={"Local Council of Proposed Hotel/Lodge"}
+                                  name={"localCouncil"}
+                                  variant={"outlined"}
+                                  margin={"dense"}
+                                  fullWidth={true}
+                                  required={true}
+                                  helperText={this.state.localCouncilError}
+                                  error={Boolean(this.state.localCouncilError)}
+                                  onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
+                                  onChange={this.handleSelect.bind(this, "localCouncil")}
+                                  options={this.state.localCouncils}/>
+                            </GridItem>
+                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
                               <TextField
-                                  value={this.state.shopName}
-                                  name={"shopName"}
+                                  onClick={(e) => this.setState({openMap: true})}
+                                  value={this.state.coordinate}
+                                  name={"coordinate"}
                                   onBlur={this.handleBlur.bind(this)}
                                   required={true}
                                   variant={"outlined"}
                                   margin={"dense"}
                                   fullWidth={true}
-                                  onChange={this.handleChange.bind(this)}
-                                  label={ShopLicenseViewModel.SHOP_NAME}
-                                  error={Boolean(this.state.shopNameError)}
-                                  helperText={this.state.shopNameError}
+                                  error={Boolean(this.state.coordinateError)}
+                                  helperText={this.state.coordinateError}
+                                  label={"Location of Proposed Hotel/Lodge"}
+                                  InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position={"end"}>
+                                          <IconButton onClick={(e) => this.setState({openMap: true})}>
+                                            <PlaceIcon/>
+                                          </IconButton>
+                                        </InputAdornment>
+                                    )
+                                  }}
                               />
-
                             </GridItem>
                             <GridItem className={classes.root} xs={12} sm={12} md={6}>
                               <TextField
@@ -645,7 +632,7 @@ class HotelApplication extends Component {
                                   margin={"dense"}
                                   fullWidth={true}
                                   onChange={this.handleChange.bind(this)}
-                                  label={"TIN No"}
+                                  label={"TIN No (if any)"}
                               />
                             </GridItem>
                             <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -656,7 +643,7 @@ class HotelApplication extends Component {
                                   margin={"dense"}
                                   fullWidth={true}
                                   onChange={this.handleChange.bind(this)}
-                                  label={"CST No"}
+                                  label={"CST No (if any)"}
                               />
                             </GridItem>
                             <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -667,7 +654,7 @@ class HotelApplication extends Component {
                                   margin={"dense"}
                                   fullWidth={true}
                                   onChange={this.handleChange.bind(this)}
-                                  label={"PAN No"}
+                                  label={"PAN No (if any)"}
                               />
                             </GridItem>
                             <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -678,12 +665,12 @@ class HotelApplication extends Component {
                                   margin={"dense"}
                                   fullWidth={true}
                                   onChange={this.handleChange.bind(this)}
-                                  label={"GST No"}
+                                  label={"GST No (if any)"}
                               />
                             </GridItem>
                             <GridItem className={classes.root} xs={12} sm={12} md={6}>
                               <FormControl fullWidth={true} margin={"dense"}>
-                                <FormLabel>Whether Premises Owned or Leased?</FormLabel>
+                                <FormLabel>Whether Premises is Owned or Leased?</FormLabel>
                                 <RadioGroup
                                     name={"premised"}
                                     row={true}
@@ -702,7 +689,7 @@ class HotelApplication extends Component {
                                           document={{
                                             id: 122,
                                             mandatory: 1,
-                                            name: "Passport size photo",
+                                            name: "Photograph of Applicant",
                                             mime: "image/*"
                                           }}
                                           onUploadSuccess={(data) => {
