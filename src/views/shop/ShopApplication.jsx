@@ -44,11 +44,11 @@ import { APPLICATION_NAME } from "../../utils/Util";
 import LoadingView from "../common/LoadingView";
 
 const style = {
-  subTitle:{
-    fontSize:16,
-    color:"#727272",
-    marginTop:6,
-    marginBottom:6
+  subTitle: {
+    fontSize: 16,
+    color: "#727272",
+    marginTop: 6,
+    marginBottom: 6
   },
   root: {
     padding: "10px 15px !important"
@@ -119,7 +119,7 @@ class ShopApplication extends Component {
     openMap: false,
     prestine: true,
     openOtp: false,
-    otpMessage: "",
+    otpMessage: ""
 
   };
 
@@ -127,10 +127,10 @@ class ShopApplication extends Component {
     document.title = "e-AMC | Shop License Application Form";
     window.scrollTo(0, 0);
     var self = this;
-    this.setGlobal({loading:true});
+    this.setGlobal({ loading: true });
     Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
       .finally(function() {
-        self.setGlobal({loading:false});
+        self.setGlobal({ loading: false });
       });
   }
 
@@ -188,20 +188,20 @@ class ShopApplication extends Component {
         .finally(() => this.setState({ submit: false }));
     }
   };
-  fetchLocalCouncil =async () => {
+  fetchLocalCouncil = async () => {
     await this.localCouncilService.fetch(errorMsg => this.setGlobal({ errorMsg }),
-        localCouncils => this.setState({ localCouncils }));
+      localCouncils => this.setState({ localCouncils }));
   };
   fetchDocuments = async () => {
     await this.documentService.fetch("shop",
-        errorMsg => this.setGlobal({ errorMsg }),
-        docs => {
-      this.setState({
-        flaDocuments: docs,
-        noFlaDocuments: docs.filter((item, index) => index !== docs.length - 1),
-        documents: docs.filter((item, index) => index !== docs.length - 1)
+      errorMsg => this.setGlobal({ errorMsg }),
+      docs => {
+        this.setState({
+          flaDocuments: docs,
+          noFlaDocuments: docs.filter((item, index) => index !== docs.length - 1),
+          documents: docs.filter((item, index) => index !== docs.length - 1)
+        });
       });
-    });
 
   };
   fetchTrades = async () => {
@@ -301,7 +301,7 @@ class ShopApplication extends Component {
       case "ownerAddress":
         value.length === 0 ? this.setState({ ownerAddressError: ShopLicenseViewModel.OWNER_ADDRESS_REQUIRED }) : this.setState({ ownerAddressError: "" });
         break;
-        case "address":
+      case "address":
         value.length === 0 ? this.setState({ addressError: ShopLicenseViewModel.ADDRESS_REQUIRED }) : this.setState({ addressError: "" });
         break;
       case "phone":
@@ -362,6 +362,7 @@ class ShopApplication extends Component {
                       <GridItem md={12} sm={12} xs={12}>
                         <Divider component={"div"}/>
                       </GridItem>
+
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <TextField
                           value={this.state.name}
@@ -421,7 +422,7 @@ class ShopApplication extends Component {
                         />
 
                       </GridItem>
-                      <GridItem className={classes.root} xs={12} sm={12} md={6} >
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <AddressField
                           textFieldProps={
                             {
@@ -638,7 +639,12 @@ class ShopApplication extends Component {
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <FileUpload applicationName={APPLICATION_NAME.SHOP}
-                                    document={{ id: 122, mandatory: 1, name: "Photograph of Applicant", mime: "image/*" }}
+                                    document={{
+                                      id: 122,
+                                      mandatory: 1,
+                                      name: "Photograph of Applicant",
+                                      mime: "image/*"
+                                    }}
                                     onUploadSuccess={(data) => {
                                       this.setState(state => {
                                         state.passport = {
@@ -668,13 +674,13 @@ class ShopApplication extends Component {
                       </GridItem>
 
                       <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                        <Typography className={classes.subTitle} variant={"h6"}>Upload Document(s)</Typography>
+                      </GridItem>
+
+                      <GridItem xs={12} sm={12} md={12}>
                         <Divider component={"div"}/>
                       </GridItem>
 
-                      <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                        <Typography className={classes.subTitle} variant={"h6"}>Upload
-                          Document(s)</Typography>
-                      </GridItem>
                       {
                         this.state.documents.map((doc, index) => {
                           return <GridItem key={index} className={classes.root} sm={12} xs={12}
@@ -705,9 +711,9 @@ class ShopApplication extends Component {
 
                       <GridItem xs={12} sm={12} md={12}>
                         <FormControlLabel
-                          style={{ whiteSpace: "pre-line",alignItems:"flex-start" }}
+                          style={{ whiteSpace: "pre-line", alignItems: "flex-start" }}
                           control={
-                            <Checkbox style={{paddingTop:0}} color={"primary"}
+                            <Checkbox style={{ paddingTop: 0 }} color={"primary"}
                                       onChange={(val, checked) => this.setState({ agree: checked })}/>
                           }
                           label={"1. I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
