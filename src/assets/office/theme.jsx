@@ -1,10 +1,16 @@
 import {createMuiTheme} from "@material-ui/core";
 
 export default createMuiTheme({
+  overrides: {
+    MUIDataTableBodyCell: {
+      root: {
+        padding: "2px 40px 2px 16px"
+      }
+    }
+  },
   typography: {
     useNextVariants: true
   },
-
   palette: {
     primary: {
       main: "#26B99A",
@@ -36,7 +42,6 @@ export default createMuiTheme({
       // The properties to apply
       disableRipple: true, // No more ripple, on the whole application 💣!
       color: "#fff"
-    },
-
+    }
   }
 });

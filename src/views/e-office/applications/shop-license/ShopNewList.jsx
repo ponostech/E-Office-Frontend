@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import {SHOP_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
+import {SHOP_LIST, FILE_CALL, GET_STAFF} from '../../../../config/ApiRoutes';
 import ShopViewDialog from "./common/ShopViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -49,7 +49,6 @@ class ShopNewList extends Component {
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, shops: res.data.data.shops});
-    console.log(res)
   };
 
   getStaffs = () => axios.get(GET_STAFF);
@@ -66,8 +65,14 @@ class ShopNewList extends Component {
 
   takeFile = (data) => this.setState({shop: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.shop.file.id))
-      .then(() => this.props.history.push(DESK));
+  confirmTakeFile = () => {
+    this.setState({openTakeFile: false})
+    this.setGlobal({loading: true})
+    axios.post(FILE_CALL(this.state.shop.file.id))
+        .then(() => this.props.history.push(DESK))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}));
+  }
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
@@ -86,21 +91,14 @@ class ShopNewList extends Component {
         label: "NAME OF APPLICANT",
       },
       {
-        name: "local_council",
-        label: "OWNER'S ADDRESS",
-        options: {
-          customBodyRender: (value) => value.name
-        }
-      },
-      {
         name: "name",
         label: "SHOP NAME",
       },
       {
-        name: "address",
+        name: "local_council",
         label: "PROPOSED LOCATION",
         options: {
-          customBodyRender: (value) => value.local_council.name
+          customBodyRender: (value) => value.name
         }
       },
       {
@@ -124,27 +122,35 @@ class ShopNewList extends Component {
             const lng = Number(data.longitude);
             return (
                 <>
+                  <Tooltip title='View Location in Map'>
+                    <IconButton size='medium' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                      <Icon fontSize="small">pin_drop</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='View Details'>
+                    <IconButton color="primary" size="medium"
+                                aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                      <Icon fontSize="small">remove_red_eye</Icon>
+                    </IconButton>
+                  </Tooltip>
                   <Tooltip title="View File">
-                    <IconButton color="primary" size="small"
+                    <IconButton color="primary" size="medium"
                                 aria-label="View File" onClick={this.viewFile.bind(this, data)}>
                       <Icon fontSize="small">folder</Icon>
                     </IconButton>
                   </Tooltip>
-                  <IconButton color="primary" size="small"
-                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                    <Icon fontSize="small">remove_red_eye</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="secondary"
-                              size="small" onClick={this.openAssignment.bind(this, data)}>
-                    <Icon fontSize="small">send</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="primary"
-                              size="small" onClick={this.takeFile.bind(this, data)}>
-                    <Icon fontSize="small">desktop_mac</Icon>
-                  </IconButton>
-                  <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                    <Icon fontSize="small">pin_drop</Icon>
-                  </IconButton>
+                  <Tooltip title='Assign to Officer/Staff'>
+                    <IconButton variant="contained" color="secondary"
+                                size="medium" onClick={this.openAssignment.bind(this, data)}>
+                      <Icon fontSize="small">send</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Call File'>
+                    <IconButton variant="contained" color="secondary"
+                                size="medium" onClick={this.takeFile.bind(this, data)}>
+                      <Icon fontSize="small">desktop_mac</Icon>
+                    </IconButton>
+                  </Tooltip>
                 </>
             );
           }

@@ -3,9 +3,9 @@ import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
-import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
+import {Icon, IconButton, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import { SHOP_LIST, FILE_TAKE, GET_STAFF, FILE_CALL } from "../../../../config/ApiRoutes";
+import {SHOP_LIST, FILE_TAKE, GET_STAFF} from "../../../../config/ApiRoutes";
 import ShopViewDialog from "./common/ShopViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -59,8 +59,9 @@ class ShopInProcessList extends Component {
 
   takeFile = (data) => this.setState({shop: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_CALL(this.state.shop.shop.file.id))
-      .then(() => this.props.history.push(DESK));
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.shop.shop.file.id))
+      .then(() => this.props.history.push(DESK))
+      .catch(err => this.setGlobal({errorMsg: err.toString()}));
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
@@ -76,19 +77,18 @@ class ShopInProcessList extends Component {
     const tableColumns = [
       {
         name: "owner",
-        label: "APPLICANT",
-      },
-      {
-        name: "owner_address",
-        label: "OWNER ADDRESS",
+        label: "NAME OF APPLICANT",
       },
       {
         name: "name",
         label: "SHOP NAME",
       },
       {
-        name: "address",
+        name: "local_council",
         label: "PROPOSED LOCATION",
+        options: {
+          customBodyRender: (value) => value.name
+        }
       },
       {
         name: "created_at",
@@ -111,27 +111,29 @@ class ShopInProcessList extends Component {
             const lng = Number(data.longitude);
             return (
                 <>
+                  <Tooltip title='Location of Shop'>
+                    <IconButton size='medium' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                      <Icon fontSize="small">pin_drop</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='View Details'>
+                    <IconButton color="primary" size="medium"
+                                aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                      <Icon fontSize="small">remove_red_eye</Icon>
+                    </IconButton>
+                  </Tooltip>
                   <Tooltip title="View File">
-                    <IconButton color="primary" size="small"
+                    <IconButton color="primary" size="medium"
                                 aria-label="View File" onClick={this.viewFile.bind(this, data)}>
                       <Icon fontSize="small">folder</Icon>
                     </IconButton>
                   </Tooltip>
-                  <IconButton color="primary" size="small"
-                              aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                    <Icon fontSize="small">remove_red_eye</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="secondary"
-                              size="small" onClick={this.openAssignment.bind(this, data)}>
-                    <Icon fontSize="small">send</Icon>
-                  </IconButton>
-                  <IconButton variant="contained" color="primary"
-                              size="small" onClick={this.takeFile.bind(this, data)}>
-                    <Icon fontSize="small">desktop_mac</Icon>
-                  </IconButton>
-                  <IconButton size='small' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                    <Icon fontSize="small">pin_drop</Icon>
-                  </IconButton>
+                  <Tooltip title='Call File'>
+                    <IconButton variant="contained" color="secondary"
+                                size="medium" onClick={this.takeFile.bind(this, data)}>
+                      <Icon fontSize="small">desktop_mac</Icon>
+                    </IconButton>
+                  </Tooltip>
                 </>
             );
           }

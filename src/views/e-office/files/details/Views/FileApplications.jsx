@@ -41,6 +41,7 @@ class FileApplications extends Component {
   };
 
   processResponse = (res) => {
+    console.log('applications', res)
     if (res.data.status) this.setState({data: res.data.data.applications});
     else this.setState({err: res.data.messages})
   };
@@ -57,6 +58,7 @@ class FileApplications extends Component {
   };
 
   getByStatus = (data, status = 'new') => {
+    if (!data.length) return false
     return data.filter((val) => {
       if (val.status === status) return true;
     }).map(val => <DetailViewRow key={val.id} primary={val.applicant.advertiser.name}
@@ -75,7 +77,7 @@ class FileApplications extends Component {
 
   render() {
     const {data, loading, tabValue, err, openDetails, singleData} = this.state;
-    const newList = this.getByStatus(data);
+    const newList = this.getByStatus(data, 'new');
     const inProcessList = this.getByStatus(data, 'in-process');
     const rejectedList = this.getByStatus(data, 'rejected');
     const cancelledList = this.getByStatus(data, 'cancelled');
