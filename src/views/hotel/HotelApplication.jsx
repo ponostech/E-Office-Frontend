@@ -555,7 +555,7 @@ class HotelApplication extends Component {
                                   label={"Details of business"}
                               />
                             </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                            <GridItem className={classes.root} xs={12} sm={12} md={3}>
                               <TextField
                                   value={this.state.acRoom}
                                   InputProps={{
@@ -570,7 +570,7 @@ class HotelApplication extends Component {
                                   label={"No of Room (AC)"}
                               />
                             </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                            <GridItem className={classes.root} xs={12} sm={12} md={3}>
                               <TextField
                                   InputProps={{
                                     min: 0
@@ -585,7 +585,7 @@ class HotelApplication extends Component {
                                   label={"No of Room (No AC)"}
                               />
                             </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                            <GridItem className={classes.root} xs={12} sm={12} md={3}>
                               <TextField
                                   InputProps={{
                                     min: 0
@@ -600,7 +600,7 @@ class HotelApplication extends Component {
                                   label={"No of Conference Hall"}
                               />
                             </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                            <GridItem className={classes.root} xs={12} sm={12} md={3}>
                               <TextField
                                   InputProps={{
                                     min: 0
@@ -727,11 +727,10 @@ class HotelApplication extends Component {
                             </GridItem>
 
                             <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                              <Divider component={"div"}/>
-                            </GridItem>
-
-                            <GridItem className={classes.root} xs={12} sm={12} md={12}>
                               <Typography className={classes.subTitle} variant={"h6"}>Upload Document(s)</Typography>
+                            </GridItem>
+                            <GridItem  xs={12} sm={12} md={12}>
+                              <Divider component={"div"}/>
                             </GridItem>
                             {
                               this.state.documents.map((doc, index) => {
@@ -769,7 +768,7 @@ class HotelApplication extends Component {
                                   }
                                   label={"1.I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
                                   "no unauthorized construction." +
-                                  "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations. " +
+                                  "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations 2012. " +
                                   "\n3. I shall follow all rules and regulations of AMC;" +
                                   "\n4. It is certified that the above information is correct to the best of my knowledge"}/>
                             </GridItem>
