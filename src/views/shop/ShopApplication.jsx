@@ -44,6 +44,12 @@ import { APPLICATION_NAME } from "../../utils/Util";
 import LoadingView from "../common/LoadingView";
 
 const style = {
+  subTitle:{
+    fontSize:16,
+    color:"#727272",
+    marginTop:6,
+    marginBottom:6
+  },
   root: {
     padding: "10px 15px !important"
   },
@@ -124,9 +130,7 @@ class ShopApplication extends Component {
     this.setGlobal({loading:true});
     Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
       .finally(function() {
-        setTimeout(function() {
-          self.setGlobal({ loading: false });
-        }, 2000);
+        self.setGlobal({loading:false});
       });
   }
 
@@ -184,12 +188,12 @@ class ShopApplication extends Component {
         .finally(() => this.setState({ submit: false }));
     }
   };
-  fetchLocalCouncil = () => {
-    this.localCouncilService.fetch(errorMsg => this.setGlobal({ errorMsg }),
+  fetchLocalCouncil =async () => {
+    await this.localCouncilService.fetch(errorMsg => this.setGlobal({ errorMsg }),
         localCouncils => this.setState({ localCouncils }));
   };
-  fetchDocuments = () => {
-    this.documentService.fetch("shop",
+  fetchDocuments = async () => {
+    await this.documentService.fetch("shop",
         errorMsg => this.setGlobal({ errorMsg }),
         docs => {
       this.setState({
@@ -200,8 +204,8 @@ class ShopApplication extends Component {
     });
 
   };
-  fetchTrades = () => {
-    this.tradeService.fetch((errorMsg) => this.setGlobal({ errorMsg })
+  fetchTrades = async () => {
+    await this.tradeService.fetch((errorMsg) => this.setGlobal({ errorMsg })
       , (trades) => this.setState({ trades }));
   };
   handleChange = (e) => {
@@ -294,8 +298,8 @@ class ShopApplication extends Component {
       case "shopName":
         value.length === 0 ? this.setState({ shopNameError: ShopLicenseViewModel.SHOP_NAME_REQUIRED }) : this.setState({ shopNameError: "" });
         break;
-      case "address":
-        value.length === 0 ? this.setState({ addressError: ShopLicenseViewModel.ADDRESS_REQUIRED }) : this.setState({ addressError: "" });
+      case "ownerAddress":
+        value.length === 0 ? this.setState({ ownerAddressError: ShopLicenseViewModel.OWNER_ADDRESS_REQUIRED }) : this.setState({ ownerAddressError: "" });
         break;
       case "phone":
         value.length === 0 ? this.setState({ phoneError: ShopLicenseViewModel.PHONE_REQUIRED }) : this.setState({ phoneError: "" });
@@ -349,7 +353,11 @@ class ShopApplication extends Component {
                       </GridItem>
 
                       <GridItem md={12} sm={12} xs={12}>
-                        <Divider style={{ marginBottom: 10, marginTop: 10 }}/>
+                        <Typography className={classes.subTitle} variant={"h6"}> Details of Applicant</Typography>
+                      </GridItem>
+
+                      <GridItem md={12} sm={12} xs={12}>
+                        <Divider component={"div"}/>
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <TextField
@@ -410,7 +418,7 @@ class ShopApplication extends Component {
                         />
 
                       </GridItem>
-                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                      <GridItem className={classes.root} xs={12} sm={12} md={6} >
                         <AddressField
                           textFieldProps={
                             {
@@ -438,72 +446,28 @@ class ShopApplication extends Component {
                             }
                           }}/>
                       </GridItem>
-                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                        <OfficeSelect
-                          value={this.state.localCouncil}
-                          label={"Local Council"}
-                          name={"localCouncil"}
-                          variant={"outlined"}
-                          margin={"dense"}
-                          fullWidth={true}
-                          required={true}
-                          helperText={this.state.localCouncilError}
-                          error={Boolean(this.state.localCouncilError)}
-                          onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
-                          onChange={this.handleSelect.bind(this, "localCouncil")}
-                          options={this.state.localCouncils}/>
-                      </GridItem>
-                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                        <AddressField
-                          textFieldProps={
-                            {
-                              value: this.state.address,
-                              name: "address",
-                              placeholder: "Address",
-                              onBlur: this.handleBlur.bind(this),
-                              required: true,
-                              variant: "outlined",
-                              margin: "dense",
-                              fullWidth: true,
-                              error: Boolean(this.state.addressError),
-                              helperText: this.state.addressError,
-                              onChange: this.handleChange.bind(this),
-                              label: "Purposed Location of Shop"
-                            }
-                          }
 
-                          onPlaceSelect={(place) => {
-                            if (place) {
-                              let name = place.name;
-                              let address = place.formatted_address;
-                              let complete_address = address.includes(name) ? address : `${name} ${address}`;
-                              this.setState({ address: complete_address });
-                            }
-                          }}/>
+                      <GridItem md={12} sm={12} xs={12}>
+                        <Typography className={classes.subTitle} variant={"h6"}> Details of Proposed Shop</Typography>
+                      </GridItem>
+
+                      <GridItem sm={12} xs={12} md={12}>
+                        <Divider component={"div"}/>
                       </GridItem>
 
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <TextField
-                          onClick={(e) => this.setState({ openMap: true })}
-                          value={this.state.coordinate}
-                          name={"coordinate"}
+                          value={this.state.shopName}
+                          name={"shopName"}
                           onBlur={this.handleBlur.bind(this)}
                           required={true}
                           variant={"outlined"}
                           margin={"dense"}
                           fullWidth={true}
-                          error={Boolean(this.state.coordinateError)}
-                          helperText={this.state.coordinateError}
-                          label={"Coordinate of Purposed Location"}
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position={"end"}>
-                                <IconButton onClick={(e) => this.setState({ openMap: true })}>
-                                  <PlaceIcon/>
-                                </IconButton>
-                              </InputAdornment>
-                            )
-                          }}
+                          onChange={this.handleChange.bind(this)}
+                          label={ShopLicenseViewModel.SHOP_NAME}
+                          error={Boolean(this.state.shopNameError)}
+                          helperText={this.state.shopNameError}
                         />
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -522,22 +486,79 @@ class ShopApplication extends Component {
                           label={"Name of Trade"}
                           options={this.state.trades}/>
                       </GridItem>
+
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                        <AddressField
+                          textFieldProps={
+                            {
+                              value: this.state.address,
+                              name: "address",
+                              placeholder: "Address",
+                              onBlur: this.handleBlur.bind(this),
+                              required: true,
+                              variant: "outlined",
+                              margin: "dense",
+                              fullWidth: true,
+                              error: Boolean(this.state.addressError),
+                              helperText: this.state.addressError,
+                              onChange: this.handleChange.bind(this),
+                              label: "Address of Proposed Shop"
+                            }
+                          }
+
+                          onPlaceSelect={(place) => {
+                            if (place) {
+                              let name = place.name;
+                              let address = place.formatted_address;
+                              let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                              this.setState({ address: complete_address });
+                            }
+                          }}/>
+                      </GridItem>
+
+                      <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                        <OfficeSelect
+                          value={this.state.localCouncil}
+                          label={"Local Council of Proposed Shop"}
+                          name={"localCouncil"}
+                          variant={"outlined"}
+                          margin={"dense"}
+                          fullWidth={true}
+                          required={true}
+                          helperText={this.state.localCouncilError}
+                          error={Boolean(this.state.localCouncilError)}
+                          onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
+                          onChange={this.handleSelect.bind(this, "localCouncil")}
+                          options={this.state.localCouncils}/>
+                      </GridItem>
+
+
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <TextField
-                          value={this.state.shopName}
-                          name={"shopName"}
+                          onClick={(e) => this.setState({ openMap: true })}
+                          value={this.state.coordinate}
+                          name={"coordinate"}
                           onBlur={this.handleBlur.bind(this)}
                           required={true}
                           variant={"outlined"}
                           margin={"dense"}
                           fullWidth={true}
-                          onChange={this.handleChange.bind(this)}
-                          label={ShopLicenseViewModel.SHOP_NAME}
-                          error={Boolean(this.state.shopNameError)}
-                          helperText={this.state.shopNameError}
+                          error={Boolean(this.state.coordinateError)}
+                          helperText={this.state.coordinateError}
+                          label={"Location of Proposed Shop"}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position={"end"}>
+                                <IconButton onClick={(e) => this.setState({ openMap: true })}>
+                                  <PlaceIcon/>
+                                </IconButton>
+                              </InputAdornment>
+                            )
+                          }}
                         />
-
                       </GridItem>
+
+
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <TextField
                           value={this.state.businessDetail}
@@ -576,7 +597,7 @@ class ShopApplication extends Component {
                           margin={"dense"}
                           fullWidth={true}
                           onChange={this.handleChange.bind(this)}
-                          label={"TIN No"}
+                          label={"TIN No (If Any)"}
                         />
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -587,7 +608,7 @@ class ShopApplication extends Component {
                           margin={"dense"}
                           fullWidth={true}
                           onChange={this.handleChange.bind(this)}
-                          label={"CST No"}
+                          label={"CST No (If Any)"}
                         />
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -598,7 +619,7 @@ class ShopApplication extends Component {
                           margin={"dense"}
                           fullWidth={true}
                           onChange={this.handleChange.bind(this)}
-                          label={"PAN No"}
+                          label={"PAN No (If Any)"}
                         />
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -609,12 +630,12 @@ class ShopApplication extends Component {
                           margin={"dense"}
                           fullWidth={true}
                           onChange={this.handleChange.bind(this)}
-                          label={"GST No"}
+                          label={"GST No (If Any)"}
                         />
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <FileUpload applicationName={APPLICATION_NAME.SHOP}
-                                    document={{ id: 122, mandatory: 1, name: "Passport size photo", mime: "image/*" }}
+                                    document={{ id: 122, mandatory: 1, name: "Photograph of Applicant", mime: "image/*" }}
                                     onUploadSuccess={(data) => {
                                       this.setState(state => {
                                         state.passport = {
@@ -628,7 +649,7 @@ class ShopApplication extends Component {
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={6}>
                         <FormControl fullWidth={true} margin={"dense"}>
-                          <FormLabel>Whether Premises Owned or Leased?</FormLabel>
+                          <FormLabel>Whether Premises is Owned or Leased?</FormLabel>
                           <RadioGroup
                             name={"premised"}
                             row={true}
@@ -647,7 +668,7 @@ class ShopApplication extends Component {
                         <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
                       </GridItem>
                       <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                        <Typography variant={"headline"}>Upload
+                        <Typography className={classes.subTitle} variant={"h6"}>Upload
                           Document(s)</Typography>
                       </GridItem>
                       {
@@ -674,17 +695,20 @@ class ShopApplication extends Component {
 
                         })
                       }
+                      <GridItem xs={12} sm={12} md={12}>
+                        <Typography className={classes.subTitle} variant={"h6"}>Declaration</Typography>
+                      </GridItem>
 
                       <GridItem xs={12} sm={12} md={12}>
                         <FormControlLabel
-                          style={{ whiteSpace: "pre-line" }}
+                          style={{ whiteSpace: "pre-line",alignItems:"flex-start" }}
                           control={
-                            <Checkbox color={"primary"}
+                            <Checkbox style={{paddingTop:0}} color={"primary"}
                                       onChange={(val, checked) => this.setState({ agree: checked })}/>
                           }
                           label={"1. I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
                           "no unauthorized construction." +
-                          "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations." +
+                          "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations 2012." +
                           "\n3. I shall follow all rules and regulations of AMC." +
                           "\n4. It is certified that the above information is correct to the best of my knowledge." +
                           "\n"}/>

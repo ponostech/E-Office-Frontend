@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ApiRoutes } from "../config/ApiRoutes";
+import { ArrayToString } from "../utils/ErrorUtil";
 
 export class DocumentService {
 
@@ -15,7 +16,7 @@ export class DocumentService {
         const docs = res.data.data.documents;
         successCallback(docs);
       } else {
-        errorCallback("Something went wrong: Please try again later");
+        errorCallback(ArrayToString(res.data.messages));
       }
     } catch (e) {
       errorCallback(e.toString());
