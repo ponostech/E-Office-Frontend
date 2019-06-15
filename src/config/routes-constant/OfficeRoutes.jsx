@@ -71,11 +71,13 @@ export const NEW_HOARDINGS = "/e-office/applications/hoardings";
 export const UNDER_PROCESS_HOARDINGS = "/e-office/applications/hoardings/under-process";
 export const REJECTED_HOARDINGS = "/e-office/applications/hoardings/reject";
 export const APPROVED_HOARDINGS = "/e-office/applications/hoardings/approved";
+export const CANCELLED_HOARDINGS = "/e-office/applications/hoardings/cancelled";
 
 export const NEW_KIOSKS = "/e-office/applications/kiosks/new";
 export const UNDER_PROCESS_KIOSKS = "/e-office/applications/kiosks/under-process";
 export const APPROVED_KIOSKS = "/e-office/applications/kiosks/approved";
 export const REJECTED_KIOSKS = "/e-office/applications/kiosks/rejected";
+export const CANCELLED_KIOSKS = "/e-office/applications/kiosks/cancelled";
 
 export const NEW_BANNER = "/e-office/applications/banner/new";
 export const UNDER_PROCESS_BANNER = "/e-office/applications/banner/under-process";

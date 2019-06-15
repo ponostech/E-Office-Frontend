@@ -67,7 +67,8 @@ const menu = (props) => {
             { title: "New Application", link: OfficeRoutes.NEW_HOARDINGS },
             { title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_HOARDINGS },
             { title: "Approved List", link: OfficeRoutes.APPROVED_HOARDINGS },
-            { title: "Reject List", link: OfficeRoutes.REJECTED_HOARDINGS }
+            { title: "Reject List", link: OfficeRoutes.REJECTED_HOARDINGS },
+            { title: "Cancelled List", link: OfficeRoutes.CANCELLED_HOARDINGS },
           ]}
           buttonText={"Hoarding"}
           buttonProps={{ color: "transparent" }}/>
@@ -76,7 +77,8 @@ const menu = (props) => {
             { title: "New Application", link: OfficeRoutes.NEW_KIOSKS },
             { title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_KIOSKS },
             { title: "Approved List", link: OfficeRoutes.APPROVED_KIOSKS },
-            { title: "Reject List", link: OfficeRoutes.REJECTED_KIOSKS }
+            { title: "Reject List", link: OfficeRoutes.REJECTED_KIOSKS },
+            { title: "Cancelled List", link: OfficeRoutes.CANCELLED_KIOSKS },
 
           ]}
           buttonText={"Kiosk"}
