@@ -35,7 +35,7 @@ class ShopInProcessList extends Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(SHOP_LIST, {params: {status: 'approve'}})
+  getData = () => axios.get(SHOP_LIST, {params: {status: 'approved'}})
       .then(res => this.processResult(res))
       .catch(err => this.setGlobal({errorMsg: err.toString()}))
       .then(() => this.setGlobal({loading: false}));
