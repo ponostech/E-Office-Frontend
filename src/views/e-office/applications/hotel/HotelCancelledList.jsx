@@ -35,7 +35,7 @@ class HotelCancelledList extends Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(HOTEL_LIST, {params: {status: 'cancel'}})
+  getData = () => axios.get(HOTEL_LIST, {params: {status: 'cancelled'}})
       .then(res => this.processResult(res))
       .catch(err => this.setGlobal({errorMsg: err.toString()}))
       .then(() => this.setGlobal({loading: false}));

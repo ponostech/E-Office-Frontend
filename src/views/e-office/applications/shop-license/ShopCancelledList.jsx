@@ -37,7 +37,7 @@ class ShopCancelledList extends React.Component {
     this.getData();
     this.getStaffs();
   }
-  getData = () => axios.get(SHOP_LIST, {params: {status: 'cancel'}})
+  getData = () => axios.get(SHOP_LIST, {params: {status: 'cancelled'}})
     .then(res => this.processResult(res))
     .catch(err => this.setState({errorMsg: err.toString()}))
     .then(() => this.props.doLoad(false));

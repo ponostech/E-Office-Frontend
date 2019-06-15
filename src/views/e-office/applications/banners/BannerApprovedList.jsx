@@ -35,7 +35,7 @@ class BannerApprovedList extends Component {
     this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
   }
 
-  getData = () => axios.get(BANNER_LIST, {params: {status: 'approve'}})
+  getData = () => axios.get(BANNER_LIST, {params: {status: 'approved'}})
       .then(res => this.processResult(res))
       .catch(err => this.setGlobal({errorMsg: err.toString()}))
       .then(() => this.setGlobal({loading: false}));

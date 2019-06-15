@@ -81,6 +81,7 @@ export const NEW_BANNER = "/e-office/applications/banner/new";
 export const UNDER_PROCESS_BANNER = "/e-office/applications/banner/under-process";
 export const APPROVED_BANNER = "/e-office/applications/banner/approved";
 export const REJECTED_BANNER = "/e-office/applications/banner/rejected";
+export const CANCELLED_BANNER = "/e-office/applications/banner/cancelled";
 
 export const NEW_SHOPLICENSE = "/e-office/applications/shop-license/new";
 export const UNDER_PROCESS_SHOPLICENSE = "/e-office/applications/shop-license/under-process";
