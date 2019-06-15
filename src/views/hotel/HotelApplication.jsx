@@ -783,9 +783,9 @@ class HotelApplication extends Component {
                           <GridContainer justify={"flex-end"}>
                             <GridItem>
                               <Button name={"primary"} disabled={
-                                !Boolean(this.state.name) || !Boolean(this.state.type) || !Boolean(this.state.address)
+                                !Boolean(this.state.name) || !Boolean(this.state.type) || !Boolean(this.state.address) || !Boolean(this.state.ownerAddress)
                                 || !Boolean(this.state.coordinate) || !Boolean(this.state.phone) || !Boolean(this.state.shopName)
-                                || !Boolean(this.state.estd) || !Boolean(this.state.prestine) ||
+                                || !Boolean(this.state.estd) ||
                                 !this.state.agree || this.state.passport === undefined
                               }
                                       color={"primary"} variant={"outlined"}
