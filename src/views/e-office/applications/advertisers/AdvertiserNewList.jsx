@@ -11,7 +11,6 @@ import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
-import ErrorHandler from "../../../common/StatusHandler";
 import CardContent from "@material-ui/core/CardContent"
 
 const styles = {
@@ -69,7 +68,7 @@ class AdvertiserNewList extends Component {
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
-    const {loading, advertiser, advertisers, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
+    const {advertiser, advertisers, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -118,24 +117,26 @@ class AdvertiserNewList extends Component {
                       <Icon fontSize="small">folder</Icon>
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="View Details">
-                    <IconButton color="primary" size="small"
-                                aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
-                      <Icon fontSize="small">remove_red_eye</Icon>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Assign File">
-                    <IconButton variant="contained" color="secondary"
-                                size="small" onClick={this.openAssignment.bind(this, data)}>
-                      <Icon fontSize="small">send</Icon>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Take File">
-                    <IconButton variant="contained" color="primary"
-                                size="small" onClick={this.takeFile.bind(this, data)}>
-                      <Icon fontSize="small">desktop_mac</Icon>
-                    </IconButton>
-                  </Tooltip>
+                  {data.file ? <>
+                    <Tooltip title="View Details">
+                      <IconButton color="primary" size="small"
+                                  aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
+                        <Icon fontSize="small">remove_red_eye</Icon>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Assign File">
+                      <IconButton variant="contained" color="secondary"
+                                  size="small" onClick={this.openAssignment.bind(this, data)}>
+                        <Icon fontSize="small">send</Icon>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Take File">
+                      <IconButton variant="contained" color="primary"
+                                  size="small" onClick={this.takeFile.bind(this, data)}>
+                        <Icon fontSize="small">desktop_mac</Icon>
+                      </IconButton>
+                    </Tooltip>
+                  </> : null}
                 </div>
             );
           }
@@ -167,8 +168,6 @@ class AdvertiserNewList extends Component {
           <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                          onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                          onConfirm={this.confirmTakeFile}/>}
-
-          {this.global.errorMsg && <ErrorHandler/>}
         </>
     );
   }

@@ -53,6 +53,7 @@ export class LoginService {
         errorCallback("Something went wrong: Please try again later");
       }
     } catch (e) {
+      localStorage.clear()
       console.error(e);
       errorCallback(e.toString());
     }
