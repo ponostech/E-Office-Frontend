@@ -87,7 +87,8 @@ const menu = (props) => {
             { title: "New Application", link: OfficeRoutes.NEW_BANNER },
             { title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_BANNER },
             { title: "Approved List", link: OfficeRoutes.APPROVED_BANNER },
-            { title: "Reject List", link: OfficeRoutes.REJECTED_BANNER }
+            { title: "Reject List", link: OfficeRoutes.REJECTED_BANNER },
+            { title: "Cancelled List", link: OfficeRoutes.CANCELLED_BANNER }
 
           ]}
           buttonText={"Banner"}

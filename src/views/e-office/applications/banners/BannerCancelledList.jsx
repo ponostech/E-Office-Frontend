@@ -17,7 +17,7 @@ import CardContent from "@material-ui/core/CardContent"
 
 const styles = {};
 
-class BannerRejectedList extends Component {
+class BannerCancelledList extends Component {
   state = {
     banners: [],
     openMap: false,
@@ -35,7 +35,7 @@ class BannerRejectedList extends Component {
     this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
   }
 
-  getData = () => axios.get(BANNER_LIST, {params: {status: 'rejected'}})
+  getData = () => axios.get(BANNER_LIST, {params: {status: 'cancelled'}})
     .then(res => this.processResult(res))
     .catch(err => this.setGlobal({errorMsg: err.toString()}))
     .then(() => this.setGlobal({loading: false}));
@@ -186,4 +186,4 @@ class BannerRejectedList extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(BannerRejectedList));
+export default withRouter(withStyles(styles)(BannerCancelledList));
