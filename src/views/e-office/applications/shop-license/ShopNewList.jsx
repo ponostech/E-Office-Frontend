@@ -41,7 +41,7 @@ class ShopNewList extends Component {
   }
 
   getData = () => {
-    axios.get(SHOP_LIST)
+    axios.get(SHOP_LIST, {params: {status: 'new'}})
         .then(res => this.processResult(res))
         .catch(err => this.setGlobal({errorMsg: err.toString()}))
         .then(() => this.setGlobal({loading: false}));
@@ -83,11 +83,11 @@ class ShopNewList extends Component {
     const tableColumns = [
       {
         name: "owner",
-        label: "APPLICANT",
+        label: "NAME OF APPLICANT",
       },
       {
         name: "local_council",
-        label: "OWNER ADDRESS",
+        label: "OWNER'S ADDRESS",
         options: {
           customBodyRender: (value) => value.name
         }
@@ -99,6 +99,9 @@ class ShopNewList extends Component {
       {
         name: "address",
         label: "PROPOSED LOCATION",
+        options: {
+          customBodyRender: (value) => value.local_council.name
+        }
       },
       {
         name: "created_at",
