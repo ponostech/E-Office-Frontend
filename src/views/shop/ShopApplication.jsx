@@ -279,7 +279,7 @@ class ShopApplication extends Component {
       case "type":
         this.state.type ? this.setState({ typeError: "" }) : this.setState({ typeError: ShopLicenseViewModel.TYPE_REQUIRED });
         break;
-      case "tradeName":
+      case "trade":
         this.state.tradeName === undefined ? this.setState({ tradeNameError: ShopLicenseViewModel.TRADE_REQUIRED }) : this.setState({ tradeNameError: "" });
         break;
       case "displayType":
@@ -300,6 +300,9 @@ class ShopApplication extends Component {
         break;
       case "ownerAddress":
         value.length === 0 ? this.setState({ ownerAddressError: ShopLicenseViewModel.OWNER_ADDRESS_REQUIRED }) : this.setState({ ownerAddressError: "" });
+        break;
+        case "address":
+        value.length === 0 ? this.setState({ addressError: ShopLicenseViewModel.ADDRESS_REQUIRED }) : this.setState({ addressError: "" });
         break;
       case "phone":
         value.length === 0 ? this.setState({ phoneError: ShopLicenseViewModel.PHONE_REQUIRED }) : this.setState({ phoneError: "" });
@@ -465,7 +468,7 @@ class ShopApplication extends Component {
                           margin={"dense"}
                           fullWidth={true}
                           onChange={this.handleChange.bind(this)}
-                          label={ShopLicenseViewModel.SHOP_NAME}
+                          label={"Name of Proposed Shop"}
                           error={Boolean(this.state.shopNameError)}
                           helperText={this.state.shopNameError}
                         />
@@ -493,7 +496,7 @@ class ShopApplication extends Component {
                             {
                               value: this.state.address,
                               name: "address",
-                              placeholder: "Address",
+                              placeholder: "Address of Proposed Shop",
                               onBlur: this.handleBlur.bind(this),
                               required: true,
                               variant: "outlined",
@@ -665,8 +668,9 @@ class ShopApplication extends Component {
                       </GridItem>
 
                       <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                        <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+                        <Divider component={"div"}/>
                       </GridItem>
+
                       <GridItem className={classes.root} xs={12} sm={12} md={12}>
                         <Typography className={classes.subTitle} variant={"h6"}>Upload
                           Document(s)</Typography>
