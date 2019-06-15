@@ -14,9 +14,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 import LoginIcon from "@material-ui/icons/ArrowRight";
 
 import Home from "@material-ui/icons/Home";
+import Person from "@material-ui/icons/PersonAdd";
+
 import authNavbarStyle from "assets/jss/material-dashboard-pro-react/components/authNavbarStyle.jsx";
 import { Button, Fab, LinearProgress } from "@material-ui/core";
-import { LOGIN, ROOT } from "../../config/routes-constant/OfficeRoutes";
+import { LOGIN, ROOT, APPLY_ADVERTISER } from "../../config/routes-constant/OfficeRoutes";
 
 // core components
 
@@ -88,6 +90,16 @@ class AuthNavbar extends React.Component {
               primary={"Home"}
               disableTypography={true}
               className={classes.listItemText}
+            />
+          </NavLink>
+        </ListItem>
+        <ListItem className={classes.listItem}>
+          <NavLink to={APPLY_ADVERTISER} className={classes.navLink}>
+            <Person className={classes.listItemIcon}/>
+            <ListItemText
+                primary={"Advertiser Registration"}
+                disableTypography={true}
+                className={classes.listItemText}
             />
           </NavLink>
         </ListItem>
