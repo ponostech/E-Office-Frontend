@@ -154,7 +154,7 @@ class BannerRejectedList extends Component {
       <>
         {this.global.loading ? <LoadingView/> : <CardContent>
           <MUIDataTable
-            title={"Banner: List of Rejected Application"}
+            title={"Banner: List of Rejected Applications"}
             data={banners}
             columns={tableColumns}
             options={tableOptions}

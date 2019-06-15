@@ -31,6 +31,7 @@ import NewBannerApplications from "../../views/e-office/applications/banners/Ban
 import UnderProcessBanner from "../../views/e-office/applications/banners/BannerUnderProcessList";
 import BannerGrantedList from "../../views/e-office/applications/banners/BannerApprovedList";
 import BannerRejectedList from "../../views/e-office/applications/banners/BannerRejectedList";
+import BannerCancelledList from "../../views/e-office/applications/banners/BannerCancelledList";
 import UnderProcessShopLicense from "../../views/e-office/applications/shop-license/ShopInProcessList";
 import ApprovedShopLicense from "../../views/e-office/applications/shop-license/ShopApprovedList";
 import RejectedShopLicense from "../../views/e-office/applications/shop-license/ShopRejectedList";
@@ -112,6 +113,7 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.UNDER_PROCESS_BANNER} render={e => <UnderProcessBanner/>}/>
       <Route exact path={OfficeRoutes.APPROVED_BANNER} render={e => <BannerGrantedList/>}/>
       <Route exact path={OfficeRoutes.REJECTED_BANNER} render={e => <BannerRejectedList/>}/>
+      <Route exact path={OfficeRoutes.CANCELLED_BANNER} render={e => <BannerCancelledList/>}/>
 
       {/*Shop Licensing*/}
       <Route exact path={OfficeRoutes.NEW_SHOPLICENSE} render={e => <ShopNewList/>}/>
