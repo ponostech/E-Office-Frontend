@@ -58,53 +58,55 @@ class BannerViewDialog extends Component {
           </AppBar>
           <DialogContent>
             <List>
-              <Card>
-                <DetailViewRow primary="Name of Applicant" secondary={data.name} />
-                <DetailViewRow primary="Type of Applicant" secondary={data.applicant_type.toUpperCase()} />
-                <DetailViewRow primary="Owner Address" secondary={data.address} />
-                <DetailViewRow primary="Mobile" secondary={data.phone} />
-                <DetailViewRow primary="Shop Name" secondary={data.name} />
-                <DetailViewRow primary="Proposed Location" secondary={data.address} />
-                <DetailViewRow primary="Details of Business" secondary={data.details} />
-                <DetailViewRow primary="Date of Application" secondary={moment(data.created_at).format("Do MMMM YYYY")} />
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Length</TableCell>
-                      <TableCell>Height</TableCell>
-                      <TableCell>Locations</TableCell>
-                      <TableCell>From</TableCell>
-                      <TableCell>To</TableCell>
-                      <TableCell>No of days</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data?
-                      data.advertisements.map(function(item, index) {
-                        let now  = item.from;
-                        let then = item.to;
-                       // then  = moment(then).format('D-MM-YYYY');
-                        //now   = moment(now).format('D-MM-YYYY');
-                        let diff = moment(then).diff(moment(now),'days');
-                        let duration = moment.duration(diff);
-                        console.log(moment(diff));
-                        return (
-                          <TableRow key={index}>
-                            <TableCell>{item.length}</TableCell>
-                            <TableCell>{item.height}</TableCell>
-                            <TableCell>{item.locations}</TableCell>
-                            <TableCell>{moment(item.from).format("Do MMMM YYYY")}</TableCell>
-                            <TableCell>{moment(item.to).format("Do MMMM YYYY")}</TableCell>
-                            <TableCell>
-                              {diff}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      }):""
-                    }
-                  </TableBody>
-                </Table>
-               </Card>
+              {
+                data?<Card>
+                  <DetailViewRow primary="Name of Applicant" secondary={data.name} />
+                  <DetailViewRow primary="Type of Applicant" secondary={data.applicant_type.toUpperCase()} />
+                  <DetailViewRow primary="Owner Address" secondary={data.address} />
+                  <DetailViewRow primary="Mobile" secondary={data.phone} />
+                  <DetailViewRow primary="Shop Name" secondary={data.name} />
+                  <DetailViewRow primary="Proposed Location" secondary={data.address} />
+                  <DetailViewRow primary="Details of Business" secondary={data.details} />
+                  <DetailViewRow primary="Date of Application" secondary={moment(data.created_at).format("Do MMMM YYYY")} />
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Length</TableCell>
+                        <TableCell>Height</TableCell>
+                        <TableCell>Locations</TableCell>
+                        <TableCell>From</TableCell>
+                        <TableCell>To</TableCell>
+                        <TableCell>No of days</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {data?
+                        data.advertisements.map(function(item, index) {
+                          let now  = item.from;
+                          let then = item.to;
+                          // then  = moment(then).format('D-MM-YYYY');
+                          //now   = moment(now).format('D-MM-YYYY');
+                          let diff = moment(then).diff(moment(now),'days');
+                          let duration = moment.duration(diff);
+                          console.log(moment(diff));
+                          return (
+                            <TableRow key={index}>
+                              <TableCell>{item.length}</TableCell>
+                              <TableCell>{item.height}</TableCell>
+                              <TableCell>{item.locations}</TableCell>
+                              <TableCell>{moment(item.from).format("Do MMMM YYYY")}</TableCell>
+                              <TableCell>{moment(item.to).format("Do MMMM YYYY")}</TableCell>
+                              <TableCell>
+                                {diff}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        }):""
+                      }
+                    </TableBody>
+                  </Table>
+                </Card>:""
+              }
             </List>
           </DialogContent>
           <DialogActions>

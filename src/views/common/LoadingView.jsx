@@ -3,7 +3,7 @@ import { CircularProgress, Grid } from "@material-ui/core";
 
 const loadingView = (props) => {
   return (
-    <Grid container justify={"center"} spacing={32}>
+    <Grid container justify={"center"} spacing={3}>
       <Grid item lg={12} align={props.align ? props.align : "center"}>
         <div style={{ margin: 20 }}>
           <CircularProgress variant={"indeterminate"}

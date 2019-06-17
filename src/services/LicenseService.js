@@ -5,7 +5,7 @@ import { ArrayToString } from "../utils/ErrorUtil";
 export class LicenseService {
   async checkShopLicense(phone_no, errorCallback, successCallback) {
     try {
-      let res = await axios.get(ApiRoutes.WARDS);
+      let res = await axios.get(ApiRoutes.CHECK_LICENSE);
       if (res.data.status) {
         successCallback(res.data.data);
       } else {
@@ -18,7 +18,7 @@ export class LicenseService {
   }
   async checkHotelLicense(phone_no, errorCallback, successCallback) {
     try {
-      let res = await axios.get(ApiRoutes.WARDS);
+      let res = await axios.get(ApiRoutes.CHECK_LICENSE);
       if (res.data.status) {
         successCallback(res.data.data);
       } else {
@@ -31,9 +31,9 @@ export class LicenseService {
   }
   async checkBanner(phone_no, errorCallback, successCallback) {
     try {
-      let res = await axios.get(ApiRoutes.WARDS);
+      let res = await axios.get(ApiRoutes.STAFF_BANNER);
       if (res.data.status) {
-        successCallback(res.data.data);
+        successCallback(res.data.data.banners);
       } else {
         errorCallback(ArrayToString(res.data.messages));
       }

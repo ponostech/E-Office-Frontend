@@ -114,6 +114,7 @@ export class ApiRoutes {
 
   static UPDATE_NOTESHEET=(id)=>`/notesheets/${id}`;
   static CREATE_FILE="/files";
+  static CHECK_LICENSE="/check-license";
 
 
   static UPDATE_LICENSE_TEMPLATE(id) {
