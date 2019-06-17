@@ -5,7 +5,7 @@ import Card from "../../../components/Card/Card";
 import { Button, CardContent, Divider, Grid, TextField, Typography } from "@material-ui/core";
 import CardFooter from "../../../components/Card/CardFooter";
 import OfficeSelect from "../../../components/OfficeSelect";
-import { HOME } from "../../../config/routes-constant/OfficeRoutes";
+import { HOME, SEARCH_LICENSE } from "../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { LicenseService } from "../../../services/LicenseService";
 import SubmitDialog from "../../../components/SubmitDialog";
@@ -13,8 +13,6 @@ import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { Validators } from "../../../utils/Validators";
 
 class CheckLicense extends Component {
-
-  licenseService = new LicenseService();
   state = {
     phone: null,
     type: undefined,
@@ -55,30 +53,14 @@ componentDidMount() {
 
   checkLicense = (e) => {
 
-    const { phone } = this.state;
+    const { phone,type } = this.state;
+    const { history } = this.props;
 
     if (Boolean(this.state.phoneError) || Boolean(this.state.typeError) || this.state.prestine) {
       this.setGlobal({ errorMsg: "Please fill all the required field" });
       return;
     }
-
-    this.setState({ submit: true });
-    switch (this.state.type.value) {
-      case "shop":
-        this.licenseService.checkShopLicense(phone, errorMessage => this.setState({ errorMessage }),
-          shops => console.log(shops)).finally(() => this.setState({ submit: false }));
-        break;
-      case "banner":
-        this.licenseService.checkBanner(phone, errorMessage => this.setState({ errorMessage }),
-          shops => console.log(shops)).finally(() => this.setState({ submit: false }));
-        break;
-      case "hotel":
-        this.licenseService.checkHotelLicense(phone, errorMessage => this.setState({ errorMessage }),
-          shops => console.log(shops)).finally(() => this.setState({ submit: false }));
-        break;
-      default:
-        break;
-    }
+    history.push(SEARCH_LICENSE(phone,type.value))
   };
 
   render() {
@@ -131,7 +113,7 @@ componentDidMount() {
               </Grid>
             </CardContent>
             <CardFooter>
-              <Button href={"#"} onClick={this.checkLicense} color={"primary"} variant={"outlined"} fullWidth={true}>Check</Button>
+              <Button disabled={!Boolean(this.state.phone) || this.state.type===undefined} href={"#"} onClick={this.checkLicense} color={"primary"} variant={"outlined"} fullWidth={true}>Check</Button>
               <Button href={"#"} onClick={e => history.push(HOME)} color={"primary"} variant={"text"} fullWidth={true}>Back to
                 home</Button>
             </CardFooter>
