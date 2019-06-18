@@ -1,19 +1,20 @@
-import React, {Component} from "reactn";
-import axios from 'axios';
-import {withRouter} from "react-router-dom";
+import React, { Component } from "reactn";
+import axios from "axios";
+import { withRouter } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import {withStyles} from "@material-ui/core/styles";
-import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import { Icon, IconButton, Tooltip } from "@material-ui/core";
 import moment from "moment";
-import {HOTEL_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
+import { FILE_TAKE, GET_STAFF, HOTEL_LIST } from "../../../../config/ApiRoutes";
 import HotelViewDialog from "./common/HotelViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
+import { DESK, FILE_DETAIL_ROUTE, FILE_SEND } from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
-import CardContent from "@material-ui/core/CardContent"
+import CardContent from "@material-ui/core/CardContent";
+import { ArrayToString } from "../../../../utils/ErrorUtil";
 
 const styles = {};
 
@@ -26,70 +27,98 @@ class HotelNewList extends Component {
     hotel: null,
     openAssignment: false,
     openTakeFile: false,
-    openViewDialog: false,
+    openViewDialog: false
   };
 
   componentDidMount() {
-    this.setGlobal({loading: true});
+    this.setGlobal({ loading: true });
     this.getData();
-    this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
+    this.getStaffs().then(res => this.setState({ staffs: res.data.data.staffs }));
   }
 
   getData = () => {
     axios.get(HOTEL_LIST)
-        .then(res => this.processResult(res))
-        .catch(err => this.setGlobal({errorMsg: err.toString()}))
-        .then(() => this.setGlobal({loading: false}))
+      .then(res => this.processResult(res))
+      .catch(err => this.setGlobal({ errorMsg: err.toString() }))
+      .then(() => this.setGlobal({ loading: false }));
   };
 
   processResult = (res) => {
-    if (res.data.status) this.setState({hotels: res.data.data.hotels});
-    else this.setGlobal({errorMsg: res.data.messages})
+    if (res.data.status) this.setState({ hotels: res.data.data.hotels });
+    else this.setGlobal({ errorMsg: res.data.messages });
   };
 
   getStaffs = () => axios.get(GET_STAFF);
 
-  closeViewDialog = () => this.setState({openViewDialog: false});
+  closeViewDialog = () => this.setState({ openViewDialog: false });
 
-  viewDetails = (data) => this.setState({openViewDialog: true, hotel: data});
+  viewDetails = (data) => this.setState({ openViewDialog: true, hotel: data });
 
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
-  openAssignment = (data) => this.setState({file: data, openAssignment: true});
+  openAssignment = (data) => this.setState({ file: data.file, openAssignment: true });
 
-  closeAssignment = () => this.setState({file: null, openAssignment: false});
+  closeAssignment = () => this.setState({ file: null, openAssignment: false });
 
-  takeFile = (data) => this.setState({hotel: data, openTakeFile: true});
+  takeFile = (data) => this.setState({ hotel: data, openTakeFile: true });
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id)).then(() => this.props.history.push(DESK));
+  confirmTakeFile = () => {
+    this.setState({ openTakeFile: false });
+    this.setGlobal({ loading: true });
+    axios.post(FILE_TAKE(this.state.hotel.file.id))
+      .then((res) => {
+        if (res.data.status) {
+          this.setGlobal({ successMsg: ArrayToString(res.data.messages) });
+          this.props.history.push(DESK);
+        } else {
+          this.setGlobal({ errorMsg: ArrayToString(res.data.messages) });
+        }
+      })
+      .catch(err => this.setGlobal({ errorMsg:err.toString() }))
+      .finally(() => this.setGlobal({ loading: false }));
+  };
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
+  sendFile = (id, recipient_id) => {
+    this.setState({ openAssignment: false });
+    this.setGlobal({ laoding: true });
+    axios.post(FILE_SEND(id), { recipient_id })
+      .then(res=>{
+        if (res.data.status) {
+           window.location.reload();
+           this.setGlobal({successMsg:ArrayToString(res.data.messages)})
+        }else{
+           this.setGlobal({errorMsg:ArrayToString(res.data.messages)})
+        }
+      })
+      .catch(err=>this.setGlobal({errorMsg:err.toString()}))
+      .then(() => window.location.reload());
+  };
 
   render() {
-    const {hotel, hotels, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
+    const { hotel, hotels, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
-      rowsPerPage: 8,
-      serverSide: false,
+      rowsPerPage: 15,
+      serverSide: false
     };
 
     const tableColumns = [
       {
         name: "owner",
-        label: "APPLICANT",
+        label: "Name of Applicant"
       },
       {
         name: "phone",
-        label: "Contact",
+        label: "Contact"
       },
       {
         name: "name",
-        label: "SHOP NAME",
+        label: "SHOP NAME"
       },
       {
         name: "address",
-        label: "PROPOSED LOCATION",
+        label: "PROPOSED LOCATION"
       },
       {
         name: "created_at",
@@ -106,68 +135,77 @@ class HotelNewList extends Component {
           filter: false,
           sort: false,
           customBodyRender: (value, tableMeta) => {
-            const {rowIndex} = tableMeta;
+            const { rowIndex } = tableMeta;
             let data = hotels[rowIndex];
             const lat = Number(data.latitude);
             const lng = Number(data.longitude);
             return (
-                <div>
-                  <Tooltip title="View File">
-                    <IconButton color="primary" size="small"
-                                aria-label="View File" onClick={this.viewFile.bind(this, data)}>
-                      <Icon fontSize="small">folder</Icon>
-                    </IconButton>
-                  </Tooltip>
-                  <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+              <div>
+                <Tooltip title={"View File"}>
+                  <IconButton href={"#"} color="primary" size="small"
+                              aria-label="View File" onClick={this.viewFile.bind(this, data)}>
+                    <Icon fontSize="small">folder</Icon>
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title={"View Location"}>
+                  <IconButton href={"#"} onClick={e => this.setState({ openMap: true, lat: lat, lng: lng })}>
                     <Icon fontSize="small">pin_drop</Icon>
                   </IconButton>
-                  <IconButton color="primary" size="small"
+                </Tooltip>
+                <Tooltip title={"View Details"}>
+                  <IconButton href={"#"} color="primary" size="small"
                               aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                     <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
-                  <IconButton variant="contained" color="secondary"
+                </Tooltip>
+                <Tooltip title={"Assign to Officer/Staff"}>
+                  <IconButton href={"#"} variant="contained" color="secondary"
                               size="small" onClick={this.openAssignment.bind(this, data)}>
                     <Icon fontSize="small">send</Icon>
                   </IconButton>
-                  <IconButton variant="contained" color="primary"
+                </Tooltip>
+                <Tooltip title={"Call file"}>
+                  <IconButton href={"#"} variant="contained" color="primary"
                               size="small" onClick={this.takeFile.bind(this, data)}>
                     <Icon fontSize="small">desktop_mac</Icon>
                   </IconButton>
-                </div>
+                </Tooltip>
+              </div>
             );
           }
         }
-      },
+      }
     ];
 
     return (
-        <>
-          {this.global.loading ? <LoadingView/> : <CardContent>
-            <MUIDataTable
-                title={"HOTEL/LODGING: List of New Application"}
-                data={hotels}
-                columns={tableColumns}
-                options={tableOptions}
-            />
-          </CardContent>}
+      <>
+        {this.global.loading ? <LoadingView/> : <CardContent>
+          <MUIDataTable
+            title={"HOTEL/LODGING: List of New Application"}
+            data={hotels}
+            columns={tableColumns}
+            options={tableOptions}
+          />
+        </CardContent>}
 
-          {openMap && <GMapDialog viewMode={true} open={openMap} lat={this.state.lat} lng={this.state.lng}
-                                  onClose={() => this.setState({openMap: false})} isMarkerShown={true}/>}
+        {openMap && <GMapDialog viewMode={true} open={openMap} lat={this.state.lat} lng={this.state.lng}
+                                onClose={() => this.setState({ openMap: false })} isMarkerShown={true}/>}
 
-          {openViewDialog &&
-          <HotelViewDialog open={openViewDialog} close={this.closeViewDialog} data={hotel}/>}
+        {openViewDialog &&
+        <HotelViewDialog open={openViewDialog} close={this.closeViewDialog} data={hotel}/>}
 
-          {openAssignment && staffs &&
-          <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
-                          onClose={this.closeAssignment} file={file} props={this.props}/>}
+        {openAssignment && staffs &&
+        <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
+                        onClose={this.closeAssignment} file={file} props={this.props}/>}
 
-          {openTakeFile &&
-          <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
-                         onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
-                         onConfirm={this.confirmTakeFile}/>}
+        {openTakeFile &&
+        <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
+                       onCancel={() => this.setState({ openTakeFile: false })} open={openTakeFile}
+                       onConfirm={this.confirmTakeFile}/>}
 
-          {this.global.errorMsg && <ErrorHandler/>}
-        </>
+        {this.global.errorMsg && <ErrorHandler/>}
+      </>
     );
   }
 }

@@ -43,7 +43,9 @@ class FileUpload extends Component {
     data.status = "prestine";
     this.setState( {
       file: data,
-      uploadedFile: null
+      uploadedFile: null,
+
+      uploading:false
     });
   }
 
@@ -119,7 +121,7 @@ class FileUpload extends Component {
                     let item = e.target.files[0];
 
                     let blob = item.slice(0, item.size, item.type);
-                    let newName =applicationName+ Date.now()+ "-" + uniqid() ;
+                    let newName =Date.now()+ "-" + uniqid() ;
                     let newFile = new File([blob], newName, { type: item.type });
 
                     let temp = file;
@@ -140,6 +142,7 @@ class FileUpload extends Component {
                         .catch(e => console.error(e));
                     }
                     //store new file
+                    this.setState({uploading:true});
                     S3FileUpload
                       .uploadFile(newFile, config)
                       .then(data => {
@@ -159,11 +162,12 @@ class FileUpload extends Component {
                           file: temp
                         });
                         onUploadFailure(err);
-                      });
+                      })
+                      .finally(()=>this.setState({uploading:false}))
                   }}
                 />
                 <label htmlFor={file.id}>
-                  <Button size={"small"} variant="outlined" component="button">
+                  <Button disabled={this.state.uploading} size={"small"} variant="outlined" component="button">
                     Upload
                   </Button>
                 </label>

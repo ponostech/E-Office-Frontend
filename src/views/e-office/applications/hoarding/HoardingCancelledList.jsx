@@ -5,51 +5,55 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
 import moment from "moment";
-import {BANNER_LIST, FILE_TAKE, GET_STAFF} from "../../../../config/ApiRoutes";
-import BannerViewDialog from "./common/BannerViewDialog";
+import {HOARDING_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
+import HoardingViewDialog from "./common/HoardingViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
-import CardContent from "@material-ui/core/CardContent"
 
 const styles = {};
 
-class BannerApprovedList extends Component {
+class HoardingCancelledList extends Component {
+  doLoad = this.props.doLoad;
   state = {
-    banners: [],
-    openMap: false,
+    tableData: [],
     staffs: null,
     file: null,
-    banner: null,
+    singleData: null,
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
+    openMap: false,
   };
 
   componentDidMount() {
     this.setGlobal({loading: true});
     this.getData();
-    this.getStaffs().then(res => this.setState({staffs: res.data.data.staffs}));
+    this.getStaffs();
   }
 
-  getData = () => axios.get(BANNER_LIST, {params: {status: 'approved'}})
-      .then(res => this.processResult(res))
-      .catch(err => this.setGlobal({errorMsg: err.toString()}))
-      .then(() => this.setGlobal({loading: false}));
-
-  getStaffs = () => axios.get(GET_STAFF);
+  getData = () => {
+    axios.get(HOARDING_LIST, {params: {status: 'cancelled'}})
+        .then(res => this.processResult(res))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(res => this.setGlobal({loading: false}))
+  };
 
   processResult = (res) => {
-    if (res.data.status) this.setState({loading: false, banners: res.data.data.banners});
-    else this.setGlobal({errorMsg: res.data.messages})
+    if (res.data.status) this.setState({loading: false, tableData: res.data.data.hoarding_applications});
+    else this.setGlobal({errorMsg: res.data.messages});
+  };
+
+  getStaffs = () => {
+    axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
   };
 
   closeViewDialog = () => this.setState({openViewDialog: false});
 
-  viewDetails = (data) => this.setState({openViewDialog: true, banner: data});
+  viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
 
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
@@ -57,15 +61,19 @@ class BannerApprovedList extends Component {
 
   closeAssignment = () => this.setState({file: null, openAssignment: false});
 
-  takeFile = (data) => this.setState({banner: data, openTakeFile: true});
+  takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.banner.file.id))
-      .then(() => this.props.history.push(DESK));
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
+      .then(res => {
+        this.setState({openTakeFile: false});
+        this.props.history.push(DESK);
+      });
 
-  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
+  sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(res => window.location.reload());
+
 
   render() {
-    const {loading, banner, banners, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
+    const {singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -75,42 +83,33 @@ class BannerApprovedList extends Component {
 
     const tableColumns = [
       {
-        name: "name",
+        name: "applicant",
         label: "APPLICANT",
-      },
-      {
-        name: "address",
-        label: "OWNER ADDRESS",
-      },
-      {
-        name: "applicant_type",
-        label: "APPLICANT TYPE",
-      },
-      {
-        name: "advertisement_type",
-        label: "TYPE OF ADVERTISEMENTS",
-      },
-      {
-        name: "advertisement_count",
-        label: "NO OF ADVERTISEMENTS",
-      },
-      {
-        name: "local_council",
-        label: "LOCAL COUNCIL.",
         options: {
-          customBodyRender: (local_council) => {
-            return (
-                local_council.name
-            );
+          customBodyRender: function (value) {
+            return value.advertiser.name;
           }
         }
       },
       {
-        name: "created_at",
-        label: "APPLICATION DATE",
+        name: "applicant",
+        label: "APPLICANT TYPE",
         options: {
-          filter: false,
-          customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
+          customBodyRender: value => value.advertiser.type.toUpperCase()
+        }
+      },
+      {
+        name: 'created_at',
+        label: 'APPLICATION DATE',
+        options: {
+          customBodyRender: value => moment(value).format("Do MMMM YYYY")
+        }
+      },
+      {
+        name: 'hoarding',
+        label: "FILE LOCATION",
+        options: {
+          customBodyRender: ({desk}) => desk ? desk.staff.name + " (" + desk.staff.designation + ")" : 'Not on any desk'
         }
       },
       {
@@ -121,15 +120,20 @@ class BannerApprovedList extends Component {
           sort: false,
           customBodyRender: (value, tableMeta) => {
             const {rowIndex} = tableMeta;
-            let data = banners[rowIndex];
+            let data = tableData[rowIndex];
+            const lat = Number(data.hoarding.latitude);
+            const lng = Number(data.hoarding.longitude);
             return (
-                <div>
+                <>
                   <Tooltip title="View File">
                     <IconButton color="primary" size="small"
                                 aria-label="View File" onClick={this.viewFile.bind(this, data)}>
                       <Icon fontSize="small">folder</Icon>
                     </IconButton>
                   </Tooltip>
+                  <IconButton size='small' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                    <Icon fontSize="small">pin_drop</Icon>
+                  </IconButton>
                   <IconButton color="primary" size="small"
                               aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                     <Icon fontSize="small">remove_red_eye</Icon>
@@ -142,7 +146,7 @@ class BannerApprovedList extends Component {
                               size="small" onClick={this.takeFile.bind(this, data)}>
                     <Icon fontSize="small">desktop_mac</Icon>
                   </IconButton>
-                </div>
+                </>
             );
           }
         }
@@ -151,22 +155,22 @@ class BannerApprovedList extends Component {
 
     return (
         <>
-          {this.global.loading ? <LoadingView/> : <CardContent>
+          {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
             <MUIDataTable
-                title={"Banner: List of Approved Application"}
-                data={banners}
+                title={"Hoarding: List of Cancelled Applications"}
+                data={tableData}
                 columns={tableColumns}
                 options={tableOptions}
             />
-          </CardContent>}
+          </Grid>}
 
-          <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
-                      onClose={() => this.setState({openMap: false})}
-                      isMarkerShown={true}
-          />
           {openViewDialog &&
-          <BannerViewDialog open={openViewDialog} close={this.closeViewDialog}
-                            data={banner}/>}
+          <HoardingViewDialog open={openViewDialog} close={this.closeViewDialog}
+                              data={singleData}/>}
+          {openMap && <GMapDialog viewMode={true} open={openMap} lat={this.state.lat} lng={this.state.lng}
+                                  onClose={() => this.setState({openMap: false})}
+                                  isMarkerShown={true}
+          />}
 
           {openAssignment && staffs &&
           <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
@@ -177,11 +181,10 @@ class BannerApprovedList extends Component {
           <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
                          onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                          onConfirm={this.confirmTakeFile}/>}
-
           {this.global.errorMsg && <ErrorHandler/>}
         </>
     );
   }
 }
 
-export default withRouter(withStyles(styles)(BannerApprovedList));
+export default withRouter(withStyles(styles)(HoardingCancelledList));

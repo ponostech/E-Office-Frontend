@@ -5,25 +5,23 @@ import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
 import {Icon, IconButton, Grid} from "@material-ui/core";
 import moment from "moment";
-import {HOTEL_LIST, FILE_TAKE, GET_STAFF} from "../../../../config/ApiRoutes";
-import HotelViewDialog from "./common/HotelViewDialog";
+import {KIOSK_LIST, FILE_TAKE, GET_STAFF} from '../../../../config/ApiRoutes';
+import KioskViewDialog from "./common/KioskViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import {DESK, FILE_SEND} from "../../../../config/routes-constant/OfficeRoutes";
 import LoadingView from "../../../common/LoadingView";
-import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
 import CardContent from "@material-ui/core/CardContent"
 
 const styles = {};
 
-class HotelCancelledList extends Component {
+class KioskCancelledList extends Component {
   state = {
-    hotels: [],
-    openMap: false,
+    tableData: [],
     staffs: null,
     file: null,
-    hotel: null,
+    singleData: null,
     openAssignment: false,
     openTakeFile: false,
     openViewDialog: false,
@@ -35,35 +33,41 @@ class HotelCancelledList extends Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(HOTEL_LIST, {params: {status: 'cancelled'}})
-      .then(res => this.processResult(res))
-      .catch(err => this.setGlobal({errorMsg: err.toString()}))
-      .then(() => this.setGlobal({loading: false}));
-
-  getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
+  getData = () => {
+    axios.get(KIOSK_LIST, {params: {status: 'cancelled'}})
+        .then(res => this.processResult(res))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setGlobal({loading: false}));
+  };
 
   processResult = (res) => {
-    if (res.data.status) this.setState({hotels: res.data.data.hotels});
-    else this.setGlobal({errorMsg: res.data.messages})
+    if (res.data.status) this.setState({tableData: res.data.data.kiosk_applications});
+  };
+
+  getStaffs = () => {
+    axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
   };
 
   closeViewDialog = () => this.setState({openViewDialog: false});
 
-  viewDetails = (data) => this.setState({openViewDialog: true, hotel: data});
+  viewDetails = (data) => this.setState({openViewDialog: true, singleData: data});
 
   openAssignment = (data) => this.setState({file: data, openAssignment: true});
 
   closeAssignment = () => this.setState({file: null, openAssignment: false});
 
-  takeFile = (data) => this.setState({hotel: data, openTakeFile: true});
+  takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id))
-      .then(() => this.props.history.push(DESK));
+  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.singleData.file.id))
+      .then(res => {
+        this.setState({openTakeFile: false});
+        this.props.history.push(DESK);
+      });
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), {recipient_id}).then(() => window.location.reload());
 
   render() {
-    const {hotel, hotels, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
+    const {singleData, tableData, staffs, openTakeFile, openAssignment, openViewDialog, file} = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -73,27 +77,33 @@ class HotelCancelledList extends Component {
 
     const tableColumns = [
       {
-        name: "owner",
+        name: "applicant",
         label: "APPLICANT",
-      },
-      {
-        name: "owner_address",
-        label: "OWNER ADDRESS",
-      },
-      {
-        name: "name",
-        label: "SHOP NAME",
-      },
-      {
-        name: "address",
-        label: "PROPOSED LOCATION",
-      },
-      {
-        name: "created_at",
-        label: "APPLICATION DATE",
         options: {
-          filter: false,
-          customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
+          customBodyRender: function (value) {
+            return value.advertiser.name;
+          }
+        }
+      },
+      {
+        name: "applicant",
+        label: "APPLICANT TYPE",
+        options: {
+          customBodyRender: value => value.advertiser.type.toUpperCase()
+        }
+      },
+      {
+        name: 'created_at',
+        label: 'APPLICATION DATE',
+        options: {
+          customBodyRender: value => moment(value).format("Do MMMM YYYY")
+        }
+      },
+      {
+        name: 'file',
+        label: "FILE LOCATION",
+        options: {
+          customBodyRender: value => value.desk.staff.name + " (" + value.desk.staff.designation + ")"
         }
       },
       {
@@ -104,14 +114,9 @@ class HotelCancelledList extends Component {
           sort: false,
           customBodyRender: (value, tableMeta) => {
             const {rowIndex} = tableMeta;
-            let data = hotels[rowIndex];
-            const lat = Number(data.latitude);
-            const lng = Number(data.longitude);
+            let data = tableData[rowIndex];
             return (
-                <div>
-                  <IconButton onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
-                    <Icon fontSize="small">pin_drop</Icon>
-                  </IconButton>
+                <>
                   <IconButton color="primary" size="small"
                               aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                     <Icon fontSize="small">remove_red_eye</Icon>
@@ -124,7 +129,7 @@ class HotelCancelledList extends Component {
                               size="small" onClick={this.takeFile.bind(this, data)}>
                     <Icon fontSize="small">desktop_mac</Icon>
                   </IconButton>
-                </div>
+                </>
             );
           }
         }
@@ -133,24 +138,24 @@ class HotelCancelledList extends Component {
 
     return (
         <>
-          {this.global.loading ? <LoadingView/> : <CardContent>
-            <MUIDataTable
-                title={"HOTEL/LODGING: List of Cancelled Applications"}
-                data={hotels}
-                columns={tableColumns}
-                options={tableOptions}
-            />
-          </CardContent>}
-
-          <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
-                      onClose={() => this.setState({openMap: false})} isMarkerShown={true}/>
+          {this.global.loading ? <LoadingView/> :
+              <CardContent>
+                <MUIDataTable
+                    title={"Kiosk: List of Cancelled Application"}
+                    data={tableData}
+                    columns={tableColumns}
+                    options={tableOptions}
+                />
+              </CardContent>}
 
           {openViewDialog &&
-          <HotelViewDialog open={openViewDialog} close={this.closeViewDialog} data={hotel}/>}
+          <KioskViewDialog open={openViewDialog} close={this.closeViewDialog}
+                           data={singleData}/>}
 
           {openAssignment && staffs &&
           <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
-                          onClose={this.closeAssignment} file={file} props={this.props}/>}
+                          onClose={this.closeAssignment} file={file}
+                          props={this.props}/>}
 
           {openTakeFile &&
           <ConfirmDialog primaryButtonText={"Confirm"} title={"Confirmation"} message={"Do you want to call this file?"}
@@ -163,4 +168,4 @@ class HotelCancelledList extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(HotelCancelledList));
+export default withRouter(withStyles(styles)(KioskCancelledList));

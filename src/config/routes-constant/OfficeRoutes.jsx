@@ -16,6 +16,7 @@ export const RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
 
 export const APPLY_BANNER = "/banner/new";
 export const CHECK_LICENSE = "/license/check";
+export const SEARCH_LICENSE=(mobile_no,type) => `/license/${mobile_no}/search/${type}`;
 
 
 export const RESET_PASSWORD = "/reset-password";
@@ -63,24 +64,24 @@ export const NEW_RECEIPT = "/e-office/receipt/new";
 export const EDIT_RECEIPT=(id) => `/e-office/receipt/${id}/edit`;
 export const RECEIPT_ATTACHED_LIST = "/e-office/receipt/attached-list";
 export const RECEIPT_NEW_LIST = "/e-office/receipt/new-list";
-export const SENT_RECEIPT = "/e-office/receipt/sent";
-export const CLOSE_RECEIPT = "/e-office/receipt/close";
-export const RECEIPT_DETAIL = "/e-office/receipt/:id/details";
 
 export const NEW_HOARDINGS = "/e-office/applications/hoardings";
 export const UNDER_PROCESS_HOARDINGS = "/e-office/applications/hoardings/under-process";
 export const REJECTED_HOARDINGS = "/e-office/applications/hoardings/reject";
 export const APPROVED_HOARDINGS = "/e-office/applications/hoardings/approved";
+export const CANCELLED_HOARDINGS = "/e-office/applications/hoardings/cancelled";
 
 export const NEW_KIOSKS = "/e-office/applications/kiosks/new";
 export const UNDER_PROCESS_KIOSKS = "/e-office/applications/kiosks/under-process";
 export const APPROVED_KIOSKS = "/e-office/applications/kiosks/approved";
 export const REJECTED_KIOSKS = "/e-office/applications/kiosks/rejected";
+export const CANCELLED_KIOSKS = "/e-office/applications/kiosks/cancelled";
 
 export const NEW_BANNER = "/e-office/applications/banner/new";
 export const UNDER_PROCESS_BANNER = "/e-office/applications/banner/under-process";
 export const APPROVED_BANNER = "/e-office/applications/banner/approved";
 export const REJECTED_BANNER = "/e-office/applications/banner/rejected";
+export const CANCELLED_BANNER = "/e-office/applications/banner/cancelled";
 
 export const NEW_SHOPLICENSE = "/e-office/applications/shop-license/new";
 export const UNDER_PROCESS_SHOPLICENSE = "/e-office/applications/shop-license/under-process";

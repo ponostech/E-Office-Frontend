@@ -32,6 +32,7 @@ import NewBannerApplications from "../../views/e-office/applications/banners/Ban
 import UnderProcessBanner from "../../views/e-office/applications/banners/BannerUnderProcessList";
 import BannerGrantedList from "../../views/e-office/applications/banners/BannerApprovedList";
 import BannerRejectedList from "../../views/e-office/applications/banners/BannerRejectedList";
+import BannerCancelledList from "../../views/e-office/applications/banners/BannerCancelledList";
 import UnderProcessShopLicense from "../../views/e-office/applications/shop-license/ShopInProcessList";
 import ApprovedShopLicense from "../../views/e-office/applications/shop-license/ShopApprovedList";
 import RejectedShopLicense from "../../views/e-office/applications/shop-license/ShopRejectedList";
@@ -51,6 +52,8 @@ import { RECEIPT_NEW_LIST } from "../../config/routes-constant/OfficeRoutes";
 import ReceiptNewList from "../../views/e-office/receipt/ReceiptNewList";
 import ReceiptEdit from "../../views/e-office/receipt/ReceiptEdit";
 import ReceiptAttachedList from "../../views/e-office/receipt/ReceiptAttachedList";
+import HoardingCancelledList from "../../views/e-office/applications/hoarding/HoardingCancelledList";
+import KioskCancelledList from "../../views/e-office/applications/kiosk/KioskCancelledList";
 
 const routes = (props) => {
   return (
@@ -90,18 +93,21 @@ const routes = (props) => {
         <Route exact path={OfficeRoutes.REJECTED_HOARDINGS} component={RejectedHoardingApplications}/>
         <Route exact path={OfficeRoutes.APPROVED_HOARDINGS} component={ApprovedHoarding}/>
         <Route exact path={OfficeRoutes.HOARDING_DETAILS} component={HoardingDetails}/>
+        <Route exact path={OfficeRoutes.CANCELLED_HOARDINGS} component={HoardingCancelledList}/>
 
         {/*Kiosk*/}
         <Route exact path={OfficeRoutes.NEW_KIOSKS} render={e => <NewKioskApplications/>}/>
         <Route exact path={OfficeRoutes.UNDER_PROCESS_KIOSKS} render={e => <UnderProcessKiosks/>}/>
         <Route exact path={OfficeRoutes.APPROVED_KIOSKS} render={e => <ApprovedKiosks/>}/>
         <Route exact path={OfficeRoutes.REJECTED_KIOSKS} render={e => <RejectedKiosks/>}/>
+        <Route exact path={OfficeRoutes.CANCELLED_KIOSKS} render={e => <KioskCancelledList/>}/>
 
         {/*Banner*/}
         <Route exact path={OfficeRoutes.NEW_BANNER} render={e => <NewBannerApplications/>}/>
         <Route exact path={OfficeRoutes.UNDER_PROCESS_BANNER} render={e => <UnderProcessBanner/>}/>
         <Route exact path={OfficeRoutes.APPROVED_BANNER} render={e => <BannerGrantedList/>}/>
         <Route exact path={OfficeRoutes.REJECTED_BANNER} render={e => <BannerRejectedList/>}/>
+        <Route exact path={OfficeRoutes.CANCELLED_BANNER} render={e => <BannerCancelledList/>}/>
 
 
         {/*Shop Licensing*/}

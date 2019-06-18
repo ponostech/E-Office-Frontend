@@ -45,6 +45,12 @@ import {APPLICATION_NAME} from "../../utils/Util";
 import LoadingView from "../common/LoadingView";
 
 const style = {
+  subTitle:{
+    fontSize:16,
+    color:"#727272",
+    marginTop:6,
+    marginBottom:6
+  },
   root: {
     padding: "10px 15px !important"
   },
@@ -271,7 +277,7 @@ class HotelApplication extends Component {
       case "type":
         this.state.type ? this.setState({typeError: ""}) : this.setState({typeError: ShopLicenseViewModel.TYPE_REQUIRED});
         break;
-      case "tradeName":
+      case "trade":
         this.state.tradeName === undefined ? this.setState({tradeNameError: ShopLicenseViewModel.TRADE_REQUIRED}) : this.setState({tradeNameError: ""});
         break;
       case "displayType":
@@ -292,6 +298,9 @@ class HotelApplication extends Component {
         break;
       case "address":
         value.length === 0 ? this.setState({addressError: ShopLicenseViewModel.ADDRESS_REQUIRED}) : this.setState({addressError: ""});
+        break;
+        case "ownerAddress":
+        value.length === 0 ? this.setState({ownerAddressError: ShopLicenseViewModel.OWNER_ADDRESS_REQUIRED}) : this.setState({ownerAddressError: ""});
         break;
       case "phone":
         value.length === 0 ? this.setState({phoneError: ShopLicenseViewModel.PHONE_REQUIRED}) : this.setState({phoneError: ""});
@@ -339,7 +348,11 @@ class HotelApplication extends Component {
                               </Typography>
                             </GridItem>
                             <GridItem md={12} sm={12} xs={12}>
-                              <Divider style={{marginBottom: 10, marginTop: 10}}/>
+                              <Typography className={classes.subTitle} variant={"h6"}> Details of Applicant</Typography>
+                            </GridItem>
+
+                            <GridItem md={12} sm={12} xs={12}>
+                              <Divider component={"div"}/>
                             </GridItem>
                             <GridItem className={classes.root} xs={12} sm={12} md={6}>
                               <TextField
@@ -399,7 +412,7 @@ class HotelApplication extends Component {
                                   label={ShopLicenseViewModel.EMAIL}
                               />
                             </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={12}>
+                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
                               <AddressField
                                   textFieldProps={
                                     {
@@ -425,6 +438,14 @@ class HotelApplication extends Component {
                                       this.setState({ownerAddress: complete_address});
                                     }
                                   }}/>
+                            </GridItem>
+
+                            <GridItem md={12} sm={12} xs={12}>
+                              <Typography className={classes.subTitle} variant={"h6"}> Details of Proposed Hotel & Lodgings</Typography>
+                            </GridItem>
+
+                            <GridItem sm={12} xs={12} md={12}>
+                              <Divider component={"div"}/>
                             </GridItem>
                             <GridItem className={classes.root} xs={12} sm={12} md={6}>
                               <TextField
@@ -534,7 +555,7 @@ class HotelApplication extends Component {
                                   label={"Details of business"}
                               />
                             </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                            <GridItem className={classes.root} xs={12} sm={12} md={3}>
                               <TextField
                                   value={this.state.acRoom}
                                   InputProps={{
@@ -549,7 +570,7 @@ class HotelApplication extends Component {
                                   label={"No of Room (AC)"}
                               />
                             </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                            <GridItem className={classes.root} xs={12} sm={12} md={3}>
                               <TextField
                                   InputProps={{
                                     min: 0
@@ -564,7 +585,7 @@ class HotelApplication extends Component {
                                   label={"No of Room (No AC)"}
                               />
                             </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                            <GridItem className={classes.root} xs={12} sm={12} md={3}>
                               <TextField
                                   InputProps={{
                                     min: 0
@@ -579,7 +600,7 @@ class HotelApplication extends Component {
                                   label={"No of Conference Hall"}
                               />
                             </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                            <GridItem className={classes.root} xs={12} sm={12} md={3}>
                               <TextField
                                   InputProps={{
                                     min: 0
@@ -706,11 +727,10 @@ class HotelApplication extends Component {
                             </GridItem>
 
                             <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                              <Divider style={{marginTop: 10, marginBottom: 10}}/>
+                              <Typography className={classes.subTitle} variant={"h6"}>Upload Document(s)</Typography>
                             </GridItem>
-                            <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                              <Typography variant={"headline"}>Upload
-                                Document(s)</Typography>
+                            <GridItem  xs={12} sm={12} md={12}>
+                              <Divider component={"div"}/>
                             </GridItem>
                             {
                               this.state.documents.map((doc, index) => {
@@ -736,15 +756,19 @@ class HotelApplication extends Component {
                             }
 
                             <GridItem xs={12} sm={12} md={12}>
+                              <Typography className={classes.subTitle} variant={"h6"}>Declaration</Typography>
+                            </GridItem>
+
+                            <GridItem xs={12} sm={12} md={12}>
                               <FormControlLabel
-                                  style={{whiteSpace: "pre-line"}}
+                                  style={{whiteSpace: "pre-line",alignItems:"flex-start"}}
                                   control={
-                                    <Checkbox color={"primary"}
+                                    <Checkbox style={{paddingTop:0}} color={"primary"}
                                               onChange={(val, checked) => this.setState({agree: checked})}/>
                                   }
                                   label={"1.I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
                                   "no unauthorized construction." +
-                                  "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations. " +
+                                  "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations 2012. " +
                                   "\n3. I shall follow all rules and regulations of AMC;" +
                                   "\n4. It is certified that the above information is correct to the best of my knowledge"}/>
                             </GridItem>
@@ -758,9 +782,9 @@ class HotelApplication extends Component {
                           <GridContainer justify={"flex-end"}>
                             <GridItem>
                               <Button name={"primary"} disabled={
-                                !Boolean(this.state.name) || !Boolean(this.state.type) || !Boolean(this.state.address)
+                                !Boolean(this.state.name) || !Boolean(this.state.type) || !Boolean(this.state.address) || !Boolean(this.state.ownerAddress)
                                 || !Boolean(this.state.coordinate) || !Boolean(this.state.phone) || !Boolean(this.state.shopName)
-                                || !Boolean(this.state.estd) || !Boolean(this.state.prestine) ||
+                                || !Boolean(this.state.estd) ||
                                 !this.state.agree || this.state.passport === undefined
                               }
                                       color={"primary"} variant={"outlined"}

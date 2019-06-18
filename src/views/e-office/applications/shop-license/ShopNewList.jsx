@@ -59,7 +59,7 @@ class ShopNewList extends Component {
 
   viewFile = (data) => this.props.history.push(FILE_DETAIL_ROUTE(data.file.id));
 
-  openAssignment = (data) => this.setState({file: data, openAssignment: true});
+  openAssignment = (data) => this.setState({file: data.file, openAssignment: true});
 
   closeAssignment = () => this.setState({file: null, openAssignment: false});
 

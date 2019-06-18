@@ -8,7 +8,7 @@ import {
   DialogTitle,
   Divider, IconButton,
   Slide, Toolbar,
-  Typography
+  Typography, withStyles
 } from "@material-ui/core";
 import { SiteVerificationService } from "../../../../services/SiteVerificationService";
 import WidgetConstant from "../../../../components/form-builder/WidgetConstant";
@@ -176,4 +176,4 @@ ShopSiteVerificationDialog.propTypes = {
   file: PropTypes.object.isRequired
 };
 
-export default ShopSiteVerificationDialog;
+export default withStyles(styles) (ShopSiteVerificationDialog);
