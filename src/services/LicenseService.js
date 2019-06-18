@@ -5,9 +5,9 @@ import { ArrayToString } from "../utils/ErrorUtil";
 export class LicenseService {
   async checkShopLicense(phone_no, errorCallback, successCallback) {
     try {
-      let res = await axios.get(ApiRoutes.CHECK_LICENSE);
+      let res = await axios.get(ApiRoutes.STAFF_SHOP);
       if (res.data.status) {
-        successCallback(res.data.data);
+        successCallback(res.data.data.shops);
       } else {
         errorCallback(ArrayToString(res.data.messages));
       }

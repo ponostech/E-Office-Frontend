@@ -66,59 +66,123 @@ class HotelLicenseList extends Component {
         }
       },{
         name: "status",
-        label:"STATUS",
-        options:{
-          customBodyRender(status){
-            let color="grey";
-            let name="New";
+        label: "STATUS",
+        options: {
+          customBodyRender: (status) => {
+            let color;
+            let name;
             switch (status) {
               case ApplicationState.NEW_APPLICATION:
-                color="#727272";
-                name="New"
+                color = "#727272";
+                name = "New";
                 break;
               case ApplicationState.UNDER_PROCESS_APPLICATION:
-                color="#f8504b";
-                name="In Process"
+                color = "#f8504b";
+                name = "In Process";
                 break;
               case ApplicationState.APPROVED_APPLICATION:
-                color="#27f88c";
+                color = "#27f88c";
                 name = "Approved";
                 break;
               case ApplicationState.CANCELLED_APPLICATION:
-                color="#4966a0";
-                name="Cancelled";
+                color = "#4966a0";
+                name = "Cancelled";
+                break;
+              case ApplicationState.REJECTED_APPLICATION:
+                color = "#a03937";
+                name = "Rejected";
                 break;
               default:
-                color="grey";
-                break
+                color="#f8f8f8";
+                name = "Cancelled";
+                break;
             }
-            return <Chip component={"span"} variant={"outlined"} label={name} color={color}/>
+            return <Chip component={"span"} variant={"outlined"} label={name} color={color}/>;
           }
         }
       },
 
       {
-        name: "id",
+        name: "status",
         label: "ACTION",
         options: {
           filter: false,
           sort: false,
-          customBodyRender: (value, tableMeta) => {
-            const {rowIndex} = tableMeta;
+          customBodyRender: (status, tableMeta) => {
+            const { rowIndex } = tableMeta;
             let data = applications[rowIndex];
+            let controls = undefined;
+            let view = <>
+              <Tooltip title={"View Application details"}>
+                <IconButton href={"#"} onClick={e => this.setState({ view: true })}>
+                  <Icon fontSize={"small"}>remove_red_eye</Icon>
+                </IconButton>
+              </Tooltip>
+            </>;
+            switch (status) {
+              case ApplicationState.NEW_APPLICATION:
+                controls = <>
+                  {view}
+                  <Tooltip title={"Withdraw Application"}>
+                    <IconButton href={"#"} onClick={this.withDraw.bind(this, data)}>
+                      <Icon fontSize={"small"}>close</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>;
+                break;
+              case ApplicationState.APPROVED_APPLICATION:
+                controls = <>
+                  {view}
+                  <Tooltip title={"Download License"}>
+                    <IconButton href={"#"} onClick={this.downloadLicense.bind(this, data)}>
+                      <Icon fontSize={"small"} color={"primary"}>cloud_download</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={"Print License"}>
+                    <IconButton href={"#"} onClick={this.printLicense.bind(this, data)}>
+                      <Icon fontSize={"small"} color={"primary"}>print</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>;
+                break;
+              case ApplicationState.EXPIRED_LICENSE:
+                controls = <>
+                  {view}
+                  <Tooltip title={"Renew License"}>
+                    <IconButton href={"#"} onClick={this.renewLicense.bind(this, data)}>
+                      <Icon fontSize={"small"}color={"primary"}>refresh</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>;
+                break;
+              case ApplicationState.REJECTED_APPLICATION:
+                controls = <>
+                  {view}
+                  <Tooltip title={"Submit New Applications"}>
+                    <IconButton href={"#"} onClick={this.submitNewApplication.bind(this, data)}>
+                      <Icon fontSize={"small"}color={"primary"}>save</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>;
+                break;
+              case ApplicationState.SEND_BACK:
+                controls = <>
+                  {view}
+                  <Tooltip title={"Re Submit Application"}>
+                    <IconButton href={"#"} onClick={this.resubmit.bind(this, data)}>
+                      <Icon fontSize={"small"} color={"primary"}>send</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>;
+                break;
+
+            }
             return (
-              <>
-                <Tooltip title='View Details'>
-                  <IconButton href={"#"} color="primary" size="medium"
-                              aria-label="View Details" onClick={event => this.setState({application:data,view:true})}>
-                    <Icon fontSize="small">remove_red_eye</Icon>
-                  </IconButton>
-                </Tooltip>
-              </>
+              controls
             );
           }
         }
-      },
+      }
     ];
 
     let notFound= (<div style={{display:"flex",alignItems:"center",justifyContent:"center",direction:"row"}}>
@@ -127,7 +191,7 @@ class HotelLicenseList extends Component {
     </div>);
     let found= <>
       <MUIDataTable
-        title={"HOTEL/LODGING: List of Application"}
+        title={"HOTEL/LODGING LICENSING: List of Application"}
         data={applications}
         columns={tableColumns}
         options={tableOptions}/>

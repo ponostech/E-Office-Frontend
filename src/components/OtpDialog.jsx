@@ -72,15 +72,15 @@ class OtpDialog extends Component {
 
     return (
       <Dialog fullWidth={true} maxWidth={"sm"} open={open}>
-        <CardHeader title={"Enter One Time Password"} action={
-          <IconButton onClick={e=>onClose(null)}>
-            <CloseIcon/>
-          </IconButton>
-        }/>
+
         <DialogContent>
 
-          <GridContainer justify={"space-between"} spacing={16}>
-
+          <GridContainer justify={"space-between"} spacing={3}>
+            <CardHeader style={{flex:1}} title={"Enter One Time Password"} action={
+              <IconButton onClick={e=>onClose(null)}>
+                <CloseIcon/>
+              </IconButton>
+            }/>
             <GridItem md={12}>
               <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
             </GridItem>

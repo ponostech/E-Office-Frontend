@@ -86,44 +86,86 @@ class BannerList extends Component {
         }
       },
       {
-        name: "id",
+        name: "status",
         label: "ACTION",
         options: {
           filter: false,
           sort: false,
-          customBodyRender: (value, tableMeta) => {
-            const {rowIndex} = tableMeta;
-            let application = applications[rowIndex];
+          customBodyRender: (status, tableMeta) => {
+            const { rowIndex } = tableMeta;
+            let data = applications[rowIndex];
             let controls = undefined;
-            switch (application.status) {
+            let view = <>
+              <Tooltip title={"View Application details"}>
+                <IconButton href={"#"} onClick={e => this.setState({ view: true })}>
+                  <Icon fontSize={"small"}>remove_red_eye</Icon>
+                </IconButton>
+              </Tooltip>
+            </>;
+            switch (status) {
               case ApplicationState.NEW_APPLICATION:
-                controls=(
-                  <>
-                    <IconButton href={"#"} color="primary" size="small"
-                                aria-label="View Details" onClick={event => this.setState({view:true,application})}>
-                      <Icon fontSize="small">remove_red_eye</Icon>
+                controls = <>
+                  {view}
+                  <Tooltip title={"Withdraw Application"}>
+                    <IconButton href={"#"} onClick={this.withDraw.bind(this, data)}>
+                      <Icon fontSize={"small"}>close</Icon>
                     </IconButton>
-                    </>
-                );
+                  </Tooltip>
+                </>;
                 break;
               case ApplicationState.APPROVED_APPLICATION:
-                controls=(
-                  <>
-                    <IconButton href={"#"} color="primary" size="small"
-                                aria-label="Renew" onClick={event => this.setState({renew:true,application})}>
-                      <Icon fontSize="small">remove_red_eye</Icon>
+                controls = <>
+                  {view}
+                  <Tooltip title={"Download License"}>
+                    <IconButton href={"#"} onClick={this.downloadLicense.bind(this, data)}>
+                      <Icon fontSize={"small"} color={"primary"}>cloud_download</Icon>
                     </IconButton>
-                  </>
-                );
-                  break;
-              case ApplicationState.UNDER_PROCESS_APPLICATION:
-                controls=undefined;
+                  </Tooltip>
+                  <Tooltip title={"Print License"}>
+                    <IconButton href={"#"} onClick={this.printLicense.bind(this, data)}>
+                      <Icon fontSize={"small"} color={"primary"}>print</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>;
                 break;
+              case ApplicationState.EXPIRED_LICENSE:
+                controls = <>
+                  {view}
+                  <Tooltip title={"Renew License"}>
+                    <IconButton href={"#"} onClick={this.renewLicense.bind(this, data)}>
+                      <Icon fontSize={"small"}color={"primary"}>refresh</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>;
+                break;
+              case ApplicationState.REJECTED_APPLICATION:
+                controls = <>
+                  {view}
+                  <Tooltip title={"Submit New Applications"}>
+                    <IconButton href={"#"} onClick={this.submitNewApplication.bind(this, data)}>
+                      <Icon fontSize={"small"}color={"primary"}>save</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>;
+                break;
+              case ApplicationState.SEND_BACK:
+                controls = <>
+                  {view}
+                  <Tooltip title={"Re Submit Application"}>
+                    <IconButton href={"#"} onClick={this.resubmit.bind(this, data)}>
+                      <Icon fontSize={"small"} color={"primary"}>send</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>;
+                break;
+
             }
-            return controls;
+            return (
+              controls
+            );
           }
         }
-      },
+      }
     ];
 
     let notFound= (<div style={{display:"flex",alignItems:"center",justifyContent:"center",direction:"row"}}>
