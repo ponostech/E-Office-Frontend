@@ -10,6 +10,8 @@ import { withRouter } from "react-router-dom";
 import { LicenseService } from "../../../services/LicenseService";
 import GridContainer from "../../../components/Grid/GridContainer";
 import moment from "moment";
+import ConfirmDialog from "../../../components/ConfirmDialog";
+import SubmitDialog from "../../../components/SubmitDialog";
 
 
 class ShopLicenseList extends Component {
@@ -17,7 +19,11 @@ class ShopLicenseList extends Component {
     super(props);
     this.state = {
       applications: [],
-      application: null
+      application: null,
+
+      openConfirm:false,
+
+      submit:false
     };
 
     this.licenseService = new LicenseService();
@@ -33,7 +39,16 @@ class ShopLicenseList extends Component {
   }
 
   withDraw=(data)=>{
-    console.log(data)
+    this.setState({openConfirm:true, application: data})
+  }
+  confirmWithdraw=(event)=>{
+    const { application } = this.state;
+
+    this.setState({openConfirm:false,submit:true});
+    this.licenseService.cancelShopLicense(application.id,
+      errorMsg=>this.setGlobal({errorMsg}),
+      successMsg=>this.setGlobal({successMsg}))
+      .final(()=>this.setState({submit:false}))
   }
   resubmit=(data)=>{
     console.log(data)
@@ -224,6 +239,8 @@ class ShopLicenseList extends Component {
           {applications.length !== 0 && found}
         </CardContent>}
 
+        <SubmitDialog open={this.state.submit} title={"Withdraw Application"} text={"Please wait ..."}/>
+        <ConfirmDialog onCancel={e=>this.setState({openConfirm:false})} open={this.state.openConfirm} onConfirm={this.confirmWithdraw.bind(this)}/>
       </>
     );
   }

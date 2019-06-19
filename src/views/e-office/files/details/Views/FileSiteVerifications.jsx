@@ -101,13 +101,13 @@ class FileSiteVerifications extends Component {
                             <>
                               <Tooltip title={"View details"}>
                                 <IconButton href={"#"} onClick={self.view.bind(this, item)}>
-                                  <EyeIcon color={"primary"}/>
+                                  <EyeIcon fontSize={"small"} color={"primary"}/>
                                 </IconButton>
                               </Tooltip>
                               {allowed &&
                               <Tooltip title={"edit"}>
                                 <IconButton href={"#"} onClick={self.edit.bind(this, item)}>
-                                  <EditIcon color={"primary"}/>
+                                  <EditIcon fontSize={"small"} color={"primary"}/>
                                 </IconButton>
                               </Tooltip>}
                               {/*{allowed && <Tooltip title={"Delete"}>*/}

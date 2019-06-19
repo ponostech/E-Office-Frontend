@@ -43,4 +43,17 @@ export class LicenseService {
     }
   }
 
+  async cancelShopLicense(id, errorCallback, successCallback) {
+    try {
+      let res=await axios.post("")
+      if (res.data.status) {
+        successCallback(ArrayToString(res.data.messages))
+      }else{
+        errorCallback(ArrayToString(res.data.messages))
+      }
+    }catch (e) {
+      console.error(e);
+      errorCallback(e.toString())
+    }
+  }
 }
