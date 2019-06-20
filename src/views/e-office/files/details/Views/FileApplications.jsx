@@ -60,7 +60,7 @@ class FileApplications extends Component {
     if (!data.length) return false
     return data.filter((val) => {
       if (val.status === status) return true;
-    }).map(val => <DetailViewRow key={val.id} primary={val.applicant.advertiser.name}
+    }).map(val => <DetailViewRow key={val.id} primary={val.applicant?val.applicant.advertiser.name:"NA"}
                                  secondary={val.status.toUpperCase()} click={this.viewDetails} value={val}/>);
   };
 

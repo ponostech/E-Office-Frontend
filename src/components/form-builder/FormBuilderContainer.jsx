@@ -2,16 +2,15 @@ import React, { Component } from "react";
 import GridContainer from "../Grid/GridContainer";
 import GridItem from "../Grid/GridItem";
 import {
+  CardContent, CardHeader,
   Divider,
   Icon,
   IconButton,
-  InputAdornment,
   List,
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  TextField,
   Typography
 } from "@material-ui/core";
 import Card from "../Card/Card";
@@ -21,7 +20,6 @@ import TextFieldDialog from "./config-dialog/TextFieldDialog";
 import NumberFieldDialog from "./config-dialog/NumberFieldDialog";
 import WidgetConstant from "./WidgetConstant";
 import PatternFieldDialog from "./config-dialog/PatternFieldDialog";
-import SearchIcon from "@material-ui/icons/Search";
 import FileUploadFieldDialog from "./config-dialog/FileUploadFieldDialog";
 import ImageUploadFieldDialog from "./config-dialog/ImageUploadFieldDialog";
 
@@ -58,7 +56,7 @@ class FormBuilderContainer extends Component {
   }
 
   componentDidMount() {
-    window.document.title="e-AMC Site verification template"
+    window.document.title = "e-AMC Site verification template";
   }
 
   clear = () => {
@@ -125,60 +123,65 @@ class FormBuilderContainer extends Component {
   render() {
     const self = this;
     return (
-      <Card style={{ padding: 15 }}>
-        <GridContainer>
-          <GridItem md={3} lg={3}>
-            <Typography variant={"h6"}>Add New Widget</Typography>
-            <TextField style={{ background: "#f3f3f3" }}
-                       InputProps={{
-                         endAdornment: <InputAdornment position={"end"}>
-                           <SearchIcon color={"action"}/>
-                         </InputAdornment>
-                       }}
-                       margin={"dense"} variant={"outlined"} fullWidth={true} placeholder={"Search"}/>
-            <Divider/>
-            <List>
-              {
-                widgets.map(function(item, index) {
-                  return (
-                    <>
-                      <ListItem onClick={self.handleClick.bind(this, item)} button={true} color={"primary"} key={index}>
-                        <ListItemIcon>
-                          <Icon>{item.icon}</Icon>
-                        </ListItemIcon>
-                        <ListItemText primary={item.name}/>
-                        <ListItemSecondaryAction>
-                          <IconButton onClick={self.handleClick.bind(this, item)}>
-                            <Icon color={"primary"} fontSize={"default"}>add_circle</Icon>
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                      <Divider/>
-                    </>
-                  );
-                })
-              }
-            </List>
-          </GridItem>
-          <GridItem md={9} lg={9}>
-              <DynamicFormPreview edit={false}  clear={this.clear} formElements={this.state.formElements}/>
-          </GridItem>
+      <GridContainer>
+        <GridItem md={3} lg={3}>
+          <Card raised={true} testimonial={true}>
+            <CardHeader title={"Add New Widget"}/>
+              <Divider/>
+            <CardContent>
 
-          <FileUploadFieldDialog widget={this.state.selectedWidget} open={this.state.openFileDialog}
-                                 onClose={this.addWidget.bind(this)}/>
-          <ImageUploadFieldDialog widget={this.state.selectedWidget} open={this.state.openImageDialog}
-                                 onClose={this.addWidget.bind(this)}/>
+              {/*<Typography variant={"h6"}>Add New Widget</Typography>*/}
+              {/*<TextField style={{ background: "#f3f3f3" }}*/}
+              {/*           InputProps={{*/}
+              {/*             endAdornment: <InputAdornment position={"end"}>*/}
+              {/*               <SearchIcon color={"action"}/>*/}
+              {/*             </InputAdornment>*/}
+              {/*           }}*/}
+              {/*           margin={"dense"} variant={"outlined"} fullWidth={true} placeholder={"Search"}/>*/}
+              <List>
+                {
+                  widgets.map(function(item, index) {
+                    return (
+                      <>
+                        <ListItem onClick={self.handleClick.bind(this, item)} button={true} color={"primary"}
+                                  key={index}>
+                          <ListItemIcon>
+                            <Icon>{item.icon}</Icon>
+                          </ListItemIcon>
+                          <ListItemText primary={item.name}/>
+                          <ListItemSecondaryAction>
+                            <IconButton onClick={self.handleClick.bind(this, item)}>
+                              <Icon color={"primary"} fontSize={"default"}>add_circle</Icon>
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                        <Divider/>
+                      </>
+                    );
+                  })
+                }
+              </List>
+            </CardContent>
+          </Card>
+        </GridItem>
+        <GridItem md={9} lg={9}>
+          <DynamicFormPreview edit={false} clear={this.clear} formElements={this.state.formElements}/>
+        </GridItem>
 
-          <TextFieldDialog widget={this.state.selectedWidget} open={this.state.openTextDialog}
+        <FileUploadFieldDialog widget={this.state.selectedWidget} open={this.state.openFileDialog}
+                               onClose={this.addWidget.bind(this)}/>
+        <ImageUploadFieldDialog widget={this.state.selectedWidget} open={this.state.openImageDialog}
+                                onClose={this.addWidget.bind(this)}/>
+
+        <TextFieldDialog widget={this.state.selectedWidget} open={this.state.openTextDialog}
+                         onClose={this.addWidget.bind(this)}/>
+        <PatternFieldDialog widget={this.state.selectedWidget} open={this.state.openPatternDialog}
+                            onClose={this.addWidget.bind(this)}/>
+        <NumberFieldDialog widget={this.state.selectedWidget} open={this.state.openNumberDialog}
                            onClose={this.addWidget.bind(this)}/>
-          <PatternFieldDialog widget={this.state.selectedWidget} open={this.state.openPatternDialog}
-                              onClose={this.addWidget.bind(this)}/>
-          <NumberFieldDialog widget={this.state.selectedWidget} open={this.state.openNumberDialog}
-                             onClose={this.addWidget.bind(this)}/>
-          <SelectFieldDialog widget={this.state.selectedWidget} open={this.state.openSelectDialog}
-                             onClose={this.addWidget.bind(this)}/>
-        </GridContainer>
-      </Card>
+        <SelectFieldDialog widget={this.state.selectedWidget} open={this.state.openSelectDialog}
+                           onClose={this.addWidget.bind(this)}/>
+      </GridContainer>
 
     );
   }

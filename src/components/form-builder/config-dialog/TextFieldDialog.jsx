@@ -17,17 +17,11 @@ import WidgetConstant from "../WidgetConstant";
 
 class TextFieldDialog extends Component {
   state = {
-    elementType: "Textfield",
-    elementConfig:{
-      name: "",
-      label: "",
-      placeholder: "",
-    },
-    validation:{
-      required: true
-    },
-    valid:false,
-    value: "",
+    name: "",
+    label: "",
+    placeholder: "",
+    value:"",
+    required:false
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -36,31 +30,12 @@ class TextFieldDialog extends Component {
 
   handleChange = (e) => {
     const { name, value } = e.target;
-    let elementConfig=this.state.elementConfig;
-    switch (name) {
-      case "name":
-        elementConfig.name=value;
-        this.setState({elementConfig})
-        break;
-      case "label":
-        elementConfig.label=value;
-        this.setState({elementConfig})
-        break;
-      case "placeholder":
-        elementConfig.placeholder=value;
-        this.setState({elementConfig})
-        break;
-      case 'value':
-        this.setState({[name]:value})
-        break;
-    }
+    this.setState({[name]:value})
   };
+
   handleRadio = event => {
-    const validation={
-      required:event.target.checked
-    }
     this.setState({
-      validation
+      required:event.target.checked
     })
   };
   handleClick = (id, event) => {
@@ -69,27 +44,38 @@ class TextFieldDialog extends Component {
     switch (id) {
       case "save":
         const config = {
-          elementType:widget.name,
+          elementType:WidgetConstant.TEXTFIELD,
           elementConfig:{
-            name: this.state.elementConfig.name,
-            label: this.state.elementConfig.label,
-            placeholder: this.state.elementConfig.placeholder,
+            name: this.state.name,
+            label: this.state.label,
+            placeholder: this.state.placeholder,
           },
           validation:{
-            required: this.state.validation.required
+            required: this.state.required
           },
           valid:false,
           value: this.state.value,
         };
-        onClose(this.state.elementConfig.name,config);
+        onClose(this.state.name,config);
+        this.doClear();
         break;
       case "close":
+        this.doClear();
         onClose(null,null);
         break;
       default:
         break;
     }
   };
+  doClear=()=>{
+    this.setState({
+      name:"",
+      label:"",
+      placeholder:"",
+      value: "",
+      required:false
+    })
+  }
 
   render() {
     const { open, onClose ,widget} = this.props;
@@ -107,12 +93,12 @@ class TextFieldDialog extends Component {
         <DialogContent>
 
           <GridContainer>
-            <TextField name={"name"} onChange={this.handleChange.bind(this)} required={true} value={this.state.elementConfig.name}
+            <TextField name={"name"} onChange={this.handleChange.bind(this)} required={true} value={this.state.name}
                        variant={"outlined"} fullWidth={true} margin={"dense"} label={"Name"}/>
-            <TextField name={"label"} onChange={this.handleChange.bind(this)} required={true} value={this.state.elementConfig.label}
+            <TextField name={"label"} onChange={this.handleChange.bind(this)} required={true} value={this.state.label}
                        variant={"outlined"} fullWidth={true} margin={"dense"} label={"Label"}/>
             <TextField name={"placeholder"} onChange={this.handleChange.bind(this)} required={true}
-                       value={this.state.elementConfig.placeholder}
+                       value={this.state.placeholder}
                        variant={"outlined"} fullWidth={true} margin={"dense"} label={"PlaceHolder"}/>
 
             <TextField name={"value"} onChange={this.handleChange.bind(this)} required={true} value={this.state.value}
@@ -122,7 +108,7 @@ class TextFieldDialog extends Component {
               control={
                 <Switch
                   onChange={this.handleRadio.bind(this)}
-                  value={this.state.validation.required}
+                  value={this.state.required}
                   checked={this.state.required}
                   color="primary"
                 />

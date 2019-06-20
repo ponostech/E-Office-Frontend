@@ -18,7 +18,8 @@ import Person from "@material-ui/icons/PersonAdd";
 
 import authNavbarStyle from "assets/jss/material-dashboard-pro-react/components/authNavbarStyle.jsx";
 import { Button, Fab, LinearProgress } from "@material-ui/core";
-import { LOGIN, ROOT, APPLY_ADVERTISER } from "../../config/routes-constant/OfficeRoutes";
+import { APPLY_ADVERTISER, LOGIN, ROOT } from "../../config/routes-constant/OfficeRoutes";
+import IconButton from "@material-ui/core/IconButton";
 
 // core components
 
@@ -97,9 +98,9 @@ class AuthNavbar extends React.Component {
           <NavLink to={APPLY_ADVERTISER} className={classes.navLink}>
             <Person className={classes.listItemIcon}/>
             <ListItemText
-                primary={"Advertiser Registration"}
-                disableTypography={true}
-                className={classes.listItemText}
+              primary={"Advertiser Registration"}
+              disableTypography={true}
+              className={classes.listItemText}
             />
           </NavLink>
         </ListItem>
@@ -122,6 +123,11 @@ class AuthNavbar extends React.Component {
               <Button href="#" className={classes.title} color="inherit">
                 AIZAWL MUNICIPAL CORP0RATION
               </Button>
+            </div>
+            <div>
+              <IconButton href={"#"} onClick={event => history.push(APPLY_ADVERTISER)}>
+                <Person className={classes.listItemIcon}/>
+              </IconButton>
             </div>
           </Hidden>
           <Hidden smDown>{list}</Hidden>

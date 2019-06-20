@@ -53,6 +53,7 @@ class NumberFieldDialog extends Component {
           value: this.state.value,
         };
         onClose(this.state.name,config);
+        this.doClear();
         break;
       case "close":
         this.doClear();

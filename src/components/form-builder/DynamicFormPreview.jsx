@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import GridItem from "../Grid/GridItem";
 import {
   Button,
@@ -48,6 +48,7 @@ class DynamicFormPreview extends Component {
     const { edit, selectedType } = this.props;
     if (edit)
     this.setState({ selectedType });
+    this.setGlobal({loading:false})
   }
 
   submitHandler = event => {

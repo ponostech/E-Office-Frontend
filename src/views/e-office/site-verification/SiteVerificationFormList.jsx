@@ -1,7 +1,7 @@
 import React, { Component } from "reactn";
 import moment from "moment";
 import {
-  Avatar,
+  Avatar, Button,
   Card,
   CardActions,
   CardContent,
@@ -14,7 +14,7 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  Tooltip
+  Tooltip, withStyles
 } from "@material-ui/core";
 import { SiteVerificationService } from "../../../services/SiteVerificationService";
 import GridContainer from "../../../components/Grid/GridContainer";
@@ -29,6 +29,12 @@ import AddIcon from "@material-ui/icons/Add";
 import { SITE_VERIFICATION, SITE_VERIFICATION_EDIT } from "../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 
+
+const styles = theme => ({
+  action:{
+    margin:0
+  }
+});
 class SiteVerificationFormList extends Component {
   siteVerificationService = new SiteVerificationService();
   state = {
@@ -64,7 +70,7 @@ class SiteVerificationFormList extends Component {
   };
 
   render() {
-    const { history } = this.props;
+    const { history,classes } = this.props;
 
     return (
       <>
@@ -75,8 +81,11 @@ class SiteVerificationFormList extends Component {
             <GridContainer justify={"flex-start"}>
               <GridItem md={8}>
                 <Card>
-                  <CardHeader title={"List of site verification templates"}
-                              subheader={"Be careful to edit and create"}/>
+                  <CardHeader classes={{action:classes.action}} title={"List of site verification templates"} action={
+                                <Button onClick={e=>history.push(SITE_VERIFICATION)}  href={"#"} color={"primary"} variant={"outlined"}>
+                                  New Site Verification
+                                </Button>
+                  } />
                   <Divider component={"hr"}/>
                   <CardContent>
                     <List component={"div"}>
@@ -106,9 +115,9 @@ class SiteVerificationFormList extends Component {
                     </List>
                   </CardContent>
                   <CardActions style={{justifyContent:"flex-end"}}>
-                    < Fab href={"#"}
-                          onClick={e => history.push(SITE_VERIFICATION)}
-                          color={"primary"}><AddIcon/></Fab>
+                    {/*< Fab href={"#"}*/}
+                    {/*      onClick={e => history.push(SITE_VERIFICATION)}*/}
+                    {/*      color={"primary"}><AddIcon/></Fab>*/}
 
                   </CardActions>
                 </Card>
@@ -129,4 +138,4 @@ class SiteVerificationFormList extends Component {
   }
 }
 
-export default withRouter(SiteVerificationFormList);
+export default withStyles(styles)(withRouter(SiteVerificationFormList));
