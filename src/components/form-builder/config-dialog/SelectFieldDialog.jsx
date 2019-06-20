@@ -92,8 +92,10 @@ class SelectFieldDialog extends Component {
           value: null
         };
         onClose(this.state.name, config);
+        this.doClear()
         break;
       case "close":
+        this.doClear()
         onClose(null, null);
         break;
       default:
@@ -113,6 +115,14 @@ class SelectFieldDialog extends Component {
     });
   };
 
+  doClear=()=>{
+    this.setState({
+      name:"",
+      label:"",
+      options: [],
+      required:false
+    })
+  }
   render() {
     const { open, onClose, widget } = this.props;
 
