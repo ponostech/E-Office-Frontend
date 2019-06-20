@@ -41,7 +41,6 @@ class FileApplications extends Component {
   };
 
   processResponse = (res) => {
-    console.log('applications', res)
     if (res.data.status) this.setState({data: res.data.data.applications});
     else this.setState({err: res.data.messages})
   };
