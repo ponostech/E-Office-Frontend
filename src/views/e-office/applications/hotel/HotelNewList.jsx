@@ -142,32 +142,32 @@ class HotelNewList extends Component {
             return (
               <div>
                 <Tooltip title={"View File"}>
-                  <IconButton href={"#"} color="primary" size="small"
+                  <IconButton href={"#"} color="primary" size="medium"
                               aria-label="View File" onClick={this.viewFile.bind(this, data)}>
                     <Icon fontSize="small">folder</Icon>
                   </IconButton>
                 </Tooltip>
 
                 <Tooltip title={"View Location"}>
-                  <IconButton href={"#"} onClick={e => this.setState({ openMap: true, lat: lat, lng: lng })}>
+                  <IconButton size="medium" href={"#"} onClick={e => this.setState({ openMap: true, lat: lat, lng: lng })}>
                     <Icon fontSize="small">pin_drop</Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"View Details"}>
-                  <IconButton href={"#"} color="primary" size="small"
+                  <IconButton href={"#"} color="primary" size="medium"
                               aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                     <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Assign to Officer/Staff"}>
                   <IconButton href={"#"} variant="contained" color="secondary"
-                              size="small" onClick={this.openAssignment.bind(this, data)}>
+                              size="medium" onClick={this.openAssignment.bind(this, data)}>
                     <Icon fontSize="small">send</Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Call file"}>
                   <IconButton href={"#"} variant="contained" color="primary"
-                              size="small" onClick={this.takeFile.bind(this, data)}>
+                              size="medium" onClick={this.takeFile.bind(this, data)}>
                     <Icon fontSize="small">desktop_mac</Icon>
                   </IconButton>
                 </Tooltip>

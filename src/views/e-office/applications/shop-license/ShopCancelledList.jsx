@@ -112,19 +112,19 @@ class ShopCancelledList extends React.Component {
             const lng = Number(data.longitude);
             return (
               <>
-                <IconButton size='small' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
+                <IconButton size='medium' onClick={e => this.setState({openMap: true, lat: lat, lng: lng})}>
                   <Icon fontSize="small" className={classes.actionIcon}>pin_drop</Icon>
                 </IconButton>
-                <IconButton color="primary" size="small"
+                <IconButton color="primary" size="medium"
                             aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                   <Icon fontSize="small">remove_red_eye</Icon>
                 </IconButton>
                 <IconButton variant="contained" color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, data)}>
+                            size="medium" onClick={this.openAssignment.bind(this, data)}>
                   <Icon fontSize="small">send</Icon>
                 </IconButton>
                 <IconButton variant="contained" color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
+                            size="medium" onClick={this.takeFile.bind(this, data)}>
                   <Icon fontSize="small">desktop_mac</Icon>
                 </IconButton>
               </>
