@@ -75,6 +75,14 @@ class FileApplications extends Component {
         title = "Applicant: " + val.owner;
         subtitle = 'Name of Shop: ' + val.name;
         break;
+      case 'App\\Hotel':
+        title = "Applicant: " + val.owner;
+        subtitle = 'Name of Hotel: ' + val.name;
+        break;
+      case 'App\\Hoarding':
+        title = "Applicant: " + val.owner;
+        subtitle = 'Name of Shop: ' + val.name;
+        break;
       default:
         title = 'Not Found';
         subtitle = 'Not found';
