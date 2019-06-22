@@ -72,14 +72,13 @@ class FileNewList extends Component {
 
   confirmTakeFileResponse = (res) => {
     if (res.data.status) {
-      this.setState({successMsg: "File called successfully", openTakeFile: false});
-      setTimeout(() => this.props.history.push(DESK), 2000);
+      this.setState({openTakeFile: false});
+      this.setGlobal({successMsg: "File called successfully"})
+      this.props.history.push(DESK)
     } else {
       this.setState({errorMsg: res.data.messages, openTakeFile: false});
     }
   };
-
-  onStatusClose = () => this.setState({successMsg: ''});
 
   render() {
     const {tableData, openAssignment, successMsg, openTakeFile, singleData, staffs} = this.state;
