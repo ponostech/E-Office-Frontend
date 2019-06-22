@@ -70,14 +70,16 @@ class FileNewList extends Component {
   takeFile = (data) => this.setState({singleData: data, openTakeFile: true});
 
   confirmTakeFile = () => axios.post(FILE_CALL(this.state.singleData.id))
-      .then(res => this.confirmTakeFileResponse(res));
+      .then(res => this.confirmTakeFileResponse(res))
+      .catch(err => this.setGlobal({errorMsg: err.toString()}))
+      .then(() => this.setState({openTakeFile: false}))
 
   confirmTakeFileResponse = (res) => {
     if (res.data.status) {
-      this.setState({successMsg: "File called successfully", openTakeFile: false});
-      setTimeout(() => this.props.history.push(DESK), 2000);
+      this.setGlobal({successMsg: "File called successfully"})
+      this.props.history.push(DESK)
     } else {
-      this.setState({errorMsg: res.data.messages, openTakeFile: false});
+      this.setGlobal({errorMsg: res.data.messages});
     }
   };
 
@@ -118,12 +120,12 @@ class FileNewList extends Component {
   closeDialog = (key) => this.setState({[key]: false});
 
   render() {
+    console.log('data', this.state.tableData)
     const {tableData, openAssignment, openTakeFile, singleData, staffs, openFileArchiveDialog, openFileCloseDialog} = this.state;
 
     const tableOptions = {
       filterType: "checkbox",
-      responsive: "scroll",
-      rowsPerPage: 8,
+      rowsPerPage: 10,
       serverSide: false
     };
 
@@ -143,6 +145,15 @@ class FileNewList extends Component {
         }
       },
       {
+        name: 'desk',
+        label: 'FILE LOCATION',
+        options: {
+          customBodyRender: (data) => {
+            return data ? data.staff.name : <span style={{color: 'red'}}>New File</span>
+          }
+        }
+      },
+      {
         name: "created_at",
         label: "CREATED ON",
         options: {
@@ -152,10 +163,10 @@ class FileNewList extends Component {
           }
         }
       },
-      {
+      /*{
         name: "branch",
         label: "BRANCH"
-      },
+      },*/
       {
         name: "id",
         label: "ACTION",

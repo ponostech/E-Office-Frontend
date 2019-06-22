@@ -100,8 +100,7 @@ class FileNewList extends Component {
 
         const tableOptions = {
             filterType: "checkbox",
-            responsive: "scroll",
-            rowsPerPage: 8,
+            rowsPerPage: 10,
             serverSide: false
         };
 

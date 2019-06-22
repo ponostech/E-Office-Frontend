@@ -82,7 +82,7 @@ class DeskFiles extends Component {
           customBodyRender: (value) => {
             return (
                 <Tooltip title="View Details">
-                  <IconButton color="primary" size="small"
+                  <IconButton color="primary" size="medium"
                               aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
                     <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
