@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import { withStyles } from "@material-ui/core/styles";
 import { Icon, IconButton, Tooltip } from "@material-ui/core";
 import moment from "moment";
-import { FILE_TAKE, GET_STAFF, HOTEL_LIST } from "../../../../config/ApiRoutes";
+import { FILE_CALL, GET_STAFF, HOTEL_LIST } from "../../../../config/ApiRoutes";
 import HotelViewDialog from "./common/HotelViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
@@ -63,9 +63,10 @@ class HotelNewList extends Component {
   takeFile = (data) => this.setState({ hotel: data, openTakeFile: true });
 
   confirmTakeFile = () => {
+    console.log("hotel", this.state.hotel)
     this.setState({ openTakeFile: false });
     this.setGlobal({ loading: true });
-    axios.post(FILE_TAKE(this.state.hotel.file.id))
+    axios.post(FILE_CALL(this.state.hotel.file.id))
       .then((res) => {
         if (res.data.status) {
           this.setGlobal({ successMsg: ArrayToString(res.data.messages) });
@@ -98,7 +99,6 @@ class HotelNewList extends Component {
     const { hotel, hotels, staffs, openTakeFile, openAssignment, openViewDialog, file, openMap } = this.state;
     const tableOptions = {
       filterType: "checkbox",
-      responsive: "scroll",
       rowsPerPage: 15,
       serverSide: false
     };
@@ -165,8 +165,8 @@ class HotelNewList extends Component {
                     <Icon fontSize="small">send</Icon>
                   </IconButton>
                 </Tooltip>
-                <Tooltip title={"Call file"}>
-                  <IconButton href={"#"} variant="contained" color="primary"
+                <Tooltip title="Call file">
+                  <IconButton href={"#"} variant="contained" color="secondary"
                               size="medium" onClick={this.takeFile.bind(this, data)}>
                     <Icon fontSize="small">desktop_mac</Icon>
                   </IconButton>
