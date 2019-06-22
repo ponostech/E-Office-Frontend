@@ -3,12 +3,13 @@ import axios from "axios";
 import {CardContent, Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import {ApiRoutes, FILE_TAKE} from "../../../config/ApiRoutes";
+import {ApiRoutes, FILE_STATUS_UPDATE, FILE_TAKE} from "../../../config/ApiRoutes";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../config/routes-constant/OfficeRoutes";
 import FileSendDialog from "../../common/SendDialog";
 import moment from "moment";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import LoadingView from "../../common/LoadingView";
+import Tooltip from "@material-ui/core/Tooltip"
 
 class FileNewList extends Component {
     state = {
@@ -17,7 +18,7 @@ class FileNewList extends Component {
         singleData: [],
         openAssignment: false,
         openTakeFile: false,
-        successMsg: '',
+        openFileReOpenDialog: false,
     };
 
     componentDidMount() {
@@ -76,8 +77,26 @@ class FileNewList extends Component {
         }
     };
 
+    reOpenFile = (data) => this.setState({singleData: data, openFileReOpenDialog: true})
+
+    confirmFileReOpen = () => {
+        this.updateStatus('active')
+            .then(res => {
+                if (res.data.status) {
+                    this.setGlobal({successMsg: "File Re-Opened successfully"})
+                    this.getData();
+                } else {
+                    this.setGlobal({errorMsg: res.data.messages})
+                }
+            })
+            .catch(err => this.setGlobal({errorMsg: err.toString()}))
+            .then(() => this.setState({openFileReOpenDialog: false}))
+    }
+
+    updateStatus = (status) => axios.post(FILE_STATUS_UPDATE(this.state.singleData.id), {status: status});
+
     render() {
-        const {tableData, openAssignment, successMsg, openTakeFile, singleData, staffs} = this.state;
+        const {tableData, openAssignment, openFileReOpenDialog, openTakeFile, singleData, staffs} = this.state;
 
         const tableOptions = {
             filterType: "checkbox",
@@ -126,18 +145,26 @@ class FileNewList extends Component {
                         let data = this.state.tableData[rowIndex];
                         return (
                             <>
-                                <IconButton color="primary" size="small"
-                                            aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
-                                    <Icon fontSize="small">remove_red_eye</Icon>
-                                </IconButton>
-                                <IconButton variant="contained" color="secondary"
-                                            size="small" onClick={this.openAssignment.bind(this, data)}>
+                                <Tooltip title="View Details">
+                                    <IconButton color="primary" size="medium"
+                                                aria-label="View Details" onClick={this.viewDetail.bind(this, value)}>
+                                        <Icon fontSize="small">remove_red_eye</Icon>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Re-Open File">
+                                    <IconButton variant="contained" color="secondary"
+                                                size="medium" onClick={this.reOpenFile.bind(this, data)}>
+                                        <Icon fontSize="small">unarchive</Icon>
+                                    </IconButton>
+                                </Tooltip>
+                                {/*<IconButton variant="contained" color="secondary"
+                                            size="medium" onClick={this.openAssignment.bind(this, data)}>
                                     <Icon fontSize="small">send</Icon>
                                 </IconButton>
                                 <IconButton variant="contained" color="primary"
-                                            size="small" onClick={this.takeFile.bind(this, data)}>
+                                            size="medium" onClick={this.takeFile.bind(this, data)}>
                                     <Icon fontSize="small">desktop_mac</Icon>
-                                </IconButton>
+                                </IconButton>*/}
                             </>
                         );
                     }
@@ -147,7 +174,7 @@ class FileNewList extends Component {
 
         const files =
             <CardContent>
-                <MUIDataTable title={"File: List of New Files"} data={tableData} columns={tableColumns}
+                <MUIDataTable title={"File: List of Archived Files"} data={tableData} columns={tableColumns}
                               options={tableOptions}/>
             </CardContent>;
 
@@ -165,6 +192,10 @@ class FileNewList extends Component {
                                onCancel={() => this.setState({openTakeFile: false})} open={openTakeFile}
                                onConfirm={this.confirmTakeFile.bind(this)}/>}
 
+                {openFileReOpenDialog &&
+                <ConfirmDialog onCancel={this.closeFileReOpenDialog}
+                               open={openFileReOpenDialog} onConfirm={this.confirmFileReOpen}
+                               message="Are you sure you want to Re-Open this file?"/>}
             </>
         );
     }
