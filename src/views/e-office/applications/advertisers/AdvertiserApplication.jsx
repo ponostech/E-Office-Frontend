@@ -99,17 +99,17 @@ class AdvertiserApplication extends React.Component {
             const data = this.state.kiosks[rowIndex];
             return (
               <div>
-                <IconButton className={classes.button} color="primary" size="small"
+                <IconButton className={classes.button} color="primary" size="medium"
                             aria-label="View Details"
                             onClick={e => this.setState({ kiosk: data.kiosk, openDetail: true })}>
                   <Icon fontSize="small" className={classes.actionIcon}>remove_red_eye</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="secondary"
-                            size="small" onClick={this.openAssignment.bind(this, value)}>
+                            size="medium" onClick={this.openAssignment.bind(this, value)}>
                   <Icon fontSize="small" className={classes.actionIcon}>send</Icon>
                 </IconButton>
                 <IconButton variant="contained" className={classes.button} color="primary"
-                            size="small" onClick={this.takeFile.bind(this, data)}>
+                            size="medium" onClick={this.takeFile.bind(this, data)}>
                   <Icon fontSize="small" className={classes.actionIcon}>drag_indicator</Icon>
                 </IconButton>
               </div>
