@@ -69,6 +69,7 @@ class NotesheetAttachmentItem extends Component {
           console.error(err);
         });
     }
+    console.log(attachment)
 
   }
 
