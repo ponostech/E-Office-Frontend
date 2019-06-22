@@ -54,6 +54,7 @@ export class LoginService {
       }
     } catch (e) {
       localStorage.clear()
+      window.location.replace(ApiRoutes.LOGIN_ROUTE)
       console.error(e);
       errorCallback(e.toString());
     }
