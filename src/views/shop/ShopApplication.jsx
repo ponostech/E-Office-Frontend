@@ -44,12 +44,7 @@ import { APPLICATION_NAME } from "../../utils/Util";
 import LoadingView from "../common/LoadingView";
 
 const style = {
-  subTitle: {
-    fontSize: 16,
-    color: "#727272",
-    marginTop: 6,
-    marginBottom: 6
-  },
+
   root: {
     padding: "10px 15px !important"
   },

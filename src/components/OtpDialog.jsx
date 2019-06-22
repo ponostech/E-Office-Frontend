@@ -24,6 +24,14 @@ class OtpDialog extends Component {
     // this.props.onClose();
   };
 
+  doClear=()=>{
+    this.setState({
+      otp: "",
+      errorMessage: "",
+      submit:false,
+      successMessage:""
+    })
+  }
 
   handleResend = () => {
     const self = this;
@@ -60,7 +68,7 @@ class OtpDialog extends Component {
       },
       successMessage => {
         this.setState({ successMessage });
-        console.log("call me bitch");
+        this.doClear();
         onClose(true);
       })
       .finally(() => this.setState({ submit: false }));
@@ -72,20 +80,21 @@ class OtpDialog extends Component {
 
     return (
       <Dialog fullWidth={true} maxWidth={"sm"} open={open}>
+        <CardHeader style={{flex:1}} title={"Enter One Time Password"} action={
+          <IconButton onClick={e=>{
+            this.doClear();
+            onClose(null)}}>
+            <CloseIcon/>
+          </IconButton>
+        }/>
+        <Divider/>
 
         <DialogContent>
 
           <GridContainer justify={"space-between"} spacing={3}>
-            <CardHeader style={{flex:1}} title={"Enter One Time Password"} action={
-              <IconButton onClick={e=>onClose(null)}>
-                <CloseIcon/>
-              </IconButton>
-            }/>
-            <GridItem md={12}>
-              <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-            </GridItem>
 
-            <GridItem xs={12} md={12}>
+
+            <GridItem xs={12} sm={12}>
               <TextField variant={"outlined"}
                          margin={"dense"}
                          placeholder={"Enter OTP"}
@@ -100,9 +109,6 @@ class OtpDialog extends Component {
                          }}/>
             </GridItem>
 
-            <GridItem sm={12} md={12}>
-              <Divider style={{ marginBottom: 10, marginTop: 10 }}/>
-            </GridItem>
             <GridItem xs={12} md={6}>
               <Button fullWidth={true} disabled={this.state.submit} onClick={this.handleResend.bind(this)}
                       variant={"outlined"}
