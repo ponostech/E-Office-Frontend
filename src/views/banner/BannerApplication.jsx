@@ -32,7 +32,14 @@ import LoadingView from "../common/LoadingView";
 const style = {
   root: {
     padding: "10px 15px !important"
-  }
+  },
+  subTitle: {
+    fontSize: 16,
+    color: "#727272",
+    marginTop: 6,
+    marginBottom: 6
+  },
+
 };
 
 var timeout = null;
@@ -233,7 +240,7 @@ class BannerApplication extends Component {
                           </Typography>
                         </GridItem>
                         <GridItem xs={12} sm={12} md={12}>
-                          <Typography variant="h7">
+                          <Typography variant="h6" className={classes.subTitle}>
                             Applicant Details
                           </Typography>
                           <Divider/>
@@ -355,7 +362,7 @@ class BannerApplication extends Component {
                         </GridItem>
 
                         <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                          <Typography style={{ marginTop: 20 }} variant={"h7"}> Details of Advertisement</Typography>
+                          <Typography  variant="h6" className={classes.subTitle}> Details of Advertisement</Typography>
                           <Divider component={"div"} style={{ marginTop: 10, marginBottom: 10 }}/>
                           <BannerDetail ref={this.bannerRef}
                                         onRemoveDetail={(index) => {
