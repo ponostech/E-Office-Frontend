@@ -1,4 +1,4 @@
-import React from "react";
+import React from "reactn";
 import { FileService } from "../../../../../services/FileService";
 import {
   Card,
@@ -27,35 +27,6 @@ export const FILEABLE_TYPE = {
   HOTEL: "App\\Hotel"
 };
 
-function PrintApplication(props) {
-
-  return (
-    <table>
-      <thead>
-      <th>column 1</th>
-      <th>column 2</th>
-      <th>column 3</th>
-      </thead>
-      <tbody>
-      <tr>
-        <td>data 1</td>
-        <td>data 2</td>
-        <td>data 3</td>
-      </tr>
-      <tr>
-        <td>data 1</td>
-        <td>data 2</td>
-        <td>data 3</td>
-      </tr>
-      <tr>
-        <td>data 1</td>
-        <td>data 2</td>
-        <td>data 3</td>
-      </tr>
-      </tbody>
-    </table>
-  );
-}
 
 class FileApplicationDetails extends React.Component {
   state = {
@@ -74,7 +45,7 @@ class FileApplicationDetails extends React.Component {
   componentDidMount() {
     const { file } = this.props;
     this.fileService.getApplication(file.fileable_id, file.fileable_type,
-      errorMessage => this.setState({ errorMessage }),
+      errorMsg => this.setGlobal({ errorMsg }),
       application => this.renderView(application))
       .finally(() => this.setState({ loading: false }));
   }

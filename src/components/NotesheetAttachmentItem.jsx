@@ -20,7 +20,7 @@ const inputProps = {
 var uniqid = require("uniqid");
 const config = {
   bucketName: BUCKET_NAME,
-  dirName: "office/notesheet-attachments", /* optional */
+  dirName: "notesheet-attachments", /* optional */
   region: REGION,
   accessKeyId: S3_ACCESS_KEY,
   secretAccessKey: S3_SECRET_ACCESS_KEY
@@ -48,11 +48,11 @@ class NotesheetAttachmentItem extends Component {
 
     if (file) {
       let blob = file.slice(0, file.size, file.type);
-      let newName = "notesheet_attachment_"+Date.now() + "-" + uniqid();
+      let newName =Date.now()+ "-" + uniqid()+file.name.substr(file.name.lastIndexOf("."),file.name.length);
       let newFile = new File([blob], newName, { type: file.type });
 
-      let loc = moment().format("MM-YYYY");
-      // config.dirName=`office/notesheet-attachments/${loc}/`;
+      let loc = moment().format("YYYY-MM");
+      config.dirName=`notesheet-attachments/${loc}`;
 
       this.setState({ file: newFile });
 

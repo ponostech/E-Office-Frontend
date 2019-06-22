@@ -112,27 +112,27 @@ class AdvertiserNewList extends Component {
             return (
                 <div>
                   <Tooltip title="View File">
-                    <IconButton color="primary" size="small"
+                    <IconButton color="primary" size="medium"
                                 aria-label="View File" onClick={this.viewFile.bind(this, data)}>
                       <Icon fontSize="small">folder</Icon>
                     </IconButton>
                   </Tooltip>
                   {data.file ? <>
                     <Tooltip title="View Details">
-                      <IconButton color="primary" size="small"
+                      <IconButton color="primary" size="medium"
                                   aria-label="View Details" onClick={this.viewDetails.bind(this, data)}>
                         <Icon fontSize="small">remove_red_eye</Icon>
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Assign File">
                       <IconButton variant="contained" color="secondary"
-                                  size="small" onClick={this.openAssignment.bind(this, data)}>
+                                  size="medium" onClick={this.openAssignment.bind(this, data)}>
                         <Icon fontSize="small">send</Icon>
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Take File">
                       <IconButton variant="contained" color="primary"
-                                  size="small" onClick={this.takeFile.bind(this, data)}>
+                                  size="medium" onClick={this.takeFile.bind(this, data)}>
                         <Icon fontSize="small">desktop_mac</Icon>
                       </IconButton>
                     </Tooltip>

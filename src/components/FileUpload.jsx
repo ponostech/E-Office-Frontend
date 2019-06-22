@@ -12,7 +12,7 @@ import moment from "moment";
 var uniqid = require("uniqid");
 const config = {
   bucketName: BUCKET_NAME,
-  dirName: "office", /* optional */
+  dirName: "", /* optional */
   region: REGION,
   accessKeyId: S3_ACCESS_KEY,
   secretAccessKey: S3_SECRET_ACCESS_KEY
@@ -76,7 +76,7 @@ class FileUpload extends Component {
     var self = this;
 
     let path = moment().format("YYYY-MM");
-    config.dirName = `office/${applicationName}/${path}`;
+    config.dirName = `${applicationName}/${path}`;
     return (
       <>
         <TextField
@@ -121,8 +121,13 @@ class FileUpload extends Component {
                     let item = e.target.files[0];
 
                     let blob = item.slice(0, item.size, item.type);
-                    let newName =Date.now()+ "-" + uniqid() ;
+                    let newName =Date.now()+ "-" + uniqid()+item.name.substr(item.name.lastIndexOf("."),item.name.length);
+
+                    console.log("new name",newName);
+
                     let newFile = new File([blob], newName, { type: item.type });
+
+                    console.log("fileupload",newFile)
 
                     let temp = file;
                     temp.file = item;

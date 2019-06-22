@@ -22,6 +22,7 @@ import ErrorHandler from "../views/common/StatusHandler";
 import ShopLicenseList from "../views/landing-pages/license-checking/ShopLicenseList";
 import HotelLicenseList from "../views/landing-pages/license-checking/HotelLicenseList";
 import BannerList from "../views/landing-pages/license-checking/BannerList";
+import Test from "../views/Test";
 
 class LayoutLanding extends React.Component {
   constructor(props) {
@@ -60,6 +61,7 @@ class LayoutLanding extends React.Component {
               <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
 
               <Route exact={true} path={OfficeRoutes.GRIEVANCE_CREATE} component={GrievanceCreate}/>
+              <Route exact={true} path={"/test"} component={Test}/>
 
             </Switch>
           </div>
