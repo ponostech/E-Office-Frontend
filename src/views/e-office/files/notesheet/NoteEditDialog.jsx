@@ -48,7 +48,7 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class NoteCreateDialog extends Component {
+class NoteEditDialog extends Component {
   state = {
     content: "",
     action: null,
@@ -63,6 +63,8 @@ class NoteCreateDialog extends Component {
   };
 
   componentDidMount() {
+
+
     axios.all([this.getFileActionTypes(), this.getFilePriorities()])
       .then(axios.spread((actions, priorities) => this.processResult(actions, priorities)))
       .then(() => this.setGlobal({ loading: false }))
@@ -70,21 +72,19 @@ class NoteCreateDialog extends Component {
   }
 
   processResult = (actions, priorities) => {
-    let stateList = {
-      actionTypes: actions.data.data.actions,
-      priorityTypes: priorities.data.data.priorities
-    };
+    const { note } = this.props;
+    this.setState({actionTypes:actions.data.data.actions});
+    this.setState({priorityTypes:priorities.data.data.priorities})
 
-    if (this.props.note) { // if edit note
-      let tempList = {
-        content: this.props.note.content,
-        action: { "value": this.props.note.action, "label": this.props.note.action },
-        priority: { "value": this.props.note.priority, "label": this.props.note.priority },
-        fixedDate: this.props.note.fixed_date
-      };
-      stateList = { ...stateList, ...tempList };
+    if (note) {
+      this.setState({
+        fixedDate:moment(note.fixed_date),
+        content:note.content,
+        action:{value:note.action,label:note.action},
+        priority:{value:note.priority,label:note.priority}
+      })
     }
-    this.setState(stateList);
+
   };
 
   getFileActionTypes = () => axios.get(FILE_ACTION_TYPES);
@@ -103,10 +103,11 @@ class NoteCreateDialog extends Component {
   editorChange = (e) => this.setState({ content: e.target.getContent() });
 
   onSubmitNote = (action) => {
+    const { note } = this.props;
     if (this.valid()) {
       let data = {
-        id:this.props.id,
-        file_id: this.props.file.id,
+        id:note.id,
+        file_id:note.file_id,
         content: this.state.content,
         action: this.state.action.value,
         priority: this.state.priority.value,
@@ -117,14 +118,6 @@ class NoteCreateDialog extends Component {
       if (this.state.fixedDate) data.fixed_date = moment(this.state.fixedDate).format("YYYY-MM-DD");
       if (action === "confirm") data.draft = 0;
 
-      // //Edit
-      // if (this.props.editNote) {
-      //     this.props.onClose(data,"edit")
-      // }else{
-      //   //Create
-      //      this.props.onClose(data,"create");
-      // }
-      // this.setGlobal({successMsg: 'File updated successfully'});
       this.props.onClose(data);
     } else {
       this.setGlobal({ errorMsg: "Please fill all the required field." });
@@ -140,7 +133,7 @@ class NoteCreateDialog extends Component {
   };
 
   render() {
-    const { classes, open, edit } = this.props;
+    const { classes, open, note } = this.props;
     const { loading, errorMsg } = this.state;
     let content = <CardContent>
       <Grid container spacing={6}>
@@ -209,22 +202,17 @@ class NoteCreateDialog extends Component {
         </Grid>
         <Grid item={true} lg={6}>
           <Typography style={{textTransform:"capitalize"}} variant={"h6"}>Notesheet Attachment</Typography>
-          <NotesheetAttachment value={[]} onSuccess={this.onSuccess}/>
+          <NotesheetAttachment value={[note.attachments]} onSuccess={this.onSuccess}/>
         </Grid>
       </Grid>
     </CardContent>;
 
     const addActionList = <DialogActions>
       <Button href={"#"} color="primary" onClick={this.onSubmitNote.bind(this, "draft")}>Save Draft</Button>
-      <Button href={"#"} color="primary" onClick={this.onSubmitNote.bind(this, "confirm")}>Save</Button>
+      <Button href={"#"} color="primary" onClick={this.onSubmitNote.bind(this, "confirm")}>Confirm</Button>
       <Button href={"#"} color="secondary" onClick={this.handleClose.bind(this)}>Cancel</Button>
     </DialogActions>;
 
-    const editActionList = <DialogActions>
-      <Button href={"#"} color="primary" onClick={this.onSubmitNote.bind(this, "draft")}>Save Draft</Button>
-      <Button href={"#"} color="primary" onClick={this.onSubmitNote.bind(this, "confirm")}>Confirm</Button>
-      <Button href={"#"} color="secondary" onClick={this.handleClose.bind(this)}>Cancel Edit</Button>
-    </DialogActions>;
 
     return (
       <>
@@ -256,26 +244,27 @@ class NoteCreateDialog extends Component {
                 {loading ? <LoadingView/> : content}
               </Card>
             </List>
-            {errorMsg && <ErrorHandler messages={errorMsg}/>}
+            {/*{errorMsg && <ErrorHandler messages={errorMsg}/>}*/}
           </DialogContent>
           <Divider component={"li"}/>
-          {loading ? "" : (edit ? editActionList : addActionList)}
+          <DialogActions>
+            {addActionList}
+          </DialogActions>
         </Dialog>
       </>
     );
   };
 }
 
-NoteCreateDialog.defaultProps = {
+NoteEditDialog.defaultProps = {
   note: null
 };
 
-NoteCreateDialog.propTypes = {
+NoteEditDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  file: PropTypes.object.isRequired
 };
 
 
-export default withStyles(styles)(NoteCreateDialog);
+export default withStyles(styles)(NoteEditDialog);
 

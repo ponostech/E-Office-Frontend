@@ -49,7 +49,7 @@ function Timeline({...props}) {
                 ) : null}
                 <div className={draft ? panelClasses + " " + classes.draft : panelClasses}>
                   {draft && <div style={{float:"right"}}>
-                    <Button variant='text' color="primary" onClick={(id) => props.onNoteEdit(prop.id)}>Edit</Button>
+                    <Button variant='text' color="primary" onClick={(id) => props.onNoteEdit(prop.note)}>Edit</Button>
                     <Button color="secondary" onClick={(id) => props.onNoteDelete(prop.id)}>Delete</Button>
                   </div>}
                   {prop.title ? (
