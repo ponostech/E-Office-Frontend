@@ -41,7 +41,7 @@ class NotesheetAttachmentItem extends Component {
     if (attachment) {
       this.setState({
         name:attachment.name,
-        location:attachment.location,
+        location:attachment.path,
         loading:false
       })
     }
