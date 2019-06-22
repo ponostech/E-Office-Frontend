@@ -3,7 +3,7 @@ import axios from "axios";
 import {CardContent, Grid, Icon, IconButton} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import {ApiRoutes, FILE_CALL} from "../../../config/ApiRoutes";
+import {ApiRoutes, FILE_CALL, FILE_STATUS_UPDATE} from "../../../config/ApiRoutes";
 import {DESK, FILE_DETAIL_ROUTE, FILE_SEND} from "../../../config/routes-constant/OfficeRoutes";
 import FileSendDialog from "../../common/SendDialog";
 import moment from "moment";
@@ -81,13 +81,39 @@ class FileNewList extends Component {
     }
   };
 
-  archiveFile = () => this.setState({openFileArchiveDialog: true})
+  archiveFile = (data) => this.setState({singleData: data, openFileArchiveDialog: true})
 
-  confirmedArchiveFile = () => {}
+  confirmedArchiveFile = () => {
+    this.updateStatus('archived')
+        .then(res => {
+          if (res.data.status) {
+            this.setGlobal({successMsg: "File archived successfully"})
+            this.getData();
+          } else {
+            this.setGlobal({errorMsg: res.data.messages})
+          }
+        })
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setState({openFileArchiveDialog: false}))
+  }
 
-  closeFile = () => this.setState({openFileCloseDialog: true})
+  closeFile = (data) => this.setState({singleData: data, openFileCloseDialog: true})
 
-  confirmedCloseFile = () => {}
+  confirmedCloseFile = () => {
+    this.updateStatus('closed')
+        .then(res => {
+          if (res.data.status) {
+            this.setGlobal({successMsg: "File closed successfully"})
+            this.getData();
+          } else {
+            this.setGlobal({errorMsg: res.data.messages})
+          }
+        })
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
+        .then(() => this.setState({openFileCloseDialog: false}))
+  }
+
+  updateStatus = (status) => axios.post(FILE_STATUS_UPDATE(this.state.singleData.id), {status: status});
 
   closeDialog = (key) => this.setState({[key]: false});
 
@@ -137,30 +163,31 @@ class FileNewList extends Component {
           filter: false,
           sort: false,
           customBodyRender: (value, tableMeta) => {
-            let data = tableMeta.rowData;
+            let {rowIndex} = tableMeta;
+            let data = this.state.tableData[rowIndex];
             return (
                 <>
                   <Tooltip title='View File Details'>
-                    <IconButton color="primary" size="small"
+                    <IconButton color="primary" size="medium"
                                 aria-label="View File Details" onClick={this.viewDetail.bind(this, value)}>
                       <Icon fontSize="small">remove_red_eye</Icon>
                     </IconButton>
                   </Tooltip>
                   <Tooltip title='Call file'>
                     <IconButton variant="contained" color="primary"
-                                size="small" onClick={this.takeFile.bind(this, data)}>
+                                size="medium" onClick={this.takeFile.bind(this, data)}>
                       <Icon fontSize="small">desktop_mac</Icon>
                     </IconButton>
                   </Tooltip>
                   <Tooltip title='Archive File'>
                     <IconButton variant="contained" color="secondary"
-                                size="small" onClick={this.archiveFile.bind(this, data)}>
+                                size="medium" onClick={this.archiveFile.bind(this, data)}>
                       <Icon fontSize="small">archive</Icon>
                     </IconButton>
                   </Tooltip>
                   <Tooltip title='Close File'>
                     <IconButton variant="contained" color="secondary"
-                                size="small" onClick={this.closeFile.bind(this, data)}>
+                                size="medium" onClick={this.closeFile.bind(this, data)}>
                       <Icon fontSize="small">close</Icon>
                     </IconButton>
                   </Tooltip>
@@ -173,7 +200,7 @@ class FileNewList extends Component {
 
     const files =
         <CardContent>
-          <MUIDataTable title={"File: List of New Files"} data={tableData} columns={tableColumns}
+          <MUIDataTable title={"File: List of Active Files"} data={tableData} columns={tableColumns}
                         options={tableOptions}/>
         </CardContent>;
 
@@ -195,6 +222,7 @@ class FileNewList extends Component {
           <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileCloseDialog")}
                          open={openFileCloseDialog} onConfirm={this.confirmedCloseFile}
                          message="Are you sure you want to close this file?"/>}
+
           {openFileArchiveDialog &&
           <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileArchiveDialog")}
                          open={openFileArchiveDialog} onConfirm={this.confirmedArchiveFile}
