@@ -60,9 +60,31 @@ class FileApplications extends Component {
     if (!data.length) return false
     return data.filter((val) => {
       if (val.status === status) return true;
-    }).map(val => <DetailViewRow key={val.id} primary={val.applicant?val.applicant.advertiser.name:"NA"}
-                                 secondary={val.status.toUpperCase()} click={this.viewDetails} value={val}/>);
+    }).map(val => this.listApplications(val));
   };
+
+  listApplications = (val) => {
+    const {fileable_type} = this.props.file
+    let title = '';
+    let subtitle = '';
+    // console.log(val)
+    // console.log(this.props.file)
+
+    switch (fileable_type) {
+      case 'App\\Shop':
+        title = "Applicant: " + val.owner;
+        subtitle = 'Name of Shop: ' + val.name;
+        break;
+      default:
+        title = 'Not Found';
+        subtitle = 'Not found';
+        break;
+
+    }
+    return <DetailViewRow key={val.id} primary={title} secondary={subtitle} value={val}
+                          type={fileable_type} click={this.viewDetails}/>
+  }
+
 
   handleTabChange = (event, newValue) => this.setState({tabValue: newValue});
 
@@ -105,11 +127,16 @@ class FileApplications extends Component {
             index={tabValue}
             onChangeIndex={this.handleTabChangeIndex}
         >
-          <TabContainer>{loading ? <LoadingView/> : <List>{newList.length ? newList : 'Not Available'}</List>}</TabContainer>
-          <TabContainer>{loading ? <LoadingView/> : <List>{inProcessList.length ? inProcessList : 'Not Available'}</List>}</TabContainer>
-          <TabContainer>{loading ? <LoadingView/> : <List>{rejectedList.length ? rejectedList : 'Not Available'}</List>}</TabContainer>
-          <TabContainer>{loading ? <LoadingView/> : <List>{cancelledList.length ? cancelledList : 'Not Available'}</List>}</TabContainer>
-          <TabContainer>{loading ? <LoadingView/> : <List>{approvedList.length ? approvedList : 'Not Available'}</List>}</TabContainer>
+          <TabContainer>{loading ? <LoadingView/> :
+              <List>{newList.length ? newList : 'Not Available'}</List>}</TabContainer>
+          <TabContainer>{loading ? <LoadingView/> :
+              <List>{inProcessList.length ? inProcessList : 'Not Available'}</List>}</TabContainer>
+          <TabContainer>{loading ? <LoadingView/> :
+              <List>{rejectedList.length ? rejectedList : 'Not Available'}</List>}</TabContainer>
+          <TabContainer>{loading ? <LoadingView/> :
+              <List>{cancelledList.length ? cancelledList : 'Not Available'}</List>}</TabContainer>
+          <TabContainer>{loading ? <LoadingView/> :
+              <List>{approvedList.length ? approvedList : 'Not Available'}</List>}</TabContainer>
         </SwipeableViews>;
 
     return <>
@@ -120,7 +147,7 @@ class FileApplications extends Component {
       </div>
       <Divider/>
       {err && <ErrorHandler messages={err} onClose={this.closeStatus}/>}
-      {openDetails && <ApplicationDetailsDialog open={openDetails} title='View Application Details' content={singleData}
+      {openDetails && <ApplicationDetailsDialog type={this.props.file.fileable_type} open={openDetails} title='View Application Details' content={singleData}
                                                 onClose={this.closeDetails}/>}
     </>
   }
