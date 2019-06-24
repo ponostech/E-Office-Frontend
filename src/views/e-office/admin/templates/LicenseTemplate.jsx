@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import GridContainer from "../../../../components/Grid/GridContainer";
 import { Card, CardContent, CardHeader, withStyles } from "@material-ui/core";
-import { SettingViewModel } from "../../../model/SettingViewModel";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import HotelLicenseTemplate from "./licenses/HotelLicenseTemplate";
@@ -10,10 +8,10 @@ import AdvertiserLicenseTemplate from "./licenses/AdvertiserLicenseTemplate";
 import TechnicalPersonLicenseTemplate from "./licenses/TechnicalPersonLicenseTemplate";
 
 
-
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    borderBottom: "1px solid #e8e8e8",
     backgroundColor: theme.palette.background.paper
   },
   tabsRoot: {
@@ -63,38 +61,40 @@ class LicenseTemplate extends Component {
   };
 
   handleChange = (event, value) => {
-    this.setState({value});
+    this.setState({ value });
   };
 
   render() {
     const { classes } = this.props;
-    const {value} = this.state;
+    const { value } = this.state;
 
     return (
-      <Card >
-        <CardHeader style={{padding:"5px 16px"}} title={"LICENSE TEMPLATE"}/>
-        <CardContent style={{padding:"5px 16px"}}>
-          <Tabs
-            value={value}
-            onChange={this.handleChange}
-            classes={{root: classes.tabsRoot, indicator: classes.tabsIndicator}}
-          >
+      <Card>
+        <CardHeader style={{ padding: "5px 16px" }} title={"LICENSE TEMPLATE"}/>
+        <CardContent style={{ padding: "5px 16px" }}>
+          <div className={classes.root}>
+            <Tabs
+              value={value}
+              onChange={this.handleChange}
+              classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
+            >
 
-            <Tab value={"shop"}
-                 disableRipple
-                 classes={{root: classes.tabRoot, selected: classes.tabSelected}}
-                 label={"Shop License"}/>
-            <Tab disableRipple value={"hotel"}
-                 classes={{root: classes.tabRoot, selected: classes.tabSelected}}
-                 label={"Hotel License"}/>
-            <Tab disableRipple value={"advertiser"}
-                 classes={{root: classes.tabRoot, selected: classes.tabSelected}}
-                 label={"Advertiser License"}/>
-            <Tab disableRipple value={"technical"}
-                 classes={{root: classes.tabRoot, selected: classes.tabSelected}}
-                 label={"Techinical Person License"}/>
+              <Tab value={"shop"}
+                   disableRipple
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Shop License"}/>
+              <Tab disableRipple value={"hotel"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Hotel License"}/>
+              <Tab disableRipple value={"advertiser"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Advertiser License"}/>
+              <Tab disableRipple value={"technical"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Techinical Person License"}/>
 
-          </Tabs>
+            </Tabs>
+          </div>
         </CardContent>
         <div>
           {value === "hotel" && <HotelLicenseTemplate doLoad={this.props.doLoad}/>}

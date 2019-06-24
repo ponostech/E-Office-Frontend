@@ -15,6 +15,7 @@ import TechnicalPersonCancelTemplate from "./cancel/TechnicalPersonCancelTemplat
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    borderBottom: "1px solid #e8e8e8",
     backgroundColor: theme.palette.background.paper
   },
   tabsRoot: {
@@ -73,46 +74,48 @@ class CancelTemplate extends Component {
 
     return (
       <Card>
-        <CardHeader style={{padding:"5px 16px"}} title={"CANCELLED TEMPLATE"}/>
-        <CardContent style={{padding:"5px 16px"}}>
-          <Tabs
-            value={value}
-            onChange={this.handleChange}
-            classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-          >
+        <CardHeader style={{ padding: "5px 16px" }} title={"CANCELLED TEMPLATE"}/>
+        <CardContent style={{ padding: "5px 16px" }}>
+          <div className={classes.root}>
+            <Tabs
+              value={value}
+              onChange={this.handleChange}
+              classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
+            >
 
-            <Tab value={"advertiser"}
-                 disableRipple
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Advertiser "}/>
-            <Tab disableRipple value={"shop"}
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Shop "}/>
-            <Tab disableRipple value={"hotel"}
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Hotel& Lodging"}/>
+              <Tab value={"advertiser"}
+                   disableRipple
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Advertiser "}/>
+              <Tab disableRipple value={"shop"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Shop "}/>
+              <Tab disableRipple value={"hotel"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Hotel& Lodging"}/>
 
-            <Tab disableRipple value={"hoarding"}
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Hoarding"}/>
+              <Tab disableRipple value={"hoarding"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Hoarding"}/>
 
-            <Tab disableRipple value={"kiosk"}
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Kiosk"}/>
+              <Tab disableRipple value={"kiosk"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Kiosk"}/>
 
-            <Tab disableRipple value={"banner"}
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Banner"}/>
+              <Tab disableRipple value={"banner"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Banner"}/>
 
-            <Tab disableRipple value={"technical"}
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Techinical Person "}/>
+              <Tab disableRipple value={"technical"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Techinical Person "}/>
 
-                 <Tab disableRipple value={"building"}
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Building "}/>
+              <Tab disableRipple value={"building"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Building "}/>
 
-          </Tabs>
+            </Tabs>
+          </div>
         </CardContent>
         <div>
           {value === "advertiser" && <AdvertiserCancelTemplate doLoad={this.props.doLoad}/>}

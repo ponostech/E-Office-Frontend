@@ -10,6 +10,7 @@ import BannerPermitTemplate from "./permits/BannerPermitTemplate";
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    borderBottom: '1px solid #e8e8e8',
     backgroundColor: theme.palette.background.paper
   },
   tabsRoot: {
@@ -71,24 +72,26 @@ class PermitTemplates extends Component {
       <Card>
         <CardHeader style={{ padding: "5px 16px" }} title={"PERMIT TEMPLATE"}/>
         <CardContent style={{ padding: "5px 16px" }}>
-          <Tabs component={"div"}
-            value={value}
-            onChange={this.handleChange}
-            classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-          >
+         <div className={classes.root}>
+           <Tabs component={"div"}
+                 value={value}
+                 onChange={this.handleChange}
+                 classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
+           >
 
-            <Tab href={"#"} value={"hoarding"}
-                 disableRipple
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Hoarding"}/>
-            <Tab href={"#"} disableRipple value={"kiosk"}
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Kiosk"}/>
-            <Tab href={"#"} disableRipple value={"banner"}
-                 classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                 label={"Banner"}/>
+             <Tab href={"#"} value={"hoarding"}
+                  disableRipple
+                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                  label={"Hoarding"}/>
+             <Tab href={"#"} disableRipple value={"kiosk"}
+                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                  label={"Kiosk"}/>
+             <Tab href={"#"} disableRipple value={"banner"}
+                  classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                  label={"Banner"}/>
 
-          </Tabs>
+           </Tabs>
+         </div>
         </CardContent>
         <div>
           {value === "hoarding" && <HoardingPermitTemplate doLoad={this.props.doLoad}/>}
