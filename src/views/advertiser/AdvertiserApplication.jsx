@@ -97,8 +97,10 @@ class AdvertiserApplication extends Component {
   };
 
   isInvalid = () => {
-    return this.state.prestine || !!this.state.nameError || !!this.state.emailError || !!this.state.addressError || !!this.state.passwordError || !!this.state.confirmPasswordError
-      || !!this.state.phoneError  || this.state.type === undefined || !this.validateDocument();
+    return !this.state.agree ||  !Boolean(this.state.name) || !Boolean(this.state.email) || !Boolean(this.state.address)
+      || !Boolean(this.state.password) || !Boolean(this.state.confirmPassword) || !Boolean(this.state.phone)
+      || !Validators.PHONE_REGEX.test(this.state.phone) || !Validators.EMAIL_REGEX.test(this.state.email) || !Validators.PASSWORD_REGEX.test(this.state.password)
+      || this.state.password!==this.state.confirmPassword  || this.state.type === undefined || !this.validateDocument();
   };
 
   submit = (e) => {
@@ -437,7 +439,7 @@ class AdvertiserApplication extends Component {
                   <CardActions>
                     <GridContainer justify={"flex-end"}>
                       <GridItem>
-                        <Button name={"submit"} disabled={!this.state.agree}
+                        <Button name={"submit"} disabled={this.isInvalid()}
                                 onClick={this.submit.bind(this)}
                                 variant={"outlined"} color={"primary"}> Submit</Button>
                         {"\u00A0 "}
@@ -454,9 +456,7 @@ class AdvertiserApplication extends Component {
                 </Card>
               </GridItem>
               {this.state.successMessage}
-              <OfficeSnackbar variant={"error"} open={!!this.state.errorMessage}
-                              onClose={(e) => this.setState({ errorMessage: "" })}
-                              message={this.state.errorMessage}/>
+
               <SubmitDialog open={this.state.submit} text={"Your application is submitting ... "}/>
             </GridContainer>
         }
