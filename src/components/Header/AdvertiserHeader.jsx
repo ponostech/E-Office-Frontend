@@ -75,11 +75,10 @@ class AdvertiserHeader extends React.Component {
           {"\u00A0 "}
           <CustomDropdown
             dropdownList={[
-              { title: "New hoarding", link: OfficeRoutes.ADVERTISER_NEW_HOARDING },
-              { title: "Proposed Hoarding", link: OfficeRoutes.ADVERTISER_PROPOSED_HOARDING },
-              { title: "Available Hoarding", link: OfficeRoutes.ADVERTISER_AVAILABLE_HOARDING },
+              { title: "New Proposal", link: OfficeRoutes.ADVERTISER_NEW_HOARDING },
+              { title: "Proposed Applications", link: OfficeRoutes.ADVERTISER_PROPOSED_HOARDING },
               { title: "Active Hoarding", link: OfficeRoutes.ADVERTISER_ACTIVE_HOARDING },
-              { title: "Withdrawn Hoarding", link: OfficeRoutes.ADVERTISER_WITHDRAWN_HOARDING }
+              { title: "Withdrawn Applications", link: OfficeRoutes.ADVERTISER_WITHDRAWN_HOARDING }
             ]}
             linkClick={this.handleHoarding.bind(this)}
             buttonText={"Hoarding"}
@@ -87,11 +86,10 @@ class AdvertiserHeader extends React.Component {
 
           <CustomDropdown
             dropdownList={[
-              { title: "New Kiosk", link: OfficeRoutes.ADVERTISER_NEW_KIOSK },
-              { title: "Proposed Kiosk", link: OfficeRoutes.ADVERTISER_PROPOSED_KIOSK },
-              { title: "Available Kiosk", link: OfficeRoutes.ADVERTISER_AVAILABLE_KIOSK },
+              { title: "New Proposal", link: OfficeRoutes.ADVERTISER_NEW_KIOSK },
+              { title: "Proposed Application", link: OfficeRoutes.ADVERTISER_PROPOSED_KIOSK },
               { title: "Active Kiosk", link: OfficeRoutes.ADVERTISER_ACTIVE_KIOSK },
-              { title: "Withdrawn Kiosk", link: OfficeRoutes.ADVERTISER_WITHDRAWN_KIOSK }
+              { title: "Withdrawn Applications", link: OfficeRoutes.ADVERTISER_WITHDRAWN_KIOSK }
             ]}
             linkClick={this.handleKiosk.bind(this)}
             buttonText={"Kiosk"}

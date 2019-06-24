@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component} from "reactn";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import NavPills from "../../../components/NavPills/NavPills";
@@ -7,8 +7,14 @@ import Profile from "./Profile";
 import {Card, CardContent} from "@material-ui/core";
 import ChangePassword from "./ChangePassword";
 import Typography from "@material-ui/core/es/Typography/Typography";
+import AdvertiserLicense from "./AdvertiserLicense";
 
 class ProfileLayout extends Component {
+
+    componentDidMount() {
+        this.setGlobal({loading:false})
+    }
+
     render() {
         return (
             <GridContainer justify={"center"}>
@@ -32,6 +38,10 @@ class ProfileLayout extends Component {
                                                 tabButton: "Change Password",
                                                 tabIcon: UserIcon,
                                                 tabContent: (<ChangePassword/>)
+                                            },{
+                                                tabButton: "License",
+                                                tabIcon: UserIcon,
+                                                tabContent: (<AdvertiserLicense/>)
                                             }
                                         ]}
                                     />

@@ -28,7 +28,7 @@ import {
   ADVERTISER_WITHDRAWN_KIOSK
 } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
-import { Avatar, CardActions, Divider, Grid } from "@material-ui/core";
+import { Avatar, Divider, Grid } from "@material-ui/core";
 
 
 function AdvertiserMobileMenu(props) {
@@ -62,6 +62,26 @@ function AdvertiserMobileMenu(props) {
           </ListItemIcon>
           <ListItemText primary="Dashboard"/>
         </ListItem>
+        <ListItem onClick={e => {
+          props.history.push(ADVERTISER_AVAILABLE_KIOSK);
+          props.close();
+        }} button>
+          <ListItemIcon>
+            <StarBorder color={"primary"} fontSize={"small"}/>
+          </ListItemIcon>
+          <ListItemText primary="Available Kiosks"/>
+        </ListItem>
+
+        <ListItem onClick={e => {
+          props.history.push(ADVERTISER_AVAILABLE_HOARDING);
+          props.close();
+        }} button>
+          <ListItemIcon>
+            <StarBorder color={"primary"} fontSize={"small"}/>
+          </ListItemIcon>
+          <ListItemText primary="Available Hoarding"/>
+        </ListItem>
+
         <ListItem button onClick={handleHoarding}>
           <ListItemIcon>
             <ListIcon fontSize={"small"} color={"primary"}/>
@@ -78,7 +98,7 @@ function AdvertiserMobileMenu(props) {
               <ListItemIcon>
                 <StarBorder/>
               </ListItemIcon>
-              <ListItemText primary="New Hoarding"/>
+              <ListItemText primary="New Proposal"/>
             </ListItem>
 
             <ListItem onClick={e => {
@@ -88,17 +108,7 @@ function AdvertiserMobileMenu(props) {
               <ListItemIcon>
                 <StarBorder/>
               </ListItemIcon>
-              <ListItemText primary="Purposed Hoardings"/>
-            </ListItem>
-
-            <ListItem onClick={e => {
-              props.close();
-              props.history.push(ADVERTISER_AVAILABLE_HOARDING);
-            }} button style={{ paddingLeft: 40 }}>
-              <ListItemIcon>
-                <StarBorder/>
-              </ListItemIcon>
-              <ListItemText primary="Available Hoardings"/>
+              <ListItemText primary="Purposed Applications"/>
             </ListItem>
 
             <ListItem onClick={e => {
@@ -135,33 +145,27 @@ function AdvertiserMobileMenu(props) {
           <List dense={true} component="div" disablePadding>
             <ListItem onClick={e => {
               props.history.push(ADVERTISER_NEW_KIOSK);
+              props.close();
             }} button style={{ paddingLeft: 40 }}>
               <ListItemIcon>
                 <StarBorder/>
               </ListItemIcon>
-              <ListItemText primary="New Kiosk"/>
+              <ListItemText primary="New Proposal"/>
             </ListItem>
 
             <ListItem onClick={e => {
               props.history.push(ADVERTISER_PROPOSED_KIOSK);
+              props.close();
             }} button style={{ paddingLeft: 40 }}>
               <ListItemIcon>
                 <StarBorder/>
               </ListItemIcon>
-              <ListItemText primary="Purposed Kiosks"/>
-            </ListItem>
-
-            <ListItem onClick={e => {
-              props.history.push(ADVERTISER_AVAILABLE_KIOSK);
-            }} button style={{ paddingLeft: 40 }}>
-              <ListItemIcon>
-                <StarBorder/>
-              </ListItemIcon>
-              <ListItemText primary="Available Kiosks"/>
+              <ListItemText primary="Purposed Applications"/>
             </ListItem>
 
             <ListItem onClick={e => {
               props.history.push(ADVERTISER_ACTIVE_KIOSK);
+              props.close();
             }} button style={{ paddingLeft: 40 }}>
               <ListItemIcon>
                 <StarBorder/>
@@ -171,6 +175,7 @@ function AdvertiserMobileMenu(props) {
 
             <ListItem onClick={e => {
               props.history.push(ADVERTISER_WITHDRAWN_KIOSK);
+              props.close();
             }} button style={{ paddingLeft: 40 }}>
               <ListItemIcon>
                 <StarBorder/>
@@ -198,6 +203,7 @@ function AdvertiserMobileMenu(props) {
         </div>
 
         <ListItem button onClick={e => {
+          props.close();
           props.history.push(ADVERTISER_DASHBOARD);
         }}>
           <ListItemIcon>
