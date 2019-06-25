@@ -54,7 +54,7 @@ class AttachReceiptDialog extends Component {
   render() {
     const { open, classes, files ,receipt, ...rest} = this.props;
     return (
-      <Dialog fullWidth={true} maxWidth={"sm"} open={open} onClose={e => this.props.onClose(null, null)} {...rest}>
+      <Dialog fullWidth={true} maxWidth={"sm"} open={open} onClose={e=>this.props.onClose(null,null)}>
 
         <AppBar className={classes.appBar}>
           <Toolbar>

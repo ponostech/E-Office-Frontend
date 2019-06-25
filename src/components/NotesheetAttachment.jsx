@@ -112,7 +112,7 @@ class NotesheetAttachment extends Component {
               })
             }
             {
-              this.props.value ? this.props.value.map((item, index) => <NotesheetAttachmentItem index={index}
+              this.props.edit ? this.props.value.map((item, index) => <NotesheetAttachmentItem index={index}
                                                                                                addItem={this.addItem}
                                                                                                onNameChanged={this.handleNameChanged}
                                                                                                onDelete={this.deleteItem}

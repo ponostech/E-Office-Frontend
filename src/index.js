@@ -19,21 +19,21 @@ axios.defaults.timeout = 20000;
 const token = localStorage.getItem("access_token");
 const decodedJwt=jwt.decode(token);
 
-axios.interceptors.response.use(response=>{
-  // let currentDate = Date.now();
-  // let expiredDate=new Date(decodedJwt.exp*1000)
-  // if (currentDate > expiredDate)
-  //   window.location.replace(HOME)
-  return response
-},error => {
-  console.log(error)
-  if (405 === error.response.status) {
-      localStorage.clear()
-      window.location = '/home';
-  } else {
-    return Promise.reject(error);
-  }
-})
+// axios.interceptors.response.use(response=>{
+//   // let currentDate = Date.now();
+//   // let expiredDate=new Date(decodedJwt.exp*1000)
+//   // if (currentDate > expiredDate)
+//   //   window.location.replace(HOME)
+//   return response
+// },error => {
+//   console.log(error)
+//   if (405 === error.response.status) {
+//       localStorage.clear()
+//       window.location = '/home';
+//   } else {
+//     return Promise.reject(error);
+//   }
+// })
 
 if (token) {
   axios.defaults.headers.common = {

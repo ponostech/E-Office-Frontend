@@ -9,7 +9,7 @@ import ReceiptService from "../../../services/ReceiptService";
 import LoadingView from "../../common/LoadingView";
 import { FileService } from "../../../services/FileService";
 import AttachReceiptDialog from "./movement/AttachReceiptDialog";
-import { EDIT_RECEIPT } from "../../../config/routes-constant/OfficeRoutes";
+import { EDIT_RECEIPT, FILE_DETAIL, FILE_DETAIL_ROUTE } from "../../../config/routes-constant/OfficeRoutes";
 import SubmitDialog from "../../../components/SubmitDialog";
 import ReceiptDetailDialog from "./ReceiptDetailDialog";
 
@@ -60,6 +60,10 @@ class ReceiptAttachedList extends Component {
 
   view = (receipt) => {
       this.setState({receipt,view:true});
+  };
+  gotoFile = (receipt) => {
+    const { history } = this.props;
+    history.push(FILE_DETAIL_ROUTE(receipt.file_id));
   };
   edit = (receipt) => {
     const { history } = this.props;
@@ -145,10 +149,16 @@ class ReceiptAttachedList extends Component {
                     <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="View File">
+                <Tooltip title="Edit Receipt">
                   <IconButton href={"#"} color="primary" size="small"
                               aria-label="Edit receipt" onClick={this.edit.bind(this, data)}>
                     <Icon fontSize="small">edit</Icon>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="View File">
+                  <IconButton href={"#"} color="primary" size="small"
+                              aria-label="view file" onClick={this.gotoFile.bind(this, data)}>
+                    <Icon fontSize="small">folder</Icon>
                   </IconButton>
                 </Tooltip>
                 {/*<Tooltip title="Attach to file">*/}

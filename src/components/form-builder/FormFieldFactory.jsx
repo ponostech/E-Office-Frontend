@@ -206,7 +206,7 @@ openMap:false
         this.inputElement = (
           <FormControl>
             <FormLabel htmlFor={"image"}>{elementConfig.label}</FormLabel>
-            <NotesheetAttachment value={value} id={"image"} onSuccess={items=>changed(items)} acceptedFiles={"image/*"}/>
+            <NotesheetAttachment edit={Boolean(value)} value={value} id={"image"} onSuccess={items=>changed(items)} acceptedFiles={"image/*"}/>
           </FormControl>
         );
         break;

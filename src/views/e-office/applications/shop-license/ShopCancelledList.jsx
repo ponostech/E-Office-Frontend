@@ -1,4 +1,4 @@
-import React from "react";
+import React from "reactn";
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -33,20 +33,20 @@ class ShopCancelledList extends React.Component {
   };
 
   componentDidMount() {
-    this.props.doLoad(true);
+    this.setGlobal({loading:true});
     this.getData();
     this.getStaffs();
   }
   getData = () => axios.get(SHOP_LIST, {params: {status: 'cancelled'}})
     .then(res => this.processResult(res))
-    .catch(err => this.setState({errorMsg: err.toString()}))
-    .then(() => this.props.doLoad(false));
+    .catch(err => this.setGlobal({errorMsg: err.toString()}))
+    .then(() => this.setGlobal({loading:false}));
 
   getStaffs = () => axios.get(GET_STAFF).then(res => this.setState({staffs: res.data.data.staffs}));
 
   processResult = (res) => {
     if (res.data.status) this.setState({loading: false, shops: res.data.data.shops});
-    this.props.doLoad(false);
+        this.setGlobal({loading:false})
   };
 
   closeViewDialog = () => this.setState({openViewDialog: false});

@@ -202,7 +202,7 @@ class NoteEditDialog extends Component {
         </Grid>
         <Grid item={true} lg={6}>
           <Typography style={{textTransform:"capitalize"}} variant={"h6"}>Notesheet Attachment</Typography>
-          <NotesheetAttachment value={[note.attachments]} onSuccess={this.onSuccess}/>
+          <NotesheetAttachment edit={true} value={[note.attachments]} onSuccess={this.onSuccess}/>
         </Grid>
       </Grid>
     </CardContent>;

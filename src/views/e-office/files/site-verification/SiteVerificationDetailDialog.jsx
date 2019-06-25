@@ -6,7 +6,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Divider,
+  Divider, Icon,
   IconButton,
   List,
   ListItem,
@@ -61,13 +61,13 @@ class SiteVerificationDetailDialog extends Component {
         switch (element.elementType) {
           case WidgetConstant.FILE_UPLOAD:
             attachment.value=element.value.name;
-            attachment.path=element.value.path;
+            attachment.path=element.value.location;
 
             attachments.push(attachment);
             break;
           case WidgetConstant.IMAGE_UPLOAD:
             image.value=element.value.name;
-            image.path=element.value.path;
+            image.path=element.value.location;
 
             images.push(image);
             break;
@@ -97,7 +97,7 @@ class SiteVerificationDetailDialog extends Component {
       <Dialog fullScreen={true} fullWidth={true} maxWidth={"md"} open={open} onClose={onClose}>
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={this.props.close} aria-label="Close">
+            <IconButton href={"#"} color="inherit" onClick={this.props.onClose} aria-label="Close">
               <CloseIcon/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
@@ -139,11 +139,13 @@ class SiteVerificationDetailDialog extends Component {
               {images.length!==0 && <Typography variant={"h6"}>Images</Typography>}
               <List component={"div"}>
                 {
-                  images.map((item, index) => (
-                    <>
-                     <img src={item.path} height={200} width={100}  onClick={e=>window.open(item.path)}/>
-                    </>
-                  ))
+                  images.map((item, index) =>
+                    <DetailViewRow key={index} primary={item.name} >
+                      <IconButton href={item.location} onClick={e=>window.open(item.location)}>
+                        <Icon color={"primary"} fontSize={"small"}>remove_red_eye</Icon>
+                      </IconButton>
+                    </DetailViewRow>
+                  )
                 }
               </List>
             </GridItem>

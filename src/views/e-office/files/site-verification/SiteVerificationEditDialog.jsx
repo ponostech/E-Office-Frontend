@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import {
   AppBar,
   Button,
@@ -47,7 +47,7 @@ class SiteVerificationEditDialog extends Component {
   componentDidMount() {
     const { type } = this.props;
     this.setState({ loading: true });
-    this.siteVerification.getTemplate(type, errorMessage => this.setState({ errorMessage }), template => {
+    this.siteVerification.getTemplate(type, errorMsg => this.setGlobal({ errorMsg }), template => {
       this.mergeFormElements(template.data.formElements)
     })
       .finally(() => this.setState({ loading: false }));
