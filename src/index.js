@@ -5,7 +5,10 @@ import {MuiThemeProvider} from "@material-ui/core/styles";
 import theme from "./assets/office/theme";
 import App from "./App";
 import {ApiRoutes} from "./config/ApiRoutes";
+import { HOME } from "./config/routes-constant/OfficeRoutes";
 // import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
+
+var jwt = require("jsonwebtoken");
 
 axios.defaults.baseURL = ApiRoutes.BASE_URL;
 axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
@@ -14,6 +17,23 @@ axios.defaults.headers.get["Access-Control-Allow-Origin"] = "http://127.0.0.1:30
 axios.defaults.timeout = 20000;
 
 const token = localStorage.getItem("access_token");
+const decodedJwt=jwt.decode(token);
+
+axios.interceptors.response.use(response=>{
+  // let currentDate = Date.now();
+  // let expiredDate=new Date(decodedJwt.exp*1000)
+  // if (currentDate > expiredDate)
+  //   window.location.replace(HOME)
+  return response
+},error => {
+  console.log(error)
+  if (405 === error.response.status) {
+      localStorage.clear()
+      window.location = '/home';
+  } else {
+    return Promise.reject(error);
+  }
+})
 
 if (token) {
   axios.defaults.headers.common = {
