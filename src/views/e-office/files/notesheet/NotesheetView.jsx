@@ -13,6 +13,7 @@ import {NotesheetService} from "../../../../services/NotesheetService";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import OfficeSnackbar from "../../../../components/OfficeSnackbar";
 import { LoginService } from "../../../../services/LoginService";
+import NotesheetAttachmentDialog from "./NotesheetAttachmentDialog";
 
 class NotesheetView extends Component {
   noteService = new NotesheetService();
@@ -20,7 +21,10 @@ class NotesheetView extends Component {
   state = {
     note: [],
     openDialog: false,
+    openAttachments:false,
     loading: true,
+    attachments:[],
+
 
     errorMessage: "",
     successMessage: "",
@@ -49,12 +53,14 @@ class NotesheetView extends Component {
       temp['footerName'] = data.staff.staff.name;
       temp['footerDesignation'] = data.staff.staff.designation;
       temp['footerTitle'] = "Dated: " + moment(data.created_at).format("Do MMMM YYYY \(dddd\)");
+      temp['note']=data;
       return temp;
     });
     this.setState({note: formattedNote});
   };
 
   handleOpenCreateNote = () => this.setState({openDialog: true});
+  openAttachments = (attachments) => this.setState({openAttachments: true,attachments});
 
   handleCloseCreateNote = (data) => {
     this.setState({openDialog: false});
@@ -79,7 +85,7 @@ class NotesheetView extends Component {
     let noteList = <Loading align="left" color="secondary"/>;
 
     if (!loading)
-      if (this.state.note.length) noteList = <Timeline simple stories={this.state.note}/>;
+      if (this.state.note.length>0) noteList = <Timeline openAttachment={this.openAttachments} simple stories={this.state.note}/>;
       else noteList = <div style={{padding: 20}}>New File. Note not available.</div>;
 
     let allowed=LoginService.getCurrentUser().id===this.props.file.current_user_id;
@@ -100,6 +106,8 @@ class NotesheetView extends Component {
                           open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
           <OfficeSnackbar variant={"error"} onClose={() => this.setState({errorMessage: ""})}
                           open={Boolean(this.state.errorMessage)} message={this.state.errorMessage}/>
+          <NotesheetAttachmentDialog attachments={this.state.attachments} open={this.state.openAttachments} onClose={e=>this.setState({openAttachments:false})}/>
+
           {/*<CreateNoteDialog onSubmit={this.loadingNoteDialog.bind(this, true)} loading={this.state.loadingNoteDialog}*/}
           {/*                  file={this.props.file} open={this.state.openDialog}*/}
           {/*                  close={this.handleCloseCreateNote}/>*/}

@@ -13,9 +13,12 @@ import timelineStyle from "../../assets/jss/material-dashboard-pro-react/compone
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "../Badge/Badge";
 import Button from '@material-ui/core/Button';
+import { Icon, Tooltip } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import moment from "moment";
 
 function Timeline({...props}) {
-  const {classes, stories, simple, draft} = props;
+  const {classes, stories, simple, draft,allowed} = props;
   const timelineClass =
       classes.timeline +
       " " +
@@ -48,10 +51,26 @@ function Timeline({...props}) {
                     </div>
                 ) : null}
                 <div className={draft ? panelClasses + " " + classes.draft : panelClasses}>
-                  {draft && <div style={{float:"right"}}>
-                    <Button variant='text' color="primary" onClick={(id) => props.onNoteEdit(prop.note)}>Edit</Button>
-                    <Button color="secondary" onClick={(id) => props.onNoteDelete(prop.id)}>Delete</Button>
+                  {draft && allowed && <div style={{float:"right"}}>
+                   <Tooltip title={"Edit"}>
+                     <IconButton onClick={id=>props.onNoteEdit(prop.note)}>
+                       <Icon color={"primary"} fontSize={"small"}>edit</Icon>
+                     </IconButton>
+                   </Tooltip>
+                    <Tooltip title={"Delete"}>
+                     <IconButton onClick={id=>props.onNoteDelete(prop.id)}>
+                       <Icon color={"secondary"} fontSize={"small"}>delete</Icon>
+                     </IconButton>
+                   </Tooltip>
+
                   </div>}
+                  {!draft?
+                    <div style={{float:"right"}}>
+                      {prop.note.fixed_date ? (
+                        <h6 className={classes.timelineFooterText}>Fixed Date: {moment(prop.note.fixed_date).format("Do MMM YYYY")}</h6>
+                      ) : null}
+                  </div>
+                  :null}
                   {prop.title ? (
                       <div className={classes.timelineHeading}>
                         <Badge color={prop.titleColor} classes={{badge: classes.timelineTitle}}>{prop.title}</Badge>
@@ -63,18 +82,23 @@ function Timeline({...props}) {
                   <div className={classes.timelineBody} dangerouslySetInnerHTML={{__html: prop.body}}/>
                   {prop.footer ? <hr className={classes.footerLine}/> : null}
                   {prop.avatar ? (<Avatar alt="" src={prop.avatar} className={classes.avatar}/>) : null}
+                  {prop.note.attachments.length>0 ? <IconButton href={"#"} onClick={event => props.openAttachment(prop.note.attachments)}>
+                    <Icon color={"primary"} fontSize={"default"}>attach_file</Icon>
+                  </IconButton>:null}
                   {prop.footerName ? (
                       <h6 className={classes.timelineFooterText}>{prop.footerName} {prop.footerDesignation ? " (" + prop.footerDesignation + ")" : null}</h6>
                   ) : null}
                   {/*{prop.footerDesignation ? (*/}
                   {/*  <h6 className={classes.timelineFooterText}>{prop.footerDesignation}</h6>*/}
                   {/*) : null}*/}
+
                   {prop.footer ? (
                       <div className={classes.timelineFooter}>{prop.footer}</div>
                   ) : null}
                   {prop.footerTitle ? (
                       <h6 className={classes.footerTitle}>{prop.footerTitle}</h6>
                   ) : null}
+
                 </div>
               </li>
           );
