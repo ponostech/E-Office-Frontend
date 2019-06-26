@@ -11,8 +11,8 @@ import ConfirmDialog from "../../../../components/ConfirmDialog";
 import { ArrayToString } from "../../../../utils/ErrorUtil";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import NoteEditDialog from "./NoteEditDialog";
-import NotesheetAttachmentDialog from "./NotesheetAttachmentDialog";
 import { LoginService } from "../../../../services/LoginService";
+import NotesheetAttachmentDialog from "./NotesheetAttachmentDialog";
 
 class NotesheetDraftView extends Component {
   state = {
