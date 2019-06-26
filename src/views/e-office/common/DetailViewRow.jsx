@@ -11,7 +11,7 @@ const DetailViewRow = (props) => (
         {props.children}
       </ListItemSecondaryAction>
     </ListItem>
-    <Divider/>
+    <Divider component={"div"}/>
   </>
 );
 

@@ -11,13 +11,17 @@ import ConfirmDialog from "../../../../components/ConfirmDialog";
 import { ArrayToString } from "../../../../utils/ErrorUtil";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import NoteEditDialog from "./NoteEditDialog";
+import NotesheetAttachmentDialog from "./NotesheetAttachmentDialog";
+import { LoginService } from "../../../../services/LoginService";
 
 class NotesheetDraftView extends Component {
   state = {
     currentFile: null,
     note: [],
     selectedNote: null,
+    attachments: [],
 
+    openAttachments:false,
     openConfirmDelete: false,
     editNote: false,
     loadingNoteDialog: true,
@@ -94,6 +98,9 @@ class NotesheetDraftView extends Component {
   edit = (note) => {
     this.setState({ selectedNote: note, openEdit: true });
   };
+  openAttachment = (attachments) => {
+    this.setState({attachments,openAttachments:true})
+  };
 
   deleteNote = (id) => this.setState({ openConfirmDelete: true, currentNoteId: id });
 
@@ -121,7 +128,7 @@ class NotesheetDraftView extends Component {
 
     if (!this.global.loading)
       if (this.state.note.length)
-        noteList = <Timeline simple stories={this.state.note} onNoteDelete={this.deleteNote} onNoteEdit={this.edit}
+        noteList = <Timeline allowed={LoginService.getCurrentUser().id === file.current_user_id} simple stories={this.state.note} onNoteDelete={this.deleteNote} onNoteEdit={this.edit} openAttachment={this.openAttachment}
                              draft/>;
       else
         noteList = <div style={{ padding: 20 }}>Draft Note not available.</div>;
@@ -138,6 +145,7 @@ class NotesheetDraftView extends Component {
         {openConfirmDelete &&
         <ConfirmDialog onCancel={this.onCancelDelete} open={openConfirmDelete} onConfirm={this.onConfirmDelete}/>}
         <SubmitDialog open={this.state.submit} title={"Draft Update"} text={"Please wait..."}/>
+        <NotesheetAttachmentDialog attachments={this.state.attachments} open={this.state.openAttachments} onClose={e=>this.setState({openAttachments:false})}/>
       </>
     );
   };
