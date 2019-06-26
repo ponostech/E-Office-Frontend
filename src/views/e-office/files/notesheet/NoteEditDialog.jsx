@@ -78,7 +78,7 @@ class NoteEditDialog extends Component {
 
     if (note) {
       this.setState({
-        fixedDate:moment(note.fixed_date),
+        fixedDate:note.fixed_date?moment(note.fixed_date):null,
         content:note.content,
         action:{value:note.action,label:note.action},
         priority:{value:note.priority,label:note.priority}
