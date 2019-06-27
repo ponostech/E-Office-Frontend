@@ -17,7 +17,7 @@ class ProfileLayout extends Component {
 
     render() {
         return (
-            <GridContainer justify={"center"}>
+            <GridContainer justify={"flex-start"}>
                 <GridItem xs={12} sm={12} md={6}>
                     <Card>
                         <CardContent>

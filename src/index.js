@@ -42,7 +42,7 @@ const decodedJwt=jwt.decode(token);
 if (token) {
   let currentDate = Date.now();
   let expiredDate=new Date(decodedJwt.exp*1000)
-  if (moment(currentDate).isSameOrBefore(moment(expiredDate).add(1,"days"))) {
+  if (moment(currentDate).isSameOrAfter(moment(expiredDate).add(1,"d"))) {
     localStorage.clear();
   }
   axios.defaults.headers.common = {
