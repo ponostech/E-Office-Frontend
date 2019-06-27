@@ -24,22 +24,16 @@ const style = {
 class LoginView extends Component {
   loginService = new LoginService();
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      showPassword: true,
-
-      emailError: "",
-      passwordError: "",
-
-      prestine: true,
-      submit: false,
-      errorMessage: ""
-    };
-  }
-
+  state = {
+    email: "",
+    password: "",
+    showPassword: true,
+    emailError: "",
+    passwordError: "",
+    prestine: true,
+    submit: false,
+    errorMessage: ""
+  };
 
   componentDidMount() {
     this.setGlobal({loading: false})
@@ -47,27 +41,24 @@ class LoginView extends Component {
 
   handleRequired = (e) => {
     const {name, value} = e.target;
-    switch (name) {
-      case "email":
-        if (value.match(/^\d/)) {
-          !value.match(Validators.PHONE_REGEX) ? this.setState({emailError: "Phone number must be 10 digit number"}) : this.setState({emailError: ""});
+
+    if (name === "email") {
+      if (value.match(/^\d/)) {
+        !value.match(Validators.PHONE_REGEX) ? this.setState({emailError: "Phone number must be 10 digit number"}) : this.setState({emailError: ""});
+      } else {
+        if (value.length === 0) {
+          this.setState({emailError: "Email/Phone No is required"})
+        } else if (!value.match(Validators.EMAIL_REGEX)) {
+          this.setState({emailError: "Invalid Email address"})
         } else {
-          if (value.length === 0) {
-            this.setState({emailError: "Email/Phone No is required"})
-          } else if (!value.match(Validators.EMAIL_REGEX)) {
-            this.setState({emailError: "Invalid Email address"})
-          } else {
-            this.setState({emailError: ""})
-          }
+          this.setState({emailError: ""})
         }
-        break;
-      case "password":
-        value.length === 0 ? this.setState({passwordError: "Password is required"}) : this.setState({passwordError: ""});
-        break;
-      default:
-        break;
+      }
+    } else if (name === "password") {
+      value.length === 0 ? this.setState({passwordError: "Password is required"}) : this.setState({passwordError: ""});
     }
   };
+
   handleChange = (e) => {
     const {name, value} = e.target;
     this.setState({
@@ -75,30 +66,23 @@ class LoginView extends Component {
       prestine: false
     });
 
-    switch (name) {
-      case "email":
-        if (value.match(/^\d/)) {
-          !value.match(Validators.PHONE_REGEX) ? this.setState({emailError: "Phone number must be 10 digit number"}) : this.setState({emailError: ""});
-        } else {
-          !value.match(Validators.EMAIL_REGEX) ? this.setState({emailError: "Invalid email"}) : this.setState({emailError: ""});
-        }
-        break;
-      case "password":
-        value.length === 0 ? this.setState({passwordError: "Password is required"}) : this.setState({passwordError: ""});
-        break;
-      default:
-        break;
+    if (name === "email") {
+      if (value.match(/^\d/)) {
+        !value.match(Validators.PHONE_REGEX) ? this.setState({emailError: "Phone number must be 10 digit number"}) : this.setState({emailError: ""});
+      } else {
+        !value.match(Validators.EMAIL_REGEX) ? this.setState({emailError: "Invalid email"}) : this.setState({emailError: ""});
+      }
+    } else if (name === "password") {
+      value.length === 0 ? this.setState({passwordError: "Password is required"}) : this.setState({passwordError: ""});
     }
   };
+
   handleKey = (e) => {
-    if (e.key === "Enter") {
-      this.doLogin(e);
-    }
-  };
-  handleForgot = (e) => {
-    const {history} = this.props;
-    history.push(FORGOT_PASSWORD)
-  };
+    if (e.key === "Enter") this.doLogin(e);
+  }
+
+  handleForgot = (e) => this.props.history.push(FORGOT_PASSWORD)
+
   doLogin = (setUser, e) => {
     const invalid = Boolean(this.state.emailError) || Boolean(this.state.passwordError);
     const {email, password} = this.state;
@@ -201,4 +185,5 @@ class LoginView extends Component {
 }
 
 LoginView.contextType = authContext;
+
 export default withStyles(style)(withRouter(LoginView));

@@ -78,17 +78,20 @@ class BannerNewList extends Component {
         name: "name",
         label: "APPLICANT",
       },
-      {
+      /*{
         name: "address",
         label: "OWNER ADDRESS",
       },
       {
         name: "applicant_type",
         label: "APPLICANT TYPE",
-      },
+      },*/
       {
         name: "advertisement_type",
         label: "TYPE OF ADVERTISEMENTS",
+        options: {
+          customBodyRender: (val) => val.toUpperCase()
+        }
       },
       {
         name: "advertisement_count",
