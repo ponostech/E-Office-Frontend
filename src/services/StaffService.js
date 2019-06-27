@@ -1,36 +1,35 @@
 import axios from "axios";
 import {ApiRoutes, GET_STAFF} from "../config/ApiRoutes";
 import moment from "moment";
-import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
+import {ArrayToString, ErrorToString} from "../utils/ErrorUtil";
 
 export class StaffService {
-  async all(errorCallback,successCallback) {
+  async all(errorCallback, successCallback) {
     const token = localStorage.getItem("access_token");
-    const config = { headers: { "Authorization": `Bearer ${token}` } };
-
-    try{
+    const config = {headers: {"Authorization": `Bearer ${token}`}};
+    try {
       let res = await axios.get(ApiRoutes.GET_STAFF, config);
-
       if (res.data.status) {
         successCallback(res.data.data.staffs)
-      }else{
+      } else {
         errorCallback("Something went wrong: Please try again later")
       }
-    }catch (e) {
-       console.error(e);
+    } catch (e) {
+      console.error(e);
       errorCallback(e.toString())
     }
 
   }
-  async update(staff,errorCallback,successCallback){
-    try{
-      let res=await axios.post(ApiRoutes.UPDATE_STAFF,staff);
+
+  async update(staff, errorCallback, successCallback) {
+    try {
+      let res = await axios.post(ApiRoutes.UPDATE_STAFF, staff);
       if (res.data.status) {
         successCallback("Staff info update successfully")
-      }else{
+      } else {
         errorCallback(ErrorToString(res.data.messages))
       }
-    }catch (e) {
+    } catch (e) {
       console.error(e)
       errorCallback(e.toString())
     }
@@ -38,7 +37,7 @@ export class StaffService {
 
   async create(state, errorCallback, successCallback) {
     const token = localStorage.getItem("access_token");
-    const config = { headers: { "Authorization": `Bearer ${token}` } };
+    const config = {headers: {"Authorization": `Bearer ${token}`}};
     let data = {
       email: state.email,
       phone_no: state.phone,

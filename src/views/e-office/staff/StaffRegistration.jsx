@@ -17,6 +17,8 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {Validators} from "../../../utils/Validators";
 import LoadingView from "../../common/LoadingView";
+import {STAFF_LIST} from "../../../config/routes-constant/OfficeRoutes"
+import {withRouter} from "react-router-dom"
 
 const style = {
   item: {
@@ -52,7 +54,6 @@ class StaffRegistration extends Component {
     designationError: "",
     dobError: "",
 
-
     errorMessage: "",
     successMessage: "",
 
@@ -85,7 +86,10 @@ class StaffRegistration extends Component {
   };
 
   fetchRole = async () => {
-    await this.staffService.getRoles(errorMessage => this.setState({errorMessage}), roles => this.setState({roles}));
+    await this.staffService.getRoles(
+        errorMessage => this.setState({errorMessage}),
+        roles => this.setState({roles})
+    );
   };
 
   handleChange = (e) => {
@@ -141,7 +145,12 @@ class StaffRegistration extends Component {
       return;
     }
     this.setState({submit: true});
-    this.staffService.create(this.state, (errorMessage) => this.setState({errorMessage}), (successMessage) => this.setState({successMessage}))
+    this.staffService.create(this.state,
+        (errorMessage) => this.setState({errorMessage}),
+        (successMessage) => {
+          this.setState({successMessage})
+          this.props.history.push(STAFF_LIST)
+        })
         .finally(() => this.setState({submit: false}));
   };
 
@@ -465,4 +474,4 @@ class StaffRegistration extends Component {
   }
 }
 
-export default withStyles(style)(StaffRegistration);
+export default withStyles(style)(withRouter(StaffRegistration));
