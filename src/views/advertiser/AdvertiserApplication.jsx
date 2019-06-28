@@ -107,8 +107,8 @@ class AdvertiserApplication extends Component {
       this.setGlobal({ errorMsg: "Please fill all the required fields" });
       return;
     }
-    // this.setState({ submit: true });
-    // this.insertData();
+    this.setState({ submit: true });
+    this.insertData();
   };
 
   validateDocument = () => {
