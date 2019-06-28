@@ -22,7 +22,7 @@ class ShopLicenseTemplate extends Component {
   componentDidMount() {
     this.setGlobal({loading:true});
     this.licenseTemplateService.get("shop",
-      errorMsg => this.setState({ errorMsg }),
+      errorMsg => this.setGlobal({ errorMsg }),
       template => {
       if (template)
       this.setState({ content:template.content,id:template.id,type:template.type, edit: true })

@@ -38,7 +38,7 @@ export default class LicenseTemplateService {
       if (res.data.status) {
         successCallback(res.data.data.template);
       } else {
-        successCallback(null);
+        errorCallback(ArrayToString(res.data.messages));
       }
     } catch (e) {
       console.error(e);

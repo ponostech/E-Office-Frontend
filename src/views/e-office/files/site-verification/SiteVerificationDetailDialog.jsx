@@ -2,21 +2,25 @@ import React, { Component } from "react";
 import {
   AppBar,
   Button,
+  Card,
+  CardContent,
   CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
-  Divider, Icon,
+  Divider,
+  Icon,
   IconButton,
   List,
-  ListItem,
-  ListItemText, Toolbar, Typography, withStyles
+  Toolbar,
+  Typography,
+  withStyles
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import CloseIcon from "@material-ui/icons/Close";
 import DetailViewRow from "../../common/DetailViewRow";
 import WidgetConstant from "../../../../components/form-builder/WidgetConstant";
-import EyeIcon from '@material-ui/icons/RemoveRedEye';
+import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import GridItem from "../../../../components/Grid/GridItem";
 
@@ -28,7 +32,7 @@ const styles = {
     flex: 1
   },
   docsItem: {
-    cursor: 'pointer',
+    cursor: "pointer"
   },
   editor: {
     minHeight: 200
@@ -39,11 +43,11 @@ class SiteVerificationDetailDialog extends Component {
   state = {
     rows: [],
     images: [],
-    attachments: [],
+    attachments: []
   };
 
   componentDidMount() {
-   };
+  };
 
   componentWillReceiveProps(nextProps, nextContext) {
     const { open, onClose, file, verification } = nextProps;
@@ -53,44 +57,44 @@ class SiteVerificationDetailDialog extends Component {
 
     if (verification) {
       const elements = verification.template.formElements;
-      console.log("she called me")
+      console.log("she called me");
       elements.forEach(function(element, index) {
-        let row={};
-        let attachment={};
-        let image={};
+        let row = {};
+        let attachment = {};
+        let image = {};
         switch (element.elementType) {
           case WidgetConstant.FILE_UPLOAD:
-            attachment.value=element.value.name;
-            attachment.path=element.value.location;
+            attachment.value = element.value.name;
+            attachment.path = element.value.location;
 
             attachments.push(attachment);
             break;
           case WidgetConstant.IMAGE_UPLOAD:
-            image.value=element.value.name;
-            image.path=element.value.location;
+            image.value = element.value.name;
+            image.path = element.value.location;
 
             images.push(image);
             break;
           case WidgetConstant.SELECT:
-            row.label=element.elementConfig.label;
-            row.value=element.value.value;
+            row.label = element.elementConfig.label;
+            row.value = element.value.value;
             rows.push(row);
             break;
           default:
-            row.label=element.elementConfig.label;
-            row.value=element.value;
+            row.label = element.elementConfig.label;
+            row.value = element.value;
 
-            rows.push(row)
+            rows.push(row);
         }
       });
     }
 
-    this.setState({ rows,attachments,images });
+    this.setState({ rows, attachments, images });
 
   }
 
   render() {
-    const { open, onClose, file,classes } = this.props;
+    const { open, onClose, file, classes } = this.props;
     const { rows, images, attachments } = this.state;
 
     return (
@@ -109,48 +113,54 @@ class SiteVerificationDetailDialog extends Component {
           </Toolbar>
         </AppBar>
 
-        <CardHeader title={`FILE NUMBER : ${file.number}`} subheader={`SITE VERIFICATION OF ${file.subject}`}/>
-        <Divider component={"li"}/>
 
         <DialogContent>
-          <GridContainer spacing={3}>
-            <GridItem md={6}>
-              <List component={"div"}>
-                {
-                  rows.map((row, index) => (
-                    <> <DetailViewRow key={index} primary={row.label} secondary={row.value}/> </>
-                  ))
-                }
-              </List>
-            </GridItem>
-            <GridItem md={6}>
-              {attachments.length!==0 && <Typography variant={"h6"}>Attachment</Typography>}
-              <List component={"div"}>
-                {
-                  attachments.map((item, index) => (
-                    <>
-                      <DetailViewRow secondary={item.value}>
-                        <IconButton href={item.path}><EyeIcon color={"primary"}/></IconButton>
-                      </DetailViewRow>
-                    </>
-                  ))
-                }
-              </List>
-              {images.length!==0 && <Typography variant={"h6"}>Images</Typography>}
-              <List component={"div"}>
-                {
-                  images.map((item, index) =>
-                    <DetailViewRow key={index} primary={item.name} >
-                      <IconButton href={item.location} onClick={e=>window.open(item.location)}>
-                        <Icon color={"primary"} fontSize={"small"}>remove_red_eye</Icon>
-                      </IconButton>
-                    </DetailViewRow>
-                  )
-                }
-              </List>
-            </GridItem>
-          </GridContainer>
+          <Card>
+            <CardHeader title={`FILE NUMBER : ${file.number}`} subheader={`SITE VERIFICATION OF ${file.subject}`}/>
+            <CardContent>
 
+              <Divider component={"div"}/>
+
+              <GridContainer spacing={3}>
+                <GridItem md={6}>
+                  <List component={"div"}>
+                    {
+                      rows.map((row, index) => (
+                        <> <DetailViewRow key={index} primary={row.label} secondary={row.value}/> </>
+                      ))
+                    }
+                  </List>
+                </GridItem>
+                <GridItem md={6}>
+                  {attachments.length !== 0 && <Typography variant={"h6"}>Attachment</Typography>}
+                  <List component={"div"}>
+                    {
+                      attachments.map((item, index) => (
+                        <>
+                          <DetailViewRow secondary={item.value}>
+                            <IconButton href={item.path}><EyeIcon color={"primary"}/></IconButton>
+                          </DetailViewRow>
+                        </>
+                      ))
+                    }
+                  </List>
+                  {images.length !== 0 && <Typography variant={"h6"}>Images</Typography>}
+                  <List component={"div"}>
+                    {
+                      images.map((item, index) =>
+                        <DetailViewRow key={index} primary={item.name}>
+                          <IconButton href={item.location} onClick={e => window.open(item.location)}>
+                            <Icon color={"primary"} fontSize={"small"}>remove_red_eye</Icon>
+                          </IconButton>
+                        </DetailViewRow>
+                      )
+                    }
+                  </List>
+                </GridItem>
+              </GridContainer>
+
+            </CardContent>
+          </Card>
 
         </DialogContent>
 

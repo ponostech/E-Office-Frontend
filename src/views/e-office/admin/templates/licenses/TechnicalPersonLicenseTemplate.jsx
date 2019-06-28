@@ -3,64 +3,63 @@ import TextEditor from "../../../common/Editor";
 import { Button, Card, CardActions, CardContent } from "@material-ui/core";
 import LicenseTemplateService from "../../../../../services/LicenseTemplateService";
 import SubmitDialog from "../../../../../components/SubmitDialog";
-import OfficeSnackbar from "../../../../../components/OfficeSnackbar";
 
 class TechnicalPersonLicenseTemplate extends Component {
 
   licenseTemplateService = new LicenseTemplateService();
 
   state = {
-    id:null,
+    id: null,
     content: "",
     type: "technical-person",
 
     edit: false,
-    submit: false,
+    submit: false
   };
 
 
   componentDidMount() {
-    this.setGlobal({loading:true})
+    this.setGlobal({ loading: true });
     this.licenseTemplateService.get("technical-person",
       errorMsg => this.setGlobal({ errorMsg }),
       template => {
-      if (template)
-      this.setState({ content:template.content,id:template.id,type:template.type, edit: true })
+        if (template)
+          this.setState({ content: template.content, id: template.id, type: template.type, edit: true });
       })
-      .finally(() => this.setGlobal({loading:false}));
+      .finally(() => this.setGlobal({ loading: false }));
   }
 
   doUpdate = () => {
-     let template={
-        id:this.state.id,
-        content:this.state.content,
-        type:this.state.type
-      }
-    this.setState({submit:true})
-    this.licenseTemplateService.update(template,errorMsg=>this.setGlobal({errorMsg}),
-      successMsg=>this.setGlobal({successMsg}))
-      .finally(()=>this.setState({submit:false}))
+    let template = {
+      id: this.state.id,
+      content: this.state.content,
+      type: this.state.type
+    };
+    this.setState({ submit: true });
+    this.licenseTemplateService.update(template, errorMsg => this.setGlobal({ errorMsg }),
+      successMsg => this.setGlobal({ successMsg }))
+      .finally(() => this.setState({ submit: false }));
   };
   doSave = () => {
-    let data={
-      content:this.state.content,
-      type:"technical-person"
-    }
-    this.setState({submit:true})
-    this.licenseTemplateService.create(data,errorMsg=>this.setGlobal({errorMsg}),
-      (successMsg,id) => {
-      this.setGlobal({successMsg});
-      this.setState({ edit:true,id})
+    let data = {
+      content: this.state.content,
+      type: "technical-person"
+    };
+    this.setState({ submit: true });
+    this.licenseTemplateService.create(data, errorMsg => this.setGlobal({ errorMsg }),
+      (successMsg, id) => {
+        this.setGlobal({ successMsg });
+        this.setState({ edit: true, id });
       })
-      .finally(()=>this.setState({submit:false}))
+      .finally(() => this.setState({ submit: false }));
   };
   handleClick = (identifier) => {
     switch (identifier) {
       case "save":
         if (this.state.edit) {
-          this.doUpdate()
+          this.doUpdate();
         } else {
-          this.doSave()
+          this.doSave();
         }
         break;
       case "reset":
