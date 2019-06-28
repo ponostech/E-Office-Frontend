@@ -19,7 +19,6 @@ import AdvertiserViewModel from "../model/AdvertiserViewModel";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import VisibilityOn from "@material-ui/icons/Visibility";
 import { Validators } from "../../utils/Validators";
-import OfficeSnackbar from "../../components/OfficeSnackbar";
 import SubmitDialog from "../../components/SubmitDialog";
 import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
@@ -97,19 +96,19 @@ class AdvertiserApplication extends Component {
   };
 
   isInvalid = () => {
-    return !this.state.agree ||  !Boolean(this.state.name) || !Boolean(this.state.email) || !Boolean(this.state.address)
+    return !this.state.agree ||  !Boolean(this.state.name) || !Boolean(this.state.email) || !Boolean(this.state.address)|| this.state.type === undefined
       || !Boolean(this.state.password) || !Boolean(this.state.confirmPassword) || !Boolean(this.state.phone)
-      || !Validators.PHONE_REGEX.test(this.state.phone) || !Validators.EMAIL_REGEX.test(this.state.email) || !Validators.PASSWORD_REGEX.test(this.state.password)
-      || this.state.password!==this.state.confirmPassword  || this.state.type === undefined || !this.validateDocument();
+      || !Validators.PHONE_REGEX.test(this.state.phone) || !Validators.EMAIL_REGEX.test(this.state.email) || this.state.password<6
+      || this.state.password!==this.state.confirmPassword   || !this.validateDocument();
   };
 
   submit = (e) => {
     if (this.isInvalid()) {
-      this.setState({ errorMessage: "Please enter all the required fields" });
+      this.setGlobal({ errorMsg: "Please fill all the required fields" });
       return;
     }
-    this.setState({ submit: true });
-    this.insertData();
+    // this.setState({ submit: true });
+    // this.insertData();
   };
 
   validateDocument = () => {
@@ -149,7 +148,7 @@ class AdvertiserApplication extends Component {
   }
 
   clear = () => {
-    window.location.reload();
+    this.componentDidMount()
   };
 
   saveDraft = () => {
