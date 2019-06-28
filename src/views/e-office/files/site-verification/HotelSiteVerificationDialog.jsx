@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
   AppBar,
-  Button,
+  Button, Card, CardContent, CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,6 +17,8 @@ import FormFieldFactory from "../../../../components/form-builder/FormFieldFacto
 import GridContainer from "../../../../components/Grid/GridContainer";
 import PropTypes from "prop-types";
 import CloseIcon from "@material-ui/icons/Close";
+import Grid from "@material-ui/core/Grid";
+import LoadingView from "../../../common/LoadingView";
 
 
 const styles = {
@@ -154,9 +156,15 @@ class HotelSiteVerificationDialog extends Component {
         </AppBar>
 
         <DialogContent>
-          <GridContainer justify={"flex-start"}>
-            {loading ? "loading" : form}
-          </GridContainer>
+          <Card>
+            <CardHeader title={"FILE NO: " + file.number} subheader={"SITE VERIFICATION OF" + file.subject}/>
+            <Divider component={"li"}/>
+            <CardContent>
+              <Grid container={true} justify={"flex-start"} spacing={3}>
+                {loading ? <LoadingView/> : form}
+              </Grid>
+            </CardContent>
+          </Card>
         </DialogContent>
         <Divider/>
         <DialogActions>

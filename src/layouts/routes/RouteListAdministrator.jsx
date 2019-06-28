@@ -3,9 +3,6 @@ import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
 import { Route, withRouter } from "react-router-dom";
 import ReceiptCreate from "../../views/e-office/receipt/ReceiptCreate";
 import FileCreate from "../../views/e-office/files/FileCreate";
-import ReceiptShow from "../../views/e-office/receipt/ReceiptShow";
-import ReceiptList from "../../views/e-office/receipt/ReceiptList";
-import ReceiptSentList from "../../views/e-office/receipt/ReceiptSentList";
 import ShopNewList from "../../views/e-office/applications/shop-license/ShopNewList";
 import HoardingApplications from "../../views/e-office/applications/hoarding/HoardingNewList";
 import Settings from "../../views/e-office/settings/Setting";
@@ -126,7 +123,7 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.REJECTED_SHOPLICENSE} render={e => <RejectedShopLicense/>}/>
       <Route exact path={OfficeRoutes.CANCELLED_SHOPLICENSE} render={e => <ShopCancelledList/>}/>
 
-      {/*Shop Licensing*/}
+      {/*hotel Licensing*/}
       <Route exact path={OfficeRoutes.NEW_HOTELLICENSE} render={e => <HotelNewList/>}/>
       <Route exact path={OfficeRoutes.UNDER_PROCESS_HOTELLICENSE} render={e => <HotelUnderProcessList/>}/>
       <Route exact path={OfficeRoutes.APPROVED_HOTELLICENSE} render={e => <HotelApprovedList/>}/>
@@ -140,11 +137,13 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.STAFF_LIST} render={e => <StaffList/>}/>
 
       {/*site verification*/}
-      <Route exact path={OfficeRoutes.SITE_VERIFICATION + "/:module/edit"} render={e => <EditSiteVerificationTemplate/>}/>
+      <Route exact path={OfficeRoutes.SITE_VERIFICATION + "/:module/edit"}
+             render={e => <EditSiteVerificationTemplate/>}/>
       <Route exact path={OfficeRoutes.SITE_VERIFICATION_LIST} render={e => <SiteVerificationFormList/>}/>
       <Route exact path={OfficeRoutes.SITE_VERIFICATION} render={e => <FormBuilderContainer/>}/>
 
-      <Route exact path={OfficeRoutes.PERMIT_TEMPLATE} render={e => <PermitTemplates/>}/>
+        {/*template*/}
+      {/*<Route exact path={OfficeRoutes.PERMIT_TEMPLATE} render={e => <PermitTemplates/>}/>*/}
       <Route exact path={OfficeRoutes.LICENSE_TEMPLATE} render={e => <LicenseTemplate/>}/>
       <Route exact path={OfficeRoutes.REJECTED_TEMPLATE} render={e => <RejectTemplate/>}/>
       <Route exact path={OfficeRoutes.CANCELLED_TEMPLATE} render={e => <CancelTemplate/>}/>

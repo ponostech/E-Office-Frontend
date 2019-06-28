@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
   AppBar,
-  Button,
+  Button, Card, CardContent, CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,6 +17,8 @@ import FormFieldFactory from "../../../../components/form-builder/FormFieldFacto
 import GridContainer from "../../../../components/Grid/GridContainer";
 import PropTypes from "prop-types";
 import CloseIcon from "@material-ui/icons/Close";
+import Grid from "@material-ui/core/Grid";
+import LoadingView from "../../../common/LoadingView";
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -134,7 +136,7 @@ class ShopSiteVerificationDialog extends Component {
       );
     }
     return (
-      <Dialog fullWidth={true} maxWidth={"lg"} open={open}>
+      <Dialog fullScreen={true} TransitionComponent={Transition} fullWidth={true} maxWidth={"lg"} open={open}>
         <AppBar className={classes.appBar}>
 
           <Toolbar>
@@ -152,9 +154,15 @@ class ShopSiteVerificationDialog extends Component {
         <Divider component={"li"}/>
 
         <DialogContent>
-          <GridContainer justify={"flex-start"}>
-            {loading ? "loading" : form}
-          </GridContainer>
+          <Card>
+            <CardHeader title={"FILE NO: " + file.number} subheader={"SITE VERIFICATION OF" + file.subject}/>
+            <Divider component={"li"}/>
+            <CardContent>
+              <Grid container={true} justify={"flex-start"} spacing={3}>
+                {loading ? <LoadingView/> : form}
+              </Grid>
+            </CardContent>
+          </Card>
         </DialogContent>
         <Divider component={"li"}/>
         <DialogActions>

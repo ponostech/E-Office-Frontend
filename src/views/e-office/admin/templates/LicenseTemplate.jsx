@@ -6,6 +6,9 @@ import HotelLicenseTemplate from "./licenses/HotelLicenseTemplate";
 import ShopLicenseTemplate from "./licenses/ShopLicenseTemplate";
 import AdvertiserLicenseTemplate from "./licenses/AdvertiserLicenseTemplate";
 import TechnicalPersonLicenseTemplate from "./licenses/TechnicalPersonLicenseTemplate";
+import BannerPermitTemplate from "./permits/BannerPermitTemplate";
+import KioskPermitTemplate from "./permits/KioskPermitTemplate";
+import HoardingPermitTemplate from "./permits/HoardingPermitTemplate";
 
 
 const styles = theme => ({
@@ -70,7 +73,7 @@ class LicenseTemplate extends Component {
 
     return (
       <Card>
-        <CardHeader style={{ padding: "5px 16px" }} title={"LICENSE TEMPLATE"}/>
+        <CardHeader style={{ padding: "5px 16px" }} title={"LICENSE/PERMIT TEMPLATE"}/>
         <CardContent style={{ padding: "5px 16px" }}>
           <div className={classes.root}>
             <Tabs
@@ -92,7 +95,15 @@ class LicenseTemplate extends Component {
               <Tab disableRipple value={"technical"}
                    classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                    label={"Techinical Person License"}/>
-
+              <Tab disableRipple value={"banner"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Banner Permit"}/>
+              <Tab disableRipple value={"kiosk"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Kiosk Permit"}/>
+              <Tab disableRipple value={"hoarding"}
+                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                   label={"Hoarding Permit"}/>
             </Tabs>
           </div>
         </CardContent>
@@ -101,6 +112,9 @@ class LicenseTemplate extends Component {
           {value === "shop" && <ShopLicenseTemplate doLoad={this.props.doLoad}/>}
           {value === "advertiser" && <AdvertiserLicenseTemplate doLoad={this.props.doLoad}/>}
           {value === "technical" && <TechnicalPersonLicenseTemplate doLoad={this.props.doLoad}/>}
+          {value === "banner" && <BannerPermitTemplate doLoad={this.props.doLoad}/>}
+          {value === "kiosk" && <KioskPermitTemplate doLoad={this.props.doLoad}/>}
+          {value === "hoarding" && <HoardingPermitTemplate doLoad={this.props.doLoad}/>}
         </div>
       </Card>
     );

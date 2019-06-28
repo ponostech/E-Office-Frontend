@@ -92,7 +92,7 @@ export class ApiRoutes {
   static FILE_DETAIL = "/files";
   static CREATE_TRADE = "/trades";
   static GET_TRADE = "/trades";
-  static CREATE_LICENSE_TEMPLATE = "/license-templates";
+  static CREATE_LICENSE_TEMPLATE = "/permit-templates";
   static CREATE_PERMIT_TEMPLATE = "/permit-templates";
 
   static UPDATE_TRADE = (id) => {
@@ -101,7 +101,7 @@ export class ApiRoutes {
 
   //template
   static GET_LICENSE_TEMPLATE = (module) => {
-    return `license-templates/${module}`;
+    return `permit-templates/${module}`;
   };
   static DELETE_SITE_VERIFICATION="site-verification-templates";
 
@@ -118,7 +118,7 @@ export class ApiRoutes {
 
 
   static UPDATE_LICENSE_TEMPLATE(id) {
-    return `/license-templates/${id}`;
+    return `/permit-templates/${id}`;
   }
 
   static GET_PERMIT_TEMPLATE = (module) => {

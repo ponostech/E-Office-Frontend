@@ -2,6 +2,9 @@ import React, { Component } from "reactn";
 import {
   AppBar,
   Button,
+  Card,
+  CardContent,
+  CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
@@ -48,7 +51,7 @@ class SiteVerificationEditDialog extends Component {
     const { type } = this.props;
     this.setState({ loading: true });
     this.siteVerification.getTemplate(type, errorMsg => this.setGlobal({ errorMsg }), template => {
-      this.mergeFormElements(template.data.formElements)
+      this.mergeFormElements(template.data.formElements);
     })
       .finally(() => this.setState({ loading: false }));
   }
@@ -57,10 +60,10 @@ class SiteVerificationEditDialog extends Component {
     if (this.props.verification) {
       const { formElements } = this.props.verification.template;
 
-      let merge=this.merge(formElements,newElements);
-      this.setState({formElements:merge})
+      let merge = this.merge(formElements, newElements);
+      this.setState({ formElements: merge });
     }
-    console.log("about to merge")
+    console.log("about to merge");
   };
 
   merge = (a, b) => a.filter(elem => !b.find(subElem => subElem.elementConfig.name === elem.elementConfig.name)).concat(b);
@@ -117,7 +120,7 @@ class SiteVerificationEditDialog extends Component {
       formData[element.elementConfig.name] = element.value.value ? element.value.value : element.value;
     });
     if (!valid) {
-      this.setState({ errorMessage: "Please fill all the required field" });
+      this.setGlobal({ errorMsg: "Please fill all the required field" });
     } else {
       let url = `site-verifications/${verification.id}`;
       let template = {
@@ -139,7 +142,7 @@ class SiteVerificationEditDialog extends Component {
       form = (
         <>
           {formElements.map((element, index) => (
-            <Grid style={{margin:10}} key={index} md={6}>
+            <Grid style={{ margin: 10 }} key={index} md={6}>
               <FormFieldFactory
                 key={index}
                 elementType={element.elementType}
@@ -171,19 +174,17 @@ class SiteVerificationEditDialog extends Component {
           </Toolbar>
         </AppBar>
 
-        <DialogTitle title={"title"}>
-          <Typography variant={"title"}>FILE NO: {file.number}</Typography>
-          <Typography variant={"subtitle1"}>SITE VERIFICATION OF {file.subject}</Typography>
-          <Typography hidden={!Boolean(errorMessage)} color={"secondary"}
-                      variant={"caption"}>{errorMessage}</Typography>
-        </DialogTitle>
-
-        <Divider component={"li"}/>
-
         <DialogContent>
-          <Grid container={true} justify={"flex-start"} spacing={3}>
-            {loading ? <LoadingView/> : form}
-          </Grid>
+          <Card>
+            <CardHeader title={"FILE NO: " + file.number} subheader={"SITE VERIFICATION OF" + file.subject}/>
+            <Divider component={"li"}/>
+            <CardContent>
+              <Grid container={true} justify={"flex-start"} spacing={3}>
+                {loading ? <LoadingView/> : form}
+              </Grid>
+            </CardContent>
+          </Card>
+
         </DialogContent>
         <Divider component={"li"}/>
         <DialogActions>
