@@ -1,12 +1,14 @@
-import React, {Component} from 'react';
+import React, {Component} from 'reactn';
 import axios from 'axios';
-import {CardHeader, List} from "@material-ui/core";
+import { CardHeader, Icon, List } from "@material-ui/core";
 import DetailViewRow from "../../../common/DetailViewRow";
 import LoadingView from "../../../../common/LoadingView";
 import {FILE_DRAFT_LIST} from "../../../../../config/ApiRoutes";
 import ErrorHandler from "../../../../common/StatusHandler";
 import moment from "moment";
 import DraftSingleViewDialog from "../../../../common/DraftSingleViewDialog";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
 
 class FileDraftPermitList extends Component {
   state = {
@@ -26,12 +28,12 @@ class FileDraftPermitList extends Component {
   }
 
   getData = (id) => {
-    axios.get(FILE_DRAFT_LIST(id, 't'))
+    axios.get(FILE_DRAFT_LIST(id, 'permit'))
         .then(res => {
           if (res.data.status) this.setState({loading: false, data: res.data.data.drafts});
-          else this.setState({errorMsg: res.data.messages});
+          else this.setGlobal({errorMsg: res.data.messages});
         })
-        .catch(err => this.setState({errorMsg: err.toString()}))
+        .catch(err => this.setGlobal({errorMsg: err.toString()}))
   };
 
   formatCreated = (value) => "Created by - " + value.creator.staff.name + " (" + value.creator.staff.designation + ")" +
@@ -42,17 +44,21 @@ class FileDraftPermitList extends Component {
   openDetails = (value) => this.setState({loading: true, singleData: value, showDetails: true});
 
   render() {
-    const {loading, errorMsg, showDetails, singleData, data} = this.state;
+    const {loading, showDetails, singleData, data} = this.state;
     const content = data.length === 0 ? "No draft" :
         data.map(value => <DetailViewRow value={value} click={this.openDetails}
                                          primary={"Draft Permit No. " + value.id}
-                                         secondary={this.formatCreated(value)}/>);
+                                         secondary={this.formatCreated(value)}>
+          <IconButton href={"#"} onClick={this.openDetails}>
+            <Icon color={"action"}>keyboard_arrow_right</Icon>
+          </IconButton>
+        </DetailViewRow>);
     return (
         <>
           <CardHeader title="List of Drafts Permit"/>
+          <Divider component={"div"}/>
           {loading ? <LoadingView align="left"/> : <List>{content}</List>}
-          {errorMsg && <ErrorHandler messages={this.state.errorMsg}/>}
-          {showDetails && <DraftSingleViewDialog data={singleData} open={showDetails} onClose={this.closeDetails}/>}
+          {showDetails && <DraftSingleViewDialog draft={singleData} open={showDetails} onClose={this.closeDetails}/>}
         </>
     )
   }

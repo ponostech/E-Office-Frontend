@@ -156,7 +156,8 @@ class FileView extends Component {
             break;
         }
         break;
-      case "Draft Permit":
+
+      case "Draft Permit/License":
         this.setState({openDraftPermit: true});
         break;
       case "Draft Reject":

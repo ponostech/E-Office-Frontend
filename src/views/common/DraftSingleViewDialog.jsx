@@ -1,9 +1,9 @@
-import React from "react";
+import React from "reactn";
 import axios from "axios";
 import PropTypes from "prop-types";
 import {Button, DialogActions} from "@material-ui/core";
 import {withStyles} from "@material-ui/core/styles";
-import {GET_DRAFT} from "../../config/ApiRoutes";
+import {UPDATE_DRAFT} from "../../config/ApiRoutes";
 import Editor from "../e-office/common/Editor"
 import DialogWrapper from "../e-office/files/dialog/common/DialogWrapper";
 
@@ -18,19 +18,24 @@ const styles = {
 
 class DraftSingleViewDialog extends React.Component {
   state = {
-    successMsg: '',
-    errorMsg: '',
-    data: '',
+    content: '',
     loading: true
   };
 
+  componentDidMount() {
+    // console.log("data",this.props.data)
+    this.setState({
+      content:this.props.draft.content
+    })
+  }
+
   editorChange = (e) => {
-    this.setState({data: e.target.getContent()});
+    this.setState({content: e.target.getContent()});
   };
 
   validate = () => {
-    if (this.state.data === "") {
-      this.setState({errorMsg: "No change in the content yet"});
+    if (this.state.content === "") {
+      this.setGlobal({errorMsg: "No change in the content yet"});
       return false;
     }
     return true;
@@ -38,26 +43,29 @@ class DraftSingleViewDialog extends React.Component {
 
   saveEdit = (id) => {
     this.validate();
-    axios.post(GET_DRAFT(id), {content: this.state.data})
+    axios.post(UPDATE_DRAFT(id), {content: this.state.content})
         .then(res => {
-          if (res.data.status) this.setState({successMsg: res.data.messages});
-          else this.setState({errorMsg: res.data.messages});
+          if (res.data.status) {
+            this.setGlobal({successMsg: res.data.messages});
+            this.props.onClose()
+          }
+          else this.setGlobal({errorMsg: res.data.messages});
         })
   };
 
   render() {
-    const {data, open, onClose} = this.props;
+    const {draft, open, onClose} = this.props;
     const {errorMsg, successMsg} = this.state;
 
     const content =
         <>
-          <Editor default={data.content} onChange={this.editorChange} height={700}/>
+          <Editor default={draft.content} onChange={this.editorChange} height={700}/>
         </>;
 
     const actions =
         <>
           <Button color="primary">Approve</Button>
-          <Button color="primary" onClick={this.saveEdit.bind(this, data.id)}>Save Edit</Button>
+          <Button color="primary" onClick={this.saveEdit.bind(this, draft.id)}>Update</Button>
           <Button color="secondary" onClick={onClose}>Close</Button>
         </>;
 
@@ -73,7 +81,7 @@ class DraftSingleViewDialog extends React.Component {
 DraftSingleViewDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  data: PropTypes.any
+  draft: PropTypes.any
 };
 
 export default withStyles(styles)(DraftSingleViewDialog);
