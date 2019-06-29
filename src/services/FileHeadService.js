@@ -4,30 +4,12 @@ import moment from "moment";
 import {ArrayToString, ErrorToString} from "../utils/ErrorUtil";
 
 export class FileHeadService {
-  async all(errorCallback, successCallback) {
-    const token = localStorage.getItem("access_token");
-    const config = {headers: {"Authorization": `Bearer ${token}`}};
-    try {
-      let main_res = await axios.get(ApiRoutes.GET_MAIN_HEAD, config);
-      let group_res = await axios.get(ApiRoutes.GET_GROUP_HEAD, config);
-      let sub_res = await axios.get(ApiRoutes.GET_SUB_HEAD, config);
-      if (res.data.status) {
-        successCallback(main_res.data.data.group-heads)
-      } else {
-        errorCallback("Something went wrong: Please try again later")
-      }
-    } catch (e) {
-      console.error(e);
-      errorCallback(e.toString())
-    }
 
-  }
-
-  async update(staff, errorCallback, successCallback) {
+  async create(data, errorCallback, successCallback) {
     try {
-      let res = await axios.post(ApiRoutes.UPDATE_STAFF, staff);
+      let res = await axios.post(ApiRoutes.CREATE_FILE_HEAD, data);
       if (res.data.status) {
-        successCallback("Staff info update successfully")
+        successCallback(ArrayToString(res.data.messages))
       } else {
         errorCallback(ErrorToString(res.data.messages))
       }
@@ -37,82 +19,31 @@ export class FileHeadService {
     }
   }
 
-  async create(state, errorCallback, successCallback) {
-    const token = localStorage.getItem("access_token");
-    const config = {headers: {"Authorization": `Bearer ${token}`}};
-    let data = {
-      email: state.email,
-      phone_no: state.phone,
-      password: state.password,
-      name: state.name,
-      designation: state.designation,
-      address: state.address,
-      dob: moment(state.dob).format("Y-M-D"),
-      branch: state.branch.value,
-      blood: state.blood,
-      role: state.role,
-      signature: state.signature.path,
-      photo: state.passport.path
-    };
+  async getHead(errorCallback, successCallback) {
     try {
-      let res = await axios.post(ApiRoutes.CREATE_STAFF, data);
+      const res = await  axios.get("file-index/group-heads");
       if (res.data.status) {
-        let msg = ArrayToString(res.data.messages);
-        successCallback(msg);
-      } else {
-        errorCallback(ErrorToString(res.data.messages));
-      }
-    } catch (e) {
-      console.error(e)
-      errorCallback(e.toString());
-    }
-  }
-
-  async fetch(errorCallback, successCallback) {
-    // const token = localStorage.getItem("access_token");
-    // const config={ headers: {"Authorization" : `Bearer ${token}`} }
-    try {
-      const res = await axios.get(ApiRoutes.GET_STAFF);
-      if (res.data.status) {
-        successCallback(res.data.data.staffs);
+        const heads = res.data.data.group_heads;
+        successCallback(heads);
       } else {
         errorCallback(ArrayToString(res.data.messages));
       }
     } catch (e) {
-      console.error(e)
       errorCallback(e.toString());
     }
-  }
-
-  async getBranch(errorCallback, successCallback) {
-    let data = [];
+  }async getMain(group_id,errorCallback, successCallback) {
     try {
-      const res = await axios.get(ApiRoutes.BRANCHES);
-      console.log(res);
+      const res = await  axios.get(`file-index/main-heads/${group_id}`);
       if (res.data.status) {
-        const branches = res.data.data.branches;
-        successCallback(branches);
+        const heads = res.data.data.main_heads;
+        successCallback(heads);
       } else {
-        const msg = ErrorToString(res.messages);
-        errorCallback(msg);
+        errorCallback(ArrayToString(res.data.messages));
       }
     } catch (e) {
       errorCallback(e.toString());
     }
   }
 
-  async getRoles(errorCallback, successCallback) {
-    let data = [];
-    try {
-      const res = await axios.get(ApiRoutes.STAFF_ROLE);
-      if (res.data.status) {
-        const roles = res.data.data.roles;
-        successCallback(roles);
-      } else {
-        errorCallback("Something went wrong: Please try again later");
-      }
-    } catch (e) {
-      errorCallback(e.toString());
-    }
-  }
+
 }

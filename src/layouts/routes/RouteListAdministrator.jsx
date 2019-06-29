@@ -59,6 +59,7 @@ import ReceiptEdit from "../../views/e-office/receipt/ReceiptEdit";
 import ReceiptAttachedList from "../../views/e-office/receipt/ReceiptAttachedList";
 import HoardingCancelledList from "../../views/e-office/applications/hoarding/HoardingCancelledList";
 import KioskCancelledList from "../../views/e-office/applications/kiosk/KioskCancelledList";
+import FileHeadTemplates from "../../views/e-office/admin/e-file/FileHeadTemplates";
 
 const routes = (props) => {
   return (
@@ -135,6 +136,7 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.TRADE_LIST} render={e => <TradeList/>}/>
       <Route exact path={OfficeRoutes.STAFF_REGISTRATION} render={e => <StaffRegistration/>}/>
       <Route exact path={OfficeRoutes.STAFF_LIST} render={e => <StaffList/>}/>
+      <Route exact path={OfficeRoutes.FILE_HEAD} render={e => <FileHeadTemplates/>}/>
 
       {/*site verification*/}
       <Route exact path={OfficeRoutes.SITE_VERIFICATION + "/:module/edit"}
