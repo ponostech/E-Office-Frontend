@@ -26,56 +26,58 @@ const ApplicationDetailsDialog = (props) => {
       break;
     case "App\\Kiosk" :
       LEFT_ITEMS = [
-        { key: "License No.", value: props.content.advertiser.license_no },
-        { key: "Name of Applicant", value: props.content.advertiser.name },
-        { key: "Applicant Type", value: props.content.advertiser.type },
-        { key: "Date", value: moment(props.content.created_at).format("Do MMM YYYY") },
-        { key: "Address", value: props.content.length },
-        { key: "Local Council", value: props.content.local_council.name },
-        { key: "Length", value: props.content.length + " ft" },
-        { key: "Height", value: props.content.height + " ft" },
-        { key: "Both Sided", value: props.content.both_side ? "Yes" : "No" },
-        { key: "Collapsible", value: props.content.collapsible ? "Yes" : "No" },
+        { key: "License No.", value: props.content.applicant.advertiser.license_no },
+        { key: "Name of Applicant", value: props.content.applicant.advertiser.name },
+        { key: "Applicant Type", value: props.content.applicant.advertiser.type.toUpperCase() },
+        { key: "Date", value: moment(props.content.kiosk.created_at).format("Do MMM YYYY") },
+        { key: "Address", value: props.content.applicant.advertiser.address},
+        { key: "Local Council", value: props.content.kiosk.local_council.name },
+        { key: "Length", value: props.content.kiosk.length + " ft" },
+        { key: "Height", value: props.content.kiosk.height + " ft" },
+        { key: "Both Sided", value: props.content.kiosk.both_side ? "Yes" : "No" },
+        { key: "Collapsible", value: props.content.kiosk.collapsible ? "Yes" : "No" },
         {
           key: "Ground Clearance",
-          value: props.content.application.ground_clearance ? props.content.ground_clearance : "NA"
+          value: props.content.kiosk.ground_clearance ? props.content.kiosk.ground_clearance : "NA"
         },
         {
           key: "Road Detail",
-          value: props.content.application.road_detail ? props.content.road_detail : "NA"
+          value: props.content.kiosk.road_detail ? props.content.kiosk.road_detail : "NA"
         },
-        { key: "Both Sided", value: props.content.both_side ? "Yes" : "No" },
-        { key: "Display Type", value: props.content.display_type },
-        { key: "Name of Landowner", value: props.content.land_owner_name },
-        { key: "Type of Landowner", value: props.content.land_owner_type ? "Public" : "Private" },
+        { key: "Both Sided", value: props.content.kiosk.both_side ? "Yes" : "No" },
+        { key: "Display Type", value: props.content.kiosk.display_type },
+        { key: "Name of Landowner", value: props.content.kiosk.land_owner_name },
+        { key: "Type of Landowner", value: props.content.kiosk.land_owner_type ? "Public" : "Private" },
         { key: "Application Date", value: moment(props.content.created_at).format("Do MMMM YYYY") },
-        { key: "Applicant Status", value: props.content.status.toUpperCase() }
+        { key: "Applicant Status", value: props.content.kiosk.status.toUpperCase() }
       ];
       break;
     case "App\\Hoarding" :
       LEFT_ITEMS = [
-        { key: "License No.", value: props.content.advertiser.license_no },
-        { key: "Name of Applicant", value: props.content.advertiser.name },
-        { key: "Applicant Type", value: props.content.advertiser.type },
-        { key: "Date", value: moment(props.content.created_at).format("Do MMM YYYY") },
-        { key: "Address", value: props.content.length },
-        { key: "Local Council", value: props.content.local_council.name },
-        { key: "Length", value: props.content.length + " ft" },
-        { key: "Height", value: props.content.height + " ft" },
+        { key: "License No.", value: props.content.applicant.advertiser.license_no },
+        { key: "Name of Applicant", value: props.content.applicant.advertiser.name },
+        { key: "Applicant Type", value: props.content.applicant.advertiser.type.toUpperCase() },
+        { key: "Date", value: moment(props.content.hoarding.created_at).format("Do MMM YYYY") },
+        { key: "Address", value: props.content.applicant.advertiser.address},
+        { key: "Local Council", value: props.content.hoarding.local_council.name },
+        { key: "Length", value: props.content.hoarding.length + " ft" },
+        { key: "Height", value: props.content.hoarding.height + " ft" },
+        { key: "Both Sided", value: props.content.hoarding.both_side ? "Yes" : "No" },
+        { key: "Collapsible", value: props.content.hoarding.collapsible ? "Yes" : "No" },
         {
           key: "Ground Clearance",
-          value: props.content.ground_clearance ? props.content.ground_clearance : "NA"
+          value: props.content.hoarding.ground_clearance ? props.content.hoarding.ground_clearance : "NA"
         },
         {
           key: "Road Detail",
-          value: props.content.application.road_detail ? props.content.road_detail : "NA"
+          value: props.content.hoarding.road_detail ? props.content.hoarding.road_detail : "NA"
         },
-        { key: "Both Sided", value: props.content.both_side ? "Yes" : "No" },
-        { key: "Display Type", value: props.content.display_type },
-        { key: "Name of Landowner", value: props.content.land_owner_name },
-        { key: "Type of Landowner", value: props.content.land_owner_type ? "Public" : "Private" },
+        { key: "Both Sided", value: props.content.hoarding.both_side ? "Yes" : "No" },
+        { key: "Display Type", value: props.content.hoarding.display_type },
+        { key: "Name of Landowner", value: props.content.hoarding.land_owner_name },
+        { key: "Type of Landowner", value: props.content.hoarding.land_owner_type ? "Public" : "Private" },
         { key: "Application Date", value: moment(props.content.created_at).format("Do MMMM YYYY") },
-        { key: "Applicant Status", value: props.content.status.toUpperCase() }
+        { key: "Applicant Status", value: props.content.hoarding.status.toUpperCase() }
       ];
       break;
     case "App\\Hotel" :
