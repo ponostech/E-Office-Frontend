@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import { Card, CardContent, CardHeader, withStyles } from "@material-ui/core";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import HoardingPermitTemplate from "./permits/HoardingPermitTemplate";
-import KioskPermitTemplate from "./permits/KioskPermitTemplate";
-import BannerPermitTemplate from "./permits/BannerPermitTemplate";
+import GroupHeadCreate from "./GroupHeadCreate";
+import MainHeadCreate from "./MainHeadCreate";
+import SubHeadCreate from "./SubHeadCreate";
 
 
 const styles = theme => ({
@@ -55,10 +55,14 @@ const styles = theme => ({
   }
 });
 
-class FileTemplates extends Component {
+class FileHeadTemplates extends Component {
   state = {
     value: "group-head"
   };
+
+  componentDidMount() {
+    this.setGlobal({loading:false})
+  }
 
   handleChange = (event, value) => {
     this.setState({ value });
@@ -70,7 +74,7 @@ class FileTemplates extends Component {
 
     return (
       <Card>
-        <CardHeader style={{ padding: "5px 16px" }} title={"FILE INDEX"}/>
+        <CardHeader style={{ padding: "5px 16px" }} title={"FUNCTIONAL FILE INDEX"}/>
         <CardContent style={{ padding: "5px 16px" }}>
          <div className={classes.root}>
            <Tabs component={"div"}
@@ -94,13 +98,13 @@ class FileTemplates extends Component {
          </div>
         </CardContent>
         <div>
-          {value === "group-head" && <HoardingPermitTemplate doLoad={this.props.doLoad}/>}
-          {value === "main-head" && <KioskPermitTemplate doLoad={this.props.doLoad}/>}
-          {value === "sub-head" && <BannerPermitTemplate doLoad={this.props.doLoad}/>}
+          {value === "group-head" && <GroupHeadCreate/>}
+          {value === "main-head" && <MainHeadCreate/>}
+          {value === "sub-head" && <SubHeadCreate/>}
         </div>
       </Card>
     );
   }
 }
 
-export default withStyles(styles)(FileTemplates);
+export default withStyles(styles)(FileHeadTemplates);

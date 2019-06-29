@@ -1,3 +1,4 @@
+export const FILE_HEAD = "/e-office/file-head";
 export const ROOT = "/";
 export const LOGIN = "/auth/login";
 export const LOGOUT = "/auth/logout";
