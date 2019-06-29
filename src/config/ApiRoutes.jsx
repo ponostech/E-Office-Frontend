@@ -97,6 +97,10 @@ export class ApiRoutes {
   static GET_TRADE = "/trades";
   static CREATE_LICENSE_TEMPLATE = "/permit-templates";
   static CREATE_PERMIT_TEMPLATE = "/permit-templates";
+  static CREATE_FILE_HEAD = "/file-index";
+  static GET_GROUP_HEAD = "/file-index/group-heads";
+  static GET_MAIN_HEAD = "/file-index/main-heads/{group_id}";
+  static GET_SUB_HEAD = "/file-index/sub-heads/{main_id}";
 
   static UPDATE_TRADE = (id) => {
     return `/trades/${id}`;
