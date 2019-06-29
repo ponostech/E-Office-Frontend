@@ -80,8 +80,12 @@ class FileApplications extends Component {
         subtitle = 'Name of Hotel: ' + val.name;
         break;
       case 'App\\Hoarding':
-        title = "Applicant: " + val.owner;
-        subtitle = 'Name of Shop: ' + val.name;
+        title = "Applicant: " + val.applicant.advertiser.name;
+        subtitle = 'Contact: ' + val.applicant.phone_no;
+        break;
+      case 'App\\Kiosk':
+        title = "Applicant: " + val.applicant.advertiser.name;
+        subtitle = 'Contact: ' + val.applicant.phone_no;
         break;
       default:
         title = 'Not Found';
