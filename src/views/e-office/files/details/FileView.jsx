@@ -43,6 +43,7 @@ import {LoginService} from "../../../../services/LoginService";
 import FileApproveDialog from '../dialog/FileApproveDialog';
 import UsersMessageDialog from "../../common/UsersMessageDialog";
 import FileEnClosures from "./Views/FileEnclosures";
+import FileRejectDialog from "../dialog/FileRejectDialog";
 
 const styles = theme => ({
   root: {
@@ -99,6 +100,8 @@ class FileView extends Component {
     openShopVerification: false,
     openHotelVerification: false,
     submitNote: false,
+
+    openRejectDialog:false,
     openApproveDialog: false,
     openMessageDialog: false,
   };
@@ -180,6 +183,9 @@ class FileView extends Component {
         break;
       case 'Approve':
         this.setState({openApproveDialog: true});
+        break;
+        case 'Reject':
+        this.setState({openRejectDialog: true});
         break;
       case 'Send back Applicant':
         this.setState({openMessageDialog: true});
@@ -315,7 +321,7 @@ class FileView extends Component {
     const {openDraft, openDraftPermit, openNote, file, submitNote, menus} = this.state;
     const {openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog, openDraftLicense} = this.state;
     const {moduleName, openDraftReject, openDraftCancel, openHoardingVerification, openKioskVerification, openHotelVerification, } = this.state;
-    const {openShopVerification, openApproveDialog, openMessageDialog} = this.state;
+    const {openShopVerification, openApproveDialog, openMessageDialog,openRejectDialog} = this.state;
 
     let allowed = LoginService.getCurrentUser().id === file.current_user_id;
     let contentStyle = {
@@ -410,6 +416,8 @@ class FileView extends Component {
                                                        onClose={this.closeDialog.bind(this, "openDraftLicense")}/>}
           {openDraftReject && <FileDraftRejectDialog module={moduleName} file={file} open={openDraftReject}
                                                      onClose={this.closeDialog.bind(this, "openDraftReject")}/>}
+          {openRejectDialog && <FileRejectDialog module={moduleName} file={file} open={openRejectDialog}
+                                                     onClose={this.closeDialog.bind(this, "openRejectDialog")}/>}
           {openDraftCancel && <FileDraftCancelDialog module={moduleName} file={file} open={openDraftCancel}
                                                      onClose={this.closeDialog.bind(this, "openDraftCancel")}/>}
           {openApproveDialog && <FileApproveDialog module={moduleName} file={file} open={openApproveDialog}
