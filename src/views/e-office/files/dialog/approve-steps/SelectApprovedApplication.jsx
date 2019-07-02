@@ -5,6 +5,7 @@ import { CardHeader, Icon } from "@material-ui/core";
 import DetailViewRow from "../../../common/DetailViewRow";
 import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
+import { getApplicationTitle } from "../common/ApplicationResolver";
 
 class SelectApprovedApplication extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class SelectApprovedApplication extends Component {
       <CardHeader title={"Please Select Application to Approved"}/>
       <Divider component={"div"}/>
     {applications.map((application,index)=>
-        <DetailViewRow key={index} click={e=>onSelectApplication(application)} primary={"Name of the Applicant"} secondary={this.getApplicantName(application)}>
+        <DetailViewRow key={index} click={e=>onSelectApplication(application)} primary={getApplicationTitle(application).title} secondary={getApplicationTitle(application).subtitle}>
           <IconButton href={"#"} onClick={e=>onSelectApplication(application)}>
             <Icon color={"action"}>keyboard_arrow_right</Icon>
           </IconButton>

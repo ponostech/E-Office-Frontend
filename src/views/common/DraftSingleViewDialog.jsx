@@ -64,7 +64,7 @@ class DraftSingleViewDialog extends React.Component {
 
     const actions =
         <>
-          <Button color="primary">Approve</Button>
+          {/*<Button color="primary">Approve</Button>*/}
           <Button color="primary" onClick={this.saveEdit.bind(this, draft.id)}>Update</Button>
           <Button color="secondary" onClick={onClose}>Close</Button>
         </>;

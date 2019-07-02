@@ -1,7 +1,39 @@
 import { FILEABLE_TYPE } from "../../details/Views/FileApplicationDetails";
 import moment from "moment";
 
-const ApplicationResolver=(application)=> {
+export const getApplicationTitle=(application)=>{
+  let title = "";
+  let subtitle = "";
+
+  switch (application.file.fileable_type) {
+    case "App\\Shop":
+      title = "Applicant: " + application.owner;
+      subtitle = "Name of Shop: " + application.name;
+      break;
+    case "App\\Hotel":
+      title = "Applicant: " + application.owner;
+      subtitle = "Name of Hotel: " + application.name;
+      break;
+    case "App\\Hoarding":
+      title = "Applicant: " + application.applicant.advertiser.name;
+      subtitle = "Contact: " + application.applicant.phone_no;
+      break;
+    case "App\\Kiosk":
+      title = "Applicant: " + application.applicant.advertiser.name;
+      subtitle = "Contact: " + application.applicant.phone_no;
+      break;
+    case "App\\Banner":
+      title = "Applicant: " + application.name;
+      subtitle = "Contact: " + application.phone;
+      break;
+    default:
+      title = "Not Found";
+      subtitle = "Not found";
+      break;
+  }
+  return {title,subtitle};
+}
+export const ApplicationResolver=(application)=> {
   if (application === null)
     return [];
   const { fileable_type } =application.file;
@@ -54,7 +86,6 @@ const ApplicationResolver=(application)=> {
       application.advertisements.map(item => tableData.push(
         [item.length, item.height, item.locations, moment(item.from).format("Do MMM YYYY"), moment(item.to).format("Do MMM YYYY")]
       ));
-      this.setState({ tableData });
       break;
     case FILEABLE_TYPE.SHOP:
       rows.push(

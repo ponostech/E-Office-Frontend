@@ -85,7 +85,10 @@ class FileApproveDialog extends Component {
           this.setGlobal({ errorMsg: ArrayToString(res.data.messages) });
         }
       })
-      .catch(err => this.setGlobal({ errorMsg: err.toString() }))
+      .catch(err => {
+        console.log("error",err)
+        this.setGlobal({ errorMsg: err.toString() })
+      })
       .finally(() => this.setState({ submit: false }));
   };
 
