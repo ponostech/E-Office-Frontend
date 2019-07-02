@@ -7,6 +7,7 @@ import DetailViewRow from "../../../common/DetailViewRow";
 import ErrorHandler from "../../../../common/StatusHandler";
 import DraftSingleViewDialog from "../../../../common/DraftSingleViewDialog";
 import moment from "moment";
+import Divider from "@material-ui/core/Divider";
 
 class fileDraftCancels extends React.Component {
   state = {
@@ -55,6 +56,7 @@ class fileDraftCancels extends React.Component {
     return (
         <>
           <CardHeader title="List of Drafts Cancellation" subheader="click on the list item to see details"/>
+          <Divider component={"div"} />
           {loading ? <LoadingView align="left"/> : <List>{content}</List>}
           {errorMsg && <ErrorHandler messages={this.state.errorMsg}/>}
           {showDetails && singleData &&
