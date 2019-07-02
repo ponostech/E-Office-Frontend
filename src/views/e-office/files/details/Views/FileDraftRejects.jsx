@@ -42,9 +42,10 @@ class FileDraftRejects extends React.Component {
   formatCreated = (value) => {
     return "Created On: " + moment(value.created_at).format("Do MMMM YYYY");
   };
+  closeDetails = () => this.setState({showDetails: false, loading: false});
 
   openDetails = (draft) => {
-    this.setState({singleData:draft})
+    this.setState({singleData:draft,showDetails:true})
   };
 
   render() {
@@ -64,7 +65,7 @@ class FileDraftRejects extends React.Component {
         <Divider component={"div"}/>
         {loading ? <LoadingView align="left"/> : <List>{content}</List>}
         {showDetails && singleData &&
-        <DraftSingleViewDialog data={singleData} open={showDetails} onClose={this.closeDetails}/>}
+        <DraftSingleViewDialog draft={singleData} open={showDetails} onClose={this.closeDetails}/>}
       </>
     )
   }

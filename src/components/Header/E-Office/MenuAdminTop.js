@@ -124,7 +124,7 @@ const menu = (props) => {
             { title: "List Trade", link: OfficeRoutes.TRADE_LIST },
             { title: "New Staff", link: OfficeRoutes.STAFF_REGISTRATION },
             { title: "List Staff", link: OfficeRoutes.STAFF_LIST },
-            { title: "New File Head", link: OfficeRoutes.FILE_HEAD },
+            { title: "File Index", link: OfficeRoutes.FILE_HEAD },
             // { title: "Permit Template", link: OfficeRoutes.PERMIT_TEMPLATE },
             { title: "License/Permit Template", link: OfficeRoutes.LICENSE_TEMPLATE },
             { title: "Rejected Template", link: OfficeRoutes.REJECTED_TEMPLATE },
