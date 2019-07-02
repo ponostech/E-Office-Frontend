@@ -127,7 +127,7 @@ const ApplicationDetailsDialog = (props) => {
 
   let leftRow = LEFT_ITEMS.map(val => <DetailViewRow key={val.key} primary={val.key} secondary={val.value}/>);
 
-  let documents = props.content.documents.map(val => <FileViewRow key={val.id} data={val}/>);
+  let documents = props.content.documents?props.content.documents.map(val => <FileViewRow key={val.id} data={val}/>):[];
 
   let content =
     <Grid container>

@@ -37,6 +37,10 @@ export const GET_DRAFT = (id) => {
 export const UPDATE_DRAFT = (id) => {
   return `/drafts/${id}`;
 };
+
+export const UPDATE_FILE_APPLICATION = (fileId,applicationId) => {
+  return `files/${fileId}/application/${applicationId}/status`;
+};
 export const DELETE_NOTE_DRAFT = (id) => `/notesheets/${id}`;
 export const DRAFT_CREATE = "drafts";
 export const FILE_ACTION_TYPES = "setting/notesheet/actions";
