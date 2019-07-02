@@ -1,7 +1,4 @@
 import React, { Component } from "reactn";
-import SelectRejectedApplication from "./rejectSteps/SelectRejectedApplication";
-import SelectRejectedDraft from "./rejectSteps/SelectRejectedDraft";
-import ConfirmReject from "./rejectSteps/ConfirmReject";
 import {
   AppBar,
   Button,
@@ -9,11 +6,18 @@ import {
   DialogContent,
   Icon,
   IconButton,
-  Slide, Step, StepContent, StepLabel, Stepper,
+  Slide,
+  Step,
+  StepContent,
+  StepLabel,
+  Stepper,
   Toolbar,
   Typography,
   withStyles
 } from "@material-ui/core";
+import SelectCancelApplication from "./cancel-steps/SelectCancelApplication";
+import SelectCancelDraft from "./cancel-steps/SelectCancelDraft";
+import ConfirmCancel from "./cancel-steps/ConfirmCancel";
 import axios from "axios";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
@@ -25,7 +29,7 @@ const styles = {
     position: "relative"
   },
   actionsContainer: {
-    marginBottom: 6,
+    marginBottom: 6
   },
   flex: {
     flex: 1
@@ -37,71 +41,75 @@ function Transition(props) {
 }
 
 function getSteps() {
-  return ["Select Application","Select Rejected Draft","Confirm Reject"]
+  return ["Select Application", "Select Cancel Draft", "Confirm Cancel"];
 }
 
-class FileRejectDialog extends Component {
+class FileCancelDialog extends Component {
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       activeStep: 0,
 
       selectedApplication: null,
       selectedDraft: null,
-      submit:false
-    }
-  }
-  selectApplication=(selectedApplication)=>{
-    this.setState({selectedApplication})
-    this.handleNext()
-  }
-  selectDraft=(selectedDraft)=>{
-    this.setState({selectedDraft})
-    this.handleNext()
-  }
-  handleNext=()=>{
-    const { activeStep } = this.state;
-    this.setState({activeStep:activeStep+1})
-  }
-  handleBack=()=>{
-    const { activeStep } = this.state;
-    this.setState({activeStep:activeStep-1})
+      submit: false
+    };
   }
 
-  confirmReject=()=>{
-    this.setState({ submit: true})
+  selectApplication = (selectedApplication) => {
+    this.setState({ selectedApplication });
+    this.handleNext();
+  };
+  selectDraft = (selectedDraft) => {
+    this.setState({ selectedDraft });
+    this.handleNext();
+  };
+  handleNext = () => {
+    const { activeStep } = this.state;
+    this.setState({ activeStep: activeStep + 1 });
+  };
+  handleBack = () => {
+    const { activeStep } = this.state;
+    this.setState({ activeStep: activeStep - 1 });
+  };
+
+  confirmCancel = () => {
+    this.setState({ submit: true });
     axios.post("/files/" + this.props.file.id + "/application/" + this.state.selectedApplication.id + "/cancel",
       { permit: this.state.selectedDraft.content })
-      .then(res=>{
+      .then(res => {
         if (res.data.status) {
-          this.setGlobal({successMsg:ArrayToString(res.data.messages)})
-          this.props.history.push(DESK)
-        }else{
-          this.setGlobal({errorMsg:ArrayToString(res.data.messages)})
+          this.setGlobal({ successMsg: ArrayToString(res.data.messages) });
+          this.props.history.push(DESK);
+        } else {
+          this.setGlobal({ errorMsg: ArrayToString(res.data.messages) });
         }
       })
-      .catch(err=>this.setGlobal({errorMsg:err.toString()}))
-      .finally(()=>this.setState({submit:false}));
-  }
+      .catch(err => this.setGlobal({ errorMsg: err.toString() }))
+      .finally(() => this.setState({ submit: false }));
 
-  getStepContent=(step)=>{
+  };
+
+  getStepContent = (step) => {
     switch (step) {
       case 0:
-        return <SelectRejectedApplication file={this.props.file} onSelectApplication={this.selectApplication} onNext={this.handleNext}/>;
+        return <SelectCancelApplication file={this.props.file} onSelectApplication={this.selectApplication}
+                                        onNext={this.handleNext}/>;
       case 1:
-        return <SelectRejectedDraft file={this.props.file} onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
+        return <SelectCancelDraft file={this.props.file} onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
       case 2:
-        return <ConfirmReject application={this.state.selectedApplication} draft={this.state.selectedDraft} onBack={this.handleBack} confirmReject={this.confirmReject}/>;
+        return <ConfirmCancel application={this.state.selectedApplication} draft={this.state.selectedDraft}
+                              onBack={this.handleBack} confirmCancel={this.confirmCancel}/>;
       default:
-        return "unknown step"
+        return "unknown step";
 
     }
-  }
+  };
 
   render() {
     const { activeStep } = this.state;
-    const { classes,open,onClose } = this.props;
-    const steps=getSteps();
+    const { classes, open, onClose } = this.props;
+    const steps = getSteps();
 
     return (
       <Dialog fullScreen={true} open={open} TransitionComponent={Transition} onClose={onClose} fullWidth={true}>
@@ -112,7 +120,7 @@ class FileRejectDialog extends Component {
               <Icon>close</Icon>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-              Reject Application
+              Cancel Application
             </Typography>
             <Button href={"#"} onClick={this.props.onClose} color="inherit">
               Close
@@ -136,10 +144,10 @@ class FileRejectDialog extends Component {
 
         </DialogContent>
 
-        <SubmitDialog open={this.state.submit} title={"Reject Application"} text={"Please wait ..."}/>
+        <SubmitDialog open={this.state.submit} title={"Cancel Application"} text={"Please wait ..."}/>
       </Dialog>
     );
   }
 }
 
-export default withRouter(withStyles(styles)(FileRejectDialog));
+export default withRouter(withStyles(styles)(FileCancelDialog));
