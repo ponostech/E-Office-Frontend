@@ -43,7 +43,7 @@ class SelectApprovedDraft extends Component {
         <CardHeader title={"Please Select Draft to Approved"}/>
         <Divider component={"div"}/>
         {drafts.map((draft, index) =>
-          <DetailViewRow key={index} click={e => onDraftSelect(draft)} primary={"Draft Approved Order No. " + draft.id}
+          <DetailViewRow key={index} click={e => onDraftSelect(draft)} primary={"Draft Permit No. " + draft.id}
                          secondary={this.formatCreated(draft)}>
             <IconButton href={"#"} onClick={e => onDraftSelect(draft)}>
               <Icon color={"action"}>keyboard_arrow_right</Icon>
