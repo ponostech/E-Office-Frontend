@@ -125,6 +125,7 @@ const menu = (props) => {
             { title: "New Staff", link: OfficeRoutes.STAFF_REGISTRATION },
             { title: "List Staff", link: OfficeRoutes.STAFF_LIST },
             { title: "File Index", link: OfficeRoutes.FILE_HEAD },
+            { title: "Advertisement Rates", link: OfficeRoutes.RATE_LIST },
             // { title: "Permit Template", link: OfficeRoutes.PERMIT_TEMPLATE },
             { title: "License/Permit Template", link: OfficeRoutes.LICENSE_TEMPLATE },
             { title: "Rejected Template", link: OfficeRoutes.REJECTED_TEMPLATE },

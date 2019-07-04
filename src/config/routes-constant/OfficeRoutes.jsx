@@ -17,7 +17,7 @@ export const RENEW_SHOP_LICENSE = "/shop-license/:id/renew";
 
 export const APPLY_BANNER = "/banner/new";
 export const CHECK_LICENSE = "/license/check";
-export const SEARCH_LICENSE=(mobile_no,type) => `/license/${mobile_no}/search/${type}`;
+export const SEARCH_LICENSE = (mobile_no, type) => `/license/${mobile_no}/search/${type}`;
 
 
 export const RESET_PASSWORD = "/reset-password";
@@ -62,7 +62,7 @@ export const FILE_SEND = (id) => {
     return `/files/${id}/send`;
 };
 export const NEW_RECEIPT = "/e-office/receipt/new";
-export const EDIT_RECEIPT=(id) => `/e-office/receipt/${id}/edit`;
+export const EDIT_RECEIPT = (id) => `/e-office/receipt/${id}/edit`;
 export const RECEIPT_ATTACHED_LIST = "/e-office/receipt/attached-list";
 export const RECEIPT_NEW_LIST = "/e-office/receipt/new-list";
 
@@ -108,6 +108,7 @@ export const PERMIT_TEMPLATE = "/e-office/admin/permit-template";
 export const LICENSE_TEMPLATE = "/e-office/admin/license-template";
 export const REJECTED_TEMPLATE = "/e-office/admin/rejected-template";
 export const CANCELLED_TEMPLATE = "/e-office/admin/cancelled-template";
+export const RATE_LIST = "/e-office/admin/rates";
 
 // site verification
 export const SITE_VERIFICATION = "/e-office/admin/site-verification";

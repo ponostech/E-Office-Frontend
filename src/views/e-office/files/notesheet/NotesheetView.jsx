@@ -100,7 +100,7 @@ class NotesheetView extends Component {
 
           <CreateNoteDialog file={this.props.file} open={this.state.openDialog} onClose={this.handleCloseCreateNote}/>
 
-          <SubmitDialog open={this.state.submit} title={"Create Notesheet"} text={"Notesheet is creating ..."}/>
+          <SubmitDialog open={this.state.submit} title={"Create Notesheet"} text={"Please wait ..."}/>
 
           <OfficeSnackbar variant={"success"} onClose={() => this.setState({successMessage: ""})}
                           open={Boolean(this.state.successMessage)} message={this.state.successMessage}/>
