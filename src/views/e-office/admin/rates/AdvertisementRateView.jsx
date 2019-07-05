@@ -8,6 +8,7 @@ import RateCreateDialog from "./RateCreateDialog";
 import RateService from "../../../../services/RateService";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
+import RateEditDialog from "./RateEditDialog";
 
 const fake=[
   {id:1,type:"hoarding",display_type:"illuminate",land_owner_type:"Private",category:"A",rate:10000}
@@ -39,6 +40,15 @@ class AdvertisementRateView extends Component {
     if (data) {
       this.setState({ submit: true });
       this.rateService.create(data, errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => this.setGlobal({ successMsg }))
+        .finally(() => this.setState({ submit: false }));
+    }
+  };
+  onUpdate = (data) => {
+    this.setState({ openEdit: false,submitTitle:"Updating Advertisement Rate" });
+    if (data) {
+      this.setState({ submit: true });
+      this.rateService.update(data, errorMsg => this.setGlobal({ errorMsg }),
         successMsg => this.setGlobal({ successMsg }))
         .finally(() => this.setState({ submit: false }));
     }
@@ -109,14 +119,14 @@ class AdvertisementRateView extends Component {
       <>
         {this.global.loading ? <LoadingView/> : <CardContent>
           <MUIDataTable
-            title={"Hoarding: List of New Application"}
+            title={"Rate of advertisement"}
             data={rates}
             columns={tableColumns}
             options={tableOptions}
           />
 
           <Fab href={"#"} onClick={event => this.setState({ openCreate: true })} color="primary" aria-label="Add"
-               style={{ position: "fixed", right: 80, bottom: 100, zIndex: 9000 }}>
+               style={{ position: "fixed", right: 80, bottom: 100 }}>
             <Icon>add</Icon>
           </Fab>
         </CardContent>}
@@ -124,6 +134,7 @@ class AdvertisementRateView extends Component {
         <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
         <ConfirmDialog onCancel={e=>this.setState({openConfirm:false})} open={this.state.confirmDelete} onConfirm={this.deleteRate.bind(this)}/>
         <RateCreateDialog open={this.state.openCreate} onClose={this.onCreate.bind(this)}/>
+        <RateEditDialog open={this.state.openEdit} rate={this.state.selectedRate} onClose={this.onUpdate.bind(this)}/>
       </>
     );
   }

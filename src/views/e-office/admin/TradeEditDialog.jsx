@@ -12,18 +12,28 @@ import {
   Radio,
   RadioGroup,
   TextField,
-  Tooltip
+  Tooltip, Typography
 } from "@material-ui/core";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import CloseIcon from "@material-ui/icons/Close";
 import withStyles from "@material-ui/core/es/styles/withStyles";
+import Toolbar from "@material-ui/core/Toolbar";
+import AppBar from "@material-ui/core/AppBar";
+import Slide from "@material-ui/core/Slide";
 
-const style = {
-  item: {
-    padding: "10px 15px !important"
+const styles = {
+  appBar: {
+    position: "relative"
+  },
+  flex: {
+    flex: 1
   }
 };
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
 class TradeEditDialog extends Component {
 
   state = {
@@ -55,8 +65,11 @@ class TradeEditDialog extends Component {
   close = () => {
     this.props.onClose(null);
   };
-  handleEdit = (e) => {
-    const { id,name, rate, fla, nameError, rateError } = this.state;
+  invalid=()=>{
+    return !Boolean(this.state.name) || !Boolean(this.state.rate)
+  }
+  edit = (e) => {
+    const { id,name, rate, fla } = this.state;
     const { onClose } = this.props;
     if (!name || !rate) {
       this.setState({errorMessage:"Please fill the required field"});
@@ -85,22 +98,28 @@ class TradeEditDialog extends Component {
   render() {
     const { open, onClose,classes } = this.props;
     return (
-      <Dialog fullWidth={true} maxWidth={"sm"} open={open} onClose={onClose}>
-          <CardHeader title={"Edit Trade"} action={
-            <>
-              <Tooltip title={"Close"}>
-                <IconButton onClick={onClose}> <CloseIcon/> </IconButton>
-              </Tooltip>
-            </>
-          }/>
+      <Dialog TransitionComponent={Transition} fullWidth={true} maxWidth={"sm"} open={open} onClose={this.close.bind(this)}>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton href={"#"} color="inherit" onClick={this.close.bind(this)} aria-label="Close">
+              <CloseIcon/>
+            </IconButton>
+            <Typography variant="subtitle2" color="inherit" style={{flex:1}}>
+              Create New Trade
+            </Typography>
+            <Button href={"#"} onClick={this.close.bind(this)} color="inherit">
+              Close
+            </Button>
+          </Toolbar>
+        </AppBar>
 
-        <Divider/>
         <DialogContent>
-          <GridContainer justify={"center"}>
-            <GridItem className={classes.item} xs={12} sm={12} md={12}>
+
               <TextField variant={"outlined"}
                          name={"name"}
+                         margin={"dense"}
                          value={this.state.name}
+                         label={"Name of Trade"}
                          required={true}
                          fullWidth={true}
                          onBlur={this.handleRequired.bind(this)}
@@ -108,10 +127,11 @@ class TradeEditDialog extends Component {
                          error={Boolean(this.state.nameError)}
                          helperText={this.state.nameError}
               />
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={12}>
+
               <TextField variant={"outlined"}
                          name={"rate"}
+                         label={"Rate"}
+                         margin={"dense"}
                          required={true}
                          type={"number"}
                          value={this.state.rate}
@@ -121,9 +141,8 @@ class TradeEditDialog extends Component {
                          error={Boolean(this.state.rateError)}
                          helperText={this.state.rateError}
               />
-            </GridItem>
-            <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <FormControl fullWidth={true} margin={"dense"}>
+
+              <FormControl  fullWidth={true} margin={"dense"}>
                 <FormLabel>Required Food Licensing Authority Permit?</FormLabel>
                 <RadioGroup
                   defaultValue={"0"}
@@ -138,14 +157,11 @@ class TradeEditDialog extends Component {
                                     label={"No"}/>
                 </RadioGroup>
               </FormControl>
-            </GridItem>
-          </GridContainer>
 
         </DialogContent>
 
-        <Divider/>
         <DialogActions>
-          <Button variant={"outlined"} color={"primary"} onClick={this.handleEdit.bind(this)}>Update</Button>
+          <Button disabled={this.invalid()} variant={"outlined"} color={"primary"} onClick={this.edit.bind(this)}>Update</Button>
           <Button variant={"outlined"} color={"secondary"} onClick={this.close.bind(this)}>Close</Button>
         </DialogActions>
       </Dialog>
@@ -153,4 +169,4 @@ class TradeEditDialog extends Component {
   }
 }
 
-export default withStyles(style)(TradeEditDialog);
+export default withStyles(styles)(TradeEditDialog);

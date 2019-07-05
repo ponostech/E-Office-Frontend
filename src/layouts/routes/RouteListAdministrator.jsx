@@ -16,7 +16,7 @@ import FileArchivedList from "../../views/e-office/files/FileArchivedList";
 import HoardingDetails from "../../views/e-office/applications/hoarding/HoardingDetails";
 import AdvertiserDetails from "../../views/e-office/applications/advertisers/AdvertiserDetails";
 import DeskView from "../../views/e-office/desk/DeskView";
-import TradeNew from "../../views/e-office/admin/TradeNew";
+import TradeNew from "../../views/e-office/admin/trades/TradeCreateDialog";
 import UnderProcessHoarding from "../../views/e-office/applications/hoarding/HoardingUnderProcessList";
 import RejectedHoardingApplications from "../../views/e-office/applications/hoarding/HoardingRejectedList";
 import ApprovedHoarding from "../../views/e-office/applications/hoarding/HoardingApprovedList";
@@ -45,7 +45,7 @@ import HotelNewList from "../../views/e-office/applications/hotel/HotelNewList";
 import AdvertiserApprovedList from "../../views/e-office/applications/advertisers/AdvertiserApprovedList";
 import AdvertiserRejectedList from "../../views/e-office/applications/advertisers/AdvertiserRejectedList";
 import AdvertiserCanceledList from "../../views/e-office/applications/advertisers/AdvertiserCanceledList";
-import TradeList from "../../views/e-office/admin/TradeList";
+import TradeList from "../../views/e-office/admin/trades/TradeList";
 import DashboardAdmin from "../../views/e-office/admin/DashboardAdmin";
 import PermitTemplates from "../../views/e-office/admin/templates/PermitTemplates";
 import LicenseTemplate from "../../views/e-office/admin/templates/LicenseTemplate";
@@ -133,7 +133,6 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.CANCELLED_HOTELLICENSE} render={e => <HotelCancelledList/>}/>
 
       {/*Admin*/}
-      <Route exact path={OfficeRoutes.TRADE_NEW} render={e => <TradeNew/>}/>
       <Route exact path={OfficeRoutes.TRADE_LIST} render={e => <TradeList/>}/>
       <Route exact path={OfficeRoutes.STAFF_REGISTRATION} render={e => <StaffRegistration/>}/>
       <Route exact path={OfficeRoutes.STAFF_LIST} render={e => <StaffList/>}/>
