@@ -120,7 +120,6 @@ const menu = (props) => {
 
         <CustomDropdown
           dropdownList={[
-            { title: "New Trade", link: OfficeRoutes.TRADE_NEW },
             { title: "List Trade", link: OfficeRoutes.TRADE_LIST },
             { title: "New Staff", link: OfficeRoutes.STAFF_REGISTRATION },
             { title: "List Staff", link: OfficeRoutes.STAFF_LIST },
