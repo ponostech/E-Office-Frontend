@@ -19,7 +19,7 @@ axios.defaults.timeout = 20000;
 
 const token = localStorage.getItem("access_token");
 const decodedJwt=jwt.decode(token);
-
+console.log(decodedJwt)
 
 
 
@@ -42,7 +42,7 @@ const decodedJwt=jwt.decode(token);
 if (token) {
   let currentDate = Date.now();
   let expiredDate=new Date(decodedJwt.exp*1000)
-  if (moment(currentDate).isSameOrAfter(moment(expiredDate).add(1,"d"))) {
+  if (moment(currentDate).isSameOrBefore(moment(expiredDate))) {
     localStorage.clear();
   }
   axios.defaults.headers.common = {
