@@ -93,7 +93,7 @@ class LoginView extends Component {
     }
 
     this.setState({submit: true});
-    this.loginService.login({email, password}, errorMessage => this.setState({errorMessage}),
+    this.loginService.login({email, password}, errorMsg => this.setGlobal({errorMsg}),
         res => {
           const {access_token, redirect_url} = res.data;
           localStorage.setItem("access_token", access_token);
