@@ -75,7 +75,6 @@ class ShopViewDialog extends Component {
                   <DetailViewRow primary="Owner Address" secondary={data.owner_address}/>
                   <DetailViewRow primary="Local Council" secondary={data.local_council.name}/>
                   <DetailViewRow primary="Mobile" secondary={data.phone}/>
-                  <DetailViewRow primary="Owner Type" secondary={data.type}/>
                   <DetailViewRow primary="Shop Name" secondary={data.name}/>
                   <DetailViewRow primary="Proposed Location" secondary={data.address}/>
                   <DetailViewRow primary="Date of Application"
@@ -94,7 +93,7 @@ class ShopViewDialog extends Component {
             </Grid>
             <Grid item xs>
               <ListItem>
-                <Typography variant="subtitle1">Documents</Typography>
+                <Typography variant="subtitle1">Documents </Typography>
               </ListItem>
               <ListItem>
                 <img alt="Photo of Applicant" src={data.passport} className={classes.bigAvatar}/>
