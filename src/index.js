@@ -42,9 +42,14 @@ console.log(decodedJwt)
 if (token) {
   let currentDate = Date.now();
   let expiredDate=new Date(decodedJwt.exp*1000)
-  if (moment(currentDate).isSameOrBefore(moment(expiredDate))) {
-    localStorage.clear();
-  }
+  console.log(moment(currentDate))
+  console.log(moment(expiredDate))
+  // if (moment(currentDate).isSameOrBefore(moment(expiredDate))) {
+  //   console.log("token expired")
+  //   console.log(moment(currentDate))
+  //   console.log(moment(expiredDate))
+  //   localStorage.clear();
+  // }
   axios.defaults.headers.common = {
     "Authorization": `Bearer ${token}`
   };
