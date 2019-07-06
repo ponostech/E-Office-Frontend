@@ -17,7 +17,7 @@ class BannerPermitTemplate extends Component {
     submit: false
 
   };
-
+git
 
   componentDidMount() {
     this.setGlobal({ loading: true });

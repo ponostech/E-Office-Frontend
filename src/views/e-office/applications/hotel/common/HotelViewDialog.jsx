@@ -75,7 +75,6 @@ class HotelViewDialog extends Component {
                     <DetailViewRow primary="Owner Address" secondary={data.owner_address}/>
                     <DetailViewRow primary="Local Council" secondary={data.local_council.name}/>
                     <DetailViewRow primary="Mobile" secondary={data.phone}/>
-                    <DetailViewRow primary="Owner Type" secondary={data.type}/>
                     <DetailViewRow primary="Shop Name" secondary={data.name}/>
                     <DetailViewRow primary="Proposed Location" secondary={data.address}/>
                     <DetailViewRow primary="Date of Application"
