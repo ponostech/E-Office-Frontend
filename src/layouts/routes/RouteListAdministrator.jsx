@@ -61,6 +61,7 @@ import HoardingCancelledList from "../../views/e-office/applications/hoarding/Ho
 import KioskCancelledList from "../../views/e-office/applications/kiosk/KioskCancelledList";
 import FileHeadTemplates from "../../views/e-office/admin/e-file/FileHeadTemplates";
 import AdvertisementRateView from "../../views/e-office/admin/rates/AdvertisementRateView";
+import ShopUnpaidList from "../../views/e-office/applications/shop-license/ShopUnpaidList";
 
 const routes = (props) => {
   return (
@@ -119,6 +120,7 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.CANCELLED_BANNER} render={e => <BannerCancelledList/>}/>
 
       {/*Shop Licensing*/}
+      <Route exact path={OfficeRoutes.UNPAID_SHOPLICENSE} render={e => <ShopUnpaidList/>}/>
       <Route exact path={OfficeRoutes.NEW_SHOPLICENSE} render={e => <ShopNewList/>}/>
       <Route exact path={OfficeRoutes.UNDER_PROCESS_SHOPLICENSE} render={e => <UnderProcessShopLicense/>}/>
       <Route exact path={OfficeRoutes.APPROVED_SHOPLICENSE} render={e => <ApprovedShopLicense/>}/>
