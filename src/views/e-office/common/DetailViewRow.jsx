@@ -4,7 +4,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 
 const DetailViewRow = (props) => (
   <>
-    <ListItem component={"div"} onClick={props.click ? props.click.bind(this, props.value) : null} button>
+    <ListItem onClick={props.click ? props.click.bind(this, props.value) : null} button>
       {props.icon && <ListItemIcon>{props.icon}</ListItemIcon>}
       <ListItemText primary={props.primary} secondary={props.secondary}/>
       <ListItemSecondaryAction>

@@ -1,7 +1,7 @@
 import React, { Component } from "reactn";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { Button, CardHeader, Icon } from "@material-ui/core";
+import { Button, CardHeader, Icon,List } from "@material-ui/core";
 import DetailViewRow from "../../../common/DetailViewRow";
 import IconButton from "@material-ui/core/IconButton";
 import { FILE_DRAFT_LIST } from "../../../../../config/ApiRoutes";
@@ -42,6 +42,7 @@ class SelectApprovedDraft extends Component {
       <>
         <CardHeader title={"Please Select Draft to Approved"}/>
         <Divider component={"div"}/>
+        <List>
         {drafts.map((draft, index) =>
           <DetailViewRow key={index} click={e => onDraftSelect(draft)} primary={"Draft Permit No. " + draft.id}
                          secondary={this.formatCreated(draft)}>
@@ -50,6 +51,7 @@ class SelectApprovedDraft extends Component {
             </IconButton>
           </DetailViewRow>
         )};
+        </List>
         <br/>
         <br/>
         <br/>

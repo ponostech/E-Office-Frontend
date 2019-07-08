@@ -1,9 +1,10 @@
 import React from "react";
-import { Button, Card, CardContent, CardHeader, Grid } from "@material-ui/core";
+import { Button, Card, CardContent, CardHeader, Grid,List } from "@material-ui/core";
 import PropTypes from "prop-types";
 import ApplicationResolver from "../common/ApplicationResolver";
 import DetailViewRow from "../../../common/DetailViewRow";
 import Divider from "@material-ui/core/Divider";
+import TextEditor from "../../../common/Editor";
 
 function ConfirmCancel(props) {
   const { application, draft, confirmCancel, onBack } = props;
@@ -16,9 +17,11 @@ function ConfirmCancel(props) {
         <Card>
           <CardHeader title={"Application Details"}/>
           <CardContent>
+            <List>
             {rows.map((row,index)=>
               <DetailViewRow key={index} primary={row.name} secondary={row.value}/>
             )}
+            </List>
           </CardContent>
         </Card>
 
@@ -27,7 +30,7 @@ function ConfirmCancel(props) {
         <Card>
           <CardHeader title={"Rejected Application Template"}/>
           <CardContent>
-            <div dangerouslySetInnerHTML={{__html: draft.content}}/>
+            <TextEditor default={draft.content}/>
           </CardContent>
         </Card>
       </Grid>

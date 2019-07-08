@@ -1,7 +1,7 @@
 import React, { Component } from "reactn";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { CardHeader, Icon } from "@material-ui/core";
+import { CardHeader, Icon,List } from "@material-ui/core";
 import DetailViewRow from "../../../common/DetailViewRow";
 import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
@@ -40,6 +40,7 @@ class SelectApprovedApplication extends Component {
       <>
       <CardHeader title={"Please Select Application to Approved"}/>
       <Divider component={"div"}/>
+      <List>
     {applications.map((application,index)=>
         <DetailViewRow key={index} click={e=>onSelectApplication(application)} primary={getApplicationTitle(application).title} secondary={getApplicationTitle(application).subtitle}>
           <IconButton href={"#"} onClick={e=>onSelectApplication(application)}>
@@ -47,6 +48,7 @@ class SelectApprovedApplication extends Component {
           </IconButton>
         </DetailViewRow>
     )};
+      </List>
         </>
     );
   }
