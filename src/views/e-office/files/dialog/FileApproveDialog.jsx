@@ -23,6 +23,7 @@ import axios from "axios";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { ArrayToString } from "../../../../utils/ErrorUtil";
+import SendMessage from "./common/SendMessage";
 
 const styles = {
   appBar: {
@@ -41,7 +42,7 @@ function Transition(props) {
 }
 
 function getSteps() {
-  return ["Select Application", "Select Approve Draft", "Confirm Approved"];
+  return ["Select Application", "Select Draft", "Create Message"," Approved"];
 }
 
 class FileApproveDialog extends Component {
@@ -73,6 +74,11 @@ class FileApproveDialog extends Component {
     this.setState({ activeStep: activeStep - 1 });
   };
 
+  sendMessage=(message)=>{
+    const { selectedApplication } = this.state;
+    console.log(message)
+    this.handleNext();
+  }
   confirmApproved = () => {
     this.setState({ submit: true });
     axios.post("/files/" + this.props.file.id + "/application/" + this.state.selectedApplication.id + "/approve",
@@ -100,6 +106,9 @@ class FileApproveDialog extends Component {
       case 1:
         return <SelectApprovedDraft file={this.props.file} onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
       case 2:
+        return <SendMessage application={this.state.selectedApplication} onBack={this.handleBack}
+                            onMessageSend={this.sendMessage}/>;
+      case 3:
         return <ConfirmApproved confirmApproved={this.confirmApproved} application={this.state.selectedApplication}
                                 draft={this.state.selectedDraft} onBack={this.handleBack}/>;
       default:

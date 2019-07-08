@@ -1,48 +1,97 @@
-import React from "react";
-import { Button, Card, CardContent, CardHeader, Grid } from "@material-ui/core";
+import { Button, Card, CardContent, CardHeader, Grid, InputAdornment, List } from "@material-ui/core";
 import PropTypes from "prop-types";
 import ApplicationResolver from "../common/ApplicationResolver";
 import DetailViewRow from "../../../common/DetailViewRow";
+import TextEditor from "../../../common/Editor";
+import React, { Component } from "react";
+import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import CalendarIcon from "@material-ui/icons/CalendarToday";
 import Divider from "@material-ui/core/Divider";
 
-function ConfirmApproved(props) {
-  const { application, draft, confirmApproved, onBack } = props;
+class ConfirmApproved extends Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      validity:null,
 
-  const rows = ApplicationResolver(application);
-  console.log("rows",rows)
-  return (
-    <Grid container={true} spacing={3}>
-      <Grid item={true} md={6}>
-        <Card>
-          <CardHeader title={"Application Details"}/>
-          <CardContent>
-            {rows.map((row,index)=>
-              <DetailViewRow key={index} primary={row.name} secondary={row.value}/>
-            )}
-          </CardContent>
-        </Card>
+      validityError: ""
+    }
+  }
 
+  handleValidity=(val)=>{
+    this.setState({validity:val})
+  }
+  handleBlur=(e)=>{
+     (this.state.validity===null)?this.setState({validityError:"Validity is required"}):this.setState({validityError:""})
+  }
+
+  render() {
+    const { application, draft, confirmApproved, onBack } = this.props;
+    const { validity,validityError } = this.state;
+
+    const rows = ApplicationResolver(application);
+    return (
+      <Grid container={true} spacing={3}>
+        <Grid item={true} md={6}>
+          <Card>
+            <CardHeader title={"Application Details"}/>
+            <CardContent>
+              <List>
+                {rows.map((row,index)=>
+                  <DetailViewRow key={index} primary={row.name} secondary={row.value}/>
+                )}
+              </List>
+            </CardContent>
+          </Card>
+
+        </Grid>
+        <Grid item={true} md={6}>
+          <Card>
+            <CardHeader title={"Rejected Application Template"}/>
+            <CardContent>
+              <TextEditor default={draft.content}/>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item={true} md={12}>
+          <Divider />
+        </Grid>
+        <Grid item={true} md={12}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DatePicker
+              InputLabelProps={
+                { shrink: true }
+              }
+              InputProps={{
+                endAdornment:
+                  <InputAdornment position={"end"}>
+                    <CalendarIcon color={"action"}/>
+                  </InputAdornment>
+              }}
+              label={"Set Validity"}
+              error={Boolean(validityError)}
+              onBlur={this.handleBlur.bind(this)}
+              helperText={validityError}
+              margin="dense"
+              name={"validity"}
+              variant="outlined"
+              value={validity}
+              onChange={this.handleValidity}
+              format={"dd/MM/yyyy"}
+            />
+          </MuiPickersUtilsProvider>
+        </Grid>
+        <Grid item={true} md={12}>
+          <Button href={"#"} variant={"contained"} onClick={onBack} color={"inherit"}>Back</Button>
+          {"\u00A0 "}
+          {"\u00A0 "}
+          {"\u00A0 "}
+          <Button disabled={!Boolean(this.state.validity)} href={"#"} variant={"contained"} onClick={confirmApproved} color={"primary"}>Approved Application</Button>
+        </Grid>
       </Grid>
-      <Grid item={true} md={6}>
-        <Card>
-          <CardHeader title={"Rejected Application Template"}/>
-          <CardContent>
-            <div dangerouslySetInnerHTML={{__html: draft.content}}/>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item={true} md={12}>
-      <Divider/>
-      </Grid>
-      <Grid item={true} md={12}>
-        <Button href={"#"} variant={"contained"} onClick={onBack} color={"inherit"}>Back</Button>
-        {"\u00A0 "}
-        {"\u00A0 "}
-        {"\u00A0 "}
-        <Button href={"#"} variant={"contained"} onClick={confirmApproved} color={"primary"}>Approved Application</Button>
-      </Grid>
-    </Grid>
-  );
+    );
+  }
 }
 
 ConfirmApproved.propTypes = {
