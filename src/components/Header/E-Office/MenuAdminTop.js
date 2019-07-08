@@ -97,6 +97,7 @@ const menu = (props) => {
           buttonProps={{ color: "transparent" }}/>
         <CustomDropdown
           dropdownList={[
+            { title: "Unpaid Application List", link: OfficeRoutes.UNPAID_SHOPLICENSE },
             { title: "New Application", link: OfficeRoutes.NEW_SHOPLICENSE },
             { title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_SHOPLICENSE },
             { title: "Approved List", link: OfficeRoutes.APPROVED_SHOPLICENSE },
