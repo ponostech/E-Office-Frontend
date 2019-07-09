@@ -61,7 +61,7 @@ class SelectRejectedDraft extends Component {
           </List>
           <br/>
           <br/>
-          <Button href={"#"} onClick={onBack} variant={"contained"} color={"primary"}>Back</Button>
+          <Button href={"#"} onClick={onBack} variant={"contained"} color={"default"}>Back</Button>
           {"\u00A0 "}
           {"\u00A0 "}
           {"\u00A0 "}

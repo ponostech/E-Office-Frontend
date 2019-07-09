@@ -74,7 +74,10 @@ class ReceiptNewList extends Component {
       this.setState({ openAttach: false, submit: true });
       this.receiptService.attachToFile(receipt_id, file_id,
         errorMsg => this.setGlobal({ errorMsg }),
-        successMsg => this.setGlobal({ successMsg }))
+        successMsg => {
+        this.setGlobal({ successMsg })
+        this.componentDidMount();
+        })
         .finally(() => this.setState({ submit: false }));
     }
     this.setState({ openAttach: false })
@@ -167,7 +170,7 @@ class ReceiptNewList extends Component {
         </CardContent>}
 
         <ReceiptDetailDialog open={this.state.view} onClose={e=>this.setState({view:false})} receipt={this.state.receipt}/>
-        <SubmitDialog open={this.state.submit} text={"Please wait ..."} title={"Receipt Attachment"}/>
+        <SubmitDialog open={this.state.submit} text={"Please wait ..."} title={"Attaching Receipt to File"}/>
         <AttachReceiptDialog onClose={this.handleAttach.bind(this)}
                              open={Boolean(this.state.openAttach)}
                              files={this.state.files}
