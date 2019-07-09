@@ -12,6 +12,7 @@ import SubmitDialog from "../../../../../components/SubmitDialog";
 import { UPDATE_FILE_APPLICATION } from "../../../../../config/ApiRoutes";
 import ApplicationState from "../../../../../utils/ApplicationState";
 import { LoginService } from "../../../../../services/LoginService";
+import SingleApplicationSendBackDialog from "../../../common/SingleApplicationSendBackDialog";
 
 // hoarding/:id/applications
 function TabContainer({ children, dir }) {
@@ -28,6 +29,8 @@ class FileApplications extends Component {
     singleData: [],
     loading: true,
     openDetails: false,
+    openSendBackDialog: false,
+    selectedApplication:null,
     tabValue: 0,
     err: ""
   };
@@ -87,7 +90,7 @@ class FileApplications extends Component {
       });
   };
   listApplications = (val, status) => {
-    const { fileable_type,current_user_id } = this.props.file;
+    const { fileable_type, current_user_id } = this.props.file;
     let title = "";
     let subtitle = "";
     let allowed = LoginService.getCurrentUser().id === current_user_id;
@@ -130,10 +133,17 @@ class FileApplications extends Component {
           </IconButton>
         </Tooltip>
       }
+      {status === "new" &&
+      <Tooltip title={"Send Back Application"}>
+        <IconButton href={"#"} onClick={event => this.setState({selectedApplication:val,openSendBackDialog:true})}>
+          <Icon color={"primary"}>send</Icon>
+        </IconButton>
+      </Tooltip>
+      }
     </DetailViewRow>;
   };
 
-
+  onSendBackApplication = (reason) => this.setState({openSendBackDialog:false});
   handleTabChange = (event, newValue) => this.setState({ tabValue: newValue });
 
   handleTabChangeIndex = (index) => this.setState({ tabValue: index });
@@ -145,7 +155,7 @@ class FileApplications extends Component {
   closeStatus = () => this.setState({ err: "" });
 
   render() {
-    const { data, loading, tabValue, err, openDetails, singleData } = this.state;
+    const { data, loading, tabValue, err, openDetails,openSendBackDialog, singleData,selectedApplication } = this.state;
     const newList = this.getByStatus(data, "new");
     const inProcessList = this.getByStatus(data, "in-process");
     const rejectedList = this.getByStatus(data, "rejected");
@@ -200,7 +210,11 @@ class FileApplications extends Component {
       <ApplicationDetailsDialog type={this.props.file.fileable_type} open={openDetails} title='View Application Details'
                                 content={singleData}
                                 onClose={this.closeDetails}/>}
-    </>;
+      { openSendBackDialog &&
+        <SingleApplicationSendBackDialog onClose={e=>this.setState({openSendBackDialog:false})} open={this.state.openSendBackDialog} application={selectedApplication} sendBackApplication={this.onSendBackApplication}/>
+      }
+
+        </>;
   }
 }
 
