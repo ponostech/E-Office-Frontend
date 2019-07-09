@@ -42,7 +42,7 @@ function Transition(props) {
 }
 
 function getSteps() {
-  return ["Select Application", "Select Draft", "Create Message"," Approved"];
+  return ["Select Application", "Select Draft"," Approved"];
 }
 
 class FileApproveDialog extends Component {
@@ -105,10 +105,10 @@ class FileApproveDialog extends Component {
                                           onNext={this.handleNext}/>;
       case 1:
         return <SelectApprovedDraft file={this.props.file} onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
+      // case 2:
+      //   return <SendMessage application={this.state.selectedApplication} onBack={this.handleBack}
+      //                       onMessageSend={this.sendMessage}/>;
       case 2:
-        return <SendMessage application={this.state.selectedApplication} onBack={this.handleBack}
-                            onMessageSend={this.sendMessage}/>;
-      case 3:
         return <ConfirmApproved confirmApproved={this.confirmApproved} application={this.state.selectedApplication}
                                 draft={this.state.selectedDraft} onBack={this.handleBack}/>;
       default:

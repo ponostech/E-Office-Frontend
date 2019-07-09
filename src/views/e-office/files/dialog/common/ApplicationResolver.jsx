@@ -1,6 +1,9 @@
 import { FILEABLE_TYPE } from "../../details/Views/FileApplicationDetails";
 import moment from "moment";
 
+export const getApplicantDetail = (application)=>{
+
+}
 export const getApplicationTitle=(application)=>{
   let title = "";
   let subtitle = "";

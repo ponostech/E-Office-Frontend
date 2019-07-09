@@ -59,8 +59,8 @@ class SendMessage extends Component {
     this.props.onMessageSend(msg);
   }
   render() {
-    const { subject, subjectError, message, messageError,onBack,onMessageSend } = this.props;
-    const details=ApplicationResolver(this.props.application);
+    const { subject,application, subjectError, message, messageError,onBack,onMessageSend } = this.props;
+    const details=application?ApplicationResolver(application):"";
     return (
       <Card>
         <CardHeader title={"Send Message"}/>
@@ -106,7 +106,7 @@ class SendMessage extends Component {
             </GridItem>
 
             <GridItem xs={12} md={6} sm={12}>
-              <Typography variant={"h6"}>Receiver</Typography>
+              <Typography variant={"h6"}>Receive to:</Typography>
               <Divider/>
               <List>
                 {details.map(value => <DetailViewRow primary={value.name} secondary={value.value}/> )}
