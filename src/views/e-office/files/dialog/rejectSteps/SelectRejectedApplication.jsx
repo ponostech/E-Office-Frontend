@@ -1,17 +1,20 @@
 import React, { Component } from "reactn";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { CardHeader, Icon } from "@material-ui/core";
+import { Button, CardHeader, Icon,List } from "@material-ui/core";
 import DetailViewRow from "../../../common/DetailViewRow";
 import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
-import { getApplicationTitle } from "../common/ApplicationResolver";
+import ApplicationResolver, { getApplicationTitle } from "../common/ApplicationResolver";
+import GridItem from "../../../../../components/Grid/GridItem";
+import GridContainer from "../../../../../components/Grid/GridContainer";
 
 class SelectRejectedApplication extends Component {
   constructor(props) {
     super(props);
     this.state={
-      applications:[]
+      applications:[],
+      selectedApplication:null
     }
   }
 
@@ -28,22 +31,34 @@ class SelectRejectedApplication extends Component {
       })
   }
 
+  selectApplication=(selectedApplication)=>{
+    this.setState({selectedApplication})
+  }
   render() {
-    const { applications } = this.state;
+    const { applications,selectedApplication } = this.state;
     const { onSelectApplication } = this.props;
 
     return (
-      <>
-      <CardHeader title={"Please Select Application to Reject"}/>
-      <Divider component={"div"}/>
-    {applications.map((application,index)=>
-        <DetailViewRow key={index} click={e=>onSelectApplication(application)} primary={getApplicationTitle(application).title} secondary={getApplicationTitle(application).subtitle}>
-          <IconButton href={"#"} onClick={e=>onSelectApplication(application)}>
-            <Icon color={"action"}>keyboard_arrow_right</Icon>
-          </IconButton>
-        </DetailViewRow>
-    )};
-        </>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={6}>
+          <CardHeader title={"Please Select Application to Reject"}/>
+          <Divider component={"div"}/>
+          <List>
+          {applications.map((application,index)=>
+            <DetailViewRow key={index} click={e=>this.selectApplication(application)} primary={getApplicationTitle(application).title} secondary={getApplicationTitle(application).subtitle}>
+              <IconButton href={"#"} onClick={e=>this.selectApplication(application)}>
+                <Icon color={"action"}>keyboard_arrow_right</Icon>
+              </IconButton>
+            </DetailViewRow>
+          )}
+          </List>
+          <Button disabled={!Boolean(selectedApplication)} href={"#"} color={"primary"} variant={"contained"} onClick={e=>onSelectApplication(selectedApplication)}>Next</Button>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={6}>
+          {selectedApplication && <List component={"div"}>{ApplicationResolver(selectedApplication).map(value => <DetailViewRow primary={value.name} secondary={value.value}/>)}</List>}
+        </GridItem>
+
+        </GridContainer>
     );
   }
 }

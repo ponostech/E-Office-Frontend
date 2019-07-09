@@ -50,7 +50,7 @@ class SelectCancelDraft extends Component {
               <Icon color={"action"}>keyboard_arrow_right</Icon>
             </IconButton>
           </DetailViewRow>
-        )};
+        )}
         </List>
         <br/>
         <br/>

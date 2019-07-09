@@ -47,9 +47,6 @@ class CashPaymentDialog extends Component {
     }
   }
 
-  handleUpload=()=>{
-
-  }
   handleClose=(e)=>{
     this.props.onClose(null);
   }
@@ -90,7 +87,7 @@ class CashPaymentDialog extends Component {
     return (
       <Dialog
         fullWidth={true}
-        maxWidth={"sm"}
+        maxWidth={"md"}
         open={open}
         onClose={this.handleClose.bind(this)}
         TransitionComponent={Transition}
