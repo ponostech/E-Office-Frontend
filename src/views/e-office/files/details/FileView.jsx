@@ -45,6 +45,7 @@ import UsersMessageDialog from "../../common/UsersMessageDialog";
 import FileEnClosures from "./Views/FileEnclosures";
 import FileRejectDialog from "../dialog/FileRejectDialog";
 import FileCancelDialog from "../dialog/FileCancelDialog";
+import SendBackApplicationDialog from "../dialog/SendBackApplicationDialog";
 
 const styles = theme => ({
   root: {
@@ -434,7 +435,7 @@ class FileView extends Component {
         {submitNote &&
         <SubmitDialog open={submitNote} title="Create Notesheet" text="Note is Creating ... Please wait"/>}
 
-        {openMessageDialog && <UsersMessageDialog open={openMessageDialog} sendTo={"lala"}
+        {openMessageDialog && <SendBackApplicationDialog module={moduleName} file={file} open={openMessageDialog}
                                                   onClose={this.closeDialog.bind(this, "openMessageDialog")}/>}
       </Grid>
     );
