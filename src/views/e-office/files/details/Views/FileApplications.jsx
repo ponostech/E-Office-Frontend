@@ -133,13 +133,11 @@ class FileApplications extends Component {
           </IconButton>
         </Tooltip>
       }
-      {status === "new" &&
       <Tooltip title={"Send Back Application"}>
         <IconButton href={"#"} onClick={event => this.setState({selectedApplication:val,openSendBackDialog:true})}>
           <Icon color={"primary"}>send</Icon>
         </IconButton>
       </Tooltip>
-      }
     </DetailViewRow>;
   };
 
