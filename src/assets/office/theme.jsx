@@ -6,6 +6,11 @@ export default createMuiTheme({
       root: {
         padding: "2px 40px 2px 16px"
       }
+    },
+    MuiDivider: {
+      root:{
+        listStyleType: 'none'
+      }
     }
   },
   typography: {
