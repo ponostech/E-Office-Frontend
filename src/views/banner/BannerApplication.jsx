@@ -66,12 +66,11 @@ class BannerApplication extends Component {
     localCouncils: [],
     agree: false,
     display_types: [
-      { value: "vehicle", label: "Vehicle" },
-      { value: "umbrella", label: "Umbrella" },
-      { value: "balloons", label: "Balloons" },
-      { value: "video", label: "Video" },
-      { value: "audio/sound", label: "Audio/Sound" },
-      { value: "others", label: "Others" }
+      { value: "Vehicle", label: "Vehicle" },
+      { value: "Umbrella", label: "Umbrella" },
+      { value: "Balloons", label: "Balloons" },
+      { value: "Video", label: "Video" },
+      { value: "Audio/Sound", label: "Audio/Sound" },
     ],
     types: [
       { value: "private", label: "Private" },

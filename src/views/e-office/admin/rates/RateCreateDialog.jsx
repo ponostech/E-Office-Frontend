@@ -42,6 +42,7 @@ class RateCreateDialog extends Component {
       category: null,
       landlordType: "0",
       rate: 0,
+      duration:"Day",
 
       rateError: "",
       typeError: "",
@@ -49,15 +50,18 @@ class RateCreateDialog extends Component {
       categoryError: "",
 
       types:[
-        { value: "Hoarding", label: "Hoarding" },
-        { value: "Kiosk", label: "Kiosk" },
-        { value: "Shop", label: "Shop" },
-        { value: "Banner", label: "Banner" }
+        { value: "Hoarding/Kiosk", label: "Hoarding/Kiosk" },
+        { value: "Collapsible Kiosk", label: "Collapsible Kiosk" },
+        { value: "Poster/Banner", label: "Poster/Banner" },
+        { value: "Umbrella", label: "Umbrella " },
+        { value: "Balloons", label: "Balloons " },
+        { value: "Audio/Sound", label: "Audio/Sound " },
+        { value: "Vehicle", label: "Vehicle" },
+        { value: "Video", label: "Video" },
       ],
       displayTypes:[
         { value: "ILLUMINATED", label: "ILLUMINATED" },
         { value: "NON-ILLUMINATED", label: "NON ILLUMINATED" },
-        { value: "FLICKERING_LIGHT", label: "FLICKERING LIGHT" }
       ],
       loading: false
     };
@@ -66,7 +70,7 @@ class RateCreateDialog extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     new CategoryServices().fetch(
-      errorMsg => this.setGloba({ errorMsg }),
+      errorMsg => this.setGlobal({ errorMsg }),
       categories => this.setState({ categories })
     )
       .finally(() => this.setState({ loading: false }));
@@ -89,7 +93,7 @@ class RateCreateDialog extends Component {
         this.state.category === null ? this.setState({ categoryError: "Category is required" }) : this.setState({ categoryError: "" });
         break;
       case "rate":
-        this.state.category === null ? this.setState({ rateError: "Rate is required" }) : this.setState({ rateError: "" });
+        this.state.rate === null ? this.setState({ rateError: "Rate is required" }) : this.setState({ rateError: "" });
         break;
 
     }
@@ -97,18 +101,20 @@ class RateCreateDialog extends Component {
 
   invalid = () => {
     const { type, displayType, category, landlordType, rate } = this.state;
-    return !Boolean(type) || !Boolean(displayType) || !Boolean(category) || !Boolean(rate);
+    let valid = true;
+   return false
   };
   save = () => {
-    const { type, displayType, category, landlordType, rate } = this.state;
-    if (this.invalid) {
+    const { type, displayType, category, landlordType, rate,duration } = this.state;
+    if (this.invalid()) {
       this.setGlobal({ errorMsg: "Please fill all the required fields" });
     } else {
       let data = {
-        type,
-        display_type:displayType.value,
-        category_id:category.value,
-        landlord_type: landlordType ? "Public" : "Private",
+        type:type?type.value:null,
+        display_type:displayType?displayType.value:null,
+        area_category_id:category?category.value:null,
+        land_owner_type: landlordType ? "Public" : "Private",
+        per_time: duration ,
         rate
       };
       this.props.onClose(data);
@@ -120,7 +126,7 @@ class RateCreateDialog extends Component {
   };
 
   render() {
-    const { type, displayType, category, landlordType, rate } = this.state;
+    const { type, displayType, category, landlordType, rate,duration } = this.state;
     const { typeError, displayTypeError, categoryError, rateError } = this.state;
     const { types, displayTypes, categories } = this.state;
     const { open,onClose,classes } = this.props;
@@ -132,7 +138,7 @@ class RateCreateDialog extends Component {
               <CloseIcon/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-              "Create Advertisement Rate"
+              Create Advertisement Rate
             </Typography>
             <Button href={"#"} onClick={this.close.bind(this)} color="inherit">
               Close
@@ -152,55 +158,74 @@ class RateCreateDialog extends Component {
               required={true}
               helperText={typeError}
               error={Boolean(typeError)}
-              onBlur={e => this.handleRequired("type")}
               onChange={val => this.handleChange("type", val)}
               options={types}/>
-            <OfficeSelect
+           { type && type.value==="Hoarding/Kiosk" &&
+           <OfficeSelect
               value={displayType}
               label={"Type of Display"}
               name={"displayType"}
               variant={"outlined"}
               margin={"dense"}
               fullWidth={true}
-              required={true}
               helperText={displayTypeError}
               error={Boolean(displayTypeError)}
-              onBlur={e => this.handleRequired("displayType")}
               onChange={val => this.handleChange("displayType", val)}
-              options={displayTypes}/>
-
-            <OfficeSelect
+              options={displayTypes}/>}
+            {
+              type && type.value==="Hoarding/Kiosk" &&
+              <FormControl component={"div"} fullWidth={true} margin={"dense"}>
+                <FormLabel component={"div"}>Type of Landlord/ Land owner</FormLabel>
+                <RadioGroup
+                  defaultValue={"0"}
+                  value={landlordType}
+                  name={"landlordType"}
+                  row={true}
+                  onChange={event => this.handleChange("landlordType", event.target.value)}
+                >
+                  <FormControlLabel value={"0"} control={<Radio color={"primary"}/>}
+                                    label={"Private"}/>
+                  <FormControlLabel value={"1"} control={<Radio color={"primary"}/>}
+                                    label={"Public"}/>
+                </RadioGroup>
+              </FormControl>
+            }
+            {
+              landlordType && landlordType==="1" &&<OfficeSelect
               value={category}
               label={"Categories"}
               name={"category"}
               variant={"outlined"}
               margin={"dense"}
               fullWidth={true}
-              required={true}
               helperText={categoryError}
               error={Boolean(categoryError)}
-              onBlur={e => this.handleRequired("category")}
               onChange={val => this.handleChange("category", val)}
               options={categories}/>
+            }
+
 
             <FormControl component={"div"} fullWidth={true} margin={"dense"}>
-              <FormLabel component={"div"}>Type of Landlord/ Land owner</FormLabel>
+              <FormLabel component={"div"}>Rate Duration</FormLabel>
               <RadioGroup
                 defaultValue={"0"}
-                value={landlordType}
-                name={"landlordType"}
+                value={duration}
+                name={"duration"}
                 row={true}
-                onChange={event => this.handleChange("landlordType", event.target.value)}
+                onChange={event => this.handleChange("duration", event.target.value)}
               >
-                <FormControlLabel value={"0"} control={<Radio color={"primary"}/>}
-                                  label={"Private"}/>
-                <FormControlLabel value={"1"} control={<Radio color={"primary"}/>}
-                                  label={"Public"}/>
+                <FormControlLabel value={"Day"} control={<Radio color={"primary"}/>}
+                                  label={"Day"}/>
+                <FormControlLabel value={"Month"} control={<Radio color={"primary"}/>}
+                                  label={"Month"}/>
+                                  <FormControlLabel value={"Year"} control={<Radio color={"primary"}/>}
+                                  label={"Year"}/>
               </RadioGroup>
             </FormControl>
 
             <TextField
               value={rate}
+              type={"number"}
               name={"rate"}
               fullWidth={true}
               variant={"outlined"}
@@ -208,7 +233,7 @@ class RateCreateDialog extends Component {
               required={true}
               error={Boolean(rateError)}
               helperText={rateError}
-              onChange={event => this.handleChange("name", event.target.value)}/>
+              onChange={event => this.handleChange("rate", event.target.value)}/>
           </DialogContent>
         }
 
