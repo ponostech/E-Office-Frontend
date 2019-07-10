@@ -8,51 +8,51 @@ import {LoginService} from "../../../services/LoginService";
 import {HOME} from "../../../config/routes-constant/OfficeRoutes";
 
 const menu = (props) => {
-    const {history} = props;
-    const currentUser = JSON.parse(localStorage.getItem('current_user'));
+  const {history} = props;
+  const currentUser = JSON.parse(localStorage.getItem('current_user'));
 
-    return (
-        <>
-            <div style={{display: "flex", alignItems: "center"}}>
-                <NavLink to={OfficeRoutes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
-                <CustomDropdown
-                    dropdownList={[
-                        {title: "Create New", link: OfficeRoutes.NEW_FILE},
-                        {title: "List Created By You", link: OfficeRoutes.CREATED_FILES},
-                        {title: "List Sent by You", link: OfficeRoutes.SENT_FILE},
-                        {title: "List New", link: OfficeRoutes.FILE_IN_ACTIVE_LIST},
-                        {title: "List Closed", link: OfficeRoutes.FILE_CLOSED_LIST},
-                        {title: "List Archived", link: OfficeRoutes.FILE_ARCHIVED_LIST},
-                        {title: "List Active", link: OfficeRoutes.FILE_ACTIVE_LIST},
-                    ]}
-                    linkClick={props.linkClick}
-                    buttonText={"File"}
-                    buttonProps={{color: "transparent"}}/>
+  return (
+      <>
+        <div style={{display: "flex", alignItems: "center"}}>
+          <NavLink to={OfficeRoutes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
+          <CustomDropdown
+              dropdownList={[
+                {title: "Create New", link: OfficeRoutes.NEW_FILE},
+                {title: "List Created By You", link: OfficeRoutes.CREATED_FILES},
+                {title: "List Sent by You", link: OfficeRoutes.SENT_FILE},
+                {title: "List New", link: OfficeRoutes.FILE_IN_ACTIVE_LIST},
+                {title: "List Active", link: OfficeRoutes.FILE_ACTIVE_LIST},
+                {title: "List Closed", link: OfficeRoutes.FILE_CLOSED_LIST},
+                {title: "List Archived", link: OfficeRoutes.FILE_ARCHIVED_LIST},
+              ]}
+              linkClick={props.linkClick}
+              buttonText={"File"}
+              buttonProps={{color: "transparent"}}/>
 
-                <CustomDropdown
-                    dropdownList={[
-                        {title: "Create New", link: OfficeRoutes.NEW_RECEIPT},
-                        {title: "List New", link: OfficeRoutes.RECEIPT_NEW_LIST},
-                        {title: "List Attached", link: OfficeRoutes.RECEIPT_ATTACHED_LIST}
-                    ]}
-                    linkClick={props.linkClick}
-                    buttonText={"Receipt"}
-                    buttonProps={{color: "transparent"}}/>
+          <CustomDropdown
+              dropdownList={[
+                {title: "Create New", link: OfficeRoutes.NEW_RECEIPT},
+                {title: "List New", link: OfficeRoutes.RECEIPT_NEW_LIST},
+                {title: "List Attached", link: OfficeRoutes.RECEIPT_ATTACHED_LIST}
+              ]}
+              linkClick={props.linkClick}
+              buttonText={"Receipt"}
+              buttonProps={{color: "transparent"}}/>
 
-                <CustomDropdown
-                    dropdownList={[
-                        {title: "Advertiser", link: OfficeRoutes.ADVERTISER_NEW_LIST},
-                        {title: "Hoarding", link: OfficeRoutes.NEW_HOARDINGS},
-                        {title: "Kiosks", link: OfficeRoutes.NEW_KIOSKS},
-                        {title: "Banner/Advertisement", link: OfficeRoutes.NEW_BANNER},
-                        {title: "Shop", link: OfficeRoutes.NEW_SHOPLICENSE},
-                        {title: "Hotel", link: OfficeRoutes.NEW_HOTELLICENSE},
-                    ]}
-                    linkClick={props.linkClick}
-                    buttonText="New Applications"
-                    buttonProps={{color: "transparent"}}/>
+          <CustomDropdown
+              dropdownList={[
+                {title: "Advertiser", link: OfficeRoutes.ADVERTISER_NEW_LIST},
+                {title: "Hoarding", link: OfficeRoutes.NEW_HOARDINGS},
+                {title: "Kiosks", link: OfficeRoutes.NEW_KIOSKS},
+                {title: "Banner/Advertisement", link: OfficeRoutes.NEW_BANNER},
+                {title: "Shop", link: OfficeRoutes.NEW_SHOPLICENSE},
+                {title: "Hotel", link: OfficeRoutes.NEW_HOTELLICENSE},
+              ]}
+              linkClick={props.linkClick}
+              buttonText="New Applications"
+              buttonProps={{color: "transparent"}}/>
 
-                {/*<CustomDropdown
+          {/*<CustomDropdown
                     dropdownList={[
                         {title: "Under Process", link: OfficeRoutes.ADVERTISER_IN_PROCESS_LIST},
                         {title: "Approved List", link: OfficeRoutes.ADVERTISER_APPROVE_LIST},
@@ -111,25 +111,25 @@ const menu = (props) => {
                     linkClick={props.linkClick}
                     buttonText={"Hotel & Lodging"}
                     buttonProps={{color: "transparent"}}/>*/}
-            </div>
+        </div>
 
 
-            <div style={{display: "flex", alignItems: "center"}}>
-                <Typography variant={"caption"}
-                            color={"textSecondary"}>Hello {currentUser.staff.name} ({currentUser.staff.designation})</Typography>
-                <IconButton><Icon>account_circle_rounded</Icon></IconButton>
-                <NavLink to={OfficeRoutes.SETTING}><IconButton><Icon>settings</Icon></IconButton></NavLink>
+        <div style={{display: "flex", alignItems: "center"}}>
+          <Typography variant={"caption"}
+                      color={"textSecondary"}>Hello {currentUser.staff.name} ({currentUser.staff.designation})</Typography>
+          <IconButton><Icon>account_circle_rounded</Icon></IconButton>
+          <NavLink to={OfficeRoutes.SETTING}><IconButton><Icon>settings</Icon></IconButton></NavLink>
 
-                <Tooltip title={"Click here to log user out"}>
-                    <IconButton onClick={() => {
-                        new LoginService()
-                            .logout(errorMessage => console.log(errorMessage), successMessage => history.push(HOME))
-                            .finally(() => console.log("log out request has been made"));
-                    }}><Icon>power_settings_new</Icon></IconButton>
-                </Tooltip>
-            </div>
-        </>
-    );
+          <Tooltip title={"Click here to log user out"}>
+            <IconButton onClick={() => {
+              new LoginService()
+                  .logout(errorMessage => console.log(errorMessage), successMessage => history.push(HOME))
+                  .finally(() => console.log("log out request has been made"));
+            }}><Icon>power_settings_new</Icon></IconButton>
+          </Tooltip>
+        </div>
+      </>
+  );
 };
 
 export default withRouter(menu);
