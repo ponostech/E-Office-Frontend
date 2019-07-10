@@ -46,8 +46,8 @@ class SelectRejectedDraft extends Component {
 
     return (
       <GridContainer>
-        <GridItem>
-          <CardHeader title={"Please Select Draft to reject"}/>
+        <GridItem md={4}>
+          <CardHeader title={"Please Select Draft to Reject"}/>
           <Divider component={"div"}/>
           <List>
             {drafts.map((draft, index) =>
@@ -67,7 +67,7 @@ class SelectRejectedDraft extends Component {
           {"\u00A0 "}
           <Button href={"#"} onClick={onDraftSelect(selectedDraft)} variant={"contained"} color={"primary"}>Next</Button>
         </GridItem>
-        <GridItem>
+        <GridItem md={8}>
           <TextEditor default={selectedDraft.content} onChange={event=>selectedDraft.content=event.target.getContent()}/>
         </GridItem>
 

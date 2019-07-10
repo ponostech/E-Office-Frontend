@@ -33,31 +33,7 @@ class ConfirmApproved extends Component {
     const rows = ApplicationResolver(application);
     return (
       <Grid container={true} spacing={3}>
-        <Grid item={true} md={6}>
-          <Card>
-            <CardHeader title={"Application Details"}/>
-            <CardContent>
-              <List>
-                {rows.map((row,index)=>
-                  <DetailViewRow key={index} primary={row.name} secondary={row.value}/>
-                )}
-              </List>
-            </CardContent>
-          </Card>
-
-        </Grid>
-        <Grid item={true} md={6}>
-          <Card>
-            <CardHeader title={"Rejected Application Template"}/>
-            <CardContent>
-              <TextEditor default={draft.content}/>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item={true} md={12}>
-          <Divider />
-        </Grid>
-        <Grid item={true} md={12}>
+        <Grid item={true} md={4}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DatePicker
               InputLabelProps={
@@ -69,6 +45,7 @@ class ConfirmApproved extends Component {
                     <CalendarIcon color={"action"}/>
                   </InputAdornment>
               }}
+              fullWidth={true}
               label={"Set Validity"}
               error={Boolean(validityError)}
               onBlur={this.handleBlur.bind(this)}
@@ -82,6 +59,33 @@ class ConfirmApproved extends Component {
             />
           </MuiPickersUtilsProvider>
         </Grid>
+        <Grid item={true} md={8}>
+        </Grid>
+        <Grid item={true} md={4}>
+          <Card>
+            <CardHeader title={"Application Details"}/>
+            <CardContent>
+              <List>
+                {rows.map((row,index)=>
+                  <DetailViewRow key={index} primary={row.name} secondary={row.value}/>
+                )}
+              </List>
+            </CardContent>
+          </Card>
+
+        </Grid>
+        <Grid item={true} md={8}>
+          <Card>
+            <CardHeader title={"Approved Application Template"}/>
+            <CardContent>
+              <div  dangerouslySetInnerHTML={{__html: draft.content}}/>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item={true} md={12}>
+          <Divider />
+        </Grid>
+
         <Grid item={true} md={12}>
           <Button href={"#"} variant={"contained"} onClick={onBack} color={"inherit"}>Back</Button>
           {"\u00A0 "}

@@ -51,7 +51,7 @@ class SelectApprovedApplication extends Component {
                   <Icon color={"action"}>keyboard_arrow_right</Icon>
                 </IconButton>
               </DetailViewRow>
-            )};
+            )}
           </List>
           <Button disabled={!Boolean(selectedApplication)} href={"#"} variant={"contained"} color={"primary"} onClick={e=>onSelectApplication(selectedApplication)} >Next</Button>
         </GridItem>

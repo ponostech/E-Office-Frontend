@@ -9,10 +9,9 @@ function ConfirmReject(props) {
   const { application, draft, confirmReject, onBack } = props;
 
   const rows = ApplicationResolver(application);
-  console.log("rows",rows)
   return (
     <Grid container={true} spacing={3}>
-      <Grid item={true} md={6}>
+      <Grid item={true} md={4}>
         <Card>
           <CardHeader title={"Application Details"}/>
           <CardContent>
@@ -23,7 +22,7 @@ function ConfirmReject(props) {
         </Card>
 
       </Grid>
-      <Grid item={true} md={6}>
+      <Grid item={true} md={8}>
         <Card>
           <CardHeader title={"Rejected Application Template"}/>
           <CardContent>
