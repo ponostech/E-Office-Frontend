@@ -87,7 +87,7 @@ class CashPaymentDialog extends Component {
           }} onUploadFailure={(e) => {
           console.log(e);
         }} document={
-          {id:new Date().getTime(),name:"Receipt of challan",mime:"application/pdf",mandatory:1}
+          {id:new Date().getTime(),name:"Scanned Copy of Challan",mime:"application/pdf",mandatory:1}
         }/>
         <TextField name={"comment"} margin={"dense"} multiline={true} rows={5} fullWidth={true} variant={"outlined"} value={comment}
                    label={"Comment"}
