@@ -127,6 +127,7 @@ export class ApiRoutes {
   static CREATE_FILE="/files";
   static CHECK_LICENSE="/check-license";
   static CREATE_RATE="advertisement-rate";
+  static LIST_CHALLAN=(status)=>`/challan/${status}`;
 
 
   static UPDATE_LICENSE_TEMPLATE(id) {

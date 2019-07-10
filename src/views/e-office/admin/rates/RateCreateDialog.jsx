@@ -19,6 +19,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Slide from "@material-ui/core/Slide";
+import Divider from "@material-ui/core/Divider";
 
 const styles = {
   appBar: {
@@ -40,10 +41,9 @@ class RateCreateDialog extends Component {
       type: null,
       displayType: null,
       category: null,
-      landlordType: "0",
+      landlordType: "Private",
       rate: 0,
       duration:"Day",
-
       rateError: "",
       typeError: "",
       displayTypeError: "",
@@ -79,6 +79,9 @@ class RateCreateDialog extends Component {
 
   handleChange = (name, value) => {
     this.setState({ [name]: value });
+    if (name === "type") {
+      this.setState({landlordType:"Private"})
+    }
   };
 
   handleRequired = (name) => {
@@ -113,21 +116,38 @@ class RateCreateDialog extends Component {
         type:type?type.value:null,
         display_type:displayType?displayType.value:null,
         area_category_id:category?category.value:null,
-        land_owner_type: landlordType ? "Public" : "Private",
+        land_owner_type: landlordType,
         per_time: duration ,
         rate
       };
+      this.clear()
       this.props.onClose(data);
     }
   };
 
+  clear=()=>{
+    this.setState({
+      type: null,
+      displayType: null,
+      category: null,
+      landlordType: "Private",
+      rate: 0,
+      duration:"Day",
+
+      rateError: "",
+      typeError: "",
+      displayTypeError: "",
+      categoryError: "",
+    })
+  }
   close = () => {
+    this.clear()
     this.props.onClose(null);
   };
 
   render() {
     const { type, displayType, category, landlordType, rate,duration } = this.state;
-    const { typeError, displayTypeError, categoryError, rateError } = this.state;
+    const { typeError, displayTypeError, categoryError, rateError,heightVh } = this.state;
     const { types, displayTypes, categories } = this.state;
     const { open,onClose,classes } = this.props;
     return (
@@ -147,7 +167,7 @@ class RateCreateDialog extends Component {
         </AppBar>
         {
           this.state.loading === false &&
-          <DialogContent>
+          <DialogContent style={{height:"50vh"}}>
             <OfficeSelect
               value={type}
               label={"Type of Advertisement"}
@@ -183,15 +203,15 @@ class RateCreateDialog extends Component {
                   row={true}
                   onChange={event => this.handleChange("landlordType", event.target.value)}
                 >
-                  <FormControlLabel value={"0"} control={<Radio color={"primary"}/>}
+                  <FormControlLabel value={"Private"} control={<Radio color={"primary"}/>}
                                     label={"Private"}/>
-                  <FormControlLabel value={"1"} control={<Radio color={"primary"}/>}
+                  <FormControlLabel value={"Public"} control={<Radio color={"primary"}/>}
                                     label={"Public"}/>
                 </RadioGroup>
               </FormControl>
             }
             {
-              landlordType && landlordType==="1" &&<OfficeSelect
+              landlordType && landlordType==="Public" &&<OfficeSelect
               value={category}
               label={"Categories"}
               name={"category"}
@@ -203,7 +223,6 @@ class RateCreateDialog extends Component {
               onChange={val => this.handleChange("category", val)}
               options={categories}/>
             }
-
 
             <FormControl component={"div"} fullWidth={true} margin={"dense"}>
               <FormLabel component={"div"}>Rate Duration</FormLabel>
@@ -236,10 +255,11 @@ class RateCreateDialog extends Component {
               onChange={event => this.handleChange("rate", event.target.value)}/>
           </DialogContent>
         }
+        <Divider component={"div"}/>
 
         <DialogActions>
           <Button href={"#"} variant={"outlined"} color={"primary"} onClick={this.save.bind(this)}>Save</Button>
-          <Button href={"#"} variant={"outlined"} color={"primary"} onClick={this.close.bind(this)}>Close</Button>
+          <Button href={"#"} variant={"outlined"} color={"secondary"} onClick={this.close.bind(this)}>Close</Button>
         </DialogActions>
       </Dialog>
     );
