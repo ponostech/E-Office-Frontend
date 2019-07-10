@@ -129,6 +129,9 @@ export const ADVERTISER_REJECT_LIST = '/e-office/applications/advertiser/reject'
 export const ADVERTISER_CANCEL_LIST = '/e-office/applications/advertiser/cancel';
 export const ADVERTISER_APPROVE_LIST = '/e-office/applications/advertiser/approved';
 
+export const CHALLAN_LIST = "/e-office/challans";
+
+
 export const GRIEVANCE_CREATE = '/grievance';
 
 export const NOT_FOUND = '/404/not-found';

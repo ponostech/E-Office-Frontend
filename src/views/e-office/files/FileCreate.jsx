@@ -156,10 +156,10 @@ class FileCreate extends Component {
       this.setState({ [name]: value });
       switch (name) {
         case "groupHead":
-          this.getMain(value.id);
+          Boolean(value)?this.getMain(value.id):this.setState({mainHeadOptions:[]});
           break;
         case "mainHead":
-          this.getSub(value.id);
+          Boolean(value)?this.getSub(value.id):this.setState({subHeadOptions:[]});
           break;
         default:
           break;
@@ -169,9 +169,9 @@ class FileCreate extends Component {
   doSubmit = () => {
     const { groupHead, mainHead, subHead, subject, classification, branch, remark, references } = this.state;
     const file={
-      group_head: groupHead.value,
-      main_head:mainHead.value,
-      sub_head:subHead.value,
+      group_head:Boolean(groupHead)? groupHead.value:null,
+      main_head:Boolean(mainHead)?mainHead.value:null,
+      sub_head:Boolean(subHead)?subHead.value:null,
       subject,
       classification:classification?classification.value:null,
       branch:branch.value,

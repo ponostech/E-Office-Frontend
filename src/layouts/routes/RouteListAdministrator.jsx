@@ -16,7 +16,6 @@ import FileArchivedList from "../../views/e-office/files/FileArchivedList";
 import HoardingDetails from "../../views/e-office/applications/hoarding/HoardingDetails";
 import AdvertiserDetails from "../../views/e-office/applications/advertisers/AdvertiserDetails";
 import DeskView from "../../views/e-office/desk/DeskView";
-import TradeNew from "../../views/e-office/admin/trades/TradeCreateDialog";
 import UnderProcessHoarding from "../../views/e-office/applications/hoarding/HoardingUnderProcessList";
 import RejectedHoardingApplications from "../../views/e-office/applications/hoarding/HoardingRejectedList";
 import ApprovedHoarding from "../../views/e-office/applications/hoarding/HoardingApprovedList";
@@ -47,7 +46,6 @@ import AdvertiserRejectedList from "../../views/e-office/applications/advertiser
 import AdvertiserCanceledList from "../../views/e-office/applications/advertisers/AdvertiserCanceledList";
 import TradeList from "../../views/e-office/admin/trades/TradeList";
 import DashboardAdmin from "../../views/e-office/admin/DashboardAdmin";
-import PermitTemplates from "../../views/e-office/admin/templates/PermitTemplates";
 import LicenseTemplate from "../../views/e-office/admin/templates/LicenseTemplate";
 import CancelTemplate from "../../views/e-office/admin/templates/CancelTemplate";
 import RejectTemplate from "../../views/e-office/admin/templates/RejectTemplate";
@@ -62,6 +60,7 @@ import KioskCancelledList from "../../views/e-office/applications/kiosk/KioskCan
 import FileHeadTemplates from "../../views/e-office/admin/e-file/FileHeadTemplates";
 import AdvertisementRateView from "../../views/e-office/admin/rates/AdvertisementRateView";
 import ShopUnpaidList from "../../views/e-office/applications/shop-license/ShopUnpaidList";
+import ChallanList from "../../views/e-office/challan/ChallanList";
 
 const routes = (props) => {
   return (
@@ -152,6 +151,9 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.LICENSE_TEMPLATE} render={e => <LicenseTemplate/>}/>
       <Route exact path={OfficeRoutes.REJECTED_TEMPLATE} render={e => <RejectTemplate/>}/>
       <Route exact path={OfficeRoutes.CANCELLED_TEMPLATE} render={e => <CancelTemplate/>}/>
+
+        {/*Challan*/}
+      <Route exact path={OfficeRoutes.CHALLAN_LIST} render={e => <ChallanList/>}/>
 
       <Route path={OfficeRoutes.SETTING} component={Settings}/>
     </>
