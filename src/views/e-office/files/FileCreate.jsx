@@ -10,6 +10,7 @@ import { FileService } from "../../../services/FileService";
 import SubmitDialog from "../../../components/SubmitDialog";
 import { FILE_DETAIL } from "../../../config/routes-constant/OfficeRoutes";
 import { ApiRoutes } from "../../../config/ApiRoutes";
+import {withRouter} from "react-router-dom"
 
 class FileCreate extends Component {
   fileService = new FileService();
@@ -185,10 +186,14 @@ class FileCreate extends Component {
 
     this.setState({ submit: true });
     this.fileService.create(file, errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => this.setGlobal({ successMsg }))
+      successMsg => this.fileCreateSuccess(successMsg))
       .finally(() => this.setState({ submit: false }));
   };
 
+  fileCreateSuccess = (successMsg) => {
+    this.setGlobal({ successMsg })
+    this.props.history.push('/')
+  }
 
   handleClick = (e) => {
     const invalid = !Boolean(this.state.groupHead) || !Boolean(this.state.mainHead) || !Boolean(this.state.subHead) ||
@@ -347,4 +352,4 @@ class FileCreate extends Component {
   }
 }
 
-export default FileCreate;
+export default withRouter(FileCreate);

@@ -54,10 +54,16 @@ class DeskFiles extends Component {
       {
         name: "number",
         label: "FILE NUMBER",
+        options: {
+          filter: false,
+        }
       },
       {
         name: "subject",
         label: "SUBJECT",
+        options: {
+          filter: false,
+        }
       },
       {
         name: "updated_at",
