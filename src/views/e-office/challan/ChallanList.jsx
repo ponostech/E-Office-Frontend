@@ -6,6 +6,8 @@ import MUIDataTable from "mui-datatables";
 import CashPaymentDialog from "../../common/CashPaymentDialog";
 import moment from "moment";
 import ChallanService from "../../../services/ChallanService";
+import SubmitDialog from "../../../components/SubmitDialog";
+import ConfirmDialog from "../../../components/ConfirmDialog";
 
 // challan no,application_no,details,type,created_at
 const fake = [
@@ -19,7 +21,10 @@ class ChallanList extends Component {
       selectedChallan: null,
       challans: fake,
 
-      openPayByCashDialog: false
+      openConfirm: false,
+      openPayByCashDialog: false,
+      submit: false,
+      submitTitle: "Create Payment"
     };
     this.challanService = new ChallanService();
 
@@ -33,26 +38,52 @@ class ChallanList extends Component {
       .finally(() => this.setGlobal({ loading: false }));
   }
 
+  onCancelChallan = () => {
+    const { selectedChallan } = this.state;
+    this.setState({ openConfirm: false, submit: true, submitTitle: "Cancel Challan" });
+    this.challanService.cancelChallan(selectedChallan.id,
+      errorMsg => this.setGlobal({ errorMsg }),
+      successMsg => this.setGlobal({ successMsg }))
+      .finally(() => this.setState({ submit: false }));
+  };
   onCashPayment = (data) => {
     this.setState({ openPayByCashDialog: false });
+    if (data) {
+      this.setState({ submit: true, submitTitle: "Create Payment" });
+      this.challanService.createPayment(data,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => {
+          this.setGlobal({ successMsg });
+          this.componentDidMount();
+        })
+        .finally(() => this.setState({ submit: false }));
+    }
   };
 
   render() {
-    const { challans, openPayByCashDialog } = this.state;
+    const { challans, selectedChallan, openPayByCashDialog, openConfirm, submit, submitTitle } = this.state;
 
     const tableColumns = [
       {
-        name: "challan_no",
+        name: "number",
         label: "CHALLAN NO"
       }, {
         name: "type",
         label: "TYPE OF CHALLAN"
       }, {
-        name: "application_no",
-        label: "APPLICATION NO"
-      }, {
-        name: "detail",
+        name: "details",
         label: "DETAIL"
+      }, {
+        name: "amount",
+        label: "AMOUNT",
+        options: {
+          customBodyRender: (rate, tableMeta) => new Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency: "INR",
+            maximumSignificantDigits: 2
+          }).format(rate)
+
+        }
       }, {
         name: "created_at",
         label: "CREATED AT",
@@ -85,6 +116,13 @@ class ChallanList extends Component {
                     <Icon fontSize="small" color={"primary"}>credit_card</Icon>
                   </IconButton>
                 </Tooltip>
+                <Tooltip title={"Cancel Challan"}>
+                  <IconButton size='small ' onClick={(e) => {
+                    this.setState({ selectedChallan, openConfirm: true });
+                  }}>
+                    <Icon fontSize="small" color={"secondary"}>highlight_off</Icon>
+                  </IconButton>
+                </Tooltip>
               </>
             );
 
@@ -112,7 +150,10 @@ class ChallanList extends Component {
 
         </CardContent>}
 
-        <CashPaymentDialog open={openPayByCashDialog} onClose={this.onCashPayment} application={null}/>
+        <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={openConfirm}
+                       onConfirm={this.onCancelChallan.bind(this)}/>
+        <CashPaymentDialog open={openPayByCashDialog} onClose={this.onCashPayment} challan={selectedChallan}/>
+        <SubmitDialog open={submit} title={submitTitle} text={"Please wait ..."}/>
       </>
     );
   }

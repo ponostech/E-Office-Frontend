@@ -39,7 +39,7 @@ class CashPaymentDialog extends Component {
   constructor(props) {
     super(props);
     this.state={
-      attachments:[],
+      receipt:null,
       comment: "",
 
       commentError: "",
@@ -47,36 +47,49 @@ class CashPaymentDialog extends Component {
     }
   }
 
-  handleClose=(e)=>{
-    this.props.onClose(null);
+  handleClose=(name)=>{
+    const { challan } = this.props;
+    const { comment, receipt } = this.state;
+    if (name === "confirm") {
+        let data={
+          receipt,
+          txn_details:comment,
+          txn_no:challan.number,
+          challan_id:challan.id
+        }
+        this.clear();
+      this.props.onClose(data);
+    }else {
+      this.clear();
+      this.props.onClose(null);
+    }
   }
+  clear=()=> this.setState({
+    receipt:null,
+    comment: "",
+  })
+
   handleChange=(event)=> this.setState({[event.target.name]:event.target.value})
 
   handleBlur=(event)=>event.target.value?this.setState({commentError:""}):this.setState({commentError:"Comment is required"})
   render() {
-    const { classes,open } = this.props;
+    const { classes,open,challan } = this.props;
     const { comment,commentError,loading } = this.state;
     let content=(
       <>
         <FileUpload
           required={true}
-          applicationName={"challan"}
+          applicationName={"challans"}
           onUploadSuccess={(data) => {
             this.setState(state => {
-              let temp = {
-                mandatory: true,
-                document_id: new Date().getTime(),
-                name: "challan",
-                path: data.location
-              };
-              state.attachments.push(temp);
+              state.receipt=data.location;
             });
           }} onUploadFailure={(e) => {
           console.log(e);
         }} document={
-          {id:new Date().getTime(),name:"challan",mime:"application/pdf",mandatory:1}
+          {id:new Date().getTime(),name:"Receipt of challan",mime:"application/pdf",mandatory:1}
         }/>
-        <TextField margin={"dense"} multiline={true} rows={5} fullWidth={true} variant={"outlined"} value={comment}
+        <TextField name={"comment"} margin={"dense"} multiline={true} rows={5} fullWidth={true} variant={"outlined"} value={comment}
                    label={"Comment"}
                    onChange={this.handleChange.bind(this)}
                    onBlur={this.handleBlur.bind(this)}
@@ -94,19 +107,21 @@ class CashPaymentDialog extends Component {
       >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={this.handleClose.bind(this)} aria-label="Close">
+            <IconButton href={"#"} color="inherit" onClick={event => this.handleClose("close")} aria-label="Close">
               <CloseIcon/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
               Cash Payment
             </Typography>
-            <Button href={"#"} onClick={this.handleClose.bind(this)} color="inherit">
+            <Button href={"#"} onClick={event => this.handleClose("close")} color="inherit">
               Close
             </Button>
           </Toolbar>
         </AppBar>
         <DialogContent>
             <Card>
+              <CardHeader title={"Challan Number"} subheader={challan?challan.number:""}/>
+              <Divider component={"div"}/>
               <CardContent>
               {loading ? <LoadingView/> : content}
               </CardContent>
@@ -114,8 +129,8 @@ class CashPaymentDialog extends Component {
         </DialogContent>
         <Divider component={"div"}/>
         <DialogActions>
-          <Button href={"#"} variant={"outlined"} color={"primary"} onClick={this.handleClose.bind(this)}>Confirm Payment</Button>
-          <Button href={"#"} variant={"outlined"} color={"secondary"} onClick={this.handleClose.bind(this)}>Close</Button>
+          <Button disabled={!Boolean(this.state.receipt)} href={"#"} variant={"outlined"} color={"primary"} onClick={event => this.handleClose("confirm")}>Confirm Payment</Button>
+          <Button href={"#"} variant={"outlined"} color={"secondary"} onClick={event => this.handleClose("close")}>Close</Button>
         </DialogActions>
       </Dialog>
     );
@@ -125,7 +140,7 @@ class CashPaymentDialog extends Component {
 CashPaymentDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  application:PropTypes.object.isRequired
+  challan:PropTypes.object.isRequired
 };
 
 
