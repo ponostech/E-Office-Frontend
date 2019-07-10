@@ -10,10 +10,9 @@ function ConfirmCancel(props) {
   const { application, draft, confirmCancel, onBack } = props;
 
   const rows = ApplicationResolver(application);
-  console.log("rows",rows)
   return (
     <Grid container={true} spacing={3}>
-      <Grid item={true} md={6}>
+      <Grid item={true} md={4}>
         <Card>
           <CardHeader title={"Application Details"}/>
           <CardContent>
@@ -26,9 +25,9 @@ function ConfirmCancel(props) {
         </Card>
 
       </Grid>
-      <Grid item={true} md={6}>
+      <Grid item={true} md={8}>
         <Card>
-          <CardHeader title={"Rejected Application Template"}/>
+          <CardHeader title={"Cancelation Application Template"}/>
           <CardContent>
             <TextEditor default={draft.content}/>
           </CardContent>

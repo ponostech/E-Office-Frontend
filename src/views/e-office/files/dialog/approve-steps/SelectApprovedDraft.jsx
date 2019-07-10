@@ -49,7 +49,7 @@ class SelectApprovedDraft extends Component {
 
     return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={4}>
           <CardHeader title={"Please Select Draft to Approved"}/>
           <Divider component={"div"}/>
           <List>
@@ -66,7 +66,7 @@ class SelectApprovedDraft extends Component {
           <Button href={"#"} onClick={onBack} variant={"contained"} color={"default"}>Back</Button>
           <Button href={"#"} onClick={e=>onDraftSelect(selectedDraft)} variant={"contained"} color={"primary"}>Next</Button>
         </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={8}>
 
           {selectedDraft && <TextEditor default={selectedDraft.content} onChange={e=>selectedDraft.content=e.target.getContent()} />}
 
