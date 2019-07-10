@@ -63,10 +63,7 @@ class SendBackApplicationDialog extends Component {
     this.setState({ selectedApplication });
     this.handleNext();
   };
-  selectDraft = (selectedDraft) => {
-    this.setState({ selectedDraft });
-    this.handleNext();
-  };
+
   handleNext = () => {
     const { activeStep } = this.state;
     this.setState({ activeStep: activeStep + 1 });

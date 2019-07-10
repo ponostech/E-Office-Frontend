@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import { IconButton, Tooltip, Typography } from "@material-ui/core";
+import { Button, IconButton, Tooltip, Typography } from "@material-ui/core";
 import CustomDropdown from "../../CustomDropdown/CustomDropdown";
 import Icon from "@material-ui/core/es/Icon/Icon";
 import { LoginService } from "../../../services/LoginService";
@@ -28,6 +28,7 @@ const menu = (props) => {
       <div className={classes.menuWrapper}>
         <NavLink to={OfficeRoutes.E_OFFICE}><IconButton color="primary"><Icon>apps</Icon></IconButton></NavLink>
         <NavLink to={OfficeRoutes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
+        <NavLink to={OfficeRoutes.CHALLAN_LIST}><IconButton color="primary"><Icon>account_balance_wallet</Icon></IconButton></NavLink>
         <CustomDropdown
           dropdownList={[
             { title: "Create New", link: OfficeRoutes.NEW_FILE },
@@ -135,6 +136,8 @@ const menu = (props) => {
           ]}
           buttonText={"Admin Control"}
           buttonProps={{ color: "transparent" }}/>
+
+        <NavLink style={{padding:10,color:"#4d4d4d", textTransform: "capitalize", fontSize: 14}} to={OfficeRoutes.CHALLAN_LIST}>Challan</NavLink>
 
         <CustomDropdown
           dropdownList={[

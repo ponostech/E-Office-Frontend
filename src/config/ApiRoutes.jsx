@@ -28,7 +28,7 @@ export const FILE_DRAFT_VIEW = (id) => {
 export const FILE_DRAFT_PERMIT_VIEW = (id) => {
   return `/e-office/file/${id}/view/draft-permit`;
 };
-export const FILE_DRAFT_LIST = (id, type = 'general') => {
+export const FILE_DRAFT_LIST = (id, type = "general") => {
   return `/files/${id}/drafts/${type}`;
 };
 export const GET_DRAFT = (id) => {
@@ -38,7 +38,7 @@ export const UPDATE_DRAFT = (id) => {
   return `/drafts/${id}`;
 };
 
-export const UPDATE_FILE_APPLICATION = (fileId,applicationId) => {
+export const UPDATE_FILE_APPLICATION = (fileId, applicationId) => {
   return `files/${fileId}/application/${applicationId}/status`;
 };
 export const DELETE_NOTE_DRAFT = (id) => `/notesheets/${id}`;
@@ -52,6 +52,7 @@ export const GET_REJECT_TEMPLATE = (type) => `/reject-templates/${type}`;
 export const GET_CANCEL_TEMPLATE = (type) => `/cancel-templates/${type}`;
 export const GET_NOTE = (id) => `/notesheets/${id}`;
 export const FILE_STATUS_UPDATE = (id) => `files/${id}/update/status`;
+
 export class ApiRoutes {
   static BASE_URL = "http://139.59.26.3/api/v1";
   static LOGIN_ROUTE = "/auth/login";
@@ -105,6 +106,17 @@ export class ApiRoutes {
   static GET_GROUP_HEAD = "/file-index/group-heads";
   static GET_MAIN_HEAD = "/file-index/main-heads/{group_id}";
   static GET_SUB_HEAD = "/file-index/sub-heads/{main_id}";
+  static DELETE_SITE_VERIFICATION = "site-verification-templates";
+  static CREATE_RECEIPT = "/receipts";
+  static LIST_RECEIPT = "/receipts";
+  static CREATE_FILE = "/files";
+  static CHECK_LICENSE = "/check-license";
+  static CREATE_RATE = "advertisement-rate";
+  static CREATE_PAYMENT = "payments/cash";
+  static CREATE_CANCEL_TEMPLATE = "/cancel-templates";
+  static CREATE_REJECT_TEMPLATE = "/reject-templates";
+  static CREATE_SITE_VERIFICATION_TEMPLATE = "/site-verification-templates";
+  static GET_ALL_SITE_VERIFICATION_TEMPLATE = "/site-verifications/templates";
 
   static UPDATE_TRADE = (id) => {
     return `/trades/${id}`;
@@ -114,20 +126,18 @@ export class ApiRoutes {
   static GET_LICENSE_TEMPLATE = (module) => {
     return `permit-templates/${module}`;
   };
-  static DELETE_SITE_VERIFICATION="site-verification-templates";
 
-  static CREATE_RECEIPT="/receipts";
-  static UPDATE_RECEIPT=(id)=>`/receipts/${id}`;
-  static RETRIEVE_RECEIPT=(id) => `/receipts/${id}`;
-  static LIST_RECEIPT="/receipts";
-  static ATTACH_FILE=(id,file_id)=>`receipts/${id}/attach/${file_id}`;
-  static FILE_ENCLOSURES=(id)=>`/files/${id}/receipts`;
+  static UPDATE_RECEIPT = (id) => `/receipts/${id}`;
 
-  static UPDATE_NOTESHEET=(id)=>`/notesheets/${id}`;
-  static CREATE_FILE="/files";
-  static CHECK_LICENSE="/check-license";
-  static CREATE_RATE="advertisement-rate";
+  static RETRIEVE_RECEIPT = (id) => `/receipts/${id}`;
 
+  static ATTACH_FILE = (id, file_id) => `receipts/${id}/attach/${file_id}`;
+
+  static FILE_ENCLOSURES = (id) => `/files/${id}/receipts`;
+
+  static UPDATE_NOTESHEET = (id) => `/notesheets/${id}`;
+
+  static LIST_CHALLAN = (status) => `/challans/${status}`;
 
   static UPDATE_LICENSE_TEMPLATE(id) {
     return `/permit-templates/${id}`;
@@ -141,19 +151,16 @@ export class ApiRoutes {
     return `/permit-templates/${id}`;
   }
 
-  static CREATE_CANCEL_TEMPLATE="/cancel-templates"
-  static UPDATE_CANCEL_TEMPLATE=(id)=> `/cancel-templates/${id}`;
-  static GET_CANCEL_TEMPLATE=(module)=> `/cancel-templates/${module}`;
+  static UPDATE_CANCEL_TEMPLATE = (id) => `/cancel-templates/${id}`;
 
-  static CREATE_REJECT_TEMPLATE="/reject-templates";
-  static UPDATE_REJECT_TEMPLATE=(id)=> `/reject-templates/${id}`;
-  static GET_REJECT_TEMPLATE=(module)=> `/reject-templates/${module}`;
+  static GET_CANCEL_TEMPLATE = (module) => `/cancel-templates/${module}`;
 
-  static CREATE_SITE_VERIFICATION_TEMPLATE="/site-verification-templates";
-  static GET_ALL_SITE_VERIFICATION_TEMPLATE="/site-verifications/templates";
+  static UPDATE_REJECT_TEMPLATE = (id) => `/reject-templates/${id}`;
+
+  static GET_REJECT_TEMPLATE = (module) => `/reject-templates/${module}`;
 
   static GET_SITE_VERIFICATION_TEMPLATE(module) {
-    return 	`site-verification-templates/${module}`
+    return `site-verification-templates/${module}`;
   }
 
   static GET_SITE_VERIFICATION(id) {
@@ -165,4 +172,7 @@ export class ApiRoutes {
   }
 
 
+  static CANCEL_CHALLAN(id) {
+    return `/challan/${id}`;
+  }
 }

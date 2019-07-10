@@ -244,12 +244,14 @@ class ShopApplication extends Component {
     }
   };
 
+  invalid=()=>{
+    return Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
+    || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
+    || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || !this.validateDocument();
+  }
   onSubmit = (e) => {
-    const invalid = Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
-      || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || !this.validateDocument();
 
-    if (!invalid) {
+    if (!this.invalid()) {
       this.sendOtp();
     } else {
       this.setState({ errorMsg: "Please fill all the required fields" });
@@ -727,10 +729,7 @@ class ShopApplication extends Component {
                     <GridContainer justify={"flex-end"}>
                       <GridItem>
                         <Button name={"primary"} disabled={
-                          !Boolean(this.state.name) || !Boolean(this.state.type) || !Boolean(this.state.address)
-                          || !Boolean(this.state.coordinate) || !Boolean(this.state.phone) || !Boolean(this.state.shopName)
-                          || Boolean(this.state.prestine) ||
-                          !this.state.agree || this.state.passport === undefined
+                          this.invalid()
                         }
                                 color={"primary"} variant={"outlined"}
                                 onClick={this.onSubmit.bind(this)}>
