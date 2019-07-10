@@ -8,7 +8,7 @@ import OfficeSelect from "../../../components/OfficeSelect";
 import Grid from "@material-ui/core/Grid";
 import { FileService } from "../../../services/FileService";
 import SubmitDialog from "../../../components/SubmitDialog";
-import { FILE_DETAIL } from "../../../config/routes-constant/OfficeRoutes";
+import { DESK, FILE_ACTIVE_LIST, FILE_DETAIL } from "../../../config/routes-constant/OfficeRoutes";
 import { ApiRoutes } from "../../../config/ApiRoutes";
 import {withRouter} from "react-router-dom"
 
@@ -152,22 +152,18 @@ class FileCreate extends Component {
     }
   };
 
-  handleChange = (isSelect, identifier, event) => {
-    if (isSelect) {
-      this.setState({ [identifier]: event });
-      switch (identifier) {
+  handleChange = (name, value) => {
+      this.setState({ [name]: value });
+      switch (name) {
         case "groupHead":
-          this.getMain(event.id);
+          this.getMain(value.id);
           break;
         case "mainHead":
-          this.getSub(event.id);
+          this.getSub(value.id);
           break;
         default:
           break;
       }
-    } else {
-      this.setState({ [identifier]: event.target.value });
-    }
   };
 
   doSubmit = () => {
@@ -181,7 +177,7 @@ class FileCreate extends Component {
       branch:branch.value,
       short_name:branch.short_name,
       remark,
-      references:references.map(ref=>ref.value)
+      references:Boolean(references)?references.map(ref=>ref.value):null
     }
 
     this.setState({ submit: true });
@@ -192,7 +188,7 @@ class FileCreate extends Component {
 
   fileCreateSuccess = (successMsg) => {
     this.setGlobal({ successMsg })
-    this.props.history.push('/')
+    this.props.history.push(DESK)
   }
 
   handleClick = (e) => {
@@ -231,7 +227,7 @@ class FileCreate extends Component {
                     error={Boolean(this.state.groupHeadError)}
                     helperText={this.state.groupHeadError}
                     onBlur={this.handleBlur.bind(this, "groupHead")}
-                    onChange={this.handleChange.bind(this, true, "groupHead")}/>
+                    onChange={val=>this.handleChange("groupHead", val)}/>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <OfficeSelect
@@ -247,7 +243,7 @@ class FileCreate extends Component {
                     error={Boolean(this.state.mainHeadError)}
                     helperText={this.state.mainHeadError}
                     onBlur={this.handleBlur.bind(this, "mainHead")}
-                    onChange={this.handleChange.bind(this, true, "mainHead")}/>
+                    onChange={val=>this.handleChange("mainHead",val)}/>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
                   <OfficeSelect
@@ -263,7 +259,7 @@ class FileCreate extends Component {
                     error={Boolean(this.state.subHeadError)}
                     helperText={this.state.subHeadError}
                     onBlur={this.handleBlur.bind(this, "subHead")}
-                    onChange={this.handleChange.bind(this, true, "subHead")}/>
+                    onChange={val=>this.handleChange("subHead",val)}/>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -273,7 +269,7 @@ class FileCreate extends Component {
                     margin={"dense"}
                     label={NewFileViewModel.SUBJECT_LABEL}
                     variant={"outlined"}
-                    onChange={this.handleChange.bind(this, false, "subject")}
+                    onChange={event => this.handleChange("subject",event.target.value)}
                     onBlur={this.handleBlur.bind(this, "subject")}
                     name={"subject"}
                     value={this.state.subject}
@@ -294,7 +290,7 @@ class FileCreate extends Component {
                     error={Boolean(this.state.branchError)}
                     helperText={this.state.branchError}
                     onBlur={this.handleBlur.bind(this, "branch")}
-                    onChange={this.handleChange.bind(this, true, "branch")}/>
+                    onChange={val=>this.handleChange("branch",val)}/>
                 </Grid>
                 <Grid item xs={12}>
                   <OfficeSelect
@@ -306,7 +302,7 @@ class FileCreate extends Component {
                     name={"classification"}
                     isClearable={true}
                     options={this.state.classifications}
-                    onChange={this.handleChange.bind(this, true, "classification")}/>
+                    onChange={val=>this.handleChange( "classification",val)}/>
                 </Grid>
                 <Grid item xs={12}>
                   <OfficeSelect
@@ -315,7 +311,7 @@ class FileCreate extends Component {
                     label={"File Reference(s)"}
                     name={"references"}
                     variant={"outlined"}
-                    onChange={this.handleChange.bind(this, true, "references")}
+                    onChange={val=>this.handleChange("references",val)}
                     options={this.state.files}
                     fullWidth={true}/>
                 </Grid>
@@ -325,7 +321,7 @@ class FileCreate extends Component {
                     label={NewFileViewModel.REMARK_LABEL}
                     name={"remark"}
                     variant={"outlined"}
-                    onChange={this.handleChange.bind(this, false, "remark")}
+                    onChange={event => this.handleChange( "remark",event.target.value)}
                     fullWidth={true}
                     rows={3}
                     value={this.state.remark}
