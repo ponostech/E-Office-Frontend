@@ -26,7 +26,7 @@ function ConfirmReject(props) {
         <Card>
           <CardHeader title={"Rejected Application Template"}/>
           <CardContent>
-            <div dangerouslySetInnerHTML={{__html: draft.content}}/>
+            <div dangerouslySetInnerHTML={{__html: draft?draft.content:""}}/>
           </CardContent>
         </Card>
       </Grid>

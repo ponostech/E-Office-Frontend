@@ -1,7 +1,7 @@
 import React, { Component } from "reactn";
-import SelectRejectedApplication from "./rejectSteps/SelectRejectedApplication";
-import SelectRejectedDraft from "./rejectSteps/SelectRejectedDraft";
-import ConfirmReject from "./rejectSteps/ConfirmReject";
+import SelectRejectedApplication from "./reject-steps/SelectRejectedApplication";
+import SelectRejectedDraft from "./reject-steps/SelectRejectedDraft";
+import ConfirmReject from "./reject-steps/ConfirmReject";
 import {
   AppBar,
   Button,
@@ -89,7 +89,7 @@ class FileRejectDialog extends Component {
       case 0:
         return <SelectRejectedApplication file={this.props.file} onSelectApplication={this.selectApplication} onNext={this.handleNext}/>;
       case 1:
-        return <SelectRejectedDraft file={this.props.file} onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
+        return <SelectRejectedDraft file={this.props.file} onDraftSelect={this.selectDraft.bind(this)} onBack={this.handleBack}/>;
       case 2:
         return <ConfirmReject application={this.state.selectedApplication} draft={this.state.selectedDraft} onBack={this.handleBack} confirmReject={this.confirmReject}/>;
       default:
