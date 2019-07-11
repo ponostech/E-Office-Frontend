@@ -138,6 +138,7 @@ export class ApiRoutes {
   static UPDATE_NOTESHEET = (id) => `/notesheets/${id}`;
 
   static LIST_CHALLAN = (status) => `/challans/${status}`;
+  static SEND_BACK_APPLICATION="/application/sent-back";
 
   static UPDATE_LICENSE_TEMPLATE(id) {
     return `/permit-templates/${id}`;
