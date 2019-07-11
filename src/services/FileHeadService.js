@@ -44,6 +44,18 @@ export class FileHeadService {
       errorCallback(e.toString());
     }
   }
-
+async getAllMain(errorCallback, successCallback) {
+    try {
+      const res = await  axios.get(`file-index/main-heads`);
+      if (res.data.status) {
+        const heads = res.data.data.main_heads;
+        successCallback(heads);
+      } else {
+        errorCallback(ArrayToString(res.data.messages));
+      }
+    } catch (e) {
+      errorCallback(e.toString());
+    }
+  }
 
 }
