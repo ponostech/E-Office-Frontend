@@ -11,7 +11,7 @@ export default createMuiTheme({
       root:{
         listStyleType: 'none'
       }
-    }
+    },
   },
   typography: {
     useNextVariants: true
