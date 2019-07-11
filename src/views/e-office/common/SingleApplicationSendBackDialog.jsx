@@ -79,9 +79,6 @@ class SingleApplicationSendBackDialog extends Component {
           </Toolbar>
         </AppBar>
         <DialogContent>
-
-          <Typography variant={"h6"}>Compose Message</Typography>
-          <br/>
           <List>
             <DetailViewRow primary={"TO"} secondary={detail.title}/>
           </List>

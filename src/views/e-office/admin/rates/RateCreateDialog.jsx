@@ -102,14 +102,26 @@ class RateCreateDialog extends Component {
     }
   };
 
-  invalid = () => {
-    const { type, displayType, category, landlordType, rate } = this.state;
-    let valid = true;
-   return false
+  isValid = () => {
+    const { type, displayType, category, landlordType, rate,duration } = this.state;
+    let valid=false;
+    if (type==="Hoarding/Kiosk") {
+      valid=Boolean(displayType);
+      if (landlordType === "Public"){
+        valid=Boolean(category)
+      }else {
+        this.setGlobal({errorMsg:"Hoarding/Kiosk must be in public"})
+        valid=false
+      }
+    }else{
+      valid=Boolean(type);
+    }
+    return valid;
   };
   save = () => {
     const { type, displayType, category, landlordType, rate,duration } = this.state;
-    if (this.invalid()) {
+
+    if (!this.isValid()) {
       this.setGlobal({ errorMsg: "Please fill all the required fields" });
     } else {
       let data = {
@@ -121,7 +133,7 @@ class RateCreateDialog extends Component {
         rate
       };
       this.clear()
-      this.props.onClose(data);
+      // this.props.onCreate(data);
     }
   };
 
@@ -258,7 +270,7 @@ class RateCreateDialog extends Component {
         <Divider component={"div"}/>
 
         <DialogActions>
-          <Button href={"#"} variant={"outlined"} color={"primary"} onClick={this.save.bind(this)}>Save</Button>
+          <Button disabled={!Boolean(type)} href={"#"} variant={"outlined"} color={"primary"} onClick={this.save.bind(this)}>Save</Button>
           <Button href={"#"} variant={"outlined"} color={"secondary"} onClick={this.close.bind(this)}>Close</Button>
         </DialogActions>
       </Dialog>

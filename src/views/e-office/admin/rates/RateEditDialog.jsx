@@ -19,6 +19,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Slide from "@material-ui/core/Slide";
+import Divider from "@material-ui/core/Divider";
 
 const styles = {
   appBar: {
@@ -68,7 +69,7 @@ class RateEditDialog extends Component {
 
     this.setState({ loading: true });
     new CategoryServices().fetch(
-      errorMsg => this.setGloba({ errorMsg }),
+      errorMsg => this.setGlobal({ errorMsg }),
       categories => {
         this.setState({ categories })
         this.setState({
@@ -111,17 +112,19 @@ class RateEditDialog extends Component {
     return !Boolean(type) || !Boolean(displayType) || !Boolean(category) || !Boolean(rate);
   };
   update = () => {
-    const { type, displayType, category, landlordType, rate } = this.state;
-    if (this.invalid) {
+    const { type, displayType, category, landlordType, rate,duration } = this.state;
+    if (this.invalid()) {
       this.setGlobal({ errorMsg: "Please fill all the required fields" });
     } else {
       let data = {
-        type,
-        display_type:displayType.value,
-        category_id:category.value,
-        landlord_type: landlordType ? "Public" : "Private",
+        type:type?type.value:null,
+        display_type:displayType?displayType.value:null,
+        area_category_id:category?category.value:null,
+        land_owner_type: landlordType,
+        per_time: duration ,
         rate
       };
+      this.clear()
       this.props.onClose(data);
     }
   };
@@ -131,10 +134,10 @@ class RateEditDialog extends Component {
   };
 
   render() {
-    const { type, displayType, category, landlordType, rate } = this.state;
+    const { type, displayType, category, landlordType, rate,duration } = this.state;
     const { typeError, displayTypeError, categoryError, rateError } = this.state;
     const { types, displayTypes, categories } = this.state;
-    const { open,onClose,classes } = this.props;
+    const { open,classes } = this.props;
     return (
       <Dialog TransitionComponent={Transition} open={open} onClose={this.close.bind(this)} fullWidth={true} maxWidth={"sm"}>
         <AppBar className={classes.appBar}>
@@ -143,7 +146,7 @@ class RateEditDialog extends Component {
               <CloseIcon/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-              Edit Advertisement Rate
+              Create Advertisement Rate
             </Typography>
             <Button href={"#"} onClick={this.close.bind(this)} color="inherit">
               Close
@@ -152,7 +155,7 @@ class RateEditDialog extends Component {
         </AppBar>
         {
           this.state.loading === false &&
-          <DialogContent>
+          <DialogContent style={{height:"50vh"}}>
             <OfficeSelect
               value={type}
               label={"Type of Advertisement"}
@@ -163,9 +166,9 @@ class RateEditDialog extends Component {
               required={true}
               helperText={typeError}
               error={Boolean(typeError)}
-              onBlur={e => this.handleRequired("type")}
               onChange={val => this.handleChange("type", val)}
               options={types}/>
+            { type && type.value==="Hoarding/Kiosk" &&
             <OfficeSelect
               value={displayType}
               label={"Type of Display"}
@@ -173,45 +176,63 @@ class RateEditDialog extends Component {
               variant={"outlined"}
               margin={"dense"}
               fullWidth={true}
-              required={true}
               helperText={displayTypeError}
               error={Boolean(displayTypeError)}
-              onBlur={e => this.handleRequired("displayType")}
               onChange={val => this.handleChange("displayType", val)}
-              options={displayTypes}/>
-
-            <OfficeSelect
-              value={category}
-              label={"Categories"}
-              name={"category"}
-              variant={"outlined"}
-              margin={"dense"}
-              fullWidth={true}
-              required={true}
-              helperText={categoryError}
-              error={Boolean(categoryError)}
-              onBlur={e => this.handleRequired("category")}
-              onChange={val => this.handleChange("category", val)}
-              options={categories}/>
+              options={displayTypes}/>}
+            {
+              type && type.value==="Hoarding/Kiosk" &&
+              <FormControl component={"div"} fullWidth={true} margin={"dense"}>
+                <FormLabel component={"div"}>Type of Landlord/ Land owner</FormLabel>
+                <RadioGroup
+                  defaultValue={"0"}
+                  value={landlordType}
+                  name={"landlordType"}
+                  row={true}
+                  onChange={event => this.handleChange("landlordType", event.target.value)}
+                >
+                  <FormControlLabel value={"Private"} control={<Radio color={"primary"}/>}
+                                    label={"Private"}/>
+                  <FormControlLabel value={"Public"} control={<Radio color={"primary"}/>}
+                                    label={"Public"}/>
+                </RadioGroup>
+              </FormControl>
+            }
+            {
+              landlordType && landlordType==="Public" &&<OfficeSelect
+                value={category}
+                label={"Categories"}
+                name={"category"}
+                variant={"outlined"}
+                margin={"dense"}
+                fullWidth={true}
+                helperText={categoryError}
+                error={Boolean(categoryError)}
+                onChange={val => this.handleChange("category", val)}
+                options={categories}/>
+            }
 
             <FormControl component={"div"} fullWidth={true} margin={"dense"}>
-              <FormLabel component={"div"}>Type of Landlord/ Land owner</FormLabel>
+              <FormLabel component={"div"}>Rate Duration</FormLabel>
               <RadioGroup
                 defaultValue={"0"}
-                value={landlordType}
-                name={"landlordType"}
+                value={duration}
+                name={"duration"}
                 row={true}
-                onChange={event => this.handleChange("landlordType", event.target.value)}
+                onChange={event => this.handleChange("duration", event.target.value)}
               >
-                <FormControlLabel value={"0"} control={<Radio color={"primary"}/>}
-                                  label={"Private"}/>
-                <FormControlLabel value={"1"} control={<Radio color={"primary"}/>}
-                                  label={"Public"}/>
+                <FormControlLabel value={"Day"} control={<Radio color={"primary"}/>}
+                                  label={"Day"}/>
+                <FormControlLabel value={"Month"} control={<Radio color={"primary"}/>}
+                                  label={"Month"}/>
+                <FormControlLabel value={"Year"} control={<Radio color={"primary"}/>}
+                                  label={"Year"}/>
               </RadioGroup>
             </FormControl>
 
             <TextField
               value={rate}
+              type={"number"}
               name={"rate"}
               fullWidth={true}
               variant={"outlined"}
@@ -219,13 +240,14 @@ class RateEditDialog extends Component {
               required={true}
               error={Boolean(rateError)}
               helperText={rateError}
-              onChange={event => this.handleChange("name", event.target.value)}/>
+              onChange={event => this.handleChange("rate", event.target.value)}/>
           </DialogContent>
         }
+        <Divider component={"div"}/>
 
         <DialogActions>
-          <Button href={"#"} variant={"outlined"} color={"primary"} onClick={this.update.bind(this)}>update</Button>
-          <Button href={"#"} variant={"outlined"} color={"primary"} onClick={this.close.bind(this)}>Close</Button>
+          <Button href={"#"} variant={"outlined"} color={"primary"} onClick={this.update.bind(this)}>Save</Button>
+          <Button href={"#"} variant={"outlined"} color={"secondary"} onClick={this.close.bind(this)}>Close</Button>
         </DialogActions>
       </Dialog>
     );
