@@ -35,9 +35,9 @@ const menu = (props) => {
             // {title: "List Created By You", link: OfficeRoutes.CREATED_FILES},
             // {title: "List Sent by You", link: OfficeRoutes.SENT_FILE},
             { title: "List New", link: OfficeRoutes.FILE_IN_ACTIVE_LIST },
+            { title: "List Active", link: OfficeRoutes.FILE_ACTIVE_LIST },
             { title: "List Closed", link: OfficeRoutes.FILE_CLOSED_LIST },
-            { title: "List Archived", link: OfficeRoutes.FILE_ARCHIVED_LIST },
-            { title: "List Active", link: OfficeRoutes.FILE_ACTIVE_LIST }
+            { title: "List Archived", link: OfficeRoutes.FILE_ARCHIVED_LIST }
           ]}
           buttonText={"File"}
           buttonProps={{ color: "transparent" }}/>

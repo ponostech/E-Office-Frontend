@@ -167,10 +167,11 @@ class FileApplications extends Component {
     const { data, loading, tabValue, err, openDetails, openSendBackDialog, singleData, selectedApplication } = this.state;
     const newList = this.getByStatus(data, "new");
     const inProcessList = this.getByStatus(data, "in-process");
-    console.log(inProcessList)
+    const sentBackList = this.getByStatus(data, "sent-back");
+    const reSubmitList = this.getByStatus(data, "re-submit");
     const rejectedList = this.getByStatus(data, "rejected");
     const cancelledList = this.getByStatus(data, "cancelled");
-    const approvedList = this.getByStatus(data, "approved");
+      const approvedList = this.getByStatus(data, "approved");
 
     const tabBar =
       <AppBar position="static" color="default">
@@ -179,13 +180,16 @@ class FileApplications extends Component {
           onChange={this.handleTabChange}
           indicatorColor="primary"
           textColor="primary"
-          variant="fullWidth"
+          variant="scrollable"
+          scrollButtons="auto"
         >
-          <Tab label="New Applications"/>
-          <Tab label="In Process Applications"/>
-          <Tab label="Rejected Applications"/>
-          <Tab label="Cancelled Applications"/>
-          <Tab label="Approved Applications"/>
+          <Tab label="New"/>
+          <Tab label="Sent Back"/>
+          <Tab label="Re Submit"/>
+          <Tab label="In Process"/>
+          <Tab label="Rejected"/>
+          <Tab label="Cancelled"/>
+          <Tab label="Approved"/>
         </Tabs>
       </AppBar>;
 
@@ -196,22 +200,27 @@ class FileApplications extends Component {
         onChangeIndex={this.handleTabChangeIndex}
       >
         <TabContainer>{loading ? <LoadingView/> :
-          <List>{newList.length ? newList : "Not Available"}</List>}</TabContainer>
+          <List>{newList.length ? newList : "Application Not Found"}</List>}</TabContainer>
+        <TabContainer>{loading ? <LoadingView/> : <List>{sentBackList.length ? sentBackList : "Application Not Found"}</List>}</TabContainer>
         <TabContainer>{loading ? <LoadingView/> :
-          <List>{inProcessList.length ? inProcessList : "Not Available"}</List>}</TabContainer>
+          <List>{reSubmitList.length ? reSubmitList : "Application Not Found"}</List>}</TabContainer>
         <TabContainer>{loading ? <LoadingView/> :
-          <List>{rejectedList.length ? rejectedList : "Not Available"}</List>}</TabContainer>
+          <List>{inProcessList.length ? inProcessList : "Application Not Found"}</List>}</TabContainer>
         <TabContainer>{loading ? <LoadingView/> :
-          <List>{cancelledList.length ? cancelledList : "Not Available"}</List>}</TabContainer>
+          <List>{rejectedList.length ? rejectedList : "Application Not Found"}</List>}</TabContainer>
         <TabContainer>{loading ? <LoadingView/> :
-          <List>{approvedList.length ? approvedList : "Not Available"}</List>}</TabContainer>
+          <List>{cancelledList.length ? cancelledList : "Application Not Found"}</List>}</TabContainer>
+        <TabContainer>{loading ? <LoadingView/> :
+          <List>{approvedList.length ? approvedList : "Application Not Found"}</List>}</TabContainer>
       </SwipeableViews>;
 
     return <>
       <CardHeader title="List of Applications" subheader=""/>
       <div>
-        {tabBar}
-        {tabContent}
+        <div style={{flexGrow: 1}}>
+          {tabBar}
+          {tabContent}
+        </div>
       </div>
       <Divider/>
       <SubmitDialog open={this.state.submit} text={"Please wait ..."} title={"Receive Application"}/>
