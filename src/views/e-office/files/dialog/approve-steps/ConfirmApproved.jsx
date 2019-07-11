@@ -34,36 +34,9 @@ class ConfirmApproved extends Component {
     return (
       <Grid container={true} spacing={3}>
         <Grid item={true} md={4}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <DatePicker
-              InputLabelProps={
-                { shrink: true }
-              }
-              InputProps={{
-                endAdornment:
-                  <InputAdornment position={"end"}>
-                    <CalendarIcon color={"action"}/>
-                  </InputAdornment>
-              }}
-              fullWidth={true}
-              label={"Set Validity"}
-              error={Boolean(validityError)}
-              onBlur={this.handleBlur.bind(this)}
-              helperText={validityError}
-              margin="dense"
-              name={"validity"}
-              variant="outlined"
-              value={validity}
-              onChange={this.handleValidity}
-              format={"dd/MM/yyyy"}
-            />
-          </MuiPickersUtilsProvider>
-        </Grid>
-        <Grid item={true} md={8}>
-        </Grid>
-        <Grid item={true} md={4}>
           <Card>
             <CardHeader title={"Application Details"}/>
+            <Divider component={"div"}/>
             <CardContent>
               <List>
                 {rows.map((row,index)=>
@@ -77,6 +50,7 @@ class ConfirmApproved extends Component {
         <Grid item={true} md={8}>
           <Card>
             <CardHeader title={"Approved Application Template"}/>
+            <Divider component={"div"}/>
             <CardContent>
               <div  dangerouslySetInnerHTML={{__html: draft.content}}/>
             </CardContent>

@@ -15,7 +15,8 @@ class SelectRejectedDraft extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      drafts: []
+      drafts: [],
+      selectedDraft:null
     };
   }
 
@@ -65,10 +66,10 @@ class SelectRejectedDraft extends Component {
           {"\u00A0 "}
           {"\u00A0 "}
           {"\u00A0 "}
-          <Button href={"#"} onClick={onDraftSelect(selectedDraft)} variant={"contained"} color={"primary"}>Next</Button>
+          <Button disabled={!Boolean(selectedDraft)} href={"#"} onClick={event => onDraftSelect(selectedDraft)} variant={"contained"} color={"primary"}>Next</Button>
         </GridItem>
         <GridItem md={8}>
-          <TextEditor default={selectedDraft.content} onChange={event=>selectedDraft.content=event.target.getContent()}/>
+          <TextEditor default={selectedDraft?selectedDraft.content:""} onChange={event=>selectedDraft.content=event.target.getContent()}/>
         </GridItem>
 
       </GridContainer>
