@@ -49,7 +49,7 @@ class ConfirmApproved extends Component {
         </Grid>
         <Grid item={true} md={8}>
           <Card>
-            <CardHeader title={"Approved Application Template"}/>
+            <CardHeader title={"License/Permit Template"}/>
             <Divider component={"div"}/>
             <CardContent>
               <div  dangerouslySetInnerHTML={{__html: draft.content}}/>
@@ -65,7 +65,7 @@ class ConfirmApproved extends Component {
           {"\u00A0 "}
           {"\u00A0 "}
           {"\u00A0 "}
-          <Button disabled={!Boolean(this.state.validity)} href={"#"} variant={"contained"} onClick={confirmApproved} color={"primary"}>Approved Application</Button>
+          <Button  href={"#"} variant={"contained"} onClick={confirmApproved} color={"primary"}>Approved Application</Button>
         </Grid>
       </Grid>
     );

@@ -27,9 +27,9 @@ function ConfirmCancel(props) {
       </Grid>
       <Grid item={true} md={8}>
         <Card>
-          <CardHeader title={"Cancelation Application Template"}/>
+          <CardHeader title={"Cancel Application Template"}/>
           <CardContent>
-            <TextEditor default={draft.content}/>
+            <div dangerouslySetInnerHTML={{__html: draft?draft.content:""}}/>
           </CardContent>
         </Card>
       </Grid>

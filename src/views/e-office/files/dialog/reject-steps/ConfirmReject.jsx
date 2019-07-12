@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import ApplicationResolver from "../common/ApplicationResolver";
 import DetailViewRow from "../../../common/DetailViewRow";
 import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
 
 function ConfirmReject(props) {
   const { application, draft, confirmReject, onBack } = props;
@@ -15,9 +16,11 @@ function ConfirmReject(props) {
         <Card>
           <CardHeader title={"Application Details"}/>
           <CardContent>
+            <List>
             {rows.map((row,index)=>
               <DetailViewRow key={index} primary={row.name} secondary={row.value}/>
             )}
+            </List>
           </CardContent>
         </Card>
 
