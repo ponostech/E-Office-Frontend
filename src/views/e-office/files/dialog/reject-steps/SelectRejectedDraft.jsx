@@ -42,7 +42,7 @@ class SelectRejectedDraft extends Component {
   }
 
   render() {
-    const { drafts,selectedDraft } = this.state;
+    let { drafts,selectedDraft } = this.state;
     const { onBack, onDraftSelect } = this.props;
 
     return (
@@ -69,7 +69,7 @@ class SelectRejectedDraft extends Component {
           <Button disabled={!Boolean(selectedDraft)} href={"#"} onClick={event => onDraftSelect(selectedDraft)} variant={"contained"} color={"primary"}>Next</Button>
         </GridItem>
         <GridItem md={8}>
-          <TextEditor default={selectedDraft?selectedDraft.content:""} onChange={event=>selectedDraft.content=event.target.getContent()}/>
+          <TextEditor default={selectedDraft?selectedDraft.content:""} onChange={event=>selectedDraft?selectedDraft.content=event.target.getContent():selectedDraft=null}/>
         </GridItem>
 
       </GridContainer>
