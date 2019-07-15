@@ -17,7 +17,7 @@ import CardContent from "@material-ui/core/CardContent"
 
 const styles = {};
 
-class ShopCancelledList extends Component {
+class ShopReSubmitList extends Component {
   state = {
     shops: [],
     openMap: false,
@@ -154,7 +154,7 @@ class ShopCancelledList extends Component {
         <>
           {this.global.loading ? <LoadingView/> : <CardContent>
             <MUIDataTable
-                title="SHOP: List of Cancelled Application"
+                title="SHOP: List of Re-Submit Application"
                 data={shops}
                 columns={tableColumns}
                 options={tableOptions}
@@ -182,4 +182,4 @@ class ShopCancelledList extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(ShopCancelledList));
+export default withRouter(withStyles(styles)(ShopReSubmitList));

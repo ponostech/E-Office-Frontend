@@ -3,7 +3,7 @@ import axios from 'axios';
 import {withRouter} from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import {withStyles} from "@material-ui/core/styles";
-import {Icon, IconButton, Grid, Tooltip} from "@material-ui/core";
+import {Icon, IconButton, Tooltip} from "@material-ui/core";
 import moment from "moment";
 import {SHOP_LIST, FILE_TAKE, GET_STAFF} from "../../../../config/ApiRoutes";
 import ShopViewDialog from "./common/ShopViewDialog";
@@ -90,11 +90,21 @@ class ShopInProcessList extends Component {
         }
       },
       {
-        name: "created_at",
+        name: "application_date",
         label: "APPLICATION DATE",
         options: {
           filter: false,
           customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
+        }
+      },
+      {
+        name: 'file',
+        label: 'CURRENT FILE LOCATION',
+        options: {
+          filter: false,
+          customBodyRender: ({desk}) => {
+            return desk.staff ? desk.staff.name + " (" + desk.staff.designation + ")"  : 'Not Found'
+          }
         }
       },
       {

@@ -12,6 +12,13 @@ export default createMuiTheme({
         listStyleType: 'none'
       }
     },
+    MuiTab: {
+      root: {
+        '@media (min-width: 960px)': {
+          minWidth: 140
+        }
+      }
+    }
   },
   typography: {
     useNextVariants: true

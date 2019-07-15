@@ -42,7 +42,7 @@ class SelectApprovedApplication extends Component {
     return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
-          <CardHeader title={"Please Select Application to Approved"}/>
+          <CardHeader title={"Please Select Application to be Approved"}/>
           <Divider component={"div"}/>
           <List>
             {applications.map((application,index)=>
