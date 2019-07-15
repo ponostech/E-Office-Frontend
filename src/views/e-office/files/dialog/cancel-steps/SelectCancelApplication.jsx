@@ -39,7 +39,7 @@ class SelectCancelApplication extends Component {
     return (
       <GridContainer>
         <GridItem md={4}>
-          <CardHeader title={"Please Select Application to Cancel"}/>
+          <CardHeader title={"Please Select Application to be Cancelled"}/>
           <Divider component={"div"}/>
           <List>
             {applications.map((application,index)=>
@@ -48,7 +48,7 @@ class SelectCancelApplication extends Component {
                   <Icon color={"action"}>keyboard_arrow_right</Icon>
                 </IconButton>
               </DetailViewRow>
-            )};
+            )}
           </List>
           <Button disabled={!Boolean(selectedApplication)} href={"#"} onClick={event => onSelectApplication(selectedApplication)} variant={"contained"} color={"primary"} >Next</Button>
         </GridItem>

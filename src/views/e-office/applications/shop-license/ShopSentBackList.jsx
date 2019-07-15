@@ -17,7 +17,7 @@ import CardContent from "@material-ui/core/CardContent"
 
 const styles = {};
 
-class ShopCancelledList extends Component {
+class ShopInProcessList extends Component {
   state = {
     shops: [],
     openMap: false,
@@ -35,7 +35,7 @@ class ShopCancelledList extends Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(SHOP_LIST, {params: {status: 're-submit'}})
+  getData = () => axios.get(SHOP_LIST, {params: {status: 'sent-back'}})
       .then(res => this.processResult(res))
       .catch(err => this.setGlobal({errorMsg: err.toString()}))
       .then(() => this.setGlobal({loading: false}));
@@ -154,7 +154,7 @@ class ShopCancelledList extends Component {
         <>
           {this.global.loading ? <LoadingView/> : <CardContent>
             <MUIDataTable
-                title="SHOP: List of Cancelled Application"
+                title={"SHOP: List of Sent Back Application"}
                 data={shops}
                 columns={tableColumns}
                 options={tableOptions}
@@ -182,4 +182,4 @@ class ShopCancelledList extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(ShopCancelledList));
+export default withRouter(withStyles(styles)(ShopInProcessList));

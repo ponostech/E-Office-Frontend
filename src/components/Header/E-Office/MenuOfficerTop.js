@@ -66,10 +66,10 @@ const menu = (props) => {
 
           <CustomDropdown
               dropdownList={[
-                {title: "Under Process", link: OfficeRoutes.ADVERTISER_IN_PROCESS_LIST},
-                {title: "Approved List", link: OfficeRoutes.ADVERTISER_APPROVE_LIST},
-                {title: "Rejected List", link: OfficeRoutes.ADVERTISER_REJECT_LIST},
-                {title: "Cancelled List", link: OfficeRoutes.ADVERTISER_CANCEL_LIST}
+                {title: "List Under Process", link: OfficeRoutes.ADVERTISER_IN_PROCESS_LIST},
+                {title: "List Approved", link: OfficeRoutes.ADVERTISER_APPROVE_LIST},
+                {title: "List Rejected", link: OfficeRoutes.ADVERTISER_REJECT_LIST},
+                {title: "List Cancelled", link: OfficeRoutes.ADVERTISER_CANCEL_LIST}
               ]}
               linkClick={props.linkClick}
               buttonText={"Advertiser"}
@@ -77,9 +77,9 @@ const menu = (props) => {
 
           <CustomDropdown
               dropdownList={[
-                {title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_HOARDINGS},
-                {title: "Approved List", link: OfficeRoutes.APPROVED_HOARDINGS},
-                {title: "Reject List", link: OfficeRoutes.REJECTED_HOARDINGS}
+                {title: "List Under Process", link: OfficeRoutes.UNDER_PROCESS_HOARDINGS},
+                {title: "List Approved", link: OfficeRoutes.APPROVED_HOARDINGS},
+                {title: "List Rejected", link: OfficeRoutes.REJECTED_HOARDINGS}
               ]}
               linkClick={props.linkClick}
               buttonText={"Hoarding"}
@@ -88,7 +88,7 @@ const menu = (props) => {
               dropdownList={[
                 {title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_KIOSKS},
                 {title: "Approved List", link: OfficeRoutes.APPROVED_KIOSKS},
-                {title: "Reject List", link: OfficeRoutes.REJECTED_KIOSKS}
+                {title: "Rejected List", link: OfficeRoutes.REJECTED_KIOSKS}
 
               ]}
               linkClick={props.linkClick}
@@ -97,9 +97,9 @@ const menu = (props) => {
 
           <CustomDropdown
               dropdownList={[
-                {title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_BANNER},
-                {title: "Approved List", link: OfficeRoutes.APPROVED_BANNER},
-                {title: "Reject List", link: OfficeRoutes.REJECTED_BANNER}
+                {title: "List Under Process", link: OfficeRoutes.UNDER_PROCESS_BANNER},
+                {title: "List Approved", link: OfficeRoutes.APPROVED_BANNER},
+                {title: "List Rejected", link: OfficeRoutes.REJECTED_BANNER}
 
               ]}
               linkClick={props.linkClick}
@@ -107,9 +107,12 @@ const menu = (props) => {
               buttonProps={{color: "transparent"}}/>
           <CustomDropdown
               dropdownList={[
-                {title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_SHOPLICENSE},
-                {title: "Approved List", link: OfficeRoutes.APPROVED_SHOPLICENSE},
-                {title: "Reject List", link: OfficeRoutes.REJECTED_SHOPLICENSE}
+                {title: "List Under Process", link: OfficeRoutes.UNDER_PROCESS_SHOPLICENSE},
+                {title: "List Sent Back", link: OfficeRoutes.SENT_BACK_SHOPLICENSE},
+                {title: "List Re-Submit", link: OfficeRoutes.RE_SUBMIT_SHOPLICENSE},
+                {title: "List Rejected", link: OfficeRoutes.REJECTED_SHOPLICENSE},
+                {title: "List Cancelled", link: OfficeRoutes.CANCELLED_SHOPLICENSE},
+                {title: "List Approved", link: OfficeRoutes.APPROVED_SHOPLICENSE}
 
               ]}
               linkClick={props.linkClick}
@@ -117,9 +120,12 @@ const menu = (props) => {
               buttonProps={{color: "transparent"}}/>
           <CustomDropdown
               dropdownList={[
-                {title: "Under Process", link: OfficeRoutes.UNDER_PROCESS_HOTELLICENSE},
-                {title: "Approved List", link: OfficeRoutes.APPROVED_HOTELLICENSE},
-                {title: "Reject List", link: OfficeRoutes.REJECTED_HOTELLICENSE}
+                {title: "List Under Process", link: OfficeRoutes.UNDER_PROCESS_HOTELLICENSE},
+                {title: "List Sent Back", link: OfficeRoutes.SENT_BACK_HOTELLICENSE},
+                {title: "List Re-Submit", link: OfficeRoutes.RE_SUBMIT_HOTELLICENSE},
+                {title: "List Rejected", link: OfficeRoutes.REJECTED_HOTELLICENSE},
+                {title: "List Cancelled", link: OfficeRoutes.CANCELLED_HOTELLICENSE},
+                {title: "List Approved", link: OfficeRoutes.APPROVED_HOTELLICENSE}
 
               ]}
               linkClick={props.linkClick}
