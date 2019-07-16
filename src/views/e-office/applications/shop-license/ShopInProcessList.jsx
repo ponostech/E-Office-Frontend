@@ -103,7 +103,7 @@ class ShopInProcessList extends Component {
         options: {
           filter: false,
           customBodyRender: ({desk}) => {
-            return desk.staff ? desk.staff.name + " (" + desk.staff.designation + ")"  : 'Not Found'
+            return desk.staff ? desk.staff.name + " (" + desk.staff.designation + ")" : 'Not Found'
           }
         }
       },
@@ -116,6 +116,7 @@ class ShopInProcessList extends Component {
           customBodyRender: (value, tableMeta) => {
             const {rowIndex} = tableMeta;
             let data = shops[rowIndex];
+            let currentDesk = data.file.desk ? data.file.desk.staff.user_id : null
             const lat = Number(data.latitude);
             const lng = Number(data.longitude);
             return (
@@ -137,12 +138,16 @@ class ShopInProcessList extends Component {
                       <Icon fontSize="small">folder</Icon>
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title='Call File'>
-                    <IconButton variant="contained" color="secondary"
-                                size="medium" onClick={this.takeFile.bind(this, data)}>
-                      <Icon fontSize="small">desktop_mac</Icon>
-                    </IconButton>
-                  </Tooltip>
+
+                  {/* Current Login Desk a File a awm chuan Call theih a ni lo */}
+                  {currentDesk !== JSON.parse(localStorage.getItem('current_user')).id ?
+                      <Tooltip title='Call File'>
+                        <IconButton variant="contained" color="secondary"
+                                    size="medium" onClick={this.takeFile.bind(this, data)}>
+                          <Icon fontSize="small">desktop_mac</Icon>
+                        </IconButton>
+                      </Tooltip> : null
+                  }
                 </>
             );
           }
