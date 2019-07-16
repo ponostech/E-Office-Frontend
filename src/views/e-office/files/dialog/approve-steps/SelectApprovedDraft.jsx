@@ -49,7 +49,7 @@ class SelectApprovedDraft extends Component {
 
   render() {
     const { drafts, selectedDraft, validity, validityError } = this.state;
-    const { onBack, onDraftSelect } = this.props;
+    const { onBack, onDraftSelect,onSetValidity } = this.props;
     return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
@@ -94,7 +94,10 @@ class SelectApprovedDraft extends Component {
           {"\u00A0 "}
           {"\u00A0 "}
           {"\u00A0 "}
-          <Button disabled={!Boolean(validity) || !Boolean(selectedDraft)} href={"#"} onClick={e => onDraftSelect(selectedDraft)} variant={"contained"}
+          <Button disabled={!Boolean(validity) || !Boolean(selectedDraft)} href={"#"} onClick={e => {
+            onDraftSelect(selectedDraft)
+            onSetValidity(validity)
+          }} variant={"contained"}
                   color={"primary"}>Next</Button>
         </GridItem>
         <GridItem xs={12} sm={12} md={8}>
@@ -113,6 +116,7 @@ class SelectApprovedDraft extends Component {
 SelectApprovedDraft.propTypes = {
   file: PropTypes.object.isRequired,
   onDraftSelect: PropTypes.func.isRequired,
+  onSetValidity: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired
 };
 export default SelectApprovedDraft;

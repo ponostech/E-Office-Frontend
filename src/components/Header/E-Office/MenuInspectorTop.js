@@ -15,7 +15,9 @@ const menu = (props) => {
         <>
             <div style={{display: "flex", alignItems: "center"}}>
                 <NavLink to={OfficeRoutes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
-                <CustomDropdown
+              <NavLink to={OfficeRoutes.CHALLAN_LIST}><IconButton color="primary"><Icon>account_balance_wallet</Icon></IconButton></NavLink>
+
+              <CustomDropdown
                     dropdownList={[
                         {title: "Create New", link: OfficeRoutes.NEW_FILE},
                         // {title: "List Created By You", link: OfficeRoutes.CREATED_FILES},

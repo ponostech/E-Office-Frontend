@@ -750,7 +750,7 @@ class ShopApplication extends Component {
                         <Button name={"secondary"}
                                 color={"secondary"}
                                 variant={"outlined"}
-                                onClick={e => window.location.reload()}>
+                                onClick={e => this.componentDidMount()}>
                           {ShopLicenseViewModel.SECONDARY_TEXT}
                         </Button>
                       </GridItem>

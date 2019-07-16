@@ -45,6 +45,7 @@ import AdvertiserCanceledList from "../../views/e-office/applications/advertiser
 import ReceiptNewList from "../../views/e-office/receipt/ReceiptNewList";
 import ReceiptEdit from "../../views/e-office/receipt/ReceiptEdit";
 import ReceiptAttachedList from "../../views/e-office/receipt/ReceiptAttachedList";
+import ChallanList from "../../views/e-office/challan/ChallanList";
 
 const routes = (props) => {
     return (
@@ -109,6 +110,9 @@ const routes = (props) => {
             <Route exact path={OfficeRoutes.UNDER_PROCESS_HOTELLICENSE} render={e => <HotelUnderProcessList/>}/>
             <Route exact path={OfficeRoutes.APPROVED_HOTELLICENSE} render={e => <HotelApprovedList/>}/>
             <Route exact path={OfficeRoutes.REJECTED_HOTELLICENSE} render={e => <HotelRejectedList/>}/>
+
+             {/*Challan*/}
+             <Route exact path={OfficeRoutes.CHALLAN_LIST} render={e => <ChallanList/>}/>
         </>
     )
 };

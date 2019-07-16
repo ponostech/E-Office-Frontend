@@ -91,7 +91,7 @@ class ShopInProcessList extends Component {
         }
       },
       {
-        name: "created_at",
+        name: "application_date",
         label: "APPLICATION DATE",
         options: {
           filter: false,
