@@ -18,6 +18,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import LoadingView from "./LoadingView";
 import FileUpload from "../../components/FileUpload";
 import PropTypes from "prop-types";
+import DetailViewRow from "../e-office/common/DetailViewRow";
 
 const styles = {
   appBar: {
@@ -120,7 +121,13 @@ class CashPaymentDialog extends Component {
         </AppBar>
         <DialogContent>
             <Card>
-              <CardHeader title={"Challan Number"} subheader={challan?challan.number:""}/>
+              <DetailViewRow primary={"Challan Number"} secondary={challan?challan.number:""}/>
+              <DetailViewRow primary={"Payable Amount"} secondary={new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumSignificantDigits: 2
+              }).format(Boolean(challan)?challan.amount:0)}/>
+
               <Divider component={"div"}/>
               <CardContent>
               {loading ? <LoadingView/> : content}
