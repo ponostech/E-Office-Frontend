@@ -427,7 +427,8 @@ class FileView extends Component {
 
         {openDraftCancel && <FileDraftCancelDialog module={moduleName} file={file} open={openDraftCancel}
                                                    onClose={this.closeDialog.bind(this, "openDraftCancel")}/>}
-        {openApproveDialog && <FileApproveDialog module={moduleName} file={file} open={openApproveDialog}
+        {openApproveDialog && <FileApproveDialog createDraft={()=>this.setState({openDraftPermit:true,openApproveDialog:false})}
+                                                 module={moduleName} file={file} open={openApproveDialog}
                                                  onClose={this.closeDialog.bind(this, "openApproveDialog")}/>}
 
         {openCancelDialog && <FileCancelDialog module={moduleName} file={file} open={openCancelDialog}
