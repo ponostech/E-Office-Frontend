@@ -17,7 +17,7 @@ import CardContent from "@material-ui/core/CardContent"
 
 const styles = {};
 
-class ShopInProcessList extends Component {
+class ShopReSubmitList extends Component {
   state = {
     shops: [],
     openMap: false,
@@ -172,4 +172,4 @@ class ShopInProcessList extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(ShopInProcessList));
+export default withRouter(withStyles(styles)(ShopReSubmitList));

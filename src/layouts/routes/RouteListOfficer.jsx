@@ -34,7 +34,10 @@ import BannerGrantedList from "../../views/e-office/applications/banners/BannerA
 import BannerRejectedList from "../../views/e-office/applications/banners/BannerRejectedList";
 import BannerCancelledList from "../../views/e-office/applications/banners/BannerCancelledList";
 import UnderProcessShopLicense from "../../views/e-office/applications/shop-license/ShopInProcessList";
+import SentBackShopLicense from "../../views/e-office/applications/shop-license/ShopSentBackList";
+import ReSubmitShopLicense from "../../views/e-office/applications/shop-license/ShopReSubmitList";
 import ApprovedShopLicense from "../../views/e-office/applications/shop-license/ShopApprovedList";
+import CancelledShopLicense from "../../views/e-office/applications/shop-license/ShopCancelledList";
 import RejectedShopLicense from "../../views/e-office/applications/shop-license/ShopRejectedList";
 import AdvertiserNewList from "../../views/e-office/applications/advertisers/AdvertiserNewList";
 import AdvertiserInProcessList from "../../views/e-office/applications/advertisers/AdvertiserInProcessList";
@@ -48,7 +51,7 @@ import AdvertiserApprovedList from "../../views/e-office/applications/advertiser
 import AdvertiserRejectedList from "../../views/e-office/applications/advertisers/AdvertiserRejectedList";
 import AdvertiserCanceledList from "../../views/e-office/applications/advertisers/AdvertiserCanceledList";
 import TradeList from "../../views/e-office/admin/trades/TradeList";
-import { RECEIPT_NEW_LIST } from "../../config/routes-constant/OfficeRoutes";
+import {RECEIPT_NEW_LIST} from "../../config/routes-constant/OfficeRoutes";
 import ReceiptNewList from "../../views/e-office/receipt/ReceiptNewList";
 import ReceiptEdit from "../../views/e-office/receipt/ReceiptEdit";
 import ReceiptAttachedList from "../../views/e-office/receipt/ReceiptAttachedList";
@@ -67,7 +70,7 @@ const routes = (props) => {
         <Route exact path={OfficeRoutes.RECEIPT_NEW_LIST} component={ReceiptNewList}/>
         <Route exact path={OfficeRoutes.RECEIPT_ATTACHED_LIST} component={ReceiptAttachedList}/>
 
-            {/*File*/}
+        {/*File*/}
         <Route exact path={OfficeRoutes.NEW_FILE} render={e => <FileCreate/>}/>
         <Route path={OfficeRoutes.FILE_DETAIL} render={(e) => <FileDetail {...props}/>}/>
         <Route exact path={OfficeRoutes.CREATED_FILES} component={FileCreatedList}/>
@@ -114,8 +117,11 @@ const routes = (props) => {
         {/*Shop Licensing*/}
         <Route exact path={OfficeRoutes.NEW_SHOPLICENSE} render={e => <ShopNewList/>}/>
         <Route exact path={OfficeRoutes.UNDER_PROCESS_SHOPLICENSE} render={e => <UnderProcessShopLicense/>}/>
-        <Route exact path={OfficeRoutes.APPROVED_SHOPLICENSE} render={e => <ApprovedShopLicense/>}/>
+        <Route exact path={OfficeRoutes.SENT_BACK_SHOPLICENSE} render={e => <SentBackShopLicense/>}/>
+        <Route exact path={OfficeRoutes.RE_SUBMIT_SHOPLICENSE} render={e => <ReSubmitShopLicense/>}/>
+        <Route exact path={OfficeRoutes.CANCELLED_SHOPLICENSE} render={e => <CancelledShopLicense/>}/>
         <Route exact path={OfficeRoutes.REJECTED_SHOPLICENSE} render={e => <RejectedShopLicense/>}/>
+        <Route exact path={OfficeRoutes.APPROVED_SHOPLICENSE} render={e => <ApprovedShopLicense/>}/>
 
         {/*Shop Licensing*/}
         <Route exact path={OfficeRoutes.NEW_HOTELLICENSE} render={e => <HotelNewList/>}/>

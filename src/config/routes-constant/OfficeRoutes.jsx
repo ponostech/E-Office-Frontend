@@ -87,12 +87,16 @@ export const CANCELLED_BANNER = "/e-office/applications/banner/cancelled";
 export const UNPAID_SHOPLICENSE = "/e-office/applications/shop-license/unpaid";
 export const NEW_SHOPLICENSE = "/e-office/applications/shop-license/new";
 export const UNDER_PROCESS_SHOPLICENSE = "/e-office/applications/shop-license/under-process";
+export const SENT_BACK_SHOPLICENSE = "/e-office/applications/shop-license/sent-back";
+export const RE_SUBMIT_SHOPLICENSE = "/e-office/applications/shop-license/re-submit";
 export const APPROVED_SHOPLICENSE = "/e-office/applications/shop-license/approve";
 export const REJECTED_SHOPLICENSE = "/e-office/applications/shop-license/reject";
 export const CANCELLED_SHOPLICENSE = "/e-office/applications/shop-license/cancelled";
 
 export const NEW_HOTELLICENSE = "/e-office/applications/hotel-license/new";
 export const UNDER_PROCESS_HOTELLICENSE = "/e-office/applications/hotel-license/under-process";
+export const SENT_BACK_HOTELLICENSE = "/e-office/applications/hotel-license/sent-back";
+export const RE_SUBMIT_HOTELLICENSE = "/e-office/applications/hotel-license/re-submit";
 export const APPROVED_HOTELLICENSE = "/e-office/applications/hotel-license/approve";
 export const REJECTED_HOTELLICENSE = "/e-office/applications/hotel-license/reject";
 export const CANCELLED_HOTELLICENSE = "/e-office/applications/hotel-license/cancelled";

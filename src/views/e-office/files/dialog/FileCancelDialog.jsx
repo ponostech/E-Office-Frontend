@@ -126,7 +126,7 @@ class FileCancelDialog extends Component {
               Close
             </Button>
           </Toolbar>
-        </AppBar>;
+        </AppBar>
 
         <DialogContent>
           <Stepper activeStep={activeStep} orientation="vertical">

@@ -41,7 +41,7 @@ class SelectRejectedApplication extends Component {
     return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
-          <CardHeader title={"Please Select Application to Reject"}/>
+          <CardHeader title={"Please Select Application to be Rejected"}/>
           <Divider component={"div"}/>
           <List>
           {applications.map((application,index)=>
