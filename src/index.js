@@ -19,6 +19,7 @@ axios.defaults.timeout = 20000;
 
 const token = localStorage.getItem("access_token");
 const decodedJwt=jwt.decode(token);
+
 console.log(decodedJwt)
 
 // axios.interceptors.response.use(response=>{
