@@ -20,6 +20,8 @@ axios.defaults.timeout = 20000;
 const token = localStorage.getItem("access_token");
 const decodedJwt=jwt.decode(token);
 
+console.log(decodedJwt)
+
 // axios.interceptors.response.use(response=>{
 //   // let currentDate = Date.now();
 //   // let expiredDate=new Date(decodedJwt.exp*1000)
@@ -37,16 +39,16 @@ const decodedJwt=jwt.decode(token);
 // })
 
 if (token) {
-  // let currentDate = Date.now();
-  // let expiredDate=new Date(decodedJwt.exp*1000)
-  // console.log(moment(currentDate))
-  // console.log(moment(expiredDate))
-  // if (moment(currentDate).isSameOrBefore(moment(expiredDate))) {
-  //   console.log("token expired")
-  //   console.log(moment(currentDate))
-  //   console.log(moment(expiredDate))
-  //   localStorage.clear();
-  // }
+  let currentDate = Date.now();
+  let expiredDate=new Date(decodedJwt.exp*1000)
+  console.log(moment(currentDate))
+  console.log(moment(expiredDate))
+  if (moment(currentDate).isSameOrAfter(moment(expiredDate))) {
+    console.log("token expired")
+    console.log(moment(currentDate))
+    console.log(moment(expiredDate))
+    localStorage.clear();
+  }
   axios.defaults.headers.common = {
     "Authorization": `Bearer ${token}`
   };
