@@ -9,7 +9,7 @@ import { HOME } from "./config/routes-constant/OfficeRoutes";
 import moment from "moment";
 // import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
 
-var jwt = require("jsonwebtoken");
+// var jwt = require("jsonwebtoken");
 
 axios.defaults.baseURL = ApiRoutes.BASE_URL;
 axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
@@ -18,10 +18,8 @@ axios.defaults.headers.get["Access-Control-Allow-Origin"] = "http://127.0.0.1:30
 axios.defaults.timeout = 20000;
 
 const token = localStorage.getItem("access_token");
-const decodedJwt=jwt.decode(token);
-console.log(decodedJwt)
-
-
+// const decodedJwt=jwt.decode(token);
+// console.log(decodedJwt)
 
 // axios.interceptors.response.use(response=>{
 //   // let currentDate = Date.now();
@@ -40,10 +38,10 @@ console.log(decodedJwt)
 // })
 
 if (token) {
-  let currentDate = Date.now();
-  let expiredDate=new Date(decodedJwt.exp*1000)
-  console.log(moment(currentDate))
-  console.log(moment(expiredDate))
+  // let currentDate = Date.now();
+  // let expiredDate=new Date(decodedJwt.exp*1000)
+  // console.log(moment(currentDate))
+  // console.log(moment(expiredDate))
   // if (moment(currentDate).isSameOrBefore(moment(expiredDate))) {
   //   console.log("token expired")
   //   console.log(moment(currentDate))
