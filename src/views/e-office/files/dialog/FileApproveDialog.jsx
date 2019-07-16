@@ -23,7 +23,7 @@ import axios from "axios";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { ArrayToString } from "../../../../utils/ErrorUtil";
-import SendMessage from "./common/SendMessage";
+import moment from "moment";
 
 const styles = {
   appBar: {
@@ -42,7 +42,7 @@ function Transition(props) {
 }
 
 function getSteps() {
-  return ["Select Application", "Select Draft"," Approved"];
+  return ["Select Application", "Select Draft", " Approved"];
 }
 
 class FileApproveDialog extends Component {
@@ -53,10 +53,14 @@ class FileApproveDialog extends Component {
 
       selectedApplication: null,
       selectedDraft: null,
+      validUpto: null,
       submit: false
     };
   }
 
+  setValidity = (validUpto) => {
+    this.setState({ validUpto });
+  };
   selectApplication = (selectedApplication) => {
     this.setState({ selectedApplication });
     this.handleNext();
@@ -74,15 +78,18 @@ class FileApproveDialog extends Component {
     this.setState({ activeStep: activeStep - 1 });
   };
 
-  sendMessage=(message)=>{
+  sendMessage = (message) => {
     const { selectedApplication } = this.state;
-    console.log(message)
+    console.log(message);
     this.handleNext();
-  }
+  };
   confirmApproved = () => {
     this.setState({ submit: true });
     axios.post("/files/" + this.props.file.id + "/application/" + this.state.selectedApplication.id + "/approve",
-      { permit: this.state.selectedDraft.content })
+      {
+        permit: this.state.selectedDraft.content,
+        valid_upto: moment(this.state.validUpto).format("Y/M/D")
+      })
       .then(res => {
         if (res.data.status) {
           this.setGlobal({ successMsg: ArrayToString(res.data.messages) });
@@ -92,8 +99,8 @@ class FileApproveDialog extends Component {
         }
       })
       .catch(err => {
-        console.log("error",err)
-        this.setGlobal({ errorMsg: err.toString() })
+        console.log("error", err);
+        this.setGlobal({ errorMsg: err.toString() });
       })
       .finally(() => this.setState({ submit: false }));
   };
@@ -104,7 +111,8 @@ class FileApproveDialog extends Component {
         return <SelectApprovedApplication file={this.props.file} onSelectApplication={this.selectApplication}
                                           onNext={this.handleNext}/>;
       case 1:
-        return <SelectApprovedDraft file={this.props.file} onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
+        return <SelectApprovedDraft file={this.props.file} onSetValidity={this.setValidity}
+                                    onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
       // case 2:
       //   return <SendMessage application={this.state.selectedApplication} onBack={this.handleBack}
       //                       onMessageSend={this.sendMessage}/>;

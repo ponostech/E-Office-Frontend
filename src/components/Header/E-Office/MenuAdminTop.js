@@ -6,6 +6,7 @@ import CustomDropdown from "../../CustomDropdown/CustomDropdown";
 import Icon from "@material-ui/core/es/Icon/Icon";
 import { LoginService } from "../../../services/LoginService";
 import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
+import OfficeContextMenu from "../../OfficeContextMenu";
 
 const styles = {
   menuWrapper: {
@@ -19,6 +20,16 @@ const styles = {
   }
 };
 
+const contextMenu={
+  title:"text",
+  icon:<Icon>close</Icon>,
+  textOnly:false,
+  menuItems:[
+    {text:"item one",onClick:e=>console.log("data")},
+    {text:"item one",icon:<Icon fontSize={"small"}>edit</Icon>,onClick:e=>console.log("data")},
+  ]
+
+}
 const menu = (props) => {
   const { history, classes } = props;
   const currentUser = JSON.parse(localStorage.getItem("current_user"));
@@ -154,6 +165,7 @@ const menu = (props) => {
         <NavLink to={OfficeRoutes.SETTING}>
           <IconButton><Icon>settings</Icon></IconButton>
         </NavLink>
+        <OfficeContextMenu menu={contextMenu}/>
 
         <Tooltip title={"Click here to log user out"}>
           <IconButton style={{ color: "red" }} onClick={() => {

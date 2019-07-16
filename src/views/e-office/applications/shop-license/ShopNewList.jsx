@@ -84,6 +84,7 @@ class ShopNewList extends Component {
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), { recipient_id })
     .then((res) => {
       if (res.data.status) {
+        this.setState({openAssignment:false});
         this.setGlobal({ successMsg: "Application is sent successfully" });
         this.componentDidMount()
       } else
@@ -118,7 +119,7 @@ class ShopNewList extends Component {
         }
       },
       {
-        name: "created_at",
+        name: "application_date",
         label: "APPLICATION DATE",
         options: {
           filter: false,

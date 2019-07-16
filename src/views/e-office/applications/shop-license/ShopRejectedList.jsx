@@ -90,7 +90,7 @@ class ShopReSubmitList extends Component {
         label: "PROPOSED LOCATION",
       },
       {
-        name: "created_at",
+        name: "application_date",
         label: "APPLICATION DATE",
         options: {
           filter: false,

@@ -71,7 +71,7 @@ const SimplePopper = (props) => {
                         Settings
                       </MenuItem>
                       <MenuItem onClick={() => logOut(props)} className={classes.menuList}>
-                        Log Out <Icon className={classes.logOut}>power_settings_new</Icon>
+                         <Icon className={classes.logOut}>power_settings_new</Icon>Log Out
                       </MenuItem>
                     </MenuList>
                   </ClickAwayListener>

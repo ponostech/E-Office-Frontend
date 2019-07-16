@@ -50,8 +50,8 @@ class SingleApplicationSendBackDialog extends Component {
     const { reason, attachment } = this.state;
     const { application } = this.props;
     let data = {
-      messageable_id: application.id,
-      messageable_type: application.type,
+      application_id: application.id,
+      application_type: application.type,
       text: reason,
       attachment
     };

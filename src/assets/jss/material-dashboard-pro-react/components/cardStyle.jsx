@@ -41,9 +41,9 @@ const cardStyle = {
   },
   cardRaised: {
     boxShadow:
-      "0 16px 38px -12px rgba(" +
+      "0 16px 10px -12px rgba(" +
       hexToRgb(blackColor) +
-      ", 0.56), 0 4px 25px 0px rgba(" +
+      ", 0.12), 0 4px 25px 0px rgba(" +
       hexToRgb(blackColor) +
       ", 0.12), 0 8px 10px -5px rgba(" +
       hexToRgb(blackColor) +

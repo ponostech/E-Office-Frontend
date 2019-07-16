@@ -14,6 +14,7 @@ import ApplicationState from "../../../../../utils/ApplicationState";
 import { LoginService } from "../../../../../services/LoginService";
 import SingleApplicationSendBackDialog from "../../../common/SingleApplicationSendBackDialog";
 import ApplicationService from "../../../../../services/ApplicationService";
+import ConfirmDialog from "../../../../../components/ConfirmDialog";
 
 // hoarding/:id/applications
 function TabContainer({ children, dir }) {
@@ -36,7 +37,8 @@ class FileApplications extends Component {
     tabValue: 0,
     err: "",
     submit: false,
-    submitTitle: "Send Back Application"
+    submitTitle: "Send Back Application",
+    confirmReceive:false
   };
 
   componentDidMount() {
@@ -74,9 +76,9 @@ class FileApplications extends Component {
     }).map(val => this.listApplications(val, status));
   };
 
-  receiveApplication = (application) => {
-    this.setState({ submit: true });
-    let url = UPDATE_FILE_APPLICATION(this.props.file.id, application.id);
+  receiveApplication = () => {
+    this.setState({receiveConfirm:false,submit:true,submitTitle:"Receiving Application"})
+    let url = UPDATE_FILE_APPLICATION(this.props.file.id, this.state.selectedApplication.id);
     axios.post(url, { status: ApplicationState.UNDER_PROCESS_APPLICATION })
       .then(res => {
         if (res.data.status) {
@@ -131,7 +133,7 @@ class FileApplications extends Component {
                           type={fileable_type} click={this.viewDetails}>
       {
         status === "new" && allowed && <Tooltip title={"Receive Application"}>
-          <IconButton href={"#"} onClick={event => this.receiveApplication(val)}>
+          <IconButton href={"#"} onClick={event => this.setState({confirmReceive:true,selectedApplication:val})}>
             <Icon color={"primary"}>desktop_mac</Icon>
           </IconButton>
         </Tooltip>
@@ -145,12 +147,15 @@ class FileApplications extends Component {
   };
 
   onSendBackApplication = (data) => {
-    data.messageable_type=this.props.file.fileable_type;
+    data.application_type=this.props.file.fileable_type;
     this.setState({ openSendBackDialog: false });
     this.setState({ submit: true, submitTitle: "Send Back Application" });
     this.applicationService.sendBack(data,
       errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => this.setGlobal({ successMsg }))
+      successMsg => {
+      this.setGlobal({ successMsg })
+      this.componentDidMount();
+      })
       .finally(() => this.setState({ submit: false }));
   };
   handleTabChange = (event, newValue) => this.setState({ tabValue: newValue });
@@ -164,7 +169,7 @@ class FileApplications extends Component {
   closeStatus = () => this.setState({ err: "" });
 
   render() {
-    const { data, loading, tabValue, err, openDetails, openSendBackDialog, singleData, selectedApplication } = this.state;
+    const { data, loading, tabValue, err, openDetails, openSendBackDialog, singleData, confirmReceive,selectedApplication } = this.state;
     const newList = this.getByStatus(data, "new");
     const inProcessList = this.getByStatus(data, "in-process");
     const sentBackList = this.getByStatus(data, "sent-back");
@@ -223,8 +228,7 @@ class FileApplications extends Component {
         </div>
       </div>
       <Divider/>
-      <SubmitDialog open={this.state.submit} text={"Please wait ..."} title={"Receive Application"}/>
-      {err && <ErrorHandler messages={err} onClose={this.closeStatus}/>}
+      <ConfirmDialog open={confirmReceive} onCancel={()=>this.setState({confirmReceive:false})} onConfirm={this.receiveApplication}/>
       {openDetails &&
       <ApplicationDetailsDialog type={this.props.file.fileable_type} open={openDetails} title='View Application Details'
                                 content={singleData}
