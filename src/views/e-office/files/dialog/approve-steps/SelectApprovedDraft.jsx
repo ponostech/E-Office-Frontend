@@ -49,11 +49,11 @@ class SelectApprovedDraft extends Component {
 
   render() {
     const { drafts, selectedDraft, validity, validityError } = this.state;
-    const { onBack, onDraftSelect,onSetValidity } = this.props;
+    const { onBack, onDraftSelect,onSetValidity,createDraft } = this.props;
     return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
-          <CardHeader title={"Please Select Draft to Approved"}/>
+          {drafts.length!==0 &&<CardHeader title={"Please Select Draft to Approved"}/>}
           <Divider component={"div"}/>
           <List>
             {drafts.map((draft, index) =>
@@ -64,6 +64,7 @@ class SelectApprovedDraft extends Component {
                 </IconButton>
               </DetailViewRow>
             )}
+            {drafts.length===0 && <Button href={"#"} variant={"text"} color={"primary"} onClick={event => createDraft()}>Create Draft</Button>}
           </List>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DatePicker

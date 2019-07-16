@@ -111,7 +111,7 @@ class FileApproveDialog extends Component {
         return <SelectApprovedApplication file={this.props.file} onSelectApplication={this.selectApplication}
                                           onNext={this.handleNext}/>;
       case 1:
-        return <SelectApprovedDraft file={this.props.file} onSetValidity={this.setValidity}
+        return <SelectApprovedDraft createDraft={this.props.createDraft} file={this.props.file} onSetValidity={this.setValidity}
                                     onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
       // case 2:
       //   return <SendMessage application={this.state.selectedApplication} onBack={this.handleBack}
