@@ -13,6 +13,7 @@ import TextEditor from "../../../common/Editor";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import CalendarIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import ApplicationService from "../../../../../services/ApplicationService";
 
 class SelectApprovedDraft extends Component {
   constructor(props) {
@@ -22,8 +23,9 @@ class SelectApprovedDraft extends Component {
       selectedDraft: null,
 
       validity: null,
-      validityError: ""
+      validityError: "",
     };
+    this.applicationService = new ApplicationService();
   }
 
   componentDidMount() {
@@ -43,13 +45,22 @@ class SelectApprovedDraft extends Component {
     return "Created On: " + moment(value.created_at).format("Do MMMM YYYY");
   };
 
-  selectDraft = (draft) => {
-    this.setState({ selectedDraft: draft });
+  selectDraft = (selectedDraft) => {
+    const { application, file } = this.props;
+    let params={
+      application_id:application.id,
+      application_type:file.fileable_type
+    }
+    this.applicationService.getDraft(selectedDraft.id,params,
+      errorMsg=>this.setGlobal({errorMsg}),
+      selectedDraft=>this.setState({selectedDraft}))
+      .finally(()=>console.log("draft request complete"))
+    // this.setState({ selectedDraft: draft });
   };
 
   render() {
     const { drafts, selectedDraft, validity, validityError } = this.state;
-    const { onBack, onDraftSelect,onSetValidity,createDraft } = this.props;
+    const { onBack,application, onDraftSelect,onSetValidity,createDraft } = this.props;
     return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
@@ -116,6 +127,7 @@ class SelectApprovedDraft extends Component {
 
 SelectApprovedDraft.propTypes = {
   file: PropTypes.object.isRequired,
+  application: PropTypes.object.isRequired,
   onDraftSelect: PropTypes.func.isRequired,
   onSetValidity: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired
