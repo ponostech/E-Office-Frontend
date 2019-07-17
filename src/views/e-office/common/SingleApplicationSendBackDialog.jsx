@@ -84,7 +84,7 @@ class SingleApplicationSendBackDialog extends Component {
           </List>
           <FileUpload
             required={true}
-            applicationName={"application-messages"}
+            applicationName={"sendback-messages"}
             onUploadSuccess={(data) => {
               this.setState(state => {
                 state.attachment = data.location;
