@@ -139,6 +139,7 @@ export class ApiRoutes {
 
   static LIST_CHALLAN = (status) => `/challans/${status}`;
   static SEND_BACK_APPLICATION="/application/sent-back";
+  static SEND_MESSAGE=`application/sent-sms`;
 
   static UPDATE_LICENSE_TEMPLATE(id) {
     return `/permit-templates/${id}`;

@@ -231,7 +231,7 @@ class FileApplications extends Component {
       <ConfirmDialog open={confirmReceive} onCancel={()=>this.setState({confirmReceive:false})} onConfirm={this.receiveApplication}/>
       {openDetails &&
       <ApplicationDetailsDialog type={this.props.file.fileable_type} open={openDetails} title='View Application Details'
-                                content={singleData}
+                                application={singleData}
                                 onClose={this.closeDetails}/>}
       {openSendBackDialog &&
       <SingleApplicationSendBackDialog onClose={e => this.setState({ openSendBackDialog: false })}
