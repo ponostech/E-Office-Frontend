@@ -7,9 +7,11 @@ import {
   Dialog,
   DialogActions,
   Divider,
+  Grid,
   Icon,
   IconButton,
   InputAdornment,
+  List,
   Slide,
   TextField,
   Toolbar,
@@ -20,7 +22,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import DialogContent from "@material-ui/core/DialogContent";
 import LoadingView from "../../../common/LoadingView";
 import PropTypes from "prop-types";
-import OfficeSelect from "../../../../components/OfficeSelect";
+import DetailViewRow from "../../common/DetailViewRow";
+import { getApplicationTitle } from "./common/ApplicationResolver";
 
 
 const styles = {
@@ -43,93 +46,120 @@ class ImposedFineDialog extends Component {
   constructor(props) {
     super(props);
 
-    this.state={
-      application:null,
+    this.state = {
+      application: null,
       reason: "",
       amount: 0,
 
       applicationError: "",
       reasonError: "",
-      amountError: "",
+      amountError: ""
 
-      applications:[]
-    }
+    };
   }
-  handleClose=()=>{
-    this.props.onClose(null);
+
+  componentDidMount() {
+    const { file } = this.props;
+    this.setState({ application: this.props.application });
   }
-  onChange=(name,value)=>{
-    this.setState({[name]:value})
-  }
-  onBlur=(name,value)=>{
+
+  onChange = (name, value) => {
+    this.setState({ [name]: value });
+  };
+  clear = () => this.setState({
+    application: null,
+    reason: "",
+    amount: 0
+  });
+  imposeFine = () => {
+    const { application, file } = this.props;
+    const { reason, amount } = this.state;
+    let data = {
+      challanable_id: application.id,
+      challanable_type: application.file.fileable_type,
+      detail: reason,
+      amount
+    };
+    this.clear();
+    this.props.imposeFine(data);
+  };
+  onBlur = (name, value) => {
     switch (name) {
       case "application":
-        value?this.setState({applicationError:""}):this.setState({applicationError:"Application is required"})
+        value ? this.setState({ applicationError: "" }) : this.setState({ applicationError: "Application is required" });
         break;
       case "reason":
-        value?this.setState({reasonError:""}):this.setState({reasonError:"Reason is required"})
+        value ? this.setState({ reasonError: "" }) : this.setState({ reasonError: "Reason is required" });
         break;
       case "amount":
-        value?this.setState({ amountError: ""}):this.setState({amountError:"Amount is required"});
+        value ? this.setState({ amountError: "" }) : this.setState({ amountError: "Amount is required" });
         break;
       default:
         break;
     }
-  }
+  };
 
   render() {
-    const { application, applications, reason, amount } = this.state;
+    const { application, reason, amount, loading } = this.state;
     const { applicationError, reasonError, amountError } = this.state;
     const { open, onClose, classes } = this.props;
 
+    let val = getApplicationTitle(application);
     let content = (
       <>
-        <OfficeSelect
-          value={application}
-          label={"Select Application"}
-          name={"application"}
-          variant={"outlined"}
-          margin={"dense"}
-          fullWidth={true}
-          required={true}
-          helperText={applicationError}
-          error={Boolean(applicationError)}
-          onBlur={event => this.onBlur("application", event.target.value)}
-          onChange={val => this.onChange("application", val)}
-          options={applications}/>
-        <TextField name={"reason"}
-                   value={reason}
-                   margin={"dense"}
-                   fullWidth={true}
-                   variant={"outlined"}
-                   onChange={event => this.onChange("reason", event.target.value)}
-                   label={"Reason"}
-                   required={true}
-                   onBlur={event => this.onBlur("reason", event.target.value)}
-                   error={Boolean(reasonError)}
-                   helperText={reasonError}
-        />
-        <TextField name={"amount"}
-                   InputProps={{
-                     inputProps: {
-                       min: 0
-                     },
-                     startAdornment: <InputAdornment position={"start"}>
-                       <Icon color={"action"}>rupee</Icon>
-                     </InputAdornment>
-                   }}
-                   type={"number"}
-                   value={amount}
-                   margin={"dense"}
-                   fullWidth={true}
-                   variant={"outlined"}
-                   onChange={event => this.onChange("amount", event.target.value)}
-                   label={"Amount"}
-                   required={true}
-                   onBlur={event => this.onBlur("amount", event.target.value)}
-                   error={Boolean(amountError)}
-                   helperText={amountError}
-        />
+        <Grid container={true} spacing={3}>
+          <Grid sm={12} md={12} item={true}>
+
+            <List>
+              {
+                application &&
+                <DetailViewRow primary={val.title} secondary={val.subtitle}/>
+              }
+            </List>
+
+          </Grid>
+
+          <Grid sm={12} md={12} item={true}>
+            <TextField name={"amount"}
+                       InputProps={{
+                         inputProps: {
+                           min: 0
+                         },
+                         startAdornment: <InputAdornment position={"start"}>
+                           <Icon color={"action"} fontSize={"small"}>account_balance_wallet</Icon>
+                         </InputAdornment>
+                       }}
+                       type={"number"}
+                       value={amount}
+                       margin={"dense"}
+                       fullWidth={true}
+                       variant={"outlined"}
+                       onChange={event => this.onChange("amount", event.target.value)}
+                       label={"Amount"}
+                       required={true}
+                       onBlur={event => this.onBlur("amount", event.target.value)}
+                       error={Boolean(amountError)}
+                       helperText={amountError}
+            />
+          </Grid>
+          <Grid sm={12} md={12} item={true}>
+            <TextField name={"reason"}
+                       value={reason}
+                       multiline={true}
+                       rows={3}
+                       margin={"dense"}
+                       fullWidth={true}
+                       variant={"outlined"}
+                       onChange={event => this.onChange("reason", event.target.value)}
+                       label={"Reason"}
+                       required={true}
+                       onBlur={event => this.onBlur("reason", event.target.value)}
+                       error={Boolean(reasonError)}
+                       helperText={reasonError}
+            />
+          </Grid>
+
+        </Grid>
       </>
     );
     return (
@@ -137,18 +167,18 @@ class ImposedFineDialog extends Component {
         fullWidth={true}
         maxWidth={"sm"}
         open={open}
-        onClose={this.handleClose.bind(this)}
+        onClose={onClose}
         TransitionComponent={Transition}
       >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={this.handleClose.bind(this)} aria-label="Close">
+            <IconButton href={"#"} color="inherit" onClick={onClose} aria-label="Close">
               <CloseIcon/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-              Cash Payment
+              Impose Fine
             </Typography>
-            <Button href={"#"} onClick={this.handleClose.bind(this)} color="inherit">
+            <Button href={"#"} onClick={onClose} color="inherit">
               Close
             </Button>
           </Toolbar>
@@ -162,10 +192,11 @@ class ImposedFineDialog extends Component {
         </DialogContent>
         <Divider component={"div"}/>
         <DialogActions>
-          <Button href={"#"} variant={"outlined"} color={"primary"} onClick={this.handleClose.bind(this)}>Impose
+          <Button disabled={!Boolean(amount) || !Boolean(reason)} href={"#"} variant={"outlined"} color={"primary"}
+                  onClick={event => this.imposeFine()}>Impose
             Fine</Button>
           <Button href={"#"} variant={"outlined"} color={"secondary"}
-                  onClick={this.handleClose.bind(this)}>Close</Button>
+                  onClick={onClose}>Close</Button>
         </DialogActions>
       </Dialog>
     );
@@ -175,6 +206,7 @@ class ImposedFineDialog extends Component {
 ImposedFineDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  imposeFine: PropTypes.func.isRequired,
   application: PropTypes.object.isRequired
 };
 

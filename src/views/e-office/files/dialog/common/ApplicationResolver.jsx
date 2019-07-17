@@ -8,6 +8,9 @@ export const getApplicationTitle=(application)=>{
   let title = "";
   let subtitle = "";
 
+  if (!Boolean(application)){
+    return {title:"",subtitle:""}
+  }
   switch (application.file.fileable_type) {
     case "App\\Shop":
       title = "Applicant: " + application.owner;
