@@ -23,6 +23,7 @@ import ShopLicenseList from "../views/landing-pages/license-checking/ShopLicense
 import HotelLicenseList from "../views/landing-pages/license-checking/HotelLicenseList";
 import BannerList from "../views/landing-pages/license-checking/BannerList";
 import Test from "../views/Test";
+import { HOME } from "../config/routes-constant/OfficeRoutes";
 
 class LayoutLanding extends React.Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class LayoutLanding extends React.Component {
     else if (LoginService.isAdvertiser()) window.location.replace(ADVERTISER_DASHBOARD);
     else if (LoginService.hasRole("commissioner")) window.location.replace(E_OFFICE);
     else if (LoginService.hasRole("secretary")) window.location.replace(E_OFFICE);
+    else window.location.replace(HOME)
 
   }
 
@@ -61,6 +63,8 @@ class LayoutLanding extends React.Component {
               <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
 
               <Route exact={true} path={OfficeRoutes.GRIEVANCE_CREATE} component={GrievanceCreate}/>
+
+              <Route exact={true} path={OfficeRoutes.RESUBMIT_SHOP_LICENSE_APPLICATION(":id")} component={GrievanceCreate}/>
               <Route exact={true} path={"/test"} component={Test}/>
 
             </Switch>
