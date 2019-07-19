@@ -36,7 +36,7 @@ class ApplicationDetailsDialog extends React.Component {
   };
 
   imposeFine = (data) => {
-    this.setState({ openFine: false });
+    this.setState({ openFineDialog: false });
     this.setState({ submit: true, submitTitle: "Impose Fine" });
     this.applicationService.imposeFine(data,
       errorMsg => this.setGlobal({ errorMsg }),

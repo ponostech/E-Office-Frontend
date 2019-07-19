@@ -2,10 +2,21 @@ import React, { Component } from "reactn";
 import axios from "axios";
 import LoadingView from "../../../../common/LoadingView";
 import DetailViewRow from "../../../common/DetailViewRow";
-import { AppBar, CardHeader, Icon, List, Tab, Tabs, Tooltip, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  CardHeader,
+  Icon,
+  List,
+  ListItemSecondaryAction,
+  ListItemText,
+  Tab,
+  Tabs,
+  Tooltip,
+  Typography,
+  ListItem
+} from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
 import Divider from "@material-ui/core/Divider";
-import ErrorHandler from "../../../../common/StatusHandler";
 import ApplicationDetailsDialog from "../../../../common/ApplicationDetailsDialog";
 import IconButton from "@material-ui/core/IconButton";
 import SubmitDialog from "../../../../../components/SubmitDialog";
@@ -15,6 +26,9 @@ import { LoginService } from "../../../../../services/LoginService";
 import SingleApplicationSendBackDialog from "../../../common/SingleApplicationSendBackDialog";
 import ApplicationService from "../../../../../services/ApplicationService";
 import ConfirmDialog from "../../../../../components/ConfirmDialog";
+import { APPLICATION_MENUITEM, ApplicationContextMenu } from "../../../common/ApplicationContextMenu";
+import ImposedFineDialog from "../../dialog/ImposedFineDialog";
+import SendMessageDialog from "../../dialog/common/SendMessageDialog";
 
 // hoarding/:id/applications
 function TabContainer({ children, dir }) {
@@ -38,7 +52,12 @@ class FileApplications extends Component {
     err: "",
     submit: false,
     submitTitle: "Send Back Application",
-    confirmReceive:false
+
+    confirmReceive: false,
+    openMenu: false,
+    openFineDialog: false,
+    openSendMessageDialog:false
+
   };
 
   componentDidMount() {
@@ -75,9 +94,25 @@ class FileApplications extends Component {
       if (val.status === status) return true;
     }).map(val => this.listApplications(val, status));
   };
+  onMenuClick = (menu) => {
+    switch (menu) {
+      case APPLICATION_MENUITEM.RECEIVE_APPLICATION:
+        this.setState({ confirmReceive: true });
+        break;
+      case APPLICATION_MENUITEM.SEND_BACK:
+        this.setState({ openSendMessageDialog: true });
+        break;
+        case APPLICATION_MENUITEM.SEND_MESSAGE:
+        this.setState({ openSendMessageDialog: true });
+        break;
+      case APPLICATION_MENUITEM.IMPOSE_FINE:
+        this.setState({ openFineDialog: true });
+        break;
+    }
+  };
 
   receiveApplication = () => {
-    this.setState({receiveConfirm:false,submit:true,submitTitle:"Receiving Application"})
+    this.setState({ receiveConfirm: false, submit: true, submitTitle: "Receiving Application" });
     let url = UPDATE_FILE_APPLICATION(this.props.file.id, this.state.selectedApplication.id);
     axios.post(url, { status: ApplicationState.UNDER_PROCESS_APPLICATION })
       .then(res => {
@@ -129,32 +164,70 @@ class FileApplications extends Component {
         break;
 
     }
-    return <DetailViewRow key={val.id} primary={title} secondary={subtitle} value={val}
-                          type={fileable_type} click={this.viewDetails}>
-      {
-        status === "new" && allowed && <Tooltip title={"Receive Application"}>
-          <IconButton href={"#"} onClick={event => this.setState({confirmReceive:true,selectedApplication:val})}>
-            <Icon color={"primary"}>desktop_mac</Icon>
-          </IconButton>
-        </Tooltip>
-      }
-      <Tooltip title={"Send Back Application"}>
-        <IconButton href={"#"} onClick={event => this.setState({ selectedApplication: val, openSendBackDialog: true })}>
-          <Icon color={"primary"}>send</Icon>
-        </IconButton>
-      </Tooltip>
-    </DetailViewRow>;
+    let row=(
+      <ListItem style={{boxShadow:"0px 1px 5px 0px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 3px 1px -2px rgba(0,0,0,0.12)",borderRadius:3}}>
+        <ListItemText primary={title} secondary={subtitle} onClick={this.viewDetails}/>
+        <ListItemSecondaryAction>
+          <Tooltip title={"Open Menu"}>
+            <IconButton href={"#"} onClick={event => this.setState({ openMenu: true, selectedApplication: val })}>
+              <Icon color={"action"}>more_vert</Icon>
+            </IconButton>
+          </Tooltip>
+        </ListItemSecondaryAction>
+      </ListItem>
+    )
+    return row
+    // return <DetailViewRow style={{
+    //   boxShadow: "0px 10px 20px 0px rgba(0,0,0,0.16)"
+    // }} key={val.id} primary={title} secondary={subtitle} value={val}
+    //                       type={fileable_type} click={this.viewDetails}>
+    //   <Tooltip title={"Open Menu"}>
+    //     <IconButton href={"#"} onClick={event => this.setState({ openMenu: true, selectedApplication: val })}>
+    //       <Icon color={"action"}>more_vert</Icon>
+    //     </IconButton>
+    //   </Tooltip>
+      {/*{*/}
+      {/*  status === "new" && allowed && <Tooltip title={"Receive Application"}>*/}
+      {/*    <IconButton href={"#"} onClick={event => this.setState({ confirmReceive: true, selectedApplication: val })}>*/}
+      {/*      <Icon color={"primary"}>more_vert</Icon>*/}
+      {/*    </IconButton>*/}
+      {/*  </Tooltip>*/}
+      {/*}*/}
+      {/*<Tooltip title={"Send Back Application"}>*/}
+      {/*  <IconButton href={"#"} onClick={event => this.setState({ selectedApplication: val, openSendBackDialog: true })}>*/}
+      {/*    <Icon color={"primary"}>send</Icon>*/}
+      {/*  </IconButton>*/}
+      {/*</Tooltip>*/}
+    // </DetailViewRow>;
+  };
+  imposeFine = (data) => {
+    this.setState({ openFineDialog: false });
+    this.setState({ submit: true, submitTitle: "Impose Fine" });
+    this.applicationService.imposeFine(data,
+      errorMsg => this.setGlobal({ errorMsg }),
+      successMsg => this.setGlobal({ successMsg }))
+      .finally(() => this.setState({ submit: false }));
+  };
+
+  sendMessage = (msg) => {
+    this.setState({ openSendMessageDialog: false });
+    this.setState({ submit: true, submitTitle: "Sending Message" });
+    this.applicationService.sendMessage(msg,
+      errorMsg => this.setGlobal({ errorMsg }),
+      successMsg => this.setGlobal({ successMsg }))
+      .finally(() => this.setState({ submit: false }));
+    console.log(msg);
   };
 
   onSendBackApplication = (data) => {
-    data.application_type=this.props.file.fileable_type;
+    data.application_type = this.props.file.fileable_type;
     this.setState({ openSendBackDialog: false });
     this.setState({ submit: true, submitTitle: "Send Back Application" });
     this.applicationService.sendBack(data,
       errorMsg => this.setGlobal({ errorMsg }),
       successMsg => {
-      this.setGlobal({ successMsg })
-      this.componentDidMount();
+        this.setGlobal({ successMsg });
+        this.componentDidMount();
       })
       .finally(() => this.setState({ submit: false }));
   };
@@ -169,14 +242,14 @@ class FileApplications extends Component {
   closeStatus = () => this.setState({ err: "" });
 
   render() {
-    const { data, loading, tabValue, err, openDetails, openSendBackDialog, singleData, confirmReceive,selectedApplication } = this.state;
+    const { data, loading, tabValue, openMenu, openDetails,openSendMessageDialog, openSendBackDialog, openFineDialog, singleData, confirmReceive, selectedApplication } = this.state;
     const newList = this.getByStatus(data, "new");
     const inProcessList = this.getByStatus(data, "in-process");
     const sentBackList = this.getByStatus(data, "sent-back");
     const reSubmitList = this.getByStatus(data, "re-submit");
     const rejectedList = this.getByStatus(data, "rejected");
     const cancelledList = this.getByStatus(data, "cancelled");
-      const approvedList = this.getByStatus(data, "approved");
+    const approvedList = this.getByStatus(data, "approved");
 
     const tabBar =
       <AppBar position="static" color="default">
@@ -206,7 +279,8 @@ class FileApplications extends Component {
       >
         <TabContainer>{loading ? <LoadingView/> :
           <List>{newList.length ? newList : "Application Not Found"}</List>}</TabContainer>
-        <TabContainer>{loading ? <LoadingView/> : <List>{sentBackList.length ? sentBackList : "Application Not Found"}</List>}</TabContainer>
+        <TabContainer>{loading ? <LoadingView/> :
+          <List>{sentBackList.length ? sentBackList : "Application Not Found"}</List>}</TabContainer>
         <TabContainer>{loading ? <LoadingView/> :
           <List>{reSubmitList.length ? reSubmitList : "Application Not Found"}</List>}</TabContainer>
         <TabContainer>{loading ? <LoadingView/> :
@@ -222,13 +296,14 @@ class FileApplications extends Component {
     return <>
       <CardHeader title="List of Applications" subheader=""/>
       <div>
-        <div style={{flexGrow: 1}}>
+        <div style={{ flexGrow: 1 }}>
           {tabBar}
           {tabContent}
         </div>
       </div>
       <Divider/>
-      <ConfirmDialog open={confirmReceive} onCancel={()=>this.setState({confirmReceive:false})} onConfirm={this.receiveApplication}/>
+      <ConfirmDialog open={confirmReceive} onCancel={() => this.setState({ confirmReceive: false })}
+                     onConfirm={this.receiveApplication}/>
       {openDetails &&
       <ApplicationDetailsDialog type={this.props.file.fileable_type} open={openDetails} title='View Application Details'
                                 application={singleData}
@@ -238,7 +313,14 @@ class FileApplications extends Component {
                                        open={this.state.openSendBackDialog} application={selectedApplication}
                                        sendBackApplication={this.onSendBackApplication}/>}
 
+
+      <SendMessageDialog onClose={e => this.setState({ openSendMessageDialog: false })} open={openSendMessageDialog}
+                         application={selectedApplication} onMessageSend={this.sendMessage}/>
+      <ImposedFineDialog application={selectedApplication} open={openFineDialog}
+                         onClose={e => this.setState({ openFineDialog: false })} imposeFine={this.imposeFine}/>
       <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
+      <ApplicationContextMenu open={openMenu} onMenuClick={this.onMenuClick}
+                              onClose={e => this.setState({ openMenu: false })} application={selectedApplication}/>
     </>;
   }
 }

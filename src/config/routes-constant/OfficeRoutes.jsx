@@ -1,3 +1,5 @@
+export const RESUBMIT_SHOP_LICENSE_APPLICATION = (id) => `/shop-license/${id}/re-submit`;
+
 export const FILE_HEAD = "/e-office/file-head";
 export const ROOT = "/";
 export const LOGIN = "/auth/login";
@@ -53,13 +55,13 @@ export const FILE_CLOSED_LIST = "/e-office/files/closed";
 export const FILE_ARCHIVED_LIST = "/e-office/files/archived";
 export const FILE_IN_ACTIVE_LIST = "/e-office/files/new";
 export const FILE_DETAIL_ROUTE = (id) => {
-    return `/e-office/file/${id}`;
+  return `/e-office/file/${id}`;
 };
 export const SHOP_DETAIL_ROUTE = (id) => {
-    return `/e-office/applications/shop-license/${id}/new`;
+  return `/e-office/applications/shop-license/${id}/new`;
 };
 export const FILE_SEND = (id) => {
-    return `/files/${id}/send`;
+  return `/files/${id}/send`;
 };
 export const NEW_RECEIPT = "/e-office/receipt/new";
 export const EDIT_RECEIPT = (id) => `/e-office/receipt/${id}/edit`;
@@ -127,15 +129,15 @@ export const ADVERTISERS = "/e-office/advertisers";
 
 export const ADVERTISER_DETAIL = `/e-office/advertisers/:id/details`;
 
-export const ADVERTISER_NEW_LIST = '/e-office/applications/advertiser/new';
-export const ADVERTISER_IN_PROCESS_LIST = '/e-office/applications/advertiser/in-process';
-export const ADVERTISER_REJECT_LIST = '/e-office/applications/advertiser/reject';
-export const ADVERTISER_CANCEL_LIST = '/e-office/applications/advertiser/cancel';
-export const ADVERTISER_APPROVE_LIST = '/e-office/applications/advertiser/approved';
+export const ADVERTISER_NEW_LIST = "/e-office/applications/advertiser/new";
+export const ADVERTISER_IN_PROCESS_LIST = "/e-office/applications/advertiser/in-process";
+export const ADVERTISER_REJECT_LIST = "/e-office/applications/advertiser/reject";
+export const ADVERTISER_CANCEL_LIST = "/e-office/applications/advertiser/cancel";
+export const ADVERTISER_APPROVE_LIST = "/e-office/applications/advertiser/approved";
 
 export const CHALLAN_LIST = "/e-office/challans";
 
 
-export const GRIEVANCE_CREATE = '/grievance';
+export const GRIEVANCE_CREATE = "/grievance";
 
-export const NOT_FOUND = '/404/not-found';
+export const NOT_FOUND = "/404/not-found";
