@@ -55,7 +55,7 @@ const OfficeContextMenu = (props) => {
       >
         {menuItems.map((menuItem, index) =>
           <MenuItem component={"div"} button={""}>
-            <ListItem component={"div"} button={true} onClick={event => menuItem.onClick()}>
+            <ListItem component={"div"} button={true} onClick={event => menuItem.onClick(menuItem.name)}>
               {
                 menuItem.icon?
                   <>
