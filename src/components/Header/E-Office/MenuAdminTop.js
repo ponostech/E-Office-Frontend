@@ -20,20 +20,32 @@ const styles = {
   }
 };
 
-const contextMenu={
-  title:"text",
-  icon:<Icon>close</Icon>,
-  textOnly:false,
-  menuItems:[
-    {text:"item one",onClick:e=>console.log("data")},
-    {text:"item one",icon:<Icon fontSize={"small"}>edit</Icon>,onClick:e=>console.log("data")},
-  ]
 
-}
+
 const menu = (props) => {
   const { history, classes } = props;
   const currentUser = JSON.parse(localStorage.getItem("current_user"));
-
+  const onContextMenuClick=(menu)=>{
+    switch (menu) {
+      case "log_out":
+        new LoginService()
+          .logout(errorMsg => console.log(errorMsg), successMessage => history.push(OfficeRoutes.HOME))
+          .finally(() => console.log("log out request has been made"));
+        break;
+      case "my_account":
+        break;
+    }
+  }
+  const contextMenu={
+    icon:<Icon>account_circle_rounded</Icon>,
+    textOnly:false,
+    menuItems:[
+      {name:"profile", icon:<Icon fontSize={"small"}>user</Icon>,text:"My Account",onClick:onContextMenuClick},
+      {name:"profile", icon:<Icon fontSize={"small"}>edit</Icon>,text:"My Account",onClick:onContextMenuClick},
+      {name:"profile", icon:<Icon fontSize={"small"}>edit</Icon>,text:"My Account",onClick:onContextMenuClick},
+      {name:"log_out", icon:<Icon fontSize={"small"}>power_settings_new</Icon>,text:"Log out",onClick:onContextMenuClick},
+    ]
+  }
   return (
     <>
       <div className={classes.menuWrapper}>
@@ -148,7 +160,7 @@ const menu = (props) => {
           buttonText={"Admin Control"}
           buttonProps={{ color: "transparent" }}/>
 
-        <NavLink style={{padding:10,color:"#4d4d4d", textTransform: "capitalize", fontSize: 14}} to={OfficeRoutes.CHALLAN_LIST}>Challan</NavLink>
+        {/*<NavLink style={{padding:10,color:"#4d4d4d", textTransform: "capitalize", fontSize: 14}} to={OfficeRoutes.CHALLAN_LIST}>Challan</NavLink>*/}
 
         <CustomDropdown
           dropdownList={[
@@ -161,21 +173,8 @@ const menu = (props) => {
       <div className={classes.menuWrapper}>
         <Typography variant={"caption"}
                     color={"textSecondary"}>Hello {currentUser.staff.name} ({currentUser.staff.designation})</Typography>
-        <IconButton><Icon>account_circle_rounded</Icon></IconButton>
-        <NavLink to={OfficeRoutes.SETTING}>
-          <IconButton><Icon>settings</Icon></IconButton>
-        </NavLink>
-        <OfficeContextMenu menu={contextMenu}/>
 
-        <Tooltip title={"Click here to log user out"}>
-          <IconButton style={{ color: "red" }} onClick={() => {
-            new LoginService()
-              .logout(errorMessage => console.log(errorMessage), successMessage => history.push(OfficeRoutes.HOME))
-              .finally(() => console.log("log out request has been made"));
-          }}>
-            <Icon>power_settings_new</Icon>
-          </IconButton>
-        </Tooltip>
+        <OfficeContextMenu menu={contextMenu}/>
       </div>
     </>
   );

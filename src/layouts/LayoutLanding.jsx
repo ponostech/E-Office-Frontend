@@ -33,7 +33,7 @@ class LayoutLanding extends React.Component {
     else if (LoginService.isAdvertiser()) window.location.replace(ADVERTISER_DASHBOARD);
     else if (LoginService.hasRole("commissioner")) window.location.replace(E_OFFICE);
     else if (LoginService.hasRole("secretary")) window.location.replace(E_OFFICE);
-    else window.location.replace(HOME)
+    // else window.location.replace(HOME)
 
   }
 
