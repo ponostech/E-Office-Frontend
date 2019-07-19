@@ -78,11 +78,6 @@ class FileApproveDialog extends Component {
     this.setState({ activeStep: activeStep - 1 });
   };
 
-  sendMessage = (message) => {
-    const { selectedApplication } = this.state;
-    console.log(message);
-    this.handleNext();
-  };
   confirmApproved = () => {
     this.setState({ submit: true });
     axios.post("/files/" + this.props.file.id + "/application/" + this.state.selectedApplication.id + "/approve",

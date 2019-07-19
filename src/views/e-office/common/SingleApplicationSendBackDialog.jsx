@@ -63,7 +63,7 @@ class SingleApplicationSendBackDialog extends Component {
     const { reason } = this.state;
     let detail = getApplicationTitle(application);
     return (
-      <Dialog maxWidth={"md"} open={open} TransitionComponent={Transition} onClose={onClose} fullWidth={true}>
+      <Dialog maxWidth={"sm"} open={open} TransitionComponent={Transition} onClose={onClose} fullWidth={true}>
 
         <AppBar className={classes.appBar}>
           <Toolbar>

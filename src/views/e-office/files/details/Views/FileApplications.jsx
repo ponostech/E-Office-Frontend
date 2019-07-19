@@ -1,19 +1,18 @@
 import React, { Component } from "reactn";
 import axios from "axios";
 import LoadingView from "../../../../common/LoadingView";
-import DetailViewRow from "../../../common/DetailViewRow";
 import {
   AppBar,
   CardHeader,
   Icon,
   List,
+  ListItem,
   ListItemSecondaryAction,
   ListItemText,
   Tab,
   Tabs,
   Tooltip,
-  Typography,
-  ListItem
+  Typography
 } from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
 import Divider from "@material-ui/core/Divider";
@@ -56,7 +55,7 @@ class FileApplications extends Component {
     confirmReceive: false,
     openMenu: false,
     openFineDialog: false,
-    openSendMessageDialog:false
+    openSendMessageDialog: false
 
   };
 
@@ -100,9 +99,9 @@ class FileApplications extends Component {
         this.setState({ confirmReceive: true });
         break;
       case APPLICATION_MENUITEM.SEND_BACK:
-        this.setState({ openSendMessageDialog: true });
+        this.setState({ openSendBackDialog: true });
         break;
-        case APPLICATION_MENUITEM.SEND_MESSAGE:
+      case APPLICATION_MENUITEM.SEND_MESSAGE:
         this.setState({ openSendMessageDialog: true });
         break;
       case APPLICATION_MENUITEM.IMPOSE_FINE:
@@ -164,9 +163,12 @@ class FileApplications extends Component {
         break;
 
     }
-    let row=(
-      <ListItem style={{boxShadow:"0px 1px 5px 0px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 3px 1px -2px rgba(0,0,0,0.12)",borderRadius:3}}>
-        <ListItemText primary={title} secondary={subtitle} onClick={this.viewDetails}/>
+    let row = (
+      <ListItem style={{
+        boxShadow: "0px 1px 5px 0px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 3px 1px -2px rgba(0,0,0,0.12)",
+        borderRadius: 3
+      }}>
+        <ListItemText primary={title} secondary={subtitle} onClick={event => this.viewDetails(val)}/>
         <ListItemSecondaryAction>
           <Tooltip title={"Open Menu"}>
             <IconButton href={"#"} onClick={event => this.setState({ openMenu: true, selectedApplication: val })}>
@@ -175,30 +177,8 @@ class FileApplications extends Component {
           </Tooltip>
         </ListItemSecondaryAction>
       </ListItem>
-    )
-    return row
-    // return <DetailViewRow style={{
-    //   boxShadow: "0px 10px 20px 0px rgba(0,0,0,0.16)"
-    // }} key={val.id} primary={title} secondary={subtitle} value={val}
-    //                       type={fileable_type} click={this.viewDetails}>
-    //   <Tooltip title={"Open Menu"}>
-    //     <IconButton href={"#"} onClick={event => this.setState({ openMenu: true, selectedApplication: val })}>
-    //       <Icon color={"action"}>more_vert</Icon>
-    //     </IconButton>
-    //   </Tooltip>
-      {/*{*/}
-      {/*  status === "new" && allowed && <Tooltip title={"Receive Application"}>*/}
-      {/*    <IconButton href={"#"} onClick={event => this.setState({ confirmReceive: true, selectedApplication: val })}>*/}
-      {/*      <Icon color={"primary"}>more_vert</Icon>*/}
-      {/*    </IconButton>*/}
-      {/*  </Tooltip>*/}
-      {/*}*/}
-      {/*<Tooltip title={"Send Back Application"}>*/}
-      {/*  <IconButton href={"#"} onClick={event => this.setState({ selectedApplication: val, openSendBackDialog: true })}>*/}
-      {/*    <Icon color={"primary"}>send</Icon>*/}
-      {/*  </IconButton>*/}
-      {/*</Tooltip>*/}
-    // </DetailViewRow>;
+    );
+    return row;
   };
   imposeFine = (data) => {
     this.setState({ openFineDialog: false });
@@ -242,7 +222,7 @@ class FileApplications extends Component {
   closeStatus = () => this.setState({ err: "" });
 
   render() {
-    const { data, loading, tabValue, openMenu, openDetails,openSendMessageDialog, openSendBackDialog, openFineDialog, singleData, confirmReceive, selectedApplication } = this.state;
+    const { data, loading, tabValue, openMenu, openDetails, openSendMessageDialog, openSendBackDialog, openFineDialog, singleData, confirmReceive, selectedApplication } = this.state;
     const newList = this.getByStatus(data, "new");
     const inProcessList = this.getByStatus(data, "in-process");
     const sentBackList = this.getByStatus(data, "sent-back");
@@ -313,7 +293,6 @@ class FileApplications extends Component {
                                        open={this.state.openSendBackDialog} application={selectedApplication}
                                        sendBackApplication={this.onSendBackApplication}/>}
 
-
       <SendMessageDialog onClose={e => this.setState({ openSendMessageDialog: false })} open={openSendMessageDialog}
                          application={selectedApplication} onMessageSend={this.sendMessage}/>
       <ImposedFineDialog application={selectedApplication} open={openFineDialog}
@@ -321,8 +300,8 @@ class FileApplications extends Component {
       <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
       <ApplicationContextMenu open={openMenu} onMenuClick={this.onMenuClick}
                               onClose={e => this.setState({ openMenu: false })} application={selectedApplication}/>
-    </>;
-  }
+      </>;
+      };;
 }
 
 

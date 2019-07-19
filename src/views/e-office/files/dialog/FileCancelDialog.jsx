@@ -96,7 +96,7 @@ class FileCancelDialog extends Component {
         return <SelectCancelApplication file={this.props.file} onSelectApplication={this.selectApplication}
                                         onNext={this.handleNext}/>;
       case 1:
-        return <SelectCancelDraft file={this.props.file} onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
+        return <SelectCancelDraft application={this.state.selectedApplication} createCancelDraft={this.props.createCancelDraft} file={this.props.file} onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
       case 2:
         return <ConfirmCancel application={this.state.selectedApplication} draft={this.state.selectedDraft}
                               onBack={this.handleBack} confirmCancel={this.confirmCancel}/>;

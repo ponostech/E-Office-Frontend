@@ -84,12 +84,13 @@ class FileRejectDialog extends Component {
       .finally(()=>this.setState({submit:false}));
   }
 
+
   getStepContent=(step)=>{
     switch (step) {
       case 0:
         return <SelectRejectedApplication file={this.props.file} onSelectApplication={this.selectApplication} onNext={this.handleNext}/>;
       case 1:
-        return <SelectRejectedDraft file={this.props.file} onDraftSelect={this.selectDraft.bind(this)} onBack={this.handleBack}/>;
+        return <SelectRejectedDraft createRejectDraft={this.props.createRejectDraft} file={this.props.file} application={this.state.selectedApplication} onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
       case 2:
         return <ConfirmReject application={this.state.selectedApplication} draft={this.state.selectedDraft} onBack={this.handleBack} confirmReject={this.confirmReject}/>;
       default:

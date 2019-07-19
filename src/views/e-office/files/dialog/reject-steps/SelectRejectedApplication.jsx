@@ -8,17 +8,20 @@ import Divider from "@material-ui/core/Divider";
 import ApplicationResolver, { getApplicationTitle } from "../common/ApplicationResolver";
 import GridItem from "../../../../../components/Grid/GridItem";
 import GridContainer from "../../../../../components/Grid/GridContainer";
+import LoadingView from "../../../../common/LoadingView";
 
 class SelectRejectedApplication extends Component {
   constructor(props) {
     super(props);
     this.state={
       applications:[],
-      selectedApplication:null
+      selectedApplication:null,
+      loading:false
     }
   }
 
   componentDidMount() {
+    this.setState({loading:true})
     axios.get("/files/" + this.props.file.id + "/applications", { params: { status: "active" } })
       .then(res=>{
         if (res.data.status)
@@ -29,13 +32,14 @@ class SelectRejectedApplication extends Component {
       .catch(err=>{
         this.setGlobal({errorMsg:err.toString()})
       })
+      .finally(()=>this.setState({loading:false}))
   }
 
   selectApplication=(selectedApplication)=>{
     this.setState({selectedApplication})
   }
   render() {
-    const { applications,selectedApplication } = this.state;
+    const { applications,selectedApplication,loading } = this.state;
     const { onSelectApplication } = this.props;
 
     return (
@@ -43,7 +47,8 @@ class SelectRejectedApplication extends Component {
         <GridItem xs={12} sm={12} md={6}>
           <CardHeader title={"Please Select Application to be Rejected"}/>
           <Divider component={"div"}/>
-          <List>
+          {loading && <LoadingView/>}
+          <List component={"div"}>
           {applications.map((application,index)=>
             <DetailViewRow key={index} click={e=>this.selectApplication(application)} primary={getApplicationTitle(application).title} secondary={getApplicationTitle(application).subtitle}>
               <IconButton href={"#"} onClick={e=>this.selectApplication(application)}>

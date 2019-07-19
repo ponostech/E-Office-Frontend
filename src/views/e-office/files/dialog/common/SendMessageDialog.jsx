@@ -100,7 +100,7 @@ class SendMessageDialog extends Component {
       <>
         <Dialog
           fullWidth={true}
-          maxWidth={"md"}
+          maxWidth={"sm"}
           open={open}
           onClose={onClose}
           TransitionComponent={Transition}
