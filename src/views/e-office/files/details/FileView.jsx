@@ -423,6 +423,7 @@ class FileView extends Component {
         {openDraftReject && <FileDraftRejectDialog module={moduleName} file={file} open={openDraftReject}
                                                    onClose={this.closeDialog.bind(this, "openDraftReject")}/>}
         {openRejectDialog && <FileRejectDialog module={moduleName} file={file} open={openRejectDialog}
+                                               createRejectDraft={()=>this.setState({openRejectDialog:false,openDraftReject:true})}
                                                onClose={this.closeDialog.bind(this, "openRejectDialog")}/>}
 
         {openDraftCancel && <FileDraftCancelDialog module={moduleName} file={file} open={openDraftCancel}
@@ -432,6 +433,7 @@ class FileView extends Component {
                                                  onClose={this.closeDialog.bind(this, "openApproveDialog")}/>}
 
         {openCancelDialog && <FileCancelDialog module={moduleName} file={file} open={openCancelDialog}
+                                               createCancelDraft={()=>this.setState({openCancelDialog:false,openDraftCancel:true})}
                                                  onClose={this.closeDialog.bind(this, "openCancelDialog")}/>}
         {submitNote &&
         <SubmitDialog open={submitNote} title="Create Notesheet" text="Note is Creating ... Please wait"/>}

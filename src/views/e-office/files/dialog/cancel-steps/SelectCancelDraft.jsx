@@ -10,6 +10,7 @@ import moment from "moment";
 import GridContainer from "../../../../../components/Grid/GridContainer";
 import GridItem from "../../../../../components/Grid/GridItem";
 import TextEditor from "../../../common/Editor";
+import ApplicationService from "../../../../../services/ApplicationService";
 
 class SelectCancelDraft extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class SelectCancelDraft extends Component {
       drafts: [],
       selectedDraft:null
     };
+    this.applicationService=new ApplicationService();
   }
 
   componentDidMount() {
@@ -38,18 +40,28 @@ class SelectCancelDraft extends Component {
   };
 
   selectDraft=(selectedDraft)=>{
-    this.setState({selectedDraft})
+    const { application,file } = this.props;
+    let params={
+      application_id:application.id,
+      application_type:file.fileable_type
+    }
+    this.applicationService.getDraft(selectedDraft.id,params,
+      errorMsg=>this.setGlobal({errorMsg}),
+      selectedDraft=>this.setState({selectedDraft}))
+      .finally(()=>console.log("draft request complete"))
   }
   render() {
     const { drafts,selectedDraft } = this.state;
-    const { onBack, onDraftSelect } = this.props;
+    const { onBack, onDraftSelect,createCancelDraft } = this.props;
 
     return (
       <GridContainer>
 
-        <GridItem md={6}>
-          <CardHeader title={"Please Select Draft to Canceled"}/>
+        <GridItem md={4}>
+          <CardHeader title={"Please Select Draft to Cancelled"}/>
           <Divider component={"div"}/>
+          {drafts.length===0 && <Button href={"#"} variant={"text"} onClick={e=>createCancelDraft()}>Create Cancel Draft</Button>}
+
           <List>
             {drafts.map((draft, index) =>
               <DetailViewRow key={index} click={e => this.selectDraft(draft)} primary={"Draft Cancellation Order No. " + draft.id}
@@ -68,7 +80,7 @@ class SelectCancelDraft extends Component {
           {"\u00A0 "}
           <Button disabled={!Boolean(selectedDraft)} href={"#"} onClick={event => onDraftSelect(selectedDraft)} variant={"contained"} color={"primary"}>Next</Button>
         </GridItem>
-        <GridItem md={6}>
+        <GridItem md={8}>
           {selectedDraft && <TextEditor default={selectedDraft.content} onChange={event=>selectedDraft.content=event.target.getContent()}/>}
         </GridItem>
 
@@ -80,6 +92,7 @@ class SelectCancelDraft extends Component {
 SelectCancelDraft.propTypes = {
   file: PropTypes.object.isRequired,
   onDraftSelect: PropTypes.func.isRequired,
+  createCancelDraft: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired
 };
 export default SelectCancelDraft;
