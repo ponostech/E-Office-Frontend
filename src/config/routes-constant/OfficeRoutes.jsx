@@ -1,3 +1,4 @@
+export const EXPIRED_SHOP_LICENSE_CHECK = "/shop-license/expired/check";
 export const RESUBMIT_SHOP_LICENSE_APPLICATION = (id) => `/shop-license/${id}/re-submit`;
 
 export const FILE_HEAD = "/e-office/file-head";

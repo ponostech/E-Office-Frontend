@@ -226,3 +226,26 @@ export const CheckLicense = (props) => {
         </div>
     );
 };
+export const CheckExpiredShopLicense = (props) => {
+    return (
+        <div className={props.classes.card}>
+            <Card pricing raised>
+                <CardBody pricing>
+                    <h4 className={props.classes.cardCategory}>Renew Shop License</h4>
+                    <div className={props.classes.icon}>
+                        <Icon color="primary">person</Icon>
+                    </div>
+                    <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
+                        Advertiser License
+                    </h4>
+                    <p className={props.classes.cardDescription}>
+                    </p>
+                    <Button color="primary" round
+                            onClick={props.click(OfficeRoutes.EXPIRED_SHOP_LICENSE_CHECK)}>
+                        Renew License
+                    </Button>
+                </CardBody>
+            </Card>
+        </div>
+    );
+};

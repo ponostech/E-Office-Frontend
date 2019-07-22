@@ -11,7 +11,7 @@ import {
   ApplyHoarding,
   ApplyHotel,
   ApplyKiosk,
-  BuildingPermission,
+  BuildingPermission, CheckExpiredShopLicense,
   CheckLicense,
   Grievance,
   ShopLicensing
@@ -159,6 +159,9 @@ class HomePage extends Component {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CheckLicense classes={classes} click={this.handleLink}/>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={4}>
+                  <CheckExpiredShopLicense classes={classes} click={this.handleLink}/>
                 </GridItem>
               </GridContainer>
             </Card>
