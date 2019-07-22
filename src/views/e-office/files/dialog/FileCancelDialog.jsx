@@ -23,6 +23,8 @@ import SubmitDialog from "../../../../components/SubmitDialog";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { ArrayToString } from "../../../../utils/ErrorUtil";
+import { FILE_NOTESHEET } from "../../../../config/ApiRoutes";
+import ApplicationService from "../../../../services/ApplicationService";
 
 const styles = {
   appBar: {
@@ -54,6 +56,8 @@ class FileCancelDialog extends Component {
       selectedDraft: null,
       submit: false
     };
+    this.applicationService=new ApplicationService()
+
   }
 
   selectApplication = (selectedApplication) => {
@@ -75,17 +79,14 @@ class FileCancelDialog extends Component {
 
   confirmCancel = () => {
     this.setState({ submit: true });
-    axios.post("/files/" + this.props.file.id + "/application/" + this.state.selectedApplication.id + "/cancel",
-      { permit: this.state.selectedDraft.content })
-      .then(res => {
-        if (res.data.status) {
-          this.setGlobal({ successMsg: ArrayToString(res.data.messages) });
-          this.props.history.push(DESK);
-        } else {
-          this.setGlobal({ errorMsg: ArrayToString(res.data.messages) });
-        }
+    let data = { content: this.state.selectedDraft.content };
+    this.applicationService.cancel(this.state.selectedApplication.id, data,
+      errorMsg => this.setGlobal({ errorMsg }),
+      successMsg => {
+        this.props.closeActionDialog()
+        this.props.history.push(FILE_NOTESHEET);
+        this.setGlobal({ successMsg });
       })
-      .catch(err => this.setGlobal({ errorMsg: err.toString() }))
       .finally(() => this.setState({ submit: false }));
 
   };

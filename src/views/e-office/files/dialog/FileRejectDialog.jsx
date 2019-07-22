@@ -79,6 +79,7 @@ class FileRejectDialog extends Component {
     this.applicationService.reject(this.state.selectedApplication.id, data,
       errorMsg => this.setGlobal({ errorMsg }),
       successMsg => {
+        this.props.closeActionDialog()
         this.props.history.push(FILE_NOTESHEET);
         this.setGlobal({ successMsg });
       })
