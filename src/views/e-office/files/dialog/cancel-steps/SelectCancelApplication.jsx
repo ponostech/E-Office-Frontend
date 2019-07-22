@@ -8,6 +8,7 @@ import Divider from "@material-ui/core/Divider";
 import ApplicationResolver, { getApplicationTitle } from "../common/ApplicationResolver";
 import GridContainer from "../../../../../components/Grid/GridContainer";
 import GridItem from "../../../../../components/Grid/GridItem";
+import ApplicationService from "../../../../../services/ApplicationService";
 
 class SelectCancelApplication extends Component {
   constructor(props) {
@@ -15,10 +16,12 @@ class SelectCancelApplication extends Component {
     this.state={
       applications:[]
     }
+    this.applicationService=new ApplicationService()
+
   }
 
   componentDidMount() {
-    axios.get("/files/" + this.props.file.id + "/applications", { params: { status: "active" } })
+    axios.get("/files/" + this.props.file.id + "/applications", { params: { status: "approved" } })
       .then(res=>{
         if (res.data.status)
           this.setState({applications:res.data.data.applications})

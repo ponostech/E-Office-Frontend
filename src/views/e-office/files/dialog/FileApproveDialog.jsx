@@ -90,8 +90,9 @@ class FileApproveDialog extends Component {
         data,
         errorMsg => this.setGlobal({ errorMsg }),
         successMsg => {
+          this.props.closeActionDialog()
           this.setGlobal({ successMsg });
-          window.history.push(DESK);
+          this.props.history.push(DESK);
         }
       )
       .finally(() => this.setState({ submit: false }));

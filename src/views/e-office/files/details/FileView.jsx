@@ -321,7 +321,9 @@ class FileView extends Component {
       this.setGlobal({ errorMsg: res.data.messages });
     }
   };
-
+  closeActionDialog=()=>{
+    this.setState({openApproveDialog:false,openCancelDialog:false,openRejectDialog:false})
+  }
   render() {
     const { classes } = this.props;
     const { openDraft, openDraftPermit, openNote, file, submitNote, menus } = this.state;
@@ -422,17 +424,17 @@ class FileView extends Component {
                                                      onClose={this.closeDialog.bind(this, "openDraftLicense")}/>}
         {openDraftReject && <FileDraftRejectDialog module={moduleName} file={file} open={openDraftReject}
                                                    onClose={this.closeDialog.bind(this, "openDraftReject")}/>}
-        {openRejectDialog && <FileRejectDialog module={moduleName} file={file} open={openRejectDialog}
+        {openRejectDialog && <FileRejectDialog closeActionDialog={this.closeActionDialog} module={moduleName} file={file} open={openRejectDialog}
                                                createRejectDraft={()=>this.setState({openRejectDialog:false,openDraftReject:true})}
                                                onClose={this.closeDialog.bind(this, "openRejectDialog")}/>}
 
         {openDraftCancel && <FileDraftCancelDialog module={moduleName} file={file} open={openDraftCancel}
                                                    onClose={this.closeDialog.bind(this, "openDraftCancel")}/>}
-        {openApproveDialog && <FileApproveDialog createDraft={()=>this.setState({openDraftPermit:true,openApproveDialog:false})}
+        {openApproveDialog && <FileApproveDialog closeActionDialog={this.closeActionDialog} createDraft={()=>this.setState({openDraftPermit:true,openApproveDialog:false})}
                                                  module={moduleName} file={file} open={openApproveDialog}
                                                  onClose={this.closeDialog.bind(this, "openApproveDialog")}/>}
 
-        {openCancelDialog && <FileCancelDialog module={moduleName} file={file} open={openCancelDialog}
+        {openCancelDialog && <FileCancelDialog closeActionDialog={this.closeActionDialog} module={moduleName} file={file} open={openCancelDialog}
                                                createCancelDraft={()=>this.setState({openCancelDialog:false,openDraftCancel:true})}
                                                  onClose={this.closeDialog.bind(this, "openCancelDialog")}/>}
         {submitNote &&
