@@ -7,8 +7,13 @@ export default createMuiTheme({
         padding: "2px 40px 2px 16px"
       }
     },
+    MuiListItem: {
+      container: {
+        listStyleType: 'none'
+      }
+    },
     MuiDivider: {
-      root:{
+      root: {
         listStyleType: 'none'
       }
     },
