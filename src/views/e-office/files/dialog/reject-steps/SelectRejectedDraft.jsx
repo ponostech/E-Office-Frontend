@@ -23,16 +23,20 @@ class SelectRejectedDraft extends Component {
   }
 
   componentDidMount() {
-    axios.get(FILE_DRAFT_LIST(this.props.file.id, "reject"))
-      .then(res => {
-        if (res.data.status)
-          this.setState({ drafts: res.data.data.drafts });
-        else
-          this.setGlobal({ errorMsg: res.data.messages });
-      })
-      .catch(err => {
-        this.setGlobal({ errorMsg: err.toString() });
-      });
+    // axios.get(FILE_DRAFT_LIST(this.props.file.id, "reject"))
+    //   .then(res => {
+    //     if (res.data.status)
+    //       this.setState({ drafts: res.data.data.drafts });
+    //     else
+    //       this.setGlobal({ errorMsg: res.data.messages });
+    //   })
+    //   .catch(err => {
+    //     this.setGlobal({ errorMsg: err.toString() });
+    //   });
+    this.applicationService.getFileDrafts(this.props.file.id,"reject",
+      errorMsg=>this.setGlobal({errorMsg }),
+       drafts=>this.setState({drafts}))
+      .finally(()=>console.log("request of file drafts complete"))
   }
 
   formatCreated = (value) => {

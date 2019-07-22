@@ -178,4 +178,9 @@ export class ApiRoutes {
   static CANCEL_CHALLAN(id) {
     return `/challan/${id}`;
   }
+
+  static APPROVE_APPLICATION=(id)=>`shop/${id}/approve`;
+  static REJECT_APPLICATION=(id)=>`shop/${id}/reject`;
+  static CANCEL_APPLICATION=(id)=>`shop/${id}/cancel`;
 }
+

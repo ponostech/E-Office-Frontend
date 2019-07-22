@@ -51,6 +51,7 @@ class FileApplications extends Component {
     err: "",
     submit: false,
     submitTitle: "Send Back Application",
+    confirmTitle: "Do you want to delete?",
 
     confirmReceive: false,
     openMenu: false,
@@ -96,7 +97,7 @@ class FileApplications extends Component {
   onMenuClick = (menu) => {
     switch (menu) {
       case APPLICATION_MENUITEM.RECEIVE_APPLICATION:
-        this.setState({ confirmReceive: true });
+        this.setState({ confirmReceive: true ,confirmTitle:"Click confirm to receive the application?"});
         break;
       case APPLICATION_MENUITEM.SEND_BACK:
         this.setState({ openSendBackDialog: true });
@@ -222,7 +223,7 @@ class FileApplications extends Component {
   closeStatus = () => this.setState({ err: "" });
 
   render() {
-    const { data, loading, tabValue, openMenu, openDetails, openSendMessageDialog, openSendBackDialog, openFineDialog, singleData, confirmReceive, selectedApplication } = this.state;
+    const { data, loading, tabValue, openMenu, openDetails, openSendMessageDialog,confirmTitle, openSendBackDialog, openFineDialog, singleData, confirmReceive, selectedApplication } = this.state;
     const newList = this.getByStatus(data, "new");
     const inProcessList = this.getByStatus(data, "in-process");
     const sentBackList = this.getByStatus(data, "sent-back");
@@ -282,7 +283,7 @@ class FileApplications extends Component {
         </div>
       </div>
       <Divider/>
-      <ConfirmDialog open={confirmReceive} onCancel={() => this.setState({ confirmReceive: false })}
+      <ConfirmDialog message={confirmTitle} open={confirmReceive} onCancel={() => this.setState({ confirmReceive: false })}
                      onConfirm={this.receiveApplication}/>
       {openDetails &&
       <ApplicationDetailsDialog type={this.props.file.fileable_type} open={openDetails} title='View Application Details'

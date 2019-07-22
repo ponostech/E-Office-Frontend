@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  Grid,
   Icon,
   IconButton,
   List,
@@ -79,26 +80,36 @@ class SingleApplicationSendBackDialog extends Component {
           </Toolbar>
         </AppBar>
         <DialogContent>
-          <List>
-            <DetailViewRow primary={"TO"} secondary={detail.title}/>
-          </List>
-          <FileUpload
-            required={true}
-            applicationName={"sendback-messages"}
-            onUploadSuccess={(data) => {
-              this.setState(state => {
-                state.attachment = data.location;
-              });
-            }} onUploadFailure={(e) => {
-            console.log(e);
-          }} document={
-            { id: new Date().getTime(), name: "Attachment", mime: "application/pdf", mandatory: 0 }
-          }/>
-          <TextField label={"Reason"} value={reason} required={true} fullWidth={true} multiline={true} rows={5}
-                     name={"reason"}
-                     variant={"outlined"}
-                     onChange={event => this.setState({ reason: event.target.value })}
-          />
+          <Grid container={true} spacing={3}>
+            <Grid md={12} item={true}>
+              <List>
+                <DetailViewRow primary={"TO"} secondary={detail.title}/>
+              </List>
+            </Grid>
+            <Grid md={12} item={true}>
+              <TextField label={"Reason"} value={reason} required={true} fullWidth={true} multiline={true} rows={5}
+                         name={"reason"}
+                         variant={"outlined"}
+                         onChange={event => this.setState({ reason: event.target.value })}
+              />
+            </Grid>
+            <Grid md={12} item={true}>
+              <FileUpload
+                required={true}
+                applicationName={"sendback-messages"}
+                onUploadSuccess={(data) => {
+                  this.setState(state => {
+                    state.attachment = data.location;
+                  });
+                }} onUploadFailure={(e) => {
+                console.log(e);
+              }} document={
+                { id: new Date().getTime(), name: "Attachment", mime: "application/pdf", mandatory: 0 }
+              }/>
+            </Grid>
+
+
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button disabled={!Boolean(reason)} href={"#"} variant={"contained"} color={"primary"}

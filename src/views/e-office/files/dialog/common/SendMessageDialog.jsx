@@ -7,7 +7,7 @@ import {
   DialogActions,
   FormControl,
   FormControlLabel,
-  FormLabel,
+  FormLabel, Grid,
   IconButton,
   Slide,
   TextField,
@@ -119,44 +119,52 @@ class SendMessageDialog extends Component {
             </Toolbar>
           </AppBar>
           <DialogContent>
-            <TextField margin={"dense"}
-                       value={subject}
-                       variant={"outlined"}
-                       label={"Subject"}
-                       required={true}
-                       fullWidth={true}
-                       error={Boolean(subjectError)}
-                       helperText={subjectError}
-                       onChange={event => this.onChange("subject", event)}
-                       onBlur={event => this.onBlur("subject", event)}
-            />
 
-            <TextField margin={"dense"}
-                       value={message}
-                       multiline={true}
-                       rows={5}
-                       variant={"outlined"}
-                       label={"Message"}
-                       required={true}
-                       fullWidth={true}
-                       error={Boolean(messageError)}
-                       helperText={messageError}
-                       onChange={event => this.onChange("message", event)}
-                       onBlur={event => this.onBlur("message", event)}
-            />
+            <Grid container={true} spacing={3}>
+              <Grid item={true} md={12}>
+                <TextField margin={"dense"}
+                           value={subject}
+                           variant={"outlined"}
+                           label={"Subject"}
+                           required={true}
+                           fullWidth={true}
+                           error={Boolean(subjectError)}
+                           helperText={subjectError}
+                           onChange={event => this.onChange("subject", event)}
+                           onBlur={event => this.onBlur("subject", event)}
+                />
+              </Grid>
+              <Grid item={true} md={12}>
+                <TextField margin={"dense"}
+                           value={message}
+                           multiline={true}
+                           rows={5}
+                           variant={"outlined"}
+                           label={"Message"}
+                           required={true}
+                           fullWidth={true}
+                           error={Boolean(messageError)}
+                           helperText={messageError}
+                           onChange={event => this.onChange("message", event)}
+                           onBlur={event => this.onBlur("message", event)}
+                />
+              </Grid>
+              <Grid item={true} md={12}>
+                <FileUpload
+                  required={true}
+                  applicationName={"application-messages"}
+                  onUploadSuccess={(data) => {
+                    this.setState(state => {
+                      state.attachment = data.location;
+                    });
+                  }} onUploadFailure={(e) => {
+                  console.error(e);
+                }} document={
+                  this.state.document
+                }/>
+              </Grid>
+            </Grid>
 
-            <FileUpload
-              required={true}
-              applicationName={"application-messages"}
-              onUploadSuccess={(data) => {
-                this.setState(state => {
-                  state.attachment = data.location;
-                });
-              }} onUploadFailure={(e) => {
-              console.error(e);
-            }} document={
-              this.state.document
-            }/>
           </DialogContent>
           <Divider component={"li"}/>
           <DialogActions>
