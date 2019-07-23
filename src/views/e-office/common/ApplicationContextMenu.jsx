@@ -43,7 +43,8 @@ export function ApplicationContextMenu(props) {
               </ListItemText>
             </ListItem>}
 
-          <ListItem button={true} onClick={e => {
+         {application && application.status!=="sent-back" &&
+         <ListItem button={true} onClick={e => {
             onClose()
             onMenuClick(APPLICATION_MENUITEM.SEND_BACK)
           }}>
@@ -53,7 +54,7 @@ export function ApplicationContextMenu(props) {
             <ListItemText>
               Send Back Application
             </ListItemText>
-          </ListItem>
+          </ListItem>}
 
           <ListItem button={true} onClick={e => {onClose();onMenuClick(APPLICATION_MENUITEM.IMPOSE_FINE)}}>
             <ListItemIcon>

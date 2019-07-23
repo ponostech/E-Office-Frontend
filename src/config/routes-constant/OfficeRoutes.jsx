@@ -1,4 +1,4 @@
-export const APPLICANT_DASHBOARD=(mobile_no) => `/licencse/${mobile_no}/dashboard`;
+export const APPLICANT_DASHBOARD=(mobile_no) => `/license/${mobile_no}/dashboard`;
 
 export const EXPIRED_SHOP_LICENSE_CHECK = "/shop-license/expired/check";
 export const RESUBMIT_SHOP_LICENSE_APPLICATION = (id) => `/shop-license/${id}/re-submit`;

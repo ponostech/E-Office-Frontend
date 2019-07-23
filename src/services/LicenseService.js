@@ -56,4 +56,17 @@ export class LicenseService {
       errorCallback(e.toString())
     }
   }
+  async getApplications(phone, errorCallback, successCallback) {
+    try {
+      let res=await axios.get(`/user/${phone}/applications`)
+      if (res.data.status) {
+        successCallback(res.data.data)
+      }else{
+        errorCallback(ArrayToString(res.data.messages))
+      }
+    }catch (e) {
+      console.error(e);
+      errorCallback(e.toString())
+    }
+  }
 }

@@ -14,21 +14,20 @@ import { Validators } from "../../../utils/Validators";
 import { ApiRoutes } from "../../../config/ApiRoutes";
 
 class CheckLicense extends Component {
-  state = {
-    phone: null,
-    type: undefined,
+  constructor(props) {
+    super(props);
+    this.state = {
+      phone: null,
 
-    phoneError: "",
-    typeError: "",
+      phoneError: "",
 
-    submit: false,
-    prestine: true,
-    options: [
-      { value: "shop", label: "Shop License Application" },
-      { value: "hotel", label: "Hotel & Lodging License Application" },
-      { value: "banner", label: "Banner Application" }
-    ]
-  };
+      submit: false,
+    };
+    this.licenseService=new LicenseService();
+  }
+
+
+
 componentDidMount() {
   this.setGlobal({loading:false})
 }
@@ -54,13 +53,12 @@ componentDidMount() {
 
   checkLicense = (e) => {
 
-    const { phone,type } = this.state;
+    const { phone } = this.state;
     const { history } = this.props;
-
-    if (Boolean(this.state.phoneError) || Boolean(this.state.typeError) || this.state.prestine) {
-      this.setGlobal({ errorMsg: "Please fill all the required field" });
-      return;
-    }
+    // this.licenseService.getApplications(phone,
+    //   errorMsg=>this.setGlobal({errorMsg}),
+    //    data=>history.push(APPLICANT_DASHBOARD(phone)))
+    //   .finally(()=>console.log("request complete"))
     history.push(APPLICANT_DASHBOARD(phone))
   };
 
@@ -95,26 +93,10 @@ componentDidMount() {
                              variant={"outlined"}
                   />
                 </Grid>
-
-                <Grid item={true}>
-                  <OfficeSelect
-                    required={true}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    name={"type"}
-                    error={Boolean(this.state.typeError)}
-                    onBlur={this.validateType}
-                    helperText={this.state.typeError}
-                    value={this.state.type}
-                    label={"Select Type of Application"}
-                    onChange={val => this.setState({ type: val })}
-                    options={options}
-                  />
-                </Grid>
               </Grid>
             </CardContent>
             <CardFooter>
-              <Button disabled={!Boolean(this.state.phone) || this.state.type===undefined} href={"#"} onClick={this.checkLicense} color={"primary"} variant={"outlined"} fullWidth={true}>Check</Button>
+              <Button disabled={!Boolean(this.state.phone)} href={"#"} onClick={this.checkLicense} color={"primary"} variant={"outlined"} fullWidth={true}>Check</Button>
               <Button href={"#"} onClick={e => history.push(HOME)} color={"primary"} variant={"text"} fullWidth={true}>Back to
                 home</Button>
             </CardFooter>

@@ -2,9 +2,18 @@ import {createMuiTheme} from "@material-ui/core";
 
 export default createMuiTheme({
   overrides: {
+    MUIDataTable: {
+      root: {
+        backgroundColor: "#FF000",
+      },
+      paper: {
+        // boxShadow: "none",
+        padding: "16px"
+      }
+    },
     MUIDataTableBodyCell: {
       root: {
-        padding: "2px 40px 2px 16px"
+        padding: "2px 40px 2px 16px",
       }
     },
     MuiListItem: {
@@ -42,7 +51,7 @@ export default createMuiTheme({
   // shadows:["none"],
   props: {
     MuiAppBar: {
-      elevation: 5
+      elevation: 3
     },
     MuiCard: {
       raised: false,

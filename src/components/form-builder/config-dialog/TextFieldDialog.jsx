@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  AppBar,
   Button,
   CardHeader,
   Dialog,
@@ -7,14 +8,29 @@ import {
   DialogContent,
   Divider,
   FormControlLabel,
-  IconButton,
+  IconButton, Slide,
   Switch,
-  TextField
+  TextField, Toolbar, Typography
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import GridContainer from "../../Grid/GridContainer";
 import WidgetConstant from "../WidgetConstant";
+import withStyles from "@material-ui/core/styles/withStyles";
+const styles = {
+  appBar: {
+    position: "relative"
+  },
+  flex: {
+    flex: 1
+  },
+  editor: {
+    minHeight: 200
+  }
+};
 
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
 class TextFieldDialog extends Component {
   state = {
     name: "",
@@ -78,18 +94,25 @@ class TextFieldDialog extends Component {
   }
 
   render() {
-    const { open, onClose ,widget} = this.props;
+    const { open, onClose ,widget,classes} = this.props;
     const self = this;
 
     return (
-      <Dialog open={open} onClose={this.handleClick.bind(this,"close")} fullWidth={true} maxWidth={"md"}>
+      <Dialog TransitionComponent={Transition} open={open} onClose={this.handleClick.bind(this,"close")} fullWidth={true} maxWidth={"md"}>
 
-        <CardHeader title={`Configuration (${widget?widget.name:""})`} action={
-          <IconButton onClick={this.handleClick.bind(this,"close")}>
-            <CloseIcon color={"action"}/>
-          </IconButton>
-        }/>
-        <Divider/>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton href={"#"} color="inherit" onClick={this.handleClick.bind(this,"close")} aria-label="Close">
+              <CloseIcon/>
+            </IconButton>
+            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+              Configuration ({widget?widget.name:""})
+            </Typography>
+            <Button href={"#"} onClick={this.handleClick.bind(this,"close")} color="inherit">
+              Close
+            </Button>
+          </Toolbar>
+        </AppBar>
         <DialogContent>
 
           <GridContainer>
@@ -128,4 +151,4 @@ class TextFieldDialog extends Component {
   }
 }
 
-export default TextFieldDialog;
+export default withStyles(styles)(TextFieldDialog);

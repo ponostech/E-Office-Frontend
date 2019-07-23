@@ -30,12 +30,8 @@ class ShopLicenseList extends Component {
   }
 
   componentDidMount() {
-    const { mobile_no } = this.props.match.params;
-    this.setGlobal({ loading: true });
-    this.licenseService.checkShopLicense(mobile_no,
-      errorMsg => this.setGlobal({ errorMsg }),
-      applications => this.setState({ applications }))
-      .finally(() => this.setGlobal({ loading: false }));
+    this.setState({applications:this.props.shops})
+    this.setGlobal({loading:false})
   }
 
   withDraw=(data)=>{
@@ -68,7 +64,7 @@ class ShopLicenseList extends Component {
   }
   render() {
     const { application, applications } = this.state;
-    const { history } = this.props;
+    const { history,shops } = this.props;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -226,19 +222,19 @@ class ShopLicenseList extends Component {
     let found = <>
       <MUIDataTable
         title={"SHOP LICENSING: List of Application"}
-        data={applications}
+        data={shops}
         columns={tableColumns}
         options={tableOptions}/>
     </>;
 
     return (
       <>
-        {this.global.loading && <LoadingView/>}
-        <CardContent>
-          {/*{applications.length === 0 && notFound}/*/}
-          {found}
-        </CardContent>
-
+        {this.global.loading ? <LoadingView/> :
+          <CardContent>
+            {/*{applications.length === 0 && notFound}/*/}
+            {found}
+          </CardContent>
+        }
         <SubmitDialog open={this.state.submit} title={"Withdraw Application"} text={"Please wait ..."}/>
         <ConfirmDialog onCancel={e=>this.setState({openConfirm:false})} open={this.state.openConfirm} onConfirm={this.confirmWithdraw.bind(this)}/>
       </>

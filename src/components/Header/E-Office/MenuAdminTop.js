@@ -41,7 +41,7 @@ const menu = (props) => {
     textOnly:false,
     menuItems:[
       {name:"profile", icon:<Icon fontSize={"small"}>user</Icon>,text:"My Account",onClick:onContextMenuClick},
-      {name:"profile", icon:<Icon fontSize={"small"}>edit</Icon>,text:"My Account",onClick:onContextMenuClick},
+      {name:"profile", icon:<Icon fontSize={"small"}>edit</Icon>,text:"My Account",onClick:onContextMenuClick, divider:true} ,
       {name:"profile", icon:<Icon fontSize={"small"}>edit</Icon>,text:"My Account",onClick:onContextMenuClick},
       {name:"log_out", icon:<Icon fontSize={"small"}>power_settings_new</Icon>,text:"Log out",onClick:onContextMenuClick},
     ]
