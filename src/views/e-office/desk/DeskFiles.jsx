@@ -19,6 +19,12 @@ class DeskFiles extends Component {
   componentDidMount() {
     this.setGlobal({loading: true});
     this.getFiles();
+
+    axios.get('/shops/6/details')
+        .then(res => {
+          console.log('success shop details', res)
+        })
+        .catch(err => console.log('request error', err))
   }
 
   componentWillUnmount() {
