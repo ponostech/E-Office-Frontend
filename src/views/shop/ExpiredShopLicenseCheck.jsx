@@ -7,25 +7,25 @@ import OfficeSelect from "../../components/OfficeSelect";
 import Card from "../../components/Card/Card";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { Validators } from "../../utils/Validators";
+import { ShopService } from "../../services/ShopService";
 
 class ExpiredShopLicenseCheck extends Component {
-  state = {
-    phone: null,
-    type: undefined,
+  constructor(props) {
+    super(props);
+    this.state={
+      licenseNo:"",
+      licenseNoError:""
+    }
+    this.shopService=new ShopService()
+  }
 
-    phoneError: "",
-    typeError: "",
-
-    submit: false,
-    prestine: true,
-    options: [
-      { value: "shop", label: "Shop License Application" },
-      { value: "hotel", label: "Hotel & Lodging License Application" },
-      { value: "banner", label: "Banner Application" }
-    ]
-  };
   componentDidMount() {
     this.setGlobal({loading:false})
+  }
+
+  checkLicense=()=>{
+    const { licenseNo } = this.state;
+    // this.shopService.
   }
 
   validatePhone = (e) => {
@@ -39,27 +39,10 @@ class ExpiredShopLicenseCheck extends Component {
 
     this.setState({ prestine: false });
   };
-  validateType = (val) => {
-    if (!this.state.type)
-      this.setState({ typeError: "Please Select type of application" });
-    else
-      this.setState({ typeError: "" });
-    this.setState({ prestine: false });
-  };
 
-  checkLicense = (e) => {
-
-    const { phone,type } = this.state;
-    const { history } = this.props;
-
-    if (Boolean(this.state.phoneError) || Boolean(this.state.typeError) || this.state.prestine) {
-      this.setGlobal({ errorMsg: "Please fill all the required field" });
-      return;
-    }
-  };
 
   render() {
-    const { options } = this.state;
+    const { licenseNo,licenseNoError } = this.state;
     const { history } = this.props;
     return (
       <Grid container={true} spacing={3} justify={"center"}>
@@ -68,7 +51,7 @@ class ExpiredShopLicenseCheck extends Component {
             <CardContent>
               <Grid container={true} direction={"column"} spacing={3}>
                 <Grid item={true}>
-                  <Typography color={"textPrimary"} variant={"h5"}>Check your application status</Typography>
+                  <Typography color={"textPrimary"} variant={"h5"}>Check Your Shop License</Typography>
                 </Grid>
                 <Grid item={true}>
                   <Divider component={"li"}/>
@@ -77,38 +60,22 @@ class ExpiredShopLicenseCheck extends Component {
                   <TextField fullWidth={true}
                              required={true}
                              name={"phone"}
-                             error={Boolean(this.state.phoneError)}
-                             helperText={this.state.phoneError}
-                             onBlur={this.validatePhone.bind(this)}
+                             error={Boolean(licenseNoError)}
+                             helperText={licenseNoError}
+                             onBlur={event=>Boolean(event.target.value)?this.setState({licenseNoError:""}):this.setState({licenseNoError:"License no is required"})}
                              onChange={e => {
-                               this.setState({ phone: e.target.value })
-                               this.validatePhone(e)
+                               this.setState({ licenseNo: e.target.value })
                              }}
-                             value={this.state.phone}
-                             label={"Enter Your Registered Mobile No"}
+                             value={licenseNo}
+                             label={"Enter Your Shop License No"}
                              variant={"outlined"}
                   />
                 </Grid>
 
-                <Grid item={true}>
-                  <OfficeSelect
-                    required={true}
-                    fullWidth={true}
-                    variant={"outlined"}
-                    name={"type"}
-                    error={Boolean(this.state.typeError)}
-                    onBlur={this.validateType}
-                    helperText={this.state.typeError}
-                    value={this.state.type}
-                    label={"Select Type of Application"}
-                    onChange={val => this.setState({ type: val })}
-                    options={options}
-                  />
-                </Grid>
               </Grid>
             </CardContent>
             <CardFooter>
-              <Button disabled={!Boolean(this.state.phone) || this.state.type===undefined} href={"#"} onClick={this.checkLicense} color={"primary"} variant={"outlined"} fullWidth={true}>Check</Button>
+              <Button disabled={!Boolean(licenseNo)} href={"#"} onClick={this.checkLicense} color={"primary"} variant={"outlined"} fullWidth={true}>Check</Button>
               <Button href={"#"} onClick={e => history.push(HOME)} color={"primary"} variant={"text"} fullWidth={true}>Back to
                 home</Button>
             </CardFooter>

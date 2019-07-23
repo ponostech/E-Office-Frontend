@@ -70,9 +70,9 @@ class ApplicationService {
       errorCallback(e.toString())
     }
   }
-  async approve(application_id,data,errorCallback,successCallback){
+  async approve(type,application_id,data,errorCallback,successCallback){
     try{
-      let res=await axios.post(ApiRoutes.APPROVE_APPLICATION(application_id),data)
+      let res=await axios.post(ApiRoutes.APPROVE_APPLICATION(application_id,type),data)
       if (res.data.status) {
           successCallback(res.data.messages)
       }else{
@@ -87,9 +87,9 @@ class ApplicationService {
       errorCallback(e.toString())
     }
   }
-  async reject(application_id,data,errorCallback,successCallback){
+  async reject(type,application_id,data,errorCallback,successCallback){
     try{
-      let res=await axios.post(ApiRoutes.REJECT_APPLICATION(application_id),data)
+      let res=await axios.post(ApiRoutes.REJECT_APPLICATION(application_id,type),data)
       if (res.data.status) {
           successCallback(res.data.messages)
       }else{
@@ -104,9 +104,9 @@ class ApplicationService {
       errorCallback(e.toString())
     }
   }
-  async cancel(application_id,data,errorCallback,successCallback){
+  async cancel(type,application_id,data,errorCallback,successCallback){
     try{
-      let res=await axios.post(ApiRoutes.CANCEL_APPLICATION(application_id),data)
+      let res=await axios.post(ApiRoutes.CANCEL_APPLICATION(application_id,type),data)
       if (res.data.status) {
           successCallback(res.data.messages)
       }else{

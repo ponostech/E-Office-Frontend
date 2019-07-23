@@ -19,11 +19,12 @@ import { LoginService } from "../services/LoginService";
 import ForgotPassword from "../views/common/ForgotPassword";
 import GrievanceCreate from "../views/grievance/GrievanceCreate";
 import ErrorHandler from "../views/common/StatusHandler";
-import ShopLicenseList from "../views/landing-pages/license-checking/ShopLicenseList";
-import HotelLicenseList from "../views/landing-pages/license-checking/HotelLicenseList";
-import BannerList from "../views/landing-pages/license-checking/BannerList";
+import ShopLicenseList from "../views/landing-pages/applicant-layout/ShopLicenseList";
+import HotelLicenseList from "../views/landing-pages/applicant-layout/HotelLicenseList";
+import BannerList from "../views/landing-pages/applicant-layout/BannerList";
 import Test from "../views/Test";
 import ExpiredShopLicenseCheck from "../views/shop/ExpiredShopLicenseCheck";
+import ApplicantDashboard from "../views/landing-pages/ApplicantDashboard";
 
 class LayoutLanding extends React.Component {
   constructor(props) {
@@ -56,10 +57,12 @@ class LayoutLanding extends React.Component {
               <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
 
               <Route exact={true} path={OfficeRoutes.CHECK_LICENSE} component={CheckLicense}/>
-              <Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "shop")} component={ShopLicenseList}/>
-              <Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "hotel")}
-                     component={HotelLicenseList}/>
-              <Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "banner")} component={BannerList}/>
+              {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "shop")} component={ShopLicenseList}/>*/}
+              {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "hotel")}*/}
+              {/*       component={HotelLicenseList}/>*/}
+              {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "banner")} component={BannerList}/>*/}
+
+              <Route exact={true} path={OfficeRoutes.APPLICANT_DASHBOARD(":mobile_no")} component={ApplicantDashboard}/>
 
               <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
 

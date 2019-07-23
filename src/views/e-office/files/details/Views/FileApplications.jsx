@@ -28,6 +28,7 @@ import ConfirmDialog from "../../../../../components/ConfirmDialog";
 import { APPLICATION_MENUITEM, ApplicationContextMenu } from "../../../common/ApplicationContextMenu";
 import ImposedFineDialog from "../../dialog/ImposedFineDialog";
 import SendMessageDialog from "../../dialog/common/SendMessageDialog";
+import Chip from "@material-ui/core/Chip";
 
 // hoarding/:id/applications
 function TabContainer({ children, dir }) {
@@ -170,13 +171,16 @@ class FileApplications extends Component {
         borderRadius: 3
       }}>
         <ListItemText primary={title} secondary={subtitle} onClick={event => this.viewDetails(val)}/>
+        {allowed &&
         <ListItemSecondaryAction>
+          <Chip component={"div"} variant={"outlined"} color={"primary"} label={val.application_type}/>
           <Tooltip title={"Open Menu"}>
             <IconButton href={"#"} onClick={event => this.setState({ openMenu: true, selectedApplication: val })}>
               <Icon color={"action"}>more_vert</Icon>
             </IconButton>
           </Tooltip>
         </ListItemSecondaryAction>
+        }
       </ListItem>
     );
     return row;
@@ -288,6 +292,7 @@ class FileApplications extends Component {
       {openDetails &&
       <ApplicationDetailsDialog type={this.props.file.fileable_type} open={openDetails} title='View Application Details'
                                 application={singleData}
+                                file={this.props.file}
                                 onClose={this.closeDetails}/>}
       {openSendBackDialog &&
       <SingleApplicationSendBackDialog onClose={e => this.setState({ openSendBackDialog: false })}
@@ -301,8 +306,8 @@ class FileApplications extends Component {
       <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
       <ApplicationContextMenu open={openMenu} onMenuClick={this.onMenuClick}
                               onClose={e => this.setState({ openMenu: false })} application={selectedApplication}/>
-      </>;
-      };;
+      </>
+      };
 }
 
 

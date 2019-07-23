@@ -5,12 +5,13 @@ import Card from "../../../components/Card/Card";
 import { Button, CardContent, Divider, Grid, TextField, Typography } from "@material-ui/core";
 import CardFooter from "../../../components/Card/CardFooter";
 import OfficeSelect from "../../../components/OfficeSelect";
-import { HOME, SEARCH_LICENSE } from "../../../config/routes-constant/OfficeRoutes";
+import { APPLICANT_DASHBOARD, HOME, SEARCH_LICENSE } from "../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { LicenseService } from "../../../services/LicenseService";
 import SubmitDialog from "../../../components/SubmitDialog";
 import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { Validators } from "../../../utils/Validators";
+import { ApiRoutes } from "../../../config/ApiRoutes";
 
 class CheckLicense extends Component {
   state = {
@@ -60,7 +61,7 @@ componentDidMount() {
       this.setGlobal({ errorMsg: "Please fill all the required field" });
       return;
     }
-    history.push(SEARCH_LICENSE(phone,type.value))
+    history.push(APPLICANT_DASHBOARD(phone))
   };
 
   render() {

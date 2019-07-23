@@ -235,9 +235,9 @@ class ShopLicenseList extends Component {
       <>
         {this.global.loading && <LoadingView/>}
         <CardContent>
-          {applications.length === 0 && notFound}
-          {applications.length !== 0 && found}
-        </CardContent>}
+          {/*{applications.length === 0 && notFound}/*/}
+          {found}
+        </CardContent>
 
         <SubmitDialog open={this.state.submit} title={"Withdraw Application"} text={"Please wait ..."}/>
         <ConfirmDialog onCancel={e=>this.setState({openConfirm:false})} open={this.state.openConfirm} onConfirm={this.confirmWithdraw.bind(this)}/>
