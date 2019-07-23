@@ -37,7 +37,7 @@ class HotelNewList extends Component {
   }
 
   getData = () => {
-    axios.get(HOTEL_LIST)
+    axios.get(HOTEL_LIST,{ params: { status: "new" } })
       .then(res => this.processResult(res))
       .catch(err => this.setGlobal({ errorMsg: err.toString() }))
       .then(() => this.setGlobal({ loading: false }));

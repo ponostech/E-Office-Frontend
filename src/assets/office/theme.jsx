@@ -42,7 +42,7 @@ export default createMuiTheme({
   // shadows:["none"],
   props: {
     MuiAppBar: {
-      elevation: 2
+      elevation: 5
     },
     MuiCard: {
       raised: false,

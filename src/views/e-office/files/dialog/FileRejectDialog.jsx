@@ -22,6 +22,7 @@ import SubmitDialog from "../../../../components/SubmitDialog";
 import { withRouter } from "react-router-dom";
 import ApplicationService from "../../../../services/ApplicationService";
 import { FILE_NOTESHEET } from "../../../../config/ApiRoutes";
+import { FILEABLE_TYPE } from "../details/Views/FileApplicationDetails";
 
 const styles = {
   appBar: {
@@ -72,11 +73,29 @@ class FileRejectDialog extends Component {
     const { activeStep } = this.state;
     this.setState({ activeStep: activeStep - 1 });
   };
-
+  getPath=()=>{
+    const { file } = this.props;
+    let path = "";
+    switch (file.fileable_type) {
+      case FILEABLE_TYPE.SHOP:
+        return "shop";
+      case FILEABLE_TYPE.HOTEL:
+        return "hotel";
+      case FILEABLE_TYPE.BANNER:
+        return "banner";
+      case FILEABLE_TYPE.HOARDING:
+        return "hoarding";
+      case FILEABLE_TYPE.KIOSK:
+        return "kiosk";
+      default:
+        return "shop";
+    }
+  }
   confirmReject = () => {
     this.setState({ submit: true });
+    let path = this.getPath();
     let data = { content: this.state.selectedDraft.content };
-    this.applicationService.reject(this.state.selectedApplication.id, data,
+    this.applicationService.reject(path,this.state.selectedApplication.id, data,
       errorMsg => this.setGlobal({ errorMsg }),
       successMsg => {
         this.props.closeActionDialog()

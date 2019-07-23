@@ -83,7 +83,7 @@ class FileNewList extends Component {
     reOpenFile = (data) => this.setState({singleData: data, openFileReOpenDialog: true})
 
     confirmFileReOpen = () => {
-        this.updateStatus('active')
+        this.updateStatus('re-open')
             .then(res => {
                 if (res.data.status) {
                     this.setGlobal({successMsg: "File Re-Opened successfully"})

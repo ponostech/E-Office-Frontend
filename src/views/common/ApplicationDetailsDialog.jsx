@@ -9,6 +9,7 @@ import SendMessageDialog from "../e-office/files/dialog/common/SendMessageDialog
 import SubmitDialog from "../../components/SubmitDialog";
 import ApplicationResolver from "../e-office/files/dialog/common/ApplicationResolver";
 import ImposedFineDialog from "../e-office/files/dialog/ImposedFineDialog";
+import { LoginService } from "../../services/LoginService";
 
 class ApplicationDetailsDialog extends React.Component {
   constructor(props) {
@@ -45,13 +46,13 @@ class ApplicationDetailsDialog extends React.Component {
   };
 
   render() {
-    const { application, open, title, type, onClose } = this.props;
+    const { application, open, title,file, type, onClose } = this.props;
     const { openMessage, submit, submitTitle,openFine, errorMessage, successMessage } = this.state;
+    let allowed = LoginService.getCurrentUser().id === file.current_user_id;
 
     const action = <>
-      <Button onClick={onClose} color='primary'>Approve Application</Button>
-      <Button onClick={e => this.setState({ openMessage: true })} color='primary'>Send Message</Button>
-      <Button onClick={e => this.setState({ openFine: true })} color='primary'>Impose Fine</Button>
+      {allowed && <Button onClick={e => this.setState({ openMessage: true })} color='primary'>Send Message</Button>}
+      {allowed && <Button onClick={e => this.setState({ openFine: true })} color='primary'>Impose Fine</Button>}
       <Button onClick={onClose} color='secondary'>Close</Button>
     </>;
     let LEFT_ITEMS = ApplicationResolver(application);

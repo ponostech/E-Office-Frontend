@@ -25,6 +25,7 @@ import { withRouter } from "react-router-dom";
 import { ArrayToString } from "../../../../utils/ErrorUtil";
 import { FILE_NOTESHEET } from "../../../../config/ApiRoutes";
 import ApplicationService from "../../../../services/ApplicationService";
+import { FILEABLE_TYPE } from "../details/Views/FileApplicationDetails";
 
 const styles = {
   appBar: {
@@ -76,11 +77,30 @@ class FileCancelDialog extends Component {
     const { activeStep } = this.state;
     this.setState({ activeStep: activeStep - 1 });
   };
+  getPath=()=>{
+    const { file } = this.props;
+    let path = "";
+    switch (file.fileable_type) {
+      case FILEABLE_TYPE.SHOP:
+        return "shop";
+      case FILEABLE_TYPE.HOTEL:
+        return "hotel";
+      case FILEABLE_TYPE.BANNER:
+        return "banner";
+      case FILEABLE_TYPE.HOARDING:
+        return "hoarding";
+      case FILEABLE_TYPE.KIOSK:
+        return "kiosk";
+      default:
+        return "shop";
+    }
+  }
 
   confirmCancel = () => {
     this.setState({ submit: true });
+    let path=this.getPath()
     let data = { content: this.state.selectedDraft.content };
-    this.applicationService.cancel(this.state.selectedApplication.id, data,
+    this.applicationService.cancel(path,this.state.selectedApplication.id, data,
       errorMsg => this.setGlobal({ errorMsg }),
       successMsg => {
         this.props.closeActionDialog()

@@ -735,15 +735,6 @@ class ShopApplication extends Component {
                                 onClick={this.onSubmit.bind(this)}>
                           {ShopLicenseViewModel.PRIMARY_TEXT}
                         </Button>
-                        {/*{"\u00A0 "}*/}
-                        {/*{"\u00A0 "}*/}
-
-                        {/*<Button name={"draft"}*/}
-                        {/*        color={"primary"}*/}
-                        {/*        variant={"outlined"}*/}
-                        {/*        onClick={this.handleSaveDraft.bind(this)}>*/}
-                        {/*  {ShopLicenseViewModel.DRAFT}*/}
-                        {/*</Button>*/}
                         {"\u00A0 "}
                         {"\u00A0 "}
                         {"\u00A0 "}
