@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  AppBar,
   Button,
   CardHeader,
   Dialog,
@@ -7,15 +8,31 @@ import {
   DialogContent,
   Divider,
   FormControlLabel,
-  IconButton,
+  IconButton, Slide,
   Switch,
-  TextField
+  TextField, Toolbar, Typography
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/CloseOutlined";
 import GridContainer from "../../Grid/GridContainer";
 import WidgetConstant from "../WidgetConstant";
 import PropTypes from "prop-types";
+import withStyles from "@material-ui/core/styles/withStyles";
 
+const styles = {
+  appBar: {
+    position: "relative"
+  },
+  flex: {
+    flex: 1
+  },
+  editor: {
+    minHeight: 200
+  }
+};
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
 class ImageUploadFieldDialog extends Component {
 
   state = {
@@ -73,15 +90,23 @@ class ImageUploadFieldDialog extends Component {
   };
 
   render() {
-    const { open, onClose, widget } = this.props;
+    const { open, onClose, widget,classes } = this.props;
     return (
-      <Dialog open={open} onClose={this.handleClick.bind(this, "close")} fullWidth={true} maxWidth={"md"}>
+      <Dialog TransitionComponent={Transition} open={open} onClose={this.handleClick.bind(this, "close")} fullWidth={true} maxWidth={"md"}>
 
-        <CardHeader title={`Configuration (${widget ? widget.name : ""})`} action={
-          <IconButton onClick={onClose}>
-            <CloseIcon color={"action"}/>
-          </IconButton>
-        }/>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton href={"#"} color="inherit" onClick={this.handleClick.bind(this,"close")} aria-label="Close">
+              <CloseIcon/>
+            </IconButton>
+            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+              Configuration ({widget?widget.name:""})
+            </Typography>
+            <Button href={"#"} onClick={this.handleClick.bind(this,"close")} color="inherit">
+              Close
+            </Button>
+          </Toolbar>
+        </AppBar>
         <Divider/>
         <DialogContent>
 
@@ -112,4 +137,4 @@ ImageUploadFieldDialog.propTypes = {
   widget: PropTypes.object.isRequired
 
 };
-export default ImageUploadFieldDialog;
+export default withStyles(styles)(ImageUploadFieldDialog);

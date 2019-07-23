@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  AppBar,
   Button,
   CardHeader,
   Dialog,
@@ -8,21 +9,37 @@ import {
   Divider,
   FormControl,
   FormControlLabel,
-  IconButton,
+  IconButton, Slide,
   Switch,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  TextField,
+  TextField, Toolbar,
   Typography
 } from "@material-ui/core";
 import TrashIcon from "@material-ui/icons/DeleteForeverOutlined";
 import GridContainer from "../../Grid/GridContainer";
 import CloseIcon from "@material-ui/icons/CloseOutlined";
 import PropTypes from "prop-types";
+import withStyles from "@material-ui/core/styles/withStyles";
 
+const styles = {
+  appBar: {
+    position: "relative"
+  },
+  flex: {
+    flex: 1
+  },
+  editor: {
+    minHeight: 200
+  }
+};
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
 class SelectFieldDialog extends Component {
   state = {
     name: "",
@@ -124,18 +141,25 @@ class SelectFieldDialog extends Component {
     })
   }
   render() {
-    const { open, onClose, widget } = this.props;
+    const { open, onClose, widget,classes } = this.props;
 
     const self = this;
     return (
-      <Dialog open={open} onClose={this.handleClick.bind(this, "close")} fullWidth={true} maxWidth={"md"}>
+      <Dialog TransitionComponent={Transition} open={open} onClose={this.handleClick.bind(this, "close")} fullWidth={true} maxWidth={"md"}>
 
-        <CardHeader title={`Configuration (${widget ? widget.name : ""})`} action={
-          <IconButton onClick={this.handleClick.bind(this, "close")} href={"#"}>
-            <CloseIcon color={"action"}/>
-          </IconButton>
-        }/>
-        <Divider component={"li"}/>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton href={"#"} color="inherit" onClick={this.handleClick.bind(this,"close")} aria-label="Close">
+              <CloseIcon/>
+            </IconButton>
+            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+              Configuration ({widget?widget.name:""})
+            </Typography>
+            <Button href={"#"} onClick={this.handleClick.bind(this,"close")} color="inherit">
+              Close
+            </Button>
+          </Toolbar>
+        </AppBar>
         <DialogContent>
 
           <GridContainer spacing={16}>
@@ -227,4 +251,4 @@ SelectFieldDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired
 };
-export default SelectFieldDialog;
+export default withStyles(styles)(SelectFieldDialog);

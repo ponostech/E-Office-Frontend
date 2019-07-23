@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import NavPills from "../../components/NavPills/NavPills";
 import ShopIcon from "@material-ui/icons/LocalGroceryStore";
 import HotelIcon from "@material-ui/icons/Hotel";
@@ -6,8 +6,8 @@ import BannerIcon from "@material-ui/icons/PictureInPicture";
 import ShopLicenseList from "./applicant-layout/ShopLicenseList";
 import HotelLicenseList from "./applicant-layout/HotelLicenseList";
 import BannerList from "./applicant-layout/BannerList";
-import { Grid, Typography } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
+import { Card, CardContent, CardHeader, Grid } from "@material-ui/core";
+import { LicenseService } from "../../services/LicenseService";
 
 class ApplicantDashboard extends Component {
   constructor(props) {
@@ -18,52 +18,60 @@ class ApplicantDashboard extends Component {
       hotels: [],
       shops: [],
       banners: []
+
     };
+    this.licenseService = new LicenseService();
   }
 
   componentDidMount() {
+    const{mobile_no}=this.props.match.params
+    this.setState({phoneNo:mobile_no})
+    this.setGlobal({loading:true})
+    this.licenseService.getApplications(mobile_no,
+      errorMsg=>this.setGlobal({errorMsg}),
+      data=>this.setState({shops:data.shops}))
+      .finally(()=>this.setGlobal({loading:false}))
 
   }
 
   render() {
-    const { phoneNo } = this.state;
+    const { phoneNo,shops,hotels } = this.state;
     return (
-     <Grid container={true} spacing={3} justify={"center"}>
+      <Card>
+        <CardHeader title={`Dashboard of ${phoneNo}`}/>
+        <CardContent>
+          <Grid container={true} spacing={3} justify={"center"}>
 
-       {/*<Grid item={true} md={12} sm={12} xs={12}>*/}
-         <Typography style={{textAlign:"center",marginTop:20}} color={"textPrimary"} variant={"h6"}>Dashboard of {phoneNo}</Typography>
-       {/*</Grid>*/}
+            <Grid item={true} xs={12} sm={12} md={12}>
+              <NavPills
+                color={"primary"}
+                horizontal={{
+                  tabsGrid: { xs: 12, sm: 12, md: 1 },
+                  contentGrid: { xs: 12, sm: 12, md: 11 }
+                }}
+                tabs={[
+                  {
+                    tabButton: "Shop ",
+                    tabIcon: ShopIcon,
+                    tabContent: (<ShopLicenseList shops={shops}/>)
+                  }, {
+                    tabButton: "Hotel ",
+                    tabIcon: HotelIcon,
+                    tabContent: (<HotelLicenseList/>)
+                  }, {
+                    tabButton: "Banners",
+                    tabIcon: BannerIcon,
+                    tabContent: (<BannerList/>)
+                  }
+                ]}
+              />
+            </Grid>
 
-       {/*<Grid item={true} md={12} sm={12} xs={12}>*/}
-       {/*  <Divider component={"div"}/>*/}
-       {/*</Grid>*/}
+          </Grid>
+        </CardContent>
 
-       <Grid item={true} xs={12} sm={12} md={12}>
-         <NavPills
-           color={"primary"}
-           horizontal={{
-             tabsGrid: { xs: 12, sm: 12, md: 1 },
-             contentGrid: { xs: 12, sm: 12, md: 11 }
-           }}
-           tabs={[
-             {
-               tabButton: "Shop ",
-               tabIcon: ShopIcon,
-               tabContent: (<ShopLicenseList/>)
-             }, {
-               tabButton: "Hotel ",
-               tabIcon: HotelIcon,
-               tabContent: (<HotelLicenseList/>)
-             }, {
-               tabButton: "Banners",
-               tabIcon: BannerIcon,
-               tabContent: (<BannerList/>)
-             }
-           ]}
-         />
-       </Grid>
+      </Card>
 
-     </Grid>
     );
   }
 }

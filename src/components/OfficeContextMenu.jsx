@@ -7,13 +7,14 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { ListItemIcon, ListItemText, Menu } from "@material-ui/core";
 import ListItem from "@material-ui/core/ListItem";
+import List from "@material-ui/core/List";
 
 const useStyles = makeStyles(theme => ({
   typography: {
     padding: theme.spacing(2)
   },
   menuList: {
-    fontSize: 13
+    fontSize: 12
   },
   logOut: {
     color: "red",
@@ -54,20 +55,17 @@ const OfficeContextMenu = (props) => {
         }}
       >
         {menuItems.map((menuItem, index) =>
-          <MenuItem component={"div"} button={""}>
-            <ListItem component={"div"} button={true} onClick={event => menuItem.onClick(menuItem.name)}>
+          <MenuItem component={"div"} divider={Boolean(menuItem.divider)} dense={true} button={true} onClick={e=>menuItem.onClick(menuItem.name)}>
               {
                 menuItem.icon?
                   <>
                     <ListItemIcon style={{ minWidth: 40 }}> {menuItem.icon ? menuItem.icon : ""}</ListItemIcon>
-                    <ListItemText>{menuItem.text} </ListItemText>
+                    <ListItemText style={{fontSize:11}}>{menuItem.text} </ListItemText>
                   </>:
                   <>
                     <ListItemText>{menuItem.text} </ListItemText>
                   </>
               }
-
-            </ListItem>
           </MenuItem>
         )}
       </Menu>
