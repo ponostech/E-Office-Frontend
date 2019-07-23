@@ -140,7 +140,7 @@ const timelineStyle = theme => ({
     width: "45%",
     float: "left",
     padding: "20px",
-    marginBottom: "20px",
+    marginBottom: "10px",
     position: "relative",
     boxShadow: "0 1px 4px 0 rgba(" + hexToRgb(blackColor) + ", 0.14)",
     borderRadius: "6px",
@@ -189,7 +189,28 @@ const timelineStyle = theme => ({
         borderLeftWidth: "0",
         borderRightWidth: "14px",
         left: "-14px",
+        right: "auto",
+        borderRightColor: "#eafeea"
+      }
+    }
+  },
+  eventTimelinePanelInverted: {
+    padding: "10px 20px 20px",
+    [theme.breakpoints.up("sm")]: {
+      float: "right",
+      backgroundColor: warningColor[6],
+      "&:before": {
+        borderLeftWidth: "0",
+        borderRightWidth: "15px",
+        left: "-15px",
         right: "auto"
+      },
+      "&:after": {
+        borderLeftWidth: "0",
+        borderRightWidth: "14px",
+        left: "-14px",
+        right: "auto",
+        borderRightColor: warningColor[6]
       }
     }
   },
@@ -203,7 +224,12 @@ const timelineStyle = theme => ({
     // fontSize: "15px",
     lineHeight: "28px",
     color: "#666666",
-    paddingBottom: "10px",
+    paddingBottom: "4px",
+  },
+  eventTimelineBody: {
+    paddingBottom: 0,
+    lineHeight: "28px",
+    color: "#333",
   },
   timelineFooter: {
     zIndex: "1000",
@@ -214,6 +240,12 @@ const timelineStyle = theme => ({
     color: blackColor,
     fontWeight: "200",
     margin: "4px 0px 0px",
+    fontSize: "0.8em"
+  },
+  eventFooterTitle: {
+    color: blackColor,
+    fontWeight: "200",
+    margin: "0",
     fontSize: "0.8em"
   },
   footerLine: {
@@ -267,6 +299,11 @@ const timelineStyle = theme => ({
       margin: 0,
     },
     timelineBody: {
+      padding: 10,
+      margin: 0,
+      width: "100%",
+    },
+    eventTimelineBody: {
       padding: 10,
       margin: 0,
       width: "100%",

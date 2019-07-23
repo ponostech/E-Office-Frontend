@@ -35,6 +35,15 @@ function Timeline({...props}) {
                 [classes.timelinePanelInverted]: prop.inverted || simple,
                 [classes.timelineSimplePanel]: simple,
               });
+
+          const eventPanelClasses =
+              classes.timelinePanel +
+              " " +
+              cx({
+                [classes.eventTimelinePanelInverted]: prop.inverted || simple,
+                [classes.timelineSimplePanel]: simple,
+              });
+
           const timelineBadgeClasses =
               classes.timelineBadge +
               " " +
@@ -52,8 +61,11 @@ function Timeline({...props}) {
                         <prop.badgeIcon className={classes.badgeIcon}/>
                       </div>
                   ) : null}
-                  <div className={panelClasses}>
-                    <div className={classes.timelineBody} dangerouslySetInnerHTML={{__html: "Event: " + prop.body}}/>
+                  <div className={eventPanelClasses}>
+                    <div className={classes.eventTimelineBody} dangerouslySetInnerHTML={{__html: prop.body}}/>
+                    {prop.footerTitle ? (
+                        <h6 className={classes.eventFooterTitle}>{prop.footerTitle}</h6>
+                    ) : null}
                   </div>
                 </li>
             )
@@ -106,14 +118,12 @@ function Timeline({...props}) {
                     {/*{prop.footerDesignation ? (*/}
                     {/*  <h6 className={classes.timelineFooterText}>{prop.footerDesignation}</h6>*/}
                     {/*) : null}*/}
-
                     {prop.footer ? (
                         <div className={classes.timelineFooter}>{prop.footer}</div>
                     ) : null}
                     {prop.footerTitle ? (
                         <h6 className={classes.footerTitle}>{prop.footerTitle}</h6>
                     ) : null}
-
                   </div>
                 </li>
             );
