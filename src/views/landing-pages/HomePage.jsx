@@ -161,7 +161,7 @@ class HomePage extends Component {
                   <CheckLicense classes={classes} click={this.handleLink}/>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
-                  <CheckExpiredShopLicense classes={classes} click={this.handleLink}/>
+                  {/*<CheckExpiredShopLicense classes={classes} click={this.handleLink}/>*/}
                 </GridItem>
               </GridContainer>
             </Card>

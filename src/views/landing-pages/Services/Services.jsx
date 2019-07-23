@@ -208,12 +208,12 @@ export const CheckLicense = (props) => {
         <div className={props.classes.card}>
             <Card pricing raised>
                 <CardBody pricing>
-                    <h4 className={props.classes.cardCategory}>Check License</h4>
+                    <h4 className={props.classes.cardCategory}>Check Application/License</h4>
                     <div className={props.classes.icon}>
                         <Icon color="primary">person</Icon>
                     </div>
                     <h4 className={`${props.classes.cardTitle} ${props.classes.marginTop30}`}>
-                        Advertiser License
+                        Check Status/Validity of your License/Applications
                     </h4>
                     <p className={props.classes.cardDescription}>
                     </p>
