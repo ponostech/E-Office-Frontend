@@ -44,7 +44,7 @@ class NotesheetView extends Component {
       let temp = {};
       temp['id'] = data.id;
       temp['inverted'] = true;
-      temp['badgeColor'] = 'success';
+      temp['badgeColor'] = data.type === 'event' ? 'warning' : 'success';
       temp['badgeIcon'] = EventNote;
       temp['title'] = data.action;
       temp['titleColor'] = 'success';
