@@ -4,14 +4,12 @@ import GridItem from "../../../components/Grid/GridItem";
 import Card from "../../../components/Card/Card";
 import { Button, CardContent, Divider, Grid, TextField, Typography } from "@material-ui/core";
 import CardFooter from "../../../components/Card/CardFooter";
-import OfficeSelect from "../../../components/OfficeSelect";
-import { APPLICANT_DASHBOARD, HOME, SEARCH_LICENSE } from "../../../config/routes-constant/OfficeRoutes";
+import { HOME } from "../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { LicenseService } from "../../../services/LicenseService";
 import SubmitDialog from "../../../components/SubmitDialog";
-import OfficeSnackbar from "../../../components/OfficeSnackbar";
 import { Validators } from "../../../utils/Validators";
-import { ApiRoutes } from "../../../config/ApiRoutes";
+import PropTypes from "prop-types";
 
 class CheckLicense extends Component {
   constructor(props) {
@@ -21,16 +19,13 @@ class CheckLicense extends Component {
 
       phoneError: "",
 
-      submit: false,
     };
-    this.licenseService=new LicenseService();
   }
 
 
-
-componentDidMount() {
-  this.setGlobal({loading:false})
-}
+  componentDidMount() {
+    this.setGlobal({ loading: false });
+  }
 
   validatePhone = (e) => {
     if (e.target.value.length === 0) {
@@ -55,16 +50,13 @@ componentDidMount() {
 
     const { phone } = this.state;
     const { history } = this.props;
-    // this.licenseService.getApplications(phone,
-    //   errorMsg=>this.setGlobal({errorMsg}),
-    //    data=>history.push(APPLICANT_DASHBOARD(phone)))
-    //   .finally(()=>console.log("request complete"))
-    history.push(APPLICANT_DASHBOARD(phone))
+    this.props.onCheck(phone);
+    // this.props.phone = phone;
   };
 
   render() {
     const { options } = this.state;
-    const { history } = this.props;
+    const { history,checking } = this.props;
     return (
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={10} md={4}>
@@ -85,8 +77,8 @@ componentDidMount() {
                              helperText={this.state.phoneError}
                              onBlur={this.validatePhone.bind(this)}
                              onChange={e => {
-                               this.setState({ phone: e.target.value })
-                               this.validatePhone(e)
+                               this.setState({ phone: e.target.value });
+                               this.validatePhone(e);
                              }}
                              value={this.state.phone}
                              label={"Enter Your Registered Mobile No"}
@@ -96,18 +88,21 @@ componentDidMount() {
               </Grid>
             </CardContent>
             <CardFooter>
-              <Button disabled={!Boolean(this.state.phone)} href={"#"} onClick={this.checkLicense} color={"primary"} variant={"outlined"} fullWidth={true}>Check</Button>
-              <Button href={"#"} onClick={e => history.push(HOME)} color={"primary"} variant={"text"} fullWidth={true}>Back to
-                home</Button>
+              <Button disabled={!Boolean(this.state.phone) || checking} href={"#"} onClick={this.checkLicense.bind(this)} color={"primary"}
+                      variant={"outlined"} fullWidth={true}>Check</Button>
+              <Button href={"#"} onClick={e => history.push(HOME)} color={"primary"} variant={"text"} fullWidth={true}>Back to home</Button>
             </CardFooter>
           </Card>
         </GridItem>
-
-        <SubmitDialog open={Boolean(this.state.submit)} text={"Please wait..."} title={"Checking License"}/>
 
       </GridContainer>
     );
   }
 }
 
+CheckLicense.propTypes = {
+  onCheck: PropTypes.func.isRequired,
+  phone: PropTypes.string.isRequired,
+  checking: PropTypes.bool.isRequired,
+};
 export default withRouter(CheckLicense);

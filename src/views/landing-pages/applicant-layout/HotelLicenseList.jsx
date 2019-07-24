@@ -21,15 +21,6 @@ class HotelLicenseList extends Component {
     this.licenseService=new LicenseService();
   }
 
-  componentDidMount() {
-    const {mobile_no} = this.props.match.params;
-    this.setGlobal({ loading: true});
-    this.licenseService.checkHotelLicense(mobile_no,
-        errorMsg=>this.setGlobal({errorMsg}),
-        applications=>this.setState({applications}))
-      .finally(()=>this.setGlobal({loading:false}))
-
-  }
 
   render() {
     const {application, applications} = this.state;

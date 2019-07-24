@@ -14,17 +14,12 @@ import BannerApplicationForm from "../views/banner/BannerApplication";
 import AdvertiserLogin from "../views/common/LoginView";
 import AdvertiserApplication from "../views/advertiser/AdvertiserApplication";
 import HotelApplication from "../views/hotel/HotelApplication";
-import CheckLicense from "../views/landing-pages/license-checking/CheckLicense";
 import { LoginService } from "../services/LoginService";
 import ForgotPassword from "../views/common/ForgotPassword";
 import GrievanceCreate from "../views/grievance/GrievanceCreate";
 import ErrorHandler from "../views/common/StatusHandler";
-import ShopLicenseList from "../views/landing-pages/applicant-layout/ShopLicenseList";
-import HotelLicenseList from "../views/landing-pages/applicant-layout/HotelLicenseList";
-import BannerList from "../views/landing-pages/applicant-layout/BannerList";
 import Test from "../views/Test";
-import ExpiredShopLicenseCheck from "../views/shop/ExpiredShopLicenseCheck";
-import ApplicantDashboard from "../views/landing-pages/ApplicantDashboard";
+import ApplicantLayout from "../views/landing-pages/ApplicantLayout";
 
 class LayoutLanding extends React.Component {
   constructor(props) {
@@ -56,18 +51,21 @@ class LayoutLanding extends React.Component {
 
               <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
 
-              <Route exact={true} path={OfficeRoutes.CHECK_LICENSE} component={CheckLicense}/>
+              <Route exact={true} path={OfficeRoutes.CHECK_LICENSE} component={ApplicantLayout}/>
+
+
+              {/*<Route exact={true} path={OfficeRoutes.CHECK_LICENSE} component={CheckLicense}/>*/}
               {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "shop")} component={ShopLicenseList}/>*/}
               {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "hotel")}*/}
               {/*       component={HotelLicenseList}/>*/}
               {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "banner")} component={BannerList}/>*/}
 
-              <Route exact={true} path={OfficeRoutes.APPLICANT_DASHBOARD(":mobile_no")} component={ApplicantDashboard}/>
+              {/*<Route exact={true} path={OfficeRoutes.APPLICANT_DASHBOARD(":mobile_no")} component={ApplicantDashboard}/>*/}
 
               <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
 
               <Route exact={true} path={OfficeRoutes.GRIEVANCE_CREATE} component={GrievanceCreate}/>
-              <Route exact={true} path={OfficeRoutes.EXPIRED_SHOP_LICENSE_CHECK} component={ExpiredShopLicenseCheck}/>
+              {/*<Route exact={true} path={OfficeRoutes.EXPIRED_SHOP_LICENSE_CHECK} component={ExpiredShopLicenseCheck}/>*/}
 
               <Route exact={true} path={OfficeRoutes.RESUBMIT_SHOP_LICENSE_APPLICATION(":id")}
                      component={GrievanceCreate}/>

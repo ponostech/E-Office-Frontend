@@ -8,37 +8,15 @@ import HotelLicenseList from "./applicant-layout/HotelLicenseList";
 import BannerList from "./applicant-layout/BannerList";
 import { Card, CardContent, CardHeader, Grid } from "@material-ui/core";
 import { LicenseService } from "../../services/LicenseService";
+import PropTypes from "prop-types";
 
 class ApplicantDashboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      phoneNo: "000000",
-
-      hotels: [],
-      shops: [],
-      banners: []
-
-    };
-    this.licenseService = new LicenseService();
-  }
-
-  componentDidMount() {
-    const{mobile_no}=this.props.match.params
-    this.setState({phoneNo:mobile_no})
-    this.setGlobal({loading:true})
-    this.licenseService.getApplications(mobile_no,
-      errorMsg=>this.setGlobal({errorMsg}),
-      data=>this.setState({shops:data.shops}))
-      .finally(()=>this.setGlobal({loading:false}))
-
-  }
 
   render() {
-    const { phoneNo,shops,hotels } = this.state;
+    const { phone,shops,hotels,banners } = this.props;
     return (
       <Card>
-        <CardHeader title={`Dashboard of ${phoneNo}`}/>
+        <CardHeader title={`Dashboard of ${phone}`}/>
         <CardContent>
           <Grid container={true} spacing={3} justify={"center"}>
 
@@ -57,7 +35,7 @@ class ApplicantDashboard extends Component {
                   }, {
                     tabButton: "Hotel ",
                     tabIcon: HotelIcon,
-                    tabContent: (<HotelLicenseList/>)
+                    tabContent: (<p>fdf</p>)
                   }, {
                     tabButton: "Banners",
                     tabIcon: BannerIcon,
@@ -76,4 +54,10 @@ class ApplicantDashboard extends Component {
   }
 }
 
+ApplicantDashboard.propTypes = {
+  phone: PropTypes.string.isRequired,
+  shops:PropTypes.array.isRequired,
+  hotels:PropTypes.array.isRequired,
+  banners:PropTypes.array.isRequired,
+};
 export default ApplicantDashboard;
