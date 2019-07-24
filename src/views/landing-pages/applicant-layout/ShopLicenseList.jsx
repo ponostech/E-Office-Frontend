@@ -12,6 +12,8 @@ import GridContainer from "../../../components/Grid/GridContainer";
 import moment from "moment";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import SubmitDialog from "../../../components/SubmitDialog";
+import ResubmitShopApplicationDialog from "../../shop/ResubmitShopApplicationDialog";
+import { ShopService } from "../../../services/ShopService";
 
 
 class ShopLicenseList extends Component {
@@ -22,17 +24,16 @@ class ShopLicenseList extends Component {
       application: null,
 
       openConfirm:false,
+      openResubmit:false,
 
-      submit:false
+      submit:false,
+      submitTitle:"Submit"
     };
 
     this.licenseService = new LicenseService();
+    this.shopService = new ShopService();
   }
 
-  componentDidMount() {
-    this.setState({applications:this.props.shops})
-    this.setGlobal({loading:false})
-  }
 
   withDraw=(data)=>{
     this.setState({openConfirm:true, application: data})
@@ -40,15 +41,13 @@ class ShopLicenseList extends Component {
   confirmWithdraw=(event)=>{
     const { application } = this.state;
 
-    this.setState({openConfirm:false,submit:true});
-    this.licenseService.cancelShopLicense(application.id,
-      errorMsg=>this.setGlobal({errorMsg}),
-      successMsg=>this.setGlobal({successMsg}))
-      .final(()=>this.setState({submit:false}))
+    // this.setState({openConfirm:false,submit:true});
+    // this.licenseService.cancelShopLicense(application.id,
+    //   errorMsg=>this.setGlobal({errorMsg}),
+    //   successMsg=>this.setGlobal({successMsg}))
+    //   .final(()=>this.setState({submit:false}))
   }
-  resubmit=(data)=>{
-    console.log(data)
-  }
+
   downloadLicense=(data)=>{
     console.log(data)
   }
@@ -62,8 +61,14 @@ class ShopLicenseList extends Component {
     const { history } = this.props;
     history.push(APPLY_SHOP_LICENSE)
   }
+  reSubmitApplication=application=>{
+    this.setState({submitTitle:"Resubmit Application",submit:true,openResubmit:false});
+    this.shopService.resubmit(application,errorMsg=>this.setGlobal({errorMsg}),
+      successMsg=>this.setState({successMsg}))
+      .finally(()=>this.setState({submit:false}))
+  }
   render() {
-    const { application, applications } = this.state;
+    const { application, applications,openResubmit } = this.state;
     const { history,shops } = this.props;
     const tableOptions = {
       filterType: "checkbox",
@@ -141,7 +146,7 @@ class ShopLicenseList extends Component {
           sort: false,
           customBodyRender: (status, tableMeta) => {
             const { rowIndex } = tableMeta;
-            let data = applications[rowIndex];
+            let data = shops[rowIndex];
             let controls = undefined;
             let view = <>
               <Tooltip title={"View Application details"}>
@@ -200,7 +205,7 @@ class ShopLicenseList extends Component {
                 controls = <>
                   {view}
                   <Tooltip title={"Re Submit Application"}>
-                    <IconButton href={"#"} onClick={this.resubmit.bind(this, data)}>
+                    <IconButton href={"#"} onClick={e=>this.setState({application:data,openResubmit:true})}>
                       <Icon fontSize={"small"} color={"primary"}>send</Icon>
                     </IconButton>
                   </Tooltip>
@@ -235,8 +240,10 @@ class ShopLicenseList extends Component {
             {found}
           </CardContent>
         }
-        <SubmitDialog open={this.state.submit} title={"Withdraw Application"} text={"Please wait ..."}/>
-        <ConfirmDialog onCancel={e=>this.setState({openConfirm:false})} open={this.state.openConfirm} onConfirm={this.confirmWithdraw.bind(this)}/>
+        <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
+        {/*<ConfirmDialog onCancel={e=>this.setState({openConfirm:false})} open={this.state.openConfirm} onConfirm={this.confirmWithdraw.bind(this)}/>*/}
+
+        <ResubmitShopApplicationDialog open={openResubmit} onClose={e=>this.setState({openResubmit:false})} application={application} onResubmit={this.reSubmitApplication}/>
       </>
     );
   }
