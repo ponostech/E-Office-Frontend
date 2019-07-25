@@ -17,7 +17,7 @@ import HotelApplication from "../views/hotel/HotelApplication";
 import { LoginService } from "../services/LoginService";
 import ForgotPassword from "../views/common/ForgotPassword";
 import GrievanceCreate from "../views/grievance/GrievanceCreate";
-import ErrorHandler from "../views/common/StatusHandler";
+import ErrorHandler, { SuccessHandler } from "../views/common/StatusHandler";
 import Test from "../views/Test";
 import ApplicantLayout from "../views/landing-pages/ApplicantLayout";
 
@@ -74,6 +74,7 @@ class LayoutLanding extends React.Component {
             </Switch>
           </div>
           {this.global.errorMsg && <ErrorHandler/>}
+          {this.global.successMsg && <SuccessHandler/>}
         </div>
         <Footer/>
       </div>

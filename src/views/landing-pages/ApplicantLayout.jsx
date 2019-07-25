@@ -22,6 +22,10 @@ class ApplicantLayout extends Component {
 
   }
 
+  refresh=()=>{
+    const { phone } = this.state;
+    this.checkApplication(phone)
+  }
   checkApplication=(phone)=>{
     this.setState({phone,submit:true})
     this.licenseService.getApplications(phone,
@@ -38,7 +42,7 @@ class ApplicantLayout extends Component {
           {Boolean(search)?
           <CheckLicense checking={submit} onCheck={this.checkApplication}/>
           :
-          <ApplicantDashboard phone={phone} shops={shops} hotels={hotels} banners={banners}/>}
+          <ApplicantDashboard refresh={this.refresh} phone={phone} shops={shops} hotels={hotels} banners={banners}/>}
 
         </CardContent>
       </Card>
