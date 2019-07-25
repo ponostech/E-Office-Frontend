@@ -35,7 +35,7 @@ class ShopReSubmitList extends Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(SHOP_LIST, {params: {status: 'rejected'}})
+  getData = () => axios.get(SHOP_LIST, {params: {status: 'resubmit'}})
       .then(res => this.processResult(res))
       .catch(err => this.setGlobal({errorMsg: err.toString()}))
       .then(() => this.setGlobal({loading: false}));

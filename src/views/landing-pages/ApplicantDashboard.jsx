@@ -31,7 +31,7 @@ class ApplicantDashboard extends Component {
                   {
                     tabButton: "Shop ",
                     tabIcon: ShopIcon,
-                    tabContent: (<ShopLicenseList shops={shops}/>)
+                    tabContent: (<ShopLicenseList refresh={this.props.refresh} shops={shops}/>)
                   }, {
                     tabButton: "Hotel ",
                     tabIcon: HotelIcon,
@@ -59,5 +59,6 @@ ApplicantDashboard.propTypes = {
   shops:PropTypes.array.isRequired,
   hotels:PropTypes.array.isRequired,
   banners:PropTypes.array.isRequired,
+  refresh:PropTypes.func.isRequired,
 };
 export default ApplicantDashboard;

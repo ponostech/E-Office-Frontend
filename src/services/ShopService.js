@@ -73,7 +73,7 @@ async resubmit(state,errorCallback,successCallback) {
       documents: state.uploadDocuments
     };
     try {
-      let res=await axios.post(ApiRoutes.CREATE_SHOP_LICENSE, data);
+      let res=await axios.post(ApiRoutes.UPDATE_SHOP_LICENSE(state.id), data);
       if (res.data.status) {
         successCallback(ArrayToString(res.data.messages));
       }else{

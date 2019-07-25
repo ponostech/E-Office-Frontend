@@ -233,7 +233,7 @@ class FileApplications extends Component {
     const newList = this.getByStatus(data, "new");
     const inProcessList = this.getByStatus(data, "in-process");
     const sentBackList = this.getByStatus(data, "sent-back");
-    const reSubmitList = this.getByStatus(data, "re-submit");
+    const reSubmitList = this.getByStatus(data, "resubmit");
     const rejectedList = this.getByStatus(data, "rejected");
     const cancelledList = this.getByStatus(data, "cancelled");
     const approvedList = this.getByStatus(data, "approved");

@@ -7,7 +7,7 @@ import {
   CardContent,
   Checkbox,
   Dialog,
-  DialogContent, DialogTitle,
+  DialogContent,
   Divider,
   FormControl,
   FormControlLabel,
@@ -15,8 +15,10 @@ import {
   IconButton,
   InputAdornment,
   Radio,
-  RadioGroup, Slide,
-  TextField, Toolbar,
+  RadioGroup,
+  Slide,
+  TextField,
+  Toolbar,
   Typography
 } from "@material-ui/core";
 
@@ -35,33 +37,33 @@ import { Validators } from "../../utils/Validators";
 import AddressField from "../../components/AddressField";
 import { TradeService } from "../../services/TradeService";
 import { LocalCouncilService } from "../../services/LocalCouncilService";
-import SweetAlert from "react-bootstrap-sweetalert";
 import { OtpService } from "../../services/OtpService";
 import OtpDialog from "../../components/OtpDialog";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import "date-fns";
-import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { APPLICATION_NAME } from "../../utils/Util";
 import LoadingView from "../common/LoadingView";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import CloseIcon from "@material-ui/icons/Close";
+import moment from "moment";
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
+
 const style = {
-    appBar: {
-      position: "relative"
-    },
-    flex: {
-      flex: 1
-    },
-    editor: {
-      minHeight: 200
-    },
+  appBar: {
+    position: "relative"
+  },
+  flex: {
+    flex: 1
+  },
+  editor: {
+    minHeight: 200
+  },
 
 
   root: {
@@ -140,7 +142,7 @@ class ResubmitShopApplicationDialog extends Component {
   componentDidMount() {
     document.title = "e-AMC | Shop License Application Form";
     window.scrollTo(0, 0);
-    const { application } = this.props;
+
     var self = this;
     this.setGlobal({ loading: true });
     Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
@@ -150,7 +152,8 @@ class ResubmitShopApplicationDialog extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    console.log(nextProps)
+    const { application } = nextProps;
+    this.setApplication(application)
   }
 
   validateDocument = () => {
@@ -168,47 +171,6 @@ class ResubmitShopApplicationDialog extends Component {
     return uploadCount === docCount;
   };
 
-
-
-  sendOtp = () => {
-    var self = this;
-    this.otpService.requestOtp(this.state.phone, "Shop License Application",
-      errorMsg => {
-        this.setGlobal({ errorMsg });
-      },
-      otpMessage => {
-        this.setState({ openOtp: true });
-        this.setState({ otpMessage });
-      })
-      .finally(() => console.log("Finish otp request"));
-
-  };
-  onVerifiedOtp = (verified) => {
-    // if (!verified) {
-    //   return
-    // }
-    //
-    const { history } = this.props;
-    if (verified) {
-      this.setState({ submit: true });
-      this.shopService.create(this.state,
-        errorMsg => this.setGlobal({ errorMsg }),
-        msg => {
-          this.setState({
-            success: (
-              <SweetAlert
-                success
-                style={{ display: "block", marginTop: "-100px" }}
-                title={"Success"}
-                onConfirm={() => history.push(HOME)}>
-                {msg}
-              </SweetAlert>
-            )
-          });
-        })
-        .finally(() => this.setState({ submit: false }));
-    }
-  };
   fetchLocalCouncil = async () => {
     await this.localCouncilService.fetch(errorMsg => this.setGlobal({ errorMsg }),
       localCouncils => this.setState({ localCouncils }));
@@ -278,20 +240,15 @@ class ResubmitShopApplicationDialog extends Component {
   onSubmit = (e) => {
 
     if (!this.invalid()) {
-      this.sendOtp();
+      this.props.onResubmit(this.state);
     } else {
       this.setState({ errorMsg: "Please fill all the required fields" });
     }
-    this.props.onResubmit(this.state)
   };
   handleRadio = (e) => {
     this.setState({
       premised: e.target.value
     });
-  };
-
-  handleSaveDraft = (e) => {
-
   };
 
   handleSelectBlur = (identifier, e) => {
@@ -347,8 +304,50 @@ class ResubmitShopApplicationDialog extends Component {
   };
 
 
+  findTrade=(id)=>{
+    this.state.trades.find(el=>el.id===id)
+  }
+  setApplication = (application) => {
+    if (application) {
+
+      console.log(application)
+      this.setState({
+        id: application.id,
+        name: application.owner,
+        phone: application.phone,
+        type: {
+          value:application.type,
+          label:application.type
+        },
+        email: application.email,
+        address: application.address,
+        ownerAddress: application.owner_address,
+        localCouncil: {
+          value:application.local_council.id,
+          label:application.local_council.name
+        },
+        tradeName:this.findTrade(application.trade_id),
+        shopName: application.name,
+        coordinate: "Latitude: "+application.latitude + ", Longitude: " + application.longitude,
+        businessDetail: application.details,
+        estd: moment(application.estd),
+        tinNo: application.tin_no,
+        cstNo: application.cst_no,
+        gstNo: application.gst_no,
+        panNo: application.pan_no,
+        premised: application.premise_type,
+        displayType: application.display_type,
+        passport: application.passport,
+        latitude: application.latitude,
+        longitude: application.longitude,
+        uploadDocuments: application.documents,
+        prestine:false
+      });
+    }
+  };
+
   render() {
-    const { classes,open,onClose,onResubmit } = this.props;
+    const { classes, open, onClose, application, onResubmit } = this.props;
 
     return (
 
@@ -795,7 +794,7 @@ class ResubmitShopApplicationDialog extends Component {
                   </form>
                 </GridItem>
 
-                <SubmitDialog open={this.state.submit} text={"Your Application is submitting, Please wait..."}/>
+                {/*<SubmitDialog open={this.state.submit} text={"Your Application is submitting, Please wait..."}/>*/}
 
                 {/*<OfficeSnackbar open={!!this.state.errorMessage} variant={"error"} message={this.state.errorMessage}*/}
                 {/*                onClose={() => this.setState({ errorMessage: "" })}/>*/}
@@ -811,14 +810,14 @@ class ResubmitShopApplicationDialog extends Component {
                   this.setState({ openMap: false });
                 }} isMarkerShown={true}/>
 
-                <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
-                           purposed={"Shop License Application"}
-                           onClose={(value) => {
-                             this.setState({ openOtp: false });
-                             this.onVerifiedOtp(value);
-                           }}/>
+                {/*<OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}*/}
+                {/*           purposed={"Shop License Application"}*/}
+                {/*           onClose={(value) => {*/}
+                {/*             this.setState({ openOtp: false });*/}
+                {/*             this.onVerifiedOtp(value);*/}
+                {/*           }}/>*/}
 
-                {this.state.success}
+                {/*{this.state.success}*/}
               </GridContainer>
             }
           </DialogContent>
