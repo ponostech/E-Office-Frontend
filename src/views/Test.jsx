@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import ReactToPrint from "react-to-print";
+import Card from "react-bootstrap/Card";
+import { CardContent } from "@material-ui/core";
+import OfficeFileUpload from "../components/OfficeFileUpload";
 
 class ComponentToPrint extends React.Component {
   render() {
@@ -36,11 +39,11 @@ class Test extends React.Component {
   render() {
     return (
       <div>
-        <ReactToPrint
-          trigger={() => <a href="#">Print this out!</a>}
-          content={() => this.componentRef}
-        />
-        <ComponentToPrint ref={el => (this.componentRef = el)} />
+        <Card>
+          <OfficeFileUpload fullWidth={true} document={
+            {name:"NOC",location:"fdfdfdfd",mandatory:true,mime:"application/pdf",status:"ready"}
+          } onUploadFailure={e=>console.log("")} onUploadSuccess={e=>console.log("")}/>
+        </Card>
       </div>
     );
   }
