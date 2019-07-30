@@ -69,4 +69,28 @@ export class LicenseService {
       errorCallback(e.toString())
     }
   }
+
+  async getLicenses(phone, errorCallback, successCallback) {
+    try{
+      let shops = [];
+      let banners = [];
+      let hotels = [];
+      let res=await axios.get(ApiRoutes.USER_PERMIT_LIST(phone))
+      if (res.data.status) {
+
+        if (`App\\Shop` in res.data.data.permits)
+            shops=res.data.data.permits["App\\Shop"]
+        if (`"App\\Hotel"` in res.data.data.permits)
+          hotels=res.data.data.permits["App\\Hotel"]
+        if (`"App\\Banner"` in res.data.data.permits)
+          banners=res.data.data.permits["App\\Banner"]
+        successCallback(shops,hotels,banners)
+      }else{
+        errorCallback(ArrayToString(res.data.messages))
+      }
+    }catch (e) {
+      console.error(e)
+      errorCallback(e.toString())
+    }
+  }
 }
