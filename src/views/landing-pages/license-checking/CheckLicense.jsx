@@ -10,6 +10,9 @@ import { LicenseService } from "../../../services/LicenseService";
 import SubmitDialog from "../../../components/SubmitDialog";
 import { Validators } from "../../../utils/Validators";
 import PropTypes from "prop-types";
+import OtpDialog from "../../../components/OtpDialog";
+import SweetAlert from "react-bootstrap-sweetalert";
+import { OtpService } from "../../../services/OtpService";
 
 class CheckLicense extends Component {
   constructor(props) {
@@ -19,7 +22,10 @@ class CheckLicense extends Component {
 
       phoneError: "",
 
+      openOtp:false,
+      otpMessage:""
     };
+    this.otpService=new OtpService();
   }
 
 
@@ -38,15 +44,31 @@ class CheckLicense extends Component {
 
     this.setState({ prestine: false });
   };
-  validateType = (val) => {
-    if (!this.state.type)
-      this.setState({ typeError: "Please Select type of application" });
-    else
-      this.setState({ typeError: "" });
-    this.setState({ prestine: false });
+
+
+  onVerifiedOtp = (verified) => {
+    const { history } = this.props;
+    const { phone } = this.state;
+    if (verified) {
+      this.props.onCheck(phone);
+    }
   };
 
+  sendOtp = () => {
+    var self = this;
+    this.otpService.requestOtp(this.state.phone, "Check Application",
+      errorMsg => {
+        this.setGlobal({ errorMsg });
+      },
+      otpMessage => {
+        this.setState({ openOtp: true });
+        this.setState({ otpMessage });
+      })
+      .finally(() => console.log("Finish otp request"));
+
+  };
   checkLicense = (e) => {
+    // this.sendOtp();
 
     const { phone } = this.state;
     const { history } = this.props;
@@ -95,6 +117,12 @@ class CheckLicense extends Component {
           </Card>
         </GridItem>
 
+        <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
+                   purposed={"Check Application"}
+                   onClose={(value) => {
+                     this.setState({ openOtp: false });
+                     this.onVerifiedOtp(value);
+                   }}/>
       </GridContainer>
     );
   }

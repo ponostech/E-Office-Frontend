@@ -183,5 +183,9 @@ export class ApiRoutes {
   static APPROVE_APPLICATION=(id,type)=>`${type}/${id}/approve`;
   static REJECT_APPLICATION=(id,type)=>`${type}/${id}/reject`;
   static CANCEL_APPLICATION=(id,type)=>`${type}/${id}/cancel`;
+
+  static USER_PERMIT_LIST(phone) {
+    return `/user/${phone}/permits`;
+  }
 }
 

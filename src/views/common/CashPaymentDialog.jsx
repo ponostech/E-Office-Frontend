@@ -82,8 +82,8 @@ class CashPaymentDialog extends Component {
           required={true}
           applicationName={"challans"}
           onUploadSuccess={(data) => {
-            this.setState(state => {
-              state.receipt=data.location;
+            this.setState({
+              receipt:data.location
             });
           }} onUploadFailure={(e) => {
           console.log(e);
@@ -121,12 +121,14 @@ class CashPaymentDialog extends Component {
         </AppBar>
         <DialogContent>
             <Card>
-              <DetailViewRow primary={"Challan Number"} secondary={challan?challan.number:""}/>
-              <DetailViewRow primary={"Payable Amount"} secondary={new Intl.NumberFormat("en-IN", {
-                style: "currency",
-                currency: "INR",
-                maximumSignificantDigits: 2
-              }).format(Boolean(challan)?challan.amount:0)}/>
+              <DetailViewRow primary={"Challan Number"} secondary={challan?challan.number:""}>
+
+                <Typography color={"primary"} variant={"h6"}>{"Amount Payable : "+new Intl.NumberFormat("en-IN", {
+                  style: "currency",
+                  currency: "INR",
+                  maximumSignificantDigits: 2
+                }).format(Boolean(challan)?challan.amount:0)}</Typography>
+              </DetailViewRow>
 
               <Divider component={"div"}/>
               <CardContent>

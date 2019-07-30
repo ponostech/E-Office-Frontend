@@ -47,11 +47,7 @@ const OfficeContextMenu = (props) => {
         elevation={4}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "center"
-        }}
-        transformOrigin={{
-          vertical: "bottom",
-          horizontal: "center"
+          horizontal: "left"
         }}
       >
         {menuItems.map((menuItem, index) =>

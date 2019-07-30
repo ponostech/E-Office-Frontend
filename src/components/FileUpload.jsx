@@ -18,7 +18,6 @@ const config = {
   secretAccessKey: S3_SECRET_ACCESS_KEY
 };
 
-
 class FileUpload extends Component {
   constructor(props) {
     super(props);
