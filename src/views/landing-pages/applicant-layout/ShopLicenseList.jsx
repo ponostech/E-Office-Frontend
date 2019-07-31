@@ -13,6 +13,8 @@ import moment from "moment";
 import SubmitDialog from "../../../components/SubmitDialog";
 import ResubmitShopApplicationDialog from "../../shop/ResubmitShopApplicationDialog";
 import { ShopService } from "../../../services/ShopService";
+import ShopApplicationDialog from "../../common/ShopApplicationDialog";
+import ApplicationDetailsDialog from "../../common/ApplicationDetailsDialog";
 
 
 class ShopLicenseList extends Component {
@@ -23,6 +25,7 @@ class ShopLicenseList extends Component {
 
       openConfirm: false,
       openResubmit: false,
+      openDetail:false,
 
       submit: false,
       submitTitle: "Submit"
@@ -35,15 +38,6 @@ class ShopLicenseList extends Component {
 
   withDraw = (data) => {
     this.setState({ openConfirm: true, application: data });
-  };
-  confirmWithdraw = (event) => {
-    const { application } = this.state;
-
-    // this.setState({openConfirm:false,submit:true});
-    // this.licenseService.cancelShopLicense(application.id,
-    //   errorMsg=>this.setGlobal({errorMsg}),
-    //   successMsg=>this.setGlobal({successMsg}))
-    //   .final(()=>this.setState({submit:false}))
   };
 
   downloadLicense = (data) => {
@@ -71,7 +65,7 @@ class ShopLicenseList extends Component {
   };
 
   render() {
-    const { application, openResubmit } = this.state;
+    const { application, openResubmit,openDetail } = this.state;
     const { history, shops, shop } = this.props;
     const tableOptions = {
       filterType: "checkbox",
@@ -157,7 +151,7 @@ class ShopLicenseList extends Component {
             let controls = undefined;
             let view = <>
               <Tooltip title={"View Application details"}>
-                <IconButton href={"#"} onClick={e => this.setState({ view: true })}>
+                <IconButton href={"#"} onClick={e => this.setState({ application:data,openDetail: true })}>
                   <Icon fontSize={"small"}>remove_red_eye</Icon>
                 </IconButton>
               </Tooltip>
@@ -247,6 +241,11 @@ class ShopLicenseList extends Component {
             {found}
           </CardContent>
         }
+        <ApplicationDetailsDialog type={application?application.file.fileable_type:"App//Shop"} open={openDetail} title='View Application Details'
+                                  application={application}
+                                  file={application?application.file:null}
+                                  onClose={e=>this.setState({openDetail:false})}/>}
+        {/*<ShopApplicationDialog application={application} open={openDetail} onClose={e=>this.setState({openDetail:false})} />*/}
         <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
         {/*<ConfirmDialog onCancel={e=>this.setState({openConfirm:false})} open={this.state.openConfirm} onConfirm={this.confirmWithdraw.bind(this)}/>*/}
 
