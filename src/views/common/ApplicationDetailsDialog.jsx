@@ -48,7 +48,7 @@ class ApplicationDetailsDialog extends React.Component {
   render() {
     const { application, open, title,file, type, onClose } = this.props;
     const { openMessage, submit, submitTitle,openFine, errorMessage, successMessage } = this.state;
-    let allowed = LoginService.getCurrentUser().id === file.current_user_id;
+    let allowed = LoginService.getCurrentUser()===null? false:LoginService.getCurrentUser().id === file.current_user_id;
 
     const action = <>
       {allowed && <Button onClick={e => this.setState({ openMessage: true })} color='primary'>Send Message</Button>}
@@ -59,14 +59,14 @@ class ApplicationDetailsDialog extends React.Component {
 
     let leftRow = LEFT_ITEMS.map(val => <DetailViewRow key={val.key} primary={val.name} secondary={val.value}/>);
 
-    let documents = application.documents ? application.documents.map(val => <FileViewRow key={val.id}
+    let documents = application===null?[]: application.documents ? application.documents.map(val => <FileViewRow key={val.id}
                                                                                           data={val}/>) : [];
 
     let content =
       <Grid container>
         <Grid item md>{leftRow}</Grid>
         <Grid item md>
-          <img style={{ width: 300 }} src={application.passport} alt="Photograph of Applicant"/>
+          <img style={{ width: 300 }} src={application?application.passport:""} alt="Photograph of Applicant"/>
           <List subheader={<ListSubheader>Documents</ListSubheader>}><Divider/>{documents}</List>
         </Grid>
       </Grid>;
