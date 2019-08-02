@@ -40,6 +40,10 @@ class Test extends React.Component {
     return (
       <div>
         <Card>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
           <OfficeFileUpload fullWidth={true} document={
             {name:"NOC",location:"fdfdfdfd",mandatory:true,mime:"application/pdf",status:"ready"}
           } onUploadFailure={e=>console.log("")} onUploadSuccess={e=>console.log("")}/>

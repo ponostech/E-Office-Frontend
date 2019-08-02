@@ -1,82 +1,165 @@
 import React, { Component } from "react";
-import { CircularProgress, Icon, TextField } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
+import { Button, CircularProgress, Icon, TextField } from "@material-ui/core";
 import S3FileUpload from "react-s3";
 import { BUCKET_NAME, REGION, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY } from "../Configuration";
 import PropTypes from "prop-types";
-import FileUpload from "./FileUpload";
-import moment from "moment";
-
+var path = require('path');
 var uniqid = require("uniqid");
+
 const CONFIG = {
   bucketName: BUCKET_NAME,
-  dirName: "", /* optional */
+  dirName: "test", /* optional */
+  region: REGION,
+  accessKeyId: S3_ACCESS_KEY,
+  secretAccessKey: S3_SECRET_ACCESS_KEY
+};
+const DELCONFIG = {
+  bucketName: BUCKET_NAME,
+  dirName: "test", /* optional */
   region: REGION,
   accessKeyId: S3_ACCESS_KEY,
   secretAccessKey: S3_SECRET_ACCESS_KEY
 };
 
-const STATUS={
+const STATUS = {
   READY: "ready",
-  UPLOADING:"uploading",
-  UPLOADED:"uploaded",
-  FAILED:"failed"
-}
-const doc={
-  name:"NOC",
-  location:"",
-  status:STATUS.READY,
-  mandatory:true,
-  mime:"application/pdf"
-}
-const id=moment().toISOString()
+  UPLOADING: "uploading",
+  UPLOADED: "uploaded",
+  FAILED: "failed"
+};
+const doc = {
+  name: "NOC",
+  location: "",
+  status: STATUS.READY,
+  mandatory: true,
+  mime: "application/pdf"
+};
+
 class OfficeFileUpload extends Component {
 
-  upload=(e)=>{
+  constructor(props) {
+    super(props);
+    this.state = {
+      id:uniqid(),
+      name: "",
+      location: "",
+      status: STATUS.READY,
+      mandatory: false,
+      mime: "application/pdf"
+    };
+    this.fileUpload = window.document.createElement("input");
+    this.fileUpload.type="file";
+    let self=this
+    this.fileUpload.accept=document.mime;
+    this.fileUpload.onchange= event => {
+      let file = event.target.files[0];
+
+      console.log("uploading file", file);
+      if (file) {
+        self.setState({
+          name: document.name,
+          location: file,
+          type: document.type,
+          status: STATUS.UPLOADING,
+          mandatory: document.mandatory
+        });
+        S3FileUpload.uploadFile(file, CONFIG)
+          .then(res => {
+            console.log(res);
+            self.setState({ location: res.location, status: STATUS.UPLOADED });
+          })
+          .catch(error => {
+            console.log(error);
+            self.setState({
+              status: STATUS.FAILED
+            });
+          });
+      }
+    };
+
+  }
+
+  componentDidMount() {
     const { document } = this.props;
-    let fileUpload=document.getElementById(id);
-    fileUpload.click()
+
+
   }
-  remove=(e)=>{
-    console.log(e)
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    const { document } = nextProps;
+    this.setState({
+      ...document
+    });
   }
-  reUpload=(e)=>{
-    console.log(e)
-  }
+
+  upload = (e) => {
+    let self = this;
+    const { document } = this.props;
+
+    this.fileUpload.click();
+
+  };
+  remove = (e) => {
+    const { location } = this.state;
+
+    let filename = location.substring(location.lastIndexOf('/')+1);
+    this.setState({ status: STATUS.UPLOADING });
+    S3FileUpload.deleteFile(filename, CONFIG)
+      .then(res => {
+        this.setState({
+          status: STATUS.READY
+        });
+      })
+      .catch(err => {
+        this.setState({
+          status:STATUS.FAILED
+        })
+      });
+  };
+  reUpload = (e) => {
+    this.upload(e);
+  };
+
   render() {
-    const {document,textFieldProps}=this.props
+    const { document, textFieldProps } = this.props;
+    const { id,name, status, location, mime, mandatory } = this.state;
     return (
       <>
-        <input
-          accept={document.mime}
-          style={{ display: "none" }}
-          id={id}
-          name={document.name}
-          type={"file"}/>
+        {/*<input*/}
+        {/*  accept={document.mime}*/}
+        {/*  style={{ display: "none" }}*/}
+        {/*  id={id}*/}
+        {/*  name={document.name}*/}
+        {/*  type={"file"}/>*/}
 
         <TextField
-          id={moment()}
           variant={"outlined"}
           fullWidth={true}
-          required={document.mandatory}
-          name={document.name}
-          value={document.location}
-          label={document.name}
+          required={mandatory}
+          name={name}
+          value={location ? location.name ? location.name : location : ""}
+          label={name}
           InputProps={{
             startAdornment:
-            <>
-              {document.status===STATUS.UPLOADED && <Icon color={"primary"} fontSize={"small"}>check</Icon>}
-              {document.status===STATUS.FAILED && <Icon color={"secondary"} fontSize={"small"}>close</Icon>}
-              {document.status===STATUS.UPLOADING && <CircularProgress variant={"indeterminate"} color={"primary"}/>}
-              {document.status===STATUS.READY && <Icon color={"primary"} fontSize={"small"}>book</Icon>}
+              <>
+                {status === STATUS.UPLOADED && <Icon color={"primary"} fontSize={"small"}>check</Icon>}
+                {status === STATUS.FAILED && <Icon color={"secondary"} fontSize={"small"}>error</Icon>}
+                {status === STATUS.UPLOADING &&
+                <CircularProgress size={35} variant={"indeterminate"} color={"primary"}/>}
+                {status === STATUS.READY && <Icon color={"primary"} fontSize={"small"}>book</Icon>}
 
               </>,
             endAdornment:
-            <>
-              {document.status===STATUS.READY && <IconButton onClick={event => this.upload(event)} href={"#"}><Icon color={"primary"}>cloud_upload</Icon></IconButton>}
-              {document.status===STATUS.UPLOADING && <IconButton disabled={true} onClick={event => console.log("")} href={"#"}><Icon color={"primary"}>more_horiz</Icon></IconButton>}
-              {document.status===STATUS.UPLOADED && <IconButton onClick={event => this.remove(event)} href={"#"}><Icon color={"secondary"}>close</Icon></IconButton>}
-              {document.status===STATUS.FAILED && <IconButton onClick={event => this.reUpload(event)} href={"#"}><Icon color={"secondary"}>close</Icon></IconButton>}
+              <>
+                {status === STATUS.READY &&
+                <Button disabled={status === STATUS.UPLOADING} color={"primary"} variant={"contained"}
+                        onClick={event => this.upload(event)} href={"#"}>Upload</Button>}
+                {status === STATUS.UPLOADED &&
+                <Button disabled={status === STATUS.UPLOADING} color={"primary"} variant={"contained"}
+                        onClick={event => this.remove(event)} href={"#"}>Remove</Button>}
+                {status === STATUS.FAILED &&
+                <Button disabled={status === STATUS.UPLOADING} color={"primary"} variant={"contained"}
+                        onClick={event => this.reUpload(event)} href={"#"}>Upload</Button>}
               </>
           }}
           {...textFieldProps}
@@ -85,6 +168,7 @@ class OfficeFileUpload extends Component {
     );
   }
 }
+
 OfficeFileUpload.defaultProps = {
   title: "Document Upload",
   applicationName: "default"
