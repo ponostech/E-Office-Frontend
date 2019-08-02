@@ -25,7 +25,7 @@ const pagesHeaderStyle = theme => ({
     position: "absolute",
     width: "100%",
     paddingTop: "10px",
-    zIndex: "1029",
+    // zIndex: "1029",
     color: grayColor[6],
     border: "0",
     borderRadius: "3px",

@@ -39,13 +39,14 @@ class OfficeFileUpload extends Component {
 
   constructor(props) {
     super(props);
+    const{document}=props
     this.state = {
       id:uniqid(),
-      name: "",
-      location: "",
-      status: STATUS.READY,
-      mandatory: false,
-      mime: "application/pdf"
+      name: document.name,
+      location: document.location,
+      status: document.status,
+      mandatory: document.mandatory,
+      mime: document.mime
     };
     this.fileUpload = window.document.createElement("input");
     this.fileUpload.type="file";
@@ -61,12 +62,13 @@ class OfficeFileUpload extends Component {
           location: file,
           type: document.type,
           status: STATUS.UPLOADING,
-          mandatory: document.mandatory
+          mandatory: document.mandatory,
         });
         S3FileUpload.uploadFile(file, CONFIG)
           .then(res => {
             console.log(res);
             self.setState({ location: res.location, status: STATUS.UPLOADED });
+            props.onUploadSuccess(res)
           })
           .catch(error => {
             console.log(error);
@@ -82,15 +84,8 @@ class OfficeFileUpload extends Component {
   componentDidMount() {
     const { document } = this.props;
 
-
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    const { document } = nextProps;
-    this.setState({
-      ...document
-    });
-  }
 
   upload = (e) => {
     let self = this;
