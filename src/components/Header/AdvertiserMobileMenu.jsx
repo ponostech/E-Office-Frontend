@@ -29,6 +29,7 @@ import {
 } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { Avatar, Divider, Grid } from "@material-ui/core";
+import { LoginService } from "../../services/LoginService";
 
 
 function AdvertiserMobileMenu(props) {
@@ -45,6 +46,12 @@ function AdvertiserMobileMenu(props) {
     setOpenKiosk(!openKiosk);
   }
 
+  const logout=()=>{
+    const { history } = props;
+    new LoginService().logout(errorMsg=>this.setGlobal({errorMsg}),
+      success=>history.push("/"))
+      .finally(()=>console.log("log out"))
+  }
   return (
     <Grid style={{ padding: 30 }} container={true} justify={"center"} direction={"column"} alignItems={"center"}>
       <Avatar src={"https://amcmizoram.com/uploads/gallery/44_18042017015907.jpg"} style={{ width: 80, height: 80 }}/>
@@ -206,7 +213,7 @@ function AdvertiserMobileMenu(props) {
           props.close();
           props.history.push(ADVERTISER_DASHBOARD);
         }}>
-          <ListItemIcon>
+          <ListItemIcon onChange={event => logout()}>
             <PowerIcon fontSize={"small"} color={"secondary"}/>
           </ListItemIcon>
           <ListItemText primary="Logout"/>

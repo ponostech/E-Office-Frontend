@@ -49,6 +49,7 @@ import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
+import OfficeFileUpload from "../../components/OfficeFileUpload";
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -156,6 +157,30 @@ class ResubmitShopApplicationDialog extends Component {
     this.setApplication(application)
   }
 
+  requestOtp = () => {
+    var self = this;
+    this.otpService.requestOtp(this.state.phone, "Resubmit Application",
+      errorMsg => {
+        this.setGlobal({ errorMsg });
+      },
+      otpMessage => {
+        this.setState({ openOtp: true });
+        this.setState({ otpMessage });
+      })
+      .finally(() => console.log("Finish otp request"));
+
+  };
+  onVerifiedOtp = (verified) => {
+    if (verified) {
+      this.props.onResubmit(this.state);
+    }
+  };
+  valid=()=>{
+    const { name, type, email, phone, address, ownerAddress, localCouncil, tradeName, shopName, latitude, longitude, passport,agree } = this.state;
+    return Boolean(name) && Boolean(type) && Boolean(phone) && phone.length===10 &&  Boolean(email) && email.match(Validators.EMAIL_REGEX) && Boolean(address) && Boolean(ownerAddress) && Boolean(localCouncil)
+    && Boolean(tradeName) && Boolean(shopName)  && Boolean(latitude) && Boolean(longitude) && Boolean(passport) && agree && this.validateDocument()
+  }
+
   validateDocument = () => {
     const { documents, uploadDocuments } = this.state;
     let docCount = 0;
@@ -232,19 +257,7 @@ class ResubmitShopApplicationDialog extends Component {
     }
   };
 
-  invalid = () => {
-    return Boolean(this.state.nameError) || Boolean(this.state.typeError) || Boolean(this.state.addressError)
-      || Boolean(this.state.coordinateError) || Boolean(this.state.phoneError) || Boolean(this.state.shopNameError)
-      || Boolean(this.state.businessDetailError) || Boolean(this.state.estdError) || Boolean(this.state.prestine) || !this.validateDocument();
-  };
-  onSubmit = (e) => {
 
-    if (!this.invalid()) {
-      this.props.onResubmit(this.state);
-    } else {
-      this.setState({ errorMsg: "Please fill all the required fields" });
-    }
-  };
   handleRadio = (e) => {
     this.setState({
       premised: e.target.value
@@ -310,7 +323,6 @@ class ResubmitShopApplicationDialog extends Component {
   setApplication = (application) => {
     if (application) {
 
-      console.log(application)
       this.setState({
         id: application.id,
         name: application.owner,
@@ -337,7 +349,13 @@ class ResubmitShopApplicationDialog extends Component {
         panNo: application.pan_no,
         premised: application.premise_type,
         displayType: application.display_type,
-        passport: application.passport,
+        passport: {
+          name:"passport",
+          location:application.passport,
+          mime:"images/*",
+          mandatory:true,
+          status:"uploaded"
+        },
         latitude: application.latitude,
         longitude: application.longitude,
         uploadDocuments: application.documents,
@@ -678,18 +696,30 @@ class ResubmitShopApplicationDialog extends Component {
                             />
                           </GridItem>
                           <GridItem className={classes.root} xs={12} sm={12} md={6}>
-                            <FileUpload applicationName={APPLICATION_NAME.SHOP}
-                                        document={{
-                                          id: 122,
-                                          mandatory: 1,
-                                          name: "Photograph of Applicant",
-                                          mime: "image/*"
-                                        }}
+                            {/*<FileUpload applicationName={APPLICATION_NAME.SHOP}*/}
+                            {/*            document={{*/}
+                            {/*              id: 122,*/}
+                            {/*              mandatory: 1,*/}
+                            {/*              name: "Photograph of Applicant",*/}
+                            {/*              mime: "image/*"*/}
+                            {/*            }}*/}
+                            {/*            onUploadSuccess={(data) => {*/}
+                            {/*              this.setState(state => {*/}
+                            {/*                state.passport = {*/}
+                            {/*                  name: "passport",*/}
+                            {/*                  path: data.location*/}
+                            {/*                };*/}
+                            {/*              });*/}
+                            {/*            }} onUploadFailure={(err) => {*/}
+                            {/*  console.log(err);*/}
+                            {/*}}/>*/}
+                            <OfficeFileUpload applicationName={APPLICATION_NAME.SHOP}
+                                        document={this.state.passport}
                                         onUploadSuccess={(data) => {
                                           this.setState(state => {
                                             state.passport = {
                                               name: "passport",
-                                              path: data.location
+                                              location: data.location
                                             };
                                           });
                                         }} onUploadFailure={(err) => {
@@ -772,10 +802,10 @@ class ResubmitShopApplicationDialog extends Component {
                         <GridContainer justify={"flex-end"}>
                           <GridItem>
                             <Button name={"primary"} disabled={
-                              this.invalid()
+                              !this.valid()
                             }
                                     color={"primary"} variant={"outlined"}
-                                    onClick={this.onSubmit.bind(this)}>
+                                    onClick={event => this.requestOtp()}>
                               {ShopLicenseViewModel.PRIMARY_TEXT}
                             </Button>
                             {"\u00A0 "}
@@ -799,6 +829,12 @@ class ResubmitShopApplicationDialog extends Component {
                 {/*<OfficeSnackbar open={!!this.state.errorMessage} variant={"error"} message={this.state.errorMessage}*/}
                 {/*                onClose={() => this.setState({ errorMessage: "" })}/>*/}
 
+                <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
+                           purposed={"Resubmit Shop Application"}
+                           onClose={(value) => {
+                             this.setState({ openOtp: false });
+                             this.onVerifiedOtp(value);
+                           }}/>
 
                 <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
                   let msg = `Latitude: ${lat} , Longitude: ${lng}`;

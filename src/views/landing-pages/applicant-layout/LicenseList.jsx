@@ -1,15 +1,54 @@
 import React, { Component } from "reactn";
-import { Grid, Icon, Paper, Tab, Tabs, Typography } from "@material-ui/core";
+import { Card, CardHeader, Grid, Icon, Paper, Tab, Tabs, Typography } from "@material-ui/core";
 import { LicenseService } from "../../../services/LicenseService";
 import PropTypes from "prop-types";
 import Chip from "@material-ui/core/Chip";
 import moment from "moment";
-import Card from "../../../components/Card/Card";
-import CardBody from "../../../components/Card/CardBody";
-import CardHeader from "../../../components/Card/CardHeader";
-import CardIcon from "../../../components/Card/CardIcon";
-import CardText from "../../../components/Card/CardText";
+
 import CardContent from "@material-ui/core/CardContent";
+import CardIcon from "../../../components/Card/CardIcon";
+import OfficeContextMenu from "../../../components/OfficeContextMenu";
+import Divider from "@material-ui/core/Divider";
+
+{/*<Card raised={true} profile={true}>*/
+}
+
+{/*  <CardHeader color={"primary"} text={true}>*/
+}
+{/*    /!*<CardIcon color="primary">*!/*/
+}
+{/*    /!*  <Icon>content_copy</Icon>*!/*/
+}
+{/*    /!*</CardIcon>*!/*/
+}
+{/*    <CardText color={color}>*/
+}
+{/*    <Typography paragraph={true} variant={"h6"}>License Number: {license.number}</Typography>*/
+}
+{/*    </CardText>*/
+}
+{/*  </CardHeader>*/
+}
+{/*  <CardBody>*/
+}
+{/*    <Typography paragraph={true}>*/
+}
+{/*      Application Date: {moment(license.created_at).format("DD MMM YYYY")}*/
+}
+{/*    </Typography>*/
+}
+{/*    <Typography paragraph={true} dangerouslySetInnerHTML={{ __html: license.content }}/>*/
+}
+{/*    <Typography paragraph={true}>*/
+}
+{/*      {subhead}*/
+}
+{/*    </Typography>*/
+}
+{/*  </CardBody>*/
+}
+{/*</Card>*/
+}
 
 const LicenseCard = (props) => {
 
@@ -40,26 +79,27 @@ const LicenseCard = (props) => {
   const subhead = license.type === "permit" ? <Chip color={"primary"} label={license.type}/> :
     <Chip component={"div"} color={"secondary"} label={license.type}/>;
   return (
-    <Card raised={true} profile={true}>
 
-      <CardHeader color={"primary"} text={true}>
-        {/*<CardIcon color="primary">*/}
-        {/*  <Icon>content_copy</Icon>*/}
-        {/*</CardIcon>*/}
-        <CardText color={color}>
-        <Typography paragraph={true} variant={"h6"}>License Number: {license.number}</Typography>
-        </CardText>
-      </CardHeader>
-      <CardBody>
-        <Typography paragraph={true}>
-          Application Date: {moment(license.created_at).format("DD MMM YYYY")}
-        </Typography>
-        <Typography paragraph={true} dangerouslySetInnerHTML={{ __html: license.content }}/>
-        <Typography paragraph={true}>
-          {subhead}
-        </Typography>
-      </CardBody>
-    </Card>
+
+    <Paper style={{ margin: 10 }}>
+
+      <Card>
+        <CardHeader title={"LICENSE NUMBER"} subheader={license.number} action={
+          <OfficeContextMenu menu={menu}/>
+        }>
+        </CardHeader>
+        <Divider/>
+        <CardContent>
+          <Typography paragraph={true}>
+            Application Date: {moment(license.created_at).format("DD MMM YYYY")}
+          </Typography>
+          <Typography paragraph={true} dangerouslySetInnerHTML={{ __html: license.content }}/>
+          <Typography paragraph={true}>
+            {subhead}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Paper>
   );
 };
 
@@ -74,8 +114,8 @@ const ShopLicensesView = (props) => {
           </Grid>
         )}
       </Grid>}
-      {licenses.length===0  && <Typography paragraph={true}>No License is issued</Typography> }
-      </>
+      {licenses.length === 0 && <Typography paragraph={true}>No License is issued</Typography>}
+    </>
   );
 };
 
@@ -91,9 +131,9 @@ const HotelLicensesView = (props) => {
           </Grid>
         )}
       </Grid>}
-      {licenses.length===0 && <Typography paragraph={true}>No License is issued</Typography>}
+      {licenses.length === 0 && <Typography paragraph={true}>No License is issued</Typography>}
 
-      </>
+    </>
   );
 };
 const BannerLicensesView = (props) => {
@@ -108,7 +148,7 @@ const BannerLicensesView = (props) => {
           </Grid>
         )}
       </Grid>}
-      {licenses.length===0  && <Typography paragraph={true}>No License is issued</Typography>}
+      {licenses.length === 0 && <Typography paragraph={true}>No License is issued</Typography>}
 
     </>
   );
@@ -147,25 +187,25 @@ class LicenseList extends Component {
       <div>
         <Card>
           <CardContent>
-        <Paper>
+            <Paper>
 
-          <Tabs
-            component={"div"}
-            value={tabValue}
-            indicatorColor="primary"
-            textColor="primary"
-            onChange={this.selectTab}
-            aria-label="Disabled tabs example"
-          >
-            <Tab href={"#"} label="Shop" value={"shop"}/>
-            <Tab href={"#"} label="Hotel" value={"hotel"}/>
-            <Tab href={"#"} label="Banner" value={"banner"}/>
-          </Tabs>
+              <Tabs
+                component={"div"}
+                value={tabValue}
+                indicatorColor="primary"
+                textColor="primary"
+                onChange={this.selectTab}
+                aria-label="Disabled tabs example"
+              >
+                <Tab href={"#"} label="Shop" value={"shop"}/>
+                <Tab href={"#"} label="Hotel" value={"hotel"}/>
+                <Tab href={"#"} label="Banner" value={"banner"}/>
+              </Tabs>
 
-          {tabValue === "shop" && <ShopLicensesView licenses={shopLicenses}/>}
-          {tabValue === "hotel" && <HotelLicensesView licenses={hotelLicenses}/>}
-          {tabValue === "banner" && <BannerLicensesView licenses={bannerLicenses}/>}
-        </Paper>
+              {tabValue === "shop" && <ShopLicensesView licenses={shopLicenses}/>}
+              {tabValue === "hotel" && <HotelLicensesView licenses={hotelLicenses}/>}
+              {tabValue === "banner" && <BannerLicensesView licenses={bannerLicenses}/>}
+            </Paper>
           </CardContent>
         </Card>
       </div>

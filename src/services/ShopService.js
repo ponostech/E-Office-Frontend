@@ -69,7 +69,7 @@ async resubmit(state,errorCallback,successCallback) {
       pan_no: state.panNo,
       premise_type: state.premised,
       display_type: state.displayType,
-      passport: state.passport.path,
+      passport: state.passport.location,
       documents: state.uploadDocuments
     };
     try {

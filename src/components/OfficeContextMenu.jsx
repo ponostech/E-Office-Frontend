@@ -45,6 +45,10 @@ const OfficeContextMenu = (props) => {
         open={Boolean(anchorEl)}
         onClose={event => setAnchorEl(null)}
         elevation={4}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right"
+        }}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "left"

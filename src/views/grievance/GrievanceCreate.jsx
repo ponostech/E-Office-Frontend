@@ -32,7 +32,9 @@ class GrievanceCreate extends Component {
     phoneError: "",
     addressError: "",
     subjectError: "",
-    contentError: ""
+    contentError: "",
+
+    prestine:true
 
   };
 
@@ -41,7 +43,7 @@ class GrievanceCreate extends Component {
   }
 
   changeField = (name, e) => {
-    this.setState({ [name]: e.target.value });
+    this.setState({ [name]: e.target.value,prestine:false });
     if (name === "phone_no") {
       const valid = Validators.PHONE_REGEX.test(e.target.value);
       if (valid) {
@@ -107,11 +109,12 @@ class GrievanceCreate extends Component {
 
   valid = () => {
     const { name, phone_no, address, subject, content } = this.state;
-     return Boolean(name) && Boolean(phone_no) && Boolean(address) && Boolean(subject) && Boolean(content)
+     return Boolean(name) && Boolean(phone_no) && phone_no.length===10 && Boolean(address) && Boolean(subject) && Boolean(content)
   };
 
+
   reset = () => this.setState({
-    name: "", phone_no: "", address: "", branch: "", subject: "", content: "",nameError:"",phoneError:"",addressError:"",contentError:"",subjectError:""
+    name: "", phone_no: "", address: "", branch: "", subject: "", content: "",nameError:"",phoneError:"",addressError:"",contentError:"",subjectError:"",prestine:true
   });
 
   render() {
@@ -152,7 +155,7 @@ class GrievanceCreate extends Component {
 
     const actions =
       <>
-        <Button href={"#"} name="submit" disabled={!Boolean(name) || Boolean(address) || !Boolean(subject) || Boolean(phone_no) || !Boolean(content)} onClick={this.submit} variant={"outlined"}
+        <Button href={"#"} name="submit" disabled={!this.valid()} onClick={this.submit} variant={"outlined"}
                 color={"primary"}>
           Submit
         </Button>
