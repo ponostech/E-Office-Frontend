@@ -48,6 +48,20 @@ class ChallanService {
       errorCallback(e.toString())
     }
   }
+  async getUserChallan([phone], errorCallback, successCallback) {
+    try{
+      let res=await axios.post(ApiRoutes.USER_CHALLAN_LIST(phone))
+      if (res.data.status) {
+        successCallback(res.data.messages)
+      }else
+        errorCallback(res.data.messages)
+    }catch (e) {
+      console.error(e)
+      errorCallback(e.toString())
+    }
+  }
+
+
 }
 
 export default ChallanService

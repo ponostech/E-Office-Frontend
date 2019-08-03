@@ -48,6 +48,8 @@
     "react-tagsinput": "3.19.0",
     "react-virtualized": "^9.21.1",
     "reactn": "^2.1.4",
+    "sweetalert2": "^8.15.0",
+    "sweetalert2-react-content": "^1.1.0",
     "tinymce-line-height-plugin": "^1.0.0",
     "typescript": "^3.5.3",
     "uniqid": "^5.0.3",

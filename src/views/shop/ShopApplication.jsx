@@ -42,6 +42,8 @@ import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { APPLICATION_NAME } from "../../utils/Util";
 import LoadingView from "../common/LoadingView";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 const style = {
 
@@ -168,17 +170,13 @@ class ShopApplication extends Component {
       this.shopService.create(this.state,
         errorMsg => this.setGlobal({ errorMsg }),
         msg => {
-          this.setState({
-            success: (
-              <SweetAlert
-                success
-                style={{ display: "block", marginTop: "-100px" }}
-                title={"Success"}
-                onConfirm={() => history.push(HOME)}>
-                {msg}
-              </SweetAlert>
-            )
-          });
+          const MySwal = withReactContent(Swal)
+            MySwal.fire({
+              text: msg,
+              type: 'success',
+              confirmButtonColor: '#26B99A',
+              confirmButtonText: "Ok"
+            })
         })
         .finally(() => this.setState({ submit: false }));
     }
