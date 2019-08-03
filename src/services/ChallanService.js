@@ -48,11 +48,12 @@ class ChallanService {
       errorCallback(e.toString())
     }
   }
-  async getUserChallan([phone], errorCallback, successCallback) {
+  async getUserChallan(phone, errorCallback, successCallback) {
     try{
-      let res=await axios.post(ApiRoutes.USER_CHALLAN_LIST(phone))
+      let res=await axios.get(ApiRoutes.USER_CHALLAN_LIST(phone))
       if (res.data.status) {
-        successCallback(res.data.messages)
+        const { shop_challans, hotel_challans, banner_challans } = res.data.data;
+        successCallback([...shop_challans,...hotel_challans,...banner_challans])
       }else
         errorCallback(res.data.messages)
     }catch (e) {

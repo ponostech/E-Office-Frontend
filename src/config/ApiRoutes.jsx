@@ -188,6 +188,6 @@ export class ApiRoutes {
     return `/user/${phone}/permits`;
   }
 
-  static USER_CHALLAN_LIST=(phone) =>`/challans/${phone}`;
+  static USER_CHALLAN_LIST=(phone) =>`/user/${phone}/challans`;
 }
 
