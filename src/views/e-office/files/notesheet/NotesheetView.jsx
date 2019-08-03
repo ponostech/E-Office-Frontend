@@ -48,10 +48,10 @@ class NotesheetView extends Component {
       temp['badgeIcon'] = EventNote;
       temp['title'] = data.action;
       temp['titleColor'] = 'success';
-      temp['avatar'] = data.staff.photo ? data.staff.photo : DefaultAvatar;
+      temp['avatar'] = data.staff ? data.staff.photo : DefaultAvatar;
       temp['body'] = data.content;
-      temp['footerName'] = data.staff.staff.name;
-      temp['footerDesignation'] = data.staff.staff.designation;
+      temp['footerName'] = data.staff ? data.staff.staff.name : '';
+      temp['footerDesignation'] = data.staff ? data.staff.staff.designation : '';
       temp['footerTitle'] = "Dated: " + moment(data.created_at).format("Do MMMM YYYY \(dddd\)");
       temp['note'] = data;
       temp['type'] = data.type;
