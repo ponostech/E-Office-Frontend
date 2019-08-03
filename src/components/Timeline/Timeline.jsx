@@ -89,7 +89,6 @@ function Timeline({...props}) {
                           <Icon color={"secondary"} fontSize={"small"}>delete</Icon>
                         </IconButton>
                       </Tooltip>
-
                     </div>}
                     {!draft?
                         <div style={{float:"right"}}>
