@@ -1,10 +1,15 @@
-import React, { Component } from "react";
-import ReactToPrint from "react-to-print";
-import Card from "react-bootstrap/Card";
-import { CardContent } from "@material-ui/core";
-import OfficeFileUpload from "../components/OfficeFileUpload";
+import React from "react";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 class ComponentToPrint extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      show:false
+    }
+  }
+
   render() {
     return (
       <table>
@@ -36,18 +41,26 @@ class ComponentToPrint extends React.Component {
 }
 
 class Test extends React.Component {
+   show=()=>{
+     const MySwal = withReactContent(Swal)
+
+     MySwal.fire({
+       title: <p>Hello World</p>,
+       footer: 'Copyright 2018',
+       onOpen: () => {
+         // `MySwal` is a subclass of `Swal`
+         //   with all the same instance & static methods
+         MySwal.clickConfirm()
+       }
+     }).then(() => {
+       return MySwal.fire(<p>Shorthand works too</p>)
+     })
+   }
   render() {
     return (
       <div>
-        <Card>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <OfficeFileUpload fullWidth={true} document={
-            {name:"NOC",location:"fdfdfdfd",mandatory:true,mime:"application/pdf",status:"ready"}
-          } onUploadFailure={e=>console.log("")} onUploadSuccess={e=>console.log("")}/>
-        </Card>
+        <button onClick={() => this.show()}>Alert</button>
+
       </div>
     );
   }

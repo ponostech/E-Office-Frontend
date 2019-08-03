@@ -147,13 +147,13 @@ class OfficeFileUpload extends Component {
             endAdornment:
               <>
                 {status === STATUS.READY &&
-                <Button disabled={status === STATUS.UPLOADING} color={"primary"} variant={"contained"}
+                <Button disabled={status === STATUS.UPLOADING} color={"primary"}  variant={"outlined"}
                         onClick={event => this.upload(event)} href={"#"}>Upload</Button>}
                 {status === STATUS.UPLOADED &&
-                <Button disabled={status === STATUS.UPLOADING} color={"primary"} variant={"contained"}
-                        onClick={event => this.remove(event)} href={"#"}>Remove</Button>}
+                <Button disabled={status === STATUS.UPLOADING} color={"primary"} variant={"outlined"}
+                        onClick={event => this.remove(event)} href={"#"}>Change</Button>}
                 {status === STATUS.FAILED &&
-                <Button disabled={status === STATUS.UPLOADING} color={"primary"} variant={"contained"}
+                <Button disabled={status === STATUS.UPLOADING} color={"primary"} variant={"outlined"}
                         onClick={event => this.reUpload(event)} href={"#"}>Upload</Button>}
               </>
           }}

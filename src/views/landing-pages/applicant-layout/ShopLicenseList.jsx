@@ -15,6 +15,8 @@ import ResubmitShopApplicationDialog from "../../shop/ResubmitShopApplicationDia
 import { ShopService } from "../../../services/ShopService";
 import ShopApplicationDialog from "../../common/ShopApplicationDialog";
 import ApplicationDetailsDialog from "../../common/ApplicationDetailsDialog";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 
 class ShopLicenseList extends Component {
@@ -56,10 +58,33 @@ class ShopLicenseList extends Component {
   reSubmitApplication = application => {
     this.setState({ submitTitle: "Resubmit Application", submit: true, openResubmit: false });
     this.shopService.resubmit(application, errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => {
-        this.setGlobal({ successMsg });
-        this.props.refresh();
+      (challan,successMsg) => {
 
+        const MySwal = withReactContent(Swal)
+
+        if (challan){
+          MySwal.fire({
+            title:`Challan No:${challan.number}`,
+            text: successMsg,
+            type: 'success',
+            showCancelButton: true,
+            cancelButtonText:"Close",
+            confirmButtonColor: '#26B99A',
+            confirmButtonText: "Pay Now (ONLINE)"
+          }).then((result) => {
+            if (result.value) {
+              Swal.fire(
+                'Pay!',
+                'Your application is paid.',
+                'success'
+              )
+            }
+          })
+        }else {
+        this.setGlobal({ successMsg });
+        }
+
+        // this.props.refresh();
       })
       .finally(() => this.setState({ submit: false }));
   };
@@ -244,10 +269,8 @@ class ShopLicenseList extends Component {
         <ApplicationDetailsDialog type={application?application.file.fileable_type:"App//Shop"} open={openDetail} title='View Application Details'
                                   application={application}
                                   file={application?application.file:null}
-                                  onClose={e=>this.setState({openDetail:false})}/>}
-        {/*<ShopApplicationDialog application={application} open={openDetail} onClose={e=>this.setState({openDetail:false})} />*/}
+                                  onClose={e=>this.setState({openDetail:false})}/>
         <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
-        {/*<ConfirmDialog onCancel={e=>this.setState({openConfirm:false})} open={this.state.openConfirm} onConfirm={this.confirmWithdraw.bind(this)}/>*/}
 
         <ResubmitShopApplicationDialog open={openResubmit} onClose={e => this.setState({ openResubmit: false })}
                                        application={application} onResubmit={this.reSubmitApplication}/>

@@ -3,11 +3,13 @@ import NavPills from "../../components/NavPills/NavPills";
 import ShopIcon from "@material-ui/icons/LocalGroceryStore";
 import HotelIcon from "@material-ui/icons/Hotel";
 import BannerIcon from "@material-ui/icons/PictureInPicture";
+import ListIcon from "@material-ui/icons/List";
 import ShopLicenseList from "./applicant-layout/ShopLicenseList";
 import BannerList from "./applicant-layout/BannerList";
 import { Card, CardContent, CardHeader, Grid, Paper } from "@material-ui/core";
 import PropTypes from "prop-types";
 import LicenseList from "./applicant-layout/LicenseList";
+import UserChallanList from "./applicant-layout/UserChallanList";
 
 class ApplicantDashboard extends Component {
 
@@ -43,6 +45,10 @@ class ApplicantDashboard extends Component {
                       tabButton: "License",
                       tabIcon: BannerIcon,
                       tabContent: (<LicenseList phone={phone}/>)
+                    },{
+                      tabButton: "Challan List",
+                      tabIcon: ListIcon,
+                      tabContent: (<UserChallanList phone={phone}/>)
                     }
                   ]}
                 />

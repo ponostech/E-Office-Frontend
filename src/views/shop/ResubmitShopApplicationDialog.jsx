@@ -27,7 +27,6 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 
 import { ShopLicenseViewModel } from "../model/ShopLicenseViewModel";
 import OfficeSelect from "../../components/OfficeSelect";
-import SubmitDialog from "../../components/SubmitDialog";
 import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
 import { ShopService } from "../../services/ShopService";
@@ -133,6 +132,7 @@ class ResubmitShopApplicationDialog extends Component {
     documents: [],
     flaDocuments: [],
     noFlaDocuments: [],
+    uploadedDoc: [],
     openMap: false,
     prestine: true,
     openOtp: false,
@@ -154,7 +154,7 @@ class ResubmitShopApplicationDialog extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     const { application } = nextProps;
-    this.setApplication(application)
+    this.setApplication(application);
   }
 
   requestOtp = () => {
@@ -169,17 +169,18 @@ class ResubmitShopApplicationDialog extends Component {
       })
       .finally(() => console.log("Finish otp request"));
 
+
   };
   onVerifiedOtp = (verified) => {
     if (verified) {
       this.props.onResubmit(this.state);
     }
   };
-  valid=()=>{
-    const { name, type, email, phone, address, ownerAddress, localCouncil, tradeName, shopName, latitude, longitude, passport,agree } = this.state;
-    return Boolean(name) && Boolean(type) && Boolean(phone) && phone.length===10 &&  Boolean(email) && email.match(Validators.EMAIL_REGEX) && Boolean(address) && Boolean(ownerAddress) && Boolean(localCouncil)
-    && Boolean(tradeName) && Boolean(shopName)  && Boolean(latitude) && Boolean(longitude) && Boolean(passport) && agree && this.validateDocument()
-  }
+  valid = () => {
+    const { name, type, email, phone, address, ownerAddress, localCouncil, tradeName, shopName, latitude, longitude, passport, agree } = this.state;
+    return Boolean(name) && Boolean(type) && Boolean(phone) && phone.length === 10 && Boolean(email) && email.match(Validators.EMAIL_REGEX) && Boolean(address) && Boolean(ownerAddress) && Boolean(localCouncil)
+      && Boolean(tradeName) && Boolean(shopName) && Boolean(latitude) && Boolean(longitude) && Boolean(passport) && agree && this.validateDocument();
+  };
 
   validateDocument = () => {
     const { documents, uploadDocuments } = this.state;
@@ -317,9 +318,9 @@ class ResubmitShopApplicationDialog extends Component {
   };
 
 
-  findTrade=(id)=>{
-    this.state.trades.find(el=>el.id===id)
-  }
+  findTrade = (id) => {
+    this.state.trades.find(el => el.id === id);
+  };
   setApplication = (application) => {
     if (application) {
 
@@ -328,19 +329,23 @@ class ResubmitShopApplicationDialog extends Component {
         name: application.owner,
         phone: application.phone,
         type: {
-          value:application.type,
-          label:application.type
+          value: application.type,
+          label: application.type
         },
         email: application.email,
         address: application.address,
         ownerAddress: application.owner_address,
         localCouncil: {
-          value:application.local_council.id,
-          label:application.local_council.name
+          value: application.local_council.id,
+          label: application.local_council.name
         },
-        tradeName:this.findTrade(application.trade_id),
+        tradeName: {
+          value: application.trade.id,
+          label: application.trade.name,
+          fla: application.trade.fla
+        },
         shopName: application.name,
-        coordinate: "Latitude: "+application.latitude + ", Longitude: " + application.longitude,
+        coordinate: "Latitude: " + application.latitude + ", Longitude: " + application.longitude,
         businessDetail: application.details,
         estd: moment(application.estd),
         tinNo: application.tin_no,
@@ -350,19 +355,52 @@ class ResubmitShopApplicationDialog extends Component {
         premised: application.premise_type,
         displayType: application.display_type,
         passport: {
-          name:"passport",
-          location:application.passport,
-          mime:"images/*",
-          mandatory:true,
-          status:"uploaded"
+          name: "passport",
+          location: application.passport,
+          mime: "images/*",
+          mandatory: true,
+          status: "uploaded"
         },
         latitude: application.latitude,
         longitude: application.longitude,
-        uploadDocuments: application.documents,
-        prestine:false
+        uploadedDoc: application.documents,
+        prestine: false
       });
     }
   };
+
+  getDocumentView=()=>{
+    const { classes,application } = this.props;
+    return this.state.documents.map((doc, index) => {
+      let found = this.state.uploadedDoc.find(item => item.document_id === doc.id);
+      console.log("found item",found)
+      let uploadView = Boolean(found) ? <a target={"_blank"} href={found.path}>{found.name}</a> : "";
+      return <>
+        <GridItem key={index} className={classes.root} sm={12} xs={12}
+                  md={12}>
+
+          <FileUpload
+            applicationName={APPLICATION_NAME.SHOP}
+            key={index} document={doc} onUploadSuccess={(data) => {
+            let temp = {
+              mandatory: doc.mandatory,
+              document_id: doc.id,
+              name: doc.name,
+              path: data.location
+            };
+            this.setState(state => {
+              state.uploadDocuments.push(temp);
+            });
+          }} onUploadFailure={(err) => {
+            console.log(err);
+          }}/>
+
+        {uploadView}
+        </GridItem>
+      </>;
+
+    })
+  }
 
   render() {
     const { classes, open, onClose, application, onResubmit } = this.props;
@@ -714,15 +752,15 @@ class ResubmitShopApplicationDialog extends Component {
                             {/*  console.log(err);*/}
                             {/*}}/>*/}
                             <OfficeFileUpload applicationName={APPLICATION_NAME.SHOP}
-                                        document={this.state.passport}
-                                        onUploadSuccess={(data) => {
-                                          this.setState(state => {
-                                            state.passport = {
-                                              name: "passport",
-                                              location: data.location
-                                            };
-                                          });
-                                        }} onUploadFailure={(err) => {
+                                              document={this.state.passport}
+                                              onUploadSuccess={(data) => {
+                                                this.setState(state => {
+                                                  state.passport = {
+                                                    name: "passport",
+                                                    location: data.location
+                                                  };
+                                                });
+                                              }} onUploadFailure={(err) => {
                               console.log(err);
                             }}/>
                           </GridItem>
@@ -750,31 +788,7 @@ class ResubmitShopApplicationDialog extends Component {
                           <GridItem xs={12} sm={12} md={12}>
                             <Divider component={"div"}/>
                           </GridItem>
-
-                          {
-                            this.state.documents.map((doc, index) => {
-                              return <GridItem key={index} className={classes.root} sm={12} xs={12}
-                                               md={12}>
-
-                                <FileUpload
-                                  applicationName={APPLICATION_NAME.SHOP}
-                                  key={index} document={doc} onUploadSuccess={(data) => {
-                                  let temp = {
-                                    mandatory: doc.mandatory,
-                                    document_id: doc.id,
-                                    name: doc.name,
-                                    path: data.location
-                                  };
-                                  this.setState(state => {
-                                    state.uploadDocuments.push(temp);
-                                  });
-                                }} onUploadFailure={(err) => {
-                                  console.log(err);
-                                }}/>
-                              </GridItem>;
-
-                            })
-                          }
+                          {this.getDocumentView()}
                           <GridItem xs={12} sm={12} md={12}>
                             <Typography className={classes.subTitle} variant={"h6"}>Declaration</Typography>
                           </GridItem>

@@ -187,5 +187,7 @@ export class ApiRoutes {
   static USER_PERMIT_LIST(phone) {
     return `/user/${phone}/permits`;
   }
+
+  static USER_CHALLAN_LIST=(phone) =>`/challans/${phone}`;
 }
 

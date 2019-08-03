@@ -1,24 +1,22 @@
 import axios from "axios";
-import React from 'react';
+import React from "react";
 import { ApiRoutes } from "../config/ApiRoutes";
 import moment from "moment";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
-import DetailViewRow from "../views/common/HoardingApplicationDialog";
-import { Card } from "@material-ui/core";
 
 export class ShopService {
 
-  async create(state,errorCallback,successCallback) {
+  async create(state, errorCallback, successCallback) {
     let data = {
       name: state.shopName,
       phone: state.phone,
       type: state.type.value,
       email: state.email,
-      owner:state.name,
+      owner: state.name,
       address: state.address,
-      owner_address:state.ownerAddress,
-      details:state.businessDetail,
-      local_council_id:state.localCouncil.value,
+      owner_address: state.ownerAddress,
+      details: state.businessDetail,
+      local_council_id: state.localCouncil.value,
       trade_id: state.tradeName.value,
       latitude: state.latitude,
       longitude: state.longitude,
@@ -33,32 +31,33 @@ export class ShopService {
       documents: state.uploadDocuments
     };
     try {
-      let res=await axios.post(ApiRoutes.CREATE_SHOP_LICENSE, data);
+      let res = await axios.post(ApiRoutes.CREATE_SHOP_LICENSE, data);
       if (res.data.status) {
         successCallback(ArrayToString(res.data.messages));
-      }else{
+      } else {
         if (res.data.validation_error) {
           errorCallback(ErrorToString(res.data.messages));
         } else {
-          errorCallback(ArrayToString(res.data.messages))
+          errorCallback(ArrayToString(res.data.messages));
         }
       }
     } catch (e) {
-      console.error(e)
-      errorCallback(e.toString())
+      console.error(e);
+      errorCallback(e.toString());
     }
   }
-async resubmit(state,errorCallback,successCallback) {
+
+  async resubmit(state, errorCallback, successCallback) {
     let data = {
       name: state.shopName,
       phone: state.phone,
       type: state.type.value,
       email: state.email,
-      owner:state.name,
+      owner: state.name,
       address: state.address,
-      owner_address:state.ownerAddress,
-      details:state.businessDetail,
-      local_council_id:state.localCouncil.value,
+      owner_address: state.ownerAddress,
+      details: state.businessDetail,
+      local_council_id: state.localCouncil.value,
       trade_id: state.tradeName.value,
       latitude: state.latitude,
       longitude: state.longitude,
@@ -73,19 +72,22 @@ async resubmit(state,errorCallback,successCallback) {
       documents: state.uploadDocuments
     };
     try {
-      let res=await axios.post(ApiRoutes.UPDATE_SHOP_LICENSE(state.id), data);
+      let res = await axios.post(ApiRoutes.UPDATE_SHOP_LICENSE(state.id), data);
       if (res.data.status) {
-        successCallback(ArrayToString(res.data.messages));
-      }else{
+        if (res.data.data.challan)
+          successCallback(res.data.data.challan, ArrayToString(res.data.messages));
+        else
+          successCallback(false, ArrayToString(res.data.messages));
+      } else {
         if (res.data.validation_error) {
           errorCallback(ErrorToString(res.data.messages));
         } else {
-          errorCallback(ArrayToString(res.data.messages))
+          errorCallback(ArrayToString(res.data.messages));
         }
       }
     } catch (e) {
-      console.error(e)
-      errorCallback(e.toString())
+      console.error(e);
+      errorCallback(e.toString());
     }
   }
 
@@ -96,8 +98,8 @@ async resubmit(state,errorCallback,successCallback) {
     let hoardings = [];
     try {
       if (status) {
-        const res = await axios.get(ApiRoutes.STAFF_SHOP+`?status=${status}`, config);
-        console.log(res)
+        const res = await axios.get(ApiRoutes.STAFF_SHOP + `?status=${status}`, config);
+        console.log(res);
         hoardings = res.data.data.shops;
       } else {
         const defRes = await axios.get(ApiRoutes.STAFF_SHOP, config);
@@ -111,17 +113,17 @@ async resubmit(state,errorCallback,successCallback) {
     }
   }
 
-  async get(id,errorCallback,successCallback) {
+  async get(id, errorCallback, successCallback) {
     try {
-        const res = await axios.get(ApiRoutes.STAFF_SHOP);
+      const res = await axios.get(ApiRoutes.STAFF_SHOP);
       if (res.data.status) {
-        successCallback(res.data.data.shop)
+        successCallback(res.data.data.shop);
       } else {
-        errorCallback(res.data.data.messages)
+        errorCallback(res.data.data.messages);
       }
     } catch (error) {
       console.error(error);
-      errorCallback(errorCallback.toString())
+      errorCallback(errorCallback.toString());
     }
   }
 
