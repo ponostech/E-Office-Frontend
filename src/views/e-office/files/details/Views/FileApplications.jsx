@@ -97,6 +97,7 @@ class FileApplications extends Component {
       if (val.status === status) return true;
     }).map(val => this.listApplications(val, status));
   };
+
   onMenuClick = (menu) => {
     switch (menu) {
       case APPLICATION_MENUITEM.RECEIVE_APPLICATION:

@@ -1,15 +1,16 @@
-import { FILEABLE_TYPE } from "../../details/Views/FileApplicationDetails";
+import {FILEABLE_TYPE} from "../../details/Views/FileApplicationDetails";
 import moment from "moment";
 
-export const getApplicantDetail = (application)=>{
+export const getApplicantDetail = (application) => {
 
 }
-export const getApplicationTitle=(application)=>{
+
+export const getApplicationTitle = (application) => {
   let title = "";
   let subtitle = "";
 
-  if (!Boolean(application)){
-    return {title:"",subtitle:""}
+  if (!Boolean(application)) {
+    return {title: "", subtitle: ""}
   }
   switch (application.file.fileable_type) {
     case "App\\Shop":
@@ -37,110 +38,108 @@ export const getApplicationTitle=(application)=>{
       subtitle = "Not found";
       break;
   }
-  return {title,subtitle};
+  return {title, subtitle};
 }
-export const ApplicationResolver=(application)=> {
+export const ApplicationResolver = (application) => {
   if (application === null)
     return [];
-  const { fileable_type } =application.file;
+  const {fileable_type} = application.file;
   let rows = [];
 
   switch (fileable_type) {
     case FILEABLE_TYPE.KIOSK:
       rows.push(
-        { name: "Date", value: moment(application.created_at).format("Do MMM YYYY") },
-        { name: "Address", value: application.length },
-        { name: "Local Council", value: application.local_council.name },
-        { name: "Length", value: application.length + " ft" },
-        { name: "Height", value: application.height + " ft" },
-        { name: "Ground Clearance", value: application.ground_clearance ? application.ground_clearance : "NA" },
-        { name: "Road Detail", value: application.road_detail ? application.road_detail : "NA" },
-        { name: "Both Sided", value: application.both_side ? "Yes" : "No" },
-        { name: "Collapsible", value: application.collapsible ? "Yes" : "No" },
-        { name: "Display Type", value: application.display_type },
-        { name: "Name of Landowner", value: application.land_owner_name },
-        { name: "Type of Landowner", value: application.land_owner_type ? "Public" : "Private" }
+          {name: "Date of Application", value: moment(application.application_date).format("Do MMM YYYY")},
+          {name: "Address of Proposed Kiosk", value: application.address},
+          {name: "Local Council", value: application.local_council.name},
+          {name: "Length", value: application.length + " ft"},
+          {name: "Height", value: application.height + " ft"},
+          {name: "Ground Clearance", value: application.ground_clearance ? application.ground_clearance : "NA"},
+          {name: "Road Detail", value: application.road_detail ? application.road_detail : "NA"},
+          {name: "Both Sided", value: application.both_side ? "Yes" : "No"},
+          {name: "Collapsible", value: application.collapsible ? "Yes" : "No"},
+          {name: "Display Type", value: application.display_type},
+          {name: "Name of Landowner", value: application.land_owner_name},
+          {name: "Type of Landowner", value: application.land_owner_type ? "Public" : "Private"}
       );
       break;
     case FILEABLE_TYPE.HOARDING:
       rows.push(
-        { name: "Date", value: moment(application.created_at).format("Do MMM YYYY") },
-        { name: "Address", value: application.length },
-        { name: "Local Council", value: application.local_council.name },
-        { name: "Length", value: application.length + " ft" },
-        { name: "Height", value: application.height + " ft" },
-        { name: "Ground Clearance", value: application.ground_clearance ? application.ground_clearance : "NA" },
-        { name: "Road Detail", value: application.road_detail ? application.road_detail : "NA" },
-        { name: "Both Sided", value: application.both_side ? "Yes" : "No" },
-        { name: "Display Type", value: application.display_type },
-        { name: "Name of Landowner", value: application.land_owner_name },
-        { name: "Type of Landowner", value: application.land_owner_type ? "Public" : "Private" }
+          {name: "Date of Application", value: moment(application.application_date).format("Do MMM YYYY")},
+          {name: "Address of Proposed Hoarding", value: application.address},
+          {name: "Local Council", value: application.local_council.name},
+          {name: "Length", value: application.length + " ft"},
+          {name: "Height", value: application.height + " ft"},
+          {name: "Ground Clearance", value: application.ground_clearance ? application.ground_clearance : "NA"},
+          {name: "Road Detail", value: application.road_detail ? application.road_detail : "NA"},
+          {name: "Both Sided", value: application.both_side ? "Yes" : "No"},
+          {name: "Display Type", value: application.display_type},
+          {name: "Name of Landowner", value: application.land_owner_name},
+          {name: "Type of Landowner", value: application.land_owner_type ? "Public" : "Private"}
       );
       break;
     case FILEABLE_TYPE.BANNER:
       rows.push(
-        { name: "Date", value: moment(application.created_at).format("Do MMM YYYY") },
-        { name: "Name", value: application.name },
-        { name: "Phone", value: application.phone },
-        { name: "Type of Applicant", value: application.applicant_type },
-        { name: "Address", value: application.address },
-        { name: "Type of Advertisement", value: application.advertisement_type },
-        { name: "Content/Wording", value: application.content ? application.content : "NA" },
-        { name: "Detail", value: application.detail ? application.detail : "NA" }
+          {name: "Date of Application", value: moment(application.application_date).format("Do MMM YYYY")},
+          {name: "Name of Applicant", value: application.name},
+          {name: "Phone", value: application.phone},
+          {name: "Type of Applicant", value: application.applicant_type},
+          {name: "Address", value: application.address},
+          {name: "Type of Advertisement", value: application.advertisement_type},
+          {name: "Content/Wording", value: application.content ? application.content : "NA"},
+          {name: "Detail", value: application.detail ? application.detail : "NA"}
       );
       let tableData = [];
       application.advertisements.map(item => tableData.push(
-        [item.length, item.height, item.locations, moment(item.from).format("Do MMM YYYY"), moment(item.to).format("Do MMM YYYY")]
+          [item.length, item.height, item.locations, moment(item.from).format("Do MMM YYYY"), moment(item.to).format("Do MMM YYYY")]
       ));
       break;
     case FILEABLE_TYPE.SHOP:
       rows.push(
-        { name: "Date", value: moment(application.created_at).format("Do MMM YYYY") },
-        { name: "Name of Owner", value: application.owner },
-        { name: "Phone", value: application.phone },
-        { name: "Email", value: application.email },
-        { name: "Address of Applicant", value: application.owner_address },
-        { name: "Type of Applicant", value: application.type },
-        { name: "Name of the Shop", value: application.name },
-        // { name: "Name of Trade", value:application.trade.name},
-        { name: "Proposed Location", value: application.address },
-        { name: "Local Council", value: application.local_council.name },
-        { name: "Details of Business", value: application.details ? application.details : "NA" },
-        { name: "ESTD", value: moment(application.estd).format("Do MMM YYYY") },
-        { name: "TIN", value: application.tin_no ? application.tin_no : "NA" },
-        { name: "CST", value: application.cst_no ? application.cst_no : "NA" },
-        { name: "GST", value: application.gst_no ? application.gst_no : "NA" },
-        { name: "PAN", value: application.pan_no ? application.pan_no : "NA" },
-        { name: "Type of Premised", value: application.premise_type }
+          {changed: application.field_changes.indexOf('application_date') !== -1, field: 'application_date', name: "Date of Application", value: moment(application.application_date).format("Do MMM YYYY")},
+          {changed: application.field_changes.indexOf('owner') !== -1, field: 'owner', name: "Name of Owner", value: application.owner},
+          {changed: application.field_changes.indexOf('phone') !== -1, field: 'phone', name: "Phone", value: application.phone},
+          {changed: application.field_changes.indexOf('email') !== -1, field: 'email', name: "Email", value: application.email},
+          {changed: application.field_changes.indexOf('owner_address') !== -1, field: 'owner_address', name: "Address of Applicant", value: application.owner_address},
+          {changed: application.field_changes.indexOf('type') !== -1, field: 'type', name: "Type of Applicant", value: application.type},
+          {changed: application.field_changes.indexOf('name') !== -1, field: 'name', name: "Name of the Shop", value: application.name},
+          {changed: application.field_changes.indexOf('address') !== -1, field: 'address', name: "Proposed Location", value: application.address},
+          {changed: application.field_changes.indexOf('local_council_id') !== -1, field: 'local_council_id', name: "Local Council", value: application.local_council.name},
+          {changed: application.field_changes.indexOf('details') !== -1, field: 'details', name: "Details of Business", value: application.details ? application.details : "NA"},
+          {changed: application.field_changes.indexOf('estd') !== -1, field: 'estd', name: "ESTD", value: moment(application.estd).format("Do MMM YYYY")},
+          {changed: application.field_changes.indexOf('tin_no') !== -1, field: 'tin_no', name: "TIN", value: application.tin_no ? application.tin_no : "NA"},
+          {changed: application.field_changes.indexOf('cst_no') !== -1, field: 'cst_no', name: "CST", value: application.cst_no ? application.cst_no : "NA"},
+          {changed: application.field_changes.indexOf('gst_no') !== -1, field: 'gst_no', name: "GST", value: application.gst_no ? application.gst_no : "NA"},
+          {changed: application.field_changes.indexOf('pan_no') !== -1, field: 'pan_no', name: "PAN", value: application.pan_no ? application.pan_no : "NA"},
+          {changed: application.field_changes.indexOf('premise_type') !== -1, field: 'premise_type', name: "Type of Premised", value: application.premise_type}
       );
       break;
     case FILEABLE_TYPE.HOTEL:
       rows.push(
-        { name: "Date", value: moment(application.created_at).format("Do MMM YYYY") },
-        { name: "Name of Owner", value: application.owner },
-        { name: "Phone", value: application.phone },
-        { name: "Email", value: application.email },
-        { name: "Address of Applicant", value: application.owner_address },
-        { name: "Type of Applicant", value: application.type },
-        { name: "Name of the Shop", value: application.name },
-        // { name: "Name of Trade", value:application.trade.name},
-        { name: "Proposed Location", value: application.address },
-        { name: "Local Council", value: application.local_council.name },
-        { name: "Details of Business", value: application.details ? application.details : "NA" },
-        { name: "ESTD", value: moment(application.estd).format("Do MMM YYYY") },
-        { name: "TIN", value: application.tin_no ? application.tin_no : "NA" },
-        { name: "CST", value: application.cst_no ? application.cst_no : "NA" },
-        { name: "GST", value: application.gst_no ? application.gst_no : "NA" },
-        { name: "PAN", value: application.pan_no ? application.pan_no : "NA" },
-        { name: "No of AC Room", value: application.ac_rooms },
-        { name: "No of Non AC Room", value: application.non_ac_rooms },
-        { name: "No of Conference Hall", value: application.conference_halls },
-        { name: "No of Banquet", value: application.banquet_halls },
-        { name: "Facilities", value: application.facilities ? application.facilities : "NA" },
-        { name: "Type of Premised", value: application.premise_type }
+          {name: "Date of Application", value: moment(application.application_date).format("Do MMM YYYY") },
+          {name: "Name of Owner", value: application.owner},
+          {name: "Phone", value: application.phone},
+          {name: "Email", value: application.email},
+          {name: "Address of Applicant", value: application.owner_address},
+          {name: "Type of Applicant", value: application.type},
+          {name: "Name of the Shop", value: application.name},
+          // { name: "Name of Trade", value:application.trade.name},
+          {name: "Proposed Location", value: application.address},
+          {name: "Local Council", value: application.local_council.name},
+          {name: "Details of Business", value: application.details ? application.details : "NA"},
+          {name: "ESTD", value: moment(application.estd).format("Do MMM YYYY")},
+          {name: "TIN", value: application.tin_no ? application.tin_no : "NA"},
+          {name: "CST", value: application.cst_no ? application.cst_no : "NA"},
+          {name: "GST", value: application.gst_no ? application.gst_no : "NA"},
+          {name: "PAN", value: application.pan_no ? application.pan_no : "NA"},
+          {name: "No of AC Room", value: application.ac_rooms},
+          {name: "No of Non AC Room", value: application.non_ac_rooms},
+          {name: "No of Conference Hall", value: application.conference_halls},
+          {name: "No of Banquet", value: application.banquet_halls},
+          {name: "Facilities", value: application.facilities ? application.facilities : "NA"},
+          {name: "Type of Premised", value: application.premise_type}
       );
       break;
-
   }
   return rows;
 }
