@@ -53,7 +53,7 @@ class ChallanService {
       let res=await axios.get(ApiRoutes.USER_CHALLAN_LIST(phone))
       if (res.data.status) {
         const { shop_challans, hotel_challans, banner_challans } = res.data.data;
-        successCallback([...shop_challans,...hotel_challans,...banner_challans])
+        successCallback(shop_challans,hotel_challans,banner_challans)
       }else
         errorCallback(res.data.messages)
     }catch (e) {
