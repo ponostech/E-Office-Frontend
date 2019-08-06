@@ -5,6 +5,7 @@ import LoadingView from "../../../../common/LoadingView";
 import CardContent from "@material-ui/core/CardContent";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
+import {MuiThemeProvider} from "@material-ui/core/styles";
 import { FileHeadService } from "../../../../../services/FileHeadService";
 import SubmitDialog from "../../../../../components/SubmitDialog";
 import ConfirmDialog from "../../../../../components/ConfirmDialog";
@@ -19,8 +20,8 @@ class GroupHeadList extends Component {
       selectedGroupHead: null,
 
       openCreate: false,
-      openEdit:false,
-      openConfirm:false,
+      openEdit: false,
+      openConfirm: false,
 
       submit: false,
       submitTitle: "Creating Group Head"
@@ -36,7 +37,7 @@ class GroupHeadList extends Component {
   }
 
   onCreate = (data) => {
-    this.setState({ submitTitle: "Creating Group Head",openCreate:false, submit: true });
+    this.setState({ submitTitle: "Creating Group Head", openCreate: false, submit: true });
     this.fileHeadService.create(data,
       errorMsg => this.setGlobal({ errorMsg }),
       successMsg => this.setGlobal({ successMsg }))
@@ -58,7 +59,7 @@ class GroupHeadList extends Component {
 
   render() {
     const { groupHeads, selectedGroupHead } = this.state;
-    const { submit, submitTitle,openCreate,openConfirm,openEdit } = this.state;
+    const { submit, submitTitle, openCreate, openConfirm, openEdit } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       rowsPerPage: 15
@@ -104,24 +105,29 @@ class GroupHeadList extends Component {
       }];
     return (
       <>
-        {this.global.loading ? <LoadingView/> :
-          <CardContent>
-            <MUIDataTable
-              title={"List of Group Head"}
-              data={groupHeads}
-              columns={tableColumns}
-              options={tableOptions}
-            />
-            <Tooltip title="Add Note" aria-label="Add New Group Head">
-              <Fab onClick={event => this.setState({openCreate:true})} href={"#"} color="primary" aria-label="Add" style={{position: 'fixed', right: 80, bottom: 100 }}>
-                <Icon>add</Icon>
-              </Fab>
-            </Tooltip>
-          </CardContent>
-        }
-        <GroupHeadCreateDialog open={openCreate} onClose={e=>this.setState({openCreate:false})} onCreate={this.onCreate.bind(this)}/>
-        <SubmitDialog open={submit} title={submitTitle} text={"Please wait ... "}/>
-        <ConfirmDialog onCancel={e=>this.setState({openConfirm:false})} open={openConfirm} onConfirm={this.onDelete.bind(this)}/>
+        <MuiThemeProvider theme={this.props.theme}>
+          {this.global.loading ? <LoadingView/> :
+            <CardContent>
+              <MUIDataTable
+                title={"List of Group Head"}
+                data={groupHeads}
+                columns={tableColumns}
+                options={tableOptions}
+              />
+              <Tooltip title="Add Note" aria-label="Add New Group Head">
+                <Fab onClick={event => this.setState({ openCreate: true })} href={"#"} color="primary" aria-label="Add"
+                     style={{ position: "fixed", right: 80, bottom: 100 }}>
+                  <Icon>add</Icon>
+                </Fab>
+              </Tooltip>
+            </CardContent>
+          }
+          <GroupHeadCreateDialog open={openCreate} onClose={e => this.setState({ openCreate: false })}
+                                 onCreate={this.onCreate.bind(this)}/>
+          <SubmitDialog open={submit} title={submitTitle} text={"Please wait ... "}/>
+          <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={openConfirm}
+                         onConfirm={this.onDelete.bind(this)}/>
+        </MuiThemeProvider>
       </>
     );
   }

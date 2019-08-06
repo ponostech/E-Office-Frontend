@@ -8,13 +8,13 @@ import moment from "moment";
 import ChallanService from "../../../services/ChallanService";
 import SubmitDialog from "../../../components/SubmitDialog";
 import ConfirmDialog from "../../../components/ConfirmDialog";
-
+import {MuiThemeProvider,createMuiTheme} from "@material-ui/core/styles";
 // challan no,application_no,details,type,created_at
 const fake = [
   { challan_no: "123", application_no: "123", details: "detail", type: "fee", created_at: new Date() }
 ];
 
-class ChallanList extends Component {
+class UnPaidChallanList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,6 +59,30 @@ class ChallanList extends Component {
         .finally(() => this.setState({ submit: false }));
     }
   };
+
+
+  getMuiTheme = () => createMuiTheme({
+    overrides: {
+      MUIDataTable: {
+        root: {
+          backgroundColor: "black"
+        },
+        paper: {
+          boxShadow: "none"
+        }
+      }
+    },
+    palette: {
+      primary: {
+        main: "#26B99A",
+        contrastText: "#fff"
+      },
+      secondary: {
+        main: "#b93e46",
+        contrastText: "#fff"
+      }
+    },
+  });
 
   render() {
     const { challans, selectedChallan, openPayByCashDialog, openConfirm, submit, submitTitle } = this.state;
@@ -140,23 +164,25 @@ class ChallanList extends Component {
     };
     return (
       <>
-        {this.global.loading ? <LoadingView/> : <CardContent>
-          <MUIDataTable
-            title={"LIST OF CHALLAN"}
-            data={challans}
-            columns={tableColumns}
-            options={tableOptions}
-          />
+        <MuiThemeProvider theme={this.getMuiTheme()}>
+          {this.global.loading ? <LoadingView/> : <CardContent>
+            <MUIDataTable
+              title={"LIST OF CHALLAN"}
+              data={challans}
+              columns={tableColumns}
+              options={tableOptions}
+            />
 
-        </CardContent>}
+          </CardContent>}
 
-        <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={openConfirm}
-                       onConfirm={this.onCancelChallan.bind(this)}/>
-        <CashPaymentDialog open={openPayByCashDialog} onClose={this.onCashPayment} challan={selectedChallan}/>
-        <SubmitDialog open={submit} title={submitTitle} text={"Please wait ..."}/>
+          <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={openConfirm}
+                         onConfirm={this.onCancelChallan.bind(this)}/>
+          <CashPaymentDialog open={openPayByCashDialog} onClose={this.onCashPayment} challan={selectedChallan}/>
+          <SubmitDialog open={submit} title={submitTitle} text={"Please wait ..."}/>
+        </MuiThemeProvider>
       </>
     );
   }
 }
 
-export default ChallanList;
+export default UnPaidChallanList;

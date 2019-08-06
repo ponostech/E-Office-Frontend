@@ -24,10 +24,11 @@ import AddressField from "../../components/AddressField";
 import { Validators } from "../../utils/Validators";
 import OtpDialog from "../../components/OtpDialog";
 import { OtpService } from "../../services/OtpService";
-import SweetAlert from "react-bootstrap-sweetalert";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import LoadingView from "../common/LoadingView";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 const style = {
   root: {
@@ -38,7 +39,7 @@ const style = {
     color: "#727272",
     marginTop: 6,
     marginBottom: 6
-  },
+  }
 
 };
 
@@ -70,7 +71,7 @@ class BannerApplication extends Component {
       { value: "Umbrella", label: "Umbrella" },
       { value: "Balloons", label: "Balloons" },
       { value: "Video", label: "Video" },
-      { value: "Audio/Sound", label: "Audio/Sound" },
+      { value: "Audio/Sound", label: "Audio/Sound" }
     ],
     types: [
       { value: "private", label: "Private" },
@@ -142,18 +143,20 @@ class BannerApplication extends Component {
 
     if (verified) {
       this.setState({ submit: true });
-      this.bannerService.create(this.state, errorMsg => this.setGlobal({errorMsg}),
-        successMessage => this.setState({
-          success: (
-            <SweetAlert
-              success
-              style={{ display: "block", marginTop: "-100px" }}
-              title={"Success"}
-              onConfirm={() => history.push(HOME)}>
-              {successMessage}
-            </SweetAlert>
-          )
-        }))
+      this.bannerService.create(this.state, errorMsg => this.setGlobal({ errorMsg }),
+        successMessage => {
+          const MySwal = withReactContent(Swal);
+          MySwal.fire({
+            text: successMessage,
+            type: "success",
+            confirmButtonColor: "#26B99A",
+            confirmButtonText: "Ok"
+          }).then(result => {
+            if (result.value) {
+              history.push(HOME);
+            }
+          });
+        })
         .finally(() => this.setState({ submit: false }));
     }
   };
@@ -361,7 +364,7 @@ class BannerApplication extends Component {
                         </GridItem>
 
                         <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                          <Typography  variant="h6" className={classes.subTitle}> Details of Advertisement</Typography>
+                          <Typography variant="h6" className={classes.subTitle}> Details of Advertisement</Typography>
                           <Divider component={"div"} style={{ marginTop: 10, marginBottom: 10 }}/>
                           <BannerDetail ref={this.bannerRef}
                                         onRemoveDetail={(index) => {
