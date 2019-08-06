@@ -33,11 +33,12 @@ import SubmitDialog from "../../../../components/SubmitDialog";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import AddressField from "../../../../components/AddressField";
 import { CategoryServices } from "../../../../services/CategoryServices";
-import SweetAlert from "react-bootstrap-sweetalert";
-import { ADVERTISER_PROPOSED_HOARDING } from "../../../../config/routes-constant/OfficeRoutes";
+import { ADVERTISER_DASHBOARD } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { APPLICATION_NAME } from "../../../../utils/Util";
 import LoadingView from "../../../common/LoadingView";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 const style = {
   root: {
@@ -90,7 +91,7 @@ class HoardingApplicationForm extends Component {
       agree: false,
 
       success: null,
-      submit: false,
+      submit: false
     };
 
     this.localCouncilservice = new LocalCouncilService();
@@ -102,7 +103,7 @@ class HoardingApplicationForm extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     var self = this;
-    this.setGlobal({loading:true})
+    this.setGlobal({ loading: true });
     Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
       .finally(() => {
         self.setGlobal({ loading: false });
@@ -172,17 +173,16 @@ class HoardingApplicationForm extends Component {
     this.hoardingService.create(this.state,
       errorMsg => this.setGlobal({ errorMsg }),
       successMessage => {
-        this.setState({
-          success: (
-            <SweetAlert
-              success
-              style={{ display: "block", marginTop: "-100px" }}
-              title={"Success"}
-              onConfirm={() => history.push(ADVERTISER_PROPOSED_HOARDING)}
-            >
-              {successMessage}
-            </SweetAlert>
-          )
+        const MySwal = withReactContent(Swal);
+        MySwal.fire({
+          text: successMessage,
+          type: "success",
+          confirmButtonColor: "#26B99A",
+          confirmButtonText: "Ok"
+        }).then(result => {
+          if (result.value) {
+            history.push(ADVERTISER_DASHBOARD);
+          }
         });
       })
       .finally(() => this.setState({ submit: false }));

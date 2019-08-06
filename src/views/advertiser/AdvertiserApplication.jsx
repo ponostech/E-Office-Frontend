@@ -24,11 +24,12 @@ import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
 import AddressField from "../../components/AddressField";
 import OfficeSelect from "../../components/OfficeSelect";
-import SweetAlert from "react-bootstrap-sweetalert";
 import { AdvertiserService } from "../../services/AdvertiserService";
 import { HOME } from "../../config/routes-constant/OfficeRoutes";
 import { APPLICATION_NAME } from "../../utils/Util";
 import LoadingView from "../common/LoadingView";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 const style = {
   root: {
@@ -70,7 +71,7 @@ class AdvertiserApplication extends Component {
         { value: "group", label: "Group(NGO)" }
       ],
       submit: false,
-      prestine: true,
+      prestine: true
     };
 
     this.documentService = new DocumentService();
@@ -84,10 +85,10 @@ class AdvertiserApplication extends Component {
 
   retrieveDocuments = () => {
     this.documentService.fetch("advertiser",
-        errorMsg => this.setGlobal({ errorMsg }),
-        documents => this.setState({ documents }))
+      errorMsg => this.setGlobal({ errorMsg }),
+      documents => this.setState({ documents }))
       .finally(() => {
-        this.setGlobal({loading: false});
+        this.setGlobal({ loading: false });
       });
   };
 
@@ -96,10 +97,10 @@ class AdvertiserApplication extends Component {
   };
 
   isInvalid = () => {
-    return !this.state.agree ||  !Boolean(this.state.name) || !Boolean(this.state.email) || !Boolean(this.state.address)|| this.state.type === undefined
+    return !this.state.agree || !Boolean(this.state.name) || !Boolean(this.state.email) || !Boolean(this.state.address) || this.state.type === undefined
       || !Boolean(this.state.password) || !Boolean(this.state.confirmPassword) || !Boolean(this.state.phone)
-      || !Validators.PHONE_REGEX.test(this.state.phone) || !Validators.EMAIL_REGEX.test(this.state.email) || this.state.password<6
-      || this.state.password!==this.state.confirmPassword   || !this.validateDocument();
+      || !Validators.PHONE_REGEX.test(this.state.phone) || !Validators.EMAIL_REGEX.test(this.state.email) || this.state.password < 6
+      || this.state.password !== this.state.confirmPassword || !this.validateDocument();
   };
 
   submit = (e) => {
@@ -129,26 +130,25 @@ class AdvertiserApplication extends Component {
   insertData() {
     const { history } = this.props;
     this.advertiserService.create(this.state,
-        errorMsg => this.setGlobal({ errorMsg }),
-        successMessage => {
-        this.setState({
-          successMessage: (
-            <SweetAlert
-              success
-              style={{ display: "block", marginTop: "-100px" }}
-              title={"Success"}
-              onConfirm={() => history.push(HOME)}
-            >
-              {successMessage}
-            </SweetAlert>
-          )
+      errorMsg => this.setGlobal({ errorMsg }),
+      successMessage => {
+        const MySwal = withReactContent(Swal);
+        MySwal.fire({
+          text: successMessage,
+          type: "success",
+          confirmButtonColor: "#26B99A",
+          confirmButtonText: "Ok"
+        }).then(result => {
+          if (result.value) {
+            history.push(HOME);
+          }
         });
       })
       .finally(() => this.setState({ submit: false }));
   }
 
   clear = () => {
-    this.componentDidMount()
+    this.componentDidMount();
   };
 
   saveDraft = () => {

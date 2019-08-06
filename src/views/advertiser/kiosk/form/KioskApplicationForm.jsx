@@ -32,11 +32,12 @@ import GMapDialog from "../../../../components/GmapDialog";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { CategoryServices } from "../../../../services/CategoryServices";
 import AddressField from "../../../../components/AddressField";
-import SweetAlert from "react-bootstrap-sweetalert";
-import { ADVERTISER_PROPOSED_KIOSK } from "../../../../config/routes-constant/OfficeRoutes";
+import { HOME } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
 import { APPLICATION_NAME } from "../../../../utils/Util";
 import LoadingView from "../../../common/LoadingView";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 
 const style = {
@@ -103,7 +104,7 @@ class KioskApplicationForm extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     var self = this;
-    self.setGlobal({loading:true});
+    self.setGlobal({ loading: true });
     Promise.all([self.fetchCategory(), self.fetchLocalCouncil(), self.fetchDocument()])
       .finally(() => {
         self.setGlobal({ loading: false });
@@ -156,17 +157,16 @@ class KioskApplicationForm extends Component {
     this.kioskService.create(this.state,
       errorMsg => this.setState({ errorMsg }),
       successMessage => {
-        this.setState({
-          success: (
-            <SweetAlert
-              success
-              style={{ display: "block", marginTop: "-100px" }}
-              title={"Success"}
-              onConfirm={() => history.push(ADVERTISER_PROPOSED_KIOSK)}
-            >
-              {successMessage}
-            </SweetAlert>
-          )
+        const MySwal = withReactContent(Swal);
+        MySwal.fire({
+          text: successMessage,
+          type: "success",
+          confirmButtonColor: "#26B99A",
+          confirmButtonText: "Ok"
+        }).then(result => {
+          if (result.value) {
+            history.push(HOME);
+          }
         });
       })
       .finally(() => this.setState({ submit: false }));

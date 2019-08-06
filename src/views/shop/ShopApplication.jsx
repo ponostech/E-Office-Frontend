@@ -32,7 +32,6 @@ import { Validators } from "../../utils/Validators";
 import AddressField from "../../components/AddressField";
 import { TradeService } from "../../services/TradeService";
 import { LocalCouncilService } from "../../services/LocalCouncilService";
-import SweetAlert from "react-bootstrap-sweetalert";
 import { OtpService } from "../../services/OtpService";
 import OtpDialog from "../../components/OtpDialog";
 import DateFnsUtils from "@date-io/date-fns";
@@ -160,23 +159,23 @@ class ShopApplication extends Component {
 
   };
   onVerifiedOtp = (verified) => {
-    // if (!verified) {
-    //   return
-    // }
-    //
     const { history } = this.props;
     if (verified) {
       this.setState({ submit: true });
       this.shopService.create(this.state,
         errorMsg => this.setGlobal({ errorMsg }),
         msg => {
-          const MySwal = withReactContent(Swal)
-            MySwal.fire({
-              text: msg,
-              type: 'success',
-              confirmButtonColor: '#26B99A',
-              confirmButtonText: "Ok"
-            })
+          const MySwal = withReactContent(Swal);
+          MySwal.fire({
+            text: msg,
+            type: "success",
+            confirmButtonColor: "#26B99A",
+            confirmButtonText: "Ok"
+          }).then(result => {
+            if (result.value) {
+              history.push(HOME);
+            }
+          });
         })
         .finally(() => this.setState({ submit: false }));
     }

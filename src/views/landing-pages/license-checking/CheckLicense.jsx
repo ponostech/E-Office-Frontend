@@ -6,12 +6,9 @@ import { Button, CardContent, Divider, Grid, TextField, Typography } from "@mate
 import CardFooter from "../../../components/Card/CardFooter";
 import { HOME } from "../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
-import { LicenseService } from "../../../services/LicenseService";
-import SubmitDialog from "../../../components/SubmitDialog";
 import { Validators } from "../../../utils/Validators";
 import PropTypes from "prop-types";
 import OtpDialog from "../../../components/OtpDialog";
-import SweetAlert from "react-bootstrap-sweetalert";
 import { OtpService } from "../../../services/OtpService";
 
 class CheckLicense extends Component {

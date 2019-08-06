@@ -57,7 +57,7 @@ import ReceiptEdit from "../../views/e-office/receipt/ReceiptEdit";
 import ReceiptAttachedList from "../../views/e-office/receipt/ReceiptAttachedList";
 import HoardingCancelledList from "../../views/e-office/applications/hoarding/HoardingCancelledList";
 import KioskCancelledList from "../../views/e-office/applications/kiosk/KioskCancelledList";
-import ChallanList from "../../views/e-office/challan/ChallanList";
+import ChallanContainer from "../../views/e-office/challan/ChallanContainer";
 
 const routes = (props) => {
   return (
@@ -137,7 +137,7 @@ const routes = (props) => {
         <Route path={OfficeRoutes.SETTING} component={Settings}/>
 
         {/*Challan*/}
-        <Route exact path={OfficeRoutes.CHALLAN_LIST} render={e => <ChallanList/>}/>
+        <Route exact path={OfficeRoutes.CHALLAN_LIST} render={e => <ChallanContainer/>}/>
       </>
   )
 };

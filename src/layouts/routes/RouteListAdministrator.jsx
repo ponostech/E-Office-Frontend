@@ -60,7 +60,7 @@ import KioskCancelledList from "../../views/e-office/applications/kiosk/KioskCan
 import FileHeadTemplates from "../../views/e-office/admin/e-file/FileHeadTemplates";
 import AdvertisementRateView from "../../views/e-office/admin/rates/AdvertisementRateView";
 import ShopUnpaidList from "../../views/e-office/applications/shop-license/ShopUnpaidList";
-import ChallanList from "../../views/e-office/challan/ChallanList";
+import ChallanContainer from "../../views/e-office/challan/ChallanContainer";
 
 const routes = (props) => {
   return (
@@ -153,7 +153,7 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.CANCELLED_TEMPLATE} render={e => <CancelTemplate/>}/>
 
         {/*Challan*/}
-      <Route exact path={OfficeRoutes.CHALLAN_LIST} render={e => <ChallanList/>}/>
+      <Route exact path={OfficeRoutes.CHALLAN_LIST} render={e => <ChallanContainer/>}/>
 
       <Route path={OfficeRoutes.SETTING} component={Settings}/>
     </>

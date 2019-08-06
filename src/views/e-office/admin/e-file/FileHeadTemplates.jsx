@@ -1,10 +1,11 @@
 import React, { Component } from "reactn";
-import { Card, CardContent, CardHeader, withStyles } from "@material-ui/core";
+import { Card, CardContent, createMuiTheme, withStyles } from "@material-ui/core";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import GroupHeadList from "./group-head/GroupHeadList";
 import MainHeadList from "./main-head/MainHeadList";
 import SubHeadList from "./sub-head/SubHeadList";
+import Paper from "@material-ui/core/Paper";
 
 
 const styles = theme => ({
@@ -67,6 +68,28 @@ class FileHeadTemplates extends Component {
   handleChange = (event, value) => {
     this.setState({ value });
   };
+  getMuiTheme = () => createMuiTheme({
+    overrides: {
+      MUIDataTable: {
+        root: {
+          backgroundColor: "black"
+        },
+        paper: {
+          boxShadow: "none"
+        }
+      }
+    },
+    palette: {
+      primary: {
+        main: "#26B99A",
+        contrastText: "#fff"
+      },
+      secondary: {
+        main: "#b93e46",
+        contrastText: "#fff"
+      }
+    }
+  });
 
   render() {
     const { classes } = this.props;
@@ -74,34 +97,31 @@ class FileHeadTemplates extends Component {
 
     return (
       <Card>
-        <CardHeader style={{ padding: "5px 16px" }} title={"FUNCTIONAL FILE INDEX"}/>
-        <CardContent style={{ padding: "5px 16px" }}>
-          <div className={classes.root}>
+        {/*<CardHeader style={{ padding: "5px 16px" }} title={"FUNCTIONAL FILE INDEX"}/>*/}
+        <CardContent>
+          <Paper>
             <Tabs component={"div"}
                   value={value}
                   onChange={this.handleChange}
-                  classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
             >
 
               <Tab href={"#"} value={"group-head"}
                    disableRipple
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                    label={"Group Head"}/>
               <Tab href={"#"} disableRipple value={"main-head"}
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                    label={"Main Head"}/>
               <Tab href={"#"} disableRipple value={"sub-head"}
-                   classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
                    label={"Sub Head"}/>
 
             </Tabs>
-          </div>
+            <div>
+              {value === "group-head" && <GroupHeadList theme={this.getMuiTheme()}/>}
+              {value === "main-head" && <MainHeadList theme={this.getMuiTheme()}/>}
+              {value === "sub-head" && <SubHeadList theme={this.getMuiTheme()}/>}
+            </div>
+          </Paper>
         </CardContent>
-        <div>
-          {value === "group-head" && <GroupHeadList/>}
-          {value === "main-head" && <MainHeadList/>}
-          {value === "sub-head" && <SubHeadList/>}
-        </div>
+
       </Card>
     );
   }
