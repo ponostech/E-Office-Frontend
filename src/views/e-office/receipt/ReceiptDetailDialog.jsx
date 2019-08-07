@@ -75,12 +75,12 @@ class ReceiptDetailDialog extends Component {
             <GridItem md={6} lg={6}>
               <CardHeader title={"DOCUMENT"}/>
               <Paper style={{ margin: 10, padding: 20 }}>
-                <object style={{ height: "80vh" }} data={receipt ? receipt.document : undefined} type="application/pdf"
-                        width="100%"
-                        height="100%">
+                <embed style={{ height: "80vh" }} src={receipt ? receipt.document : undefined} type="application/pdf"
+                        width="300px"
+                        height="700px">
                   {/*<p>It appears you don't have a PDF plugin for this browser. You can <a href={receipt.document}>click*/}
                   {/*  here to download the PDF file.</a></p>*/}
-                </object>
+                </embed>
               </Paper>
             </GridItem>
           </GridContainer>

@@ -142,7 +142,10 @@ class DynamicFormPreview extends Component {
               variant={"outlined"}
               margin={"dense"}
               value={this.state.selectedType}
-              onChange={val => this.setState({ selectedType: val })}
+              onChange={val => {
+                this.setState({ selectedType: val })
+                this.props.onSelectType(val.value)
+              }}
               options={options}
             />
         }/>

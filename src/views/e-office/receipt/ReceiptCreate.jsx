@@ -10,6 +10,7 @@ import ReceiptService from "../../../services/ReceiptService";
 import Divider from "@material-ui/core/Divider";
 import moment from "moment";
 import SubmitDialog from "../../../components/SubmitDialog";
+import { APPLICATION_NAME } from "../../../utils/Util";
 
 const delivery_modes = [
   { value: "by hand", label: "By Hand" },
@@ -184,6 +185,7 @@ class ReceiptCreate extends Component {
           <Grid md={6} lg={6}>
             <Paper style={{ margin: 10, padding: 20 }}>
               <FileUpload document={{ id: 0, mandatory: 1, name: "document", mime: "application/pdf" }}
+                          applicationName={APPLICATION_NAME.RECEIPT}
                           onUploadSuccess={data => {
                             this.setState({
                               document: data.location
