@@ -22,6 +22,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import FileUpload from "../../../../../components/FileUpload";
 import { LoginService } from "../../../../../services/LoginService";
 import OfficeSnackbar from "../../../../../components/OfficeSnackbar";
+import TextEditor from "../../../common/Editor";
 
 const styles = {
   appBar: {
@@ -100,7 +101,7 @@ class SendMessageDialog extends Component {
       <>
         <Dialog
           fullWidth={true}
-          maxWidth={"sm"}
+          maxWidth={"md"}
           open={open}
           onClose={onClose}
           TransitionComponent={Transition}
@@ -135,18 +136,19 @@ class SendMessageDialog extends Component {
                 />
               </Grid>
               <Grid item={true} md={12}>
-                <TextField margin={"dense"}
-                           value={message}
-                           multiline={true}
-                           rows={5}
-                           variant={"outlined"}
-                           label={"Message"}
-                           required={true}
-                           fullWidth={true}
-                           error={Boolean(messageError)}
-                           helperText={messageError}
-                           onChange={event => this.onChange("message", event)}
-                           onBlur={event => this.onBlur("message", event)}
+                {/*<TextField margin={"dense"}*/}
+                {/*           value={message}*/}
+                {/*           multiline={true}*/}
+                {/*           rows={5}*/}
+                {/*           variant={"outlined"}*/}
+                {/*           label={"Message"}*/}
+                {/*           required={true}*/}
+                {/*           fullWidth={true}*/}
+                {/*           error={Boolean(messageError)}*/}
+                {/*           helperText={messageError}*/}
+                {/*           onChange={event => this.onChange("message", event)}*/}
+                {/*           onBlur={event => this.onBlur("message", event)}*/}
+                <TextEditor onChange={  (e) => this.setState({ content: e.target.getContent() })} default={message}/>
                 />
               </Grid>
               <Grid item={true} md={12}>

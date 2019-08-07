@@ -9,7 +9,8 @@ export const APPLICATION_NAME = {
   BANNER: "banners",
   SHOP: "shops",
   HOTEL: "hotels",
-  ADVERTISER: "advertisers"
+  ADVERTISER: "advertisers",
+  RECEIPT: "receipts"
 };
 export const FormatStaff = (staffs) => {
   const user_id = JSON.parse(localStorage.getItem('current_user')).id;

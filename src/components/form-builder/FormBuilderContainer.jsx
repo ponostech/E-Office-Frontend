@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import GridContainer from "../Grid/GridContainer";
 import GridItem from "../Grid/GridItem";
 import {
-  CardContent, CardHeader,
+  CardContent,
+  CardHeader,
   Divider,
   Icon,
   IconButton,
@@ -10,8 +11,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
-  ListItemText,
-  Typography
+  ListItemText
 } from "@material-ui/core";
 import Card from "../Card/Card";
 import SelectFieldDialog from "./config-dialog/SelectFieldDialog";
@@ -22,6 +22,8 @@ import WidgetConstant from "./WidgetConstant";
 import PatternFieldDialog from "./config-dialog/PatternFieldDialog";
 import FileUploadFieldDialog from "./config-dialog/FileUploadFieldDialog";
 import ImageUploadFieldDialog from "./config-dialog/ImageUploadFieldDialog";
+import FillableFieldGenerator from "./FillableFieldGenerator";
+import Avatar from "@material-ui/core/Avatar";
 
 const widgets = [
   { name: WidgetConstant.TEXTFIELD, icon: "keyboard_arrow_right" },
@@ -51,6 +53,9 @@ class FormBuilderContainer extends Component {
       openImageDialog: false,
       selectedWidget: null,
 
+      selectedFillable: null,
+
+      fields: [],
       formElements: []
     };
   }
@@ -119,6 +124,13 @@ class FormBuilderContainer extends Component {
     };
     this.state.formElements.push(element);
   };
+  createFields = (type) => {
+    const fields = FillableFieldGenerator(type);
+    this.setState({ fields });
+  };
+  handleFillableClick = (selectedFillable) => {
+    this.setState({ openFillableDialog: true, selectedFillable });
+  };
 
   render() {
     const self = this;
@@ -126,8 +138,8 @@ class FormBuilderContainer extends Component {
       <GridContainer>
         <GridItem md={3} lg={3}>
           <Card raised={true} testimonial={true}>
-            <CardHeader title={"Add New Widget"}/>
-              <Divider/>
+            <CardHeader title={"Standard Widget"}/>
+            <Divider/>
             <CardContent>
 
               {/*<Typography variant={"h6"}>Add New Widget</Typography>*/}
@@ -151,7 +163,7 @@ class FormBuilderContainer extends Component {
                           <ListItemText primary={item.name}/>
                           <ListItemSecondaryAction>
                             <IconButton onClick={self.handleClick.bind(this, item)}>
-                              <Icon color={"primary"} fontSize={"default"}>add_circle</Icon>
+                              <Icon color={"default"} fontSize={"default"}>keyboard_arrow_right</Icon>
                             </IconButton>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -161,11 +173,41 @@ class FormBuilderContainer extends Component {
                   })
                 }
               </List>
+
+            </CardContent>
+          </Card>
+          <Card raised={true} testimonial={true}>
+            <CardHeader title={"Autofill widget"}/>
+            <Divider/>
+            <CardContent>
+              <List component={"div"}>
+                {
+                  this.state.fields.map((item, index) =>
+                    <>
+                    <ListItem key={index} color={"primary"} button={true} onClick={e => self.handleFillableClick(item)} component={"li"}>
+                      <ListItemIcon color={"primary"}>
+                         <Avatar component={"span"}>
+                           {index+1}
+                         </Avatar>
+                      </ListItemIcon>
+                      <ListItemText primary={item.label}/>
+                      <ListItemSecondaryAction>
+                        <IconButton onClick={e => self.handleFillableClick(item)}>
+                          <Icon color={"default"} fontSize={"default"}>keyboard_arrow_right</Icon>
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <Divider component={"hr"}/>
+                    </>
+                  )
+                }
+              </List>
             </CardContent>
           </Card>
         </GridItem>
         <GridItem md={9} lg={9}>
-          <DynamicFormPreview edit={false} clear={this.clear} formElements={this.state.formElements}/>
+          <DynamicFormPreview onSelectType={this.createFields} edit={false} clear={this.clear}
+                              formElements={this.state.formElements}/>
         </GridItem>
 
         <FileUploadFieldDialog widget={this.state.selectedWidget} open={this.state.openFileDialog}
