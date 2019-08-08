@@ -61,19 +61,17 @@ class SiteVerificationDetailDialog extends Component {
       elements.forEach(function(element, index) {
         let row = {};
         let attachment = {};
-        let image = {};
         switch (element.elementType) {
           case WidgetConstant.FILE_UPLOAD:
-            attachment.value = element.value.name;
-            attachment.path = element.value.location;
+            attachment.name = element.value.name;
+            attachment.location = element.value.path;
 
             attachments.push(attachment);
             break;
           case WidgetConstant.IMAGE_UPLOAD:
-            image.value = element.value.name;
-            image.path = element.value.location;
-
-            images.push(image);
+            let temp=[];
+            element.value.map(img=>temp.push(img))
+            images.push(...temp);
             break;
           case WidgetConstant.SELECT:
             row.label = element.elementConfig.label;
@@ -137,8 +135,8 @@ class SiteVerificationDetailDialog extends Component {
                     {
                       attachments.map((item, index) => (
                         <>
-                          <DetailViewRow secondary={item.value}>
-                            <IconButton href={item.path}><EyeIcon color={"primary"}/></IconButton>
+                          <DetailViewRow secondary={item.name}>
+                            <IconButton onClick={e=>window.open(item.location,"_blank")} ><Icon color={"default"}>keyboard_arrow_right</Icon></IconButton>
                           </DetailViewRow>
                         </>
                       ))
@@ -148,11 +146,7 @@ class SiteVerificationDetailDialog extends Component {
                   <List component={"div"}>
                     {
                       images.map((item, index) =>
-                        <DetailViewRow key={index} primary={item.name}>
-                          <IconButton href={item.location} onClick={e => window.open(item.location)}>
-                            <Icon color={"primary"} fontSize={"small"}>remove_red_eye</Icon>
-                          </IconButton>
-                        </DetailViewRow>
+                        <img alt={item.name}  src={item.location} width={200} height={200}/>
                       )
                     }
                   </List>
