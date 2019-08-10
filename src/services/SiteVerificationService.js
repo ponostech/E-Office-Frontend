@@ -118,7 +118,6 @@ export class SiteVerificationService {
         draft:0
       });
       if (res.data.status) {
-        console.log(res)
         successCallback(ArrayToString(res.data.messages))
       }else {
         errorCallback(ArrayToString(res.data.messages))

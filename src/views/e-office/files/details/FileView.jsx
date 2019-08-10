@@ -46,6 +46,7 @@ import FileEnClosures from "./Views/FileEnclosures";
 import FileRejectDialog from "../dialog/FileRejectDialog";
 import FileCancelDialog from "../dialog/FileCancelDialog";
 import SendBackApplicationDialog from "../dialog/SendBackApplicationDialog";
+import SiteVerificationDialog from "../site-verification/SiteVerificationDialog";
 
 const styles = theme => ({
   root: {
@@ -97,6 +98,7 @@ class FileView extends Component {
     openFileArchiveDialog: false,
     openFileReOpenDialog: false,
     //site verification vars
+    openSiteVerification: false,
     openHoardingVerification: false,
     openKioskVerification: false,
     openShopVerification: false,
@@ -147,20 +149,21 @@ class FileView extends Component {
         this.setState({ openDraft: true });
         break;
       case CREATE_NAME.CREATE_VERIFICATION:
-        switch (moduleName) {
-          case "hoarding":
-            this.setState({ openHoardingVerification: true });
-            break;
-          case "kiosk":
-            this.setState({ openKioskVerification: true });
-            break;
-          case "shop":
-            this.setState({ openShopVerification: true });
-            break;
-          case "hotel":
-            this.setState({ openHotelVerification: true });
-            break;
-        }
+        this.setState({openSiteVerification:true})
+        // switch (moduleName) {
+        //   case "hoarding":
+        //     this.setState({ openHoardingVerification: true });
+        //     break;
+        //   case "kiosk":
+        //     this.setState({ openKioskVerification: true });
+        //     break;
+        //   case "shop":
+        //     this.setState({ openShopVerification: true });
+        //     break;
+        //   case "hotel":
+        //     this.setState({ openHotelVerification: true });
+        //     break;
+        // }
         break;
 
       case "Draft Permit/License":
@@ -322,13 +325,13 @@ class FileView extends Component {
     }
   };
   closeActionDialog=()=>{
-    this.setState({openApproveDialog:false,openCancelDialog:false,openRejectDialog:false})
+    this.setState({openSiteVerification:false,openApproveDialog:false,openCancelDialog:false,openRejectDialog:false})
   }
   render() {
     const { classes } = this.props;
     const { openDraft, openDraftPermit, openNote, file, submitNote, menus } = this.state;
     const { openAssignment, staffs, openFileCloseDialog, openFileArchiveDialog, openFileReOpenDialog, openDraftLicense } = this.state;
-    const { moduleName, openDraftReject, openDraftCancel, openHoardingVerification, openKioskVerification, openHotelVerification } = this.state;
+    const { moduleName, openDraftReject, openDraftCancel,openSiteVerification, openHoardingVerification, openKioskVerification, openHotelVerification } = this.state;
     const { openShopVerification, openApproveDialog, openMessageDialog, openRejectDialog,openCancelDialog } = this.state;
 
     let allowed = LoginService.getCurrentUser().id === file.current_user_id;
@@ -413,6 +416,9 @@ class FileView extends Component {
                                                              onClose={this.handleCloseShopVerification}/>}
         {openHotelVerification && <HotelSiteVerificationDialog file={file} open={openHotelVerification}
                                                                onClose={this.handleCloseHotelVerification}/>}
+        {openSiteVerification && <SiteVerificationDialog closeActionDialog={this.closeActionDialog}
+                                                 module={moduleName} file={file} open={openSiteVerification}
+                                                 onClose={this.closeDialog.bind(this, "openSiteVerification")}/>}
 
         {openDraft &&
         <FileDraftDialog module={moduleName} file={file} open={openDraft}

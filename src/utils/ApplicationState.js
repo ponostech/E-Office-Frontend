@@ -7,5 +7,6 @@ export default class ApplicationState {
   static CANCELLED_APPLICATION="cancelled";
   static EXPIRED_LICENSE="expired";
   static SEND_BACK="sent-back";
+  static RENEWABLE="renewable";
 
 };
