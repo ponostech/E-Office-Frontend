@@ -56,8 +56,11 @@ class NavPills extends React.Component {
       >
         {tabs.map((prop, key) => {
           var icon = {};
+
+          let iconStyle = {}
+          if (typeof prop.iconColor !== 'undefined' && prop.iconColor === 'secondary') iconStyle = {color: '#b93e46'}
           if (prop.tabIcon !== undefined) {
-            icon["icon"] = <prop.tabIcon className={classes.tabIcon} />;
+            icon["icon"] = <prop.tabIcon className={classes.tabIcon} style={iconStyle}/>;
           }
           const pillsClasses = classNames({
             [classes.pills]: true,
