@@ -13,10 +13,10 @@ import moment from "moment";
 import SubmitDialog from "../../../components/SubmitDialog";
 import ResubmitShopApplicationDialog from "../../shop/ResubmitShopApplicationDialog";
 import { ShopService } from "../../../services/ShopService";
-import ShopApplicationDialog from "../../common/ShopApplicationDialog";
 import ApplicationDetailsDialog from "../../common/ApplicationDetailsDialog";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import RenewShopLicenseDialog from "../../shop/RenewShopLicenseDialog";
 
 
 class ShopLicenseList extends Component {
@@ -27,7 +27,8 @@ class ShopLicenseList extends Component {
 
       openConfirm: false,
       openResubmit: false,
-      openDetail:false,
+      openRenew:false,
+      openDetail: false,
 
       submit: false,
       submitTitle: "Submit"
@@ -58,30 +59,30 @@ class ShopLicenseList extends Component {
   reSubmitApplication = application => {
     this.setState({ submitTitle: "Resubmit Application", submit: true, openResubmit: false });
     this.shopService.resubmit(application, errorMsg => this.setGlobal({ errorMsg }),
-      (challan,successMsg) => {
+      (challan, successMsg) => {
 
-        const MySwal = withReactContent(Swal)
+        const MySwal = withReactContent(Swal);
 
-        if (challan){
+        if (challan) {
           MySwal.fire({
-            title:`Challan No:${challan.number}`,
+            title: `Challan No:${challan.number}`,
             text: successMsg,
-            type: 'success',
+            type: "success",
             showCancelButton: true,
-            cancelButtonText:"Close",
-            confirmButtonColor: '#26B99A',
+            cancelButtonText: "Close",
+            confirmButtonColor: "#26B99A",
             confirmButtonText: "Pay Now (ONLINE)"
           }).then((result) => {
             if (result.value) {
               Swal.fire(
-                'Pay!',
-                'Your application is paid.',
-                'success'
-              )
+                "Pay!",
+                "Your application is paid.",
+                "success"
+              );
             }
-          })
-        }else {
-        this.setGlobal({ successMsg });
+          });
+        } else {
+          this.setGlobal({ successMsg });
         }
 
         // this.props.refresh();
@@ -90,7 +91,7 @@ class ShopLicenseList extends Component {
   };
 
   render() {
-    const { application, openResubmit,openDetail } = this.state;
+    const { application, openResubmit, openRenew,openDetail } = this.state;
     const { history, shops, shop } = this.props;
     const tableOptions = {
       filterType: "checkbox",
@@ -115,6 +116,12 @@ class ShopLicenseList extends Component {
       {
         name: "name",
         label: "SHOP NAME"
+      }, {
+        name: "validity",
+        label: "Validity",
+        options: {
+          customBodyRender: (value) => "date"
+        }
       },
       {
         name: "local_council",
@@ -176,7 +183,7 @@ class ShopLicenseList extends Component {
             let controls = undefined;
             let view = <>
               <Tooltip title={"View Application details"}>
-                <IconButton href={"#"} onClick={e => this.setState({ application:data,openDetail: true })}>
+                <IconButton href={"#"} onClick={e => this.setState({ application: data, openDetail: true })}>
                   <Icon fontSize={"small"}>remove_red_eye</Icon>
                 </IconButton>
               </Tooltip>
@@ -188,6 +195,18 @@ class ShopLicenseList extends Component {
                   <Tooltip title={"Withdraw Application"}>
                     <IconButton href={"#"} onClick={this.withDraw.bind(this, data)}>
                       <Icon fontSize={"small"}>close</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>;
+                break;
+              case ApplicationState.NEW_APPLICATION:
+                controls = <>
+                  {view}
+                  <Tooltip title={"Renew  Application"}>
+                    <IconButton href={"#"} onClick={event => this.setState({
+                      openRenew: true, data
+                    })}>
+                      <Icon fontSize={"small"}>refresh</Icon>
                     </IconButton>
                   </Tooltip>
                 </>;
@@ -266,13 +285,17 @@ class ShopLicenseList extends Component {
             {found}
           </CardContent>
         }
-        <ApplicationDetailsDialog type={application?application.file.fileable_type:"App//Shop"} open={openDetail} title='View Application Details'
+        <ApplicationDetailsDialog type={application ? application.file.fileable_type : "App//Shop"} open={openDetail}
+                                  title='View Application Details'
                                   application={application}
-                                  file={application?application.file:null}
-                                  onClose={e=>this.setState({openDetail:false})}/>
+                                  file={application ? application.file : null}
+                                  onClose={e => this.setState({ openDetail: false })}/>
         <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
 
         <ResubmitShopApplicationDialog open={openResubmit} onClose={e => this.setState({ openResubmit: false })}
+                                       application={application} onResubmit={this.reSubmitApplication}/>
+
+        <RenewShopLicenseDialog open={openRenew} onClose={e => this.setState({ openRenew: false })}
                                        application={application} onResubmit={this.reSubmitApplication}/>
       </>
     );
