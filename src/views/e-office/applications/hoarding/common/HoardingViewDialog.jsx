@@ -86,7 +86,7 @@ class HoardingViewDialog extends Component {
                     <DetailViewRow primary="Road Detail" secondary={data.hoarding.road_detail ? data.hoarding.road_detail : "NA"}/>
                     <DetailViewRow primary="Ground Clearance" secondary={data.hoarding.ground_clearance ? data.hoarding.ground_clearance : "NA"}/>
                     <DetailViewRow primary="Date of Application"
-                                   secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
+                                   secondary={moment(data.created_at).format("Do MMMM YYYY (\dddd\)")}/>
                     <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
                     {data.hoarding.file.desk && <DetailViewRow primary="File Location"
                                                       secondary={data.hoarding.file.desk.staff.name + " (" + data.hoarding.file.desk.staff.designation + ")"}/>}

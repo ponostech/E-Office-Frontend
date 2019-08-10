@@ -1,97 +1,92 @@
-import React, { Component } from "reactn";
-import { Button, Icon, IconButton, Tooltip, Typography } from "@material-ui/core";
+import React, {Component} from "reactn";
+import {Button, Icon, IconButton, Tooltip, Typography} from "@material-ui/core";
 import LoadingView from "../../common/LoadingView";
 import CardContent from "@material-ui/core/CardContent";
 import MUIDataTable from "mui-datatables";
 import ApplicationState from "../../../utils/ApplicationState";
 import Chip from "@material-ui/core/Chip";
-import { APPLY_SHOP_LICENSE, HOME } from "../../../config/routes-constant/OfficeRoutes";
-import { withRouter } from "react-router-dom";
-import { LicenseService } from "../../../services/LicenseService";
+import {APPLY_SHOP_LICENSE, HOME} from "../../../config/routes-constant/OfficeRoutes";
+import {withRouter} from "react-router-dom";
+import {LicenseService} from "../../../services/LicenseService";
 import GridContainer from "../../../components/Grid/GridContainer";
 import moment from "moment";
 import SubmitDialog from "../../../components/SubmitDialog";
 import ResubmitShopApplicationDialog from "../../shop/ResubmitShopApplicationDialog";
-import { ShopService } from "../../../services/ShopService";
+import {ShopService} from "../../../services/ShopService";
 import ShopApplicationDialog from "../../common/ShopApplicationDialog";
 import ApplicationDetailsDialog from "../../common/ApplicationDetailsDialog";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
-
 
 class ShopLicenseList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       application: null,
-
       openConfirm: false,
       openResubmit: false,
-      openDetail:false,
-
+      openDetail: false,
       submit: false,
       submitTitle: "Submit"
     };
-
     this.licenseService = new LicenseService();
     this.shopService = new ShopService();
   }
 
-
   withDraw = (data) => {
-    this.setState({ openConfirm: true, application: data });
+    this.setState({openConfirm: true, application: data});
   };
 
   downloadLicense = (data) => {
     console.log(data);
   };
+
   printLicense = (data) => {
     console.log(data);
   };
+
   renewLicense = (data) => {
     console.log(data);
   };
+
   submitNewApplication = (data) => {
-    const { history } = this.props;
+    const {history} = this.props;
     history.push(APPLY_SHOP_LICENSE);
   };
+
   reSubmitApplication = application => {
-    this.setState({ submitTitle: "Resubmit Application", submit: true, openResubmit: false });
-    this.shopService.resubmit(application, errorMsg => this.setGlobal({ errorMsg }),
-      (challan,successMsg) => {
-
-        const MySwal = withReactContent(Swal)
-
-        if (challan){
-          MySwal.fire({
-            title:`Challan No:${challan.number}`,
-            text: successMsg,
-            type: 'success',
-            showCancelButton: true,
-            cancelButtonText:"Close",
-            confirmButtonColor: '#26B99A',
-            confirmButtonText: "Pay Now (ONLINE)"
-          }).then((result) => {
-            if (result.value) {
-              Swal.fire(
-                'Pay!',
-                'Your application is paid.',
-                'success'
-              )
-            }
-          })
-        }else {
-        this.setGlobal({ successMsg });
-        }
-
-        // this.props.refresh();
-      })
-      .finally(() => this.setState({ submit: false }));
+    this.setState({submitTitle: "Resubmit Application", submit: true, openResubmit: false});
+    this.shopService.resubmit(application, errorMsg => this.setGlobal({errorMsg}),
+        (challan, successMsg) => {
+          const MySwal = withReactContent(Swal)
+          if (challan) {
+            MySwal.fire({
+              title: `Challan No:${challan.number}`,
+              text: successMsg,
+              type: 'success',
+              showCancelButton: true,
+              cancelButtonText: "Close",
+              confirmButtonColor: '#26B99A',
+              confirmButtonText: "Pay Now (ONLINE)"
+            }).then((result) => {
+              if (result.value) {
+                Swal.fire(
+                    'Pay!',
+                    'Your application is paid.',
+                    'success'
+                )
+              }
+            })
+          } else {
+            this.setGlobal({successMsg});
+          }
+        })
+        .finally(() => this.setState({submit: false}));
   };
 
   render() {
-    const { application, openResubmit,openDetail } = this.state;
-    const { history, shops, shop } = this.props;
+    const {application, openResubmit, openDetail} = this.state;
+    const {history, shops, shop} = this.props;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -114,15 +109,16 @@ class ShopLicenseList extends Component {
       },
       {
         name: "name",
-        label: "SHOP NAME"
+        label: "NAME OF SHOP"
       },
       {
         name: "local_council",
-        label: "PROPOSED LOCATION",
+        label: "PROPOSED SHOP LOCATION",
         options: {
           customBodyRender: (value) => value.name
         }
-      }, {
+      },
+      {
         name: "status",
         label: "STATUS",
         options: {
@@ -163,7 +159,6 @@ class ShopLicenseList extends Component {
           }
         }
       },
-
       {
         name: "status",
         label: "ACTION",
@@ -171,12 +166,12 @@ class ShopLicenseList extends Component {
           filter: false,
           sort: false,
           customBodyRender: (status, tableMeta) => {
-            const { rowIndex } = tableMeta;
+            const {rowIndex} = tableMeta;
             let data = shops[rowIndex];
             let controls = undefined;
             let view = <>
               <Tooltip title={"View Application details"}>
-                <IconButton href={"#"} onClick={e => this.setState({ application:data,openDetail: true })}>
+                <IconButton href={"#"} onClick={e => this.setState({application: data, openDetail: true})}>
                   <Icon fontSize={"small"}>remove_red_eye</Icon>
                 </IconButton>
               </Tooltip>
@@ -231,17 +226,14 @@ class ShopLicenseList extends Component {
                 controls = <>
                   {view}
                   <Tooltip title={"Re Submit Application"}>
-                    <IconButton href={"#"} onClick={e => this.setState({ application: data, openResubmit: true })}>
+                    <IconButton href={"#"} onClick={e => this.setState({application: data, openResubmit: true})}>
                       <Icon fontSize={"small"} color={"primary"}>send</Icon>
                     </IconButton>
                   </Tooltip>
                 </>;
                 break;
-
             }
-            return (
-              controls
-            );
+            return (controls);
           }
         }
       }
@@ -250,31 +242,32 @@ class ShopLicenseList extends Component {
       <Typography component={"div"} color={"inherit"} variant={"h6"}> No Result Found</Typography>
       <Button href={"#"} variant={"outlined"} onClick={e => history.push(HOME)} color={"primary"}>Back to Home</Button>
     </GridContainer>);
-    let found = <>
-      <MUIDataTable
+
+    let found = <MUIDataTable
         title={"SHOP LICENSING: List of Application"}
         data={shops}
         columns={tableColumns}
-        options={tableOptions}/>
-    </>;
+        options={tableOptions}/>;
 
     return (
-      <>
-        {this.global.loading ? <LoadingView/> :
-          <CardContent>
-            {/*{applications.length === 0 && notFound}/*/}
-            {found}
-          </CardContent>
-        }
-        <ApplicationDetailsDialog type={application?application.file.fileable_type:"App//Shop"} open={openDetail} title='View Application Details'
-                                  application={application}
-                                  file={application?application.file:null}
-                                  onClose={e=>this.setState({openDetail:false})}/>
-        <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
+        <>
+          {this.global.loading ? <LoadingView/> :
+              <CardContent>
+                {/*{applications.length === 0 && notFound}/*/}
+                {found}
+              </CardContent>
+          }
+          <ApplicationDetailsDialog type={application ? application.file.fileable_type : "App//Shop"} open={openDetail}
+                                    title='View Application Details'
+                                    application={application}
+                                    file={application ? application.file : null}
+                                    onClose={e => this.setState({openDetail: false})}/>
 
-        <ResubmitShopApplicationDialog open={openResubmit} onClose={e => this.setState({ openResubmit: false })}
-                                       application={application} onResubmit={this.reSubmitApplication}/>
-      </>
+          <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
+
+          <ResubmitShopApplicationDialog open={openResubmit} onClose={e => this.setState({openResubmit: false})}
+                                         application={application} onResubmit={this.reSubmitApplication}/>
+        </>
     );
   }
 }
