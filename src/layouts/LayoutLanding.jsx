@@ -38,7 +38,7 @@ class LayoutLanding extends React.Component {
 
     return (
       <div className={classes.wrapper}>
-        <AuthNavbar color={"primary"} brandText="AIZAWL MUNICIPAL CORP0RATION"
+        <AuthNavbar color={"primary"} brandText="AIZAWL MUNICIPAL CORPORATION"
                     OfficeRoutes={OfficeRoutes} {...rest} />
         <div className={classes.fullPage}>
           <div className={classes.container}>

@@ -97,6 +97,10 @@ export const ApplicationResolver = (application) => {
     case FILEABLE_TYPE.SHOP:
       rows.push(
           {
+            name: "Application Status",
+            value: application.status.toUpperCase()
+          },
+          {
             changed: application.field_changes.indexOf('application_date') !== -1,
             field: 'application_date',
             name: "Date of Application",
@@ -135,7 +139,7 @@ export const ApplicationResolver = (application) => {
           {
             changed: application.field_changes.indexOf('name') !== -1,
             field: 'name',
-            name: "Name of the Shop",
+            name: "Name of Shop",
             value: application.name
           },
           {
