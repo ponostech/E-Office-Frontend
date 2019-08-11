@@ -78,20 +78,24 @@ class HotelViewDialog extends Component {
                     <DetailViewRow primary="Shop Name" secondary={data.name}/>
                     <DetailViewRow primary="Proposed Location" secondary={data.address}/>
                     <DetailViewRow primary="Date of Application"
-                                   secondary={moment(data.created_at).format("Do MMMM YYYY")}/>
+                                   secondary={moment(data.created_at).format("Do MMMM YYYY (\dddd\)")}/>
                     <DetailViewRow primary="Details of Business" secondary={data.details}/>
-                    <DetailViewRow primary="Email" secondary={data.email ? data.email : "NA"}/>
-                    <DetailViewRow primary="CST No" secondary={data.cst_no ? data.cst_no : "NA"}/>
-                    <DetailViewRow primary="GST No" secondary={data.gst_no ? data.gst_no : "NA"}/>
-                    <DetailViewRow primary="TIN No" secondary={data.tin_no ? data.tin_no : "NA"}/>
-                    <DetailViewRow primary="PAN No" secondary={data.pan_no ? data.pan_no : "NA"}/>
+                    <DetailViewRow primary="Email" secondary={data.email ? data.email : "N/A"}/>
+                    <DetailViewRow primary="CST No" secondary={data.cst_no ? data.cst_no : "N/A"}/>
+                    <DetailViewRow primary="GST No" secondary={data.gst_no ? data.gst_no : "N/A"}/>
+                    <DetailViewRow primary="TIN No" secondary={data.tin_no ? data.tin_no : "N/A"}/>
+                    <DetailViewRow primary="PAN No" secondary={data.pan_no ? data.pan_no : "N/A"}/>
                     <DetailViewRow primary="Premise Type" secondary={data.premise_type}/>
-                    <DetailViewRow primary="No. of AC Room" secondary={data.ac_rooms ? data.ac_rooms : "NA"}/>
-                    <DetailViewRow primary="No. of Non AC Room" secondary={data.non_ac_rooms ? data.non_ac_rooms : "NA"}/>
+                    <DetailViewRow primary="No. of AC Room" secondary={data.ac_rooms ? data.ac_rooms : "N/A"}/>
+                    <DetailViewRow primary="No. of Non AC Room"
+                                   secondary={data.non_ac_rooms ? data.non_ac_rooms : "N/A"}/>
                     <DetailViewRow primary="Year of Establishment" secondary={data.estd}/>
-                    <DetailViewRow primary="No. of Banquet Hall" secondary={data.banquet_halls ? data.banquet_halls : "NA" }/>
-                    <DetailViewRow primary="No. of Conference Hall" secondary={data.conference_halls ? data.conference_halls : "NA"}/>
-                    <DetailViewRow primary="Any other facilities" secondary={data.other_facilities ? data.other_facilities : "NA"}/>
+                    <DetailViewRow primary="No. of Banquet Hall"
+                                   secondary={data.banquet_halls ? data.banquet_halls : "N/A"}/>
+                    <DetailViewRow primary="No. of Conference Hall"
+                                   secondary={data.conference_halls ? data.conference_halls : "N/A"}/>
+                    <DetailViewRow primary="Any other facilities"
+                                   secondary={data.other_facilities ? data.other_facilities : "N/A"}/>
                     <DetailViewRow primary="Status" secondary={data.status.toUpperCase()}/>
 
                   </Card>

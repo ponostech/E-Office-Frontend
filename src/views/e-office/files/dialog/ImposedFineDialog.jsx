@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
   AppBar,
   Button,
@@ -23,8 +23,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import LoadingView from "../../../common/LoadingView";
 import PropTypes from "prop-types";
 import DetailViewRow from "../../common/DetailViewRow";
-import { getApplicationTitle } from "./common/ApplicationResolver";
-
+import {getApplicationTitle} from "./common/ApplicationResolver";
 
 const styles = {
   appBar: {
@@ -54,26 +53,27 @@ class ImposedFineDialog extends Component {
       applicationError: "",
       reasonError: "",
       amountError: ""
-
     };
   }
 
   componentDidMount() {
-    const { file } = this.props;
-    this.setState({ application: this.props.application });
+    const {file} = this.props;
+    this.setState({application: this.props.application});
   }
 
   onChange = (name, value) => {
-    this.setState({ [name]: value });
+    this.setState({[name]: value});
   };
+
   clear = () => this.setState({
     application: null,
     reason: "",
     amount: 0
   });
+
   imposeFine = () => {
-    const { application, file } = this.props;
-    const { reason, amount } = this.state;
+    const {application, file} = this.props;
+    const {reason, amount} = this.state;
     let data = {
       challanable_id: application.id,
       challanable_type: application.file.fileable_type,
@@ -83,16 +83,17 @@ class ImposedFineDialog extends Component {
     this.clear();
     this.props.imposeFine(data);
   };
+
   onBlur = (name, value) => {
     switch (name) {
       case "application":
-        value ? this.setState({ applicationError: "" }) : this.setState({ applicationError: "Application is required" });
+        value ? this.setState({applicationError: ""}) : this.setState({applicationError: "Application is required"});
         break;
       case "reason":
-        value ? this.setState({ reasonError: "" }) : this.setState({ reasonError: "Reason is required" });
+        value ? this.setState({reasonError: ""}) : this.setState({reasonError: "Reason is required"});
         break;
       case "amount":
-        value ? this.setState({ amountError: "" }) : this.setState({ amountError: "Amount is required" });
+        value ? this.setState({amountError: ""}) : this.setState({amountError: "Amount is required"});
         break;
       default:
         break;
@@ -100,105 +101,101 @@ class ImposedFineDialog extends Component {
   };
 
   render() {
-    const { application, reason, amount, loading } = this.state;
-    const { applicationError, reasonError, amountError } = this.state;
-    const { open, onClose, classes } = this.props;
+    const {application, reason, amount, loading} = this.state;
+    const {applicationError, reasonError, amountError} = this.state;
+    const {open, onClose, classes} = this.props;
 
     let val = getApplicationTitle(application);
     let content = (
-      <>
-        <Grid container={true} spacing={3}>
-          <Grid sm={12} md={12} item={true}>
-
-            <List>
-              {
-                application &&
-                <DetailViewRow primary={val.title} secondary={val.subtitle}/>
-              }
-            </List>
+        <>
+          <Grid container={true} spacing={2}>
+            <Grid sm={12} md={12} item={true}>
+              <List>
+                {
+                  application &&
+                  <DetailViewRow primary={val.title} secondary={val.subtitle}/>
+                }
+              </List>
+            </Grid>
+            <Grid sm={12} md={12} item={true}>
+              <TextField name={"amount"}
+                         InputProps={{
+                           inputProps: {
+                             min: 0
+                           },
+                           startAdornment: <InputAdornment position={"start"}>
+                             <Icon color={"action"} fontSize={"small"}>account_balance_wallet</Icon>
+                           </InputAdornment>
+                         }}
+                         type={"number"}
+                         value={amount}
+                         margin={"dense"}
+                         fullWidth={true}
+                         variant={"outlined"}
+                         onChange={event => this.onChange("amount", event.target.value)}
+                         label={"Amount"}
+                         required={true}
+                         onBlur={event => this.onBlur("amount", event.target.value)}
+                         error={Boolean(amountError)}
+                         helperText={amountError}
+              />
+            </Grid>
+            <Grid sm={12} md={12} item={true}>
+              <TextField name={"reason"}
+                         value={reason}
+                         multiline={true}
+                         rows={10}
+                         margin={"dense"}
+                         fullWidth={true}
+                         variant={"outlined"}
+                         onChange={event => this.onChange("reason", event.target.value)}
+                         label={"Reason"}
+                         required={true}
+                         onBlur={event => this.onBlur("reason", event.target.value)}
+                         error={Boolean(reasonError)}
+                         helperText={reasonError}
+              />
+            </Grid>
 
           </Grid>
-
-          <Grid sm={12} md={12} item={true}>
-            <TextField name={"amount"}
-                       InputProps={{
-                         inputProps: {
-                           min: 0
-                         },
-                         startAdornment: <InputAdornment position={"start"}>
-                           <Icon color={"action"} fontSize={"small"}>account_balance_wallet</Icon>
-                         </InputAdornment>
-                       }}
-                       type={"number"}
-                       value={amount}
-                       margin={"dense"}
-                       fullWidth={true}
-                       variant={"outlined"}
-                       onChange={event => this.onChange("amount", event.target.value)}
-                       label={"Amount"}
-                       required={true}
-                       onBlur={event => this.onBlur("amount", event.target.value)}
-                       error={Boolean(amountError)}
-                       helperText={amountError}
-            />
-          </Grid>
-          <Grid sm={12} md={12} item={true}>
-            <TextField name={"reason"}
-                       value={reason}
-                       multiline={true}
-                       rows={3}
-                       margin={"dense"}
-                       fullWidth={true}
-                       variant={"outlined"}
-                       onChange={event => this.onChange("reason", event.target.value)}
-                       label={"Reason"}
-                       required={true}
-                       onBlur={event => this.onBlur("reason", event.target.value)}
-                       error={Boolean(reasonError)}
-                       helperText={reasonError}
-            />
-          </Grid>
-
-        </Grid>
-      </>
+        </>
     );
     return (
-      <Dialog
-        fullWidth={true}
-        maxWidth={"sm"}
-        open={open}
-        onClose={onClose}
-        TransitionComponent={Transition}
-      >
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={onClose} aria-label="Close">
-              <CloseIcon/>
-            </IconButton>
-            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-              Impose Fine
-            </Typography>
-            <Button href={"#"} onClick={onClose} color="inherit">
-              Close
-            </Button>
-          </Toolbar>
-        </AppBar>
-        <DialogContent>
-          <Card>
-            <CardContent>
-              {loading ? <LoadingView/> : content}
-            </CardContent>
-          </Card>
-        </DialogContent>
-        <Divider component={"div"}/>
-        <DialogActions>
-          <Button disabled={!Boolean(amount) || !Boolean(reason)} href={"#"} variant={"outlined"} color={"primary"}
-                  onClick={event => this.imposeFine()}>Impose
-            Fine</Button>
-          <Button href={"#"} variant={"outlined"} color={"secondary"}
-                  onClick={onClose}>Close</Button>
-        </DialogActions>
-      </Dialog>
+        <Dialog
+            fullWidth={true}
+            maxWidth={"sm"}
+            open={open}
+            onClose={onClose}
+            TransitionComponent={Transition}
+        >
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              <IconButton href={"#"} color="inherit" onClick={onClose} aria-label="Close">
+                <CloseIcon/>
+              </IconButton>
+              <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+                Impose Fine
+              </Typography>
+              <Button href={"#"} onClick={onClose} color="inherit">
+                Close
+              </Button>
+            </Toolbar>
+          </AppBar>
+          <DialogContent>
+            <Card>
+              <CardContent>
+                {loading ? <LoadingView/> : content}
+              </CardContent>
+            </Card>
+          </DialogContent>
+          <Divider component={"div"}/>
+          <DialogActions>
+            <Button disabled={!Boolean(amount) || !Boolean(reason)} href={"#"} variant={"outlined"} color={"primary"}
+                    onClick={event => this.imposeFine()}>Impose Fine</Button>
+            <Button href={"#"} variant={"outlined"} color={"secondary"}
+                    onClick={onClose}>Close</Button>
+          </DialogActions>
+        </Dialog>
     );
   }
 }

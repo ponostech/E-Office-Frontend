@@ -91,7 +91,7 @@ const LicenseCard = (props) => {
         <Divider/>
         <CardContent>
           <Typography paragraph={true}>
-            Application Date: {moment(license.created_at).format("DD MMM YYYY")}
+            Date of Application: {moment(license.created_at).format("DD MMM YYYY")}
           </Typography>
           <Typography paragraph={true} dangerouslySetInnerHTML={{ __html: license.content }}/>
           <Typography paragraph={true}>
