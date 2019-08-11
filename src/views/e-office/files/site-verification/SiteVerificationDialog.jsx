@@ -23,6 +23,7 @@ import SelectVerificationApplication from "./steps/SelectVerificationApplication
 import CreateVerification from "./steps/CreateVerification";
 import ConfirmVerification from "./steps/ConfirmVerification";
 import PropTypes from "prop-types";
+import { SiteVerificationService } from "../../../../services/SiteVerificationService";
 
 const styles = {
   appBar: {
@@ -55,6 +56,7 @@ class SiteVerificationDialog extends Component {
       submit: false
     };
     this.applicationService = new ApplicationService();
+    this.siteVerificationService=new SiteVerificationService()
   }
 
   createVerification = (siteVerification) => {

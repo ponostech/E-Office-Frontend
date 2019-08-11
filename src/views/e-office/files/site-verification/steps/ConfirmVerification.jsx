@@ -7,7 +7,7 @@ import { ApplicationResolver } from "../../dialog/common/ApplicationResolver";
 
 class ConfirmVerification extends Component {
 
-  handleConfirm = event => {
+  handleConfirm = () => {
     const { application,siteVerification } = this.props;
     const formData = [];
     const elements = siteVerification.template.formElements;
@@ -29,9 +29,7 @@ class ConfirmVerification extends Component {
       let template = {
         formElements: siteVerification.template.formElements
       };
-      this.props.confirmVerification({
-        url,formData,template
-      });
+      this.props.confirmVerification(url,formData,template);
     }
   };
   render() {
