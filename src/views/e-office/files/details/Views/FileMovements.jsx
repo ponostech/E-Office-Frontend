@@ -29,8 +29,9 @@ class FileMovements extends Component {
         return <>
           <ListItem>
             <ListItemText
-                primary={"Sent by " + res.sender.staff.name + " (" + res.sender.staff.designation + ")" + " to " + res.recipient.staff.name + " (" + res.recipient.staff.designation + ")"}
-                secondary={"On: " + moment(res.created_at).format("Do MMMM YYYY")}/>
+                style={{textTransform: 'capitalize'}}
+                primary={res.type + " by " + res.sender.staff.name + " (" + res.sender.staff.designation + ")" + " to " + res.recipient.staff.name + " (" + res.recipient.staff.designation + ")"}
+                secondary={"On: " + moment(res.created_at).format("Do MMMM YYYY (\dddd\)")}/>
           </ListItem>
           <Divider/>
         </>;

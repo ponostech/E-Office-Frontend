@@ -73,7 +73,7 @@ class SendDialog extends React.Component {
           </ListItem>
           <Divider/>
           <ListItem button>
-            <ListItemText primary="Created On: " secondary={moment(this.props.file.created_at).format('Do MMMM YYYY')}/>
+            <ListItemText primary="Created On: " secondary={moment(this.props.file.created_at).format('Do MMMM YYYY (\dddd\)')}/>
           </ListItem>
         </>
     );

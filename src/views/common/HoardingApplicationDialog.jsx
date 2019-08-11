@@ -50,7 +50,7 @@ class HoardingApplicationDialog extends Component {
               <Typography variant={"h6"}>Details of Hoarding</Typography>
               <List>
                 <DetailViewRow primary={"Date of Application"}
-                               secondary={moment(hoarding.created_at).format("Do MMM YYYY")}/>
+                               secondary={moment(hoarding.created_at).format("Do MMM YYYY (\dddd\)")}/>
                 <DetailViewRow primary={"Proposed Location"} secondary={hoarding.address}/>
                 <DetailViewRow primary={"Local Council"} secondary={hoarding.local_council.name}/>
                 <DetailViewRow primary={"Length"} secondary={hoarding.length + " ft"}/>

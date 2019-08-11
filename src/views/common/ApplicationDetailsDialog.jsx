@@ -9,6 +9,7 @@ import {
   ListItemSecondaryAction,
   Icon
 } from "@material-ui/core";
+import axios from "axios";
 import DialogWrapper from "../e-office/files/dialog/common/DialogWrapper";
 import Grid from "@material-ui/core/Grid";
 import {AttachFile} from "@material-ui/icons";
@@ -19,8 +20,6 @@ import SubmitDialog from "../../components/SubmitDialog";
 import ApplicationResolver from "../e-office/files/dialog/common/ApplicationResolver";
 import ImposedFineDialog from "../e-office/files/dialog/ImposedFineDialog";
 import {LoginService} from "../../services/LoginService";
-
-import axios from "axios";
 import Tooltip from "@material-ui/core/Tooltip"
 import ApplicationFieldHistoriesDialog from "../e-office/applications/ApplicationFieldHistoriesDialog"
 

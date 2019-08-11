@@ -67,7 +67,7 @@ class BannerViewDialog extends Component {
                   <DetailViewRow primary="Shop Name" secondary={data.name} />
                   <DetailViewRow primary="Proposed Location" secondary={data.address} />
                   <DetailViewRow primary="Details of Business" secondary={data.details} />
-                  <DetailViewRow primary="Date of Application" secondary={moment(data.created_at).format("Do MMMM YYYY")} />
+                  <DetailViewRow primary="Date of Application" secondary={moment(data.created_at).format("Do MMMM YYYY (\dddd\)")} />
                   <Table>
                     <TableHead>
                       <TableRow>
@@ -94,8 +94,8 @@ class BannerViewDialog extends Component {
                               <TableCell>{item.length}</TableCell>
                               <TableCell>{item.height}</TableCell>
                               <TableCell>{item.locations}</TableCell>
-                              <TableCell>{moment(item.from).format("Do MMMM YYYY")}</TableCell>
-                              <TableCell>{moment(item.to).format("Do MMMM YYYY")}</TableCell>
+                              <TableCell>{moment(item.from).format("Do MMMM YYYY (\dddd\)")}</TableCell>
+                              <TableCell>{moment(item.to).format("Do MMMM YYYY (\dddd\)")}</TableCell>
                               <TableCell>
                                 {diff}
                               </TableCell>

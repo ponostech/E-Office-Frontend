@@ -44,6 +44,10 @@ const fileDetails = (props) => {
         <ListItem button>
           <ListItemText primary="Created On" secondary={moment(file.created_at).format("Do MMMM YYYY")}/>
         </ListItem>
+        <ListItem button>
+          <ListItemText style={{color: file.status === 'active' ? '#26B99A' : '#b93e46'}} primary="File Status"
+                        secondary={file.status.toUpperCase()}/>
+        </ListItem>
         <Divider/>
       </List>
   );
