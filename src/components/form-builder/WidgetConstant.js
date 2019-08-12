@@ -9,6 +9,7 @@ export default class WidgetConstant {
   static PATTERN="Pattern";
   static EMAIL="Email";
   static PHONE="Phone";
+  static DATE="Date";
   static FILE_UPLOAD="File upload";
   static IMAGE_UPLOAD="Image upload";
 

@@ -19,6 +19,8 @@ import GridContainer from "../Grid/GridContainer";
 import FileUpload from "../FileUpload";
 import { APPLICATION_NAME } from "../../utils/Util";
 import NotesheetAttachment from "../NotesheetAttachment";
+import DateFnsUtils from "@date-io/date-fns";
+import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 
 class FormFieldFactory extends Component {
 state={
@@ -41,6 +43,26 @@ openMap:false
             value={value}
             onChange={changed}
           />
+        );
+        break;
+        case WidgetConstant.DATE:
+        this.inputElement = (
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DatePicker
+              fullWidth={true}
+              InputLabelProps={
+                { shrink: true ,required:validation.required}
+              }
+              required={validation.required}
+              placeholder={elementConfig.placeholder}
+              label={elementConfig.label}
+              margin="dense"
+              variant="outlined"
+              value={value}
+              onChange={changed}
+              format={"dd/MM/yyyy"}
+            />
+          </MuiPickersUtilsProvider>
         );
         break;
         case WidgetConstant.PATTERN:
