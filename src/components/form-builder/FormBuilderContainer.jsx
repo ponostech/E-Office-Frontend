@@ -24,6 +24,7 @@ import FileUploadFieldDialog from "./config-dialog/FileUploadFieldDialog";
 import ImageUploadFieldDialog from "./config-dialog/ImageUploadFieldDialog";
 import FillableFieldGenerator from "./FillableFieldGenerator";
 import Avatar from "@material-ui/core/Avatar";
+import DatePickerDialog from "./config-dialog/DatePickerDialog";
 
 const widgets = [
   { name: WidgetConstant.TEXTFIELD, icon: "keyboard_arrow_right" },
@@ -31,10 +32,11 @@ const widgets = [
   { name: WidgetConstant.PHONE, icon: "phone" },
   { name: WidgetConstant.NUMBER, icon: "looks_one" },
   { name: WidgetConstant.ADDRESS, icon: "pin_drop" },
-  { name: "Coordinate", icon: "donut_small" },
+  { name: WidgetConstant.COORDINATE, icon: "donut_small" },
   { name: WidgetConstant.RADIO, icon: "radio_button_checked" },
   { name: WidgetConstant.CHECKBOX, icon: "checked" },
   { name: WidgetConstant.SELECT, icon: "list" },
+  { name: WidgetConstant.DATE, icon: "date_range" },
   { name: WidgetConstant.FILE_UPLOAD, icon: "attach_file" },
   { name: WidgetConstant.IMAGE_UPLOAD, icon: "picture_in_picture" }
 ];
@@ -93,6 +95,9 @@ class FormBuilderContainer extends Component {
       case WidgetConstant.NUMBER:
         this.setState({ selectedWidget: identifier, openNumberDialog: true });
         break;
+      case WidgetConstant.DATE:
+        this.setState({ selectedWidget: identifier, openDateDialog: true });
+        break;
       case WidgetConstant.FILE_UPLOAD:
         this.setState({ selectedWidget: identifier, openFileDialog: true });
         break;
@@ -113,7 +118,8 @@ class FormBuilderContainer extends Component {
       openPatternDialog: false,
       openTextDialog: false,
       openFileDialog: false,
-      openImageDialog: false
+      openImageDialog: false,
+      openDateDialog: false,
     });
     if (!key || !config) {
       return;
@@ -184,20 +190,21 @@ class FormBuilderContainer extends Component {
                 {
                   this.state.fields.map((item, index) =>
                     <>
-                    <ListItem key={index} color={"primary"} button={true} onClick={e => self.handleFillableClick(item)} component={"li"}>
-                      <ListItemIcon color={"primary"}>
-                         <Avatar component={"span"}>
-                           {index+1}
-                         </Avatar>
-                      </ListItemIcon>
-                      <ListItemText primary={item.label}/>
-                      <ListItemSecondaryAction>
-                        <IconButton onClick={e => self.handleFillableClick(item)}>
-                          <Icon color={"default"} fontSize={"default"}>keyboard_arrow_right</Icon>
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                    <Divider component={"hr"}/>
+                      <ListItem key={index} color={"primary"} button={true}
+                                onClick={e => self.handleFillableClick(item)} component={"li"}>
+                        <ListItemIcon color={"primary"}>
+                          <Avatar component={"span"}>
+                            {index + 1}
+                          </Avatar>
+                        </ListItemIcon>
+                        <ListItemText primary={item.label}/>
+                        <ListItemSecondaryAction>
+                          <IconButton onClick={e => self.handleFillableClick(item)}>
+                            <Icon color={"default"} fontSize={"default"}>keyboard_arrow_right</Icon>
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <Divider component={"hr"}/>
                     </>
                   )
                 }
@@ -223,6 +230,9 @@ class FormBuilderContainer extends Component {
                            onClose={this.addWidget.bind(this)}/>
         <SelectFieldDialog widget={this.state.selectedWidget} open={this.state.openSelectDialog}
                            onClose={this.addWidget.bind(this)}/>
+
+        <DatePickerDialog widget={this.state.selectedWidget} open={this.state.openDateDialog}
+                         onClose={this.addWidget.bind(this)}/>
       </GridContainer>
 
     );
