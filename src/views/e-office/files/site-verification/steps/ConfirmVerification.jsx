@@ -26,10 +26,12 @@ class ConfirmVerification extends Component {
       this.setGlobal({ errorMsg: "Please fill all the required field" });
     } else {
       let url = "site-verifications/" + application.id;
+      let type=application.file.fileable_type;
+      let verifiable_id=application.id;
       let template = {
         formElements: siteVerification.template.formElements
       };
-      this.props.confirmVerification(url,formData,template);
+      this.props.confirmVerification(url,type,formData,template);
     }
   };
   render() {

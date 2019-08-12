@@ -1,24 +1,56 @@
 import React, { Component } from "reactn";
 import { SiteVerificationService } from "../../../../../services/SiteVerificationService";
-import { CardHeader, Divider, IconButton, List, Tooltip } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  Icon,
+  IconButton,
+  List,
+  Tooltip,
+  Typography
+} from "@material-ui/core";
 import moment from "moment";
-import EditIcon from "@material-ui/icons/Edit";
-import EyeIcon from "@material-ui/icons/RemoveRedEye";
-import DeleteIcon from "@material-ui/icons/Delete";
-import ConfirmDialog from "../../../../../components/ConfirmDialog";
-import SubmitDialog from "../../../../../components/SubmitDialog";
-import SiteVerificationEditDialog from "../../site-verification/SiteVerificationEditDialog";
 import { LoginService } from "../../../../../services/LoginService";
 import LoadingView from "../../../../common/LoadingView";
-import { SuccessHandler } from "../../../../common/StatusHandler";
 import PropTypes from "prop-types";
 import DetailViewRow from "../../../common/DetailViewRow";
-import SiteVerificationDetailDialog from "../../site-verification/SiteVerificationDetailDialog";
+import ApplicationService from "../../../../../services/ApplicationService";
+
+
+const SiteVerificationList = ({ siteVerifications }) => {
+
+  return (
+    <>
+      {
+        siteVerifications.length === 0 ?
+          "No site verification is created" :
+          siteVerifications.map((item, i) =>
+            <>
+              <Typography variant={"h6"} paragraph={true}>List of Site Verification</Typography>
+              <List component={"div"}>
+                <DetailViewRow key={i} primary={"Created On"} secondary={moment(item.created_at).format("Do MMM YYYY")}>
+                  <IconButton href={"#"}>
+                    <Icon color={"action"}>three_more_vert</Icon>
+                  </IconButton>
+                </DetailViewRow>
+              </List>
+            </>
+          )
+      }
+    </>
+  );
+};
+
 class FileSiteVerifications extends Component {
   siteVerificationService = new SiteVerificationService();
+  applicationService = new ApplicationService();
   state = {
-    data: [],
-    selectedVerification: null,
+    applications: [],
+    selectedApplication: null,
+    siteVerifications: [],
 
     edit: false,
     view: false,
@@ -32,11 +64,10 @@ class FileSiteVerifications extends Component {
 
   componentDidMount() {
     const { type, file } = this.props;
-    if (type) {
-      let url = `files/${file.id}/site-verifications`;
-      this.siteVerificationService.all(url,
+    if (file) {
+      this.applicationService.getFileApplications(file.id,
         errorMsg => this.setGlobal({ errorMsg }),
-        data => this.setState({ data }))
+        applications => this.setState({ applications }))
         .finally(() => this.setState({ loading: false }));
     }
   }
@@ -75,73 +106,72 @@ class FileSiteVerifications extends Component {
       .finally(() => this.setState({ submit: false }));
   };
 
+  getSiteVerification=(selectedApplication)=>{
+    let type=selectedApplication.file.fileable_type;
+    this.setState({selectedApplication})
+    this.siteVerificationService.getSiteVerifications(selectedApplication.id,type,
+      errorMsg=>this.setGlobal({errorMsg}),
+      siteVerifications=>this.setState({siteVerifications}))
+      .finally(()=>console.log("site verification request complete"))
+  }
   render() {
-    const { loading } = this.state;
+    const { loading, selectedApplication, siteVerifications } = this.state;
     const { file, type } = this.props;
     const self = this;
     let allowed = LoginService.getCurrentUser().id === file.current_user_id;
 
     return (
-      <>
+
+      <Card>
         <CardHeader title={file ? `FILE NO : ${file.number}` : ""}
-                    subheader={file ? "Site verification of " + file.subject : ""}/>
+                    subheader={"List of Site Verifications"}/>
         <Divider component={"div"}/>
-        {
-          loading ? <LoadingView/> : (<>
+        <CardContent>
+          <Grid container={true}>
+            <Grid item={true} md={6} sm={6}>
+              <Typography color={"textPrimary"} variant={"h6"} paragraph={true}>List of Application</Typography>
+              {
+                loading ? <LoadingView/> : (<>
+                  <List component={"ul"}>
+                    {this.state.applications.length>0 ?
+                      this.state.applications.map(function(item, index) {
+                        return (
+                          <>
+                            <DetailViewRow primary={"Site verification created on"}
+                                           secondary={moment(item.created_at).format("Do MMM YYYY")}>
+                              <>
+                                <Tooltip title={"View Site Verification"}>
+                                  <IconButton href={"#"} onClick={event => self.getSiteVerification(item)}>
+                                    <Icon color={"action"}>keyboard_arrow_right</Icon>
+                                  </IconButton>
+                                </Tooltip>
 
-            <>
-              <List component={"ul"}>
-                {
-                  Boolean(this.state.data) ?
-                    this.state.data.map(function(item, index) {
-                      return (
-                        <>
-                          <DetailViewRow primary={"Site verification created on"}
-                                         secondary={moment(item.created_at).format("Do MMM YYYY")}>
-                            <>
-                              <Tooltip title={"View details"}>
-                                <IconButton href={"#"} onClick={self.view.bind(this, item)}>
-                                  <EyeIcon fontSize={"small"} color={"primary"}/>
-                                </IconButton>
-                              </Tooltip>
-                              {allowed &&
-                              <Tooltip title={"edit"}>
-                                <IconButton href={"#"} onClick={self.edit.bind(this, item)}>
-                                  <EditIcon fontSize={"small"} color={"primary"}/>
-                                </IconButton>
-                              </Tooltip>}
-                              {/*{allowed && <Tooltip title={"Delete"}>*/}
-                              {/*  <IconButton href={"#"} onClick={self.delete.bind(this, item)}>*/}
-                              {/*    <DeleteIcon color={"secondary"}/>*/}
-                              {/*  </IconButton>*/}
-                              {/*</Tooltip>}*/}
+                                {/*{allowed && <Tooltip title={"Delete"}>*/}
+                                {/*  <IconButton href={"#"} onClick={self.delete.bind(this, item)}>*/}
+                                {/*    <DeleteIcon color={"secondary"}/>*/}
+                                {/*  </IconButton>*/}
+                                {/*</Tooltip>}*/}
 
-                            </>
-                          </DetailViewRow>
+                              </>
+                            </DetailViewRow>
 
-                        </>
-                      );
-                    })
-                    : "No site verification is generated"
-                }
-              </List>
+                          </>
+                        );
+                      })
+                      : "Application not available"
+                    }
+                  </List>
+                </>)}
+            </Grid>
+            <Grid item={true} md={6} sm={6}>
+              {selectedApplication && <SiteVerificationList siteVerifications={siteVerifications}/>}
+            </Grid>
+          </Grid>
+        </CardContent>
 
-            </>
-            <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={this.state.openConfirm}
-                           onConfirm={this.deleteConfirm.bind(this)}/>
+      </Card>
 
-            <SiteVerificationDetailDialog open={this.state.view} onClose={e => this.setState({ view: false })}
-                                          file={file} verification={this.state.selectedVerification}/>
-            <SiteVerificationEditDialog type={type} verification={this.state.selectedVerification}
-                                        open={this.state.edit} onClose={this.updateVerification}
-                                        file={file}/>
-            <SubmitDialog open={this.state.submit} text={this.state.submitMessage} title={this.state.submitTitle}/>
 
-            {Boolean(this.global.successMsg) && <SuccessHandler/>}
-          </>)
-
-        }
-      </>
     );
   }
 }

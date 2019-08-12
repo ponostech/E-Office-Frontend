@@ -95,11 +95,11 @@ class SiteVerificationDialog extends Component {
         return "shop";
     }
   };
-  submitVerification = (url, data, template) => {
+  submitVerification = (url,type, data, template) => {
 
     if (url && data && template) {
       this.setState({ submit: true });
-      this.siteVerificationService.createSiteVerification(url, data, template,
+      this.siteVerificationService.createSiteVerification(url,type, data, template,
         errorMsg => this.setGlobal({ errorMsg }),
         successMsg => {
           this.setGlobal({ successMsg });
