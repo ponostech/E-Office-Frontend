@@ -192,5 +192,8 @@ export class ApiRoutes {
   }
 
   static USER_CHALLAN_LIST=(phone) =>`/user/${phone}/challans`;
+
+  static FILE_APPLICATIONS=(file_id) => `files/${file_id}/applications`;
+
 }
 

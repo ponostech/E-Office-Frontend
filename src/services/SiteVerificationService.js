@@ -73,10 +73,25 @@ export class SiteVerificationService {
       errorCallback(error.toString())
     }
   }
+  async getSiteVerifications(id,type,errorCallback,successCallback) {
+
+    try {
+        const res = await axios.get(ApiRoutes.GET_SITE_VERIFICATION(id),{params:{type}});
+      if (res.data.status) {
+        console.log(res.data)
+        successCallback(res.data.data.verifications)
+      }else {
+        errorCallback(ArrayToString(res.data.messages))
+      }
+
+    } catch (error) {
+      console.error(error);
+      errorCallback(error.toString())
+    }
+  }
   async all(url,errorCallback,successCallback){
     try{
       let res=await axios.get(url);
-      console.log(res);
       if (res.data.status) {
         // let verificationData =[]
         // res.data.data.verifications.forEach(function(item, index) {
@@ -110,10 +125,11 @@ export class SiteVerificationService {
       errorCallback(error.toString())
     }
   }
-  async createSiteVerification(url, data,template,errorCallback,successCallback) {
+  async createSiteVerification(url,type, data,template,errorCallback,successCallback) {
     try {
       const res = await axios.post(url,{
         data,
+        type,
         template,
         draft:0
       });

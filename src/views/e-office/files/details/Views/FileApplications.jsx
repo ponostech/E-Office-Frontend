@@ -69,7 +69,7 @@ class FileApplications extends Component {
   };
 
   getData = (url) => {
-    axios.get(url)
+    axios.get(url,{params:{status:"all"}})
         .then(res => this.processResponse(res))
         .catch(err => this.setState({err: err.toString()}))
         .then(res => this.setState({loading: false}));

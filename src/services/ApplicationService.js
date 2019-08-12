@@ -4,6 +4,19 @@ import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
 class ApplicationService {
 
+  async getFileApplications(file_id,errorCallback,successCallback){
+    try{
+      let res=await axios.get(ApiRoutes.FILE_APPLICATIONS(file_id),{params:{status:"all"}});
+      if (res.data.status) {
+        successCallback(res.data.data.applications)
+      }else{
+        errorCallback(res.data.messages)
+      }
+    } catch (e) {
+      console.error(e)
+      errorCallback(e.toString())
+    }
+  }
   async sendBack(data,errorCallback,successCallback){
     try{
       let res=await axios.post(ApiRoutes.SEND_BACK_APPLICATION,data)
