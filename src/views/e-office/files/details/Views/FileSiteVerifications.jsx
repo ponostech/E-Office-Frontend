@@ -18,6 +18,7 @@ import LoadingView from "../../../../common/LoadingView";
 import PropTypes from "prop-types";
 import DetailViewRow from "../../../common/DetailViewRow";
 import ApplicationService from "../../../../../services/ApplicationService";
+import { getApplicantDetail, getApplicationTitle } from "../../dialog/common/ApplicationResolver";
 
 
 const SiteVerificationList = ({ siteVerifications }) => {
@@ -31,7 +32,7 @@ const SiteVerificationList = ({ siteVerifications }) => {
             <>
               <Typography variant={"h6"} paragraph={true}>List of Site Verification</Typography>
               <List component={"div"}>
-                <DetailViewRow key={i} primary={"Created On"} secondary={moment(item.created_at).format("Do MMM YYYY")}>
+                <DetailViewRow key={i} primary={getApplicationTitle(item).title} secondary={getApplicationTitle(item).subtitle}>
                   <IconButton href={"#"}>
                     <Icon color={"action"}>three_more_vert</Icon>
                   </IconButton>
