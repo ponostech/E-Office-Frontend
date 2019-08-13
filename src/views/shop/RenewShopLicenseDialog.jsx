@@ -153,13 +153,16 @@ class RenewShopLicenseDialog extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    const { application } = nextProps;
-    this.setApplication(application);
+    const { license } = nextProps;
+    // this.shopService.get(license.permitable_id,
+    //   errorMsg=>this.setGlobal({errorMsg}),
+    //   application=>this.setApplication(application))
+    //   .finally(()=>console.info("application request complete"))
   }
 
   requestOtp = () => {
     var self = this;
-    this.otpService.requestOtp(this.state.phone, "Resubmit Application",
+    this.otpService.requestOtp(this.state.phone, "Renew Shop License",
       errorMsg => {
         this.setGlobal({ errorMsg });
       },
@@ -873,7 +876,7 @@ class RenewShopLicenseDialog extends Component {
 
 RenewShopLicenseDialog.propTypes = {
   open: PropTypes.bool.isRequired,
-  application: PropTypes.object.isRequired,
+  license: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   onResubmit: PropTypes.func.isRequired
 };

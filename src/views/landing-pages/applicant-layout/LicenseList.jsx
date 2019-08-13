@@ -9,6 +9,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardIcon from "../../../components/Card/CardIcon";
 import OfficeContextMenu from "../../../components/OfficeContextMenu";
 import Divider from "@material-ui/core/Divider";
+import RenewShopLicenseDialog from "../../shop/RenewShopLicenseDialog";
 
 {/*<Card raised={true} profile={true}>*/
 }
@@ -51,9 +52,15 @@ import Divider from "@material-ui/core/Divider";
 }
 
 const LicenseCard = (props) => {
-
+  const { license } = props;
   const onContextMenuClick = (menu) => {
-    console.log(menu);
+    switch (menu) {
+      case "renew":
+        props.onRenew(license);
+        break;
+      default:
+        break
+    }
   };
   const menu = {
     icon: <Icon>more_vert</Icon>,
@@ -63,6 +70,12 @@ const LicenseCard = (props) => {
         name: "profile",
         icon: <Icon fontSize={"small"}>user</Icon>,
         text: "Download License",
+        onClick: onContextMenuClick
+      },{
+        name: "renew",
+        icon: <Icon fontSize={"small"}>refresh</Icon>,
+        text: "Renew License/Permit",
+        divider:true,
         onClick: onContextMenuClick
       },
       { name: "profile", icon: <Icon fontSize={"small"}>edit</Icon>, text: "My Account", onClick: onContextMenuClick },
@@ -74,7 +87,6 @@ const LicenseCard = (props) => {
       }
     ]
   };
-  const { license } = props;
   let color = license.type === "permit" ? "primary" : "warning";
   const subhead = license.type === "permit" ? <Chip color={"primary"} label={license.type}/> :
     <Chip component={"div"} color={"secondary"} label={license.type}/>;
@@ -110,7 +122,7 @@ const ShopLicensesView = (props) => {
       {Boolean(licenses) && <Grid style={{ padding: 16 }} container={true} spacing={2}>
         {licenses.map(item =>
           <Grid key={item.id} item={true} md={4} sm={12} xs={12}>
-            <LicenseCard license={item}/>
+            <LicenseCard onRenew={props.onShopRenew} license={item}/>
           </Grid>
         )}
       </Grid>}
@@ -127,7 +139,7 @@ const HotelLicensesView = (props) => {
       {Boolean(licenses) && <Grid container={true} spacing={2}>
         {licenses.map(item =>
           <Grid key={item.id} item={true} md={3} sm={12} xs={12}>
-            <LicenseCard license={item}/>
+            <LicenseCard onRenew={props.onHotelRenew} license={item}/>
           </Grid>
         )}
       </Grid>}
@@ -144,7 +156,7 @@ const BannerLicensesView = (props) => {
       {Boolean(licenses) && <Grid container={true} spacing={2}>
         {licenses.map(item =>
           <Grid key={item.id} item={true} md={3} sm={12} xs={12}>
-            <LicenseCard license={item}/>
+            <LicenseCard onRenew={props.onBannerRenew} license={item}/>
           </Grid>
         )}
       </Grid>}
@@ -162,6 +174,12 @@ class LicenseList extends Component {
       hotelLicenses: [],
       bannerLicenses: [],
 
+      openShopRenewDialog:false,
+      openHotelRenewDialog:false,
+      openBannerRenewDialog:false,
+
+      selectedLicense:null,
+      application:false,
       tabValue: "shop"
     };
     this.licenseService = new LicenseService();
@@ -181,8 +199,20 @@ class LicenseList extends Component {
     this.setState({ tabValue });
   };
 
+  renewShopLicense=(selectedLicense)=> console.log(selectedLicense);
+
+  submitShopRenewalForm=(application)=> {
+    this.setState({openShopRenewDialog:false,submit:true});
+  }
+
+  renewHotelLicense=(selectedLicense)=>this.setState({openHotelRenewDialog:true,selectedLicense});
+
+  renewBannerPermit=(selectedLicense)=> this.setState({openBannerRenewDialog:true,selectedLicense});
+
+
   render() {
     const { tabValue, shopLicenses, hotelLicenses, bannerLicenses } = this.state;
+    const { openShopRenewDialog, openHotelRenewDialog, openBannerRenewDialog, selectedLicense } = this.state;
     return (
       <div>
         <Card>
@@ -202,12 +232,17 @@ class LicenseList extends Component {
                 <Tab href={"#"} label="Banner" value={"banner"}/>
               </Tabs>
 
-              {tabValue === "shop" && <ShopLicensesView licenses={shopLicenses}/>}
-              {tabValue === "hotel" && <HotelLicensesView licenses={hotelLicenses}/>}
-              {tabValue === "banner" && <BannerLicensesView licenses={bannerLicenses}/>}
+              {tabValue === "shop" && <ShopLicensesView onShopRenew={this.renewShopLicense} licenses={shopLicenses}/>}
+              {tabValue === "hotel" && <HotelLicensesView onHotelRenew={this.renewHotelLicense} licenses={hotelLicenses}/>}
+              {tabValue === "banner" && <BannerLicensesView onBannerRenew={this.renewBannerPermit} licenses={bannerLicenses}/>}
             </Paper>
           </CardContent>
         </Card>
+
+        <RenewShopLicenseDialog onClose={()=>this.setState({openShopRenewDialog:false})}
+                                license={selectedLicense}
+                                onResubmit={this.submitShopRenewalForm}
+                                open={openShopRenewDialog}/>
       </div>
     );
   }

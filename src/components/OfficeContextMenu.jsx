@@ -55,7 +55,10 @@ const OfficeContextMenu = (props) => {
         }}
       >
         {menuItems.map((menuItem, index) =>
-          <MenuItem component={"div"} divider={Boolean(menuItem.divider)} dense={true} button={true} onClick={e=>menuItem.onClick(menuItem.name)}>
+          <MenuItem component={"div"} divider={Boolean(menuItem.divider)} dense={true} button={true} onClick={e=>{
+            toggleRightMenu(e);
+            menuItem.onClick(menuItem.name)
+          }}>
               {
                 menuItem.icon?
                   <>
