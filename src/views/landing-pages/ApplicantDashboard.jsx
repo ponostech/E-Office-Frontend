@@ -35,7 +35,7 @@ class ApplicantDashboard extends Component {
                       }, {
                         tabButton: "Hotel",
                         tabIcon: HotelIcon,
-                        tabContent: (<p>fdf</p>)
+                        tabContent: (<p>Hotel List ApplicantDashboard.jsx</p>)
                       }, {
                         tabButton: "Banners",
                         tabIcon: BannerIcon,
@@ -45,7 +45,7 @@ class ApplicantDashboard extends Component {
                         tabIcon: BannerIcon,
                         tabContent: (<LicenseList phone={phone}/>)
                       },{
-                        tabButton: "Expiring Expired License",
+                        tabButton: "Expiring/ Expired License",
                         tabIcon: BannerIcon,
                         tabColor: 'secondary',
                         tabContent: (<LicenseExpiringList phone={phone}/>)

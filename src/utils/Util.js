@@ -15,7 +15,8 @@ export const APPLICATION_NAME = {
 export const FormatStaff = (staffs) => {
   const user_id = JSON.parse(localStorage.getItem('current_user')).id;
   return staffs.filter(function (obj) {
-    return obj.id !== user_id;
+    console.log('role', obj)
+    return obj.id !== user_id && obj.roles[0].slug !== 'administrator';
   })
       .map(obj => {
         let temp = {};

@@ -83,7 +83,7 @@ class NotesheetView extends Component {
 
   render() {
     const {loading} = this.state;
-    let noteList = <Loading align="left" color="secondary"/>;
+    let noteList = <Loading align="left"/>;
 
     if (!loading)
       if (this.state.note.length > 0) noteList =

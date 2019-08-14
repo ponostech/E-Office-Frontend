@@ -58,6 +58,7 @@ setGlobal({
   errorMsg: '',
   successMsg: '',
   loading: true,
+  applicantLogin: true
 });
 
 ReactDOM.render(
