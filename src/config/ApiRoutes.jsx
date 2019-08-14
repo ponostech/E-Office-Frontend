@@ -195,5 +195,8 @@ export class ApiRoutes {
 
   static FILE_APPLICATIONS=(file_id) => `files/${file_id}/applications`;
 
+  static GET_SHOP=(id)=>`/shops/${id}`
+  static RENEW_SHOP=(id)=>`/shops/${id}/renew`
+
 }
 
