@@ -4,7 +4,7 @@ import MUIDataTable from "mui-datatables"
 import moment from "moment"
 import Chip from "@material-ui/core/Chip"
 
-class LicenseList extends Component {
+class LicenseExpiringList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -86,8 +86,8 @@ class LicenseList extends Component {
   }
 }
 
-LicenseList.propTypes = {
+LicenseExpiringList.propTypes = {
   // phone: PropTypes.string.isRequired
 };
 
-export default LicenseList;
+export default LicenseExpiringList;

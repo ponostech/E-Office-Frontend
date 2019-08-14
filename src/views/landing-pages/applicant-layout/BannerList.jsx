@@ -172,6 +172,7 @@ class BannerList extends Component {
       <Typography component={"div"} color={"inherit"} variant={"h6"}> No Result Found</Typography>
       <Button href={"#"} variant={"outlined"} onClick={e=>history.push(HOME)} color={"primary"}>Back to Home</Button>
     </div>);
+
     let found= <>
       <MUIDataTable
         title={"BANNER: List of Application"}
@@ -186,7 +187,7 @@ class BannerList extends Component {
         <CardContent>
           {applications.length===0 && notFound}
           {applications.length!==0 && found}
-        </CardContent>}
+        </CardContent>
 
         <BannerViewDialog data={application} close={()=>this.setState({view:false})} open={this.state.view} />
       </>
