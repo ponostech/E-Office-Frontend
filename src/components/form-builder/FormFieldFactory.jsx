@@ -22,15 +22,88 @@ import NotesheetAttachment from "../NotesheetAttachment";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 
+const FIELD_TYPE={
+  TEXT:"text",
+  PHOTOGRAPH:"photo",
+  COORDINATE:"coordinate",
+  SELECT:"coordinate",
+}
+const WIDGET_CONFIGURATION= {
+  type: "standart",
+  key:"",
+  elementType: "select",//select input datepicker etc
+  label:"",
+  validation:[
+    true,//required
+    "*."//pattern
+  ],
+  helper:{
+    error:true,
+    text:"helper text"
+  },
+  elementValue: "",//value can be anything
+  onChange: null,//function which take 2 argument i.e name and value
+
+}
+
 class FormFieldFactory extends Component {
 state={
 openMap:false
 }
+getFillableType=(widget,application)=>{
+  switch (widget.elementConfig.type) {
+    case FIELD_TYPE.TEXT:
+      return(
+        <TextField
+          name={widget.elementConfig.name}
+          variant={"outlined"}
+          fullWidth={true}
+          margin={"dense"}
+          required={widget.validation.required}
+          label={widget.elementConfig.label}
+          placeholder={widget.elementConfig.placeholder}
+          value={application?application[widget.key]:null}
+          onChange={event => widget.onChange(widget.elementConfig.name,event.target.value)}
+        />
+      );
+    case FIELD_TYPE.SELECT:
+      return(
+        <TextField
+          name={widget.elementConfig.name}
+          variant={"outlined"}
+          fullWidth={true}
+          margin={"dense"}
+          required={widget.validation.required}
+          label={widget.elementConfig.label}
+          placeholder={widget.elementConfig.placeholder}
+          value={application[widget.key]}
+          onChange={event => widget.onChange(widget.elementConfig.name,event.target.value)}
+        />
+      );
+    default:
+      return(
+        <TextField
+          name={widget.elementConfig.name}
+          variant={"outlined"}
+          fullWidth={true}
+          margin={"dense"}
+          required={widget.validation.required}
+          label={widget.elementConfig.label}
+          placeholder={widget.elementConfig.placeholder}
+          value={application[widget.key]}
+          onChange={event => widget.onChange(widget.elementConfig.name,event.target.value)}
+        />
+      );
+  }
+}
   render() {
-    let {index, elementConfig, validation, value, changed, elementType } = this.props;
+    let {index, elementConfig, validation, value, changed, elementType,application } = this.props;
 
     switch (elementType) {
-      case WidgetConstant.TEXTFIELD:
+      case WidgetConstant.FILLABLE:
+        this.inputElement=this.getFillableType({elementConfig,validation,value,index},application)
+        break;
+        case WidgetConstant.TEXTFIELD:
         this.inputElement = (
           <TextField
             {...this.props.elementConfig}
@@ -255,5 +328,7 @@ openMap:false
   }
 
 }
+FormFieldFactory.propTypes={
 
+}
 export default FormFieldFactory;

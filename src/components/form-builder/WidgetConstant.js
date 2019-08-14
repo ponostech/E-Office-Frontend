@@ -12,6 +12,7 @@ export default class WidgetConstant {
   static DATE="Date";
   static FILE_UPLOAD="File upload";
   static IMAGE_UPLOAD="Image upload";
+  static FILLABLE="Fillable";
 
 
 

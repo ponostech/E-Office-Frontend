@@ -2,21 +2,23 @@ import React, { Component } from "react";
 import {
   AppBar,
   Button,
-  CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
-  Divider,
   FormControlLabel,
-  IconButton, Slide,
+  IconButton,
+  Slide,
   Switch,
-  TextField, Toolbar, Typography
+  TextField,
+  Toolbar,
+  Typography
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import GridContainer from "../../Grid/GridContainer";
 import WidgetConstant from "../WidgetConstant";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
+
 const styles = {
   appBar: {
     position: "relative"
@@ -32,88 +34,100 @@ const styles = {
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
+const initialState={
+  name: "",
+  label: "",
+  placeholder: "",
+  required:false
+}
+
 class FillableTextField extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: props.label,
-      label: props.label,
-      placeholder: props.label,
-      value:props.value,
-      required:false
-    };
+    this.state=initialState
   }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    const { widget } = nextProps;
+    if (widget) {
+      this.state = {
+        name: widget.key,
+        label: widget.label,
+        placeholder: widget.label,
+        required: false
+      };
+    }
+  }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("component update")
+    console.log("component update");
   }
 
-  handleChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({[name]:value})
+  handleChange = (name, value) => {
+    this.setState({ [name]: value });
   };
 
   handleRadio = event => {
     this.setState({
-      required:event.target.checked
-    })
+      required: event.target.checked
+    });
   };
   handleClick = (id, event) => {
-    const { widget, onClose } = this.props;
+    const { widget, addWidget, onClose } = this.props;
 
     switch (id) {
       case "save":
         const config = {
-          elementType:WidgetConstant.TEXTFIELD,
-          elementConfig:{
-            name: this.state.name,
+          elementType: WidgetConstant.FILLABLE,
+          elementConfig: {
+            type:widget.type,
+            name: widget.key,
             label: this.state.label,
-            placeholder: this.state.placeholder,
+            placeholder: this.state.placeholder
           },
-          validation:{
+          validation: {
             required: this.state.required
           },
-          valid:false,
-          value: this.state.value,
+          valid: false,
+          value: this.state.value
         };
-        onClose(this.state.name,config);
+        addWidget(widget.key, config);
         this.doClear();
         break;
       case "close":
         this.doClear();
-        onClose(null,null);
+        onClose();
         break;
       default:
         break;
     }
   };
-  doClear=()=>{
+  doClear = () => {
     this.setState({
-      name:"",
-      label:"",
-      placeholder:"",
+      name: "",
+      label: "",
+      placeholder: "",
       value: "",
-      required:false
-    })
-  }
+      required: false
+    });
+  };
 
   render() {
-    const { open ,widget,classes} = this.props;
+    const { open, onClose, widget, classes } = this.props;
     const self = this;
 
     return (
-      <Dialog TransitionComponent={Transition} open={open} onClose={this.handleClick.bind(this,"close")} fullWidth={true} maxWidth={"md"}>
+      <Dialog TransitionComponent={Transition} open={open} onClose={onClose} fullWidth={true} maxWidth={"md"}>
 
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={this.handleClick.bind(this,"close")} aria-label="Close">
+            <IconButton href={"#"} color="inherit" onClick={onClose} aria-label="Close">
               <CloseIcon/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-              Configuration ({widget?widget.name:""})
+              Configuration ({widget ? widget.name : ""})
             </Typography>
-            <Button href={"#"} onClick={this.handleClick.bind(this,"close")} color="inherit">
+            <Button href={"#"} onClick={onClose} color="inherit">
               Close
             </Button>
           </Toolbar>
@@ -121,17 +135,14 @@ class FillableTextField extends Component {
         <DialogContent>
 
           <GridContainer>
-            <TextField name={"name"} onChange={this.handleChange.bind(this)} required={true} value={this.state.name}
-                       variant={"outlined"} fullWidth={true} margin={"dense"} label={"Name"}/>
-            <TextField name={"label"} onChange={this.handleChange.bind(this)} required={true} value={this.state.label}
+
+            <TextField name={"label"} onChange={e => this.handleChange("label", e.target.value)} required={true}
+                       value={this.state.label}
                        variant={"outlined"} fullWidth={true} margin={"dense"} label={"Label"}/>
-            <TextField name={"placeholder"} onChange={this.handleChange.bind(this)} required={true}
+            <TextField name={"placeholder"} onChange={e => this.handleChange("placeholder", e.target.value)}
+                       required={true}
                        value={this.state.placeholder}
                        variant={"outlined"} fullWidth={true} margin={"dense"} label={"PlaceHolder"}/>
-
-            <TextField name={"value"} onChange={this.handleChange.bind(this)} required={true} value={this.state.value}
-                       variant={"outlined"} fullWidth={true} margin={"dense"} label={"Default Value"}/>
-
             <FormControlLabel
               control={
                 <Switch
@@ -147,17 +158,22 @@ class FillableTextField extends Component {
 
         </DialogContent>
         <DialogActions>
-          <Button href={"#"} variant={"outlined"} color={"primary"} onClick={this.handleClick.bind(this, "save")}>Save</Button>
-          <Button href={"#"} variant={"outlined"} color={"secondary"} onClick={this.handleClick.bind(this, "close")}>Close</Button>
+          <Button href={"#"} variant={"outlined"} color={"primary"}
+                  onClick={this.handleClick.bind(this, "save")}>Save</Button>
+          <Button href={"#"} variant={"outlined"} color={"secondary"}
+                  onClick={this.handleClick.bind(this, "close")}>Close</Button>
         </DialogActions>
       </Dialog>
 
     );
   }
 }
-FillableTextField.propTypes={
-  label:PropTypes.string.isRequired,
-  value:PropTypes.any.isRequired
-}
+
+FillableTextField.propTypes = {
+  widget: PropTypes.object.isRequired,
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  addWidget: PropTypes.func.isRequired
+};
 
 export default withStyles(styles)(FillableTextField);

@@ -151,7 +151,7 @@ class DynamicFormPreview extends Component {
         }/>
         <Divider/>
         <CardContent>
-          <Grid container={true}  style={{ height: "60vh" }} justify={"flex-start"} alignItems={"flex-start"}>
+          <Grid container={true}  justify={"flex-start"} alignItems={"flex-start"}>
 
             {form}
 

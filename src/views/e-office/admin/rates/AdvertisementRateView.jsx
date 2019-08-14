@@ -11,14 +11,12 @@ import RateEditDialog from "./RateEditDialog";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
-import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
 import SaveIcon from "@material-ui/icons/Save";
 import PrintIcon from "@material-ui/icons/Print";
-import ShareIcon from "@material-ui/icons/Share";
-import DeleteIcon from "@material-ui/icons/Delete";
 import withStyles from "@material-ui/core/styles/withStyles";
 import HoardingRateDialog from "./HoardingRateDialog";
 import OtherRateDialog from "./OtherRateDialog";
+import HoardingRateEditDialog from "./HoardingRateEditDialog";
 
 const fake = [
   { id: 1, type: "hoarding", display_type: "illuminate", land_owner_type: "Private", category: "A", rate: 10000 }
@@ -45,6 +43,7 @@ class AdvertisementRateView extends Component {
 
       confirmDelete: false,
       openHoarding: false,
+      openEditHoarding: false,
       openOther: false,
       openEdit: false,
       submit: false,
@@ -91,7 +90,7 @@ class AdvertisementRateView extends Component {
 
 
   onCreate = (data) => {
-    this.setState({ openHoarding:false, openOther: false, submitTitle: "Creating Advertisement Rate" });
+    this.setState({ openHoarding: false, openOther: false, submitTitle: "Creating Advertisement Rate" });
     if (data) {
       this.setState({ submit: true });
       this.rateService.create(data, errorMsg => this.setGlobal({ errorMsg }),
@@ -215,15 +214,18 @@ class AdvertisementRateView extends Component {
         </SpeedDial>
 
         <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
-        <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={this.state.confirmDelete}
+        <ConfirmDialog onCancel={e => this.setState({ confirmDelete: false })} open={this.state.confirmDelete}
                        onConfirm={this.deleteRate.bind(this)}/>
 
         <HoardingRateDialog open={this.state.openHoarding} onCreate={this.onCreate.bind(this)}
                             onClose={e => this.setState({ openHoarding: false })}/>
+
+        <HoardingRateEditDialog open={this.state.openEditHoarding} rate={this.state.selectedRate} onUpdate={this.onUpdate}
+                                onClose={e => this.setState({ openHoarding: false })}/>
         <OtherRateDialog open={this.state.openOther} onCreate={this.onCreate.bind(this)}
                          onClose={e => this.setState({ openOther: false })}/>
 
-        <RateEditDialog open={this.state.openEdit} rate={this.state.selectedRate} onClose={this.onUpdate.bind(this)}/>
+        {/*<RateEditDialog open={this.state.openEdit} rate={this.state.selectedRate} onClose={this.onUpdate.bind(this)}/>*/}
       </>
     );
   }

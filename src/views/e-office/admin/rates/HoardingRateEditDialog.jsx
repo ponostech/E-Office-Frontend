@@ -21,6 +21,7 @@ import { CategoryServices } from "../../../../services/CategoryServices";
 import OfficeSelect from "../../../../components/OfficeSelect";
 import DialogContent from "@material-ui/core/DialogContent";
 import FormControl from "@material-ui/core/FormControl";
+import PropTypes from 'prop-types'
 
 const styles = {
   appBar: {
@@ -35,10 +36,11 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class OtherRateDialog extends Component {
+class HoardingRateEditDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      type: "Hoarding/Kiosk",
       displayType: null,
       category: null,
       landlordType: "Public",
@@ -50,21 +52,33 @@ class OtherRateDialog extends Component {
       displayTypeError: "",
       categoryError: "",
 
-      types:[
-        { value: "Collapsible Kiosk", label: "Collapsible Kiosk" },
-        { value: "Poster/Banner", label: "Poster/Banner" },
-        { value: "Umbrella", label: "Umbrella " },
-        { value: "Balloons", label: "Balloons " },
-        { value: "Audio/Sound", label: "Audio/Sound " },
-        { value: "Vehicle", label: "Vehicle" },
-        { value: "Video", label: "Video" },
-      ],
+      // types:[
+      //   { value: "Hoarding/Kiosk", label: "Hoarding/Kiosk" },
+      //   { value: "Collapsible Kiosk", label: "Collapsible Kiosk" },
+      //   { value: "Poster/Banner", label: "Poster/Banner" },
+      //   { value: "Umbrella", label: "Umbrella " },
+      //   { value: "Balloons", label: "Balloons " },
+      //   { value: "Audio/Sound", label: "Audio/Sound " },
+      //   { value: "Vehicle", label: "Vehicle" },
+      //   { value: "Video", label: "Video" },
+      // ],
       displayTypes: [
         { value: "ILLUMINATED", label: "ILLUMINATED" },
         { value: "NON-ILLUMINATED", label: "NON ILLUMINATED" }
       ],
       loading: false
     };
+  }
+  componentWillReceiveProps(nextProps, nextContext) {
+    const{rate}=nextProps;
+    // this.setState({
+    //   type:rate.type,
+    //   displayType:rate.display_type,
+    //   category:rate.category,
+    //   landlordType:rate.landlord_type,
+    //   rate:rate.rate,
+    //   duration:rate.per_time
+    // })
   }
 
   componentDidMount() {
@@ -79,6 +93,9 @@ class OtherRateDialog extends Component {
 
   handleChange = (name, value) => {
     this.setState({ [name]: value });
+    if (name === "type") {
+      this.setState({ landlordType: "Private" });
+    }
   };
   handleRequired = (name) => {
     switch (name) {
@@ -98,38 +115,36 @@ class OtherRateDialog extends Component {
     }
   };
   invalid=()=>{
-    const { type } = this.state;
-    return !Boolean(type) ;
+    const { type, displayType, category, landlordType, rate,duration } = this.state;
+    return !Boolean(type) || !Boolean(displayType) || !Boolean(category)
   }
-  save = () => {
-    const { type, rate,duration } = this.state;
+  updateRate = () => {
+    const { type, displayType, category, landlordType, rate,duration } = this.state;
 
     if (this.invalid()) {
       this.setGlobal({ errorMsg: "Please fill all the required fields" });
     } else {
       let data = {
-        type:type?type.value:null,
-        display_type:null,
-        area_category_id:null,
-        land_owner_type: "Private",
+        type:type,
+        display_type:displayType?displayType.value:null,
+        area_category_id:category?category.value:null,
+        land_owner_type: landlordType,
         per_time: duration ,
         rate
       };
       this.clear()
-      this.props.onCreate(data);
+      this.props.onUpdate(data);
     }
   };
-  clear=()=>this.setState({
-    type:null,
-    rate:0,
-    duration:"Day"
-  })
+  clear=()=>{
+
+  }
   render() {
 
     const { type, displayType, category, rate, duration } = this.state;
     const { typeError, displayTypeError, categoryError, rateError } = this.state;
     const { types, displayTypes, categories } = this.state;
-    const { open, onClose, classes } = this.props;
+    const { open, onClose,onUpdate, classes } = this.props;
     return (
       <Dialog TransitionComponent={Transition} open={open} onClose={onClose} fullWidth={true}
               maxWidth={"sm"}>
@@ -139,7 +154,7 @@ class OtherRateDialog extends Component {
               <CloseIcon/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-              Create Advertisement Rate
+              Create Hoarding/Kiosk Rate
             </Typography>
             <Button href={"#"} onClick={onClose} color="inherit">
               Close
@@ -149,25 +164,36 @@ class OtherRateDialog extends Component {
 
         {this.state.loading === false &&
 
-        <DialogContent>
+        <DialogContent >
 
           <OfficeSelect
-            value={type}
-            label={"Type of Advertisement"}
-            name={"type"}
-            required={true}
+            value={category}
+            label={"Categories"}
+            name={"category"}
             variant={"outlined"}
             margin={"dense"}
             fullWidth={true}
-            helperText={typeError}
-            error={Boolean(typeError)}
-            onChange={val => this.handleChange("type", val)}
-            options={types}/>
+            helperText={categoryError}
+            error={Boolean(categoryError)}
+            onChange={val => this.handleChange("category", val)}
+            options={categories}/>
+
+          <OfficeSelect
+            value={displayType}
+            label={"Type of Display"}
+            name={"displayType"}
+            variant={"outlined"}
+            margin={"dense"}
+            fullWidth={true}
+            helperText={displayTypeError}
+            error={Boolean(displayTypeError)}
+            onChange={val => this.handleChange("displayType", val)}
+            options={displayTypes}/>
 
           <FormControl component={"div"} fullWidth={true} margin={"dense"}>
             <FormLabel component={"div"}>Rate Duration</FormLabel>
             <RadioGroup
-              defaultValue={"0"}
+              defaultValue={"Day"}
               value={duration}
               name={"duration"}
               row={true}
@@ -198,13 +224,19 @@ class OtherRateDialog extends Component {
         <Divider component={"div"}/>
 
         <DialogActions>
-          <Button disabled={!Boolean(type)} href={"#"}
-                  variant={"outlined"} color={"primary"} onClick={event => this.save()}>Save</Button>
+          <Button disabled={!Boolean(type) || !Boolean(displayType) || !Boolean(category)} href={"#"}
+                  variant={"outlined"} color={"primary"} onClick={event => this.updateRate()}>Update</Button>
           <Button href={"#"} variant={"outlined"} color={"secondary"} onClick={onClose}>Close</Button>
         </DialogActions>
       </Dialog>
     );
   }
 }
+HoardingRateEditDialog.propTypes={
+  open:PropTypes.bool.isRequired,
+  onClose:PropTypes.func.isRequired,
+  rate:PropTypes.object.isRequired,
+  onUpdate:PropTypes.func.isRequired
+}
 
-export default withStyles(styles)(OtherRateDialog);
+export default withStyles(styles)(HoardingRateEditDialog);

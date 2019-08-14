@@ -2,18 +2,17 @@ import React, { Component } from "react";
 import GridContainer from "../Grid/GridContainer";
 import GridItem from "../Grid/GridItem";
 import {
-  CardContent,
-  CardHeader,
   Divider,
+  ExpansionPanel,
   Icon,
   IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
-  ListItemText
+  ListItemText,
+  Typography
 } from "@material-ui/core";
-import Card from "../Card/Card";
 import SelectFieldDialog from "./config-dialog/SelectFieldDialog";
 import DynamicFormPreview from "./DynamicFormPreview";
 import TextFieldDialog from "./config-dialog/TextFieldDialog";
@@ -25,6 +24,9 @@ import ImageUploadFieldDialog from "./config-dialog/ImageUploadFieldDialog";
 import FillableFieldGenerator from "./FillableFieldGenerator";
 import Avatar from "@material-ui/core/Avatar";
 import DatePickerDialog from "./config-dialog/DatePickerDialog";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import FillableTextField from "./fields/FillableTextField";
 
 const widgets = [
   { name: WidgetConstant.TEXTFIELD, icon: "keyboard_arrow_right" },
@@ -120,6 +122,7 @@ class FormBuilderContainer extends Component {
       openFileDialog: false,
       openImageDialog: false,
       openDateDialog: false,
+      openFillableDialog:false
     });
     if (!key || !config) {
       return;
@@ -135,82 +138,95 @@ class FormBuilderContainer extends Component {
     this.setState({ fields });
   };
   handleFillableClick = (selectedFillable) => {
+    console.log(selectedFillable);
     this.setState({ openFillableDialog: true, selectedFillable });
   };
+
 
   render() {
     const self = this;
     return (
       <GridContainer>
         <GridItem md={3} lg={3}>
-          <Card raised={true} testimonial={true}>
-            <CardHeader title={"Standard Widget"}/>
-            <Divider/>
-            <CardContent>
+          <ExpansionPanel expanded={true}>
+            <ExpansionPanelSummary href={"#"}
+                                   expandIcon={<ExpandMoreIcon/>}
+                                   aria-controls="panel1bh-content"
+                                   id="panel1bh-header"
+            >
+              <Typography variant={"h6"} color={"textPrimary"}>Standard Widget</Typography>
+            </ExpansionPanelSummary>
+            {/*<ExpansionPanelDetails>*/}
 
-              {/*<Typography variant={"h6"}>Add New Widget</Typography>*/}
-              {/*<TextField style={{ background: "#f3f3f3" }}*/}
-              {/*           InputProps={{*/}
-              {/*             endAdornment: <InputAdornment position={"end"}>*/}
-              {/*               <SearchIcon color={"action"}/>*/}
-              {/*             </InputAdornment>*/}
-              {/*           }}*/}
-              {/*           margin={"dense"} variant={"outlined"} fullWidth={true} placeholder={"Search"}/>*/}
-              <List>
-                {
-                  widgets.map(function(item, index) {
-                    return (
-                      <>
-                        <ListItem onClick={self.handleClick.bind(this, item)} button={true} color={"primary"}
-                                  key={index}>
-                          <ListItemIcon>
-                            <Icon>{item.icon}</Icon>
-                          </ListItemIcon>
-                          <ListItemText primary={item.name}/>
-                          <ListItemSecondaryAction>
-                            <IconButton onClick={self.handleClick.bind(this, item)}>
-                              <Icon color={"default"} fontSize={"default"}>keyboard_arrow_right</Icon>
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        <Divider/>
-                      </>
-                    );
-                  })
-                }
-              </List>
 
-            </CardContent>
-          </Card>
-          <Card raised={true} testimonial={true}>
-            <CardHeader title={"Autofill widget"}/>
-            <Divider/>
-            <CardContent>
-              <List component={"div"}>
-                {
-                  this.state.fields.map((item, index) =>
+            {/*<Typography variant={"h6"}>Add New Widget</Typography>*/}
+            {/*<TextField style={{ background: "#f3f3f3" }}*/}
+            {/*           InputProps={{*/}
+            {/*             endAdornment: <InputAdornment position={"end"}>*/}
+            {/*               <SearchIcon color={"action"}/>*/}
+            {/*             </InputAdornment>*/}
+            {/*           }}*/}
+            {/*           margin={"dense"} variant={"outlined"} fullWidth={true} placeholder={"Search"}/>*/}
+            <List>
+              {
+                widgets.map(function(item, index) {
+                  return (
                     <>
-                      <ListItem key={index} color={"primary"} button={true}
-                                onClick={e => self.handleFillableClick(item)} component={"li"}>
-                        <ListItemIcon color={"primary"}>
-                          <Avatar component={"span"}>
-                            {index + 1}
-                          </Avatar>
+                      <ListItem onClick={self.handleClick.bind(this, item)} button={true} color={"primary"}
+                                key={index}>
+                        <ListItemIcon>
+                          <Icon>{item.icon}</Icon>
                         </ListItemIcon>
-                        <ListItemText primary={item.label}/>
+                        <ListItemText primary={item.name}/>
                         <ListItemSecondaryAction>
-                          <IconButton onClick={e => self.handleFillableClick(item)}>
+                          <IconButton onClick={self.handleClick.bind(this, item)}>
                             <Icon color={"default"} fontSize={"default"}>keyboard_arrow_right</Icon>
                           </IconButton>
                         </ListItemSecondaryAction>
                       </ListItem>
-                      <Divider component={"hr"}/>
+                      <Divider/>
                     </>
-                  )
-                }
-              </List>
-            </CardContent>
-          </Card>
+                  );
+                })
+              }
+            </List>
+
+            {/*</ExpansionPanelDetails>*/}
+          </ExpansionPanel>
+          <ExpansionPanel>
+            <ExpansionPanelSummary href={"#"}
+                                   expandIcon={<ExpandMoreIcon/>}
+                                   aria-controls="panel1bh-content"
+                                   id="panel1bh-header"
+            >
+              <Typography variant={"h6"} color={"textPrimary"}>Fillable Widgets</Typography>
+            </ExpansionPanelSummary>
+
+            <List component={"div"}>
+              {
+                this.state.fields.map((item, index) =>
+                  <>
+                    <ListItem key={index} color={"primary"} button={true}
+                              onClick={e => self.handleFillableClick(item)} component={"li"}>
+                      <ListItemIcon color={"primary"}>
+                        <Avatar component={"span"}>
+                          {index + 1}
+                        </Avatar>
+                      </ListItemIcon>
+                      <ListItemText primary={item.label}/>
+                      <ListItemSecondaryAction>
+                        <IconButton onClick={e => self.handleFillableClick(item)}>
+                          <Icon color={"default"} fontSize={"default"}>keyboard_arrow_right</Icon>
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <Divider component={"hr"}/>
+                  </>
+                )
+              }
+            </List>
+          </ExpansionPanel>
+
         </GridItem>
         <GridItem md={9} lg={9}>
           <DynamicFormPreview onSelectType={this.createFields} edit={false} clear={this.clear}
@@ -232,7 +248,12 @@ class FormBuilderContainer extends Component {
                            onClose={this.addWidget.bind(this)}/>
 
         <DatePickerDialog widget={this.state.selectedWidget} open={this.state.openDateDialog}
-                         onClose={this.addWidget.bind(this)}/>
+                          onClose={this.addWidget.bind(this)}/>
+
+
+        <FillableTextField onClose={event => this.setState({ openFillableDialog: false })}
+                           widget={this.state.selectedFillable} open={this.state.openFillableDialog}
+                           addWidget={this.addWidget.bind(this)}/>
       </GridContainer>
 
     );
