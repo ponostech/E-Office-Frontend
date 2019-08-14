@@ -154,10 +154,12 @@ class RenewShopLicenseDialog extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     const { license } = nextProps;
-    // this.shopService.get(license.permitable_id,
-    //   errorMsg=>this.setGlobal({errorMsg}),
-    //   application=>this.setApplication(application))
-    //   .finally(()=>console.info("application request complete"))
+    if (license) {
+      this.shopService.get(license.permitable_id,
+        errorMsg => this.setGlobal({ errorMsg }),
+        application => this.setApplication(application))
+        .finally(() => console.info("application request complete"));
+    }
   }
 
   requestOtp = () => {
@@ -372,11 +374,11 @@ class RenewShopLicenseDialog extends Component {
     }
   };
 
-  getDocumentView=()=>{
-    const { classes,application } = this.props;
+  getDocumentView = () => {
+    const { classes, application } = this.props;
     return this.state.documents.map((doc, index) => {
       let found = this.state.uploadedDoc.find(item => item.document_id === doc.id);
-      console.log("found item",found)
+      console.log("found item", found);
       let uploadView = Boolean(found) ? <a target={"_blank"} href={found.path}>{found.name}</a> : "";
       return <>
         <GridItem key={index} className={classes.root} sm={12} xs={12}
@@ -398,12 +400,12 @@ class RenewShopLicenseDialog extends Component {
             console.log(err);
           }}/>
 
-        {uploadView}
+          {uploadView}
         </GridItem>
       </>;
 
-    })
-  }
+    });
+  };
 
   render() {
     const { classes, open, onClose, application, onResubmit } = this.props;
@@ -754,7 +756,7 @@ class RenewShopLicenseDialog extends Component {
                             {/*            }} onUploadFailure={(err) => {*/}
                             {/*  console.log(err);*/}
                             {/*}}/>*/}
-                            <OfficeFileUpload applicationName={APPLICATION_NAME.SHOP}
+                            {this.state.passport && <OfficeFileUpload applicationName={APPLICATION_NAME.SHOP}
                                               document={this.state.passport}
                                               onUploadSuccess={(data) => {
                                                 this.setState(state => {
@@ -765,7 +767,7 @@ class RenewShopLicenseDialog extends Component {
                                                 });
                                               }} onUploadFailure={(err) => {
                               console.log(err);
-                            }}/>
+                            }}/>}
                           </GridItem>
                           <GridItem className={classes.root} xs={12} sm={12} md={6}>
                             <FormControl fullWidth={true} margin={"dense"}>

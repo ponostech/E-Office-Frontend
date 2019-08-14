@@ -27,40 +27,47 @@ const STATUS = {
   UPLOADED: "uploaded",
   FAILED: "failed"
 };
-const doc = {
-  name: "NOC",
+
+
+const initialState={
+  id:uniqid(),
+  name: "",
   location: "",
   status: STATUS.READY,
-  mandatory: true,
-  mime: "application/pdf"
-};
+  mandatory:true,
+  mime:"images/*"
+}
 
 class OfficeFileUpload extends Component {
 
   constructor(props) {
     super(props);
     const{document}=props
-    this.state = {
-      id:uniqid(),
-      name: document.name,
-      location: document.location,
-      status: document.status,
-      mandatory: document.mandatory,
-      mime: document.mime
-    };
+    if (document) {
+      this.state = {
+        id:uniqid(),
+        name: document.name,
+        location: document.location,
+        status: document.status,
+        mandatory: document.mandatory,
+        mime: document.mime
+      };
+    } else {
+      this.state=initialState
+    }
+
     this.fileUpload = window.document.createElement("input");
     this.fileUpload.type="file";
     let self=this
-    this.fileUpload.accept=document.mime;
+    this.fileUpload.accept=document?document.mime:"images/*";
     this.fileUpload.onchange= event => {
       let file = event.target.files[0];
 
-      console.log("uploading file", file);
       if (file) {
         self.setState({
-          name: document.name,
+          name:document? document.name:"",
           location: file,
-          type: document.type,
+          type: document? document.type:"image",
           status: STATUS.UPLOADING,
           mandatory: document.mandatory,
         });

@@ -90,6 +90,49 @@ export class ShopService {
       errorCallback(e.toString());
     }
   }
+  async renew(state, errorCallback, successCallback) {
+    let data = {
+      name: state.shopName,
+      phone: state.phone,
+      type: state.type.value,
+      email: state.email,
+      owner: state.name,
+      address: state.address,
+      owner_address: state.ownerAddress,
+      details: state.businessDetail,
+      local_council_id: state.localCouncil.value,
+      trade_id: state.tradeName.value,
+      latitude: state.latitude,
+      longitude: state.longitude,
+      estd: moment(state.estd).format("Y/M/D"),
+      tin_no: state.tinNo,
+      cst_no: state.cstNo,
+      gst_no: state.gstNo,
+      pan_no: state.panNo,
+      premise_type: state.premised,
+      display_type: state.displayType,
+      passport: state.passport.location,
+      documents: state.uploadDocuments
+    };
+    try {
+      let res = await axios.post(ApiRoutes.RENEW_SHOP(state.id), data);
+      if (res.data.status) {
+        if (res.data.data.challan)
+          successCallback(res.data.data.challan, ArrayToString(res.data.messages));
+        else
+          successCallback(false, ArrayToString(res.data.messages));
+      } else {
+        if (res.data.validation_error) {
+          errorCallback(ErrorToString(res.data.messages));
+        } else {
+          errorCallback(ArrayToString(res.data.messages));
+        }
+      }
+    } catch (e) {
+      console.error(e);
+      errorCallback(e.toString());
+    }
+  }
 
 
   async fetch(status) {
@@ -115,7 +158,7 @@ export class ShopService {
 
   async get(id, errorCallback, successCallback) {
     try {
-      const res = await axios.get(ApiRoutes.STAFF_SHOP);
+      const res = await axios.get(ApiRoutes.GET_SHOP(id));
       if (res.data.status) {
         successCallback(res.data.data.shop);
       } else {
