@@ -69,6 +69,7 @@ class NavPills extends React.Component {
           });
           return (
             <Tab
+              onClick={prop.onTabClick}
               label={prop.tabButton}
               key={key}
               {...icon}
@@ -126,6 +127,7 @@ NavPills.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       tabButton: PropTypes.string,
+      onTabClick: PropTypes.func,
       tabIcon: PropTypes.func,
       tabContent: PropTypes.node
     })

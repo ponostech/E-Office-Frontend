@@ -1,15 +1,17 @@
 import React, { Component } from "reactn";
 import { Card, CardHeader, Grid, Icon, Paper, Tab, Tabs, Typography } from "@material-ui/core";
-import { LicenseService } from "../../../services/LicenseService";
 import PropTypes from "prop-types";
 import Chip from "@material-ui/core/Chip";
 import moment from "moment";
 
 import CardContent from "@material-ui/core/CardContent";
-import CardIcon from "../../../components/Card/CardIcon";
 import OfficeContextMenu from "../../../components/OfficeContextMenu";
 import Divider from "@material-ui/core/Divider";
 import RenewShopLicenseDialog from "../../shop/RenewShopLicenseDialog";
+import { ShopService } from "../../../services/ShopService";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+import SubmitDialog from "../../../components/SubmitDialog";
 
 {/*<Card raised={true} profile={true}>*/
 }
@@ -59,7 +61,7 @@ const LicenseCard = (props) => {
         props.onRenew(license);
         break;
       default:
-        break
+        break;
     }
   };
   const menu = {
@@ -71,11 +73,11 @@ const LicenseCard = (props) => {
         icon: <Icon fontSize={"small"}>user</Icon>,
         text: "Download License",
         onClick: onContextMenuClick
-      },{
+      }, {
         name: "renew",
         icon: <Icon fontSize={"small"}>refresh</Icon>,
         text: "Renew License/Permit",
-        divider:true,
+        divider: true,
         onClick: onContextMenuClick
       },
       { name: "profile", icon: <Icon fontSize={"small"}>edit</Icon>, text: "My Account", onClick: onContextMenuClick },
@@ -126,7 +128,14 @@ const ShopLicensesView = (props) => {
           </Grid>
         )}
       </Grid>}
-      {licenses.length === 0 && <Typography paragraph={true}>No License is issued</Typography>}
+      {licenses.length === 0 &&
+      <Card>
+        <CardContent>
+          <Typography paragraph={true}>No License is issued</Typography>
+
+        </CardContent>
+      </Card>
+      }
     </>
   );
 };
@@ -143,7 +152,14 @@ const HotelLicensesView = (props) => {
           </Grid>
         )}
       </Grid>}
-      {licenses.length === 0 && <Typography paragraph={true}>No License is issued</Typography>}
+      {licenses.length === 0 &&
+      <Card>
+        <CardContent>
+          <Typography paragraph={true}>No License is issued</Typography>
+
+        </CardContent>
+      </Card>
+      }
 
     </>
   );
@@ -160,8 +176,14 @@ const BannerLicensesView = (props) => {
           </Grid>
         )}
       </Grid>}
-      {licenses.length === 0 && <Typography paragraph={true}>No License is issued</Typography>}
+      {licenses.length === 0 &&
+      <Card>
+        <CardContent>
+          <Typography paragraph={true}>No License is issued</Typography>
 
+        </CardContent>
+      </Card>
+      }
     </>
   );
 };
@@ -170,49 +192,80 @@ class LicenseList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      shopLicenses: [],
-      hotelLicenses: [],
-      bannerLicenses: [],
 
-      openShopRenewDialog:false,
-      openHotelRenewDialog:false,
-      openBannerRenewDialog:false,
+      openShopRenewDialog: false,
+      openHotelRenewDialog: false,
+      openBannerRenewDialog: false,
 
-      selectedLicense:null,
-      application:false,
-      tabValue: "shop"
+      selectedLicense: null,
+      application: false,
+      tabValue: "shop",
+
+      submit: false
     };
-    this.licenseService = new LicenseService();
+    this.shopService = new ShopService();
   }
 
   componentDidMount() {
-    const { phone } = this.props;
-    this.licenseService.getLicenses(phone,
-      errorMsg => this.setGlobal({ errorMsg }),
-      (shopLicenses, hotelLicenses, bannerLicenses) => this.setState({
-        shopLicenses, hotelLicenses, bannerLicenses
-      }))
-      .finally(() => console.log("get licenses request complete"));
+    // const { phone } = this.props;
+    // this.licenseService.getLicenses(phone,
+    //   errorMsg => this.setGlobal({ errorMsg }),
+    //   (shopLicenses, hotelLicenses, bannerLicenses) => this.setState({
+    //     shopLicenses, hotelLicenses, bannerLicenses
+    //   }))
+    //   .finally(() => console.log("get licenses request complete"));
   }
 
   selectTab = (event, tabValue) => {
     this.setState({ tabValue });
   };
 
-  renewShopLicense=(selectedLicense)=> console.log(selectedLicense);
+  renewShopLicense = (selectedLicense) => this.setState({ openShopRenewDialog: true, selectedLicense });
 
-  submitShopRenewalForm=(application)=> {
-    this.setState({openShopRenewDialog:false,submit:true});
-  }
+  submitShopRenewalForm = application => {
+    this.setState({ submit: true, openShopRenewDialog: false });
+    this.shopService.renew(application,
+      errorMsg => this.setGlobal({ errorMsg }),
+      (challan, successMsg) => {
 
-  renewHotelLicense=(selectedLicense)=>this.setState({openHotelRenewDialog:true,selectedLicense});
+        const MySwal = withReactContent(Swal);
 
-  renewBannerPermit=(selectedLicense)=> this.setState({openBannerRenewDialog:true,selectedLicense});
+        if (challan) {
+          MySwal.fire({
+            title: `Challan No:${challan.number}`,
+            text: successMsg,
+            type: "success",
+            showCancelButton: true,
+            cancelButtonText: "Close",
+            confirmButtonColor: "#26B99A",
+            confirmButtonText: "Pay Now (ONLINE)"
+          }).then((result) => {
+            if (result.value) {
+              Swal.fire(
+                "Pay!",
+                "Your application is paid.",
+                "success"
+              );
+            }
+            this.componentDidMount();
+          });
+        } else {
+          this.setGlobal({ successMsg });
+        }
+
+        // this.props.refresh();
+      })
+      .finally(() => this.setState({ submit: false }));
+  };
+
+  renewHotelLicense = (selectedLicense) => this.setState({ openHotelRenewDialog: true, selectedLicense });
+
+  renewBannerPermit = (selectedLicense) => this.setState({ openBannerRenewDialog: true, selectedLicense });
 
 
   render() {
-    const { tabValue, shopLicenses, hotelLicenses, bannerLicenses } = this.state;
-    const { openShopRenewDialog, openHotelRenewDialog, openBannerRenewDialog, selectedLicense } = this.state;
+    const { shopLicenses, hotelLicenses, bannerLicenses } = this.props;
+    const { submit, tabValue, openShopRenewDialog, openHotelRenewDialog, openBannerRenewDialog, selectedLicense } = this.state;
     return (
       <div>
         <Card>
@@ -233,13 +286,16 @@ class LicenseList extends Component {
               </Tabs>
 
               {tabValue === "shop" && <ShopLicensesView onShopRenew={this.renewShopLicense} licenses={shopLicenses}/>}
-              {tabValue === "hotel" && <HotelLicensesView onHotelRenew={this.renewHotelLicense} licenses={hotelLicenses}/>}
-              {tabValue === "banner" && <BannerLicensesView onBannerRenew={this.renewBannerPermit} licenses={bannerLicenses}/>}
+              {tabValue === "hotel" &&
+              <HotelLicensesView onHotelRenew={this.renewHotelLicense} licenses={hotelLicenses}/>}
+              {tabValue === "banner" &&
+              <BannerLicensesView onBannerRenew={this.renewBannerPermit} licenses={bannerLicenses}/>}
             </Paper>
           </CardContent>
         </Card>
 
-        <RenewShopLicenseDialog onClose={()=>this.setState({openShopRenewDialog:false})}
+        <SubmitDialog open={submit} title={"Renew License/Permit"} text={"Please wait..."}/>
+        <RenewShopLicenseDialog onClose={() => this.setState({ openShopRenewDialog: false })}
                                 license={selectedLicense}
                                 onResubmit={this.submitShopRenewalForm}
                                 open={openShopRenewDialog}/>
@@ -249,7 +305,10 @@ class LicenseList extends Component {
 }
 
 LicenseList.propTypes = {
-  phone: PropTypes.string.isRequired
+  phone: PropTypes.string.isRequired,
+  shopLicenses: PropTypes.array.isRequired,
+  hotelLicenses: PropTypes.array.isRequired,
+  bannerLicenses: PropTypes.array.isRequired
 };
 
 export default LicenseList;
