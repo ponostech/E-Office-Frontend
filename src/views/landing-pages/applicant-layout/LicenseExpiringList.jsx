@@ -9,12 +9,15 @@ import RenewShopLicenseDialog from "../../shop/RenewShopLicenseDialog";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { ShopService } from "../../../services/ShopService";
+import PropTypes from 'prop-types';
+import LoadingView from "../../common/LoadingView";
 
 class LicenseExpiringList extends Component {
   constructor(props) {
     super(props);
+    const{permits}=props;
     this.state = {
-      permits: [],
+      permits: permits?permits:[],
       selectedPermit:null,
       openRenewDialog:false
     };
@@ -22,12 +25,7 @@ class LicenseExpiringList extends Component {
     this.shopService = new ShopService();
   }
 
-  componentDidMount() {
-    const {phone} = this.props
-    this.licenseService.getRenewablePermitList(phone,
-        errorMsg => this.setGlobal({errorMsg}),
-        (permits) => this.setState({permits}));
-  }
+
   renewPermit = application => {
     this.setState({ submitTitle: "Renew Permit", submit: true, openRenewDialog: false });
     this.shopService.renew(application,
@@ -65,7 +63,8 @@ class LicenseExpiringList extends Component {
   };
 
   render() {
-    const {permits,selectedPermit,openRenewDialog} = this.state;
+    const {selectedPermit,openRenewDialog} = this.state;
+    const {permits} = this.props;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -128,20 +127,21 @@ class LicenseExpiringList extends Component {
         options={tableOptions}/>;
 
     return (
-        <div>
-          {found}
+        <>
+
+          {this.global.loading?<LoadingView/>:found}
 
           <RenewShopLicenseDialog onClose={()=>this.setState({openRenewDialog:false})}
                                   license={selectedPermit}
                                   open={openRenewDialog}
                                   onResubmit={this.renewPermit}/>
-        </div>
+        </>
     );
   }
 }
 
 LicenseExpiringList.propTypes = {
-  // phone: PropTypes.string.isRequired
+  permits: PropTypes.array.isRequired
 };
 
 export default LicenseExpiringList;

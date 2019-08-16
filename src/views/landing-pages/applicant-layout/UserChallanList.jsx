@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 
 import ChallanService from "../../../services/ChallanService";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import LoadingView from "../../common/LoadingView";
 
 const tableOptions = {
   filterType: "dropdown",
@@ -77,18 +78,18 @@ const ChallanList = ({ title, challans }) => {
   });
   return (
     <MuiThemeProvider theme={getMuiTheme()}>
-      {challans.length===0 ?
-      <Card>
-        <CardContent>
-          <Typography paragraph={true}>No Challan is Created</Typography>
-        </CardContent>
-      </Card>
-        :<MUIDataTable
-        title={title}
-        data={challans}
-        columns={tableColumns}
-        options={tableOptions}
-      />}
+      {challans ?
+        <MUIDataTable
+          title={title}
+          data={challans}
+          columns={tableColumns}
+          options={tableOptions}
+        /> : <Card>
+          <CardContent>
+            <Typography paragraph={true}>No Challan is Created</Typography>
+          </CardContent>
+        </Card>
+      }
     </MuiThemeProvider>
 
   );
@@ -97,28 +98,20 @@ const ChallanList = ({ title, challans }) => {
 class UserChallanList extends Component {
   constructor(props) {
     super(props);
+    const {shop,hotel,banner}=props
     this.state = {
       tabValue: "shop",
-      shop: [],
-      hotel: [],
-      banner: []
+      shop: shop?shop:[],
+      hotel: hotel?hotel:[],
+      banner: banner?banner:[]
     };
-    this.challanService = new ChallanService();
-  }
-
-  componentDidMount() {
-    const { phone } = this.props;
-    this.setGlobal({ loading: true });
-    this.challanService.getUserChallan(phone,
-      errorMsg => this.setGlobal({ errorMsg }),
-      (shop, hotel, banner) => this.setState({ shop, hotel, banner }))
-      .finally(() => this.setGlobal({ loading: false }));
   }
 
   selectTab = (event, tabValue) => this.setState({ tabValue });
 
   render() {
-    const { shop, hotel, banner, tabValue } = this.state;
+    const { shop, hotel, banner } = this.props;
+    const { tabValue } = this.state;
 
     return (
       <Card>
@@ -150,7 +143,10 @@ class UserChallanList extends Component {
 }
 
 UserChallanList.propTypes = {
-  phone: PropTypes.string.isRequired
+  phone: PropTypes.string.isRequired,
+  shop: PropTypes.array.isRequired,
+  hotel: PropTypes.array.isRequired,
+  banner: PropTypes.array.isRequired
 };
 
 export default UserChallanList;
