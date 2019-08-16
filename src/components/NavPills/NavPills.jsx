@@ -55,13 +55,13 @@ class NavPills extends React.Component {
         centered={alignCenter}
       >
         {tabs.map((prop, key) => {
-          var icon = {};
+          var icon = <prop.tabIcon style={{width:50,height:50}} />;
 
-          let iconStyle = {}
-          if (typeof prop.iconColor !== 'undefined' && prop.iconColor === 'secondary') iconStyle = {color: '#b93e46'}
-          if (prop.tabIcon !== undefined) {
-            icon["icon"] = <prop.tabIcon className={classes.tabIcon} style={iconStyle}/>;
-          }
+          // let iconStyle = {}
+          // if (typeof prop.iconColor !== 'undefined' && prop.iconColor === 'secondary') iconStyle = {color: '#b93e46'}
+          // if (prop.tabIcon !== undefined) {
+          //   icon["icon"] = <prop.tabIcon className={classes.tabIcon} style={iconStyle}/>;
+          // }
           const pillsClasses = classNames({
             [classes.pills]: true,
             [classes.horizontalPills]: horizontal !== undefined,
@@ -72,7 +72,7 @@ class NavPills extends React.Component {
               onClick={prop.onTabClick}
               label={prop.tabButton}
               key={key}
-              {...icon}
+              icon={icon}
               classes={{
                 root: pillsClasses,
                 labelContainer: classes.labelContainer,
