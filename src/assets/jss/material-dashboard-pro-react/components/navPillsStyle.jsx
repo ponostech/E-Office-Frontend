@@ -10,6 +10,7 @@ import {
   grayColor,
   hexToRgb
 } from "assets/jss/material-dashboard-pro-react.jsx";
+import { red } from "@material-ui/core/colors";
 
 const navPillsStyle = theme => ({
   root: {
@@ -51,12 +52,13 @@ const navPillsStyle = theme => ({
   pillsWithIcons: {
     borderRadius: "4px"
   },
+
   tabIcon: {
     width: "50px",
     height: "50px",
     display: "block",
     margin: "15px 0",
-
+    color:grayColor[6]
   },
   horizontalPills: {
     width: "100%",
