@@ -19,6 +19,7 @@ import Swal from "sweetalert2";
 import RenewShopLicenseDialog from "../../../shop/RenewShopLicenseDialog";
 import PropTypes from "prop-types";
 import { MuiThemeProvider } from "@material-ui/core/styles";
+import FieldChangeDialog from "../../../shop/FieldChangeDialog";
 
 class ShopApplicationList extends Component {
   constructor(props) {
@@ -29,13 +30,13 @@ class ShopApplicationList extends Component {
       openConfirm: false,
       openResubmit: false,
       openRenew: false,
+      openChangeDialog: false,
       openDetail: false,
 
       submit: false,
       submitTitle: "Submit"
     };
 
-    this.licenseService = new LicenseService();
     this.shopService = new ShopService();
   }
 
@@ -57,6 +58,8 @@ class ShopApplicationList extends Component {
     const { history } = this.props;
     history.push(APPLY_SHOP_LICENSE);
   };
+  changeField=(application)=>this.setState({application,openChangeDialog:true});
+
   reSubmitApplication = application => {
     this.setState({ submitTitle: "Resubmit Application", submit: true, openResubmit: false });
     this.shopService.resubmit(application, errorMsg => this.setGlobal({ errorMsg }),
@@ -92,7 +95,7 @@ class ShopApplicationList extends Component {
   };
 
   render() {
-    const { application, openResubmit, openRenew, openDetail } = this.state;
+    const { application,openChangeDialog, openResubmit, openRenew, openDetail } = this.state;
     const { history, applications } = this.props;
     const tableOptions = {
       filterType: "checkbox",
@@ -220,6 +223,11 @@ class ShopApplicationList extends Component {
                       <Icon fontSize={"small"} color={"primary"}>print</Icon>
                     </IconButton>
                   </Tooltip>
+                  <Tooltip title={"Change Info"}>
+                    <IconButton href={"#"} onClick={this.changeField.bind(this, data)}>
+                      <Icon fontSize={"small"} color={"primary"}>edit</Icon>
+                    </IconButton>
+                  </Tooltip>
                 </>;
                 break;
               case ApplicationState.EXPIRED_LICENSE:
@@ -296,6 +304,8 @@ class ShopApplicationList extends Component {
 
         <RenewShopLicenseDialog open={openRenew} onClose={e => this.setState({ openRenew: false })}
                                 application={application} onResubmit={this.reSubmitApplication}/>
+
+                                <FieldChangeDialog open={openChangeDialog} onClose={event=>this.setState({openChangeDialog:false})} application={application}/>
       </>
     );
   }

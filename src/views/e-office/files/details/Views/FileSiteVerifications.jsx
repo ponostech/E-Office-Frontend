@@ -138,8 +138,8 @@ class FileSiteVerifications extends Component {
                       this.state.applications.map(function(item, index) {
                         return (
                           <>
-                            <DetailViewRow primary={"Site verification created on"}
-                                           secondary={moment(item.created_at).format("Do MMM YYYY")}>
+                            <DetailViewRow primary={getApplicationTitle(item).title}
+                                           secondary={getApplicationTitle(item).subtitle}>
                               <>
                                 <Tooltip title={"View Site Verification"}>
                                   <IconButton href={"#"} onClick={event => self.getSiteVerification(item)}>
