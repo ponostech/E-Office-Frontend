@@ -4,22 +4,22 @@ import MUIDataTable from "mui-datatables"
 import moment from "moment"
 import Chip from "@material-ui/core/Chip"
 import IconButton from "@material-ui/core/IconButton";
-import { Icon } from "@material-ui/core";
+import {Icon} from "@material-ui/core";
 import RenewShopLicenseDialog from "../../shop/RenewShopLicenseDialog";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
-import { ShopService } from "../../../services/ShopService";
+import {ShopService} from "../../../services/ShopService";
 import PropTypes from 'prop-types';
 import LoadingView from "../../common/LoadingView";
 
 class LicenseExpiringList extends Component {
   constructor(props) {
     super(props);
-    const{permits}=props;
+    const {permits} = props;
     this.state = {
-      permits: permits?permits:[],
-      selectedPermit:null,
-      openRenewDialog:false
+      permits: permits ? permits : [],
+      selectedPermit: null,
+      openRenewDialog: false
     };
     this.licenseService = new LicenseService();
     this.shopService = new ShopService();
@@ -27,43 +27,42 @@ class LicenseExpiringList extends Component {
 
 
   renewPermit = application => {
-    this.setState({ submitTitle: "Renew Permit", submit: true, openRenewDialog: false });
+    this.setState({submitTitle: "Renew Permit", submit: true, openRenewDialog: false});
     this.shopService.renew(application,
-        errorMsg => this.setGlobal({ errorMsg }),
+        errorMsg => this.setGlobal({errorMsg}),
         (challan, successMsg) => {
 
-        const MySwal = withReactContent(Swal);
+          const MySwal = withReactContent(Swal);
 
-        if (challan) {
-          MySwal.fire({
-            title: `Challan No:${challan.number}`,
-            text: successMsg,
-            type: "success",
-            showCancelButton: true,
-            cancelButtonText: "Close",
-            confirmButtonColor: "#26B99A",
-            confirmButtonText: "Pay Now (ONLINE)"
-          }).then((result) => {
-            if (result.value) {
-              Swal.fire(
-                "Pay!",
-                "Your application is paid.",
-                "success"
-              );
-            }
-            this.componentDidMount()
-          });
-        } else {
-          this.setGlobal({ successMsg });
-        }
-
-        // this.props.refresh();
-      })
-      .finally(() => this.setState({ submit: false }));
+          if (challan) {
+            MySwal.fire({
+              title: `Challan No:${challan.number}`,
+              text: successMsg,
+              type: "success",
+              showCancelButton: true,
+              cancelButtonText: "Close",
+              confirmButtonColor: "#26B99A",
+              confirmButtonText: "Pay Now (ONLINE)"
+            }).then((result) => {
+              if (result.value) {
+                Swal.fire(
+                    "Pay!",
+                    "Your application is paid.",
+                    "success"
+                );
+              }
+              this.componentDidMount()
+            });
+          } else {
+            this.setGlobal({successMsg});
+          }
+          // this.props.refresh();
+        })
+        .finally(() => this.setState({submit: false}));
   };
 
   render() {
-    const {selectedPermit,openRenewDialog} = this.state;
+    const {selectedPermit, openRenewDialog} = this.state;
     const {permits} = this.props;
     const tableOptions = {
       filterType: "checkbox",
@@ -109,11 +108,12 @@ class LicenseExpiringList extends Component {
           customBodyRender: (val, meta) => {
             const {rowIndex} = meta
             const selectedPermit = permits[rowIndex]
-
-            return(
-              <IconButton href={"#"} onClick={event => this.setState({selectedPermit,openRenewDialog:true})}>
-              <Icon color={"primary"}>refresh</Icon>
-              </IconButton>
+            if (selectedPermit.is_applied)
+              return <Chip size='small' color='primary' label='Renewal Applicaton In Process' />
+            return (
+                <IconButton href={"#"} onClick={event => this.setState({selectedPermit, openRenewDialog: true})}>
+                  <Icon color={"primary"}>refresh</Icon>
+                </IconButton>
             )
           }
         }
@@ -129,9 +129,9 @@ class LicenseExpiringList extends Component {
     return (
         <>
 
-          {this.global.loading?<LoadingView/>:found}
+          {this.global.loading ? <LoadingView/> : found}
 
-          <RenewShopLicenseDialog onClose={()=>this.setState({openRenewDialog:false})}
+          <RenewShopLicenseDialog onClose={() => this.setState({openRenewDialog: false})}
                                   license={selectedPermit}
                                   open={openRenewDialog}
                                   onResubmit={this.renewPermit}/>
