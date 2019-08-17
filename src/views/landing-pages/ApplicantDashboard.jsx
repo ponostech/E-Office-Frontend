@@ -146,8 +146,8 @@ class ApplicantDashboard extends Component {
                 iconColor={"secondary"}
                 color={"primary"}
                 horizontal={{
-                  tabsGrid: { xs: 3, sm: 12, md: 1 },
-                  contentGrid: { xs: 9, sm: 12, md: 11 }
+                  tabsGrid: { xs: 3, sm: 12, md: 2 },
+                  contentGrid: { xs: 9, sm: 12, md: 10 }
                 }}
                 tabs={[
                   {

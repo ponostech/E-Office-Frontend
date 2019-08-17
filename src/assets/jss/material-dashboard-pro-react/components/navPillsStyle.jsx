@@ -74,7 +74,7 @@ const navPillsStyle = theme => ({
   label: {
     lineHeight: "24px",
     textTransform: "uppercase",
-    fontSize: "12px",
+    fontSize: "11px",
     fontWeight: "500",
     position: "relative",
     display: "block",
