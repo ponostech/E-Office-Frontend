@@ -84,7 +84,7 @@ class ApplicationDetailsDialog extends React.Component {
       <Button onClick={onClose} color='secondary'>Close</Button>
     </>;
 
-    let LEFT_ITEMS = ApplicationResolver(application);
+    let LEFT_ITEMS = ApplicationResolver(application, this.props.file.fileable_type);
 
     let leftRow = LEFT_ITEMS.map(val => <DetailViewRow checkFieldHistory={this.checkFieldHistory} changed={val.changed}
                                                        field={val.field} key={val.key} primary={val.name}

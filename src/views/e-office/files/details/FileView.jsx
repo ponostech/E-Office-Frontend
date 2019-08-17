@@ -366,8 +366,7 @@ class FileView extends Component {
             <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/application-details"}
                    render={(props) => <FileApplicationDetails {...props} file={file}/>}/>
             <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/applications"}
-                   render={(props) => <FileApplications {...props} file={file} menus={menus}
-                                                        url="view/applications"/>}/>
+                   render={(props) => <FileApplications {...props} file={file} menus={menus} url="view/applications"/>}/>
             <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/site-verifications"}
                    render={(props) => <FileSiteVerifications type={moduleName} {...props} file={file}/>}/>
             <Route exact path={OfficeRoutes.FILE_DETAIL_ROUTE(file.id) + "/view/draft-licenses"}

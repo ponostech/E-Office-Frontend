@@ -5,14 +5,14 @@ export const getApplicantDetail = (application) => {
 
 }
 
-export const getApplicationTitle = (application) => {
+export const getApplicationTitle = (application, fileableType) => {
   let title = "";
   let subtitle = "";
 
   if (!Boolean(application)) {
     return {title: "", subtitle: ""}
   }
-  switch (application.file.fileable_type) {
+  switch (fileableType) {
     case "App\\Shop":
       title = "Applicant: " + application.owner;
       subtitle = "Name of Shop: " + application.name;
@@ -40,14 +40,14 @@ export const getApplicationTitle = (application) => {
   }
   return {title, subtitle};
 }
-export const ApplicationResolver = (application) => {
-  console.log('app', application)
+export const ApplicationResolver = (application, fileableType) => {
+  // console.log('app', application)
   if (application === null)
     return [];
-  const {fileable_type} = application.file;
+  // const {fileableType} = application.file;
   let rows = [];
 
-  switch (fileable_type) {
+  switch (fileableType) {
     case FILEABLE_TYPE.KIOSK:
       rows.push(
           {name: "Date of Application", value: moment(application.application_date).format("Do MMM YYYY (\dddd\)")},
