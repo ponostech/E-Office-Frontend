@@ -64,9 +64,13 @@ class FileApplications extends Component {
   };
 
   componentDidMount() {
+    this.getInitialData()
+  };
+
+  getInitialData = () => {
     const apiUrl = this.getApi(this.props.url);
     this.getData(apiUrl);
-  };
+  }
 
   getData = (url) => {
     axios.get(url,{params:{status:"all"}})
@@ -116,13 +120,14 @@ class FileApplications extends Component {
   };
 
   receiveApplication = () => {
-    this.setState({receiveConfirm: false, submit: true, submitTitle: "Receiving Application"});
+    this.setState({confirmReceive: false, submit: true, submitTitle: "Receiving Application"});
     let url = UPDATE_FILE_APPLICATION(this.props.file.id, this.state.selectedApplication.id);
-    axios.post(url, {status: ApplicationState.UNDER_PROCESS_APPLICATION})
+    axios.post(url, {status: ApplicationState.UNDER_PROCESS_APPLICATION, type: this.props.file.fileable_type})
         .then(res => {
           if (res.data.status) {
             this.setGlobal({successMsg: res.data.messages});
-            this.componentDidMount();
+            this.getInitialData()
+            // this.componentDidMount();
           } else
             this.setGlobal({errorMsg: res.data.messages});
         })
@@ -133,14 +138,13 @@ class FileApplications extends Component {
           this.setState({submit: false});
         });
   };
+
   listApplications = (val, status) => {
     const {fileable_type, current_user_id} = this.props.file;
     let title = "";
     let subtitle = "";
     let allowed = LoginService.getCurrentUser().id === current_user_id;
-
     // console.log(this.props.file)
-
     switch (fileable_type) {
       case "App\\Shop":
         title = "Applicant: " + val.owner;
@@ -166,8 +170,8 @@ class FileApplications extends Component {
         title = "Not Found";
         subtitle = "Not found";
         break;
-
     }
+
     let row = (
         <ListItem style={{
           boxShadow: "0px 1px 5px 0px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 3px 1px -2px rgba(0,0,0,0.12)",
@@ -188,6 +192,7 @@ class FileApplications extends Component {
     );
     return row;
   };
+
   imposeFine = (data) => {
     this.setState({openFineDialog: false});
     this.setState({submit: true, submitTitle: "Impose Fine"});
