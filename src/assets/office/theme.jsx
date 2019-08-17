@@ -29,7 +29,7 @@ export default createMuiTheme({
     MuiTab: {
       root: {
         '@media (min-width: 960px)': {
-          minWidth: 140
+          minWidth: 120
         }
       }
     }
