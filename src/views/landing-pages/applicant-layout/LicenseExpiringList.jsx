@@ -94,11 +94,23 @@ class LicenseExpiringList extends Component {
         name: 'valid_upto',
         label: 'Permit Status',
         options: {
-          customBodyRender: (val) => {
+          customBodyRender: (val, meta) => {
             const valid_upto = moment(val).valueOf()
             const current_time = moment().valueOf()
-            return valid_upto < current_time ? <Chip size="small" color='secondary' label="Expired"/> :
-                <Chip size="small" color='primary' label="Expiring"/>
+            const {rowIndex} = meta
+            const selectedPermit = permits[rowIndex]
+
+            let toBeReturned = []
+
+            if (selectedPermit.is_applied)
+              toBeReturned = <Chip size='small' color='primary' label='Renewal Applicaton already Submitted'/>
+
+            return (
+                <>
+                  {toBeReturned}
+                  {valid_upto < current_time ? <Chip size="small" color='secondary' label="Expired"/> : <Chip size="small" color='primary' label="Expiring"/>}
+                </>
+            )
           }
         }
       }, {
@@ -108,8 +120,6 @@ class LicenseExpiringList extends Component {
           customBodyRender: (val, meta) => {
             const {rowIndex} = meta
             const selectedPermit = permits[rowIndex]
-            if (selectedPermit.is_applied)
-              return <Chip size='small' color='primary' label='Renewal Applicaton In Process' />
             return (
                 <IconButton href={"#"} onClick={event => this.setState({selectedPermit, openRenewDialog: true})}>
                   <Icon color={"primary"}>refresh</Icon>

@@ -39,7 +39,7 @@ export const UPDATE_DRAFT = (id) => {
 };
 
 export const UPDATE_FILE_APPLICATION = (fileId, applicationId) => {
-  return `files/${fileId}/application/${applicationId}/status`;
+  return `applications/${applicationId}/update-status`;
 };
 export const DELETE_NOTE_DRAFT = (id) => `/notesheets/${id}`;
 export const DRAFT_CREATE = "drafts";
