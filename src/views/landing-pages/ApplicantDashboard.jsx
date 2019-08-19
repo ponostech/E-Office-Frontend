@@ -15,57 +15,62 @@ import ApplicationList from "./applicant-layout/ApplicationList";
 import {whiteColor, behanceColor, boxShadow, primaryColor} from "../../assets/jss/material-dashboard-pro-react";
 import Paper from "@material-ui/core/Paper";
 import {green} from "@material-ui/core/colors";
-
-const LabelInfo = ({number, title, description}) => {
-  const style = {
-    root: {
-      display: "flex",
-      alignItems: "center",
-      minHeight: 40,
-      justifyContent: "stretch",
-      backgroundColor: whiteColor,
-      padding: 0,
-      marginRight: 20,
-    },
-    numberLabel: {
-      height: "100%",
-      lineHeight: 2,
-      lineWidth: 2,
-      width: 50,
-      borderRadius: "22,0,0,3",
-      textAlign: "center",
-      backgroundColor: "#26B99A",
-      color: "#fff",
-      padding: 10,
-      margin: 0
-    },
-    title: {
-      color: "gray",
-      paddingTop: 3,
-      paddingBottom: 0,
-      margin: 0,
-      textAlign: "center"
-    },
-    panel: {
-      textAlign: "center",
-      paddingRight: 26,
-      paddingLeft: 26
-    },
-    caption: {
-      padding: 0,
-    }
+const style = {
+  root: {
+    display: "flex",
+    alignItems: "center",
+    minHeight: 40,
+    justifyContent: "stretch",
+    backgroundColor: whiteColor,
+    padding: 0,
+    marginRight: 20,
+  },
+  numberLabel: {
+    height: "100%",
+    lineHeight: 2,
+    lineWidth: 2,
+    width: 50,
+    borderRadius: "22,0,0,3",
+    textAlign: "center",
+    backgroundColor: "#fff",
+    color: "#26B99A",
+    padding: "10 3",
+    margin: 0
+  },
+  title: {
+    color: "gray",
+    paddingTop: 3,
+    paddingBottom: 0,
+    margin: 0,
+    textAlign: "center"
+  },
+  panel: {
+    textAlign: "center",
+    paddingRight: 26,
+    paddingLeft: 26,
+    border:"#fff #ddd #fff #fff"
+  },
+  divider:{
+    height:"7vh",
+    width:"3px",
+    backgroundColor:"#ddd"
+  },
+  caption: {
+    padding: 0,
   }
+}
+const LabelInfo = ({number, title, description}) => {
+
   return (
-      <Paper style={style.root}>
+      <div style={style.root}>
         <Typography style={style.numberLabel} variant={"h4"}>{number}</Typography>
         <div style={style.panel}>
           <Typography style={style.title} variant={"subtitle2"}>{title}</Typography>
           <Typography style={style.caption} color={"initial"} variant={"caption"}>{description}</Typography>
         </div>
-      </Paper>
+      </div>
   )
 }
-
 class ApplicantDashboard extends Component {
 
   constructor(props) {
@@ -128,12 +133,17 @@ class ApplicantDashboard extends Component {
     const {hotelLicenses, bannerLicenses, shopLicenses} = this.state;
     const {phone} = this.props;
     const labels = (
-        <div style={{display: "flex"}}>
+        <div style={style.root}>
           <LabelInfo title={"No. of application"} description={"No. of application submitted"}
                      number={shops ? shops.length + 1 : 0 + hotels ? hotels.length : 0 + banners ? banners.length : 0}/>
+                     <div style={style.divider}/>
           <LabelInfo title={"No. of License"} description={"No. of license/permit issued"}
                      number={bannerLicenses ? bannerLicenses.length + 1 : 0 + shopLicenses ? shopLicenses.length : 0 + hotelLicenses ? hotelLicenses.length : 0}/>
+          <div style={style.divider}/>
+
           <LabelInfo title={"Challan"} description={"No. of Challan Generated"} number={challans ? challans.length : 0}/>
+          <div style={style.divider}/>
+
           <LabelInfo title={"Expired/Expiring"} description={"No. of License Expiring/Expired"}
                      number={renewableLicenses ? renewableLicenses.length : 0}/>
         </div>
