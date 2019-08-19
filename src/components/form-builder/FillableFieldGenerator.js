@@ -1,15 +1,16 @@
-const FIELD_TYPE={
+export const FIELD_TYPE={
   TEXT:"text",
   PHOTOGRAPH:"photo",
   COORDINATE:"coordinate",
   SELECT:"coordinate",
 }
-const FillableFieldGenerator=(type)=>{
+
+export const FillableFieldGenerator=(type,application)=>{
   let fields;
   switch (type) {
     case "shop":
       fields=[
-        {key:"owner",name:"applicantName",label:"Name of Applicant",value:null,type:FIELD_TYPE.TEXT,fillable:true},
+        {key:"owner",name:"applicantName",label:"Name of Applicant",value:application["owner"],type:FIELD_TYPE.TEXT,fillable:true},
         {key:"phone_no",name:"mobile",label:"Phone No",value:null,type:FIELD_TYPE.TEXT,fillable:true},
         {key:"email",name:"email",label:"Email",value:"",type:FIELD_TYPE.TEXT,fillable:true},
         {key:"applicant_type",name:"applicantType",label:"Type of Applicant",value:"",type:FIELD_TYPE.TEXT,fillable:true},
@@ -65,5 +66,3 @@ const FillableFieldGenerator=(type)=>{
   }
   return fields
 }
-
-export default FillableFieldGenerator;

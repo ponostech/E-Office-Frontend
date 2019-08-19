@@ -21,7 +21,7 @@ import WidgetConstant from "./WidgetConstant";
 import PatternFieldDialog from "./config-dialog/PatternFieldDialog";
 import FileUploadFieldDialog from "./config-dialog/FileUploadFieldDialog";
 import ImageUploadFieldDialog from "./config-dialog/ImageUploadFieldDialog";
-import FillableFieldGenerator from "./FillableFieldGenerator";
+import {FillableFieldGenerator} from "./FillableFieldGenerator";
 import Avatar from "@material-ui/core/Avatar";
 import DatePickerDialog from "./config-dialog/DatePickerDialog";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
