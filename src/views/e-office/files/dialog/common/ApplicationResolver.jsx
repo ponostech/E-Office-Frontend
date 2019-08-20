@@ -12,13 +12,15 @@ export const getApplicationTitle = (application) => {
   if (!Boolean(application)) {
     return {title: "", subtitle: ""}
   }
-  switch (application.file.fileable_type) {
+  const {fileable_type} = application.file;
+
+  switch (fileable_type) {
     case "App\\Shop":
       title = "Applicant: " + application.owner;
       subtitle = "Name of Shop: " + application.name;
       break;
     case "App\\Hotel":
-      title = "Applicant: " + application.owner;
+      title = "Applicant: " + application.owner?application.owner:"";
       subtitle = "Name of Hotel: " + application.name;
       break;
     case "App\\Hoarding":

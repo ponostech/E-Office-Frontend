@@ -155,13 +155,13 @@ export class ShopService {
       throw new Error(error);
     }
   }
-  async changeField(data,errorCallback,successCalback){
+  async changeField(application_id,data,errorCallback,successCalback){
     try {
-      const res=await axios.post(ApiRoutes.CHANGE_SHOP,data);
+      const res=await axios.post(ApiRoutes.UPDATE_SHOP_LICENSE(application_id),data);
       if (res.data.status) {
-        successCalback(res.data.data.messages)
+        successCalback(res.data.messages)
       } else {
-        errorCallback(res.data.data.messages)
+        errorCallback(res.data.messages)
       }
     }catch (e) {
       console.error(e)

@@ -38,8 +38,7 @@ class ApplicantLayout extends Component {
           <CardContent>
             {Boolean(search) ?
                 <CheckLicense checking={submit} onCheck={this.checkApplication}/> :
-                <ApplicantDashboard refresh={this.refresh} phone={phone} shops={shops} hotels={hotels}
-                                    banners={banners}/>}
+                <ApplicantDashboard refresh={this.refresh} phone={phone}/>}
           </CardContent>
         </Card>
     );
