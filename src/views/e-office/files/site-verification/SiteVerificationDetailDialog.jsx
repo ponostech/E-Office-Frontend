@@ -114,7 +114,7 @@ class SiteVerificationDetailDialog extends Component {
 
         <DialogContent>
           <Card>
-            <CardHeader title={`FILE NUMBER : ${file.number}`} subheader={`SITE VERIFICATION OF ${file.subject}`}/>
+            {/*<CardHeader title={`FILE NUMBER : ${file.number}`} subheader={`SITE VERIFICATION OF ${file.subject}`}/>*/}
             <CardContent>
 
               <Divider component={"div"}/>

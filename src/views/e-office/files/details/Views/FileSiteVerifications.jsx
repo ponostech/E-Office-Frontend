@@ -36,7 +36,7 @@ const SiteVerificationList = ({ siteVerifications,onSiteVerificationClick }) => 
                 <DetailViewRow key={i} primary={"Site Verification"}
                                secondary={moment(item.created_at).format("Do MMM YYYY")}>
                   <IconButton onClick={event => onSiteVerificationClick(item)} href={"#"}>
-                    <Icon color={"action"}>three_more_vert</Icon>
+                    <Icon color={"action"}>keyboard_arrow_right</Icon>
                   </IconButton>
                 </DetailViewRow>
               </List>
@@ -120,7 +120,7 @@ class FileSiteVerifications extends Component {
   };
 
   onSiteVerificationClick=(selectedSiteVerification)=>{
-    this.setState({selectedSiteVerification})
+    this.setState({selectedSiteVerification,openSiteVerification:true})
   }
   render() {
     const { loading, selectedApplication,selectedSiteVerification,openSiteVerification, siteVerifications } = this.state;
@@ -173,7 +173,9 @@ class FileSiteVerifications extends Component {
                 </>)}
             </Grid>
             <Grid item={true} md={6} sm={6}>
-              {selectedApplication && <SiteVerificationList  onSiteVerificationClick={this.onSiteVerificationClick} siteVerifications={siteVerifications}/>}
+              {selectedApplication && <SiteVerificationList
+                onSiteVerificationClick={this.onSiteVerificationClick}
+                siteVerifications={siteVerifications}/>}
             </Grid>
           </Grid>
         </CardContent>
