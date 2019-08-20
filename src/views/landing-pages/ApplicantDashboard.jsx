@@ -135,6 +135,10 @@ class ApplicantDashboard extends Component {
     const {shops, hotels, banners, licenses, renewableLicenses, challans} = this.state;
     const {hotelLicenses, bannerLicenses, shopLicenses} = this.state;
     const {phone} = this.props;
+
+    const challanShopCount=challans?challans.shop?challans.shop.length:0:0
+    const challansBannerCount=challans?challans.banner?challans.banner.length:0:0
+    const challanHotelCount=challans?challans.hotel?challans.hotel.length:0:0
     const labels = (
         <div style={style.root}>
           <LabelInfo title={"No. of application"} description={"No. of application submitted"}
@@ -144,7 +148,7 @@ class ApplicantDashboard extends Component {
                      number={bannerLicenses ? bannerLicenses.length + 1 : 0 + shopLicenses ? shopLicenses.length : 0 + hotelLicenses ? hotelLicenses.length : 0}/>
           <div style={style.divider}/>
 
-          <LabelInfo title={"Challan"} description={"No. of Challan Generated"} number={challans ? challans.length : 0}/>
+          <LabelInfo title={"Challan"} description={"No. of Challan Generated"} number={challanHotelCount+challanShopCount+challansBannerCount}/>
           <div style={style.divider}/>
 
           <LabelInfo title={"Expired/Expiring"} description={"No. of License Expiring/Expired"}

@@ -161,7 +161,11 @@ export class ShopService {
       if (res.data.status) {
         successCalback(res.data.messages)
       } else {
-        errorCallback(res.data.messages)
+        if (res.data.validation_error) {
+          errorCallback(ErrorToString(res.data.messages));
+        } else {
+          errorCallback(ArrayToString(res.data.messages));
+        }
       }
     }catch (e) {
       console.error(e)
