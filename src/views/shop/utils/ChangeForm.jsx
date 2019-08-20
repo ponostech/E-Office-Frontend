@@ -78,38 +78,6 @@ class ChangeForm extends Component {
 
   }
 
-  // setApplication = (application) => {
-  //   this.setState({
-  //     name: application["owner"],
-  //     phone: application["phone"],
-  //     type: {
-  //       value: application["type"],
-  //       label: application["type"]
-  //     },
-  //     email: application["email"],
-  //     address: application["address"],
-  //     ownerAddress: application["ownerAddress"],
-  //     localCouncil: {
-  //       value: application["local_council"].id,
-  //       label: application["local_council"].name
-  //     },
-  //     tradeName: undefined,
-  //     shopName: application["name"],
-  //     coordinate: "",
-  //     businessDetail: application["details"],
-  //     estd: application["estd"],
-  //     tinNo: application["tin_no"],
-  //     cstNo: application["cst_no"],
-  //     gstNo: application["gst_no"],
-  //     panNo: application["pan_no"],
-  //     premised: application["premise_type"],
-  //
-  //     passport: undefined,
-  //     latitude: undefined,
-  //     longitude: undefined
-  //   });
-  // };
-
   componentDidMount() {
     var self = this;
     this.setGlobal({ loading: true });

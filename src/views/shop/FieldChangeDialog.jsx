@@ -261,19 +261,63 @@ class FieldChangeDialog extends React.Component {
     this.setState({formData:temp})
   }
 
+  getDefaultData = (application) => {
+    return {
+      ref_id:application["id"],
+      onwer: application["owner"],
+      phone: application["phone"],
+      type: application["type"],
+      email: application["email"],
+      address: application["address"],
+      owner_address: application["owner_address"],
+      local_council_id: application['local_council_id'],
+      trade_id: application["trade_id"],
+      name: application["name"],
+      latitude: application["latitude"],
+      longitude: application["longitude"],
+      details: application["details"],
+      estd: moment(application["estd"]).format("Y-M-D"),
+      tin_no: application["tin_no"],
+      cst_no: application["cst_no"],
+      gst_no: application["gst_no"],
+      pan_no: application["pan_no"],
+
+      passport:application['passport'],
+      premise_type: application["premise_type"],
+
+    }
+  };
+  getDefaultDocument=(documents)=>{
+    let data={}
+    documents.forEach(item=>{
+      let temp={
+        document_id:item.document_id,
+        name:item.name,
+        path:item.path
+      }
+      data[item.name]=temp;
+    })
+    return data
+  }
   submitForm = () => {
     const { application } = this.props;
-    let { formData,fields,uploadDocuments,selectedDocuments } = this.state;
+    let { formData,uploadDocuments,selectedDocuments } = this.state;
+    let defaultData = this.getDefaultData(application);
+    let defaultDocument=this.getDefaultDocument(application.documents)
+    let finalData = {...defaultData, ...formData};
+    let finalDoc = {...defaultDocument, ...uploadDocuments};
+
     //TODO:: validation
     let documents = [];
-    for (let [key, value] in uploadDocuments) {
-      documents.push(value)
+    for (let key in finalDoc) {
+      documents.push(finalDoc[key])
     }
-    formData.documents = documents;
-    formData.application_type = "Change Detail";
+    console.log("documents",documents)
+    finalData.documents = documents;
+    finalData.application_type = "Change Detail";
 
     this.setState({submit:true})
-    this.shopService.changeField(application.id,formData,
+    this.shopService.changeField(application.id,finalData,
       errorMsg=>this.setGlobal({errorMsg}),
       successMsg=>{
       this.setGlobal({successMsg})
