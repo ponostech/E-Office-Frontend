@@ -26,20 +26,16 @@ class ShopApplicationList extends Component {
     super(props);
     this.state = {
       application: null,
-
       openConfirm: false,
       openResubmit: false,
       openRenew: false,
       openChangeDialog: false,
       openDetail: false,
-
       submit: false,
       submitTitle: "Submit"
     };
-
     this.shopService = new ShopService();
   }
-
 
   withDraw = (data) => {
     this.setState({ openConfirm: true, application: data });
@@ -48,25 +44,27 @@ class ShopApplicationList extends Component {
   downloadLicense = (data) => {
     console.log(data);
   };
+
   printLicense = (data) => {
     console.log(data);
   };
+
   renewLicense = (data) => {
     console.log(data);
   };
+
   submitNewApplication = (data) => {
     const { history } = this.props;
     history.push(APPLY_SHOP_LICENSE);
   };
+
   changeField=(application)=>this.setState({application,openChangeDialog:true});
 
   reSubmitApplication = application => {
     this.setState({ submitTitle: "Resubmit Application", submit: true, openResubmit: false });
     this.shopService.resubmit(application, errorMsg => this.setGlobal({ errorMsg }),
       (challan, successMsg) => {
-
         const MySwal = withReactContent(Swal);
-
         if (challan) {
           MySwal.fire({
             title: `Challan No:${challan.number}`,
@@ -88,7 +86,6 @@ class ShopApplicationList extends Component {
         } else {
           this.setGlobal({ successMsg });
         }
-
         // this.props.refresh();
       })
       .finally(() => this.setState({ submit: false }));
@@ -168,7 +165,6 @@ class ShopApplicationList extends Component {
           }
         }
       },
-
       {
         name: "status",
         label: "ACTION",
@@ -269,10 +265,12 @@ class ShopApplicationList extends Component {
         }
       }
     ];
+
     let notFound = (<GridContainer justify={"center"}>
       <Typography component={"div"} color={"inherit"} variant={"h6"}> No Result Found</Typography>
       <Button href={"#"} variant={"outlined"} onClick={e => history.push(HOME)} color={"primary"}>Back to Home</Button>
     </GridContainer>);
+
     let found = <>
       <MuiThemeProvider theme={this.props.theme}>
         <MUIDataTable
@@ -285,13 +283,9 @@ class ShopApplicationList extends Component {
 
     return (
       <>
-        {this.global.loading ? <LoadingView/> :
-          <CardContent>
-            {/*{applications.length === 0 && notFound}/*/}
-            {found}
-          </CardContent>
-        }
-        <ApplicationDetailsDialog type={application ? application.file.fileable_type : "App//Shop"} open={openDetail}
+        {this.global.loading ? <LoadingView/> : <CardContent>{found}</CardContent>}
+
+        <ApplicationDetailsDialog open={openDetail}
                                   title='View Application Details'
                                   application={application}
                                   file={application ? application.file : null}

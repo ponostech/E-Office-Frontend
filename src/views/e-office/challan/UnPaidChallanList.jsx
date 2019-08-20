@@ -70,7 +70,12 @@ class UnPaidChallanList extends Component {
         paper: {
           boxShadow: "none"
         }
-      }
+      },
+      MUIDataTableBodyCell: {
+        root: {
+          padding: "2px 40px 2px 16px",
+        }
+      },
     },
     palette: {
       primary: {
@@ -158,7 +163,7 @@ class UnPaidChallanList extends Component {
 
     const tableOptions = {
       filterType: "dropdown",
-      rowsPerPage: 15,
+      rowsPerPage: 10,
       serverSide: false,
       responsive: "scroll"
     };

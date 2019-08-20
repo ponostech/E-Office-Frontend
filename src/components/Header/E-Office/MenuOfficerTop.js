@@ -7,7 +7,7 @@ import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
 import MenuRight from './RightMenu'
 
 const menu = (props) => {
-  const newAppsText = <span style={{color: 'red'}}>New</span>;
+  const newAppsText = <span style={{}}>New</span>;
   return (
       <>
         <div style={{display: "flex", alignItems: "center"}}>

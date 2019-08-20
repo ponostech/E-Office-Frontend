@@ -93,7 +93,6 @@ class FileUpload extends Component {
             // imageUpload.click();
           }}
           required={Boolean(file.mandatory)}
-
           name={file.name}
           variant={"outlined"}
           margin={"dense"}
