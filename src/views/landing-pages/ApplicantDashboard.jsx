@@ -75,11 +75,10 @@ class ApplicantDashboard extends Component {
 
   constructor(props) {
     super(props);
-    const {hotels, shops, banners} = props;
     this.state = {
-      shops: hotels ? hotels : [],
-      hotels: shops ? shops : [],
-      banners: banners ? banners : [],
+      shops:  [],
+      hotels : [],
+      banners: [],
 
       bannerLicenses: [],
       shopLicenses: [],
@@ -90,6 +89,10 @@ class ApplicantDashboard extends Component {
     };
     this.licenseService = new LicenseService();
     this.challanService = new ChallanService();
+  }
+
+  componentDidMount() {
+    this.getApplications()
   }
 
   getApplications = () => {

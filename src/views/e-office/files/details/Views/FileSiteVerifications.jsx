@@ -18,10 +18,11 @@ import LoadingView from "../../../../common/LoadingView";
 import PropTypes from "prop-types";
 import DetailViewRow from "../../../common/DetailViewRow";
 import ApplicationService from "../../../../../services/ApplicationService";
-import { getApplicantDetail, getApplicationTitle } from "../../dialog/common/ApplicationResolver";
+import { getApplicationTitle } from "../../dialog/common/ApplicationResolver";
+import SiteVerificationDetailDialog from "../../site-verification/SiteVerificationDetailDialog";
 
 
-const SiteVerificationList = ({ siteVerifications }) => {
+const SiteVerificationList = ({ siteVerifications,onSiteVerificationClick }) => {
 
   return (
     <>
@@ -32,8 +33,9 @@ const SiteVerificationList = ({ siteVerifications }) => {
             <>
               <Typography variant={"h6"} paragraph={true}>List of Site Verification</Typography>
               <List component={"div"}>
-                <DetailViewRow key={i} primary={getApplicationTitle(item).title} secondary={getApplicationTitle(item).subtitle}>
-                  <IconButton href={"#"}>
+                <DetailViewRow key={i} primary={"Site Verification"}
+                               secondary={moment(item.created_at).format("Do MMM YYYY")}>
+                  <IconButton onClick={event => onSiteVerificationClick(item)} href={"#"}>
                     <Icon color={"action"}>three_more_vert</Icon>
                   </IconButton>
                 </DetailViewRow>
@@ -52,9 +54,10 @@ class FileSiteVerifications extends Component {
     applications: [],
     selectedApplication: null,
     siteVerifications: [],
+    selectedSiteVerification:null,
 
     edit: false,
-    view: false,
+    openSiteVerification: false,
 
     openConfirm: false,
     loading: true,
@@ -107,22 +110,27 @@ class FileSiteVerifications extends Component {
       .finally(() => this.setState({ submit: false }));
   };
 
-  getSiteVerification=(selectedApplication)=>{
-    let type=selectedApplication.file.fileable_type;
-    this.setState({selectedApplication})
-    this.siteVerificationService.getSiteVerifications(selectedApplication.id,type,
-      errorMsg=>this.setGlobal({errorMsg}),
-      siteVerifications=>this.setState({siteVerifications}))
-      .finally(()=>console.log("site verification request complete"))
+  getSiteVerification = (selectedApplication) => {
+    let type = selectedApplication.file.fileable_type;
+    this.setState({ selectedApplication });
+    this.siteVerificationService.getSiteVerifications(selectedApplication.id, type,
+      errorMsg => this.setGlobal({ errorMsg }),
+      siteVerifications => this.setState({ siteVerifications }))
+      .finally(() => console.log("site verification request complete"));
+  };
+
+  onSiteVerificationClick=(selectedSiteVerification)=>{
+    this.setState({selectedSiteVerification})
   }
   render() {
-    const { loading, selectedApplication, siteVerifications } = this.state;
+    const { loading, selectedApplication,selectedSiteVerification,openSiteVerification, siteVerifications } = this.state;
     const { file, type } = this.props;
     const self = this;
     let allowed = LoginService.getCurrentUser().id === file.current_user_id;
 
     return (
 
+      <>
       <Card>
         <CardHeader title={file ? `FILE NO : ${file.number}` : ""}
                     subheader={"List of Site Verifications"}/>
@@ -134,7 +142,7 @@ class FileSiteVerifications extends Component {
               {
                 loading ? <LoadingView/> : (<>
                   <List component={"ul"}>
-                    {this.state.applications.length>0 ?
+                    {this.state.applications.length > 0 ?
                       this.state.applications.map(function(item, index) {
                         return (
                           <>
@@ -165,13 +173,16 @@ class FileSiteVerifications extends Component {
                 </>)}
             </Grid>
             <Grid item={true} md={6} sm={6}>
-              {selectedApplication && <SiteVerificationList siteVerifications={siteVerifications}/>}
+              {selectedApplication && <SiteVerificationList  onSiteVerificationClick={this.onSiteVerificationClick} siteVerifications={siteVerifications}/>}
             </Grid>
           </Grid>
         </CardContent>
-
       </Card>
-
+        <SiteVerificationDetailDialog onClose={e=>this.setState({openSiteVerification:false})}
+                                      open={openSiteVerification}
+                                      file={Boolean(selectedApplication)?selectedApplication.file:null}
+                                      verification={selectedSiteVerification}/>
+        </>
 
     );
   }

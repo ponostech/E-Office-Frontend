@@ -1,4 +1,4 @@
-import React from "react";
+import React from "reactn";
 import {
   AppBar,
   Button,
@@ -262,6 +262,7 @@ class FieldChangeDialog extends React.Component {
   }
 
   submitForm = () => {
+    const { application } = this.props;
     let { formData,fields,uploadDocuments,selectedDocuments } = this.state;
     //TODO:: validation
     let documents = [];
@@ -269,10 +270,15 @@ class FieldChangeDialog extends React.Component {
       documents.push(value)
     }
     formData.documents = documents;
+    formData.application_type = "Change Detail";
+
     this.setState({submit:true})
-    this.shopService.changeField(formData,
+    this.shopService.changeField(application.id,formData,
       errorMsg=>this.setGlobal({errorMsg}),
-      successMsg=>this.setGlobal({successMsg}))
+      successMsg=>{
+      this.setGlobal({successMsg})
+      this.props.onClose()
+      })
       .finally(()=>this.setState({submit:false}))
   };
 
@@ -336,6 +342,6 @@ class FieldChangeDialog extends React.Component {
 FieldChangeDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  application: PropTypes.object.isRequired
+  application: PropTypes.object.isRequired,
 };
 export default withStyles(styles)(FieldChangeDialog);
