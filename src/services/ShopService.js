@@ -155,6 +155,19 @@ export class ShopService {
       throw new Error(error);
     }
   }
+  async changeField(data,errorCallback,successCalback){
+    try {
+      const res=await axios.post(ApiRoutes.CHANGE_SHOP,data);
+      if (res.data.status) {
+        successCalback(res.data.data.messages)
+      } else {
+        errorCallback(res.data.data.messages)
+      }
+    }catch (e) {
+      console.error(e)
+      errorCallback(e.toString())
+    }
+  }
 
   async get(id, errorCallback, successCallback) {
     try {

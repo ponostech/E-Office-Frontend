@@ -142,6 +142,7 @@ export class ApiRoutes {
   static SEND_MESSAGE=`application/sent-sms`;
   static IMPOSE_FINE="impose-fine";
   static UPDATE_SHOP_LICENSE=id=>`/shops/${id}`;
+  static CHANGE_SHOP="/shops/change";
 
   static UPDATE_LICENSE_TEMPLATE(id) {
     return `/permit-templates/${id}`;
