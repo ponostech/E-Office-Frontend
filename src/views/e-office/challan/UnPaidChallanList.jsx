@@ -1,5 +1,5 @@
-import React, { Component } from "reactn";
-import { Icon, IconButton, Tooltip } from "@material-ui/core";
+import React, {Component} from "reactn";
+import {Icon, IconButton, Tooltip} from "@material-ui/core";
 import LoadingView from "../../common/LoadingView";
 import CardContent from "@material-ui/core/CardContent";
 import MUIDataTable from "mui-datatables";
@@ -8,19 +8,18 @@ import moment from "moment";
 import ChallanService from "../../../services/ChallanService";
 import SubmitDialog from "../../../components/SubmitDialog";
 import ConfirmDialog from "../../../components/ConfirmDialog";
-import {MuiThemeProvider,createMuiTheme} from "@material-ui/core/styles";
+import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 // challan no,application_no,details,type,created_at
-const fake = [
-  { challan_no: "123", application_no: "123", details: "detail", type: "fee", created_at: new Date() }
-];
+/*const fake = [
+  {challan_no: "123", application_no: "123", details: "detail", type: "fee", created_at: new Date()}
+];*/
 
 class UnPaidChallanList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedChallan: null,
-      challans: fake,
-
+      challans: [],
       openConfirm: false,
       openPayByCashDialog: false,
       submit: false,
@@ -31,35 +30,35 @@ class UnPaidChallanList extends Component {
   }
 
   componentDidMount() {
-    this.setGlobal({ loading: true });
+    this.setGlobal({loading: true});
     this.challanService.all("unpaid",
-      errorMsg => this.setGlobal({ errorMsg }),
-      challans => this.setState({ challans }))
-      .finally(() => this.setGlobal({ loading: false }));
+        errorMsg => this.setGlobal({errorMsg}),
+        challans => this.setState({challans}))
+        .finally(() => this.setGlobal({loading: false}));
   }
 
   onCancelChallan = () => {
-    const { selectedChallan } = this.state;
-    this.setState({ openConfirm: false, submit: true, submitTitle: "Cancel Challan" });
+    const {selectedChallan} = this.state;
+    this.setState({openConfirm: false, submit: true, submitTitle: "Cancel Challan"});
     this.challanService.cancelChallan(selectedChallan.id,
-      errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => this.setGlobal({ successMsg }))
-      .finally(() => this.setState({ submit: false }));
-  };
-  onCashPayment = (data) => {
-    this.setState({ openPayByCashDialog: false });
-    if (data) {
-      this.setState({ submit: true, submitTitle: "Create Payment" });
-      this.challanService.createPayment(data,
-        errorMsg => this.setGlobal({ errorMsg }),
-        successMsg => {
-          this.setGlobal({ successMsg });
-          this.componentDidMount();
-        })
-        .finally(() => this.setState({ submit: false }));
-    }
+        errorMsg => this.setGlobal({errorMsg}),
+        successMsg => this.setGlobal({successMsg}))
+        .finally(() => this.setState({submit: false}));
   };
 
+  onCashPayment = (data) => {
+    this.setState({openPayByCashDialog: false});
+    if (data) {
+      this.setState({submit: true, submitTitle: "Create Payment"});
+      this.challanService.createPayment(data,
+          errorMsg => this.setGlobal({errorMsg}),
+          successMsg => {
+            this.setGlobal({successMsg});
+            this.componentDidMount();
+          })
+          .finally(() => this.setState({submit: false}));
+    }
+  };
 
   getMuiTheme = () => createMuiTheme({
     overrides: {
@@ -76,6 +75,11 @@ class UnPaidChallanList extends Component {
           padding: "2px 40px 2px 16px",
         }
       },
+      MuiListItem: {
+        container: {
+          listStyleType: 'none'
+        }
+      },
     },
     palette: {
       primary: {
@@ -90,15 +94,32 @@ class UnPaidChallanList extends Component {
   });
 
   render() {
-    const { challans, selectedChallan, openPayByCashDialog, openConfirm, submit, submitTitle } = this.state;
+    const {challans, selectedChallan, openPayByCashDialog, openConfirm, submit, submitTitle} = this.state;
 
     const tableColumns = [
       {
         name: "number",
         label: "CHALLAN NO"
-      }, {
+      },
+      {
         name: "type",
-        label: "TYPE OF CHALLAN"
+        label: "TYPE OF CHALLAN",
+      }, {
+        name: 'application',
+        label: 'BILLED TO',
+        options: {
+          customBodyRender: (val, meta) => {
+            const {rowIndex} = meta
+            const currentChallan = challans[rowIndex]
+            switch (currentChallan.challanable_type) {
+              case 'App\\Shop':
+                return currentChallan.application.owner
+
+              default:
+                return currentChallan.challanable_type + "PaidChallanList.jsx"
+            }
+          }
+        }
       }, {
         name: "details",
         label: "DETAIL"
@@ -126,33 +147,33 @@ class UnPaidChallanList extends Component {
         label: "ACTIONS",
         options: {
           customBodyRender: (hoarding, tableMeta, updateValue) => {
-            const { rowIndex } = tableMeta;
+            const {rowIndex} = tableMeta;
             const selectedChallan = challans[rowIndex];
 
             let viewBtn = (
-              <>
-                <Tooltip title="Pay By Cash">
-                  <IconButton color="primary" size="small"
-                              aria-label="View File"
-                              onClick={event => this.setState({ selectedChallan, openPayByCashDialog: true })}>
-                    <Icon fontSize="small" color={"primary"}>account_balance_wallet</Icon>
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title={"Pay By Online"}>
-                  <IconButton size='small ' onClick={(e) => {
-                    this.setState({ selectedChallan });
-                  }}>
-                    <Icon fontSize="small" color={"primary"}>credit_card</Icon>
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title={"Cancel Challan"}>
-                  <IconButton size='small ' onClick={(e) => {
-                    this.setState({ selectedChallan, openConfirm: true });
-                  }}>
-                    <Icon fontSize="small" color={"secondary"}>highlight_off</Icon>
-                  </IconButton>
-                </Tooltip>
-              </>
+                <>
+                  <Tooltip title="Pay By Cash">
+                    <IconButton color="primary" size="small"
+                                aria-label="View File"
+                                onClick={event => this.setState({selectedChallan, openPayByCashDialog: true})}>
+                      <Icon fontSize="small" color={"primary"}>account_balance_wallet</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={"Pay By Online"}>
+                    <IconButton size='small ' onClick={(e) => {
+                      this.setState({selectedChallan});
+                    }}>
+                      <Icon fontSize="small" color={"primary"}>credit_card</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={"Cancel Challan"}>
+                    <IconButton size='small ' onClick={(e) => {
+                      this.setState({selectedChallan, openConfirm: true});
+                    }}>
+                      <Icon fontSize="small" color={"secondary"}>highlight_off</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>
             );
 
             return (viewBtn);
@@ -167,25 +188,25 @@ class UnPaidChallanList extends Component {
       serverSide: false,
       responsive: "scroll"
     };
+
     return (
-      <>
-        <MuiThemeProvider theme={this.getMuiTheme()}>
-          {this.global.loading ? <LoadingView/> : <CardContent>
-            <MUIDataTable
-              title={"LIST OF CHALLAN"}
-              data={challans}
-              columns={tableColumns}
-              options={tableOptions}
-            />
+        <>
+          <MuiThemeProvider theme={this.getMuiTheme()}>
+            {this.global.loading ? <LoadingView/> : <CardContent>
+              <MUIDataTable
+                  title={"LIST OF CHALLAN"}
+                  data={challans}
+                  columns={tableColumns}
+                  options={tableOptions}
+              />
+            </CardContent>}
 
-          </CardContent>}
-
-          <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={openConfirm}
-                         onConfirm={this.onCancelChallan.bind(this)}/>
-          <CashPaymentDialog open={openPayByCashDialog} onClose={this.onCashPayment} challan={selectedChallan}/>
-          <SubmitDialog open={submit} title={submitTitle} text={"Please wait ..."}/>
-        </MuiThemeProvider>
-      </>
+            <ConfirmDialog onCancel={e => this.setState({openConfirm: false})} open={openConfirm}
+                           onConfirm={this.onCancelChallan.bind(this)}/>
+            <CashPaymentDialog open={openPayByCashDialog} onClose={this.onCashPayment} challan={selectedChallan}/>
+            <SubmitDialog open={submit} title={submitTitle} text={"Please wait ..."}/>
+          </MuiThemeProvider>
+        </>
     );
   }
 }

@@ -20,7 +20,6 @@ class PaidChallanList extends Component {
     this.state = {
       selectedChallan: null,
       challans: fake,
-
       openConfirm: false,
       openPayByCashDialog: false,
       submit: false,
@@ -45,6 +44,7 @@ class PaidChallanList extends Component {
       successMsg => this.setGlobal({ successMsg }))
       .finally(() => this.setState({ submit: false }));
   };
+
   onCashPayment = (data) => {
     this.setState({ openPayByCashDialog: false });
     if (data) {
@@ -98,6 +98,22 @@ class PaidChallanList extends Component {
         name: "type",
         label: "TYPE OF CHALLAN"
       }, {
+        name: 'application',
+        label: 'BILLED TO',
+        options: {
+          customBodyRender: (val, meta) => {
+            const {rowIndex} = meta
+            const currentChallan = challans[rowIndex]
+            switch (currentChallan.challanable_type) {
+              case 'App\\Shop':
+                return currentChallan.application.owner
+
+              default:
+                return currentChallan.challanable_type + "PaidChallanList.jsx"
+            }
+          }
+        }
+      }, {
         name: "details",
         label: "DETAIL"
       }, {
@@ -109,7 +125,6 @@ class PaidChallanList extends Component {
             currency: "INR",
             maximumSignificantDigits: 2
           }).format(rate)
-
         }
       }, {
         name: "created_at",
@@ -119,7 +134,8 @@ class PaidChallanList extends Component {
             return moment(value).format("Do MMMM YYYY");
           }
         }
-      }, {
+      },
+      /*{
         name: "id",
         label: "ACTIONS",
         options: {
@@ -142,7 +158,7 @@ class PaidChallanList extends Component {
             return (viewBtn);
           }
         }
-      }
+      }*/
     ];
 
     const tableOptions = {
@@ -153,6 +169,7 @@ class PaidChallanList extends Component {
     };
     return (
       <>
+        {/*{console.log('challan list', challans)}*/}
         <MuiThemeProvider theme={this.getMuiTheme()}>
           {this.global.loading ? <LoadingView/> : <CardContent>
             <MUIDataTable

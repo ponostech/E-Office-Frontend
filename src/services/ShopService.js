@@ -8,6 +8,7 @@ export class ShopService {
 
   async create(state, errorCallback, successCallback) {
     let data = {
+      application_type: 'New Application',
       name: state.shopName,
       phone: state.phone,
       type: state.type.value,
