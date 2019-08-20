@@ -43,7 +43,7 @@ export const getApplicationTitle = (application) => {
   return {title, subtitle};
 }
 export const ApplicationResolver = (application) => {
-  // console.log('app', application)
+  console.log('app', application)
   if (application === null)
     return [];
   const {fileable_type} = application.file;

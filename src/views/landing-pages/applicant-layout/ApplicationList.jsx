@@ -25,7 +25,12 @@ class ApplicationList extends Component {
         paper: {
           boxShadow: "none"
         }
-      }
+      },
+      MUIDataTableBodyCell: {
+        root: {
+          padding: "2px 40px 2px 16px",
+        }
+      },
     },
     palette: {
       primary: {
