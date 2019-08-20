@@ -24,6 +24,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import moment from "moment";
 import ChangeForm from "./utils/ChangeForm";
 import { DocumentService } from "../../services/DocumentService";
+import SubmitDialog from "../../components/SubmitDialog";
+import { ShopService } from "../../services/ShopService";
 
 
 const FIELD = {
@@ -33,22 +35,21 @@ const FIELD = {
   SWITCH: "switch"
 };
 const extractField = (application) => {
-  let fields = [];
   return {
     owner: { key: "owner", name: "applicantName", label: "Name of Applicant", defaultValue: application["owner"] },
 
     phone: { key: "phone_no", name: "mobile", label: "Phone No", defaultValue: application["phone"] },
     // email:  {key:"email",name:"email",label:"Email",defaultValue:application['email']},
     type: {
-      key: "applicant_type",
+      key: "type",
       name: "applicantType",
       label: "Type of Applicant",
-      defaultValue: application["type"]
+      defaultValue: application["type"]?{value:application['type'],label:application['type']}:""
     },
     onwer_address: {
-      key: "owner",
+      key: "owner_address",
       name: "applicantName",
-      label: "Name of Applicant",
+      label: "Address of Owner",
       defaultValue: application["owner_address"]
     },
 
@@ -61,7 +62,7 @@ const extractField = (application) => {
       defaultValue: application["address"]
     },
 
-    trade: { key: "trade_name", name: "tradeName", label: "Name of Trade ", defaultValue: application["trade"] },
+    trade: { key: "trade", name: "tradeName", label: "Name of Trade ", defaultValue: application["trade"] },
 
     local_council: {
       key: "local_council",
@@ -99,17 +100,19 @@ const extractField = (application) => {
 const FieldList = ({ application, documents, isDocumentAdded, addDocument, removeDocument, isAdded, addItem, removeItem }) => {
   let fields = extractField(application);
 
-  const getStringValue = (key, value) => {
+  const getStringValue = (key, defaultValue) => {
 
     switch (key) {
       case "local_council":
-        return value.name;
+        return defaultValue.value;
+        case "type":
+        return defaultValue.value;
       case "estd":
-        return moment(value).format("Do MMM YYYY");
+        return moment(defaultValue).format("Do MMM YYYY");
       case "trade":
-        return value.name;
+        return defaultValue.name;
       default:
-        return typeof value === "object" ? "" : value;
+        return typeof defaultValue === "object" ? "" : defaultValue;
     }
   };
   return (
@@ -150,7 +153,7 @@ const FieldList = ({ application, documents, isDocumentAdded, addDocument, remov
                               onClick={e => isDocumentAdded(doc.name) ? removeDocument(doc.name) : addDocument(doc.name,doc)}>
                     {
                       isDocumentAdded(doc.name) ? <Icon color={"primary"}>check_circle</Icon> :
-                        <Icon color={"default"}>check_circle_outline</Icon>
+                        <Icon color={"default"}>check_circle_outzline</Icon>
                     }
                   </IconButton>
                 </DetailViewRow>;
@@ -187,9 +190,13 @@ class FieldChangeDialog extends React.Component {
       fields: {},
       selectedDocuments: {},
       documents: [],
-      formData: []
+      formData: {},
+      uploadDocuments:[],
+
+      submit:false
     };
     this.documentService = new DocumentService();
+    this.shopService = new ShopService();
   }
 
   componentDidMount() {
@@ -202,21 +209,29 @@ class FieldChangeDialog extends React.Component {
       });
   }
 
+  onUploadDocument=(key,value)=>{
+    const { uploadDocuments } = this.state;
+    const temp = uploadDocuments;
+    temp[key]=value;
+    this.setState({ uploadDocuments:temp})
+  }
   addField = (key, value) => {
-    const { fields } = this.state;
+    const { application } = this.props;
+    const { fields,formData } = this.state;
     let arr = fields;
+    let tempData = formData;
+    tempData[key] = value.defaultValue;
     arr[key] = value;
-    this.setState({ fields: arr });
+    this.setState({ fields: arr,formData:tempData });
   };
-  cancelChange = () => {
-    const { fields } = this.state;
-    fields.clear();
-  };
+
   removeField = (key) => {
-    const { fields } = this.state;
+    const { fields,formData } = this.state;
     let temp = fields;
+    let tempData = formData;
     delete temp[key];
-    this.setState({ fields: temp });
+    delete tempData[key];
+    this.setState({ fields: temp,formData:tempData });
   };
   isAdded = (key) => {
     const { fields } = this.state;
@@ -238,13 +253,34 @@ class FieldChangeDialog extends React.Component {
     delete temp[key]
     this.setState({ selectedDocuments: temp });
   };
-  submitForm = () => {
+  onChange=(name,value)=>{
+    console.log("onchange is called by ",name,value)
+    const { formData } = this.state;
+    let temp=formData
+    temp[name]=value
+    this.setState({formData:temp})
+  }
 
+  submitForm = () => {
+    let { formData,fields,uploadDocuments,selectedDocuments } = this.state;
+    //TODO:: validation
+    let documents = [];
+    for (let [key, value] in uploadDocuments) {
+      documents.push(value)
+    }
+    formData.documents = documents;
+    this.setState({submit:true})
+    this.shopService.changeField(formData,
+      errorMsg=>this.setGlobal({errorMsg}),
+      successMsg=>this.setGlobal({successMsg}))
+      .finally(()=>this.setState({submit:false}))
   };
+
+  cancelChange=()=> this.setState({fields:{},formData:{},selectedDocuments:{},uploadDocuments:[]})
 
   render() {
     const { open, onClose, application, classes } = this.props;
-    const { fields, selectedDocuments,documents } = this.state;
+    const { fields, selectedDocuments,documents ,formData,submit} = this.state;
     return (
       <Dialog open={open} TransitionComponent={Transition} onClose={onClose} fullScreen={true} fullWidth={true}
               maxWidth={"md"}>
@@ -266,24 +302,32 @@ class FieldChangeDialog extends React.Component {
 
           <Grid container={true} spacing={3} justify={"flex-start"}>
             <Grid item={true} md={3}>
-              <FieldList documents={documents} addDocument={this.addDocument} isDocumentAdded={this.isExistDocument}
-                         removeDocument={this.removeDocument} isAdded={this.isAdded} removeItem={this.removeField}
+              <FieldList documents={documents}
+                         addDocument={this.addDocument}
+                         isDocumentAdded={this.isExistDocument}
+                         removeDocument={this.removeDocument}
+                         isAdded={this.isAdded}
+                         removeItem={this.removeField}
                          addItem={this.addField}
                          application={application}/>
             </Grid>
             <Grid item={true} md={9}>
-              <ChangeForm selectedDocuments={selectedDocuments} application={application} selectedFields={fields}/>
-              {/*<FieldForm getFieldValue={this.getFieldValue} changeInfo={this.changeInfo} application={application} fields={fields} onCancel={this.cancelChange}*/}
-              {/*           onRemoveItem={this.removeField} onSubmit={this.submitForm}/>*/}
+              <ChangeForm onUploadDocument={this.onUploadDocument}
+                          onChange={this.onChange}
+                          formData={formData}
+                          selectedDocuments={selectedDocuments}
+                          selectedFields={fields}/>
+
             </Grid>
           </Grid>
 
         </DialogContent>
         <DialogActions>
-          <Button href={"#"}>Submit</Button>
-          <Button href={"#"}>Cancel</Button>
+          <Button variant={"outlined"} color={"primary"} href={"#"} onClick={event => this.submitForm()}>Submit</Button>
+          <Button variant={"outlined"} color={"secondary"} href={"#"} onClick={event => this.cancelChange()}>Cancel</Button>
 
         </DialogActions>
+        <SubmitDialog open={submit} title={"Submitting application"} text={"Please wait..."} />
       </Dialog>
     );
   }
