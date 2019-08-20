@@ -154,7 +154,10 @@ class FormBuilderContainer extends Component {
                                    aria-controls="panel1bh-content"
                                    id="panel1bh-header"
             >
-              <Typography variant={"h6"} color={"textPrimary"}>Standard Widget</Typography>
+             <div>
+               <Typography paragraph={true} variant={"h6"} color={"textPrimary"}>Standard Widget</Typography>
+               <Typography paragraph={true} variant={"caption"} color={"textPrimary"}>Please select widget to make form</Typography>
+             </div>
             </ExpansionPanelSummary>
             {/*<ExpansionPanelDetails>*/}
 

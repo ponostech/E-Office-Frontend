@@ -8,7 +8,6 @@ export class SiteVerificationService {
   async createTemplate(type,data,errorCallback,successCallback){
     try{
       let res=await axios.post(ApiRoutes.CREATE_SITE_VERIFICATION_TEMPLATE,{type,data});
-      console.log(res)
       if (res.data.status) {
           successCallback(ArrayToString(res.data.messages))
       }else{
