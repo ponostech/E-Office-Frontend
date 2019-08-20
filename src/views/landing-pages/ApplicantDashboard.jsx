@@ -141,11 +141,11 @@ class ApplicantDashboard extends Component {
     const challanHotelCount=challans?challans.hotel?challans.hotel.length:0:0
     const labels = (
         <div style={style.root}>
-          <LabelInfo title={"No. of application"} description={"No. of application submitted"}
+          <LabelInfo title={"Application"} description={"No. of application submitted"}
                      number={shops ? shops.length + 1 : 0 + hotels ? hotels.length : 0 + banners ? banners.length : 0}/>
                      <div style={style.divider}/>
-          <LabelInfo title={"No. of License"} description={"No. of license/permit issued"}
-                     number={bannerLicenses ? bannerLicenses.length + 1 : 0 + shopLicenses ? shopLicenses.length : 0 + hotelLicenses ? hotelLicenses.length : 0}/>
+          <LabelInfo title={"License"} description={"No. of license/permit issued"}
+                     number={bannerLicenses ? bannerLicenses.length  : 0 + shopLicenses ? shopLicenses.length : 0 + hotelLicenses ? hotelLicenses.length : 0}/>
           <div style={style.divider}/>
 
           <LabelInfo title={"Challan"} description={"No. of Challan Generated"} number={challanHotelCount+challanShopCount+challansBannerCount}/>
