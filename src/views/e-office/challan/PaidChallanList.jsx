@@ -27,7 +27,6 @@ class PaidChallanList extends Component {
       submitTitle: "Create Payment"
     };
     this.challanService = new ChallanService();
-
   }
 
   componentDidMount() {
@@ -68,6 +67,11 @@ class PaidChallanList extends Component {
         },
         paper: {
           boxShadow: "none"
+        }
+      },
+      MUIDataTableBodyCell: {
+        root: {
+          padding: "2px 40px 2px 16px",
         }
       },
     },
@@ -143,7 +147,7 @@ class PaidChallanList extends Component {
 
     const tableOptions = {
       filterType: "dropdown",
-      rowsPerPage: 15,
+      rowsPerPage: 10,
       serverSide: false,
       responsive: "scroll"
     };

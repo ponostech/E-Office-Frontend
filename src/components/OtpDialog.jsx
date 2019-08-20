@@ -29,8 +29,8 @@ const style = {
   flex: {
     flex: 1
   },
-
 };
+
 class OtpDialog extends Component {
   otpService = new OtpService();
 
@@ -111,7 +111,7 @@ class OtpDialog extends Component {
               <CloseIcon/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-              Enter OTP(One Time Password)
+              Enter OTP (One Time Password)
             </Typography>
             <Button href={"#"} onClick={event => onClose(null)} color="inherit">
               Close
@@ -146,8 +146,8 @@ class OtpDialog extends Component {
         <Divider component={"div"}/>
         <DialogActions>
           <Button fullWidth={true} disabled={this.state.submit} onClick={this.handleResend.bind(this)}
-                  variant={"outlined"}
-                  color={"primary"}>
+                  variant='text'
+                  color={"secondary"}>
             Resend OTP
           </Button>
           <Button fullWidth={true} disabled={this.state.submit} onClick={this.handleVerify.bind(this)}

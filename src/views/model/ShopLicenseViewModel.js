@@ -1,10 +1,10 @@
 export class ShopLicenseViewModel {
-  static TITLE1 = "FORM-I";
-  static TITLEb = "FORM-II";
+  static TITLE1 = "FORM - I";
+  static TITLEb = "FORM - II";
   static TITLE2 = "AIZAWL MUNICIPAL CORPORATION";
-  static TITLE = "APPLICATION FOR LICENSE (Except Hotels & Lodgings)";
+  static TITLE = "Application for License (Except Hotels & Lodgings)";
   static TITLEI = "APPLICATION FOR LICENSE (For Hotels & Lodgings)";
-  static SUBTITLE = "[See Section 4(a) of the AMC Licensing Regulations, 2012]";
+  static SUBTITLE = "[ See Section 4(a) of the AMC Licensing Regulations, 2012 ]";
 
   static  NEW = "New Applications";
   static  GRANTED = "Granted Applications";
@@ -20,10 +20,10 @@ export class ShopLicenseViewModel {
   static OWNER_ADDRESS = "Address of Applicant";
   static PHONE = "Mobile No";
   static DETAILS = "Details of Business";
-  static TIN_NO = "Tin No (if any)";
-  static CST_NO = "CST No (if any)";
-  static PAN_NO = "PAN No (if any)";
-  static GST_NO = "GST No (if any)";
+  static TIN_NO = "Tin No. (if any)";
+  static CST_NO = "CST No. (if any)";
+  static PAN_NO = "PAN No. (if any)";
+  static GST_NO = "GST No. (if any)";
   static ESTD = "Date of Establishment";
   static DISPLAY_TYPE = "Type of Display";
   static DRAFT = "Save as draft";
