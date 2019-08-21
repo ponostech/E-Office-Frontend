@@ -20,6 +20,7 @@ import GrievanceCreate from "../views/grievance/GrievanceCreate";
 import ErrorHandler, { SuccessHandler } from "../views/common/StatusHandler";
 import Test from "../views/Test";
 import ApplicantLayout from "../views/landing-pages/ApplicantLayout";
+import FormBuilderContainer from "../views/e-office/admin/form-builder/FormBuilderContainer";
 
 class LayoutLanding extends React.Component {
   constructor(props) {
@@ -69,7 +70,7 @@ class LayoutLanding extends React.Component {
 
               <Route exact={true} path={OfficeRoutes.RESUBMIT_SHOP_LICENSE_APPLICATION(":id")}
                      component={GrievanceCreate}/>
-              <Route exact={true} path={"/test"} component={Test}/>
+              <Route exact={true} path={"/test"} component={FormBuilderContainer}/>
 
             </Switch>
           </div>
