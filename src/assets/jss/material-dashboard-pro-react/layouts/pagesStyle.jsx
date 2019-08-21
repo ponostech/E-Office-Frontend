@@ -27,6 +27,7 @@ const pagesStyle = theme => ({
     position: "relative",
     background:"white",
     top: "0",
+    overflow:"hidden"
   },
   container: {
     ...container,
