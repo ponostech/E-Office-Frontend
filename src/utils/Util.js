@@ -10,7 +10,8 @@ export const APPLICATION_NAME = {
   SHOP: "shops",
   HOTEL: "hotels",
   ADVERTISER: "advertisers",
-  RECEIPT: "receipts"
+  RECEIPT: "receipts",
+  SITE_VERIFICATION: "site-verifications"
 };
 export const FormatStaff = (staffs) => {
   const user_id = JSON.parse(localStorage.getItem('current_user')).id;
