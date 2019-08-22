@@ -1,9 +1,44 @@
 import React from "react";
-import { Checkbox,TextField, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Switch } from "@material-ui/core";
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Switch,
+  TextField
+} from "@material-ui/core";
 import { APPLICATION_NAME } from "../../../../utils/Util";
 import OfficeFileUpload from "../../../../components/OfficeFileUpload";
 import NotesheetAttachment from "../../../../components/NotesheetAttachment";
+import DateFnsUtils from "@date-io/date-fns";
+import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
+import "date-fns";
+import OfficeSelect from "../../../../components/OfficeSelect";
+import axios from "axios";
+import { ApiRoutes } from "../../../../config/ApiRoutes";
+import { LocalCouncilService } from "../../../../services/LocalCouncilService";
 
+export const OfficeDatePicker = ({ key, config, application, onChange }) => {
+  let value = application[key];
+  return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <DatePicker
+        fullWidth={true}
+        required={config.validation.required}
+        InputLabelProps={{ shrink: true, required: config.validation.required }}
+        label={config.label}
+        margin="dense"
+        name={key}
+        variant="outlined"
+        value={value}
+        onChange={val => onChange(key, val)}
+        format={"dd/MM/yyyy"}
+      />
+    </MuiPickersUtilsProvider>
+  );
+};
 export const OfficeTextField = ({ key, config, application, onChange }) => {
   let value = application[key];
   return (
@@ -107,6 +142,7 @@ export const OfficeCheckbox = ({ key, config, application, onChange }) => {
     </FormControl>
   );
 };
+
 export const SiteFileUpload = ({ key, config, application, onChange }) => {
   let value = application[key] ? application[key] : {
     name: key,
@@ -133,6 +169,7 @@ export const SiteFileUpload = ({ key, config, application, onChange }) => {
   );
 };
 
+
 export const OfficeImageList = ({ key, config, application, onChange }) => {
   const onSuccess = (attachments) => {
     onChange(key, attachments);
@@ -146,4 +183,44 @@ export const OfficeImageList = ({ key, config, application, onChange }) => {
       </FormControl>
     </>
   );
+};
+
+export class OfficeLocalCouncil extends React.Component  {
+
+  constructor(props) {
+    super(props);
+    this.state={
+      options:[]
+    }
+    this.localCouncilService = new LocalCouncilService();
+  }
+
+  componentDidMount() {
+    this.localCouncilService.fetch(err=>console.log(err),
+      options=>this.setState({options}))
+      .finally(()=>console.log("local council request done"))
+  }
+  render() {
+    const{ key, config, application, onChange }=this.props;
+    const { options } = this.state;
+
+    let value = application[key];
+
+    return(
+
+     <OfficeSelect
+      variant={"outlined"}
+      margin={"dense"}
+      value={value}
+      required={config.validation.required}
+      fullWidth={true}
+      name={key}
+      onChange={val => onChange(key, val)}
+      ClearAble={true}
+      placeholder={config.placeholder}
+      label={config.label}
+      options={options}/>
+    )
+  }
+
 };

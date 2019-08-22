@@ -17,6 +17,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
+import { WIDGET_TYPE } from "../constant";
 
 const styles = {
   appBar: {
@@ -34,13 +35,16 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class StandardConfigDialog extends Component {
+class ImageListConfigDialog extends Component {
   state = {
     key: "",
+    type:WIDGET_TYPE.IMAGE_LIST,
     label: "",
     placeholder: "",
     defaultValue: "",
-    required: false
+    required: false,
+    min:0,
+    max:1000
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -59,20 +63,24 @@ class StandardConfigDialog extends Component {
 
   doClear = () => {
     this.setState({
-      name: "",
+      key: "",
+      type:"file_upload",
+      fillable:false,
       label: "",
       placeholder: "",
-      value: "",
-      pattern: "",
-      required: false
+      defaultValue: "",
+      pattern: ".*",
+      required: false,
+      min:0,
+      max:1000
     });
   };
   createConfig = () => {
-    const { onCreateConfiguration,onClose } = this.props;
+    const { onCreateConfiguration,onClose,widget } = this.props;
     const { key, label, placeholder, defaultValue, required, pattern,min,max } = this.state;
     let config = {
       label,
-      type:"file_upload",
+      type:WIDGET_TYPE.IMAGE_LIST,
       fillable:false,
       placeholder,
       defaultValue,
@@ -109,6 +117,7 @@ class StandardConfigDialog extends Component {
         <DialogContent>
 
           <Grid container={true} spacing={2}>
+
             <Grid md={12} sm={12} item={true}>
               <TextField name={"key"}
                          onChange={event => this.onChange("key", event.target.value)}
@@ -119,6 +128,7 @@ class StandardConfigDialog extends Component {
                          margin={"dense"}
                          label={"Key"}/>
             </Grid>
+
             <Grid md={12} sm={12} item={true}>
               <TextField name={"label"}
                          onChange={event => this.onChange("label", event.target.value)}
@@ -128,58 +138,6 @@ class StandardConfigDialog extends Component {
                          fullWidth={true}
                          margin={"dense"}
                          label={"Label"}/>
-            </Grid>
-            <Grid md={12} sm={12} item={true}>
-              <TextField name={"placeholder"}
-                         onChange={event => this.onChange("placeholder", event.target.value)}
-                         required={true}
-                         value={this.state.placeholder}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"PlaceHolder"}/>
-            </Grid>
-            <Grid md={12} sm={12} item={true}>
-              <TextField name={"defaultValue"}
-                         onChange={event => this.onChange("defaultValue", event.target.value)}
-                         required={true}
-                         value={this.state.defaultValue}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"Default Value"}/>
-            </Grid>
-            <Grid md={12} sm={12} item={true}>
-              <TextField name={"pattern"}
-                         onChange={event => this.onChange("pattern", event.target.value)}
-                         required={true}
-                         value={this.state.pattern}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"Pattern(Regex)"}/>
-            </Grid>
-            <Grid md={12} sm={12} item={true}>
-              <TextField name={"min"}
-                         type={"number"}
-                         onChange={event => this.onChange("min", event.target.value)}
-                         required={true}
-                         value={this.state.min}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"Minimum"}/>
-            </Grid>
-            <Grid md={12} sm={12} item={true}>
-              <TextField name={"pattern"}
-                         type={"number"}
-                         onChange={event => this.onChange("max", event.target.value)}
-                         required={true}
-                         value={this.state.max}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"Maximum"}/>
             </Grid>
 
             <Grid md={12} sm={12} item={true}>
@@ -208,10 +166,9 @@ class StandardConfigDialog extends Component {
   }
 }
 
-StandardConfigDialog.propTypes = {
+ImageListConfigDialog.propTypes = {
   onCreateConfiguration: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  widget: PropTypes.object.isRequired
 };
-export default withStyles(styles)(StandardConfigDialog);
+export default withStyles(styles)(ImageListConfigDialog);

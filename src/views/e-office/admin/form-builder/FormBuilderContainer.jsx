@@ -14,15 +14,25 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Paper,
-  TextField
+  TextField,
+  FormControl
 } from "@material-ui/core";
 import StandardConfigDialog from "./dialogs/StandardConfigDialog";
 import FillableConfigDialog from "./dialogs/FillableConfigDialog";
+import FileUploadConfigDialog from "./dialogs/FileUploadConfigDialog";
+import { OfficeDatePicker, OfficeImageList, OfficeLocalCouncil, SiteFileUpload } from "./fields";
+import { FILLABLE_TYPE, WIDGET_TYPE } from "./constant";
+import ImageListConfigDialog from "./dialogs/ImageListConfigDialog";
+import DatePickerConfigDialog from "./dialogs/DatePickerConfigDialog";
+import LocalCouncilConfig from "./dialogs/fillable/LocalCouncilConfig";
 
 const StandardWidgetList = ({ onWidgetClick }) => {
   const widgets = [
     { type: "text", label: "TextField", icon: "check" },
     { type: "text", label: "TextField", icon: "user" },
+    { type: WIDGET_TYPE.FILE_UPLOAD, label: "File upload", icon: "account_circle" },
+    { type: WIDGET_TYPE.IMAGE_LIST, label: "Image list upload", icon: "account_circle" },
+    { type: WIDGET_TYPE.DATE_PICKER, label: "Date Picker", icon: "account_circle" },
   ];
   return (
     <>
@@ -50,7 +60,8 @@ const StandardWidgetList = ({ onWidgetClick }) => {
 };
 const FillableWidgetList = ({ onWidgetClick }) => {
   const widgets = [
-    { key: "applicant_name", type: "text", label: "Name of Applicant", icon: "close" }
+    { key: "applicant_name", type: "text", label: "Name of Applicant", icon: "close" },
+    { key: "local_council", type: "text", label: "Local Council", icon: "close" },
   ];
   return (
     <>
@@ -94,10 +105,36 @@ const FillableWidgetList = ({ onWidgetClick }) => {
 const DynamicForm = ({ selectedWidgetList, onWidgetValueChange, onRemoveWidget }) => {
 
   const getControl = (key, config,application) => {
-    let value=application[key]
-    switch (config) {
-      case "radio":
-        return <p>radio</p>;
+    let value=application[key];
+    switch (config.type) {
+      case WIDGET_TYPE.FILE_UPLOAD:
+        return <FormControl component={"div"}>
+          <SiteFileUpload onChange={onWidgetValueChange} config={config} key={key} application={application}/>
+          <IconButton href={"#"} onClick={(e) => onRemoveWidget(key)}>
+            <Icon color={"secondary"} fontSize={"default"}>delete</Icon>
+          </IconButton>
+        </FormControl>
+      case WIDGET_TYPE.IMAGE_LIST:
+        return <div>
+          <OfficeImageList application={null} key={key} config={config} onChange={onWidgetValueChange}/>
+          <IconButton href={"#"} onClick={(e) => onRemoveWidget(key)}>
+            <Icon color={"secondary"} fontSize={"default"}>delete</Icon>
+          </IconButton>
+        </div>
+      case FILLABLE_TYPE.LOCAL_COUNCIL:
+        return <div>
+          <OfficeLocalCouncil application={{local_council:{value:"Zarkawt",label:"Zarkawt"}}} key={key} config={config} onChange={onWidgetValueChange}/>
+          <IconButton href={"#"} onClick={(e) => onRemoveWidget(key)}>
+            <Icon color={"secondary"} fontSize={"default"}>delete</Icon>
+          </IconButton>
+        </div>
+      case WIDGET_TYPE.DATE_PICKER:
+        return <div>
+          <OfficeDatePicker onChange={val=>onWidgetValueChange(key,val)} config={config} key={key} application={application}/>
+          <IconButton href={"#"} onClick={(e) => onRemoveWidget(key)}>
+            <Icon color={"secondary"} fontSize={"default"}>delete</Icon>
+          </IconButton>
+        </div>
       case "select":
         return <p>select</p>;
       default:
@@ -112,9 +149,7 @@ const DynamicForm = ({ selectedWidgetList, onWidgetValueChange, onRemoveWidget }
           InputProps={{
             endAdornment: (
               <InputAdornment position={"end"}>
-                <IconButton onClick={(e) => onRemoveWidget(key)}>
-                  <Icon color={"secondary"} fontSize={"default"}>delete</Icon>
-                </IconButton>
+
               </InputAdornment>
             )
           }}
@@ -155,17 +190,21 @@ class FormBuilderContainer extends Component {
 
       openStandardConfig: false,
       openFillableConfig: false,
+      openFileUploadConfig: false,
+      openImageListConfig: false,
+      openDateConfig: false,
 
+      openLocalCouncilConfig:false,
       formData: {}
     };
   }
 
 
   onStandardWidgetClick = (selectedWidget) => {
-    this.setState({ selectedWidget, openStandardConfig: true });
+    this.setState({ selectedWidget, openDateConfig: true });
   };
   onFillableWidgetClick = (selectedWidget) => {
-    this.setState({ selectedWidget, openFillableConfig: true });
+    this.setState({ selectedWidget, openLocalCouncilConfig: true });
   };
 
   changeValue = (key, value) => {
@@ -189,7 +228,8 @@ class FormBuilderContainer extends Component {
   };
 
   render() {
-    const { selectedWidgetList, openStandardConfig,openFillableConfig, selectedWidget } = this.state;
+    const { selectedWidgetList, openStandardConfig,openFillableConfig,openFileUploadConfig,openDateConfig,openImageListConfig, selectedWidget } = this.state;
+    const { openLocalCouncilConfig } = this.state;
 
     return (
       <>
@@ -214,8 +254,27 @@ class FormBuilderContainer extends Component {
                               widget={selectedWidget}
                               onCreateConfiguration={this.addConfiguredWidget}
         />
+        <FileUploadConfigDialog onClose={() => this.setState({ openFileUploadConfig: false })}
+                              open={openFileUploadConfig}
+                              onCreateConfiguration={this.addConfiguredWidget}
+        />
+        <ImageListConfigDialog onClose={() => this.setState({ openImageListConfig: false })}
+                              open={openImageListConfig}
+                              onCreateConfiguration={this.addConfiguredWidget}
+        />
+
         <FillableConfigDialog onClose={() => this.setState({ openFillableConfig: false })}
                               open={openFillableConfig}
+                              widget={selectedWidget}
+                              onCreateConfiguration={this.addConfiguredWidget}
+        />
+        <DatePickerConfigDialog onClose={() => this.setState({ openDateConfig: false })}
+                              open={openDateConfig}
+                              widget={selectedWidget}
+                              onCreateConfiguration={this.addConfiguredWidget}
+        />
+        <LocalCouncilConfig onClose={() => this.setState({ openLocalCouncilConfig: false })}
+                              open={openLocalCouncilConfig}
                               widget={selectedWidget}
                               onCreateConfiguration={this.addConfiguredWidget}
         />

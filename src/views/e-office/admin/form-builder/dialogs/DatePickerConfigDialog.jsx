@@ -17,6 +17,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
+import { WIDGET_TYPE } from "../constant";
 
 const styles = {
   appBar: {
@@ -34,7 +35,7 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class StandardConfigDialog extends Component {
+class DatePickerConfigDialog extends Component {
   state = {
     key: "",
     label: "",
@@ -72,7 +73,7 @@ class StandardConfigDialog extends Component {
     const { key, label, placeholder, defaultValue, required, pattern,min,max } = this.state;
     let config = {
       label,
-      type:"file_upload",
+      type:WIDGET_TYPE.DATE_PICKER,
       fillable:false,
       placeholder,
       defaultValue,
@@ -139,48 +140,6 @@ class StandardConfigDialog extends Component {
                          margin={"dense"}
                          label={"PlaceHolder"}/>
             </Grid>
-            <Grid md={12} sm={12} item={true}>
-              <TextField name={"defaultValue"}
-                         onChange={event => this.onChange("defaultValue", event.target.value)}
-                         required={true}
-                         value={this.state.defaultValue}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"Default Value"}/>
-            </Grid>
-            <Grid md={12} sm={12} item={true}>
-              <TextField name={"pattern"}
-                         onChange={event => this.onChange("pattern", event.target.value)}
-                         required={true}
-                         value={this.state.pattern}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"Pattern(Regex)"}/>
-            </Grid>
-            <Grid md={12} sm={12} item={true}>
-              <TextField name={"min"}
-                         type={"number"}
-                         onChange={event => this.onChange("min", event.target.value)}
-                         required={true}
-                         value={this.state.min}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"Minimum"}/>
-            </Grid>
-            <Grid md={12} sm={12} item={true}>
-              <TextField name={"pattern"}
-                         type={"number"}
-                         onChange={event => this.onChange("max", event.target.value)}
-                         required={true}
-                         value={this.state.max}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"Maximum"}/>
-            </Grid>
 
             <Grid md={12} sm={12} item={true}>
               <FormControlLabel
@@ -208,10 +167,10 @@ class StandardConfigDialog extends Component {
   }
 }
 
-StandardConfigDialog.propTypes = {
+DatePickerConfigDialog.propTypes = {
   onCreateConfiguration: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   widget: PropTypes.object.isRequired
 };
-export default withStyles(styles)(StandardConfigDialog);
+export default withStyles(styles)(DatePickerConfigDialog);
