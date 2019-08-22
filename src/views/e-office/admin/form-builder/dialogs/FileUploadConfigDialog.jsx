@@ -34,13 +34,15 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class FillableConfigDialog extends Component {
+class FileUploadConfigDialog extends Component {
   state = {
     key: "",
     label: "",
     placeholder: "",
     defaultValue: "",
-    required: false
+    required: false,
+    min:0,
+    max:1000
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -57,13 +59,11 @@ class FillableConfigDialog extends Component {
     });
   };
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    this.setState({label:nextProps.widget.label})
-  }
-
   doClear = () => {
     this.setState({
-      name: "",
+      key: "",
+      type:"file_upload",
+      fillable:false,
       label: "",
       placeholder: "",
       defaultValue: "",
@@ -78,6 +78,8 @@ class FillableConfigDialog extends Component {
     const { key, label, placeholder, defaultValue, required, pattern,min,max } = this.state;
     let config = {
       label,
+      type:"file_upload",
+      fillable:false,
       placeholder,
       defaultValue,
       validation: {
@@ -87,7 +89,7 @@ class FillableConfigDialog extends Component {
       }
     };
     onClose();
-    onCreateConfiguration(widget.key, config);
+    onCreateConfiguration(key, config);
   };
 
   render() {
@@ -113,6 +115,17 @@ class FillableConfigDialog extends Component {
         <DialogContent>
 
           <Grid container={true} spacing={2}>
+
+            <Grid md={12} sm={12} item={true}>
+              <TextField name={"key"}
+                         onChange={event => this.onChange("key", event.target.value)}
+                         required={true}
+                         value={this.state.key}
+                         variant={"outlined"}
+                         fullWidth={true}
+                         margin={"dense"}
+                         label={"Key"}/>
+            </Grid>
 
             <Grid md={12} sm={12} item={true}>
               <TextField name={"label"}
@@ -151,10 +164,9 @@ class FillableConfigDialog extends Component {
   }
 }
 
-FillableConfigDialog.propTypes = {
+FileUploadConfigDialog.propTypes = {
   onCreateConfiguration: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  widget: PropTypes.object.isRequired
 };
-export default withStyles(styles)(FillableConfigDialog);
+export default withStyles(styles)(FileUploadConfigDialog);

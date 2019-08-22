@@ -79,6 +79,8 @@ class FillableConfigDialog extends Component {
     let config = {
       label,
       placeholder,
+      type:"file_upload",
+      fillable:true,
       defaultValue,
       validation: {
         required,
