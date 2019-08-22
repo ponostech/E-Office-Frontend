@@ -36,12 +36,13 @@ import OtpDialog from "../../components/OtpDialog";
 import DateFnsUtils from "@date-io/date-fns";
 import {DatePicker, MuiPickersUtilsProvider} from "material-ui-pickers";
 import "date-fns";
-import {HOME} from "../../config/routes-constant/OfficeRoutes";
+import { DESK, HOME } from "../../config/routes-constant/OfficeRoutes";
 import {withRouter} from "react-router-dom";
 import {APPLICATION_NAME} from "../../utils/Util";
 import LoadingView from "../common/LoadingView";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import { OfficeImageList } from "../e-office/admin/form-builder/fields";
 
 const style = {
   root: {padding: "10px 15px !important"},
@@ -79,6 +80,8 @@ class ShopApplication extends Component {
     latitude: undefined,
     longitude: undefined,
     uploadDocuments: [],
+    additionalDocuments: [],
+
     nameError: "",
     typeError: "",
     addressError: "",
@@ -90,6 +93,7 @@ class ShopApplication extends Component {
     estdError: "",
     localCouncilError: "",
     ownerAddressError: "",
+
     types: [
       {value: "proprietor", label: "Proprietor"},
       {value: "partnership", label: "Partnership"},
@@ -97,16 +101,19 @@ class ShopApplication extends Component {
     ],
     trades: [],
     localCouncils: [],
+
     agree: false,
     submit: false,
     success: undefined,
-    documents: [],
-    flaDocuments: [],
-    noFlaDocuments: [],
     openMap: false,
     prestine: true,
     openOtp: false,
-    otpMessage: ""
+    otpMessage: "",
+
+    documents: [],
+    flaDocuments: [],
+    noFlaDocuments: [],
+
   };
 
   componentDidMount() {
@@ -155,19 +162,32 @@ class ShopApplication extends Component {
       this.setState({submit: true});
       this.shopService.create(this.state,
           errorMsg => this.setGlobal({errorMsg}),
-          msg => {
-            const MySwal = withReactContent(Swal);
+        (challan, successMsg) => {
+          const MySwal = withReactContent(Swal);
+          if (challan) {
             MySwal.fire({
-              text: msg,
+              title: `Challan No:${challan.number}`,
+              text: successMsg,
               type: "success",
+              showCancelButton: true,
+              cancelButtonText: "Pay by Cash",
               confirmButtonColor: "#26B99A",
-              confirmButtonText: "Ok"
-            }).then(result => {
+              confirmButtonText: "Pay Now (ONLINE)"
+            }).then((result) => {
               if (result.value) {
-                history.push(HOME);
+                Swal.fire(
+                  "Pay!",
+                  "Your application is paid.",
+                  "success"
+                );
               }
+              history.push(HOME)
             });
-          })
+          } else {
+            this.setGlobal({ successMsg });
+          }
+          // this.props.refresh();
+        })
           .finally(() => this.setState({submit: false}));
     }
   };
@@ -684,6 +704,22 @@ class ShopApplication extends Component {
                             </GridItem>;
                           })}
 
+                          <GridItem  xs={12} sm={12} md={12}>
+                          <Typography className={classes.subTitle} variant={"h6"}>Additional Document(S)</Typography>
+                          </GridItem>
+
+                          <GridItem className={classes.root} sm={12} xs={12} md={12}>
+                            <Divider component={"div"}/>
+                          </GridItem>
+
+                          <GridItem xs={12} sm={12} md={8}>
+                            <OfficeImageList application={null} key={"additionDocuments"} config={{
+                              label:"",
+                              validation:{
+                                required:false
+                            }
+                            }} onChange={(key,value)=>this.setState({additionalDocuments:value})}/>
+                          </GridItem>
                           <GridItem xs={12} sm={12} md={12}>
                             <Typography className={classes.subTitle} variant={"h6"}>Declaration</Typography>
                           </GridItem>

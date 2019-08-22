@@ -8,7 +8,7 @@ export class ShopService {
 
   async create(state, errorCallback, successCallback) {
     let data = {
-      application_type: 'New Application',
+      application_type: "New Application",
       name: state.shopName,
       phone: state.phone,
       type: state.type.value,
@@ -29,12 +29,16 @@ export class ShopService {
       premise_type: state.premised,
       display_type: state.displayType,
       passport: state.passport.path,
-      documents: state.uploadDocuments
+      documents: state.uploadDocuments,
+      addl_documents: state.additionalDocuments
     };
     try {
       let res = await axios.post(ApiRoutes.CREATE_SHOP_LICENSE, data);
       if (res.data.status) {
-        successCallback(ArrayToString(res.data.messages));
+        if (res.data.data.challan)
+          successCallback(res.data.data.challan, ArrayToString(res.data.messages));
+        else
+          successCallback(false, ArrayToString(res.data.messages));
       } else {
         if (res.data.validation_error) {
           errorCallback(ErrorToString(res.data.messages));
@@ -91,6 +95,7 @@ export class ShopService {
       errorCallback(e.toString());
     }
   }
+
   async renew(state, errorCallback, successCallback) {
     let data = {
       name: state.shopName,
@@ -156,11 +161,12 @@ export class ShopService {
       throw new Error(error);
     }
   }
-  async changeField(application_id,data,errorCallback,successCalback){
+
+  async changeField(application_id, data, errorCallback, successCalback) {
     try {
-      const res=await axios.post(ApiRoutes.UPDATE_SHOP_LICENSE(application_id),data);
+      const res = await axios.post(ApiRoutes.UPDATE_SHOP_LICENSE(application_id), data);
       if (res.data.status) {
-        successCalback(res.data.messages)
+        successCalback(res.data.messages);
       } else {
         if (res.data.validation_error) {
           errorCallback(ErrorToString(res.data.messages));
@@ -168,9 +174,9 @@ export class ShopService {
           errorCallback(ArrayToString(res.data.messages));
         }
       }
-    }catch (e) {
-      console.error(e)
-      errorCallback(e.toString())
+    } catch (e) {
+      console.error(e);
+      errorCallback(e.toString());
     }
   }
 

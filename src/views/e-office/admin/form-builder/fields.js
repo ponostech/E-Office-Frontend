@@ -1,7 +1,8 @@
 import React from "react";
-import { Checkbox, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Switch } from "@material-ui/core";
+import { Checkbox,TextField, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Switch } from "@material-ui/core";
 import { APPLICATION_NAME } from "../../../../utils/Util";
 import OfficeFileUpload from "../../../../components/OfficeFileUpload";
+import NotesheetAttachment from "../../../../components/NotesheetAttachment";
 
 export const OfficeTextField = ({ key, config, application, onChange }) => {
   let value = application[key];
@@ -107,26 +108,42 @@ export const OfficeCheckbox = ({ key, config, application, onChange }) => {
   );
 };
 export const SiteFileUpload = ({ key, config, application, onChange }) => {
-  let value = application[key]?application[key]:{
+  let value = application[key] ? application[key] : {
     name: key,
     location: null,
     mime: "application/pdf",
     mandatory: config.validation.required,
     status: "ready"
-  }
+  };
   return (
     <OfficeFileUpload applicationName={APPLICATION_NAME.SITE_VERIFICATION}
                       document={value}
                       onUploadSuccess={(data) => {
                         this.setState(state => {
-                          let result={
-                            name:key,
+                          let result = {
+                            name: key,
+                            label: config.label,
                             location: data.location
-                          }
-                          onChange(key,result)
+                          };
+                          onChange(key, result);
                         });
                       }} onUploadFailure={(err) => {
       console.log(err);
     }}/>
+  );
+};
+
+export const OfficeImageList = ({ key, config, application, onChange }) => {
+  const onSuccess = (attachments) => {
+    onChange(key, attachments);
+  };
+
+  return (
+    <>
+      <FormControl fullWidth={true} component={"div"}>
+        <FormLabel component={"label"} required={config.validation.required}>{config.label}</FormLabel>
+        <NotesheetAttachment value={[]} onSuccess={onSuccess}/>
+      </FormControl>
+    </>
   );
 };
