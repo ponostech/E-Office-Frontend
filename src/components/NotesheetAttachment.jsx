@@ -9,6 +9,7 @@ import NotesheetAttachmentItem from "./NotesheetAttachmentItem";
 const dropZoneStyle={
   padding:40,
   border:5,
+  flexWrap:1,
   background:"#f8f8f8",
   boxShadow: `2px 5px 2px #f0f0f0`,
 }

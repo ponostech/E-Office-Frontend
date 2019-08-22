@@ -22,7 +22,7 @@ import FillableConfigDialog from "./dialogs/FillableConfigDialog";
 const StandardWidgetList = ({ onWidgetClick }) => {
   const widgets = [
     { type: "text", label: "TextField", icon: "check" },
-    { type: "text", label: "TextField", icon: "user" }
+    { type: "text", label: "TextField", icon: "user" },
   ];
   return (
     <>
