@@ -19,6 +19,7 @@ import OfficeSelect from "../../../../components/OfficeSelect";
 import axios from "axios";
 import { ApiRoutes } from "../../../../config/ApiRoutes";
 import { LocalCouncilService } from "../../../../services/LocalCouncilService";
+import { TradeService } from "../../../../services/TradeService";
 
 export const OfficeDatePicker = ({ key, config, application, onChange }) => {
   let value = application[key];
@@ -107,6 +108,23 @@ export const OfficeSwitch = ({ key, config, application, onChange }) => {
     />
   );
 };
+export const OfficeFormSelect = ({ key, config, application, onChange }) => {
+  let value = application[key];
+  return (
+    <OfficeSelect
+      variant={"outlined"}
+      margin={"dense"}
+      value={value}
+      required={config.validation.required}
+      fullWidth={true}
+      name={key}
+      onChange={val => onChange(key, val)}
+      ClearAble={true}
+      placeholder={config.placeholder}
+      label={config.label}
+      options={config.options}/>
+  );
+};
 export const OfficeRadio = ({ key, config, application, onChange }) => {
   let value = application[key];
   return (
@@ -118,7 +136,7 @@ export const OfficeRadio = ({ key, config, application, onChange }) => {
         value={value}
         onChange={val => onChange(key, val)}
       >
-        {config.option.map(item =>
+        {config.options.map(item =>
           <FormControlLabel value={item.value} label={item.label}
                             control={<Radio color={"primary"}/>}
           />
@@ -197,6 +215,45 @@ export class OfficeLocalCouncil extends React.Component  {
 
   componentDidMount() {
     this.localCouncilService.fetch(err=>console.log(err),
+      options=>this.setState({options}))
+      .finally(()=>console.log("local council request done"))
+  }
+  render() {
+    const{ key, config, application, onChange }=this.props;
+    const { options } = this.state;
+
+    let value = application[key];
+
+    return(
+
+     <OfficeSelect
+      variant={"outlined"}
+      margin={"dense"}
+      value={value}
+      required={config.validation.required}
+      fullWidth={true}
+      name={key}
+      onChange={val => onChange(key, val)}
+      ClearAble={true}
+      placeholder={config.placeholder}
+      label={config.label}
+      options={options}/>
+    )
+  }
+
+};
+export class OfficeTrade extends React.Component  {
+
+  constructor(props) {
+    super(props);
+    this.state={
+      options:[]
+    }
+    this.tradeService = new TradeService();
+  }
+
+  componentDidMount() {
+    this.tradeService.all(err=>console.log(err),
       options=>this.setState({options}))
       .finally(()=>console.log("local council request done"))
   }
