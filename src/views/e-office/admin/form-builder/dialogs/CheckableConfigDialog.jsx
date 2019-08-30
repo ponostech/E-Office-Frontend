@@ -17,6 +17,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
+import { WIDGET_TYPE } from "../constant";
 
 const styles = {
   appBar: {
@@ -34,12 +35,12 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class FillableConfigDialog extends Component {
+class CheckableConfigDialog extends Component {
   state = {
     key: "",
     label: "",
     placeholder: "",
-    defaultValue: "",
+    defaultValue: false,
     required: false
   };
 
@@ -57,20 +58,16 @@ class FillableConfigDialog extends Component {
     });
   };
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    this.setState({label:nextProps.widget.label})
-  }
-
   doClear = () => {
     this.setState({
       name: "",
       label: "",
       placeholder: "",
-      defaultValue: "",
+      value: "",
       pattern: ".*",
       required: false,
       min:0,
-      max:1000
+      max:10000
     });
   };
   createConfig = () => {
@@ -78,9 +75,9 @@ class FillableConfigDialog extends Component {
     const { key, label, placeholder, defaultValue, required, pattern,min,max } = this.state;
     let config = {
       label,
-      placeholder,
       type:widget.type,
-      fillable:true,
+      fillable:false,
+      placeholder,
       defaultValue,
       validation: {
         required,
@@ -89,7 +86,7 @@ class FillableConfigDialog extends Component {
       }
     };
     onClose();
-    onCreateConfiguration(widget.key, config);
+    onCreateConfiguration(key, config);
   };
 
   render() {
@@ -115,7 +112,16 @@ class FillableConfigDialog extends Component {
         <DialogContent>
 
           <Grid container={true} spacing={2}>
-
+            <Grid md={12} sm={12} item={true}>
+              <TextField name={"key"}
+                         onChange={event => this.onChange("key", event.target.value)}
+                         required={true}
+                         value={this.state.key}
+                         variant={"outlined"}
+                         fullWidth={true}
+                         margin={"dense"}
+                         label={"Key"}/>
+            </Grid>
             <Grid md={12} sm={12} item={true}>
               <TextField name={"label"}
                          onChange={event => this.onChange("label", event.target.value)}
@@ -126,6 +132,17 @@ class FillableConfigDialog extends Component {
                          margin={"dense"}
                          label={"Label"}/>
             </Grid>
+            <Grid md={12} sm={12} item={true}>
+              <TextField name={"placeholder"}
+                         onChange={event => this.onChange("placeholder", event.target.value)}
+                         required={true}
+                         value={this.state.placeholder}
+                         variant={"outlined"}
+                         fullWidth={true}
+                         margin={"dense"}
+                         label={"PlaceHolder"}/>
+            </Grid>
+
 
             <Grid md={12} sm={12} item={true}>
               <FormControlLabel
@@ -153,10 +170,10 @@ class FillableConfigDialog extends Component {
   }
 }
 
-FillableConfigDialog.propTypes = {
+CheckableConfigDialog.propTypes = {
   onCreateConfiguration: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   widget: PropTypes.object.isRequired
 };
-export default withStyles(styles)(FillableConfigDialog);
+export default withStyles(styles)(CheckableConfigDialog);
