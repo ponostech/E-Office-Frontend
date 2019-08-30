@@ -146,6 +146,27 @@ export const OfficeRadio = ({ key, config, application, onChange }) => {
     </FormControl>
   );
 };
+export const OfficePremiseRadio = ({ key, config, application, onChange }) => {
+  let value = application[key];
+  return (
+    <FormControl component={"div"} fullWidth={true} margin={"dense"}>
+      <FormLabel component={"label"}>{config.label}</FormLabel>
+      <RadioGroup
+        name={key}
+        row={true}
+        value={value}
+        onChange={val => onChange(key, val)}
+      >
+          <FormControlLabel value={"Owned"} label={"Owned"}
+                            control={<Radio color={"primary"}/>}/>
+          <FormControlLabel value={"Leased"} label={"Leased"}
+                            control={<Radio color={"primary"}/>}/>
+
+      </RadioGroup>
+    </FormControl>
+  );
+};
+
 export const OfficeCheckbox = ({ key, config, application, onChange }) => {
   let value = application[key];
   return (
@@ -256,6 +277,42 @@ export class OfficeTrade extends React.Component  {
     this.tradeService.all(err=>console.log(err),
       options=>this.setState({options}))
       .finally(()=>console.log("local council request done"))
+  }
+  render() {
+    const{ key, config, application, onChange }=this.props;
+    const { options } = this.state;
+
+    let value = application[key];
+
+    return(
+
+     <OfficeSelect
+      variant={"outlined"}
+      margin={"dense"}
+      value={value}
+      required={config.validation.required}
+      fullWidth={true}
+      name={key}
+      onChange={val => onChange(key, val)}
+      ClearAble={true}
+      placeholder={config.placeholder}
+      label={config.label}
+      options={options}/>
+    )
+  }
+
+};
+export class OfficeApplicantType extends React.Component  {
+
+  constructor(props) {
+    super(props);
+    this.state={
+      options:[
+        {value: "proprietor", label: "Proprietor"},
+        {value: "partnership", label: "Partnership"},
+        {value: "private limited", label: "Private Limited"}
+      ]
+    }
   }
   render() {
     const{ key, config, application, onChange }=this.props;

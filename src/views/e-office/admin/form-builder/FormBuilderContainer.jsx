@@ -7,7 +7,6 @@ import {
   Grid,
   Icon,
   IconButton,
-  List,
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
@@ -18,13 +17,14 @@ import {
 import StandardConfigDialog from "./dialogs/StandardConfigDialog";
 import FillableConfigDialog from "./dialogs/FillableConfigDialog";
 import FileUploadConfigDialog from "./dialogs/FileUploadConfigDialog";
-import { WIDGET_TYPE } from "./constant";
+import { FILLABLE_TYPE, SHOP_FILLABLE, WIDGET_TYPE } from "./constant";
 import ImageListConfigDialog from "./dialogs/ImageListConfigDialog";
 import DatePickerConfigDialog from "./dialogs/DatePickerConfigDialog";
 import LocalCouncilConfig from "./dialogs/fillable/LocalCouncilConfig";
 import { getControl } from "./ControlResolver";
 import OfficeSelect from "../../../../components/OfficeSelect";
 import OptionConfigDialog from "./dialogs/OptionConfigDialog";
+import CheckableConfigDialog from "./dialogs/CheckableConfigDialog";
 
 const StandardWidgetList = ({ onWidgetClick }) => {
   const widgets = [
@@ -62,11 +62,15 @@ const StandardWidgetList = ({ onWidgetClick }) => {
     </>
   );
 };
-const FillableWidgetList = ({ onWidgetClick }) => {
-  const widgets = [
-    { key: "applicant_name", type: "text", label: "Name of Applicant", icon: "close" },
-    { key: "local_council", type: "text", label: "Local Council", icon: "close" }
-  ];
+const FillableWidgetList = ({ onWidgetClick, selectedSiteVerification }) => {
+  let widgets = [];
+  switch (selectedSiteVerification.value) {
+    case "shop":
+      widgets = SHOP_FILLABLE;
+      break;
+    default:
+      break;
+  }
   return (
     <>
       {widgets.map((widget, i) =>
@@ -112,14 +116,15 @@ const DynamicForm = ({ selectedWidgetList, onWidgetValueChange, onRemoveWidget, 
 
     { value: "hoarding", label: "Hoarding Site verification" },
     { value: "kiosk", label: "Kiosk Site verification" },
-    { value: "shop", label: "Shop Site verification" }
+    { value: "shop", label: "Shop Site verification" },
+    { value: "hotel", label: "Shop Site verification" }
   ];
 
 
   return (
     <Paper>
       <Card>
-        <CardHeader title={"Site verfication form builder"}
+        <CardHeader title={"Site verification form builder"}
                     subheader={"Select widget from the left to make site verification from"} action={
 
           <OfficeSelect
@@ -183,32 +188,61 @@ class FormBuilderContainer extends Component {
 
 
   onStandardWidgetClick = (selectedWidget) => {
-    this.setState({selectedWidget})
+    this.setState({ selectedWidget });
     switch (selectedWidget.type) {
       case WIDGET_TYPE.TEXT_FIELD:
-        this.setState({openStandardConfig:true})
+        this.setState({ openStandardConfig: true });
         break;
       case WIDGET_TYPE.CHECKBOX:
-        this.setState({openStandardConfig:true})
+        this.setState({ openSwitchConfig: true });
         break;
       case WIDGET_TYPE.SWITCH:
-        this.setState({openStandardConfig:true})
+        this.setState({ openSwitchConfig: true });
         break;
       case WIDGET_TYPE.DATE_PICKER:
-        this.setState({openDateConfig:true})
+        this.setState({ openDateConfig: true });
         break;
       case WIDGET_TYPE.SELECT:
-        this.setState({openOptionDialog:true})
+        this.setState({ openOptionDialog: true });
         break;
       case WIDGET_TYPE.RADIO:
-        this.setState({openOptionDialog:true})
+        this.setState({ openOptionDialog: true });
+        break;
+      case WIDGET_TYPE.IMAGE_LIST:
+        this.setState({ openImageListConfig: true });
+        break;
+      case WIDGET_TYPE.FILE_UPLOAD:
+        this.setState({ openFileUploadConfig: true });
         break;
       default:
-        break
+        break;
     }
   };
   onFillableWidgetClick = (selectedWidget) => {
-    this.setState({ selectedWidget, openLocalCouncilConfig: true });
+    this.setState({ selectedWidget });
+    switch (selectedWidget.type) {
+      // case FILLABLE_TYPE.TEXT_FIELD:
+      //   this.setState({ openFillableTextFieldConfig: true });
+      //   break;
+      // case FILLABLE_TYPE.LOCAL_COUNCIL:
+      //   this.setState({ openFillableLocalCouncilConfig: true });
+      //   break;
+      // case FILLABLE_TYPE.TRADE:
+      //   this.setState({ openFillableTradeConfig: true });
+      //   break;
+      // case FILLABLE_TYPE.RADIO:
+      //   this.setState({ openFillableSelectConfig: true });
+      //   break;
+      // case FILLABLE_TYPE.CHECKBOX:
+      //   this.setState({ openFillableCheckableConfig: true });
+      //   break;
+      // case FILLABLE_TYPE.DATE:
+      //   this.setState({ openFillableDateConfig: true });
+      //   break;
+      default:
+        this.setState({openFillableConfig:true})
+        break;
+    }
   };
 
   changeValue = (key, value) => {
@@ -232,19 +266,30 @@ class FormBuilderContainer extends Component {
   };
 
   render() {
-    const { selectedWidgetList, openStandardConfig, openFillableConfig, openFileUploadConfig, openOptionDialog, openDateConfig, openImageListConfig, selectedWidget, selectedSiteVerification } = this.state;
+    const { selectedWidgetList, openSwitchConfig, openStandardConfig, openFillableConfig,
+      openFileUploadConfig, openOptionDialog, openDateConfig, openImageListConfig, selectedWidget, selectedSiteVerification } = this.state;
     const { openLocalCouncilConfig } = this.state;
 
     return (
       <>
-        <Grid container={true} justify={"flex-start"} alignItems={"flex-start"}>
+        <Grid spacing={3} container={true} justify={"flex-start"} alignItems={"flex-start"}>
 
           <Grid item={true} md={3} lg={3}>
-            <List>
-              <StandardWidgetList onWidgetClick={this.onStandardWidgetClick}/>
-              <Divider component={"div"}/>
-              <FillableWidgetList onWidgetClick={this.onFillableWidgetClick}/>
-            </List>
+            <Paper>
+              <Card>
+                <CardHeader title={"Standard Widget"} subheader={"Please select widget from a list"}/>
+                <CardContent>
+                  <StandardWidgetList onWidgetClick={this.onStandardWidgetClick}/>
+                </CardContent>
+                <Divider component={"div"}/>
+                <CardHeader title={"Fillable widget"}
+                            subheader={"Select type of site verification before you select fillable widget"}/>
+                <CardContent>
+                  <FillableWidgetList selectedSiteVerification={selectedSiteVerification}
+                                      onWidgetClick={this.onFillableWidgetClick}/>
+                </CardContent>
+              </Card>
+            </Paper>
           </Grid>
 
           <Grid item={true} md={9} lg={9}>
@@ -259,6 +304,11 @@ class FormBuilderContainer extends Component {
                               open={openStandardConfig}
                               widget={selectedWidget}
                               onCreateConfiguration={this.addConfiguredWidget}/>
+
+        <CheckableConfigDialog onClose={() => this.setState({ openSwitchConfig: false })}
+                               open={openSwitchConfig}
+                               widget={selectedWidget}
+                               onCreateConfiguration={this.addConfiguredWidget}/>
 
         <OptionConfigDialog onClose={() => this.setState({ openOptionDialog: false })}
                             open={openOptionDialog}
