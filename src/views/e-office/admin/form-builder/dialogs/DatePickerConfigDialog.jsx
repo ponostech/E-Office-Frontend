@@ -44,10 +44,6 @@ class DatePickerConfigDialog extends Component {
     required: false
   };
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("component update");
-  }
-
   onChange = (name, value) => {
     this.setState({ [name]: value });
   };
@@ -69,12 +65,11 @@ class DatePickerConfigDialog extends Component {
     });
   };
   createConfig = () => {
-    const { onCreateConfiguration,onClose } = this.props;
+    const { onCreateConfiguration,onClose,widget } = this.props;
     const { key, label, placeholder, defaultValue, required, pattern,min,max } = this.state;
     let config = {
       label,
-      type:WIDGET_TYPE.DATE_PICKER,
-      fillable:false,
+      type:widget.type,
       placeholder,
       defaultValue,
       validation: {
@@ -145,7 +140,7 @@ class DatePickerConfigDialog extends Component {
               <FormControlLabel
                 control={
                   <Switch
-                    onChange={value => this.onChange("required", value)}
+                    onChange={(event, checked) => this.onChange("required", checked)}
                     value={this.state.required}
                     checked={this.state.required}
                     color="primary"

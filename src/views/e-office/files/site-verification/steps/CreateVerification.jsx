@@ -7,6 +7,7 @@ import { Button, Card, CardActions, CardContent, CardHeader, Divider } from "@ma
 import Grid from "@material-ui/core/Grid";
 import LoadingView from "../../../../common/LoadingView";
 import PropTypes from "prop-types";
+import { getControl } from "../../../admin/form-builder/ControlResolver";
 
 class CreateVerification extends Component {
   siteVerification = new SiteVerificationService();
@@ -91,7 +92,22 @@ class CreateVerification extends Component {
 
     this.setState({ formElements: newElements });
   };
+  onChange=(key,value)=>{
 
+  }
+
+  generateForm=()=>{
+    const { formElements } = this.state;
+    const { application } = this.props;
+    let view=<p>No site verification</p>
+    view=Object.entries(formElements).map(([key, config])=>
+      <>
+        <GridItem key={key} md={6}>
+          {getControl(key,config,application,this.onChange)}
+        </GridItem>
+      </>
+    )
+  }
   render() {
     const { formElements, loading } = this.state;
     const { onNext, file, onBack } = this.props;
