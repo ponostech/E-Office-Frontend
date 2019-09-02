@@ -24,6 +24,7 @@ import CreateVerification from "./steps/CreateVerification";
 import ConfirmVerification from "./steps/ConfirmVerification";
 import PropTypes from "prop-types";
 import { SiteVerificationService } from "../../../../services/SiteVerificationService";
+import CreateSiteVerification from "./steps/CreateSiteVerification";
 
 const styles = {
   appBar: {
@@ -109,7 +110,13 @@ class SiteVerificationDialog extends Component {
     //   )
     //   .finally(() => this.setState({ submit: false }));
   };
-
+// <CreateVerification
+// onCreateSiteVerification={this.createVerification}
+// application={this.state.selectedApplication}
+// file={this.props.file}
+// onNext={this.handleNext}
+// onBack={this.handleBack}
+// />
   getStepContent = step => {
     switch (step) {
       case 0:
@@ -122,7 +129,7 @@ class SiteVerificationDialog extends Component {
         );
       case 1:
         return (
-          <CreateVerification
+          <CreateSiteVerification
             onCreateSiteVerification={this.createVerification}
             application={this.state.selectedApplication}
             file={this.props.file}

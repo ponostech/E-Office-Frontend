@@ -17,6 +17,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
+import { WIDGET_TYPE } from "../constant";
 
 const styles = {
   appBar: {
@@ -78,8 +79,7 @@ class FileUploadConfigDialog extends Component {
     const { key, label, placeholder, defaultValue, required, pattern,min,max } = this.state;
     let config = {
       label,
-      type:"file_upload",
-      fillable:false,
+      type:widget.type,
       placeholder,
       defaultValue,
       validation: {
@@ -142,7 +142,7 @@ class FileUploadConfigDialog extends Component {
               <FormControlLabel
                 control={
                   <Switch
-                    onChange={value => this.onChange("required", value)}
+                    onChange={(event, checked) => this.onChange("required", checked)}
                     value={this.state.required}
                     checked={this.state.required}
                     color="primary"

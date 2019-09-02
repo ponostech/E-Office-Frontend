@@ -76,7 +76,6 @@ class CheckableConfigDialog extends Component {
     let config = {
       label,
       type:widget.type,
-      fillable:false,
       placeholder,
       defaultValue,
       validation: {
@@ -148,7 +147,7 @@ class CheckableConfigDialog extends Component {
               <FormControlLabel
                 control={
                   <Switch
-                    onChange={value => this.onChange("required", value)}
+                    onChange={(event, checked) => this.onChange("required", checked)}
                     value={this.state.required}
                     checked={this.state.required}
                     color="primary"

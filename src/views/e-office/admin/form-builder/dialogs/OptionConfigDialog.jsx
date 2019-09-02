@@ -17,6 +17,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
+import { WIDGET_TYPE } from "../constant";
 
 const styles = {
   appBar: {
@@ -67,12 +68,11 @@ class OptionConfigDialog extends Component {
     });
   };
   createConfig = () => {
-    const { onCreateConfiguration,onClose } = this.props;
+    const { onCreateConfiguration,onClose,widget } = this.props;
     const { key, label, placeholder, defaultValue, required, pattern,min,max,options } = this.state;
     let config = {
       label,
-      type:"file_upload",
-      fillable:false,
+      type:widget.type,
       placeholder,
       defaultValue,
       validation: {
@@ -95,11 +95,13 @@ class OptionConfigDialog extends Component {
     temp.slice(i,1)
     this.setState({options:temp})
   }
-  handleOptionChange=(index,value,label)=>{
+  handleOptionChange=(index,value,field)=>{
     let temp = this.state.options;
-    let data=temp[index]
-    data['label']=label;
-    data['value']=value
+    let data=temp[index];
+    if(field==="value")
+      data['value']=value;
+    else
+      data['label']=value
   }
 
   render() {
@@ -161,7 +163,7 @@ class OptionConfigDialog extends Component {
               <FormControlLabel
                 control={
                   <Switch
-                    onChange={value => this.onChange("required", value)}
+                    onChange={(event, checked) => this.onChange("required", checked)}
                     value={this.state.required}
                     checked={this.state.required}
                     color="primary"

@@ -49,7 +49,6 @@ import DashboardAdmin from "../../views/e-office/admin/DashboardAdmin";
 import LicenseTemplate from "../../views/e-office/admin/templates/LicenseTemplate";
 import CancelTemplate from "../../views/e-office/admin/templates/CancelTemplate";
 import RejectTemplate from "../../views/e-office/admin/templates/RejectTemplate";
-import FormBuilderContainer from "../../components/form-builder/FormBuilderContainer";
 import SiteVerificationFormList from "../../views/e-office/site-verification/SiteVerificationFormList";
 import EditSiteVerificationTemplate from "../../components/form-builder/EditSiteVerificationTemplate";
 import ReceiptNewList from "../../views/e-office/receipt/ReceiptNewList";
@@ -61,6 +60,7 @@ import FileHeadTemplates from "../../views/e-office/admin/e-file/FileHeadTemplat
 import AdvertisementRateView from "../../views/e-office/admin/rates/AdvertisementRateView";
 import ShopUnpaidList from "../../views/e-office/applications/shop-license/ShopUnpaidList";
 import ChallanContainer from "../../views/e-office/challan/ChallanContainer";
+import FormBuilderContainer from "../../views/e-office/admin/form-builder/FormBuilderContainer";
 
 const routes = (props) => {
   return (

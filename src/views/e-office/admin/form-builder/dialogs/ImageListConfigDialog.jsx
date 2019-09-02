@@ -64,7 +64,7 @@ class ImageListConfigDialog extends Component {
   doClear = () => {
     this.setState({
       key: "",
-      type:"file_upload",
+      type:WIDGET_TYPE.IMAGE_LIST,
       fillable:false,
       label: "",
       placeholder: "",
@@ -144,7 +144,7 @@ class ImageListConfigDialog extends Component {
               <FormControlLabel
                 control={
                   <Switch
-                    onChange={value => this.onChange("required", value)}
+                    onChange={(event, checked) => this.onChange("required", checked)}
                     value={this.state.required}
                     checked={this.state.required}
                     color="primary"

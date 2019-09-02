@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from "reactn";
 import {
-  Card,
+  Card, CardActions,
   CardContent,
   CardHeader,
   Divider,
@@ -11,7 +11,7 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  Paper,
+  Paper,Button,
   TextField
 } from "@material-ui/core";
 import StandardConfigDialog from "./dialogs/StandardConfigDialog";
@@ -25,6 +25,8 @@ import { getControl } from "./ControlResolver";
 import OfficeSelect from "../../../../components/OfficeSelect";
 import OptionConfigDialog from "./dialogs/OptionConfigDialog";
 import CheckableConfigDialog from "./dialogs/CheckableConfigDialog";
+import { SiteVerificationService } from "../../../../services/SiteVerificationService";
+import SubmitDialog from "../../../../components/SubmitDialog";
 
 const StandardWidgetList = ({ onWidgetClick }) => {
   const widgets = [
@@ -110,7 +112,7 @@ const FillableWidgetList = ({ onWidgetClick, selectedSiteVerification }) => {
 // ]
 //   }
 // }
-const DynamicForm = ({ selectedWidgetList, onWidgetValueChange, onRemoveWidget, selectedSiteVerification, changeSiteVerification }) => {
+const DynamicForm = ({onSave,onClear, selectedWidgetList, onWidgetValueChange, onRemoveWidget, selectedSiteVerification, changeSiteVerification }) => {
 
   const options = [
 
@@ -161,6 +163,10 @@ const DynamicForm = ({ selectedWidgetList, onWidgetValueChange, onRemoveWidget, 
           </Grid>
 
         </CardContent>
+        <CardActions>
+          <Button variant={"outlined"} color={"primary"} onClick={e=>onSave()} >Save</Button>
+          <Button variant={"outlined"} color={"secondary"} onClick={event => onClear()}>Clear</Button>
+        </CardActions>
       </Card>
     </Paper>
   );
@@ -182,10 +188,28 @@ class FormBuilderContainer extends Component {
       openOptionDialog: false,
 
       openLocalCouncilConfig: false,
-      formData: {}
+      formData: {},
+      submit:false
     };
+    this.siteVerificationService=new SiteVerificationService();
   }
 
+  saveConfig=()=>{
+    const { selectedWidgetList,selectedSiteVerification } = this.state;
+    const type=selectedSiteVerification.value;
+    let data={
+      formElements:selectedWidgetList
+    }
+    this.setState({submit:true});
+    if (selectedWidgetList !== null && selectedWidgetList!==undefined) {
+      this.siteVerificationService.createTemplate(type,data,
+        errorMsg=>this.setGlobal({errorMsg}),
+        successMsg=>this.setGlobal({successMsg}))
+        .finally(()=>this.setState({submit:false}))
+    }
+  }
+
+  clearItems=()=>this.setState({selectedWidgetList:{}})
 
   onStandardWidgetClick = (selectedWidget) => {
     this.setState({ selectedWidget });
@@ -266,7 +290,7 @@ class FormBuilderContainer extends Component {
   };
 
   render() {
-    const { selectedWidgetList, openSwitchConfig, openStandardConfig, openFillableConfig,
+    const { selectedWidgetList, openSwitchConfig, openStandardConfig, openFillableConfig,submit,
       openFileUploadConfig, openOptionDialog, openDateConfig, openImageListConfig, selectedWidget, selectedSiteVerification } = this.state;
     const { openLocalCouncilConfig } = this.state;
 
@@ -295,6 +319,7 @@ class FormBuilderContainer extends Component {
           <Grid item={true} md={9} lg={9}>
             <DynamicForm onRemoveWidget={this.removeWidget} onWidgetValueChange={this.changeValue}
                          selectedWidgetList={selectedWidgetList} selectedSiteVerification={selectedSiteVerification}
+                         onSave={this.saveConfig} onClear={this.clearItems}
                          changeSiteVerification={val => this.setState({ selectedSiteVerification: val })}/>
           </Grid>
 
@@ -332,8 +357,9 @@ class FormBuilderContainer extends Component {
         <LocalCouncilConfig onClose={() => this.setState({ openLocalCouncilConfig: false })}
                             open={openLocalCouncilConfig}
                             widget={selectedWidget}
-                            onCreateConfiguration={this.addConfiguredWidget}
-        />
+                            onCreateConfiguration={this.addConfiguredWidget}/>
+
+                            <SubmitDialog open={submit} title={"Create Site verification form"} text={"Please wait ..."} />
       </>
     );
   }
