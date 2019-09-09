@@ -26,8 +26,6 @@ class CreateSiteVerification extends Component {
         formData[key]=null
       }
       this.setState({
-        title: template.data.title,
-        subTitle: template.data.subTitle,
         formElements: template.data.formElements,
         formData
       });
@@ -74,23 +72,22 @@ class CreateSiteVerification extends Component {
     }
   };
   onChange=(key,value)=>{
-    const { formData, formElements } = this.state;
-    let temp = formData;
-    temp[key]=value;
     console.log("key",key)
     console.log("value",value)
-    this.setState({formData:temp})
+    const { formData, formElements } = this.state;
+    formData[key]=value
+    // this.setState({formData:temp})
   }
 
   generateForm=()=>{
-    const { formElements } = this.state;
+    const { formElements,formData } = this.state;
     const { application } = this.props;
     let view=<p>No site verification</p>
 
     view=Object.keys(formElements).map((key, index) =>
     {
       return <Grid item={true} key={index} md={6}>
-        {getControl(key,formElements[key],application,this.onChange)}
+        {getControl(key,formElements[key],formData,application,this.onChange)}
       </Grid>
     }
     );

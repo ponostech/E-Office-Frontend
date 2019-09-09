@@ -15,12 +15,13 @@ import {
 import React from "react";
 
 export const
-  getControl = (key, config, application, onWidgetValueChange) => {
+  getControl = (key, config,formData, application, onWidgetValueChange) => {
     let value = application[key];
+    formData[key]=value;
     switch (config.type) {
       case WIDGET_TYPE.TEXT_FIELD:
         return <>
-          <OfficeTextField onChange={onWidgetValueChange} config={config} field={key} application={application}/>
+          <OfficeTextField formData={formData} onChange={onWidgetValueChange} config={config} field={key} application={application}/>
         </>;
       case WIDGET_TYPE.RADIO:
         return <>
@@ -64,7 +65,7 @@ export const
                               config={config} onChange={onWidgetValueChange}/>
         </>;
       case FILLABLE_TYPE.TEXT_FIELD:
-        return <OfficeTextField application={null} onChange={onWidgetValueChange} field={key} config={config}/>;
+        return <OfficeTextField formData={formData} application={null} onChange={onWidgetValueChange} field={key} config={config}/>;
       case FILLABLE_TYPE.DATE:
         return <OfficeDatePicker config={config} field={key} onChange={onWidgetValueChange} application={null}/>;
       case FILLABLE_TYPE.PASSPORT:
