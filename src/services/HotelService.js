@@ -39,8 +39,10 @@ export class HotelService {
     try {
       let res=await axios.post(ApiRoutes.CREATE_HOTEL_LICENSE, data);
       if (res.data.status) {
-        let msgs = [];
-        successCallback(ArrayToString(res.data.messages));
+        if (res.data.data.challan)
+          successCallback(res.data.data.challan, ArrayToString(res.data.messages));
+        else
+          successCallback(false, ArrayToString(res.data.messages));
       }else{
         if (res.data.validation_error) {
           errorCallback(ErrorToString(res.data.messages));

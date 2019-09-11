@@ -106,22 +106,21 @@ class HotelNewList extends Component {
     const tableColumns = [
       {
         name: "owner",
-        label: "Name of Applicant"
-      },
-      {
-        name: "phone",
-        label: "Contact"
+        label: "NAME OF APPLICANT"
       },
       {
         name: "name",
-        label: "SHOP NAME"
+        label: "HOTEL NAME"
       },
       {
-        name: "address",
-        label: "PROPOSED LOCATION"
+        name: "local_council",
+        label: "PROPOSED LOCATION",
+        options: {
+          customBodyRender: (value) => value.name
+        }
       },
       {
-        name: "created_at",
+        name: "application_date",
         label: "APPLICATION DATE",
         options: {
           filter: false,
