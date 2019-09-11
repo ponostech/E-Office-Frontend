@@ -163,6 +163,7 @@ class HotelApplication extends Component {
       otpMessage => this.setState({ otpMessage, openOtp: true }))
       .finally(() => console.info("otp request has been made"));
   };
+
   onVerifiedOtp = (verified) => {
     const { history } = this.props;
     if (verified) {
@@ -184,9 +185,11 @@ class HotelApplication extends Component {
         .finally(() => this.setState({ submit: false }));
     }
   };
+
   fetchLocalCouncil = () => {
     this.localCouncilService.fetch(errorMsg => this.setState({ errorMsg }), localCouncils => this.setState({ localCouncils }));
   };
+
   fetchDocuments = () => {
     this.documentService.fetch("shop", errorMsg => this.setState({ errorMsg }), docs => {
       this.setState({
@@ -201,6 +204,7 @@ class HotelApplication extends Component {
     this.tradeService.fetch("hotel",(errorMsg) => this.setState({ errorMsg })
       , (trades) => this.setState({ trades }));
   };
+
   handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({

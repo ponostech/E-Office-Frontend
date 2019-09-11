@@ -91,5 +91,27 @@ export class TradeService {
     }
   }
 
-
+  async fetchHotel(errorCallback, successCallback) {
+    try {
+      const res = await axios.get(ApiRoutes.GET_TRADE, {params: {type: 'hotel'}});
+      if (res.data.status) {
+        let newTrades = [];
+        let trades=res.data.data.trades;
+        trades.forEach(function(trade, index) {
+          let temp={
+            fla:trade.fla,
+            value:trade.id,
+            label:trade.fla?trade.name +" (Required Food License)":trade.name
+          }
+          newTrades.push(temp)
+        });
+        successCallback(newTrades);
+      } else {
+        errorCallback(ArrayToString(res.data.messages));
+      }
+    } catch (e) {
+      console.error(e)
+      errorCallback(e.toString());
+    }
+  }
 }
