@@ -40,8 +40,9 @@ export const OfficeDatePicker = ({ field,config, application, onChange }) => {
     </MuiPickersUtilsProvider>
   );
 };
-export const OfficeTextField = ({ field, config, application, onChange }) => {
-  let value = application?application[field]:null;
+export const OfficeTextField = ({ field, config,formData, application, onChange }) => {
+  // let value = application?application[field]:null;
+  let value=formData[field]
   return (
     <TextField
       fullWidth={true}
@@ -103,7 +104,7 @@ export const OfficeSwitch = ({ field, config, application, onChange }) => {
         <Switch
           required={config.validation.required}
           name={field}
-          onChange={val => onChange(field, val)}
+          onChange={event => onChange(field, event.target.checked)}
           value={value}
           checked={value}
           color="primary"

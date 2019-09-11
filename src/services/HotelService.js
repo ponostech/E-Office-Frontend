@@ -33,7 +33,8 @@ export class HotelService {
       premise_type: state.premised,
       display_type: state.displayType,
       passport: state.passport.path,
-      documents: state.uploadDocuments
+      documents: state.uploadDocuments,
+      addl_documents: state.additionalDocuments
     };
     try {
       let res=await axios.post(ApiRoutes.CREATE_HOTEL_LICENSE, data);

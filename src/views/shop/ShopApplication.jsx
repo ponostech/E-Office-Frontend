@@ -210,7 +210,7 @@ class ShopApplication extends Component {
   };
 
   fetchTrades = async () => {
-    await this.tradeService.fetch((errorMsg) => this.setGlobal({errorMsg})
+    await this.tradeService.fetch("shop",(errorMsg) => this.setGlobal({errorMsg})
         , (trades) => this.setState({trades}));
   };
   handleChange = (e) => {

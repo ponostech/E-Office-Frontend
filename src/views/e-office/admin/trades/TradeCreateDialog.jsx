@@ -91,7 +91,7 @@ class TradeCreateDialog extends Component {
         fla,
         rate
       };
-      this.props.onClose(data);
+      this.props.onCreate(data);
     }
 
   };
@@ -171,7 +171,7 @@ class TradeCreateDialog extends Component {
             <RadioGroup
               defaultValue={"0"}
               value={this.state.fla}
-              name={"landlordType"}
+              name={"fla"}
               row={true}
               onChange={event => this.setState({ fla: event.target.value })}
             >

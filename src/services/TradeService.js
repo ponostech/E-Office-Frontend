@@ -9,7 +9,7 @@ export class TradeService {
     const config = { headers: { "Authorization": `Bearer ${token}` } };
 
     try {
-      let res = await axios.get(ApiRoutes.GET_TRADE, config);
+      let res = await axios.get(ApiRoutes.GET_TRADE(null), config);
 
       if (res.data.status) {
         successCallback(res.data.data.trades)
@@ -29,7 +29,7 @@ export class TradeService {
     let data = {
       name: state.name,
       rate: state.rate,
-      fla: state.fla.value,
+      fla: state.fla,
     };
     try {
       let res = await axios.post(ApiRoutes.CREATE_TRADE, data);
@@ -65,11 +65,11 @@ export class TradeService {
       errorCallback(e.toString());
     }
   }
-  async fetch(errorCallback, successCallback) {
+  async fetch(type,errorCallback, successCallback) {
     // const token = localStorage.getItem("access_token");
     // const config={ headers: {"Authorization" : `Bearer ${token}`} }
     try {
-      const res = await axios.get(ApiRoutes.GET_TRADE);
+      const res = await axios.get(ApiRoutes.GET_TRADE(type));
       if (res.data.status) {
         let newTrades = [];
         let trades=res.data.data.trades;
