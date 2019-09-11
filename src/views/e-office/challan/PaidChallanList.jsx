@@ -107,6 +107,8 @@ class PaidChallanList extends Component {
             switch (currentChallan.challanable_type) {
               case 'App\\Shop':
                 return currentChallan.application.owner
+              case 'App\\Hotel':
+                return currentChallan.application.owner
 
               default:
                 return currentChallan.challanable_type + "PaidChallanList.jsx"
