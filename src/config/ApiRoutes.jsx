@@ -99,7 +99,7 @@ export class ApiRoutes {
   static FILE_SEND = "/files/send";
   static FILE_DETAIL = "/files";
   static CREATE_TRADE = "/trades";
-  static GET_TRADE = "/trades";
+  static GET_TRADE=(type) => `/trades/${type}`;
   static CREATE_LICENSE_TEMPLATE = "/permit-templates";
   static CREATE_PERMIT_TEMPLATE = "/permit-templates";
   static CREATE_FILE_HEAD = "/file-index";

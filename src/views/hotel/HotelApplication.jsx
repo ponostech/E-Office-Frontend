@@ -44,6 +44,7 @@ import { APPLICATION_NAME } from "../../utils/Util";
 import LoadingView from "../common/LoadingView";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import { OfficeImageList } from "../e-office/admin/form-builder/fields";
 
 const style = {
   subTitle: {
@@ -99,6 +100,7 @@ class HotelApplication extends Component {
     latitude: undefined,
     longitude: undefined,
     uploadDocuments: [],
+    additionalDocuments:[],
 
     nameError: "",
     typeError: "",
@@ -196,7 +198,7 @@ class HotelApplication extends Component {
 
   };
   fetchTrades = () => {
-    this.tradeService.fetch((errorMsg) => this.setState({ errorMsg })
+    this.tradeService.fetch("hotel",(errorMsg) => this.setState({ errorMsg })
       , (trades) => this.setState({ trades }));
   };
   handleChange = (e) => {
@@ -733,13 +735,13 @@ class HotelApplication extends Component {
                         <GridItem className={classes.root} xs={12} sm={12} md={12}>
                           <Typography className={classes.subTitle} variant={"h6"}>Upload Document(s)</Typography>
                         </GridItem>
-                        <GridItem xs={12} sm={12} md={12}>
+                        <GridItem xs={12} sm={12} md={8}>
                           <Divider component={"div"}/>
                         </GridItem>
                         {
                           this.state.documents.map((doc, index) => {
                             return <GridItem key={index} className={classes.root} sm={12} xs={12}
-                                             md={12}>
+                                             md={8}>
 
                               <FileUpload key={index} document={doc} onUploadSuccess={(data) => {
                                 let temp = {
@@ -758,6 +760,23 @@ class HotelApplication extends Component {
 
                           })
                         }
+
+                        <GridItem  xs={12} sm={12} md={8}>
+                          <Typography className={classes.subTitle} variant={"h6"}>Additional Document(S)</Typography>
+                        </GridItem>
+
+                        <GridItem className={classes.root} sm={12} xs={12} md={12}>
+                          <Divider component={"div"}/>
+                        </GridItem>
+
+                        <GridItem xs={12} sm={12} md={8}>
+                          <OfficeImageList application={null} key={"additionDocuments"} config={{
+                            label:"",
+                            validation:{
+                              required:false
+                            }
+                          }} onChange={(key,value)=>this.setState({additionalDocuments:value})}/>
+                        </GridItem>
 
                         <GridItem xs={12} sm={12} md={12}>
                           <Typography className={classes.subTitle} variant={"h6"}>Declaration</Typography>

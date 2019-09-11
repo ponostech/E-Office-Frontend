@@ -45,17 +45,17 @@ class TradeList extends Component {
   onUpdate = (trade = null) => {
     this.setState({ openEdit: false });
     if (trade) {
-      this.setState({ submit: true, submitTitle: "Creating New Trade" });
+      this.setState({ submit: true, submitTitle: "Updating Trade" });
       this.tradeService.update(trade,
         errorMsg => this.setGlobal({ errorMsg }),
         successMsg => this.setGlobal({ successMsg }))
         .finally(() => this.setState({ submit: false }));
     }
   };
-  onCreate = (trade = null) => {
+  onCreate = (trade) => {
     this.setState({ openCreate: false });
     if (trade) {
-      this.setState({ submit: true, submitTitle: "Updating Trade" });
+      this.setState({ submit: true, submitTitle: "Creating New Trade" });
       this.tradeService.create(trade,
         errorMsg => this.setGlobal({ errorMsg }),
         successMsg => this.setGlobal({ successMsg }))
@@ -100,7 +100,7 @@ class TradeList extends Component {
         options: {
           customBodyRender: (fla, tableMeta, updateValue) => {
             return (
-              (fla === 0 ? "Yes" : "No")
+              (fla === 0 ? "No" : "Yes")
             );
           }
         }
@@ -144,7 +144,7 @@ class TradeList extends Component {
           />
         </Grid>}
         <TradeEditDialog open={this.state.openEdit} onClose={this.onUpdate.bind(this)} trade={this.state.trade}/>
-        <TradeCreateDialog open={this.state.openCreate} onClose={this.onCreate.bind(this)}/>
+        <TradeCreateDialog open={this.state.openCreate} onCreate={this.onCreate} onClose={()=>this.setState({openCreate:false})}/>
 
         <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={this.state.openConfirm}
                        onConfirm={this.onDelete.bind(this)}/>
