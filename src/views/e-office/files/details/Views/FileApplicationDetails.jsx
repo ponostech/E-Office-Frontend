@@ -132,7 +132,7 @@ class FileApplicationDetails extends React.Component {
             {name: "Address of Applicant", value: application.owner_address},
             {name: "Type of Applicant", value: application.type},
             {name: "Name of the Shop", value: application.name},
-            {name: "Name of Trade", value: application.trade.name},
+            // {name: "Name of Trade", value: application.trade.name},
             {name: "Proposed Location", value: application.address},
             {name: "Local Council", value: application.local_council.name},
             {name: "Details of Business", value: application.details ? application.details : "N/A"},

@@ -114,9 +114,10 @@ class UnPaidChallanList extends Component {
             switch (currentChallan.challanable_type) {
               case 'App\\Shop':
                 return currentChallan.application.owner
-
+              case 'App\\Hotel':
+                return currentChallan.application.owner
               default:
-                return currentChallan.challanable_type + "PaidChallanList.jsx"
+                return currentChallan.challanable_type + "UnPaidChallanList.jsx"
             }
           }
         }
