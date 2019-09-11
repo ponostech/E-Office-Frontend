@@ -100,7 +100,7 @@ class HotelApplication extends Component {
     latitude: undefined,
     longitude: undefined,
     uploadDocuments: [],
-    additionalDocuments:[],
+    additionalDocuments: [],
 
     nameError: "",
     typeError: "",
@@ -169,15 +169,21 @@ class HotelApplication extends Component {
     if (verified) {
       this.setState({ submit: true });
       this.hotelService.create(this.state, errorMsg => this.setGlobal({ errorMsg }),
-        successMessage => {
+        (challan,successMessage) => {
           const MySwal = withReactContent(Swal);
           MySwal.fire({
+            title: `Challan No:${challan.number}`,
             text: successMessage,
             type: "success",
             confirmButtonColor: "#26B99A",
-            confirmButtonText: "Ok"
+            confirmButtonText: "Pay Now (ONLINE)"
           }).then(result => {
             if (result.value) {
+              Swal.fire(
+                "Pay!",
+                "Your application is paid.",
+                "success"
+              );
               history.push(HOME);
             }
           });
@@ -201,7 +207,7 @@ class HotelApplication extends Component {
 
   };
   fetchTrades = () => {
-    this.tradeService.fetch("hotel",(errorMsg) => this.setState({ errorMsg })
+    this.tradeService.fetch("hotel", (errorMsg) => this.setState({ errorMsg })
       , (trades) => this.setState({ trades }));
   };
 
@@ -317,8 +323,8 @@ class HotelApplication extends Component {
       case "estd":
         value.length === 0 ? this.setState({ estdError: ShopLicenseViewModel.ESTD_REQUIRED }) : this.setState({ estdError: "" });
         break;
-      case "details":
-        value.length === 0 ? this.setState({ detailsError: ShopLicenseViewModel.DETAILS_REQUIRED }) : this.setState({ detailsError: "" });
+      case "businessDetail":
+        value.length === 0 ? this.setState({ businessDetailError: ShopLicenseViewModel.DETAILS_REQUIRED }) : this.setState({ businessDetailError: "" });
         break;
       default:
         break;
@@ -556,11 +562,15 @@ class HotelApplication extends Component {
                         </GridItem>
                         <GridItem className={classes.root} xs={12} sm={12} md={6}>
                           <TextField
+                            required={true}
+                            error={Boolean(this.state.businessDetailError)}
+                            helperText={this.state.businessDetailError}
                             value={this.state.businessDetail}
                             name={"businessDetail"}
                             variant={"outlined"}
                             margin={"dense"}
                             fullWidth={true}
+                            onBlur={this.handleBlur.bind(this)}
                             onChange={this.handleChange.bind(this)}
                             label={"Details of business"}
                           />
@@ -765,21 +775,21 @@ class HotelApplication extends Component {
                           })
                         }
 
-                        <GridItem  xs={12} sm={12} md={8}>
+                        <GridItem xs={12} sm={12} md={8}>
                           <Typography className={classes.subTitle} variant={"h6"}>Additional Document(S)</Typography>
                         </GridItem>
 
-                        <GridItem className={classes.root} sm={12} xs={12} md={12}>
+                        <GridItem className={classes.root} sm={12} xs={12} md={8}>
                           <Divider component={"div"}/>
                         </GridItem>
 
                         <GridItem xs={12} sm={12} md={8}>
                           <OfficeImageList application={null} key={"additionDocuments"} config={{
-                            label:"",
-                            validation:{
-                              required:false
+                            label: "",
+                            validation: {
+                              required: false
                             }
-                          }} onChange={(key,value)=>this.setState({additionalDocuments:value})}/>
+                          }} onChange={(key, value) => this.setState({ additionalDocuments: value })}/>
                         </GridItem>
 
                         <GridItem xs={12} sm={12} md={12}>
@@ -810,7 +820,7 @@ class HotelApplication extends Component {
                         <GridItem>
                           <Button name={"primary"} disabled={
                             !Boolean(this.state.name) || !Boolean(this.state.type) || !Boolean(this.state.address) || !Boolean(this.state.ownerAddress)
-                            || !Boolean(this.state.coordinate) || !Boolean(this.state.phone) || !Boolean(this.state.shopName)
+                            || !Boolean(this.state.coordinate) || !Boolean(this.state.phone) || !Boolean(this.state.shopName) || !Boolean(this.state.businessDetail)
                             || !Boolean(this.state.estd) ||
                             !this.state.agree || this.state.passport === undefined
                           }

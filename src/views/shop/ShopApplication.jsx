@@ -93,6 +93,7 @@ class ShopApplication extends Component {
     estdError: "",
     localCouncilError: "",
     ownerAddressError: "",
+    businessDetailError:"",
 
     types: [
       {value: "proprietor", label: "Proprietor"},
@@ -311,8 +312,8 @@ class ShopApplication extends Component {
       case "estd":
         value.length === 0 ? this.setState({estdError: ShopLicenseViewModel.ESTD_REQUIRED}) : this.setState({estdError: ""});
         break;
-      case "details":
-        value.length === 0 ? this.setState({detailsError: ShopLicenseViewModel.DETAILS_REQUIRED}) : this.setState({detailsError: ""});
+      case "businessDetail":
+        value.length === 0 ? this.setState({businessDetailError: ShopLicenseViewModel.DETAILS_REQUIRED}) : this.setState({businessDetailError: ""});
         break;
       default:
         break;
@@ -564,12 +565,16 @@ class ShopApplication extends Component {
 
                           <GridItem className={classes.root} xs={12} sm={12} md={6}>
                             <TextField
+                                required={true}
                                 value={this.state.businessDetail}
                                 name={"businessDetail"}
                                 variant={"outlined"}
                                 margin={"dense"}
                                 fullWidth={true}
+                                error={Boolean(this.state.businessDetailError)}
+                                helperText={this.state.businessDetailError}
                                 onChange={this.handleChange.bind(this)}
+                                onBlur={this.handleBlur.bind(this)}
                                 label={"Details of business"}
                             />
                           </GridItem>
