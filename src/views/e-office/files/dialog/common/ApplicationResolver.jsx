@@ -278,6 +278,31 @@ export const ApplicationResolver = (application) => {
             field: 'details',
             name: "Details of Business",
             value: application.details ? application.details : "N/A"
+          },{
+            changed: application.field_changes.indexOf('ac_rooms') !== -1,
+            field: 'ac_rooms',
+            name: "No of AC Rooms",
+            value: application.ac_rooms ? application.ac_rooms : "N/A"
+          },{
+            changed: application.field_changes.indexOf('non_ac_rooms') !== -1,
+            field: 'non_ac_rooms',
+            name: "No of Non AC Rooms",
+            value: application.non_ac_rooms ? application.non_ac_rooms: "N/A"
+          },{
+            changed: application.field_changes.indexOf('conferences_halls') !== -1,
+            field: 'conferences_halls',
+            name: "No of Conference Hall",
+            value: application.conference_halls ? application.conference_halls : "N/A"
+          },{
+            changed: application.field_changes.indexOf('banquet_halls') !== -1,
+            field: 'banquet_halls',
+            name: "No of Banquet Hall",
+            value: application.banquet_halls ? application.banquet_halls : "N/A"
+          },{
+            changed: application.field_changes.indexOf('other_facilities') !== -1,
+            field: 'other_facilities',
+            name: "Other Facilities",
+            value: application.banquet_halls ? application.other_facilities : "N/A"
           },
           {
             changed: application.field_changes.indexOf('estd') !== -1,

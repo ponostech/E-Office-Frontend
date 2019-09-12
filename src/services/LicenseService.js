@@ -83,7 +83,7 @@ export class LicenseService {
 
         if (`App\\Shop` in res.data.data.permits)
           shops = res.data.data.permits["App\\Shop"]
-        if (`"App\\Hotel"` in res.data.data.permits)
+        if (`App\\Hotel` in res.data.data.permits)
           hotels = res.data.data.permits["App\\Hotel"]
         if (`"App\\Banner"` in res.data.data.permits)
           banners = res.data.data.permits["App\\Banner"]

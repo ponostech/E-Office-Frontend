@@ -4,6 +4,7 @@ import CardContent from "@material-ui/core/CardContent";
 import PropTypes from "prop-types";
 import LicenseList from "./LicenseList";
 import ShopApplicationList from "./applications/ShopApplicationList";
+import HotelApplicationList from "./applications/HotelApplicationList";
 
 class ApplicationList extends Component {
   constructor(props) {
@@ -44,9 +45,12 @@ class ApplicationList extends Component {
     }
   });
 
+  selectTab=(event,val)=>{
+    this.setState({tabValue:val})
+  }
   render() {
     const {tabValue} = this.state;
-    const {shopApplications} = this.props;
+    const {shopApplications,hotelApplications} = this.props;
 
     return (
         <Card>
@@ -65,6 +69,7 @@ class ApplicationList extends Component {
                 <Tab href={"#"} label="Banner" value={"banner"}/>
               </Tabs>
               {tabValue === "shop" && <ShopApplicationList theme={this.getMuiTheme()} applications={shopApplications}/>}
+              {tabValue === "hotel" && <HotelApplicationList theme={this.getMuiTheme()} applications={hotelApplications}/>}
             </Paper>
           </CardContent>
         </Card>

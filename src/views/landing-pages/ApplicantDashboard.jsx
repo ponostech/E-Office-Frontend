@@ -97,7 +97,7 @@ class ApplicantDashboard extends Component {
 
   getApplications = () => {
     const {phone} = this.props;
-    this.setGlobal({loading: true});
+    // this.setGlobal({loading: true});
     this.licenseService.getApplications(phone,
         errorMsg => this.setGlobal({errorMsg}),
         data => this.setState({shops: data.shops, hotels: data.hotels, banners: data.banners}))

@@ -12,6 +12,8 @@ import { ShopService } from "../../../services/ShopService";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import SubmitDialog from "../../../components/SubmitDialog";
+import RenewHotelLicenseDialog from "../../hotel/RenewHotelLicenseDialog";
+import { HotelService } from "../../../services/HotelService";
 
 {/*<Card raised={true} profile={true}>*/
 }
@@ -204,6 +206,7 @@ class LicenseList extends Component {
       submit: false
     };
     this.shopService = new ShopService();
+    this.hotelService = new HotelService();
   }
 
   componentDidMount() {
@@ -221,6 +224,8 @@ class LicenseList extends Component {
   };
 
   renewShopLicense = (selectedLicense) => this.setState({ openShopRenewDialog: true, selectedLicense });
+  renewHotelLicense = (selectedLicense) => this.setState({ openHotelRenewDialog: true, selectedLicense });
+  renewBannerPermit = (selectedLicense) => this.setState({ openBannerRenewDialog: true, selectedLicense });
 
   submitShopRenewalForm = application => {
     this.setState({ submit: true, openShopRenewDialog: false });
@@ -257,10 +262,43 @@ class LicenseList extends Component {
       })
       .finally(() => this.setState({ submit: false }));
   };
+  submitHotelRenewalForm = application => {
+    this.setState({ submit: true, openHotelRenewDialog: false });
+    this.hotelService.renew(application,
+      errorMsg => this.setGlobal({ errorMsg }),
+      (challan, successMsg) => {
 
-  renewHotelLicense = (selectedLicense) => this.setState({ openHotelRenewDialog: true, selectedLicense });
+        const MySwal = withReactContent(Swal);
 
-  renewBannerPermit = (selectedLicense) => this.setState({ openBannerRenewDialog: true, selectedLicense });
+        if (challan) {
+          MySwal.fire({
+            title: `Challan No:${challan.number}`,
+            text: successMsg,
+            type: "success",
+            showCancelButton: true,
+            cancelButtonText: "Close",
+            confirmButtonColor: "#26B99A",
+            confirmButtonText: "Pay Now (ONLINE)"
+          }).then((result) => {
+            if (result.value) {
+              Swal.fire(
+                "Pay!",
+                "Your application is paid.",
+                "success"
+              );
+            }
+            this.componentDidMount();
+          });
+        } else {
+          this.setGlobal({ successMsg });
+        }
+
+        // this.props.refresh();
+      })
+      .finally(() => this.setState({ submit: false }));
+  };
+
+
 
 
   render() {
@@ -286,10 +324,8 @@ class LicenseList extends Component {
               </Tabs>
 
               {tabValue === "shop" && <ShopLicensesView onShopRenew={this.renewShopLicense} licenses={shopLicenses}/>}
-              {tabValue === "hotel" &&
-              <HotelLicensesView onHotelRenew={this.renewHotelLicense} licenses={hotelLicenses}/>}
-              {tabValue === "banner" &&
-              <BannerLicensesView onBannerRenew={this.renewBannerPermit} licenses={bannerLicenses}/>}
+              {tabValue === "hotel" && <HotelLicensesView onHotelRenew={this.renewHotelLicense} licenses={hotelLicenses}/>}
+              {tabValue === "banner" && <BannerLicensesView onBannerRenew={this.renewBannerPermit} licenses={bannerLicenses}/>}
             </Paper>
           </CardContent>
         </Card>
@@ -299,6 +335,11 @@ class LicenseList extends Component {
                                 license={selectedLicense}
                                 onResubmit={this.submitShopRenewalForm}
                                 open={openShopRenewDialog}/>
+
+        <RenewHotelLicenseDialog onClose={() => this.setState({ openHotelRenewDialog: false })}
+                                 license={selectedLicense}
+                                 onResubmit={this.submitHotelRenewalForm}
+                                 open={openHotelRenewDialog}/>
       </div>
     );
   }

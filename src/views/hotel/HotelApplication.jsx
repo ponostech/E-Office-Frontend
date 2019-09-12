@@ -491,7 +491,7 @@ class HotelApplication extends Component {
                             onBlur={this.handleSelectBlur.bind(this, "trade")}
                             onChange={this.handleSelect.bind(this, "trade")}
                             ClearAble={true}
-                            label={ShopLicenseViewModel.TRADE_TYPE}
+                            label={"Hotel Grade"}
                             options={this.state.trades}/>
                         </GridItem>
                         <GridItem className={classes.root} xs={12} sm={12} md={6}>
@@ -828,14 +828,6 @@ class HotelApplication extends Component {
                                   onClick={this.onSubmit.bind(this)}>
                             {ShopLicenseViewModel.PRIMARY_TEXT}
                           </Button>
-                          {/*{"\u00A0 "}*/}
-                          {/*{"\u00A0 "}*/}
-                          {/*<Button name={"secondary"}*/}
-                          {/*        color={"primary"}*/}
-                          {/*        variant={"outlined"}*/}
-                          {/*        onClick={this.saveDraft.bind(this)}>*/}
-                          {/*  {ShopLicenseViewModel.DRAFT}*/}
-                          {/*</Button>*/}
                           {"\u00A0 "}
                           {"\u00A0 "}
                           {"\u00A0 "}

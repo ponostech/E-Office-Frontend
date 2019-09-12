@@ -28,7 +28,7 @@ const OfficeContextMenu = (props) => {
   const { menuItems } = menu;
 
   function toggleRightMenu(event) {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
+    setAnchorEl(anchorEl ? null : event.target);
   }
 
   return (

@@ -85,14 +85,14 @@ class HotelNewList extends Component {
     axios.post(FILE_SEND(id), { recipient_id })
       .then(res=>{
         if (res.data.status) {
-           window.location.reload();
            this.setGlobal({successMsg:ArrayToString(res.data.messages)})
+          this.getData();
         }else{
            this.setGlobal({errorMsg:ArrayToString(res.data.messages)})
         }
       })
       .catch(err=>this.setGlobal({errorMsg:err.toString()}))
-      .then(() => window.location.reload());
+      .finally(() => console.log("send file"));
   };
 
   render() {
