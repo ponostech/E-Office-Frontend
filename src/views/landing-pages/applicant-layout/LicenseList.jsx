@@ -55,12 +55,11 @@ import { HotelService } from "../../../services/HotelService";
 {/*</Card>*/
 }
 
-const LicenseCard = (props) => {
-  const { license } = props;
+const LicenseCard = ({license,onRenew}) => {
   const onContextMenuClick = (menu) => {
     switch (menu) {
       case "renew":
-        props.onRenew(license);
+        onRenew(license);
         break;
       default:
         break;
@@ -297,9 +296,6 @@ class LicenseList extends Component {
       })
       .finally(() => this.setState({ submit: false }));
   };
-
-
-
 
   render() {
     const { shopLicenses, hotelLicenses, bannerLicenses } = this.props;

@@ -22,10 +22,10 @@ import Divider from "@material-ui/core/Divider";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import moment from "moment";
-import ChangeForm from "./utils/ChangeForm";
 import { DocumentService } from "../../services/DocumentService";
 import SubmitDialog from "../../components/SubmitDialog";
 import { ShopService } from "../../services/ShopService";
+import ChangeForm from "../shop/utils/ChangeForm";
 
 
 const FIELD = {
@@ -78,6 +78,36 @@ const extractField = (application) => {
       name: "businessDetail",
       label: "Detail of Business",
       defaultValue: application["details"]
+    },
+    non_ac_rooms: {
+      key: "non_ac_rooms",
+      name: "noNonAcRoom",
+      label: "No of Non AC Room",
+      defaultValue: application["non_ac_rooms"]
+    },
+    ac_rooms: {
+      key: "ac_rooms",
+      name: "noAcRoom",
+      label: "No of AC Room",
+      defaultValue: application["ac_rooms"]
+    },
+    conference_halls: {
+      key: "conference_halls",
+      name: "conferenceHalls",
+      label: "No of Conference halls",
+      defaultValue: application["conference_halls"]
+    },
+    banquet_halls: {
+      key: "banquet_halls",
+      name: "banquetHalls",
+      label: "No of Banquet Hall",
+      defaultValue: application["banquet_halls"]
+    },
+    other_facilities: {
+      key: "other_facilities",
+      name: "facilities",
+      label: "Facilities",
+      defaultValue: application["other_facilities"]
     },
     premise_type: {
       key: "premise_type",
@@ -182,7 +212,7 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class FieldChangeDialog extends React.Component {
+class HotelFieldChangeDialog extends React.Component {
   constructor(props) {
     super(props);
 
@@ -200,7 +230,7 @@ class FieldChangeDialog extends React.Component {
   }
 
   componentDidMount() {
-    this.documentService.fetch("shop",
+    this.documentService.fetch("hotel",
       errorMsg => this.setGlobal({ errorMsg }),
       documents => {
         this.setState({
@@ -276,6 +306,11 @@ class FieldChangeDialog extends React.Component {
       latitude: application["latitude"],
       longitude: application["longitude"],
       details: application["details"],
+      ac_rooms: application["ac_rooms"],
+      non_ac_rooms: application["non_ac_rooms"],
+      conference_halls: application["conference_halls"],
+      banquet_halls: application["banquet_halls"],
+      other_facilities: application["other_facilities"],
       estd: moment(application["estd"]).format("Y-M-D"),
       tin_no: application["tin_no"],
       cst_no: application["cst_no"],
@@ -362,7 +397,9 @@ class FieldChangeDialog extends React.Component {
                          application={application}/>
             </Grid>
             <Grid item={true} md={9}>
-              <ChangeForm onUploadDocument={this.onUploadDocument}
+              <ChangeForm
+                type={"hotel"}
+                onUploadDocument={this.onUploadDocument}
                           onChange={this.onChange}
                           formData={formData}
                           selectedDocuments={selectedDocuments}
@@ -383,9 +420,9 @@ class FieldChangeDialog extends React.Component {
   }
 }
 
-FieldChangeDialog.propTypes = {
+HotelFieldChangeDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   application: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(FieldChangeDialog);
+export default withStyles(styles)(HotelFieldChangeDialog);

@@ -186,7 +186,7 @@ export class ShopService {
       if (res.data.status) {
         successCallback(res.data.data.shop);
       } else {
-        errorCallback(res.data.data.messages);
+        errorCallback(res.data.messages);
       }
     } catch (error) {
       console.error(error);

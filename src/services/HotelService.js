@@ -1,5 +1,4 @@
 import axios from "axios";
-import React from 'react';
 import { ApiRoutes } from "../config/ApiRoutes";
 import moment from "moment";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
@@ -87,6 +86,7 @@ export class HotelService {
       address: state.address,
       owner_address: state.ownerAddress,
       details: state.businessDetail,
+
       local_council_id: state.localCouncil.value,
       trade_id: state.tradeName.value,
       latitude: state.latitude,
@@ -136,6 +136,11 @@ export class HotelService {
       address: state.address,
       owner_address: state.ownerAddress,
       details: state.businessDetail,
+      ac_rooms: state.acRoom,
+      non_ac_rooms: state.noAcRoom,
+      conference_halls:state.noConferenceHall,
+      banquet_halls:state.noBanquet,
+      other_facilities:state.facilities,
       local_council_id: state.localCouncil.value,
       trade_id: state.tradeName.value,
       latitude: state.latitude,
@@ -213,7 +218,8 @@ export class HotelService {
     try {
       const res = await axios.get(ApiRoutes.GET_HOTEL(id));
       if (res.data.status) {
-        successCallback(res.data.data.hotel);
+        console.log(res)
+        // successCallback(res.data.data.hotel);
       } else {
         errorCallback(res.data.messages);
       }

@@ -19,10 +19,11 @@ import Swal from "sweetalert2";
 import RenewShopLicenseDialog from "../../../shop/RenewShopLicenseDialog";
 import PropTypes from "prop-types";
 import { MuiThemeProvider } from "@material-ui/core/styles";
-import FieldChangeDialog from "../../../shop/FieldChangeDialog";
+import FieldChangeDialog from "../../../shop/ShopFieldChangeDialog";
 import ResubmitHotelApplicationDialog from "../../../hotel/ResubmitHotelApplicationDialog";
 import RenewHotelLicenseDialog from "../../../hotel/RenewHotelLicenseDialog";
 import { HotelService } from "../../../../services/HotelService";
+import HotelFieldChangeDialog from "../../../hotel/HotelFieldChangeDialog";
 
 class HotelApplicationList extends Component {
   constructor(props) {
@@ -52,8 +53,35 @@ class HotelApplicationList extends Component {
     console.log(data);
   };
 
-  renewLicense = (data) => {
-    console.log(data);
+  renewLicense = (application) => {
+    this.setState({ submitTitle: "Submitting License Renewal Form", submit: true, openResubmit: false });
+    this.hotelService.renew(application, errorMsg => this.setGlobal({ errorMsg }),
+      (challan, successMsg) => {
+        const MySwal = withReactContent(Swal);
+        if (challan) {
+          MySwal.fire({
+            title: `Challan No:${challan.number}`,
+            text: successMsg,
+            type: "success",
+            showCancelButton: true,
+            cancelButtonText: "Close",
+            confirmButtonColor: "#26B99A",
+            confirmButtonText: "Pay Now (ONLINE)"
+          }).then((result) => {
+            if (result.value) {
+              Swal.fire(
+                "Pay!",
+                "Your application is paid.",
+                "success"
+              );
+            }
+          });
+        } else {
+          this.setGlobal({ successMsg });
+        }
+        // this.props.refresh();
+      })
+      .finally(() => this.setState({ submit: false }));
   };
 
   submitNewApplication = (data) => {
@@ -300,9 +328,9 @@ class HotelApplicationList extends Component {
                                        application={application} onResubmit={this.reSubmitApplication}/>
 
         <RenewHotelLicenseDialog open={openRenew} onClose={e => this.setState({ openRenew: false })}
-                                application={application} onResubmit={this.reSubmitApplication}/>
+                                application={application} onResubmit={this.renewLicense}/>
 
-                                <FieldChangeDialog open={openChangeDialog} onClose={event=>this.setState({openChangeDialog:false})} application={application}/>
+                                <HotelFieldChangeDialog open={openChangeDialog} onClose={event=>this.setState({openChangeDialog:false})} application={application}/>
       </>
     );
   }

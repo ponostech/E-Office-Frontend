@@ -147,15 +147,13 @@ class RenewHotelLicenseDialog extends Component {
   };
 
   componentDidMount() {
-    document.title = "e-AMC | Shop License Application Form";
+    document.title = "e-AMC | Renewal Hotel License Application Form";
     window.scrollTo(0, 0);
 
     var self = this;
     this.setGlobal({ loading: true });
     Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
-      .finally(function() {
-        self.setGlobal({ loading: false });
-      });
+
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -269,7 +267,6 @@ class RenewHotelLicenseDialog extends Component {
     }
   };
 
-
   handleRadio = (e) => {
     this.setState({
       premised: e.target.value
@@ -327,10 +324,6 @@ class RenewHotelLicenseDialog extends Component {
     this.setState({ "estd": estdDate });
   };
 
-
-  findTrade = (id) => {
-    this.state.trades.find(el => el.id === id);
-  };
   setApplication = (application) => {
     if (application) {
 
@@ -431,7 +424,7 @@ class RenewHotelLicenseDialog extends Component {
                 <CloseIcon/>
               </IconButton>
               <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-                Renew Shop License
+                Renew Hotel License
               </Typography>
               <Button href={"#"} onClick={onClose} color="inherit">
                 Close
@@ -683,6 +676,77 @@ class RenewHotelLicenseDialog extends Component {
                               fullWidth={true}
                               onChange={this.handleChange.bind(this)}
                               label={"Details of business"}
+                            />
+                          </GridItem>
+                          <GridItem className={classes.root} xs={12} sm={12} md={3}>
+                            <TextField
+                              value={this.state.acRoom}
+                              InputProps={{
+                                min: 0
+                              }}
+                              type={"number"}
+                              name={"acRoom"}
+                              variant={"outlined"}
+                              margin={"dense"}
+                              fullWidth={true}
+                              onChange={this.handleChange.bind(this)}
+                              label={"No of Room (AC)"}
+                            />
+                          </GridItem>
+                          <GridItem className={classes.root} xs={12} sm={12} md={3}>
+                            <TextField
+                              InputProps={{
+                                min: 0
+                              }}
+                              type={"number"}
+                              value={this.state.noAcRoom}
+                              name={"noAcRoom"}
+                              variant={"outlined"}
+                              margin={"dense"}
+                              fullWidth={true}
+                              onChange={this.handleChange.bind(this)}
+                              label={"No of Room (No AC)"}
+                            />
+                          </GridItem>
+                          <GridItem className={classes.root} xs={12} sm={12} md={3}>
+                            <TextField
+                              InputProps={{
+                                min: 0
+                              }}
+                              type={"number"}
+                              value={this.state.noConferenceHall}
+                              name={"noConferenceHall"}
+                              variant={"outlined"}
+                              margin={"dense"}
+                              fullWidth={true}
+                              onChange={this.handleChange.bind(this)}
+                              label={"No of Conference Hall"}
+                            />
+                          </GridItem>
+                          <GridItem className={classes.root} xs={12} sm={12} md={3}>
+                            <TextField
+                              InputProps={{
+                                min: 0
+                              }}
+                              type={"number"}
+                              value={this.state.noBanquet}
+                              name={"noBanquet"}
+                              variant={"outlined"}
+                              margin={"dense"}
+                              fullWidth={true}
+                              onChange={this.handleChange.bind(this)}
+                              label={"No of Banquet Hall"}
+                            />
+                          </GridItem>
+                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                            <TextField
+                              value={this.state.facilities}
+                              name={"facilities"}
+                              variant={"outlined"}
+                              margin={"dense"}
+                              fullWidth={true}
+                              onChange={this.handleChange.bind(this)}
+                              label={"Any Other Facilities"}
                             />
                           </GridItem>
                           <GridItem className={classes.root} xs={12} sm={12} md={6}>

@@ -23,7 +23,7 @@ import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { LocalCouncilService } from "../../../services/LocalCouncilService";
 import withStyles from "@material-ui/core/styles/withStyles";
-import PropTypes from "prop-types";
+import PropTypes, { number } from "prop-types";
 import FileUpload from "../../../components/FileUpload";
 import { APPLICATION_NAME } from "../../../utils/Util";
 import LoadingView from "../../common/LoadingView";
@@ -92,7 +92,8 @@ class ChangeForm extends Component {
       localCouncils => this.setState({ localCouncils }));
   };
   fetchTrades = async () => {
-    await this.tradeService.fetch((errorMsg) => this.setGlobal({ errorMsg })
+    const { type } = this.props;
+    await this.tradeService.fetch(type,(errorMsg) => this.setGlobal({ errorMsg })
       , (trades) => this.setState({ trades }));
   };
 
@@ -299,6 +300,67 @@ class ChangeForm extends Component {
                   label={"Details of business"}
                 />
               </Grid>
+
+              <Grid item={true} style={{ display: selectedFields["ac_rooms"] ? "block" : "none" }} xs={12} sm={12} md={6}>
+                <TextField
+                  type={"number"}
+                  defaultValue={0}
+                  value={formData.ac_rooms}
+                  name={"acRooms"}
+                  variant={"outlined"}
+                  margin={"dense"}
+                  fullWidth={true}
+                  onChange={event => onChange("ac_rooms", event.target.value)}
+                  label={"No of AC Room"}
+                />
+              </Grid>
+              <Grid item={true} style={{ display: selectedFields["non_ac_rooms"] ? "block" : "none" }} xs={12} sm={12} md={6}>
+                <TextField
+                  type={"number"}
+                  value={formData.non_ac_rooms}
+                  name={"nonAcRooms"}
+                  variant={"outlined"}
+                  margin={"dense"}
+                  fullWidth={true}
+                  onChange={event => onChange("non_ac_rooms", event.target.value)}
+                  label={"No of Non AC Room"}
+                />
+              </Grid>
+              <Grid item={true} style={{ display: selectedFields["conference_halls"] ? "block" : "none" }} xs={12} sm={12} md={6}>
+                <TextField
+                  type={"number"}
+                  value={formData.conference_halls}
+                  name={"conferenceHall"}
+                  variant={"outlined"}
+                  margin={"dense"}
+                  fullWidth={true}
+                  onChange={event => onChange("conference_halls", event.target.value)}
+                  label={"No of Conference Hall"}
+                />
+              </Grid>
+              <Grid item={true} style={{ display: selectedFields["banquet_halls"] ? "block" : "none" }} xs={12} sm={12} md={6}>
+                <TextField
+                  type={"number"}
+                  value={formData.banquet_halls}
+                  name={"banquet_halls"}
+                  variant={"outlined"}
+                  margin={"dense"}
+                  fullWidth={true}
+                  onChange={event => onChange("banquet_halls", event.target.value)}
+                  label={"No of Banquet Hall"}
+                />
+              </Grid>
+              <Grid item={true} style={{ display: selectedFields["other_facilities"] ? "block" : "none" }} xs={12} sm={12} md={6}>
+                <TextField
+                  value={formData.other_facilities}
+                  name={"banquet_halls"}
+                  variant={"outlined"}
+                  margin={"dense"}
+                  fullWidth={true}
+                  onChange={event => onChange("other_facilities", event.target.value)}
+                  label={"Other Facilities"}
+                />
+              </Grid>
               <Grid item={true} style={{ display: selectedFields["estd"] ? "block" : "none" }} xs={12} sm={12} md={6}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <DatePicker
@@ -437,6 +499,7 @@ class ChangeForm extends Component {
 
 ChangeForm.propTypes = {
   selectedFields: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
   selectedDocuments: PropTypes.object.isRequired,
   formData: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
