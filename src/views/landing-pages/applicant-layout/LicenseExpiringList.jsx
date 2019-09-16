@@ -11,6 +11,8 @@ import Swal from "sweetalert2";
 import {ShopService} from "../../../services/ShopService";
 import PropTypes from 'prop-types';
 import LoadingView from "../../common/LoadingView";
+import RenewHotelLicenseDialog from "../../hotel/RenewHotelLicenseDialog";
+import { HotelService } from "../../../services/HotelService";
 
 class LicenseExpiringList extends Component {
   constructor(props) {
@@ -19,16 +21,64 @@ class LicenseExpiringList extends Component {
     this.state = {
       permits: permits ? permits : [],
       selectedPermit: null,
-      openRenewDialog: false
+      openHotelRenew: false,
+      openShopRenew: false
     };
     this.licenseService = new LicenseService();
     this.shopService = new ShopService();
+    this.hotelService = new HotelService();
   }
 
 
-  renewPermit = application => {
-    this.setState({submitTitle: "Renew Permit", submit: true, openRenewDialog: false});
+  openRenewDialog=(selectedPermit)=>{
+    this.setState({ selectedPermit})
+    switch (selectedPermit.permitable_type) {
+      case "App\\Hotel":
+        this.setState({openHotelRenew:true})
+        break;
+      case "App\\Shop":
+        this.setState({ openShopRenew: true})
+        break;
+    }
+
+  }
+  renewShopPermit = application => {
+    this.setState({submitTitle: "Renew Permit", submit: true, openShopRenew: false});
     this.shopService.renew(application,
+        errorMsg => this.setGlobal({errorMsg}),
+        (challan, successMsg) => {
+
+          const MySwal = withReactContent(Swal);
+
+          if (challan) {
+            MySwal.fire({
+              title: `Challan No:${challan.number}`,
+              text: successMsg,
+              type: "success",
+              showCancelButton: true,
+              cancelButtonText: "Close",
+              confirmButtonColor: "#26B99A",
+              confirmButtonText: "Pay Now (ONLINE)"
+            }).then((result) => {
+              if (result.value) {
+                Swal.fire(
+                    "Pay!",
+                    "Your application is paid.",
+                    "success"
+                );
+              }
+              this.componentDidMount()
+            });
+          } else {
+            this.setGlobal({successMsg});
+          }
+          // this.props.refresh();
+        })
+        .finally(() => this.setState({submit: false}));
+  };
+  renewHotelPermit = application => {
+    this.setState({submitTitle: "Renew Permit", submit: true, openHotelRenew: false});
+    this.hotelService.renew(application,
         errorMsg => this.setGlobal({errorMsg}),
         (challan, successMsg) => {
 
@@ -62,7 +112,7 @@ class LicenseExpiringList extends Component {
   };
 
   render() {
-    const {selectedPermit, openRenewDialog} = this.state;
+    const {selectedPermit, openHotelRenew,openShopRenew} = this.state;
     const {permits} = this.props;
     const tableOptions = {
       filterType: "checkbox",
@@ -121,7 +171,7 @@ class LicenseExpiringList extends Component {
             const {rowIndex} = meta
             const selectedPermit = permits[rowIndex]
             return (
-                <IconButton href={"#"} onClick={event => this.setState({selectedPermit, openRenewDialog: true})}>
+                <IconButton href={"#"} onClick={event => this.openRenewDialog(selectedPermit)}>
                   <Icon color={"primary"}>refresh</Icon>
                 </IconButton>
             )
@@ -141,10 +191,14 @@ class LicenseExpiringList extends Component {
 
           {this.global.loading ? <LoadingView/> : found}
 
-          <RenewShopLicenseDialog onClose={() => this.setState({openRenewDialog: false})}
+          <RenewShopLicenseDialog onClose={() => this.setState({openShopRenew: false})}
                                   license={selectedPermit}
-                                  open={openRenewDialog}
-                                  onResubmit={this.renewPermit}/>
+                                  open={openShopRenew}
+                                  onResubmit={this.renewShopPermit}/>
+          <RenewHotelLicenseDialog onClose={() => this.setState({openHotelRenew: false})}
+                                  license={selectedPermit}
+                                  open={openHotelRenew}
+                                  onResubmit={this.renewHotelPermit}/>
         </>
     );
   }

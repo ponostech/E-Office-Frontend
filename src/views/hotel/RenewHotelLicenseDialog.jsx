@@ -153,7 +153,9 @@ class RenewHotelLicenseDialog extends Component {
     var self = this;
     this.setGlobal({ loading: true });
     Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
-
+      .finally(function() {
+        self.setGlobal({ loading: false });
+      });
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -211,7 +213,7 @@ class RenewHotelLicenseDialog extends Component {
       localCouncils => this.setState({ localCouncils }));
   };
   fetchDocuments = async () => {
-    await this.documentService.fetch("hotel",
+    await this.documentService.fetch("shop",
       errorMsg => this.setGlobal({ errorMsg }),
       docs => {
         this.setState({
@@ -327,6 +329,7 @@ class RenewHotelLicenseDialog extends Component {
   setApplication = (application) => {
     if (application) {
 
+    console.log("set applicatioon")
       this.setState({
         id: application.id,
         name: application.owner,
@@ -384,8 +387,7 @@ class RenewHotelLicenseDialog extends Component {
       console.log("found item", found);
       let uploadView = Boolean(found) ? <a target={"_blank"} href={found.path}>{found.name}</a> : "";
       return <>
-        <GridItem key={index} className={classes.root} sm={12} xs={12}
-                  md={12}>
+        <GridItem key={index} className={classes.root} sm={12} xs={12} md={12}>
 
           <FileUpload
             applicationName={APPLICATION_NAME.SHOP}
@@ -411,7 +413,7 @@ class RenewHotelLicenseDialog extends Component {
   };
 
   render() {
-    const { classes, open, onClose, application, onResubmit } = this.props;
+    const { classes, open, onClose, application } = this.props;
 
     return (
 
@@ -591,7 +593,7 @@ class RenewHotelLicenseDialog extends Component {
                               onBlur={this.handleSelectBlur.bind(this, "trade")}
                               onChange={this.handleSelect.bind(this, "trade")}
                               ClearAble={true}
-                              label={"Name of Trade"}
+                              label={"Hotel Grade"}
                               options={this.state.trades}/>
                           </GridItem>
 

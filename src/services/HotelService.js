@@ -218,14 +218,13 @@ export class HotelService {
     try {
       const res = await axios.get(ApiRoutes.GET_HOTEL(id));
       if (res.data.status) {
-        console.log(res)
-        // successCallback(res.data.data.hotel);
+        successCallback(res.data.data.hotel);
       } else {
         errorCallback(res.data.messages);
       }
     } catch (error) {
       console.error(error);
-      errorCallback(errorCallback.toString());
+      errorCallback(error.toString());
     }
   }
 

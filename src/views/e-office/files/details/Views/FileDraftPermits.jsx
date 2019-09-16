@@ -46,10 +46,10 @@ class FileDraftPermitList extends Component {
   render() {
     const {loading, showDetails, singleData, data} = this.state;
     const content = data.length === 0 ? "No draft" :
-        data.map(value => <DetailViewRow value={value} click={this.openDetails}
+        data.map(value => <DetailViewRow value={value} click={e=>this.openDetails(value)}
                                          primary={"Draft Permit No. " + value.id}
                                          secondary={this.formatCreated(value)}>
-          <IconButton href={"#"} onClick={this.openDetails}>
+          <IconButton href={"#"} onClick={e=>this.openDetails(value)}>
             <Icon color={"action"}>keyboard_arrow_right</Icon>
           </IconButton>
         </DetailViewRow>);
