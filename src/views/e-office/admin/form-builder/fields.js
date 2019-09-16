@@ -21,8 +21,7 @@ import { ApiRoutes } from "../../../../config/ApiRoutes";
 import { LocalCouncilService } from "../../../../services/LocalCouncilService";
 import { TradeService } from "../../../../services/TradeService";
 
-export const OfficeDatePicker = ({ field,config, application, onChange }) => {
-  let value = application?application[field]:null;
+export const OfficeDatePicker = ({ field,config, value, onChange }) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <DatePicker
@@ -40,9 +39,9 @@ export const OfficeDatePicker = ({ field,config, application, onChange }) => {
     </MuiPickersUtilsProvider>
   );
 };
-export const OfficeTextField = ({ field, config,formData, application, onChange }) => {
+export const OfficeTextField = ({ field, config, value, onChange }) => {
   // let value = application?application[field]:null;
-  let value=formData[field]
+  // let value=formData[field]
   return (
     <TextField
       fullWidth={true}
@@ -57,46 +56,44 @@ export const OfficeTextField = ({ field, config,formData, application, onChange 
     />
   );
 };
-export const OfficeNumberField = ({ field, config, application, onChange }) => {
-  let value = application?application[field]:null;
-  return (
-    <TextField
-      fullWidth={true}
-      type={"number"}
-      InputProps={{
-        min: config.validation.min,
-        max: config.validation.max
-      }}
-      variant={"outlined"}
-      name={field}
-      required={config.validation.required}
-      label={config.label}
-      value={value}
-      placeholder={config.placeholder}
-      onChange={event => onChange(field, event.target.value)}
-    />
-  );
-};
-export const OfficeTextArea = ({ field, config, application, onChange }) => {
-  let value = application?application[field]:null;
-  return (
-    <TextField
-      variant={"outlined"}
-      fullWidth={true}
-      type={"text"}
-      multi={true}
-      rows={3}
-      name={field}
-      required={config.validation.required}
-      label={config.label}
-      value={value}
-      placeholder={config.placeholder}
-      onChange={event => onChange(field, event.target.value)}
-    />
-  );
-};
-export const OfficeSwitch = ({ field, config, application, onChange }) => {
-  let value = application?application[field]:null;
+// export const OfficeNumberField = ({ field, config, value, onChange }) => {
+//   // let value = application?application[field]:null;
+//   return (
+//     <TextField
+//       fullWidth={true}
+//       type={"number"}
+//       InputProps={{
+//         min: config.validation.min,
+//         max: config.validation.max
+//       }}
+//       variant={"outlined"}
+//       name={field}
+//       required={config.validation.required}
+//       label={config.label}
+//       value={value}
+//       placeholder={config.placeholder}
+//       onChange={event => onChange(field, event.target.value)}
+//     />
+//   );
+// };
+// export const OfficeTextArea = ({ field, config, value, onChange }) => {
+//   return (
+//     <TextField
+//       variant={"outlined"}
+//       fullWidth={true}
+//       type={"text"}
+//       multi={true}
+//       rows={3}
+//       name={field}
+//       required={config.validation.required}
+//       label={config.label}
+//       value={value}
+//       placeholder={config.placeholder}
+//       onChange={event => onChange(field, event.target.value)}
+//     />
+//   );
+// };
+export const OfficeSwitch = ({ field, config, value, onChange }) => {
   return (
     <FormControlLabel
 
@@ -114,8 +111,7 @@ export const OfficeSwitch = ({ field, config, application, onChange }) => {
     />
   );
 };
-export const OfficeFormSelect = ({ field, config, application, onChange }) => {
-  let value = application?application[field]:null;
+export const OfficeFormSelect = ({ field, config, value, onChange }) => {
   return (
     <OfficeSelect
       variant={"outlined"}
@@ -131,8 +127,7 @@ export const OfficeFormSelect = ({ field, config, application, onChange }) => {
       options={config.options}/>
   );
 };
-export const OfficeRadio = ({ field, config, application, onChange }) => {
-  let value = application?application[field]:null;
+export const OfficeRadio = ({ field, config, value, onChange }) => {
   return (
     <FormControl component={"div"} fullWidth={true} margin={"dense"}>
       <FormLabel component={"label"}>{config.label}</FormLabel>
@@ -152,8 +147,7 @@ export const OfficeRadio = ({ field, config, application, onChange }) => {
     </FormControl>
   );
 };
-export const OfficePremiseRadio = ({ field, config, application, onChange }) => {
-  let value = application?application[field]:null;
+export const OfficePremiseRadio = ({ field, config, value, onChange }) => {
   return (
     <FormControl component={"div"} fullWidth={true} margin={"dense"}>
       <FormLabel component={"label"}>{config.label}</FormLabel>
@@ -173,8 +167,7 @@ export const OfficePremiseRadio = ({ field, config, application, onChange }) => 
   );
 };
 
-export const OfficeCheckbox = ({ field, config, application, onChange }) => {
-  let value = application?application[field]:null;
+export const OfficeCheckbox = ({ field, config, value, onChange }) => {
   return (
     <FormControl component={"div"} fullWidth={true} margin={"dense"}>
       <FormControlLabel
@@ -188,8 +181,8 @@ export const OfficeCheckbox = ({ field, config, application, onChange }) => {
   );
 };
 
-export const SiteFileUpload = ({ field, config, application, onChange }) => {
-  let value = application ? application[field] : {
+export const SiteFileUpload = ({ field, config, value, onChange }) => {
+   value = value ? value: {
     name: field,
     location: null,
     mime: "application/pdf",
@@ -215,7 +208,7 @@ export const SiteFileUpload = ({ field, config, application, onChange }) => {
 };
 
 
-export const OfficeImageList = ({ field, config, application, onChange }) => {
+export const OfficeImageList = ({ field, config, value, onChange }) => {
   const onSuccess = (attachments) => {
     onChange(field, attachments);
   };
@@ -246,10 +239,8 @@ export class OfficeLocalCouncil extends React.Component  {
       .finally(()=>console.log("local council request done"))
   }
   render() {
-    const{ field, config, application, onChange }=this.props;
+    const{ field, config, value, onChange }=this.props;
     const { options } = this.state;
-
-    let value = application?application[field]:null;
 
     return(
 
@@ -285,10 +276,8 @@ export class OfficeTrade extends React.Component  {
       .finally(()=>console.log("local council request done"))
   }
   render() {
-    const{ field, config, application, onChange }=this.props;
+    const{ field, config, value, onChange }=this.props;
     const { options } = this.state;
-
-    let value = application?application[field]:null;
 
     return(
 
@@ -321,10 +310,8 @@ export class OfficeApplicantType extends React.Component  {
     }
   }
   render() {
-    const{ field, config, application, onChange }=this.props;
+    const{ field, config, value, onChange }=this.props;
     const { options } = this.state;
-
-    let value = application?application[field]:null;
 
     return(
 

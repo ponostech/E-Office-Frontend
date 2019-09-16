@@ -1,8 +1,5 @@
 import React, { Component } from "reactn";
 import { SiteVerificationService } from "../../../../../services/SiteVerificationService";
-import WidgetConstant from "../../../../../components/form-builder/WidgetConstant";
-import GridItem from "../../../../../components/Grid/GridItem";
-import FormFieldFactory from "../../../../../components/form-builder/FormFieldFactory";
 import { Button, Card, CardActions, CardContent, CardHeader, Divider } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import LoadingView from "../../../../common/LoadingView";
@@ -14,47 +11,50 @@ class CreateSiteVerification extends Component {
   state = {
     title: "",
     subTitle: "",
-    formElements:[],
-    loading:true,
-    formData:{}
+    formElements: [],
+    loading: true,
+    formData: {}
   };
 
   componentDidMount() {
+    const { application } = this.props;
+
     this.siteVerification.getTemplate("shop", errorMessage => this.setState({ errorMessage }), template => {
-      let formData={}
+      let formData = {};
       for (let [key, value] of Object.entries(template.data.formElements)) {
-        formData[key]=null
+        formData[key] = null;
       }
+      let data = Object.assign(formData, application);
       this.setState({
         formElements: template.data.formElements,
-        formData
+        formData: data
       });
     })
       .finally(() => this.setState({ loading: false }));
   }
 
-  validateInput=()=>{
-    const { formData,formElements } = this.state;
-    let validRequired=false;
-    let validMinMax=false;
-    let validPattern=false;
-    Object.entries(formElements).forEach(([key,config])=>{
-      const{required,pattern,min,max}=config.validation;
+  validateInput = () => {
+    const { formData, formElements } = this.state;
+    let validRequired = false;
+    let validMinMax = false;
+    let validPattern = false;
+    Object.entries(formElements).forEach(([key, config]) => {
+      const { required, pattern, min, max } = config.validation;
       const value = formData[key];
       if (value) {
-        if (required ===Boolean(value)) {
-          validRequired=true
+        if (required === Boolean(value)) {
+          validRequired = true;
         }
-        if (value>min && value<max) {
-          validMinMax=true
+        if (value.length > min && value.length < max) {
+          validMinMax = true;
         }
         if (pattern && value.match(pattern)) {
-          validPattern=true
+          validPattern = true;
         }
       }
-    })
+    });
     return validPattern && validMinMax && validRequired;
-  }
+  };
 
   createSiteVerification = () => {
     const { formData, formElements } = this.state;
@@ -67,32 +67,32 @@ class CreateSiteVerification extends Component {
       let url = "site-verifications/" + file.id;
 
       this.props.onCreateSiteVerification({
-        formData,formElements
+        formData, formElements
       });
     }
   };
-  onChange=(key,value)=>{
-    console.log("key",key)
-    console.log("value",value)
+  onChange = (key, value) => {
+    console.log("key", key);
+    console.log("value", value);
     const { formData, formElements } = this.state;
-    formData[key]=value
-    // this.setState({formData:temp})
-  }
+    let temp = formData;
+    temp[key] = value;
+    this.setState({ formData: temp });
+  };
 
-  generateForm=()=>{
-    const { formElements,formData } = this.state;
-    const { application } = this.props;
-    let view=<p>No site verification</p>
+  generateForm = () => {
+    const { formElements, formData } = this.state;
+    let view = <p>No site verification</p>;
 
-    view=Object.keys(formElements).map((key, index) =>
-    {
-      return <Grid item={true} key={index} md={6}>
-        {getControl(key,formElements[key],formData,application,this.onChange)}
-      </Grid>
-    }
+    view = Object.keys(formElements).map((key, index) => {
+        return <Grid item={true} key={index} md={6}>
+          {getControl(key, formElements[key], formData, this.onChange)}
+        </Grid>;
+      }
     );
     return view;
-  }
+  };
+
   render() {
     const { formElements, loading } = this.state;
     const { onNext, file, onBack } = this.props;
