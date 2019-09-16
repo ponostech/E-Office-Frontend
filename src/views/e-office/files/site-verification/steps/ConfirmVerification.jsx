@@ -39,7 +39,7 @@ class ConfirmVerification extends Component {
     const { application, siteVerification, confirmVerification, onBack } = this.props;
 
     const rows = ApplicationResolver(application);
-    const verificationData = Object.entries(siteVerification.formData).map(([key,val]) => <DetailViewRow primary={key.toUpperCase()} secondary={val}/>);
+    const verificationData = Object.entries(siteVerification.formData).map(([key,val]) => <DetailViewRow primary={key.toUpperCase()} secondary={typeof val==="object"?"Obj":val}/>);
     return (
       <Grid container={true} spacing={3}>
         <Grid item={true} md={4}>

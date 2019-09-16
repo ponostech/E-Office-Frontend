@@ -58,7 +58,9 @@ class FillableConfigDialog extends Component {
   };
 
   componentWillReceiveProps(nextProps, nextContext) {
-    this.setState({label:nextProps.widget.label})
+    if (nextProps.widget) {
+      this.setState({ label: nextProps.widget.label });
+    }
   }
 
   doClear = () => {
@@ -69,22 +71,22 @@ class FillableConfigDialog extends Component {
       defaultValue: "",
       pattern: ".*",
       required: false,
-      min:0,
-      max:1000
+      min: 0,
+      max: 1000
     });
   };
   createConfig = () => {
-    const { onCreateConfiguration,onClose,widget } = this.props;
-    const { key, label, placeholder, defaultValue, required, pattern,min,max } = this.state;
+    const { onCreateConfiguration, onClose, widget } = this.props;
+    const { key, label, placeholder, defaultValue, required, pattern, min, max } = this.state;
     let config = {
       label,
       placeholder,
-      type:widget.type,
+      type: widget.type,
       defaultValue,
       validation: {
         required,
         pattern,
-        min,max
+        min, max
       }
     };
     onClose();

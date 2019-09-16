@@ -149,7 +149,7 @@ const DynamicForm = ({onSave,onClear, selectedWidgetList, onWidgetValueChange, o
               Object.entries(selectedWidgetList).map(([key, config]) =>
                 <>
                   <Grid item={true} md={6} lg={6}>
-                    {getControl(key, config, { applicant_name: "kuri" }, onWidgetValueChange)}
+                    {getControl(key, config, {}, onWidgetValueChange)}
                   </Grid>
                   <Grid item={true} md={1} lg={1}>
                     <IconButton href={"#"} onClick={(e) => onRemoveWidget(key)}>
