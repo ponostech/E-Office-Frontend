@@ -1,6 +1,8 @@
 import React, { Component } from "reactn";
 import {
-  Card, CardActions,
+  Button,
+  Card,
+  CardActions,
   CardContent,
   CardHeader,
   Divider,
@@ -11,13 +13,13 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  Paper,Button,
+  Paper,
   TextField
 } from "@material-ui/core";
 import StandardConfigDialog from "./dialogs/StandardConfigDialog";
 import FillableConfigDialog from "./dialogs/FillableConfigDialog";
 import FileUploadConfigDialog from "./dialogs/FileUploadConfigDialog";
-import { FILLABLE_TYPE, SHOP_FILLABLE, WIDGET_TYPE } from "./constant";
+import { HOTEL_FILLABLE, SHOP_FILLABLE, WIDGET_TYPE } from "./constant";
 import ImageListConfigDialog from "./dialogs/ImageListConfigDialog";
 import DatePickerConfigDialog from "./dialogs/DatePickerConfigDialog";
 import LocalCouncilConfig from "./dialogs/fillable/LocalCouncilConfig";
@@ -27,18 +29,22 @@ import OptionConfigDialog from "./dialogs/OptionConfigDialog";
 import CheckableConfigDialog from "./dialogs/CheckableConfigDialog";
 import { SiteVerificationService } from "../../../../services/SiteVerificationService";
 import SubmitDialog from "../../../../components/SubmitDialog";
+import CoordinateConfigDialog from "./dialogs/CoordinateConfigDialog";
+import NumberConfigDialog from "./dialogs/NumberConfigDialog";
 
 const StandardWidgetList = ({ onWidgetClick }) => {
   const widgets = [
-    { type: WIDGET_TYPE.TEXT_FIELD, label: "TextField", icon: "check" },
-    { type: WIDGET_TYPE.SELECT, label: "Select", icon: "user" },
-    { type: WIDGET_TYPE.RADIO, label: "Radio", icon: "user" },
-    { type: WIDGET_TYPE.CHECKBOX, label: "Checkbox", icon: "user" },
-    { type: WIDGET_TYPE.SWITCH, label: "Switch", icon: "user" },
-    { type: WIDGET_TYPE.DATE_PICKER, label: "Date Picker", icon: "account_circle" },
+    { type: WIDGET_TYPE.TEXT_FIELD, label: "TextField", icon: "text_format" },
+    { type: WIDGET_TYPE.NUMBER_FIELD, label: "Number Field", icon: "plus_one" },
+    { type: WIDGET_TYPE.COORDINATE, label: "Coordinate", icon: "donut_small" },
+    { type: WIDGET_TYPE.SELECT, label: "Select", icon: "view_list" },
+    { type: WIDGET_TYPE.RADIO, label: "Radio", icon: "radio_button_checked" },
+    { type: WIDGET_TYPE.CHECKBOX, label: "Checkbox", icon: "check_circle" },
+    { type: WIDGET_TYPE.SWITCH, label: "Switch", icon: "toggle_on" },
+    { type: WIDGET_TYPE.DATE_PICKER, label: "Date Picker", icon: "calendar_today" },
 
-    { type: WIDGET_TYPE.FILE_UPLOAD, label: "File upload", icon: "account_circle" },
-    { type: WIDGET_TYPE.IMAGE_LIST, label: "Image list upload", icon: "account_circle" }
+    { type: WIDGET_TYPE.FILE_UPLOAD, label: "File upload", icon: "picture_as_pdf" },
+    { type: WIDGET_TYPE.IMAGE_LIST, label: "Image list upload", icon: "camera_roll" }
   ];
   return (
     <>
@@ -69,6 +75,9 @@ const FillableWidgetList = ({ onWidgetClick, selectedSiteVerification }) => {
   switch (selectedSiteVerification.value) {
     case "shop":
       widgets = SHOP_FILLABLE;
+      break;
+    case "hotel":
+      widgets = HOTEL_FILLABLE;
       break;
     default:
       break;
@@ -112,14 +121,14 @@ const FillableWidgetList = ({ onWidgetClick, selectedSiteVerification }) => {
 // ]
 //   }
 // }
-const DynamicForm = ({onSave,onClear, selectedWidgetList, onWidgetValueChange, onRemoveWidget, selectedSiteVerification, changeSiteVerification }) => {
+const DynamicForm = ({ onSave, onClear, selectedWidgetList, onWidgetValueChange, onRemoveWidget, selectedSiteVerification, changeSiteVerification }) => {
 
   const options = [
 
     { value: "hoarding", label: "Hoarding Site verification" },
     { value: "kiosk", label: "Kiosk Site verification" },
     { value: "shop", label: "Shop Site verification" },
-    { value: "hotel", label: "Shop Site verification" }
+    { value: "hotel", label: "Hotel Site verification" }
   ];
 
 
@@ -127,7 +136,7 @@ const DynamicForm = ({onSave,onClear, selectedWidgetList, onWidgetValueChange, o
     <Paper>
       <Card>
         <CardHeader title={"Site verification form builder"}
-                    subheader={"Select widget from the left to make site verification from"} action={
+                    subheader={"Select widget from the left to make form"} action={
 
           <OfficeSelect
             label={"Type of site verification"}
@@ -141,14 +150,14 @@ const DynamicForm = ({onSave,onClear, selectedWidgetList, onWidgetValueChange, o
           />
         }/>
         <Divider/>
-        <CardContent>
+        <CardContent style={{minHeight:"80%"}}>
 
           <Grid container={true} justify={"center"} alignItems={"flex-start"}>
 
             {
               Object.entries(selectedWidgetList).map(([key, config]) =>
                 <>
-                  <Grid item={true} md={6} lg={6}>
+                  <Grid item={true} md={5} lg={5}>
                     {getControl(key, config, {}, onWidgetValueChange)}
                   </Grid>
                   <Grid item={true} md={1} lg={1}>
@@ -164,7 +173,7 @@ const DynamicForm = ({onSave,onClear, selectedWidgetList, onWidgetValueChange, o
 
         </CardContent>
         <CardActions>
-          <Button variant={"outlined"} color={"primary"} onClick={e=>onSave()} >Save</Button>
+          <Button variant={"outlined"} color={"primary"} onClick={e => onSave()}>Save</Button>
           <Button variant={"outlined"} color={"secondary"} onClick={event => onClear()}>Clear</Button>
         </CardActions>
       </Card>
@@ -181,6 +190,8 @@ class FormBuilderContainer extends Component {
       selectedWidgetList: {},
 
       openStandardConfig: false,
+      openNumberConfig: false,
+      openCoordinateConfig: false,
       openFillableConfig: false,
       openFileUploadConfig: false,
       openImageListConfig: false,
@@ -189,33 +200,39 @@ class FormBuilderContainer extends Component {
 
       openLocalCouncilConfig: false,
       formData: {},
-      submit:false
+      submit: false
     };
-    this.siteVerificationService=new SiteVerificationService();
+    this.siteVerificationService = new SiteVerificationService();
   }
 
-  saveConfig=()=>{
-    const { selectedWidgetList,selectedSiteVerification } = this.state;
-    const type=selectedSiteVerification.value;
-    let data={
-      formElements:selectedWidgetList
+  saveConfig = () => {
+    const { selectedWidgetList, selectedSiteVerification } = this.state;
+    const type = selectedSiteVerification.value;
+    let data = {
+      formElements: selectedWidgetList
+    };
+    this.setState({ submit: true });
+    if (selectedWidgetList !== null && selectedWidgetList !== undefined) {
+      this.siteVerificationService.createTemplate(type, data,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => this.setGlobal({ successMsg }))
+        .finally(() => this.setState({ submit: false }));
     }
-    this.setState({submit:true});
-    if (selectedWidgetList !== null && selectedWidgetList!==undefined) {
-      this.siteVerificationService.createTemplate(type,data,
-        errorMsg=>this.setGlobal({errorMsg}),
-        successMsg=>this.setGlobal({successMsg}))
-        .finally(()=>this.setState({submit:false}))
-    }
-  }
+  };
 
-  clearItems=()=>this.setState({selectedWidgetList:{}})
+  clearItems = () => this.setState({ selectedWidgetList: {} });
 
   onStandardWidgetClick = (selectedWidget) => {
     this.setState({ selectedWidget });
     switch (selectedWidget.type) {
       case WIDGET_TYPE.TEXT_FIELD:
         this.setState({ openStandardConfig: true });
+        break;
+      case WIDGET_TYPE.NUMBER_FIELD:
+        this.setState({ openNumberConfig: true });
+        break;
+      case WIDGET_TYPE.COORDINATE:
+        this.setState({ openCoordinateConfig: true });
         break;
       case WIDGET_TYPE.CHECKBOX:
         this.setState({ openSwitchConfig: true });
@@ -264,7 +281,7 @@ class FormBuilderContainer extends Component {
       //   this.setState({ openFillableDateConfig: true });
       //   break;
       default:
-        this.setState({openFillableConfig:true})
+        this.setState({ openFillableConfig: true });
         break;
     }
   };
@@ -290,8 +307,10 @@ class FormBuilderContainer extends Component {
   };
 
   render() {
-    const { selectedWidgetList, openSwitchConfig, openStandardConfig, openFillableConfig,submit,
-      openFileUploadConfig, openOptionDialog, openDateConfig, openImageListConfig, selectedWidget, selectedSiteVerification } = this.state;
+    const {
+      selectedWidgetList, openSwitchConfig, openStandardConfig, openFillableConfig, openCoordinateConfig, openNumberConfig, submit,
+      openFileUploadConfig, openOptionDialog, openDateConfig, openImageListConfig, selectedWidget, selectedSiteVerification
+    } = this.state;
     const { openLocalCouncilConfig } = this.state;
 
     return (
@@ -330,10 +349,20 @@ class FormBuilderContainer extends Component {
                               widget={selectedWidget}
                               onCreateConfiguration={this.addConfiguredWidget}/>
 
+        <NumberConfigDialog onClose={() => this.setState({ openNumberConfig: false })}
+                            open={openNumberConfig}
+                            widget={selectedWidget}
+                            onCreateConfiguration={this.addConfiguredWidget}/>
+
         <CheckableConfigDialog onClose={() => this.setState({ openSwitchConfig: false })}
                                open={openSwitchConfig}
                                widget={selectedWidget}
                                onCreateConfiguration={this.addConfiguredWidget}/>
+
+        <CoordinateConfigDialog onClose={() => this.setState({ openCoordinateConfig: false })}
+                                open={openCoordinateConfig}
+                                widget={selectedWidget}
+                                onCreateConfiguration={this.addConfiguredWidget}/>
 
         <OptionConfigDialog onClose={() => this.setState({ openOptionDialog: false })}
                             open={openOptionDialog}
@@ -359,7 +388,7 @@ class FormBuilderContainer extends Component {
                             widget={selectedWidget}
                             onCreateConfiguration={this.addConfiguredWidget}/>
 
-                            <SubmitDialog open={submit} title={"Create Site verification form"} text={"Please wait ..."} />
+        <SubmitDialog open={submit} title={"Create Site verification form"} text={"Please wait ..."}/>
       </>
     );
   }

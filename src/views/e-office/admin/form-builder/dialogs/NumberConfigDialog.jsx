@@ -35,15 +35,15 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class CheckableConfigDialog extends Component {
+class NumberConfigDialog extends Component {
   state = {
     key: "",
     label: "",
     placeholder: "",
-    defaultValue: false,
-    required: false,
+    defaultValue: 0,
     min:0,
-    max:10000
+    max:1000,
+    required: false
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -66,10 +66,8 @@ class CheckableConfigDialog extends Component {
       label: "",
       placeholder: "",
       value: "",
-      pattern: ".*",
-      required: false,
-      min:0,
-      max:10000
+      pattern: "",
+      required: false
     });
   };
   createConfig = () => {
@@ -143,7 +141,40 @@ class CheckableConfigDialog extends Component {
                          margin={"dense"}
                          label={"PlaceHolder"}/>
             </Grid>
+            <Grid md={12} sm={12} item={true}>
+              <TextField name={"defaultValue"}
+                         type={"number"}
+                         onChange={event => this.onChange("defaultValue", event.target.value)}
+                         required={true}
+                         value={this.state.defaultValue}
+                         variant={"outlined"}
+                         fullWidth={true}
+                         margin={"dense"}
+                         label={"Default Value"}/>
+            </Grid>
 
+            <Grid md={12} sm={12} item={true}>
+              <TextField name={"min"}
+                         type={"number"}
+                         onChange={event => this.onChange("min", event.target.value)}
+                         required={true}
+                         value={this.state.min}
+                         variant={"outlined"}
+                         fullWidth={true}
+                         margin={"dense"}
+                         label={"Minimum"}/>
+            </Grid>
+            <Grid md={12} sm={12} item={true}>
+              <TextField name={"max"}
+                         type={"number"}
+                         onChange={event => this.onChange("max", event.target.value)}
+                         required={true}
+                         value={this.state.max}
+                         variant={"outlined"}
+                         fullWidth={true}
+                         margin={"dense"}
+                         label={"Maximum"}/>
+            </Grid>
 
             <Grid md={12} sm={12} item={true}>
               <FormControlLabel
@@ -171,10 +202,10 @@ class CheckableConfigDialog extends Component {
   }
 }
 
-CheckableConfigDialog.propTypes = {
+NumberConfigDialog.propTypes = {
   onCreateConfiguration: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   widget: PropTypes.object.isRequired
 };
-export default withStyles(styles)(CheckableConfigDialog);
+export default withStyles(styles)(NumberConfigDialog);

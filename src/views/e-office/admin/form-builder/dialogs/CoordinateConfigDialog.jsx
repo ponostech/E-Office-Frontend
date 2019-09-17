@@ -35,7 +35,7 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class CheckableConfigDialog extends Component {
+class CoordinateConfigDialog extends Component {
   state = {
     key: "",
     label: "",
@@ -171,10 +171,10 @@ class CheckableConfigDialog extends Component {
   }
 }
 
-CheckableConfigDialog.propTypes = {
+CoordinateConfigDialog.propTypes = {
   onCreateConfiguration: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   widget: PropTypes.object.isRequired
 };
-export default withStyles(styles)(CheckableConfigDialog);
+export default withStyles(styles)(CoordinateConfigDialog);

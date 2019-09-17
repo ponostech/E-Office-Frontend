@@ -1,11 +1,11 @@
 import { FILLABLE_TYPE, WIDGET_TYPE } from "./constant";
 import { FormControl, InputAdornment, TextField } from "@material-ui/core";
 import {
-  OfficeCheckbox,
+  OfficeCheckbox, OfficeCoordinate,
   OfficeDatePicker,
   OfficeFormSelect,
   OfficeImageList,
-  OfficeLocalCouncil,
+  OfficeLocalCouncil, OfficeNumberField,
   OfficePremiseRadio,
   OfficeRadio,
   OfficeSwitch,
@@ -20,7 +20,15 @@ export const
     switch (config.type) {
       case WIDGET_TYPE.TEXT_FIELD:
         return <>
-          <OfficeTextField value={formData[key]}  onChange={onWidgetValueChange} config={config} field={key} />
+          <OfficeTextField value={value}  onChange={onWidgetValueChange} config={config} field={key} />
+        </>;
+        case WIDGET_TYPE.NUMBER_FIELD:
+        return <>
+          <OfficeNumberField value={value}  onChange={onWidgetValueChange} config={config} field={key} />
+        </>;
+        case WIDGET_TYPE.COORDINATE:
+        return <>
+          <OfficeCoordinate value={value}  onChange={onWidgetValueChange} config={config} field={key} />
         </>;
       case WIDGET_TYPE.RADIO:
         return <>
@@ -40,8 +48,7 @@ export const
         </>;
       case WIDGET_TYPE.DATE_PICKER:
         return <>
-          <OfficeDatePicker onChange={val => onWidgetValueChange(key, val)} config={config} field={key}
-                           value={value}/>
+          <OfficeDatePicker onChange={onWidgetValueChange} config={config} field={key} value={value}/>
         </>;
       case WIDGET_TYPE.FILE_UPLOAD:
         return <>

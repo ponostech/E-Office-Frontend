@@ -3,9 +3,10 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-  FormLabel,
+  FormLabel, IconButton, InputAdornment,
   Radio,
   RadioGroup,
+  Button,
   Switch,
   TextField
 } from "@material-ui/core";
@@ -16,12 +17,12 @@ import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import "date-fns";
 import OfficeSelect from "../../../../components/OfficeSelect";
-import axios from "axios";
-import { ApiRoutes } from "../../../../config/ApiRoutes";
 import { LocalCouncilService } from "../../../../services/LocalCouncilService";
 import { TradeService } from "../../../../services/TradeService";
+import GMapDialog from "../../../../components/GmapDialog";
+import PlaceIcon from "@material-ui/icons/Place";
 
-export const OfficeDatePicker = ({ field,config, value, onChange }) => {
+export const OfficeDatePicker = ({ field, config, value, onChange }) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <DatePicker
@@ -33,7 +34,10 @@ export const OfficeDatePicker = ({ field,config, value, onChange }) => {
         name={field}
         variant="outlined"
         value={value}
-        onChange={val => onChange(field, val)}
+        onChange={date => {
+          console.log("Date select", date);
+          onChange(field, date);
+        }}
         format={"dd/MM/yyyy"}
       />
     </MuiPickersUtilsProvider>
@@ -56,26 +60,25 @@ export const OfficeTextField = ({ field, config, value, onChange }) => {
     />
   );
 };
-// export const OfficeNumberField = ({ field, config, value, onChange }) => {
-//   // let value = application?application[field]:null;
-//   return (
-//     <TextField
-//       fullWidth={true}
-//       type={"number"}
-//       InputProps={{
-//         min: config.validation.min,
-//         max: config.validation.max
-//       }}
-//       variant={"outlined"}
-//       name={field}
-//       required={config.validation.required}
-//       label={config.label}
-//       value={value}
-//       placeholder={config.placeholder}
-//       onChange={event => onChange(field, event.target.value)}
-//     />
-//   );
-// };
+export const OfficeNumberField = ({ field, config, value, onChange }) => {
+  return (
+    <TextField
+      fullWidth={true}
+      type={"number"}
+      InputProps={{
+        min: config.validation.min,
+        max: config.validation.max
+      }}
+      variant={"outlined"}
+      name={field}
+      required={config.validation.required}
+      label={config.label}
+      value={value}
+      placeholder={config.placeholder}
+      onChange={event => onChange(field, event.target.value)}
+    />
+  );
+};
 // export const OfficeTextArea = ({ field, config, value, onChange }) => {
 //   return (
 //     <TextField
@@ -135,7 +138,7 @@ export const OfficeRadio = ({ field, config, value, onChange }) => {
         name={field}
         row={true}
         value={value}
-        onChange={val => onChange(field, val)}
+        onChange={(event) => onChange(field, event.target.value)}
       >
         {config.options.map(item =>
           <FormControlLabel value={item.value} label={item.label}
@@ -157,10 +160,10 @@ export const OfficePremiseRadio = ({ field, config, value, onChange }) => {
         value={value}
         onChange={val => onChange(field, val)}
       >
-          <FormControlLabel value={"Owned"} label={"Owned"}
-                            control={<Radio color={"primary"}/>}/>
-          <FormControlLabel value={"Leased"} label={"Leased"}
-                            control={<Radio color={"primary"}/>}/>
+        <FormControlLabel value={"Owned"} label={"Owned"}
+                          control={<Radio color={"primary"}/>}/>
+        <FormControlLabel value={"Leased"} label={"Leased"}
+                          control={<Radio color={"primary"}/>}/>
 
       </RadioGroup>
     </FormControl>
@@ -182,7 +185,7 @@ export const OfficeCheckbox = ({ field, config, value, onChange }) => {
 };
 
 export const SiteFileUpload = ({ field, config, value, onChange }) => {
-   value = value ? value: {
+  value = value ? value : {
     name: field,
     location: null,
     mime: "application/pdf",
@@ -223,111 +226,168 @@ export const OfficeImageList = ({ field, config, value, onChange }) => {
   );
 };
 
-export class OfficeLocalCouncil extends React.Component  {
+export class OfficeLocalCouncil extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state={
-      options:[]
-    }
+    this.state = {
+      options: []
+    };
     this.localCouncilService = new LocalCouncilService();
   }
 
   componentDidMount() {
-    this.localCouncilService.fetch(err=>console.log(err),
-      options=>this.setState({options}))
-      .finally(()=>console.log("local council request done"))
+    this.localCouncilService.fetch(err => console.log(err),
+      options => this.setState({ options }))
+      .finally(() => console.log("local council request done"));
   }
+
   render() {
-    const{ field, config, value, onChange }=this.props;
+    const { field, config, value, onChange } = this.props;
     const { options } = this.state;
 
-    return(
+    return (
 
-     <OfficeSelect
-      variant={"outlined"}
-      margin={"dense"}
-      value={value}
-      required={config.validation.required}
-      fullWidth={true}
-      name={field}
-      onChange={val => onChange(field, val)}
-      ClearAble={true}
-      placeholder={config.placeholder}
-      label={config.label}
-      options={options}/>
-    )
+      <OfficeSelect
+        variant={"outlined"}
+        margin={"dense"}
+        value={value}
+        required={config.validation.required}
+        fullWidth={true}
+        name={field}
+        onChange={val => onChange(field, val)}
+        ClearAble={true}
+        placeholder={config.placeholder}
+        label={config.label}
+        options={options}/>
+    );
   }
 
-};
-export class OfficeTrade extends React.Component  {
+}
+
+export class OfficeTrade extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state={
-      options:[]
-    }
+    this.state = {
+      options: []
+    };
     this.tradeService = new TradeService();
   }
 
   componentDidMount() {
-    this.tradeService.all(err=>console.log(err),
-      options=>this.setState({options}))
-      .finally(()=>console.log("local council request done"))
+    this.tradeService.all(err => console.log(err),
+      options => this.setState({ options }))
+      .finally(() => console.log("local council request done"));
   }
+
   render() {
-    const{ field, config, value, onChange }=this.props;
+    const { field, config, value, onChange } = this.props;
     const { options } = this.state;
 
-    return(
+    return (
 
-     <OfficeSelect
-      variant={"outlined"}
-      margin={"dense"}
-      value={value}
-      required={config.validation.required}
-      fullWidth={true}
-      name={field}
-      onChange={val => onChange(field, val)}
-      ClearAble={true}
-      placeholder={config.placeholder}
-      label={config.label}
-      options={options}/>
-    )
+      <OfficeSelect
+        variant={"outlined"}
+        margin={"dense"}
+        value={value}
+        required={config.validation.required}
+        fullWidth={true}
+        name={field}
+        onChange={val => onChange(field, val)}
+        ClearAble={true}
+        placeholder={config.placeholder}
+        label={config.label}
+        options={options}/>
+    );
   }
 
-};
-export class OfficeApplicantType extends React.Component  {
+}
+
+export class OfficeApplicantType extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state={
-      options:[
-        {value: "proprietor", label: "Proprietor"},
-        {value: "partnership", label: "Partnership"},
-        {value: "private limited", label: "Private Limited"}
+    this.state = {
+      options: [
+        { value: "proprietor", label: "Proprietor" },
+        { value: "partnership", label: "Partnership" },
+        { value: "private limited", label: "Private Limited" }
       ]
-    }
+    };
   }
+
   render() {
-    const{ field, config, value, onChange }=this.props;
+    const { field, config, value, onChange } = this.props;
     const { options } = this.state;
 
-    return(
+    return (
 
-     <OfficeSelect
-      variant={"outlined"}
-      margin={"dense"}
-      value={value}
-      required={config.validation.required}
-      fullWidth={true}
-      name={field}
-      onChange={val => onChange(field, val)}
-      ClearAble={true}
-      placeholder={config.placeholder}
-      label={config.label}
-      options={options}/>
-    )
+      <OfficeSelect
+        variant={"outlined"}
+        margin={"dense"}
+        value={value}
+        required={config.validation.required}
+        fullWidth={true}
+        name={field}
+        onChange={val => onChange(field, val)}
+        ClearAble={true}
+        placeholder={config.placeholder}
+        label={config.label}
+        options={options}/>
+    );
   }
 
-};
+}
+
+export class OfficeCoordinate extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      openMap: false
+    };
+  }
+
+  setCoordinate = (latitude, longitude) => {
+    const { field, onChange } = this.props;
+    onChange(field, { latitude, longitude });
+    this.setState({openMap:false})
+  };
+
+  render() {
+    const { field, config, value, onChange } = this.props;
+    const { openMap } = this.state;
+    let str = value?`Latitude: ${value.latitude} , Longitude: ${value.longitude} `:"";
+
+    return (
+
+      <>
+        <TextField
+          InputProps={{
+            readOnly:true,
+            endAdornment: (
+              <InputAdornment position={"end"}>
+                <Button color={"default"} variant={"outlined"} onClick={(e) => this.setState({openMap: true})}>
+                  <PlaceIcon/>
+                </Button>
+              </InputAdornment>
+            )
+          }}
+          variant={"outlined"}
+          margin={"dense"}
+          value={str}
+          required={config.validation.required}
+          fullWidth={true}
+          name={field}
+          onClick={e => this.setState({ openMap: true })}
+          ClearAble={true}
+          placeholder={config.placeholder}
+          label={config.label}/>
+
+        <GMapDialog open={openMap} isMarkerShown={true} onClose={this.setCoordinate}/>
+      </>
+    );
+  }
+
+}

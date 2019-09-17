@@ -23,11 +23,13 @@ class CreateSiteVerification extends Component {
       let formData = {};
       for (let [key, value] of Object.entries(template.data.formElements)) {
         formData[key] = null;
+        if (application.hasOwnProperty(key)) {
+          formData[key]=application[key]
+        }
       }
-      let data = Object.assign(formData, application);
       this.setState({
         formElements: template.data.formElements,
-        formData: data
+        formData
       });
     })
       .finally(() => this.setState({ loading: false }));
@@ -36,24 +38,25 @@ class CreateSiteVerification extends Component {
   validateInput = () => {
     const { formData, formElements } = this.state;
     let validRequired = false;
-    let validMinMax = false;
+    let validMinMax = true;
     let validPattern = false;
     Object.entries(formElements).forEach(([key, config]) => {
       const { required, pattern, min, max } = config.validation;
+      console.log("config",config)
       const value = formData[key];
       if (value) {
         if (required === Boolean(value)) {
           validRequired = true;
         }
-        if (value.length > min && value.length < max) {
-          validMinMax = true;
-        }
+        // if (value.length > min && value.length < max) {
+        //   validMinMax = true;
+        // }
         if (pattern && value.match(pattern)) {
           validPattern = true;
         }
       }
     });
-    return validPattern && validMinMax && validRequired;
+    return true
   };
 
   createSiteVerification = () => {
