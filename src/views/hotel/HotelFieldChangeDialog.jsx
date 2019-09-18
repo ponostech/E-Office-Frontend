@@ -24,108 +24,126 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import moment from "moment";
 import { DocumentService } from "../../services/DocumentService";
 import SubmitDialog from "../../components/SubmitDialog";
-import { ShopService } from "../../services/ShopService";
 import ChangeForm from "../shop/utils/ChangeForm";
+import { HotelService } from "../../services/HotelService";
 
 
-const FIELD = {
-  TEXTFIELD: "textfield",
-  SELECT: "select",
-  RADIO: "radio",
-  SWITCH: "switch"
-};
-const extractField = (application) => {
-  return {
-    owner: { key: "owner", name: "applicantName", label: "Name of Applicant", defaultValue: application["owner"] },
+const
+  extractField = (application) => {
+    return {
+      owner: { key: "owner", name: "applicantName", label: "Name of Applicant", defaultValue: application["owner"] },
 
-    phone: { key: "phone_no", name: "mobile", label: "Phone No", defaultValue: application["phone"] },
-    // email:  {key:"email",name:"email",label:"Email",defaultValue:application['email']},
-    type: {
-      key: "type",
-      name: "applicantType",
-      label: "Type of Applicant",
-      defaultValue: application["type"]?{value:application['type'],label:application['type']}:""
-    },
-    onwer_address: {
-      key: "owner_address",
-      name: "applicantName",
-      label: "Address of Owner",
-      defaultValue: application["owner_address"]
-    },
+      phone: { key: "phone_no", name: "mobile", label: "Phone No", defaultValue: application["phone"] },
+      // email:  {key:"email",name:"email",label:"Email",defaultValue:application['email']},
+      type: {
+        key: "type",
+        name: "applicantType",
+        label: "Type of Applicant",
+        defaultValue: application["type"] ? { value: application["type"], label: application["type"] } : ""
+      },
+      owner_address: {
+        key: "owner_address",
+        name: "ownerAddress",
+        label: "Address of Owner",
+        defaultValue: application["owner_address"]
+      },
 
-    name: { key: "shop_name", name: "shopName", label: "Name of Shop", defaultValue: application["name"] },
+      name: { key: "name", name: "hotelName", label: "Name of Hotel", defaultValue: application["name"] },
 
-    address: {
-      key: "address",
-      name: "shopAddress",
-      label: "Address of Proposed Shop",
-      defaultValue: application["address"]
-    },
+      address: {
+        key: "address",
+        name: "shopAddress",
+        label: "Address of Proposed Shop",
+        defaultValue: application["address"]
+      },
 
-    trade: { key: "trade", name: "tradeName", label: "Name of Trade ", defaultValue: application["trade"] },
+      trade: {
+        key: "trade", name: "tradeName",
+        label: "Grade ",
+        defaultValue: {
+          value: application["trade"].id,
+          label: application["trade"].name
+        }
+      },
 
-    local_council: {
-      key: "local_council",
-      name: "shopLocalCouncil",
-      label: "Local Council of Proposed Shop ",
-      defaultValue: application["local_council"]
-    },
+      local_council: {
+        key: "local_council",
+        name: "localCouncil",
+        label: "Local Council of Proposed Hotel ",
+        defaultValue: {
+          label: application["local_council"].name,
+          value: application["local_council"].id
+        }
+      },
 
-    estd: { key: "estd", name: "estd", label: "Date of Establishment ", defaultValue: moment(application["estd"]) },
+      estd: { key: "estd", name: "estd", label: "Date of Establishment ", defaultValue: moment(application["estd"]) },
 
-    details: {
-      key: "details",
-      name: "businessDetail",
-      label: "Detail of Business",
-      defaultValue: application["details"]
-    },
-    non_ac_rooms: {
-      key: "non_ac_rooms",
-      name: "noNonAcRoom",
-      label: "No of Non AC Room",
-      defaultValue: application["non_ac_rooms"]
-    },
-    ac_rooms: {
-      key: "ac_rooms",
-      name: "noAcRoom",
-      label: "No of AC Room",
-      defaultValue: application["ac_rooms"]
-    },
-    conference_halls: {
-      key: "conference_halls",
-      name: "conferenceHalls",
-      label: "No of Conference halls",
-      defaultValue: application["conference_halls"]
-    },
-    banquet_halls: {
-      key: "banquet_halls",
-      name: "banquetHalls",
-      label: "No of Banquet Hall",
-      defaultValue: application["banquet_halls"]
-    },
-    other_facilities: {
-      key: "other_facilities",
-      name: "facilities",
-      label: "Facilities",
-      defaultValue: application["other_facilities"]
-    },
-    premise_type: {
-      key: "premise_type",
-      name: "premise_type",
-      label: "Whether Premised of leased",
-      defaultValue: application["premise_type"]
-    },
+      details: {
+        key: "details",
+        name: "businessDetail",
+        label: "Detail of Business",
+        defaultValue: application["details"]
+      },
+      non_ac_rooms: {
+        key: "non_ac_rooms",
+        name: "noNonAcRoom",
+        label: "No of Non AC Room",
+        defaultValue: application["non_ac_rooms"]
+      },
+      ac_rooms: {
+        key: "ac_rooms",
+        name: "noAcRoom",
+        label: "No of AC Room",
+        defaultValue: application["ac_rooms"]
+      },
+      conference_halls: {
+        key: "conference_halls",
+        name: "conferenceHalls",
+        label: "No of Conference halls",
+        defaultValue: application["conference_halls"]
+      },
+      banquet_halls: {
+        key: "banquet_halls",
+        name: "banquetHalls",
+        label: "No of Banquet Hall",
+        defaultValue: application["banquet_halls"]
+      },
+      other_facilities: {
+        key: "other_facilities",
+        name: "facilities",
+        label: "Facilities",
+        defaultValue: application["other_facilities"]
+      },
+      premise_type: {
+        key: "premise_type",
+        name: "premise_type",
+        label: "Whether Premised of leased",
+        defaultValue: application["premise_type"]
+      },
+      passport: {
+        key: "passport",
+        name: "passport",
+        label: "Photograph of Applicant",
 
-    tin_no: { name: "tinNo", label: "TIN No", defaultValue: application["tin_no"] },
+        defaultValue: {
+          location: application["passport"],
+          mime: "images/*",
+          mandatory: true,
+          status: "uploaded",
+          name: "Uploaded Photograph"
+        }
+      },
 
-    cst_no: { name: "cstNo", label: "CST No", defaultValue: application["cst_no"] },
+      tin_no: { name: "tinNo", label: "TIN No", defaultValue: application["tin_no"] },
 
-    pan_no: { name: "panNo", label: "PAN No", defaultValue: application["pan_no"] },
+      cst_no: { name: "cstNo", label: "CST No", defaultValue: application["cst_no"] },
 
-    gst_no: { name: "gstNO", label: "GST No", defaultValue: application["gst_no"] }
+      pan_no: { name: "panNo", label: "PAN No", defaultValue: application["pan_no"] },
 
+      gst_no: { name: "gstNO", label: "GST No", defaultValue: application["gst_no"] }
+
+    };
   };
-};
 
 const FieldList = ({ application, documents, isDocumentAdded, addDocument, removeDocument, isAdded, addItem, removeItem }) => {
   let fields = extractField(application);
@@ -134,15 +152,17 @@ const FieldList = ({ application, documents, isDocumentAdded, addDocument, remov
 
     switch (key) {
       case "local_council":
-        return defaultValue.value;
-        case "type":
-        return defaultValue.value;
+        return defaultValue.label;
+      case "passport":
+        return defaultValue.name;
+      case "type":
+        return defaultValue.label;
       case "estd":
         return moment(defaultValue).format("Do MMM YYYY");
       case "trade":
-        return defaultValue.name;
+        return defaultValue.label;
       default:
-        return typeof defaultValue === "object" ? "" : defaultValue;
+        return typeof defaultValue === "object" ? "Obj" : defaultValue;
     }
   };
   return (
@@ -177,10 +197,11 @@ const FieldList = ({ application, documents, isDocumentAdded, addDocument, remov
           <List component={"div"}>
             {
               documents.map((doc, key) => {
-                return <DetailViewRow key={key} primary={doc.mime==="application/pdf"?"Portable Document(PDF)":"Image (JPEG,JPG,PNG)"}
+                return <DetailViewRow key={key}
+                                      primary={doc.mime === "application/pdf" ? "Portable Document(PDF)" : "Image (JPEG,JPG,PNG)"}
                                       secondary={doc.name}>
                   <IconButton href={"#"}
-                              onClick={e => isDocumentAdded(doc.name) ? removeDocument(doc.name) : addDocument(doc.name,doc)}>
+                              onClick={e => isDocumentAdded(doc.name) ? removeDocument(doc.name) : addDocument(doc.name, doc)}>
                     {
                       isDocumentAdded(doc.name) ? <Icon color={"primary"}>check_circle</Icon> :
                         <Icon color={"default"}>check_circle_outzline</Icon>
@@ -221,12 +242,12 @@ class HotelFieldChangeDialog extends React.Component {
       selectedDocuments: {},
       documents: [],
       formData: {},
-      uploadDocuments:[],
+      uploadDocuments: [],
 
-      submit:false
+      submit: false
     };
     this.documentService = new DocumentService();
-    this.shopService = new ShopService();
+    this.hotelService = new HotelService();
   }
 
   componentDidMount() {
@@ -239,39 +260,39 @@ class HotelFieldChangeDialog extends React.Component {
       });
   }
 
-  onUploadDocument=(key,value)=>{
+  onUploadDocument = (key, value) => {
     const { uploadDocuments } = this.state;
     const temp = uploadDocuments;
-    temp[key]=value;
-    this.setState({ uploadDocuments:temp})
-  }
+    temp[key] = value;
+    this.setState({ uploadDocuments: temp });
+  };
   addField = (key, value) => {
     const { application } = this.props;
-    const { fields,formData } = this.state;
+    const { fields, formData } = this.state;
     let arr = fields;
     let tempData = formData;
     tempData[key] = value.defaultValue;
     arr[key] = value;
-    this.setState({ fields: arr,formData:tempData });
+    this.setState({ fields: arr, formData: tempData });
   };
 
   removeField = (key) => {
-    const { fields,formData } = this.state;
+    const { fields, formData } = this.state;
     let temp = fields;
     let tempData = formData;
     delete temp[key];
     delete tempData[key];
-    this.setState({ fields: temp,formData:tempData });
+    this.setState({ fields: temp, formData: tempData });
   };
   isAdded = (key) => {
     const { fields } = this.state;
     return Boolean(fields[key]);
   };
-  addDocument = (key,document) => {
+  addDocument = (key, document) => {
     const { selectedDocuments } = this.state;
-    let temp=selectedDocuments;
-    temp[key]=document;
-    this.setState({selectedDocuments:temp})
+    let temp = selectedDocuments;
+    temp[key] = document;
+    this.setState({ selectedDocuments: temp });
   };
   isExistDocument = (key) => {
     const { selectedDocuments } = this.state;
@@ -280,27 +301,28 @@ class HotelFieldChangeDialog extends React.Component {
   removeDocument = (key) => {
     const { selectedDocuments } = this.state;
     let temp = selectedDocuments;
-    delete temp[key]
+    delete temp[key];
     this.setState({ selectedDocuments: temp });
   };
-  onChange=(name,value)=>{
-    console.log("onchange is called by ",name,value)
+  onChange = (name, value) => {
+    console.log("onchange is called by ", name, value);
     const { formData } = this.state;
-    let temp=formData
-    temp[name]=value
-    this.setState({formData:temp})
-  }
+    let temp = formData;
+    temp[name] = value;
+    this.setState({ formData: temp });
+  };
 
   getDefaultData = (application) => {
     return {
-      ref_id:application["id"],
+      ref_id: application["id"],
       onwer: application["owner"],
       phone: application["phone"],
       type: application["type"],
       email: application["email"],
       address: application["address"],
       owner_address: application["owner_address"],
-      local_council_id: application['local_council_id'],
+      local_council_id: application["local_council_id"],
+      local_council: application["local_council"],
       trade_id: application["trade_id"],
       name: application["name"],
       latitude: application["latitude"],
@@ -317,55 +339,55 @@ class HotelFieldChangeDialog extends React.Component {
       gst_no: application["gst_no"],
       pan_no: application["pan_no"],
 
-      passport:application['passport'],
-      premise_type: application["premise_type"],
+      passport: application["passport"],
+      premise_type: application["premise_type"]
 
-    }
+    };
   };
-  getDefaultDocument=(documents)=>{
-    let data={}
-    documents.forEach(item=>{
-      let temp={
-        document_id:item.document_id,
-        name:item.name,
-        path:item.path
-      }
-      data[item.name]=temp;
-    })
-    return data
-  }
+  getDefaultDocument = (documents) => {
+    let data = {};
+    documents.forEach(item => {
+      let temp = {
+        document_id: item.document_id,
+        name: item.name,
+        path: item.path
+      };
+      data[item.name] = temp;
+    });
+    return data;
+  };
   submitForm = () => {
     const { application } = this.props;
-    let { formData,uploadDocuments,selectedDocuments } = this.state;
+    let { formData, uploadDocuments, selectedDocuments } = this.state;
     let defaultData = this.getDefaultData(application);
-    let defaultDocument=this.getDefaultDocument(application.documents)
-    let finalData = {...defaultData, ...formData};
-    let finalDoc = {...defaultDocument, ...uploadDocuments};
+    let defaultDocument = this.getDefaultDocument(application.documents);
+    let finalData = { ...defaultData, ...formData };
+    let finalDoc = { ...defaultDocument, ...uploadDocuments };
 
     //TODO:: validation
     let documents = [];
     for (let key in finalDoc) {
-      documents.push(finalDoc[key])
+      documents.push(finalDoc[key]);
     }
-    console.log("documents",documents)
+    console.log("documents", documents);
     finalData.documents = documents;
     finalData.application_type = "Change Detail";
 
-    this.setState({submit:true})
-    this.shopService.changeField(application.id,finalData,
-      errorMsg=>this.setGlobal({errorMsg}),
-      successMsg=>{
-      this.setGlobal({successMsg})
-      this.props.onClose()
+    this.setState({ submit: true });
+    this.hotelService.changeField(application.id, finalData,
+      errorMsg => this.setGlobal({ errorMsg }),
+      successMsg => {
+        this.setGlobal({ successMsg });
+        this.props.onClose();
       })
-      .finally(()=>this.setState({submit:false}))
+      .finally(() => this.setState({ submit: false }));
   };
 
-  cancelChange=()=> this.setState({fields:{},formData:{},selectedDocuments:{},uploadDocuments:[]})
+  cancelChange = () => this.setState({ fields: {}, formData: {}, selectedDocuments: {}, uploadDocuments: [] });
 
   render() {
     const { open, onClose, application, classes } = this.props;
-    const { fields, selectedDocuments,documents ,formData,submit} = this.state;
+    const { fields, selectedDocuments, documents, formData, submit } = this.state;
     return (
       <Dialog open={open} TransitionComponent={Transition} onClose={onClose} fullScreen={true} fullWidth={true}
               maxWidth={"md"}>
@@ -400,10 +422,10 @@ class HotelFieldChangeDialog extends React.Component {
               <ChangeForm
                 type={"hotel"}
                 onUploadDocument={this.onUploadDocument}
-                          onChange={this.onChange}
-                          formData={formData}
-                          selectedDocuments={selectedDocuments}
-                          selectedFields={fields}/>
+                onChange={this.onChange}
+                formData={formData}
+                selectedDocuments={selectedDocuments}
+                selectedFields={fields}/>
 
             </Grid>
           </Grid>
@@ -411,10 +433,11 @@ class HotelFieldChangeDialog extends React.Component {
         </DialogContent>
         <DialogActions>
           <Button variant={"outlined"} color={"primary"} href={"#"} onClick={event => this.submitForm()}>Submit</Button>
-          <Button variant={"outlined"} color={"secondary"} href={"#"} onClick={event => this.cancelChange()}>Cancel</Button>
+          <Button variant={"outlined"} color={"secondary"} href={"#"}
+                  onClick={event => this.cancelChange()}>Cancel</Button>
 
         </DialogActions>
-        <SubmitDialog open={submit} title={"Submitting application"} text={"Please wait..."} />
+        <SubmitDialog open={submit} title={"Submitting application"} text={"Please wait..."}/>
       </Dialog>
     );
   }
@@ -423,6 +446,6 @@ class HotelFieldChangeDialog extends React.Component {
 HotelFieldChangeDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  application: PropTypes.object.isRequired,
+  application: PropTypes.object.isRequired
 };
 export default withStyles(styles)(HotelFieldChangeDialog);
