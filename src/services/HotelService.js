@@ -199,7 +199,7 @@ export class HotelService {
 
   async changeField(application_id, data, errorCallback, successCalback) {
     try {
-      const res = await axios.post(ApiRoutes.UPDATE_SHOP_LICENSE(application_id), data);
+      const res = await axios.post(ApiRoutes.UPDATE_HOTEL_LICENSE(application_id), data);
       if (res.data.status) {
         successCalback(res.data.messages);
       } else {

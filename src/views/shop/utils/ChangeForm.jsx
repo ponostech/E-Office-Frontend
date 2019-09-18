@@ -28,6 +28,7 @@ import FileUpload from "../../../components/FileUpload";
 import { APPLICATION_NAME } from "../../../utils/Util";
 import LoadingView from "../../common/LoadingView";
 import { TradeService } from "../../../services/TradeService";
+import OfficeFileUpload from "../../../components/OfficeFileUpload";
 
 const style = {
   subTitle: {
@@ -253,11 +254,11 @@ class ChangeForm extends Component {
                   }}/>
               </Grid>
 
-              <Grid item={true} style={{ display: selectedFields["localCouncil"] ? "block" : "none" }} xs={12} sm={12}
+              <Grid item={true} style={{ display: selectedFields["local_council"] ? "block" : "none" }} xs={12} sm={12}
                     md={6}>
                 <OfficeSelect
                   value={formData.local_council}
-                  label={"Local Council of Proposed Shop"}
+                  label={"Local Council of Proposed Hotel"}
                   name={"localCouncil"}
                   variant={"outlined"}
                   margin={"dense"}
@@ -440,6 +441,19 @@ class ChangeForm extends Component {
                 </FormControl>
               </Grid>
 
+              <Grid item={true} style={{display:selectedFields["passport"]?"block":"none"}} xs={12} sm={12} md={6}>
+               { formData.passport &&  <OfficeFileUpload applicationName={APPLICATION_NAME.HOTEL}
+                                  document={formData.passport}
+                                  onUploadSuccess={(data) => {
+                                    let temp={
+                                      name:"passport",
+                                      location:data.location
+                                    }
+                                    onChange('passport',temp)
+                                  }} onUploadFailure={(err) => {
+                  console.log(err);
+                }}/>}
+              </Grid>
               <Grid item={true} xs={12} sm={12} md={12}>
                 <Typography className={classes.subTitle} variant={"h6"}>Upload Document(s)</Typography>
               </Grid>
@@ -454,7 +468,7 @@ class ChangeForm extends Component {
                                md={12}>
 
                     <FileUpload
-                      applicationName={APPLICATION_NAME.SHOP}
+                      applicationName={APPLICATION_NAME.HOTEL}
                       document={value}
                       onUploadSuccess={(data) => {
                         let temp = {
