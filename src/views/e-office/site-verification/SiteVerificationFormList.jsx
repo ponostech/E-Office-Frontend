@@ -98,11 +98,6 @@ class SiteVerificationFormList extends Component {
                                         secondary={"Created at :" + moment(item.created_at).format("Do-MMMM-YYYY")}/>
                           <ListItemSecondaryAction>
                             <>
-                              <Tooltip title={"View form"}>
-                                <IconButton href={"#"} onClick={this.handlePreview.bind(this, item)}>
-                                  <ViewIcon fontSize={"small"} color={"action"}/>
-                                </IconButton>
-                              </Tooltip>
                               <Tooltip title={"Edit"}>
                                 <IconButton href={"#"} onClick={this.edit.bind(this, item)}>
                                   <EditIcon fontSize={"small"} color={"action"}/>
@@ -130,9 +125,6 @@ class SiteVerificationFormList extends Component {
         <ConfirmDialog onCancel={e => this.setState({ openDelete: false })} open={this.state.openDelete}
                        onConfirm={this.confirmDelete.bind(this)}/>
 
-        <SiteVerificationFormPreviewDialog open={this.state.openPreview}
-                                           onClose={e => this.setState({ openPreview: false })}
-                                           template={this.state.template}/>
       </>
     );
   }

@@ -142,9 +142,9 @@ const routes = (props) => {
 
       {/*site verification*/}
       <Route exact path={OfficeRoutes.SITE_VERIFICATION + "/:module/edit"}
-             render={e => <EditSiteVerificationTemplate/>}/>
+             render={props => <FormBuilderContainer {...props}/>}/>
       <Route exact path={OfficeRoutes.SITE_VERIFICATION_LIST} render={e => <SiteVerificationFormList/>}/>
-      <Route exact path={OfficeRoutes.SITE_VERIFICATION} render={e => <FormBuilderContainer/>}/>
+      <Route exact path={OfficeRoutes.SITE_VERIFICATION} render={props => <FormBuilderContainer {...props} />}/>
 
         {/*template*/}
       {/*<Route exact path={OfficeRoutes.PERMIT_TEMPLATE} render={e => <PermitTemplates/>}/>*/}

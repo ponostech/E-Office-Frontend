@@ -8,14 +8,15 @@ import {
   Divider,
   Grid,
   Icon,
-  IconButton,
+  IconButton, InputLabel,
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
   Paper,
-  TextField
+  TextField, Typography
 } from "@material-ui/core";
+import PropTypes from "prop-types";
 import StandardConfigDialog from "./dialogs/StandardConfigDialog";
 import FillableConfigDialog from "./dialogs/FillableConfigDialog";
 import FileUploadConfigDialog from "./dialogs/FileUploadConfigDialog";
@@ -121,7 +122,7 @@ const FillableWidgetList = ({ onWidgetClick, selectedSiteVerification }) => {
 // ]
 //   }
 // }
-const DynamicForm = ({ onSave, onClear, selectedWidgetList, onWidgetValueChange, onRemoveWidget, selectedSiteVerification, changeSiteVerification }) => {
+const DynamicForm = ({module, onSave, onClear, selectedWidgetList, onWidgetValueChange, onRemoveWidget, selectedSiteVerification, changeSiteVerification }) => {
 
   const options = [
 
@@ -138,7 +139,11 @@ const DynamicForm = ({ onSave, onClear, selectedWidgetList, onWidgetValueChange,
         <CardHeader title={"Site verification form builder"}
                     subheader={"Select widget from the left to make form"} action={
 
-          <OfficeSelect
+          module ?
+            <Typography variant={"h6"}>
+            Edit : {module}  Verification Form
+            </Typography> :
+            <OfficeSelect
             label={"Type of site verification"}
             variant={"outlined"}
             margin={"dense"}
@@ -203,6 +208,19 @@ class FormBuilderContainer extends Component {
       submit: false
     };
     this.siteVerificationService = new SiteVerificationService();
+  }
+
+
+  componentDidMount() {
+
+    let module = this.props.match.params.module;
+    if (module) {
+      this.siteVerificationService.getTemplate(module,
+        errorMsg=>this.setGlobal({errorMsg}),
+        res=>this.setState({selectedWidgetList:res.data.formElements}))
+        .finally(()=>this.setGlobal({loading:false}))
+    }
+
   }
 
   saveConfig = () => {
@@ -312,6 +330,7 @@ class FormBuilderContainer extends Component {
       openFileUploadConfig, openOptionDialog, openDateConfig, openImageListConfig, selectedWidget, selectedSiteVerification
     } = this.state;
     const { openLocalCouncilConfig } = this.state;
+    const module = this.props.match.params.module;
 
     return (
       <>
@@ -336,7 +355,8 @@ class FormBuilderContainer extends Component {
           </Grid>
 
           <Grid item={true} md={9} lg={9}>
-            <DynamicForm onRemoveWidget={this.removeWidget} onWidgetValueChange={this.changeValue}
+            <DynamicForm module={module}
+                         onRemoveWidget={this.removeWidget} onWidgetValueChange={this.changeValue}
                          selectedWidgetList={selectedWidgetList} selectedSiteVerification={selectedSiteVerification}
                          onSave={this.saveConfig} onClear={this.clearItems}
                          changeSiteVerification={val => this.setState({ selectedSiteVerification: val })}/>
@@ -392,6 +412,11 @@ class FormBuilderContainer extends Component {
       </>
     );
   }
+}
+
+FormBuilderContainer.propTypes={
+  selectedSiteVerification:PropTypes.string.isRequired,
+  selectedWidgetList:PropTypes.string.isRequired
 }
 
 export default FormBuilderContainer;
