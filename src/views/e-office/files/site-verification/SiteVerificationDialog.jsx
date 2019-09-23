@@ -60,7 +60,13 @@ class SiteVerificationDialog extends Component {
     this.siteVerificationService=new SiteVerificationService()
   }
 
+  componentWillUnmount() {
+    this.applicationService = null;
+    this.siteVerificationService = null;
+  }
+
   createVerification = (siteVerification) => {
+    console.log(siteVerification)
     this.setState({ siteVerification });
     this.handleNext()
   };

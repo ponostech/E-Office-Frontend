@@ -389,9 +389,11 @@ class FormBuilderContainer extends Component {
                             widget={selectedWidget}
                             onCreateConfiguration={this.addConfiguredWidget}/>
         <FileUploadConfigDialog onClose={() => this.setState({ openFileUploadConfig: false })}
+                                widget={selectedWidget}
                                 open={openFileUploadConfig}
                                 onCreateConfiguration={this.addConfiguredWidget}/>
         <ImageListConfigDialog onClose={() => this.setState({ openImageListConfig: false })}
+                               widget={selectedWidget}
                                open={openImageListConfig}
                                onCreateConfiguration={this.addConfiguredWidget}/>
 
