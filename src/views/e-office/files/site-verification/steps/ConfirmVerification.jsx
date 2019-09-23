@@ -8,35 +8,15 @@ import { ApplicationResolver } from "../../dialog/common/ApplicationResolver";
 class ConfirmVerification extends Component {
 
   handleConfirm = () => {
-    const { application, siteVerification } = this.props;
-    const formData = [];
-    const elements = siteVerification.template.formElements;
-    let valid = true;
-    elements.forEach(function(element, index) {
-      if (!element.valid) {
-        valid = false;
-      } else {
-        let data = {
-          name: element.elementConfig.label,
-          value: element.value.value ? element.value.value : element.value
-        };
-        formData.push(data);
-      }
-    });
-    if (!valid) {
-      this.setGlobal({ errorMsg: "Please fill all the required field" });
-    } else {
+    const { application, siteVerification ,confirmVerification} = this.props;
+    const { formElements, formData } = siteVerification;
       let url = "site-verifications/" + application.id;
       let type = application.file.fileable_type;
-      let template = {
-        formElements: siteVerification.template.formElements
-      };
-      this.props.confirmVerification(url, type, formData, template);
-    }
+      confirmVerification(url, type, formData, formElements);
   };
 
   render() {
-    const { application, siteVerification, confirmVerification, onBack } = this.props;
+    const { application, siteVerification, onBack } = this.props;
 
     const rows = ApplicationResolver(application);
     const verificationData = Object.entries(siteVerification.formData).map(([key,val]) => <DetailViewRow primary={key.toUpperCase()} secondary={typeof val==="object"?"Obj":val}/>);

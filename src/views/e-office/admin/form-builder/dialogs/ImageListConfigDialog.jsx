@@ -168,6 +168,7 @@ class ImageListConfigDialog extends Component {
 
 ImageListConfigDialog.propTypes = {
   onCreateConfiguration: PropTypes.func.isRequired,
+  widget: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };

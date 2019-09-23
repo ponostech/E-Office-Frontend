@@ -46,9 +46,6 @@ class FileUploadConfigDialog extends Component {
     max:1000
   };
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("component update");
-  }
 
   onChange = (name, value) => {
     this.setState({ [name]: value });
@@ -166,6 +163,7 @@ class FileUploadConfigDialog extends Component {
 
 FileUploadConfigDialog.propTypes = {
   onCreateConfiguration: PropTypes.func.isRequired,
+  widget: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };

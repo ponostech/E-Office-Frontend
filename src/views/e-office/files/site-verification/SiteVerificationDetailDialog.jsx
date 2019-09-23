@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,17 +11,18 @@ import {
   Icon,
   IconButton,
   List,
+  ListItemText,
   Toolbar,
+  Tooltip,
   Typography,
   withStyles
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import CloseIcon from "@material-ui/icons/Close";
 import DetailViewRow from "../../common/DetailViewRow";
-import WidgetConstant from "../../../../components/form-builder/WidgetConstant";
-import EyeIcon from "@material-ui/icons/RemoveRedEye";
-import GridContainer from "../../../../components/Grid/GridContainer";
-import GridItem from "../../../../components/Grid/GridItem";
+import { getVerificationData } from "../dialog/common/ApplicationResolver";
+import { WIDGET_TYPE } from "../../admin/form-builder/constant";
+import Grid from "@material-ui/core/Grid";
 
 const styles = {
   appBar: {
@@ -46,54 +46,62 @@ class SiteVerificationDetailDialog extends Component {
     attachments: []
   };
 
-  componentDidMount() {
-  };
-
   componentWillReceiveProps(nextProps, nextContext) {
-    const { open, onClose, file, verification } = nextProps;
-    let rows = [];
-    let attachments = [];
-    let images = [];
+    if (nextProps.verification) {
+      const { data, template } = nextProps.verification;
+      const val = { ...data, ...template };
+      console.log(val);
+      console.log("after mutation");
+      console.log(nextProps.verification);
 
-    if (verification) {
-      const elements = verification.template.formElements;
-      console.log("she called me");
-      elements.forEach(function(element, index) {
-        let row = {};
-        let attachment = {};
-        switch (element.elementType) {
-          case WidgetConstant.FILE_UPLOAD:
-            attachment.name = element.value.name;
-            attachment.location = element.value.path;
-
-            attachments.push(attachment);
-            break;
-          case WidgetConstant.IMAGE_UPLOAD:
-            let temp=[];
-            element.value.map(img=>temp.push(img))
-            images.push(...temp);
-            break;
-          case WidgetConstant.SELECT:
-            row.label = element.elementConfig.label;
-            row.value = element.value.value;
-            rows.push(row);
-            break;
-          default:
-            row.label = element.elementConfig.label;
-            row.value = element.value;
-
-            rows.push(row);
-        }
-      });
     }
-
-    this.setState({ rows, attachments, images });
-
   }
 
+
+  getStringValue = () => {
+    const { verification } = this.props;
+    if (verification === null)
+      return <DetailViewRow primary={"No Detail"}/>;
+    let data = getVerificationData(verification);
+    console.log("data",data)
+    let view = (
+      <>
+        {
+          data.map((item, index) => {
+              let row;
+              if (item.type === WIDGET_TYPE.IMAGE_LIST) {
+                row = item.value.map(img =>
+                  <DetailViewRow primary={img.label}>
+                    <Tooltip title={"Click here to view the details"}>
+                      <IconButton onClick={e=>window.open(item.location,"_blank")} href={item.location} target={"_blank"}>
+                        <Icon color={"primary"} fontSize={"small"}>remove_red_eye</Icon>
+                      </IconButton>
+                    </Tooltip>
+                  </DetailViewRow>
+                );
+                return <Grid item={true} md={6} sm={12} xs={12}>
+                  <List>
+                    <ListItemText primary={item.label}/>
+                    {row}
+                  </List>
+                </Grid>
+              } else {
+                return <Grid item={true} xs={12} sm={12} md={6}>
+                  <DetailViewRow primary={(item.label)} secondary={(item.value)}/>
+                </Grid>
+              }
+            }
+          )
+        }
+      </>
+    );
+    return view;
+  };
+
   render() {
-    const { open, onClose, file, classes } = this.props;
+    const { open, onClose, verification, classes } = this.props;
     const { rows, images, attachments } = this.state;
+
 
     return (
       <Dialog fullScreen={true} fullWidth={true} maxWidth={"md"} open={open} onClose={onClose}>
@@ -119,39 +127,9 @@ class SiteVerificationDetailDialog extends Component {
 
               <Divider component={"div"}/>
 
-              <GridContainer spacing={3}>
-                <GridItem md={6}>
-                  <List component={"div"}>
-                    {
-                      rows.map((row, index) => (
-                        <> <DetailViewRow key={index} primary={row.label} secondary={row.value}/> </>
-                      ))
-                    }
-                  </List>
-                </GridItem>
-                <GridItem md={6}>
-                  {attachments.length !== 0 && <Typography variant={"h6"}>Attachment</Typography>}
-                  <List component={"div"}>
-                    {
-                      attachments.map((item, index) => (
-                        <>
-                          <DetailViewRow secondary={item.name}>
-                            <IconButton onClick={e=>window.open(item.location,"_blank")} ><Icon color={"default"}>keyboard_arrow_right</Icon></IconButton>
-                          </DetailViewRow>
-                        </>
-                      ))
-                    }
-                  </List>
-                  {images.length !== 0 && <Typography variant={"h6"}>Images</Typography>}
-                  <List component={"div"}>
-                    {
-                      images.map((item, index) =>
-                        <img alt={item.name}  src={item.location} width={200} height={200}/>
-                      )
-                    }
-                  </List>
-                </GridItem>
-              </GridContainer>
+              <Grid container={true} spacing={0}>
+                  {this.getStringValue()}
+              </Grid>
 
             </CardContent>
           </Card>

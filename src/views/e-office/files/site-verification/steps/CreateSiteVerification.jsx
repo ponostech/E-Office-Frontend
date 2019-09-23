@@ -19,6 +19,9 @@ class CreateSiteVerification extends Component {
   componentDidMount() {
     const { application } = this.props;
 
+    console.log(application)
+    let module = "shop";
+
     this.siteVerification.getTemplate("shop", errorMessage => this.setState({ errorMessage }), template => {
       let formData = {};
       for (let [key, value] of Object.entries(template.data.formElements)) {
@@ -75,8 +78,6 @@ class CreateSiteVerification extends Component {
     }
   };
   onChange = (key, value) => {
-    console.log("key", key);
-    console.log("value", value);
     const { formData, formElements } = this.state;
     let temp = formData;
     temp[key] = value;
