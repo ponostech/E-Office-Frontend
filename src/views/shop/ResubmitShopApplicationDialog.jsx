@@ -49,6 +49,7 @@ import GridItem from "../../components/Grid/GridItem";
 import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
 import OfficeFileUpload from "../../components/OfficeFileUpload";
+import { OfficeImageList } from "../e-office/admin/form-builder/fields";
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -106,6 +107,7 @@ class ResubmitShopApplicationDialog extends Component {
     latitude: undefined,
     longitude: undefined,
     uploadDocuments: [],
+    additionalDocuments: [],
 
     nameError: "",
     typeError: "",
@@ -214,7 +216,7 @@ class ResubmitShopApplicationDialog extends Component {
 
   };
   fetchTrades = async () => {
-    await this.tradeService.fetch((errorMsg) => this.setGlobal({ errorMsg })
+    await this.tradeService.fetch("shop",(errorMsg) => this.setGlobal({ errorMsg })
       , (trades) => this.setState({ trades }));
   };
   handleChange = (e) => {
@@ -789,6 +791,23 @@ class ResubmitShopApplicationDialog extends Component {
                             <Divider component={"div"}/>
                           </GridItem>
                           {this.getDocumentView()}
+
+                          <GridItem  xs={12} sm={12} md={12}>
+                            <Typography className={classes.subTitle} variant={"h6"}>Additional Document(S)</Typography>
+                          </GridItem>
+
+                          <GridItem className={classes.root} sm={12} xs={12} md={12}>
+                            <Divider component={"div"}/>
+                          </GridItem>
+
+                          <GridItem xs={12} sm={12} md={8}>
+                            <OfficeImageList value={this.state.additionalDocuments} field={"additionDocuments"} config={{
+                              label:"",
+                              validation:{
+                                required:false
+                              }
+                            }} onChange={(key,value)=>this.setState({additionalDocuments:value})}/>
+                          </GridItem>
                           <GridItem xs={12} sm={12} md={12}>
                             <Typography className={classes.subTitle} variant={"h6"}>Declaration</Typography>
                           </GridItem>

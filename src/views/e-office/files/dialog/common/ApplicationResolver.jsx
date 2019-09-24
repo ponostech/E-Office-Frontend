@@ -24,7 +24,7 @@ export const getVerificationData = (verification) => {
       case WIDGET_TYPE.CHECKBOX:
         temp = {
           label: value.label,
-          value: data[key],
+          value: data[key]?data[key]:"",
           type: WIDGET_TYPE.TEXT_FIELD
         };
         rows.push(temp);
@@ -54,12 +54,12 @@ export const getVerificationData = (verification) => {
         break;
       case WIDGET_TYPE.IMAGE_LIST:
         let arr = [];
-        data[key].forEach(item => {
-          arr.push({
+        arr=Boolean(data[key])?data[key].forEach(item => {
+          return {
             label: item.name,
             value: item.location
-          });
-        });
+          };
+        }):[];
         rows.push({
           label: value.label,
           value: arr,

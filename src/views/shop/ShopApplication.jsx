@@ -718,7 +718,7 @@ class ShopApplication extends Component {
                           </GridItem>
 
                           <GridItem xs={12} sm={12} md={8}>
-                            <OfficeImageList application={null} key={"additionDocuments"} config={{
+                            <OfficeImageList value={this.state.additionalDocuments} field={"additionDocuments"} config={{
                               label:"",
                               validation:{
                                 required:false

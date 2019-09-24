@@ -220,7 +220,7 @@ export const OfficeImageList = ({ field, config, value, onChange }) => {
     <>
       <FormControl fullWidth={true} component={"div"}>
         <FormLabel component={"label"} required={config.validation.required}>{config.label}</FormLabel>
-        <NotesheetAttachment value={[]} onSuccess={onSuccess}/>
+        <NotesheetAttachment value={value} onSuccess={onSuccess}/>
       </FormControl>
     </>
   );

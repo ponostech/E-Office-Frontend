@@ -92,6 +92,8 @@ class ApplicationDetailsDialog extends React.Component {
 
     let documents = application === null ? [] : application.documents ?
         application.documents.map(val => <FileViewRow key={val.id} data={val}/>) : [];
+    let additionalDocument = application === null ? [] : application.addl_documents ?
+        Object.entries(application.addl_documents).map(val => <FileViewRow key={val.id} data={val}/>) : [];
 
     let content =
         <Grid container>
@@ -99,6 +101,7 @@ class ApplicationDetailsDialog extends React.Component {
           <Grid item md>
             <img style={{width: 300}} src={application ? application.passport : ""} alt="Photograph of Applicant"/>
             <List subheader={<ListSubheader>Documents</ListSubheader>}><Divider/>{documents}</List>
+            <List subheader={<ListSubheader>Additional Document</ListSubheader>}><Divider/>{additionalDocument}</List>
           </Grid>
         </Grid>;
 

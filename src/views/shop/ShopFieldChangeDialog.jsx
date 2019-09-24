@@ -313,7 +313,7 @@ class ShopFieldChangeDialog extends React.Component {
     for (let key in finalDoc) {
       documents.push(finalDoc[key]);
     }
-    console.log("documents", documents);
+    console.log("application", finalData);
     finalData.documents = documents;
     finalData.application_type = "Change Detail";
 
