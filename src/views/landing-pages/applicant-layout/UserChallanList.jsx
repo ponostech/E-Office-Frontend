@@ -11,9 +11,10 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import LoadingView from "../../common/LoadingView";
 
 const tableOptions = {
-  filterType: "dropdown",
-  rowsPerPage: 7,
-  serverSide: false,
+  filterType: "checkbox",
+  responsive: "scroll",
+  rowsPerPage: 10,
+  serverSide: false
 };
 const tableColumns = [
   {

@@ -160,9 +160,8 @@ class ApplicantDashboard extends Component {
         <Card>
           <CardHeader style={{paddingTop: 10, paddingBottom: 0, marginBottom: 0}} title={`Dashboard of ${phone}`}
                       action={labels}/>
-          <CardContent>
-            <Grid container={true} spacing={3} justify={"center"}>
-              <Grid style={{marginTop: 0}} item={true} xs={12} sm={12} md={12}>
+          <CardContent style={{marginBottom:0,paddingBottom:0}}>
+
                 <NavPills
                     iconColor={"secondary"}
                     color={"primary"}
@@ -203,8 +202,6 @@ class ApplicantDashboard extends Component {
                       }
                     ]}
                 />
-              </Grid>
-            </Grid>
           </CardContent>
         </Card>
     );

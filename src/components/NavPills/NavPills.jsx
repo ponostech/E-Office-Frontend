@@ -4,31 +4,33 @@ import classNames from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
-
 // material-ui components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 
 import navPillsStyle from "assets/jss/material-dashboard-pro-react/components/navPillsStyle.jsx";
+import { BottomNavigation, Grid, Hidden, Paper } from "@material-ui/core";
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 
 class NavPills extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: props.active
+      active: props.active,
     };
   }
+
   handleChange = (event, active) => {
     this.setState({ active });
   };
   handleChangeIndex = index => {
     this.setState({ active: index });
   };
+
   render() {
     const {
       classes,
@@ -55,7 +57,7 @@ class NavPills extends React.Component {
         centered={alignCenter}
       >
         {tabs.map((prop, key) => {
-          var icon = <prop.tabIcon style={{width:50,height:50}} />;
+          var icon = <prop.tabIcon style={{ width: 50, height: 50 }}/>;
 
           // let iconStyle = {}
           // if (typeof prop.iconColor !== 'undefined' && prop.iconColor === 'secondary') iconStyle = {color: '#b93e46'}
@@ -101,11 +103,41 @@ class NavPills extends React.Component {
         </SwipeableViews>
       </div>
     );
+    const mobileMenu = (
+      <Paper style={{minWidth:"100%"}}>
+        <BottomNavigation
+          value={this.state.active}
+          onChange={this.handleChange}
+          showLabels
+        >
+          {tabs.map((prop,key)=><BottomNavigationAction onClick={prop.onTabClick} label={prop.tabButton} value={key} icon={<prop.tabIcon/>}/> )}
+        </BottomNavigation>
+      </Paper>
+    );
     return horizontal !== undefined ? (
-      <GridContainer>
-        <GridItem {...horizontal.tabsGrid}>{tabButtons}</GridItem>
-        <GridItem {...horizontal.contentGrid}>{tabContent}</GridItem>
-      </GridContainer>
+      <>
+      <Grid container={true}>
+        <Hidden only={["sm", "xs"]}>
+          <Grid item={true} {...horizontal.tabsGrid}>
+            {tabButtons}
+          </Grid>
+          <Grid item={true} {...horizontal.contentGrid}>
+            {tabContent}
+          </Grid>
+        </Hidden>
+      </Grid>
+
+      <Grid container={true} direction={"column"}>
+        <Hidden only={["md", "lg", "xl"]}>
+          <Grid zeroMinWidth={true} item={true} xs={12} sm={12}>
+            {tabContent}
+          </Grid>
+          <Grid item={true} xs={12} sm={12}>
+            {mobileMenu}
+          </Grid>
+        </Hidden>
+      </Grid>
+    </>
     ) : (
       <div>
         {tabButtons}
