@@ -18,14 +18,17 @@ import { LoginService } from "../services/LoginService";
 import ForgotPassword from "../views/common/ForgotPassword";
 import GrievanceCreate from "../views/grievance/GrievanceCreate";
 import ErrorHandler, { SuccessHandler } from "../views/common/StatusHandler";
-import Test from "../views/Test";
 import ApplicantLayout from "../views/landing-pages/ApplicantLayout";
-import FormBuilderContainer from "../views/e-office/admin/form-builder/FormBuilderContainer";
-import { Hidden } from "@material-ui/core";
+import { Container, Drawer, Hidden } from "@material-ui/core";
+import MobileMenu from "./MobileMenu";
+
 
 class LayoutLanding extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      openMobile: false
+    };
     if (LoginService.hasRole("administrator")) window.location.replace(E_OFFICE);
     else if (LoginService.isStaff()) window.location.replace(DESK);
     else if (LoginService.isAdvertiser()) window.location.replace(ADVERTISER_DASHBOARD);
@@ -35,53 +38,65 @@ class LayoutLanding extends React.Component {
 
   }
 
+  toggleDrawer = () => {
+    const { openMobile } = this.state;
+    this.setState({ openMobile: !openMobile });
+  };
+
   render() {
     const { classes, ...rest } = this.props;
-
+    const { openMobile } = this.state;
     return (
-      <div className={classes.wrapper}>
-        <AuthNavbar color={"primary"} brandText="AIZAWL MUNICIPAL CORPORATION"
-                    OfficeRoutes={OfficeRoutes} {...rest} />
-        <div className={classes.fullPage}>
-          <div className={classes.container}>
-            <Switch>
-              <Route exact={true} path={OfficeRoutes.ROOT} component={HomePage}/>
-              <Route exact={true} path={OfficeRoutes.FORGOT_PASSWORD} component={ForgotPassword}/>
-              <Route exact={true} path={OfficeRoutes.APPLY_HOTEL_LICENSE} component={HotelApplication}/>
-              <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopApplication}/>
-              <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserApplication}/>
+      <Container maxWidth={false}>
+        <header className={classes.header}>
+          <AuthNavbar onMenuClick={this.toggleDrawer} color={"primary"} brandText="AIZAWL MUNICIPAL CORPORATION"
+                      OfficeRoutes={OfficeRoutes} {...rest} />
+        </header>
+        <main className={classes.main}>
+          <Drawer className={classes.drawer} anchor="right" open={openMobile} onClose={this.toggleDrawer}>
+            <MobileMenu/>
+          </Drawer>
+          <Switch>
+            <Route exact={true} path={OfficeRoutes.ROOT} component={HomePage}/>
+            <Route exact={true} path={OfficeRoutes.FORGOT_PASSWORD} component={ForgotPassword}/>
+            <Route exact={true} path={OfficeRoutes.APPLY_HOTEL_LICENSE} component={HotelApplication}/>
+            <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopApplication}/>
+            <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserApplication}/>
 
-              <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
+            <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
 
-              <Route exact={true} path={OfficeRoutes.CHECK_LICENSE} component={ApplicantLayout}/>
+            <Route exact={true} path={OfficeRoutes.CHECK_LICENSE} component={ApplicantLayout}/>
 
 
-              {/*<Route exact={true} path={OfficeRoutes.CHECK_LICENSE} component={CheckLicense}/>*/}
-              {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "shop")} component={ShopLicenseList}/>*/}
-              {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "hotel")}*/}
-              {/*       component={HotelLicenseList}/>*/}
-              {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "banner")} component={BannerList}/>*/}
+            {/*<Route exact={true} path={OfficeRoutes.CHECK_LICENSE} component={CheckLicense}/>*/}
+            {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "shop")} component={ShopLicenseList}/>*/}
+            {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "hotel")}*/}
+            {/*       component={HotelLicenseList}/>*/}
+            {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "banner")} component={BannerList}/>*/}
 
-              {/*<Route exact={true} path={OfficeRoutes.APPLICANT_DASHBOARD(":mobile_no")} component={ApplicantDashboard}/>*/}
+            {/*<Route exact={true} path={OfficeRoutes.APPLICANT_DASHBOARD(":mobile_no")} component={ApplicantDashboard}/>*/}
 
-              <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
+            <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
 
-              <Route exact={true} path={OfficeRoutes.GRIEVANCE_CREATE} component={GrievanceCreate}/>
-              {/*<Route exact={true} path={OfficeRoutes.EXPIRED_SHOP_LICENSE_CHECK} component={ExpiredShopLicenseCheck}/>*/}
+            <Route exact={true} path={OfficeRoutes.GRIEVANCE_CREATE} component={GrievanceCreate}/>
+            {/*<Route exact={true} path={OfficeRoutes.EXPIRED_SHOP_LICENSE_CHECK} component={ExpiredShopLicenseCheck}/>*/}
 
-              <Route exact={true} path={OfficeRoutes.RESUBMIT_SHOP_LICENSE_APPLICATION(":id")}
-                     component={GrievanceCreate}/>
-              <Route exact={true} path={"/test"} component={FormBuilderContainer}/>
+            <Route exact={true} path={OfficeRoutes.RESUBMIT_SHOP_LICENSE_APPLICATION(":id")}
+                   component={GrievanceCreate}/>
+            {/*<Route exact={true} path={"/test"} component={FormBuilderContainer}/>*/}
 
-            </Switch>
-          </div>
+          </Switch>
+
           {this.global.errorMsg && <ErrorHandler/>}
           {this.global.successMsg && <SuccessHandler/>}
-        </div>
-        <Hidden only={["sm","xs"]}>
-        <Footer/>
-        </Hidden>
-      </div>
+        </main>
+        <footer className={classes.footer}>
+          <Hidden only={["sm", "xs"]}>
+            <Footer/>
+          </Hidden>
+        </footer>
+
+      </Container>
     );
   }
 

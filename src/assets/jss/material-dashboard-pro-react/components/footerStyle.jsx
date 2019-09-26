@@ -20,6 +20,10 @@ const footerStyle = {
     float: "right!important",
     padding: "15px"
   },
+  appBar:{
+    top:"auto",
+    bottom: 0
+  },
   footer: {
     background:"#26b99a",
     width:"100%",

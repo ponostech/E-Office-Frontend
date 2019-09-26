@@ -18,6 +18,7 @@ import {
 } from "./Services/Services";
 import Typography from "@material-ui/core/Typography";
 import {authContext} from "../../context/AuthContext";
+import { Grid } from "@material-ui/core";
 
 const styles = {
   pageSubcategoriesTitle: {
@@ -32,7 +33,6 @@ const styles = {
   },
   card: {
     padding: "20px"
-
   },
   title: {
     ...defaultFont,
@@ -116,9 +116,7 @@ class HomePage extends Component {
   render() {
     const {classes} = this.props;
     return (
-        <GridContainer justify="center">
-          <GridItem xs={12} sm={12} md={10}>
-            <Card style={styles.noTopMargin}>
+            <Card>
               <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={12}>
                   <h3 className={classes.pageSubcategoriesTitle}>
@@ -165,8 +163,6 @@ class HomePage extends Component {
                 </GridItem>
               </GridContainer>
             </Card>
-          </GridItem>
-        </GridContainer>
     );
   }
 }

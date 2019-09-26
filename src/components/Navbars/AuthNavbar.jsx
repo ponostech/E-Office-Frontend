@@ -17,7 +17,7 @@ import Home from "@material-ui/icons/Home";
 import Person from "@material-ui/icons/PersonAdd";
 
 import authNavbarStyle from "assets/jss/material-dashboard-pro-react/components/authNavbarStyle.jsx";
-import { Button, Fab, LinearProgress } from "@material-ui/core";
+import { Button, Fab, Icon, LinearProgress } from "@material-ui/core";
 import { APPLY_ADVERTISER, LOGIN, ROOT } from "../../config/routes-constant/OfficeRoutes";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -48,22 +48,9 @@ class AuthNavbar extends React.Component {
   }
 
   render() {
-    const { classes, brandText, OfficeRoutes, history, loading } = this.props;
+    const { classes, brandText, OfficeRoutes, history, onMenuClick, loading } = this.props;
     const currentUser = JSON.parse(localStorage.getItem("current_user"));
-    const linkLogin = (
-      <Fab onClick={(e) => history.push(OfficeRoutes.ADVERTISER_LOGIN)}
-           style={{ marginleft: 10, paddingLeft: 20, paddingRight: 20 }} size={"large"} color={"primary"}
-           variant={"extended"}>
-        Login <LoginIcon fontSize={"small"}/>
-      </Fab>
-    );
-    const linkLogout = (
-      <Fab onClick={(e) => history.push(OfficeRoutes.LOGOUT_ROUTE)}
-           style={{ marginleft: 10, paddingLeft: 20, paddingRight: 20 }} size={"large"} color={"primary"}
-           variant={"extended"}>
-        Logout <LoginIcon fontSize={"small"}/>
-      </Fab>
-    );
+
     const linkEOffice = (
       <ListItem className={classes.listItem}>
         <NavLink
@@ -104,17 +91,15 @@ class AuthNavbar extends React.Component {
             />
           </NavLink>
         </ListItem>
-        {currentUser ? linkEOffice : ""}
-        {currentUser ? linkLogout : linkLogin}
       </List>
     );
     return (
-      <AppBar elevation={5} position="static" color={"primary"}>
-        <Toolbar variant={"regular"}>
+      <AppBar elevation={5} position="fixed" color={"primary"}>
+        <Toolbar>
           <Hidden smDown>
             <div className={classes.flex}>
               <Button href="#" className={classes.title} color="inherit">
-                {brandText} small down
+                {brandText}
               </Button>
             </div>
           </Hidden>
@@ -126,37 +111,35 @@ class AuthNavbar extends React.Component {
             </div>
             <div>
               <IconButton href={"#"} onClick={event => history.push(APPLY_ADVERTISER)}>
-                <Person className={classes.listItemIcon}/>
+                <Icon className={classes.menuIcon}>person</Icon>
               </IconButton>
             </div>
           </Hidden>
           <Hidden smDown>{list}</Hidden>
-          <Hidden mdUp>
+          <Hidden only={["md", "lg", "xl"]}>
+            <IconButton onClick={event => onMenuClick()}>
+              <Icon className={classes.menuIcon}>menu</Icon>
+            </IconButton>
+          </Hidden>
+          <Hidden only={["sm", "xs"]}>
             {
               this.state.showLogin ?
-                <Button
-                  className={classes.sidebarButton}
-                  color="inherit"
-                  aria-label="open home"
-                  onClick={e => {
-                    history.push(ROOT);
-                    this.setState({ showLogin: false });
-                  }}
-                >
-                  HOME
-                </Button>
-                :
-                <Button
-                  className={classes.sidebarButton}
-                  color="inherit"
-                  aria-label="open login"
-                  onClick={e => {
-                    history.push(LOGIN);
-                    this.setState({ showLogin: true });
-                  }}
-                >
-                  Login
-                </Button>
+                <Fab onClick={(e) => {
+                  history.push(ROOT);
+                  this.setState({ showLogin: false });
+                }} style={{ marginleft: 10, paddingLeft: 20, paddingRight: 20 }} size={"large"} color={"primary"}
+                     variant={"extended"}>
+                  Home <Icon fontSize={"small"}>home</Icon>
+                </Fab>
+
+                : <Fab onClick={(e) => {
+                  history.push(LOGIN);
+                  this.setState({ showLogin: true });
+                }} style={{ marginleft: 10, paddingLeft: 20, paddingRight: 20 }} size={"large"} color={"primary"}
+                       variant={"extended"}>
+                  Login <LoginIcon fontSize={"small"}/>
+                </Fab>
+
             }
 
           </Hidden>

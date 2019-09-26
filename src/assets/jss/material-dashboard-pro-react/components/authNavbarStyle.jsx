@@ -41,6 +41,9 @@ const pagesHeaderStyle = theme => ({
   flex: {
     flex: 1
   },
+  menuIcon:{
+     color:"#fff"
+  },
   title: {
     ...defaultFont,
     lineHeight: "30px",
