@@ -196,14 +196,7 @@ export const SiteFileUpload = ({ field, config, value, onChange }) => {
     <OfficeFileUpload applicationName={APPLICATION_NAME.SITE_VERIFICATION}
                       document={value}
                       onUploadSuccess={(data) => {
-                        this.setState(state => {
-                          let result = {
-                            name: field,
-                            label: config.label,
-                            location: data.location
-                          };
-                          onChange(field, result);
-                        });
+                          onChange(field, data.location);
                       }} onUploadFailure={(err) => {
       console.log(err);
     }}/>

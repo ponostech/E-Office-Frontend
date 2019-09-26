@@ -8,23 +8,38 @@ import {
   DialogActions,
   DialogContent,
   Divider,
+  GridList,
+  GridListTile,
+  GridListTileBar,
   Icon,
-  IconButton,
-  List,
-  ListItemText,
+  IconButton, List,
+  ListSubheader,
   Toolbar,
-  Tooltip,
   Typography,
   withStyles
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import CloseIcon from "@material-ui/icons/Close";
 import DetailViewRow from "../../common/DetailViewRow";
-import { getVerificationData } from "../dialog/common/ApplicationResolver";
-import { WIDGET_TYPE } from "../../admin/form-builder/constant";
+import { FILLABLE_TYPE, WIDGET_TYPE } from "../../admin/form-builder/constant";
 import Grid from "@material-ui/core/Grid";
+import GMapDialog from "../../../../components/GmapDialog";
+import moment from "moment";
 
 const styles = {
+  gridRoot: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden"
+  },
+  gridList: {
+    width: "auto",
+    height: "auto"
+  },
+  icon: {
+    color: "rgba(255, 255, 255, 0.54)"
+  },
   appBar: {
     position: "relative"
   },
@@ -41,66 +56,165 @@ const styles = {
 
 class SiteVerificationDetailDialog extends Component {
   state = {
-    rows: [],
+    strings: [],
+    passports: [],
+    coordinates: [],
+    lat: null,
+    lng: null,
     images: [],
-    attachments: []
+    files: []
   };
 
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.verification) {
       const { data, template } = nextProps.verification;
-      const val = { ...data, ...template };
-      console.log(val);
-      console.log("after mutation");
-      console.log(nextProps.verification);
+      let strings = [], passports = [], coordinates = [], images = [], files = [];
 
+      Object.entries(template).forEach(([key, config]) => {
+        switch (config.type) {
+          case WIDGET_TYPE.RADIO:
+          case WIDGET_TYPE.NUMBER_FIELD:
+          case WIDGET_TYPE.SWITCH:
+          case WIDGET_TYPE.TEXT_FIELD:
+          case WIDGET_TYPE.CHECKBOX:
+            strings.push({
+              label: config.label,
+              value: data[key] ? data[key] : ""
+            });
+            break;
+          case WIDGET_TYPE.SELECT:
+            strings.push({
+              label: config.label,
+              value: data[key] ? data[key].label : "NA",
+            });
+            break;
+          case WIDGET_TYPE.DATE_PICKER:
+            strings.push({
+              label:config.label,
+              value:moment(data[key]).format("Do MMM YYYY")
+            })
+            break;
+          case FILLABLE_TYPE.PASSPORT:
+            passports.push({
+              label: config.label,
+              location: data[key]
+            });
+            break;
+          case WIDGET_TYPE.COORDINATE:
+            coordinates.push({
+              label: config.label,
+              latitude: data[key] ? data[key].latitude : null,
+              longitude: data[key] ? data[key].longitude : null
+            });
+            break;
+          case WIDGET_TYPE.IMAGE_LIST:
+            data[key]&&data[key].map(item=>images.push({
+              label: item?item.name:"NA",
+              location: item ? item.location : null
+            }))
+            break;
+          case WIDGET_TYPE.FILE_UPLOAD:
+            files.push({
+              label: config.label,
+              location: data[key] ? data[key] : null
+            });
+            break
+        }
+      });
+
+      this.setState({ passports, images, coordinates, files, strings });
     }
   }
 
-
-  getStringValue = () => {
-    const { verification } = this.props;
-    if (verification === null)
-      return <DetailViewRow primary={"No Detail"}/>;
-    let data = getVerificationData(verification);
-    console.log("data",data)
-    let view = (
-      <>
-        {
-          data.map((item, index) => {
-              let row;
-              if (item.type === WIDGET_TYPE.IMAGE_LIST) {
-                row = item.value.map(img =>
-                  <DetailViewRow primary={img.label}>
-                    <Tooltip title={"Click here to view the details"}>
-                      <IconButton onClick={e=>window.open(item.location,"_blank")} href={item.location} target={"_blank"}>
-                        <Icon color={"primary"} fontSize={"small"}>remove_red_eye</Icon>
-                      </IconButton>
-                    </Tooltip>
-                  </DetailViewRow>
-                );
-                return <Grid item={true} md={6} sm={12} xs={12}>
-                  <List>
-                    <ListItemText primary={item.label}/>
-                    {row}
-                  </List>
-                </Grid>
-              } else {
-                return <Grid item={true} xs={12} sm={12} md={6}>
-                  <DetailViewRow primary={(item.label)} secondary={(item.value)}/>
-                </Grid>
-              }
-            }
-          )
-        }
-      </>
+  getPassport = () => {
+    const { passports } = this.state;
+    const { classes } = this.props;
+    return (
+      Boolean(passports)?
+      <div className={classes.gridRoot}>
+        <GridList cellHeight={180} className={classes.gridList}>
+          <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
+            <ListSubheader component="div">Passport</ListSubheader>
+          </GridListTile>
+          {passports.map(tile => (
+            <GridListTile key={tile.location}>
+              <img src={tile.location} alt={tile.label}/>
+              <GridListTileBar
+                title={tile.name}
+                actionIcon={
+                  <IconButton aria-label={`info about ${tile.label}`} className={classes.icon}>
+                    <Icon>info</Icon>
+                  </IconButton>
+                }
+              />
+            </GridListTile>
+          ))}
+        </GridList>
+      </div>:null
     );
-    return view;
   };
+  getStrings = () => {
+    const { strings } = this.state;
+    return strings.map(item => <DetailViewRow primary={item.label} secondary={item.value}/>);
+  };
+  getImageList = () => {
+    const { images } = this.state;
+    const { classes } = this.props;
+    return (
+      images.length>0?
+      <div className={classes.gridRoot}>
+        <GridList cellHeight={180} className={classes.gridList}>
+          <GridListTile key="Subheader" cols={4} style={{ height: "auto" }}>
+            <ListSubheader component="div">Image List</ListSubheader>
+          </GridListTile>
+          {images.map(tile => (
+            <GridListTile key={tile.location}>
+              <img src={tile.location} alt={tile.label}/>
+              <GridListTileBar
+                title={tile.label}
+                actionIcon={
+                  <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                    <Icon>info</Icon>
+                  </IconButton>
+                }
+              />
+            </GridListTile>
+          ))}
+        </GridList>
+      </div>:null
+    );
+  };
+  getFiles = () => {
+    const { files } = this.state;
+    return <>
+      <Typography paragraph={true} variant={"h6"}>Attachments</Typography>
+      {files.map(file=>(
+      <DetailViewRow secondary={file.label}>
+        <IconButton onClick={event => window.open(file.location, "_blank")}>
+          <Icon>keyboard_arrow_right</Icon>
+        </IconButton>
+      </DetailViewRow>
+      ) )}
+    </>;
+  };
+  getCoordinate = () => {
+    const { coordinates } = this.state;
+    return <List>
+      <Typography paragraph={true} variant={"h6"}>Coordinates</Typography>
+      {coordinates.map(latLng => (
+      <DetailViewRow primary={latLng.label} secondary={`lat: ${latLng.latitude} Lng:${latLng.longitude}`}>
+        <IconButton onClick={event => this.setState({ lat: latLng.latitude, lng: latLng.longitude, openMap: true })}>
+          <Icon>keyboard_arrow_right</Icon>
+        </IconButton>
+      </DetailViewRow>
+    ))}
+    </List>
+  };
+
 
   render() {
     const { open, onClose, verification, classes } = this.props;
-    const { rows, images, attachments } = this.state;
+    const { strings, passports, files, images, coordinates,lat,lng,openMap } = this.state;
 
 
     return (
@@ -122,13 +236,17 @@ class SiteVerificationDetailDialog extends Component {
 
         <DialogContent>
           <Card>
-            {/*<CardHeader title={`FILE NUMBER : ${file.number}`} subheader={`SITE VERIFICATION OF ${file.subject}`}/>*/}
             <CardContent>
-
-              <Divider component={"div"}/>
-
-              <Grid container={true} spacing={0}>
-                  {this.getStringValue()}
+              <Grid container={true}>
+                <Grid item={true} md={6} sm={12} lg={6}>
+                  {passports.length>0 && this.getPassport()}
+                  {strings.length>0 && this.getStrings()}
+                  {coordinates.length>0 && this.getCoordinate()}
+                  {files.length>0 && this.getFiles()}
+                </Grid>
+                <Grid item={true} md={6} sm={12} lg={6}>
+                  {images.length>0 && this.getImageList()}
+                </Grid>
               </Grid>
 
             </CardContent>
@@ -141,6 +259,7 @@ class SiteVerificationDetailDialog extends Component {
           <Button href={"#"} variant={"outlined"} color={"secondary"} onClick={onClose}>Close</Button>
         </DialogActions>
 
+        <GMapDialog open={openMap} isMarkerShown={true} onClose={()=>this.setState({openMap:false})} lat={lat} lng={lng}/>
       </Dialog>
     );
   }

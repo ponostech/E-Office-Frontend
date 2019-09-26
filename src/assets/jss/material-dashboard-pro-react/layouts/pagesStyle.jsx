@@ -31,7 +31,7 @@ const pagesStyle = theme => ({
   },
   container: {
     ...container,
-    paddingBottom: "70px",
+    // paddingBottom: "70px",
     zIndex: "4",
     [theme.breakpoints.down("sm")]: {
       paddingBottom: "40px"
@@ -44,7 +44,7 @@ const pagesStyle = theme => ({
     minHeight: "70vh",
     display: "flex!important",
     margin: "0",
-    paddingBottom:"30px",
+    // paddingBottom:"30px",
     border: "0",
     // color: "#fff",
     // alignItems: "center",

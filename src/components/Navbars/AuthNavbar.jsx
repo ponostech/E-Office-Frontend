@@ -114,7 +114,7 @@ class AuthNavbar extends React.Component {
           <Hidden smDown>
             <div className={classes.flex}>
               <Button href="#" className={classes.title} color="inherit">
-                {brandText}
+                {brandText} small down
               </Button>
             </div>
           </Hidden>
