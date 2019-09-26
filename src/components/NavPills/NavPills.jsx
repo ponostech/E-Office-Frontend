@@ -13,7 +13,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 
 import navPillsStyle from "assets/jss/material-dashboard-pro-react/components/navPillsStyle.jsx";
-import { BottomNavigation, Grid, Hidden, Paper } from "@material-ui/core";
+import { AppBar, BottomNavigation, Grid, Hidden, Paper, Toolbar } from "@material-ui/core";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 
 class NavPills extends React.Component {
@@ -104,7 +104,7 @@ class NavPills extends React.Component {
       </div>
     );
     const mobileMenu = (
-      <Paper style={{minWidth:"100%"}}>
+      <AppBar color={"inherit"} className={classes.bottomNavigation} position={"static"} elevation={5}>
         <BottomNavigation
           value={this.state.active}
           onChange={this.handleChange}
@@ -112,7 +112,7 @@ class NavPills extends React.Component {
         >
           {tabs.map((prop,key)=><BottomNavigationAction onClick={prop.onTabClick} label={prop.tabButton} value={key} icon={<prop.tabIcon/>}/> )}
         </BottomNavigation>
-      </Paper>
+      </AppBar>
     );
     return horizontal !== undefined ? (
       <>

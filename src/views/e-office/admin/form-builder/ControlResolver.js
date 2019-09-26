@@ -1,15 +1,18 @@
 import { FILLABLE_TYPE, WIDGET_TYPE } from "./constant";
-import { FormControl, InputAdornment, TextField } from "@material-ui/core";
+import { FormControl } from "@material-ui/core";
 import {
-  OfficeCheckbox, OfficeCoordinate,
+  OfficeCheckbox,
+  OfficeCoordinate,
   OfficeDatePicker,
   OfficeFormSelect,
   OfficeImageList,
-  OfficeLocalCouncil, OfficeNumberField,
+  OfficeLocalCouncil,
+  OfficeNumberField,
   OfficePremiseRadio,
   OfficeRadio,
   OfficeSwitch,
-  OfficeTextField, OfficeTrade,
+  OfficeTextField,
+  OfficeTrade,
   SiteFileUpload
 } from "./fields";
 import React from "react";
@@ -57,8 +60,9 @@ export const
           </FormControl>;
         </>;
       case WIDGET_TYPE.IMAGE_LIST:
+        let temp=value===null?[]:value
         return <>
-          <OfficeImageList value={value} field={key} config={config} onChange={onWidgetValueChange}/>
+          <OfficeImageList value={temp} field={key} config={config} onChange={onWidgetValueChange}/>
         </>;
       case FILLABLE_TYPE.LOCAL_COUNCIL:
         return <>
@@ -75,7 +79,14 @@ export const
       case FILLABLE_TYPE.DATE:
         return <OfficeDatePicker config={config} field={key} onChange={onWidgetValueChange} value={value}/>;
       case FILLABLE_TYPE.PASSPORT:
-        return <SiteFileUpload value={value} onChange={onWidgetValueChange} field={key} config={config}/>;
+        let newVal={
+          name: key,
+          location: value,
+          mime: "image/*",
+          mandatory: config.validation.required,
+          status: "uploaded"
+        }
+        return <SiteFileUpload value={newVal} onChange={onWidgetValueChange} field={key} config={config}/>;
 
       case FILLABLE_TYPE.PREMISED:
         return <OfficePremiseRadio config={config} field={key} onChange={onWidgetValueChange} value={value}/>;

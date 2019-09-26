@@ -21,6 +21,7 @@ import ErrorHandler, { SuccessHandler } from "../views/common/StatusHandler";
 import Test from "../views/Test";
 import ApplicantLayout from "../views/landing-pages/ApplicantLayout";
 import FormBuilderContainer from "../views/e-office/admin/form-builder/FormBuilderContainer";
+import { Hidden } from "@material-ui/core";
 
 class LayoutLanding extends React.Component {
   constructor(props) {
@@ -77,7 +78,9 @@ class LayoutLanding extends React.Component {
           {this.global.errorMsg && <ErrorHandler/>}
           {this.global.successMsg && <SuccessHandler/>}
         </div>
+        <Hidden only={["sm","xs"]}>
         <Footer/>
+        </Hidden>
       </div>
     );
   }

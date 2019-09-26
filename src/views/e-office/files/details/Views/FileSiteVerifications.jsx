@@ -31,7 +31,6 @@ const SiteVerificationList = ({ siteVerifications,onSiteVerificationClick }) => 
           "No site verification is created" :
           siteVerifications.map((item, i) =>
             <>
-              <Typography variant={"h6"} paragraph={true}>List of Site Verification</Typography>
               <List component={"div"}>
                 <DetailViewRow key={i} primary={"Site Verification"}
                                secondary={moment(item.created_at).format("Do MMM YYYY")}>
@@ -173,6 +172,7 @@ class FileSiteVerifications extends Component {
                 </>)}
             </Grid>
             <Grid item={true} md={6} sm={6}>
+              <Typography variant={"h6"} paragraph={true}>List of Site Verification</Typography>
               {selectedApplication && <SiteVerificationList
                 onSiteVerificationClick={this.onSiteVerificationClick}
                 siteVerifications={siteVerifications}/>}

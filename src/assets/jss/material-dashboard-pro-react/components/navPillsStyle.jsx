@@ -1,16 +1,15 @@
 import {
-  roseColor,
-  primaryColor,
+  blackColor,
+  dangerColor,
+  grayColor,
+  hexToRgb,
   infoColor,
+  primaryColor,
+  roseColor,
   successColor,
   warningColor,
-  dangerColor,
-  whiteColor,
-  blackColor,
-  grayColor,
-  hexToRgb
+  whiteColor
 } from "assets/jss/material-dashboard-pro-react.jsx";
-import { red } from "@material-ui/core/colors";
 
 const navPillsStyle = theme => ({
   root: {
@@ -19,11 +18,10 @@ const navPillsStyle = theme => ({
     marginBottom: "0",
     overflow: "visible !important"
   },
-  mobileMenu:{
-  },
+  mobileMenu: {},
   flexContainer: {
     [theme.breakpoints.down("xs")]: {
-      display: "flex",
+      display: "flex"
     }
   },
   displayNone: {
@@ -33,7 +31,7 @@ const navPillsStyle = theme => ({
     overflowX: "visible"
   },
   horizontalDisplay: {
-    display: "block",
+    display: "block"
   },
   pills: {
     float: "left",
@@ -53,17 +51,20 @@ const navPillsStyle = theme => ({
   pillsWithIcons: {
     borderRadius: "4px"
   },
-
+  bottomNavigation: {
+    top: "auto",
+    bottom: 0
+  },
   tabIcon: {
     width: "50px",
     height: "50px",
     display: "block",
     margin: "15px 0",
-    color:grayColor[6]
+    color: grayColor[6]
   },
   horizontalPills: {
     width: "100%",
-    float: "none !important",
+    float: "none !important"
   },
   labelContainer: {
     padding: "0!important",
