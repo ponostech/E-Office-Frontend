@@ -6,53 +6,41 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import footerStyle from "assets/jss/material-dashboard-pro-react/components/footerStyle";
+import { AppBar, Toolbar } from "@material-ui/core";
 
-function Footer({...props}) {
-    const {classes, fluid, white} = props;
-    var container = cx({
-        [classes.container]: !fluid,
-        [classes.containerFluid]: fluid,
-        [classes.whiteColor]: white
-    });
-    var anchor =
-        classes.a +
-        cx({
-            [" " + classes.whiteColor]: white
-        });
-    var block = cx({
-        [classes.block]: true,
-        [classes.whiteColor]: white
-    });
+function Footer({classes}) {
+
     return (
-        <footer className={classes.footer}>
-            <div className={container}>
-                <div className={classes.left}>
-                    <List className={classes.list}>
-                        <ListItem className={classes.inlineBlock}>
-                            <a href="https://amcmizoram.com" target="_blank" className={block}>
-                                AMC Website
-                            </a>
-                        </ListItem>
-                        <ListItem className={classes.inlineBlock}>
-                            <a href="https://obpas.amcmizoram.com" className={block}>
-                                OBPAS
-                            </a>
-                        </ListItem>
-                        <ListItem className={classes.inlineBlock}>
-                            <a href="https://amcmizoram.com/page/about-us" className={block}>
-                                About Us
-                            </a>
-                        </ListItem>
-                    </List>
-                </div>
-                <p className={classes.right}>
-                    &copy; {1900 + new Date().getYear()}{" "}
-                    <a href="https://www.amcmizoram.com" className={anchor}>
-                        Aizawl Municipal Corporation (AMC)
-                    </a>
-                </p>
-            </div>
-        </footer>
+      <AppBar elevation={5} position="fixed" color="primary" className={classes.appBar}>
+          <Toolbar>
+              <div className={classes.left}>
+                  <List className={classes.list}>
+                      <ListItem className={classes.inlineBlock}>
+                          <a href="https://amcmizoram.com" target="_blank" className={classes.block}>
+                              AMC Website
+                          </a>
+                      </ListItem>
+                      <ListItem className={classes.inlineBlock}>
+                          <a href="https://obpas.amcmizoram.com" className={classes.block}>
+                              OBPAS
+                          </a>
+                      </ListItem>
+                      <ListItem className={classes.inlineBlock}>
+                          <a href="https://amcmizoram.com/page/about-us" className={classes.block}>
+                              About Us
+                          </a>
+                      </ListItem>
+                  </List>
+              </div>
+              <div style={{flexGrow:1}}/>
+              <p className={classes.right}>
+                  &copy; {1900 + new Date().getYear()}{" "}
+                  <a href="https://www.amcmizoram.com" className={classes.anchor}>
+                      Aizawl Municipal Corporation (AMC)
+                  </a>
+              </p>
+          </Toolbar>
+      </AppBar>
     );
 }
 

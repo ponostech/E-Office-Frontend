@@ -21,14 +21,31 @@ const container = {
   }
 };
 const pagesStyle = theme => ({
-  wrapper: {
-    height: "auto",
-    minHeight: "100vh",
-    position: "relative",
-    background:"white",
-    top: "0",
-    overflow:"hidden"
+  wrapper:{
+    display:"flex",
+    justifyContent:"center",
+    alignItems:"center",
+    flexDirection:"column",
+    margin:0,
+    padding:0
   },
+  drawer:{
+    root:{
+      background:"#26b99a"
+    }
+  },
+  header:{
+    display:"flex"
+  },
+  main:{
+    flexGrow:1,
+    marginTop:70,
+    padding:0,
+  },
+  footer:{
+
+  },
+
   container: {
     ...container,
     // paddingBottom: "70px",
@@ -37,25 +54,6 @@ const pagesStyle = theme => ({
       paddingBottom: "40px"
     }
   },
-
-  fullPage: {
-    background:'white',
-    position: "relative",
-    minHeight: "70vh",
-    display: "flex!important",
-    margin: "0",
-    // paddingBottom:"30px",
-    border: "0",
-    // color: "#fff",
-    // alignItems: "center",
-    backgroundSize: "cover",
-    backgroundPosition: "center center",
-    height: "100%",
-    [theme.breakpoints.down("sm")]: {
-      minHeight: "fit-content!important"
-    },
-
-  }
 });
 
 export default pagesStyle;
