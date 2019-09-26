@@ -44,7 +44,7 @@ class LayoutLanding extends React.Component {
   };
 
   render() {
-    const { classes, ...rest } = this.props;
+    const { classes,history, ...rest } = this.props;
     const { openMobile } = this.state;
     return (
       <Container maxWidth={false}>
@@ -54,7 +54,7 @@ class LayoutLanding extends React.Component {
         </header>
         <main className={classes.main}>
           <Drawer className={classes.drawer} anchor="right" open={openMobile} onClose={this.toggleDrawer}>
-            <MobileMenu/>
+            <MobileMenu history={history} toggleDrawer={this.toggleDrawer}/>
           </Drawer>
           <Switch>
             <Route exact={true} path={OfficeRoutes.ROOT} component={HomePage}/>

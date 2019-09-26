@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import ListSubheader from "@material-ui/core/ListSubheader";
+import { ROOT } from "../config/routes-constant/OfficeRoutes";
 
 const mobileStyle={
   root:{
@@ -38,7 +39,7 @@ const mobileStyle={
   }
 };
 
-const  MobileMenu = ({ classes }) => {
+const  MobileMenu = ({ classes,history,toggleDrawer }) => {
   return (
     <div className={classes.root}>
       <img className={classes.logo} src={"https://amcmizoram.com/uploads/gallery/44_18042017015907.jpg"} alt={"logo"}
@@ -47,9 +48,19 @@ const  MobileMenu = ({ classes }) => {
       <List className={classes.menu} component="nav">
         <Divider/>
         <ListItem>
+          <ListItemText primary={"Services"} secondary={"List of services provided by AMC"}/>
+          <ListItemSecondaryAction>
+            <IconButton onClick={event => {
+              history.push(ROOT);
+              toggleDrawer();
+            }}>
+              <Icon>keyboard_arrow_right</Icon>
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem><ListItem>
           <ListItemText primary={"OBPAS"}/>
           <ListItemSecondaryAction>
-            <IconButton>
+            <IconButton onClick={event => toggleDrawer()}>
               <Icon>keyboard_arrow_right</Icon>
             </IconButton>
           </ListItemSecondaryAction>
@@ -57,7 +68,7 @@ const  MobileMenu = ({ classes }) => {
         <ListItem>
           <ListItemText primary={"AMC Website"}/>
           <ListItemSecondaryAction>
-            <IconButton>
+            <IconButton onClick={event => toggleDrawer()}>
               <Icon>keyboard_arrow_right</Icon>
             </IconButton>
           </ListItemSecondaryAction>
@@ -65,7 +76,7 @@ const  MobileMenu = ({ classes }) => {
         <ListItem>
           <ListItemText primary={"About us"}/>
           <ListItemSecondaryAction>
-            <IconButton>
+            <IconButton onClick={event => toggleDrawer()}>
               <Icon>keyboard_arrow_right</Icon>
             </IconButton>
           </ListItemSecondaryAction>
