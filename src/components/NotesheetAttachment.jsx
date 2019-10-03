@@ -37,6 +37,13 @@ class NotesheetAttachment extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    const { value } = nextProps;
+    if (value) {
+      this.setState({attachments:value})
+    }
+  }
+
   handleNameChanged = (name, index) => {
     const { attachments } = this.state;
     let items = [];
@@ -57,8 +64,9 @@ class NotesheetAttachment extends Component {
 
   addItem = (data) => {
     let attachments = [...this.state.attachments];
+    let files = [...this.state.files];
     attachments.push(data);
-    this.setState({ attachments });
+    this.setState({ attachments:[...attachments,...files] });
 
     this.props.onSuccess(attachments);
   };

@@ -4,7 +4,17 @@ import AppIcon from "@material-ui/icons/Apps";
 import BannerIcon from "@material-ui/icons/PictureInPicture";
 import WarningIcon from "@material-ui/icons/Warning";
 import DnsIcon from "@material-ui/icons/Dns";
-import {Card, CardContent, CardHeader, Grid, Typography} from "@material-ui/core";
+import {
+  AppBar,
+  BottomNavigation,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Grid,
+  Hidden, Icon,
+  Typography
+} from "@material-ui/core";
 import PropTypes from "prop-types";
 import LicenseList from "./applicant-layout/LicenseList";
 import LicenseExpiringList from "./applicant-layout/LicenseExpiringList";
@@ -15,6 +25,7 @@ import ApplicationList from "./applicant-layout/ApplicationList";
 import {whiteColor, behanceColor, boxShadow, primaryColor} from "../../assets/jss/material-dashboard-pro-react";
 import Paper from "@material-ui/core/Paper";
 import {green} from "@material-ui/core/colors";
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 const style = {
   root: {
     display: "flex",
@@ -76,6 +87,8 @@ class ApplicantDashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      tabValue:0,
+
       shops:  [],
       hotels : [],
       banners: [],
@@ -95,17 +108,18 @@ class ApplicantDashboard extends Component {
     this.getApplications()
   }
 
-  getApplications = () => {
+  getApplications = (tabValue) => {
     const {phone} = this.props;
-    // this.setGlobal({loading: true});
+    this.setState({tabValue})
     this.licenseService.getApplications(phone,
         errorMsg => this.setGlobal({errorMsg}),
         data => this.setState({shops: data.shops, hotels: data.hotels, banners: data.banners}))
         .finally(() => this.setGlobal({loading: false}));
   };
 
-  getLicenses = () => {
+  getLicenses = (tabValue) => {
     const {phone} = this.props;
+    this.setState({tabValue})
     this.licenseService.getLicenses(phone,
         errorMsg => this.setGlobal({errorMsg}),
         (shopLicenses, hotelLicenses, bannerLicenses) => this.setState({
@@ -114,16 +128,18 @@ class ApplicantDashboard extends Component {
         .finally(() => console.log("get licenses request complete"));
   };
 
-  getRenewableLicenses = () => {
+  getRenewableLicenses = (tabValue) => {
     const {phone} = this.props;
+    this.setState({tabValue})
     this.setGlobal({loading: true});
     this.licenseService.getRenewablePermitList(phone,
         errorMsg => this.setGlobal({errorMsg}),
         renewableLicenses => this.setState({renewableLicenses}))
         .finally(() => this.setGlobal({loading: false}));
   };
-  getChallans = () => {
+  getChallans = (tabValue) => {
     const {phone} = this.props;
+    this.setState({tabValue})
     this.setGlobal({loading: true});
     this.challanService.getUserChallan(phone,
         errorMsg => this.setGlobal({errorMsg}),
@@ -163,6 +179,8 @@ class ApplicantDashboard extends Component {
           <CardContent style={{marginBottom:0,paddingBottom:0}}>
 
                 <NavPills
+                    active={this.state.tabValue}
+                    changeTabValue={(tabValue)=>this.setState({tabValue})}
                     iconColor={"secondary"}
                     color={"primary"}
                     horizontal={{
@@ -171,7 +189,8 @@ class ApplicantDashboard extends Component {
                     }}
                     tabs={[
                       {
-                        onTabClick: this.getApplications,
+                        value:0,
+                        onTabClick:() =>this.getApplications,
                         tabButton: "Application",
                         tabIcon: AppIcon,
                         tabContent: (<ApplicationList phone={phone}
@@ -180,18 +199,21 @@ class ApplicantDashboard extends Component {
                                                       shopApplications={shops}
                                                       refresh={this.props.refresh}/>)
                       }, {
+                        value:1,
                         onTabClick: this.getLicenses,
                         tabButton: "License",
                         tabIcon: BannerIcon,
                         tabContent: (<LicenseList bannerLicenses={bannerLicenses} hotelLicenses={hotelLicenses}
                                                   shopLicenses={shopLicenses} phone={phone}/>)
                       }, {
+                        value:2,
                         onTabClick: this.getRenewableLicenses,
                         tabButton: "Expiring/ Expired License",
                         tabIcon: WarningIcon,
                         tabColor: "secondary",
                         tabContent: (<LicenseExpiringList permits={renewableLicenses} phone={phone}/>)
                       }, {
+                        value:3,
                         onTabClick: this.getChallans,
                         tabButton: "Challan List",
                         tabIcon: DnsIcon,
@@ -203,6 +225,22 @@ class ApplicantDashboard extends Component {
                     ]}
                 />
           </CardContent>
+          <CardActions style={{margin:0,padding:0}}>
+            <Hidden only={["md","lg","xl"]}>
+              <AppBar color={"inherit"} position={"static"} elevation={5}>
+                <BottomNavigation
+                  value={this.state.tabValue}
+                  onChange={(event, value) => this.setState({tabValue:value})}
+                  showLabels
+                >
+                  <BottomNavigationAction onClick={event => this.getApplications(0)} label={"Applications"} value={0} icon={<AppIcon/>}/>
+                  <BottomNavigationAction onClick={event => this.getLicenses(1)} label={"License"} value={1} icon={<BannerIcon/>}/>
+                  <BottomNavigationAction onClick={event => this.getRenewableLicenses(2)} label={"Expired"} value={2} icon={<WarningIcon/>}/>
+                  <BottomNavigationAction onClick={event => this.getChallans(3)} label={"Challan"} value={3} icon={<DnsIcon/>}/>
+                </BottomNavigation>
+              </AppBar>
+            </Hidden>
+          </CardActions>
         </Card>
     );
   }

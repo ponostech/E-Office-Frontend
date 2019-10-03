@@ -40,6 +40,7 @@ const pagesStyle = theme => ({
   main:{
     flexGrow:1,
     marginTop:70,
+    marginBottom:60,
     padding:0,
   },
   footer:{

@@ -24,7 +24,7 @@ const mobileStyle={
     justifyContent:"center",
     alignItems:"stretch",
     padding:30,
-    minWidth:"300px",
+    minWidth:"200px",
   },
   logo:{
     margin: 10,

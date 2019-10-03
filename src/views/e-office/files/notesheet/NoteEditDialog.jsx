@@ -71,6 +71,14 @@ class NoteEditDialog extends Component {
       .catch(err => this.setGlobal({ errorMsg: err.toString() }));
   }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    const { note } = nextProps;
+    const { attachments } = note;
+    if (attachments) {
+      this.setState({attachments})
+    }
+  }
+
   processResult = (actions, priorities) => {
     const { note } = this.props;
     this.setState({actionTypes:actions.data.data.actions});
@@ -134,7 +142,7 @@ class NoteEditDialog extends Component {
 
   render() {
     const { classes, open, note } = this.props;
-    const { loading, errorMsg } = this.state;
+    const { loading, errorMsg,attachments } = this.state;
     let content = <CardContent>
       <Grid container spacing={6}>
         <Grid item lg={12}>
@@ -202,7 +210,7 @@ class NoteEditDialog extends Component {
         </Grid>
         <Grid item={true} lg={6}>
           <Typography style={{textTransform:"capitalize"}} variant={"h6"}>Notesheet Attachment</Typography>
-          <NotesheetAttachment edit={true} value={[note.attachments]} onSuccess={this.onSuccess}/>
+          <NotesheetAttachment edit={true} value={attachments} onSuccess={this.onSuccess}/>
         </Grid>
       </Grid>
     </CardContent>;
@@ -261,6 +269,7 @@ NoteEditDialog.defaultProps = {
 };
 
 NoteEditDialog.propTypes = {
+  note:PropTypes.array,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
