@@ -109,9 +109,9 @@ const LicenseCard = ({license,onRenew}) => {
             Date of Application: {moment(license.created_at).format("DD MMM YYYY")}
           </Typography>
           <Typography paragraph={true} dangerouslySetInnerHTML={{ __html: license.content }}/>
-          <Typography paragraph={true}>
+          <div>
             {subhead}
-          </Typography>
+          </div>
         </CardContent>
       </Card>
     </Paper>

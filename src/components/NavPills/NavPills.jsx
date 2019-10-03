@@ -9,26 +9,25 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 // core components
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
 
 import navPillsStyle from "assets/jss/material-dashboard-pro-react/components/navPillsStyle.jsx";
-import { AppBar, BottomNavigation, Grid, Hidden, Paper, Toolbar } from "@material-ui/core";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import { Grid, Hidden } from "@material-ui/core";
 
 class NavPills extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: props.active,
+      active: props.active
     };
   }
 
   handleChange = (event, active) => {
-    this.setState({ active });
+    // this.setState({ active });
+    this.props.changeTabValue(active)
   };
   handleChangeIndex = index => {
-    this.setState({ active: index });
+    // this.setState({ active: index });
+    this.props.changeTabValue(index)
   };
 
   render() {
@@ -38,7 +37,9 @@ class NavPills extends React.Component {
       direction,
       color,
       horizontal,
-      alignCenter
+      alignCenter,
+      changeTabValue,
+      active
     } = this.props;
     const flexContainerClasses = classNames({
       [classes.flexContainer]: true,
@@ -52,8 +53,11 @@ class NavPills extends React.Component {
           flexContainer: flexContainerClasses,
           indicator: classes.displayNone
         }}
-        value={this.state.active}
-        onChange={this.handleChange}
+        value={active}
+        onChange={(event, value) => {
+          console.log(value)
+          changeTabValue(value)
+        }}
         centered={alignCenter}
       >
         {tabs.map((prop, key) => {
@@ -71,7 +75,8 @@ class NavPills extends React.Component {
           });
           return (
             <Tab
-              onClick={prop.onTabClick}
+              value={prop.value}
+              onClick={(event) =>prop.onTabClick(prop.value)}
               label={prop.tabButton}
               key={key}
               icon={icon}
@@ -90,7 +95,7 @@ class NavPills extends React.Component {
       <div className={classes.contentWrapper}>
         <SwipeableViews
           axis={direction === "rtl" ? "x-reverse" : "x"}
-          index={this.state.active}
+          index={this.props.active}
           onChangeIndex={this.handleChangeIndex}
         >
           {tabs.map((prop, key) => {
@@ -103,41 +108,28 @@ class NavPills extends React.Component {
         </SwipeableViews>
       </div>
     );
-    const mobileMenu = (
-      <AppBar color={"inherit"} className={classes.bottomNavigation} position={"static"} elevation={5}>
-        <BottomNavigation
-          value={this.state.active}
-          onChange={this.handleChange}
-          showLabels
-        >
-          {tabs.map((prop,key)=><BottomNavigationAction onClick={prop.onTabClick} label={prop.tabButton} value={key} icon={<prop.tabIcon/>}/> )}
-        </BottomNavigation>
-      </AppBar>
-    );
+
     return horizontal !== undefined ? (
       <>
-      <Grid container={true}>
-        <Hidden only={["sm", "xs"]}>
-          <Grid item={true} {...horizontal.tabsGrid}>
-            {tabButtons}
-          </Grid>
-          <Grid item={true} {...horizontal.contentGrid}>
-            {tabContent}
-          </Grid>
-        </Hidden>
-      </Grid>
+        <Grid container={true}>
+          <Hidden only={["sm", "xs"]}>
+            <Grid item={true} {...horizontal.tabsGrid}>
+              {tabButtons}
+            </Grid>
+            <Grid item={true} {...horizontal.contentGrid}>
+              {tabContent}
+            </Grid>
+          </Hidden>
+        </Grid>
 
-      <Grid container={true} direction={"column"}>
-        <Hidden only={["md", "lg", "xl"]}>
-          <Grid zeroMinWidth={true} item={true} xs={12} sm={12}>
-            {tabContent}
-          </Grid>
-          <Grid item={true} xs={12} sm={12}>
-            {mobileMenu}
-          </Grid>
-        </Hidden>
-      </Grid>
-    </>
+        <Grid container={true} direction={"column"}>
+          <Hidden only={["md", "lg", "xl"]}>
+            <Grid zeroMinWidth={true} item={true} xs={12} sm={12}>
+              {tabContent}
+            </Grid>
+          </Hidden>
+        </Grid>
+      </>
     ) : (
       <div>
         {tabButtons}
@@ -156,8 +148,10 @@ NavPills.propTypes = {
   classes: PropTypes.object.isRequired,
   // index of the default active pill
   active: PropTypes.number,
+  changeTabValue:PropTypes.func.isRequired,
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
+      value: PropTypes.number,
       tabButton: PropTypes.string,
       onTabClick: PropTypes.func,
       tabIcon: PropTypes.func,

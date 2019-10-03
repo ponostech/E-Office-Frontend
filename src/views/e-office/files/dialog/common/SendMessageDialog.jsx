@@ -148,7 +148,7 @@ class SendMessageDialog extends Component {
                   {/*           helperText={messageError}*/}
                   {/*           onChange={event => this.onChange("message", event)}*/}
                   {/*           onBlur={event => this.onBlur("message", event)}*/}
-                  <TextEditor onChange={(e) => this.setState({content: e.target.getContent()})} default={message}/>
+                  <TextEditor onChange={(e) => this.setState({message: e.target.getContent()})} default={message}/>
                 </Grid>
                 <Grid item={true} md={12}>
                   <FileUpload
