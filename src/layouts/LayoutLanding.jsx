@@ -21,6 +21,7 @@ import ErrorHandler, { SuccessHandler } from "../views/common/StatusHandler";
 import ApplicantLayout from "../views/landing-pages/ApplicantLayout";
 import { Container, Drawer, Hidden } from "@material-ui/core";
 import MobileMenu from "./MobileMenu";
+import Test from "../views/Test";
 
 
 class LayoutLanding extends React.Component {
@@ -83,7 +84,7 @@ class LayoutLanding extends React.Component {
 
             <Route exact={true} path={OfficeRoutes.RESUBMIT_SHOP_LICENSE_APPLICATION(":id")}
                    component={GrievanceCreate}/>
-            {/*<Route exact={true} path={"/test"} component={FormBuilderContainer}/>*/}
+            <Route exact={true} path={"/test"} component={Test}/>
 
           </Switch>
 

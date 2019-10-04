@@ -116,8 +116,7 @@ class NotesheetAttachment extends Component {
               this.state.files.map((value, index) => {
                 return (
                   <NotesheetAttachmentItem addItem={this.addItem} onNameChanged={this.handleNameChanged}
-                                           onDelete={this.deleteItem} file={value} index={index}/>
-                );
+                                           onDelete={this.deleteItem} file={value} index={index}/>);
               })
             }
             {

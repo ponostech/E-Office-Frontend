@@ -1,6 +1,8 @@
 import React from "react";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import NotesheetView from "./e-office/files/notesheet/NotesheetView";
+import { AttachmentView } from "../components/NotesheetAttachmentItem";
 
 class ComponentToPrint extends React.Component {
   constructor(props) {
@@ -41,7 +43,14 @@ class ComponentToPrint extends React.Component {
 }
 
 class Test extends React.Component {
-   show=()=>{
+  constructor(props, context) {
+    super(props, context);
+    this.state={
+      attachments:[]
+    }
+  }
+
+  show=()=>{
      const MySwal = withReactContent(Swal)
 
      MySwal.fire({
@@ -59,7 +68,7 @@ class Test extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={() => this.show()}>Alert</button>
+       <AttachmentView attachments={this.state.attachments} onSuccess={attachments=>this.setState({attachments})} acceptedFiles={"image/*"} />
 
       </div>
     );
