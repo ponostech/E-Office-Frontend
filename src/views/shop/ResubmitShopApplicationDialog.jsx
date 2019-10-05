@@ -50,6 +50,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
 import OfficeFileUpload from "../../components/OfficeFileUpload";
 import { OfficeImageList } from "../e-office/admin/form-builder/fields";
+import { AttachmentView } from "../../components/NotesheetAttachmentItem";
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -366,6 +367,7 @@ class ResubmitShopApplicationDialog extends Component {
         latitude: application.latitude,
         longitude: application.longitude,
         uploadedDoc: application.documents,
+        additionalDocuments:application.addl_documents?application.addl_documents:[],
         prestine: false
       });
     }
@@ -801,12 +803,9 @@ class ResubmitShopApplicationDialog extends Component {
                           </GridItem>
 
                           <GridItem xs={12} sm={12} md={8}>
-                            <OfficeImageList value={this.state.additionalDocuments} field={"additionDocuments"} config={{
-                              label:"",
-                              validation:{
-                                required:false
-                              }
-                            }} onChange={(key,value)=>this.setState({additionalDocuments:value})}/>
+                            <AttachmentView attachments={this.state.additionalDocuments}
+                                            acceptedFiles={"image/*,application/pdf"}
+                                            onSuccess={additionalDocuments=>this.setState({additionalDocuments})}/>
                           </GridItem>
                           <GridItem xs={12} sm={12} md={12}>
                             <Typography className={classes.subTitle} variant={"h6"}>Declaration</Typography>

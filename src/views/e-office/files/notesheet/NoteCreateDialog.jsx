@@ -31,6 +31,7 @@ import NotesheetAttachment from "../../../../components/NotesheetAttachment";
 import CalendarIcon from "@material-ui/icons/Today";
 import DialogContent from "@material-ui/core/DialogContent";
 import ErrorHandler from "../../../common/StatusHandler";
+import { AttachmentView } from "../../../../components/NotesheetAttachmentItem";
 
 const styles = {
   appBar: {
@@ -209,7 +210,7 @@ class NoteCreateDialog extends Component {
         </Grid>
         <Grid item={true} lg={6}>
           <Typography style={{textTransform:"capitalize"}} variant={"h6"}>Notesheet Attachment</Typography>
-          <NotesheetAttachment value={[]} onSuccess={this.onSuccess}/>
+          <AttachmentView acceptedFiles={"image/*"} onSuccess={this.onSuccess} attachments={this.state.attachments} />
         </Grid>
       </Grid>
     </CardContent>;

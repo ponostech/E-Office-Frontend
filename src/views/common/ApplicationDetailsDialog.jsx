@@ -93,7 +93,7 @@ class ApplicationDetailsDialog extends React.Component {
     let documents = application === null ? [] : application.documents ?
         application.documents.map(val => <FileViewRow key={val.id} data={val}/>) : [];
     let additionalDocument = application === null ? [] : application.addl_documents ?
-        Object.entries(application.addl_documents).map(val => <FileViewRow key={val.id} data={val}/>) : [];
+        application.addl_documents.map(val => <FileViewRow key={val.id} data={val}/>) : [];
 
     let content =
         <Grid container>

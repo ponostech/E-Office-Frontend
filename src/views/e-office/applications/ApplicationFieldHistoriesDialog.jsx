@@ -39,6 +39,7 @@ class ApplicationFieldHistoriesDialog extends React.Component {
     let self = this;
     return (
         <Dialog
+           fullWidth={true} maxWidth={"md"}
             open={this.props.open}
             onClose={this.props.onClose}
             TransitionComponent={Transition}

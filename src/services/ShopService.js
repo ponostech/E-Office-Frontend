@@ -74,7 +74,9 @@ export class ShopService {
       premise_type: state.premised,
       display_type: state.displayType,
       passport: state.passport.location,
-      documents: state.uploadDocuments
+      documents: state.uploadDocuments,
+      addl_documents: state.additionalDocuments
+
     };
     try {
       let res = await axios.post(ApiRoutes.UPDATE_SHOP_LICENSE(state.id), data);

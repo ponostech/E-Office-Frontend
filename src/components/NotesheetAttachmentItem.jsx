@@ -82,7 +82,7 @@ export const AttachmentView = ({ acceptedFiles, attachments,onSuccess }) => {
         .then(data => {
           let temp={
             name:file.name,
-            location: data.location
+            path: data.location
           }
           attachments.push(temp)
           onSuccess(attachments)
@@ -101,7 +101,6 @@ export const AttachmentView = ({ acceptedFiles, attachments,onSuccess }) => {
   const removeAttachment=(index)=>{
     console.log(index)
     const res=attachments.filter((item,i)=>index!==i)
-    console.log(res)
     onSuccess(res)
   }
   return (
