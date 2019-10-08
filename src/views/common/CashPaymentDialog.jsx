@@ -139,7 +139,7 @@ class CashPaymentDialog extends Component {
           </DialogContent>
           <Divider component={"div"}/>
           <DialogActions>
-            <Button disabled={!Boolean(this.state.receipt)} href={"#"} variant={"outlined"} color={"primary"}
+            <Button disabled={!Boolean(this.state.comment)} href={"#"} variant={"outlined"} color={"primary"}
                     onClick={event => this.handleClose("confirm")}>Confirm Payment</Button>
             <Button href={"#"} variant={"outlined"} color={"secondary"}
                     onClick={event => this.handleClose("close")}>Close</Button>

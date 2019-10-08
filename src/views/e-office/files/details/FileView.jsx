@@ -1,6 +1,6 @@
 import React, { Component } from "reactn";
 import axios from "axios";
-import { Grid, withStyles } from "@material-ui/core";
+import { Grid, Typography, Button,withStyles } from "@material-ui/core";
 import FileMenuLeft from "./Menu/FileMenuLeft";
 import FileMenuRight from "./Menu/FileMenuRight";
 import { Route, withRouter } from "react-router-dom";
@@ -343,11 +343,21 @@ class FileView extends Component {
     if (!allowed) {
       contentStyle.marginRight = "20px";
     }
+
+    const staffName=file.desk?file.desk.staff.name:"";
+    const staffDesignation=file.desk?file.desk.staff.designation:""
+    const restrictedView=<>
+    <Grid style={{alignSelf:"stretch"}} container={true} justify={"center"} alignItems={"stretch"}>
+      <Grid item={true} alignItems={"center"}>
+      <Typography style={{marginTop:30}} variant={"h6"} paragraph={true} color={"textPrimary"}>File is on the desk of {staffName}({staffDesignation}) </Typography>
+      </Grid>
+    </Grid>
+    </>
     const view = (
       <>
         <div className={classes.hide}>
           <FileMenuLeft click={this.handleItemClick} menus={menus}/>
-          {allowed ? <FileMenuRight click={this.handleItemClick} menus={menus}/> : null}
+          <FileMenuRight click={this.handleItemClick} menus={menus}/>
         </div>
         <main style={contentStyle}>
           <Grid item xs={12} md={12} lg={12}>
@@ -387,7 +397,7 @@ class FileView extends Component {
     );
     return (
       <Grid container className={classes.container}>
-        <div className={classes.root}>{this.global.loading ? <LoadingView/> : view}</div>
+        <div className={classes.root}>{this.global.loading ? <LoadingView/> : allowed?view:restrictedView}</div>
 
         {openFileCloseDialog &&
         <ConfirmDialog onCancel={this.closeDialog.bind(this, "openFileCloseDialog")}
