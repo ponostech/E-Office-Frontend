@@ -45,6 +45,7 @@ import LoadingView from "../common/LoadingView";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { OfficeImageList } from "../e-office/admin/form-builder/fields";
+import { AttachmentView } from "../../components/NotesheetAttachmentItem";
 
 const style = {
   subTitle: {
@@ -784,12 +785,9 @@ class HotelApplication extends Component {
                         </GridItem>
 
                         <GridItem xs={12} sm={12} md={8}>
-                          <OfficeImageList application={null} key={"additionDocuments"} config={{
-                            label: "",
-                            validation: {
-                              required: false
-                            }
-                          }} onChange={(key, value) => this.setState({ additionalDocuments: value })}/>
+                          <AttachmentView attachments={this.state.additionalDocuments}
+                                          acceptedFiles={"image/*,application/pdf"}
+                                          onSuccess={additionalDocuments=>this.setState({additionalDocuments})}/>
                         </GridItem>
 
                         <GridItem xs={12} sm={12} md={12}>
