@@ -4,6 +4,7 @@ import { ApiRoutes } from "../config/ApiRoutes";
 import moment from "moment";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
+const DATE_FORMAT = "YYY-MM-DD";
 export class ShopService {
 
   async create(state, errorCallback, successCallback) {
@@ -21,7 +22,7 @@ export class ShopService {
       trade_id: state.tradeName.value,
       latitude: state.latitude,
       longitude: state.longitude,
-      estd: moment(state.estd).format("Y/M/D"),
+      estd: moment(state.estd).format(DATE_FORMAT),
       tin_no: state.tinNo,
       cst_no: state.cstNo,
       gst_no: state.gstNo,
@@ -66,7 +67,7 @@ export class ShopService {
       trade_id: state.tradeName.value,
       latitude: state.latitude,
       longitude: state.longitude,
-      estd: moment(state.estd).format("Y/M/D"),
+      estd: moment(state.estd).format(DATE_FORMAT),
       tin_no: state.tinNo,
       cst_no: state.cstNo,
       gst_no: state.gstNo,
@@ -112,7 +113,7 @@ export class ShopService {
       trade_id: state.tradeName.value,
       latitude: state.latitude,
       longitude: state.longitude,
-      estd: moment(state.estd).format("Y/M/D"),
+      estd: moment(state.estd).format(DATE_FORMAT),
       tin_no: state.tinNo,
       cst_no: state.cstNo,
       gst_no: state.gstNo,

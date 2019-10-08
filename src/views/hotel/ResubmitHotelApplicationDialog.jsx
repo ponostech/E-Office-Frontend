@@ -29,7 +29,6 @@ import { ShopLicenseViewModel } from "../model/ShopLicenseViewModel";
 import OfficeSelect from "../../components/OfficeSelect";
 import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
-import { ShopService } from "../../services/ShopService";
 import PlaceIcon from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../components/GmapDialog";
 import { Validators } from "../../utils/Validators";
@@ -50,6 +49,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
 import OfficeFileUpload from "../../components/OfficeFileUpload";
 import { HotelService } from "../../services/HotelService";
+import { AttachmentView } from "../../components/NotesheetAttachmentItem";
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -112,6 +112,7 @@ class ResubmitHotelApplicationDialog extends Component {
     latitude: undefined,
     longitude: undefined,
     uploadDocuments: [],
+    additionalDocuments: [],
 
     nameError: "",
     typeError: "",
@@ -220,7 +221,7 @@ class ResubmitHotelApplicationDialog extends Component {
 
   };
   fetchTrades = async () => {
-    await this.tradeService.fetch("hotel",(errorMsg) => this.setGlobal({ errorMsg })
+    await this.tradeService.fetch("hotel", (errorMsg) => this.setGlobal({ errorMsg })
       , (trades) => this.setState({ trades }));
   };
   handleChange = (e) => {
@@ -375,16 +376,16 @@ class ResubmitHotelApplicationDialog extends Component {
         latitude: application.latitude,
         longitude: application.longitude,
         uploadedDoc: application.documents,
+        additionalDocuments: application.addl_documents ? application.addl_documents : [],
         prestine: false
       });
     }
   };
 
-  getDocumentView=()=>{
-    const { classes,application } = this.props;
+  getDocumentView = () => {
+    const { classes, application } = this.props;
     return this.state.documents.map((doc, index) => {
       let found = this.state.uploadedDoc.find(item => item.document_id === doc.id);
-      console.log("found item",found)
       let uploadView = Boolean(found) ? <a target={"_blank"} href={found.path}>{found.name}</a> : "";
       return <>
         <GridItem key={index} className={classes.root} sm={12} xs={12}
@@ -406,12 +407,12 @@ class ResubmitHotelApplicationDialog extends Component {
             console.log(err);
           }}/>
 
-        {uploadView}
+          {uploadView}
         </GridItem>
       </>;
 
-    })
-  }
+    });
+  };
 
   render() {
     const { classes, open, onClose, application, onResubmit } = this.props;
@@ -873,6 +874,20 @@ class ResubmitHotelApplicationDialog extends Component {
                           {this.getDocumentView()}
                           <GridItem xs={12} sm={12} md={12}>
                             <Typography className={classes.subTitle} variant={"h6"}>Declaration</Typography>
+                          </GridItem>
+
+                          <GridItem xs={12} sm={12} md={12}>
+                            <Typography className={classes.subTitle} variant={"h6"}>Additional Document(S)</Typography>
+                          </GridItem>
+
+                          <GridItem className={classes.root} sm={12} xs={12} md={12}>
+                            <Divider component={"div"}/>
+                          </GridItem>
+
+                          <GridItem xs={12} sm={12} md={8}>
+                            <AttachmentView attachments={this.state.additionalDocuments}
+                                            acceptedFiles={"image/*,application/pdf"}
+                                            onSuccess={additionalDocuments => this.setState({ additionalDocuments })}/>
                           </GridItem>
 
                           <GridItem xs={12} sm={12} md={12}>

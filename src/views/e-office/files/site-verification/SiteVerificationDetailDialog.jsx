@@ -110,7 +110,7 @@ class SiteVerificationDetailDialog extends Component {
           case WIDGET_TYPE.IMAGE_LIST:
             data[key]&&data[key].map(item=>images.push({
               label: item?item.name:"NA",
-              location: item ? item.location : null
+              location: item ? item.path : null
             }))
             break;
           case WIDGET_TYPE.FILE_UPLOAD:

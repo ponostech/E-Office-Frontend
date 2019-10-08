@@ -19,6 +19,7 @@ import DetailViewRow from "./DetailViewRow";
 import { getApplicationTitle } from "../files/dialog/common/ApplicationResolver";
 import PropTypes from "prop-types";
 import FileUpload from "../../../components/FileUpload";
+import TextEditor from "./Editor";
 
 const styles = {
   appBar: {
@@ -65,7 +66,7 @@ class SingleApplicationSendBackDialog extends Component {
     const { reason } = this.state;
     let detail = getApplicationTitle(application);
     return (
-      <Dialog maxWidth={"sm"} open={open} TransitionComponent={Transition} onClose={onClose} fullWidth={true}>
+      <Dialog maxWidth={"md"} open={open} TransitionComponent={Transition} onClose={onClose} fullWidth={true}>
 
         <AppBar className={classes.appBar}>
           <Toolbar>
@@ -88,11 +89,7 @@ class SingleApplicationSendBackDialog extends Component {
               </List>
             </Grid>
             <Grid md={12} item={true}>
-              <TextField label={"Reason"} value={reason} required={true} fullWidth={true} multiline={true} rows={5}
-                         name={"reason"}
-                         variant={"outlined"}
-                         onChange={event => this.setState({ reason: event.target.value })}
-              />
+              <TextEditor onChange={(e) => this.setState({reason: e.target.getContent()})} default={reason}/>
             </Grid>
             <Grid md={12} item={true}>
               <FileUpload

@@ -1,18 +1,18 @@
 import React from "react";
 import {
+  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
-  FormLabel, IconButton, InputAdornment,
+  FormLabel,
+  InputAdornment,
   Radio,
   RadioGroup,
-  Button,
   Switch,
   TextField
 } from "@material-ui/core";
 import { APPLICATION_NAME } from "../../../../utils/Util";
 import OfficeFileUpload from "../../../../components/OfficeFileUpload";
-import NotesheetAttachment from "../../../../components/NotesheetAttachment";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import "date-fns";
@@ -21,6 +21,7 @@ import { LocalCouncilService } from "../../../../services/LocalCouncilService";
 import { TradeService } from "../../../../services/TradeService";
 import GMapDialog from "../../../../components/GmapDialog";
 import PlaceIcon from "@material-ui/icons/Place";
+import { AttachmentView } from "../../../../components/NotesheetAttachmentItem";
 
 export const OfficeDatePicker = ({ field, config, value, onChange }) => {
   return (
@@ -196,7 +197,7 @@ export const SiteFileUpload = ({ field, config, value, onChange }) => {
     <OfficeFileUpload applicationName={APPLICATION_NAME.SITE_VERIFICATION}
                       document={value}
                       onUploadSuccess={(data) => {
-                          onChange(field, data.location);
+                        onChange(field, data.location);
                       }} onUploadFailure={(err) => {
       console.log(err);
     }}/>
@@ -213,7 +214,7 @@ export const OfficeImageList = ({ field, config, value, onChange }) => {
     <>
       <FormControl fullWidth={true} component={"div"}>
         <FormLabel component={"label"} required={config.validation.required}>{config.label}</FormLabel>
-        <NotesheetAttachment value={value} onSuccess={onSuccess}/>
+        <AttachmentView acceptedFiles={"image/*"} onSuccess={onSuccess} attachments={value}/>
       </FormControl>
     </>
   );
@@ -345,23 +346,23 @@ export class OfficeCoordinate extends React.Component {
   setCoordinate = (latitude, longitude) => {
     const { field, onChange } = this.props;
     onChange(field, { latitude, longitude });
-    this.setState({openMap:false})
+    this.setState({ openMap: false });
   };
 
   render() {
     const { field, config, value, onChange } = this.props;
     const { openMap } = this.state;
-    let str = value?`Latitude: ${value.latitude} , Longitude: ${value.longitude} `:"";
+    let str = value ? `Latitude: ${value.latitude} , Longitude: ${value.longitude} ` : "";
 
     return (
 
       <>
         <TextField
           InputProps={{
-            readOnly:true,
+            readOnly: true,
             endAdornment: (
               <InputAdornment position={"end"}>
-                <Button color={"default"} variant={"outlined"} onClick={(e) => this.setState({openMap: true})}>
+                <Button color={"default"} variant={"outlined"} onClick={(e) => this.setState({ openMap: true })}>
                   <PlaceIcon/>
                 </Button>
               </InputAdornment>
