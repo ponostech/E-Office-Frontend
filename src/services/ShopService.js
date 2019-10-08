@@ -5,6 +5,7 @@ import moment from "moment";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
 const DATE_FORMAT = "Y-M-D";
+
 export class ShopService {
 
   async create(state, errorCallback, successCallback) {
