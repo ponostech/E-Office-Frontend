@@ -6,7 +6,6 @@ import { withStyles } from "@material-ui/core/styles";
 import { Icon, IconButton, Tooltip } from "@material-ui/core";
 import moment from "moment";
 import { FILE_CALL, GET_STAFF, SHOP_LIST } from "../../../../config/ApiRoutes";
-import ShopViewDialog from "./common/ShopViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import { DESK, FILE_DETAIL_ROUTE, FILE_SEND } from "../../../../config/routes-constant/OfficeRoutes";
@@ -15,6 +14,7 @@ import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
 import CardContent from "@material-ui/core/CardContent";
 import { ArrayToString } from "../../../../utils/ErrorUtil";
+import ApplicationDetailsDialog from "../../../common/ApplicationDetailsDialog";
 
 const styles = {};
 
@@ -72,7 +72,7 @@ class ShopNewList extends Component {
     axios.post(FILE_CALL(this.state.shop.file.id))
       .then((res) => {
         if (res.data.status) {
-          this.setGlobal({ successMsg:"Application is called successfully" });
+          this.setGlobal({ successMsg: "Application is called successfully" });
           this.props.history.push(DESK);
         } else
           this.setGlobal({ errorMsg: ArrayToString(res.data.messages) });
@@ -84,9 +84,9 @@ class ShopNewList extends Component {
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), { recipient_id })
     .then((res) => {
       if (res.data.status) {
-        this.setState({openAssignment:false});
+        this.setState({ openAssignment: false });
         this.setGlobal({ successMsg: "Application is sent successfully" });
-        this.componentDidMount()
+        this.componentDidMount();
       } else
         this.setGlobal({ errorMsg: ArrayToString(res.data.messages) });
     })
@@ -190,7 +190,10 @@ class ShopNewList extends Component {
                                 onClose={() => this.setState({ openMap: false })} isMarkerShown={true}/>}
 
         {openViewDialog &&
-        <ShopViewDialog open={openViewDialog} close={this.closeViewDialog} data={shop}/>}
+        <ApplicationDetailsDialog type={shop.file.fileable_type} open={openViewDialog} title='View Application Details'
+                                  application={shop}
+                                  file={shop.file}
+                                  onClose={this.closeViewDialog}/>}
 
         {openAssignment && staffs &&
         <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}

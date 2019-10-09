@@ -4,8 +4,12 @@ import { ApiRoutes } from "../config/ApiRoutes";
 import moment from "moment";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
+<<<<<<< HEAD
 const DATE_FORMAT = "Y-M-D";
 
+=======
+const DATE_FORMAT = "YYYY-MM-DD";
+>>>>>>> master
 export class ShopService {
 
   async create(state, errorCallback, successCallback) {
