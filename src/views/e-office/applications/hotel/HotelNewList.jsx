@@ -6,7 +6,6 @@ import { withStyles } from "@material-ui/core/styles";
 import { Icon, IconButton, Tooltip } from "@material-ui/core";
 import moment from "moment";
 import { FILE_CALL, GET_STAFF, HOTEL_LIST } from "../../../../config/ApiRoutes";
-import HotelViewDialog from "./common/HotelViewDialog";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import { DESK, FILE_DETAIL_ROUTE, FILE_SEND } from "../../../../config/routes-constant/OfficeRoutes";
@@ -15,6 +14,7 @@ import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
 import CardContent from "@material-ui/core/CardContent";
 import { ArrayToString } from "../../../../utils/ErrorUtil";
+import ApplicationDetailsDialog from "../../../common/ApplicationDetailsDialog";
 
 const styles = {};
 
@@ -37,7 +37,7 @@ class HotelNewList extends Component {
   }
 
   getData = () => {
-    axios.get(HOTEL_LIST,{ params: { status: "new" } })
+    axios.get(HOTEL_LIST, { params: { status: "new" } })
       .then(res => this.processResult(res))
       .catch(err => this.setGlobal({ errorMsg: err.toString() }))
       .then(() => this.setGlobal({ loading: false }));
@@ -63,7 +63,7 @@ class HotelNewList extends Component {
   takeFile = (data) => this.setState({ hotel: data, openTakeFile: true });
 
   confirmTakeFile = () => {
-    console.log("hotel", this.state.hotel)
+    console.log("hotel", this.state.hotel);
     this.setState({ openTakeFile: false });
     this.setGlobal({ loading: true });
     axios.post(FILE_CALL(this.state.hotel.file.id))
@@ -75,7 +75,7 @@ class HotelNewList extends Component {
           this.setGlobal({ errorMsg: ArrayToString(res.data.messages) });
         }
       })
-      .catch(err => this.setGlobal({ errorMsg:err.toString() }))
+      .catch(err => this.setGlobal({ errorMsg: err.toString() }))
       .finally(() => this.setGlobal({ loading: false }));
   };
 
@@ -83,15 +83,15 @@ class HotelNewList extends Component {
     this.setState({ openAssignment: false });
     this.setGlobal({ laoding: true });
     axios.post(FILE_SEND(id), { recipient_id })
-      .then(res=>{
+      .then(res => {
         if (res.data.status) {
-           this.setGlobal({successMsg:ArrayToString(res.data.messages)})
+          this.setGlobal({ successMsg: ArrayToString(res.data.messages) });
           this.getData();
-        }else{
-           this.setGlobal({errorMsg:ArrayToString(res.data.messages)})
+        } else {
+          this.setGlobal({ errorMsg: ArrayToString(res.data.messages) });
         }
       })
-      .catch(err=>this.setGlobal({errorMsg:err.toString()}))
+      .catch(err => this.setGlobal({ errorMsg: err.toString() }))
       .finally(() => console.log("send file"));
   };
 
@@ -148,7 +148,8 @@ class HotelNewList extends Component {
                 </Tooltip>
 
                 <Tooltip title={"View Location"}>
-                  <IconButton size="medium" href={"#"} onClick={e => this.setState({ openMap: true, lat: lat, lng: lng })}>
+                  <IconButton size="medium" href={"#"}
+                              onClick={e => this.setState({ openMap: true, lat: lat, lng: lng })}>
                     <Icon fontSize="small">pin_drop</Icon>
                   </IconButton>
                 </Tooltip>
@@ -192,8 +193,10 @@ class HotelNewList extends Component {
                                 onClose={() => this.setState({ openMap: false })} isMarkerShown={true}/>}
 
         {openViewDialog &&
-        <HotelViewDialog open={openViewDialog} close={this.closeViewDialog} data={hotel}/>}
-
+        <ApplicationDetailsDialog type={hotel.file.fileable_type} open={openViewDialog} title='View Application Details'
+                                  application={hotel}
+                                  file={hotel.file}
+                                  onClose={this.closeViewDialog}/>}
         {openAssignment && staffs &&
         <FileSendDialog onSend={this.sendFile} staffs={staffs} open={openAssignment}
                         onClose={this.closeAssignment} file={file} props={this.props}/>}

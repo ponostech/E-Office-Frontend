@@ -227,7 +227,7 @@ class ApplicantDashboard extends Component {
           </CardContent>
           <CardActions style={{margin:0,padding:0}}>
             <Hidden only={["md","lg","xl"]}>
-              <AppBar color={"inherit"} position={"static"} elevation={5}>
+              <AppBar style={{top:"auto",bottom:0}} color={"inherit"} position={"fixed"} elevation={5}>
                 <BottomNavigation
                   value={this.state.tabValue}
                   onChange={(event, value) => this.setState({tabValue:value})}

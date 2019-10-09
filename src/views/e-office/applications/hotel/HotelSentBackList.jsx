@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import { withStyles } from "@material-ui/core/styles";
 import { Icon, IconButton, Tooltip } from "@material-ui/core";
 import moment from "moment";
-import { FILE_TAKE, GET_STAFF, HOTEL_LIST } from "../../../../config/ApiRoutes";
+import { FILE_CALL, GET_STAFF, HOTEL_LIST } from "../../../../config/ApiRoutes";
 import FileSendDialog from "../../../common/SendDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import { DESK, FILE_DETAIL_ROUTE, FILE_SEND } from "../../../../config/routes-constant/OfficeRoutes";
@@ -17,7 +17,7 @@ import ApplicationDetailsDialog from "../../../common/ApplicationDetailsDialog";
 
 const styles = {};
 
-class HotelRejectedList extends Component {
+class HotelSentBackList extends Component {
   state = {
     hotels: [],
     openMap: false,
@@ -35,7 +35,7 @@ class HotelRejectedList extends Component {
     this.getStaffs();
   }
 
-  getData = () => axios.get(HOTEL_LIST, { params: { status: "reject" } })
+  getData = () => axios.get(HOTEL_LIST, { params: { status: "in-process" } })
     .then(res => this.processResult(res))
     .catch(err => this.setGlobal({ errorMsg: err.toString() }))
     .then(() => this.setGlobal({ loading: false }));
@@ -59,7 +59,8 @@ class HotelRejectedList extends Component {
 
   takeFile = (data) => this.setState({ hotel: data, openTakeFile: true });
 
-  confirmTakeFile = () => axios.post(FILE_TAKE(this.state.hotel.file.id)).then(() => this.props.history.push(DESK));
+  confirmTakeFile = () => axios.post(FILE_CALL(this.state.hotel.file.id))
+    .then(() => this.props.history.push(DESK));
 
   sendFile = (id, recipient_id) => axios.post(FILE_SEND(id), { recipient_id }).then(() => window.location.reload());
 
@@ -142,7 +143,7 @@ class HotelRejectedList extends Component {
       <>
         {this.global.loading ? <LoadingView/> : <CardContent>
           <MUIDataTable
-            title={"HOTEL/LODGING: List of Rejected Applications"}
+            title={"HOTEL/LODGING: List of Sent Back Application"}
             data={hotels}
             columns={tableColumns}
             options={tableOptions}
@@ -150,8 +151,8 @@ class HotelRejectedList extends Component {
         </CardContent>}
 
         <GMapDialog viewMode={true} open={this.state.openMap} lat={this.state.lat} lng={this.state.lng}
-                    onClose={() => this.setState({ openMap: false })} isMarkerShown={true}
-        />
+                    onClose={() => this.setState({ openMap: false })} isMarkerShown={true}/>
+
         {openViewDialog &&
         <ApplicationDetailsDialog type={hotel.file.fileable_type} open={openViewDialog} title='View Application Details'
                                   application={hotel}
@@ -173,4 +174,4 @@ class HotelRejectedList extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(HotelRejectedList));
+export default withRouter(withStyles(styles)(HotelSentBackList));
