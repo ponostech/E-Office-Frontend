@@ -43,6 +43,7 @@ import LoadingView from "../common/LoadingView";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { OfficeImageList } from "../e-office/admin/form-builder/fields";
+import { AttachmentView } from "../../components/NotesheetAttachmentItem";
 
 const style = {
   root: {padding: "10px 15px !important"},
@@ -718,12 +719,8 @@ class ShopApplication extends Component {
                           </GridItem>
 
                           <GridItem xs={12} sm={12} md={8}>
-                            <OfficeImageList value={this.state.additionalDocuments} field={"additionDocuments"} config={{
-                              label:"",
-                              validation:{
-                                required:false
-                            }
-                            }} onChange={(key,value)=>this.setState({additionalDocuments:value})}/>
+                            <AttachmentView acceptedFiles={"image/*,application/pdf"} attachments={this.state.additionalDocuments}
+                                            onSuccess={additionalDocuments=>this.setState({additionalDocuments})}/>
                           </GridItem>
                           <GridItem xs={12} sm={12} md={12}>
                             <Typography className={classes.subTitle} variant={"h6"}>Declaration</Typography>

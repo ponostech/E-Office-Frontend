@@ -5,14 +5,14 @@ import MUIDataTable from "mui-datatables";
 import { withStyles } from "@material-ui/core/styles";
 import { Icon, IconButton, Tooltip } from "@material-ui/core";
 import moment from "moment";
-import { GET_STAFF, SHOP_LIST } from "../../../../config/ApiRoutes";
-import ShopViewDialog from "./common/ShopViewDialog";
+import { SHOP_LIST } from "../../../../config/ApiRoutes";
 import LoadingView from "../../../common/LoadingView";
 import GMapDialog from "../../../../components/GmapDialog";
 import ErrorHandler from "../../../common/StatusHandler";
 import CardContent from "@material-ui/core/CardContent";
 import Chip from "@material-ui/core/Chip";
 import CashPaymentDialog from "../../../common/CashPaymentDialog";
+import ApplicationDetailsDialog from "../../../common/ApplicationDetailsDialog";
 
 const styles = {};
 
@@ -48,14 +48,14 @@ class ShopUnpaidList extends Component {
 
   viewDetails = (data) => this.setState({ openViewDialog: true, shop: data });
   payment = (data) => this.setState({ openPaymentDialog: true, shop: data });
-  confirmPayment = (data) =>{
-    this.setState({ openConfirmDialog: false})
-    console.log(data)
+  confirmPayment = (data) => {
+    this.setState({ openConfirmDialog: false });
+    console.log(data);
 
-  }
+  };
 
   render() {
-    const { shop, shops, openViewDialog,openPaymentDialog, openMap } = this.state;
+    const { shop, shops, openViewDialog, openPaymentDialog, openMap } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -84,7 +84,8 @@ class ShopUnpaidList extends Component {
         label: "APPLICATION DATE",
         options: {
           filter: false,
-          customBodyRender: (value) => <Chip label={"unpaid"} component={"div"} color={"secondary"} variant={"default"}/>
+          customBodyRender: (value) => <Chip label={"unpaid"} component={"div"} color={"secondary"}
+                                             variant={"default"}/>
         }
       },
       {
@@ -148,9 +149,13 @@ class ShopUnpaidList extends Component {
                                 onClose={() => this.setState({ openMap: false })} isMarkerShown={true}/>}
 
         {openViewDialog &&
-        <ShopViewDialog open={openViewDialog} close={this.closeViewDialog} data={shop}/>}
+        <ApplicationDetailsDialog type={shop.file.fileable_type} open={openViewDialog} title='View Application Details'
+                                  application={shop}
+                                  file={shop.file}
+                                  onClose={this.closeViewDialog}/>}
 
-        {openPaymentDialog && <CashPaymentDialog application={shop} open={openPaymentDialog} onClose={this.confirmPayment}/>}
+        {openPaymentDialog &&
+        <CashPaymentDialog application={shop} open={openPaymentDialog} onClose={this.confirmPayment}/>}
         {this.global.errorMsg && <ErrorHandler/>}
       </>
     );
