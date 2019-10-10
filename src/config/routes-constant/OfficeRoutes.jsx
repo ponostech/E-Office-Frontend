@@ -120,6 +120,10 @@ export const REJECTED_TEMPLATE = "/e-office/admin/rejected-template";
 export const CANCELLED_TEMPLATE = "/e-office/admin/cancelled-template";
 export const RATE_LIST = "/e-office/admin/rates";
 
+//setting and profile
+export const STAFF_PROFILE = "/e-office/profile";
+
+
 // site verification
 export const SITE_VERIFICATION = "/e-office/admin/site-verification";
 export const SITE_VERIFICATION_LIST = "/e-office/admin/site-verification/list";

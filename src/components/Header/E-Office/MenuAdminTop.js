@@ -7,6 +7,7 @@ import Icon from "@material-ui/core/es/Icon/Icon";
 import { LoginService } from "../../../services/LoginService";
 import * as OfficeRoutes from "../../../config/routes-constant/OfficeRoutes";
 import OfficeContextMenu from "../../OfficeContextMenu";
+import { STAFF_PROFILE } from "../../../config/routes-constant/OfficeRoutes";
 
 const styles = {
   menuWrapper: {
@@ -32,7 +33,8 @@ const menu = (props) => {
           .logout(errorMsg => console.log(errorMsg), successMessage => history.push(OfficeRoutes.HOME))
           .finally(() => console.log("log out request has been made"));
         break;
-      case "my_account":
+      case "account":
+        history.push(STAFF_PROFILE);
         break;
     }
   }
@@ -40,9 +42,8 @@ const menu = (props) => {
     icon:<Icon>account_circle_rounded</Icon>,
     textOnly:false,
     menuItems:[
-      {name:"profile", icon:<Icon fontSize={"small"}>user</Icon>,text:"My Account",onClick:onContextMenuClick},
-      {name:"profile", icon:<Icon fontSize={"small"}>edit</Icon>,text:"My Account",onClick:onContextMenuClick, divider:true} ,
-      {name:"profile", icon:<Icon fontSize={"small"}>edit</Icon>,text:"My Account",onClick:onContextMenuClick},
+      {name:"profile", icon:<Icon fontSize={"small"}>user</Icon>,text:`Welcome `,onClick:onContextMenuClick,divider:true},
+      {name:"account", icon:<Icon fontSize={"small"}>edit</Icon>,text:"My Account",onClick:onContextMenuClick},
       {name:"log_out", icon:<Icon fontSize={"small"}>power_settings_new</Icon>,text:"Log out",onClick:onContextMenuClick},
     ]
   }

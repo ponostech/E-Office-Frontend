@@ -201,5 +201,8 @@ export class ApiRoutes {
 
   static GET_HOTEL=(id)=>`/hotels/${id}`
   static RENEW_HOTEL=(id)=>`/hotels/${id}/renew`
+
+  static GET_STAFF_BY_ID=(id) => `/staff/${id}`;
+  
 }
 

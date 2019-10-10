@@ -1,17 +1,9 @@
-import React from "react";
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-import NotesheetView from "./e-office/files/notesheet/NotesheetView";
-import { AttachmentView } from "../components/NotesheetAttachmentItem";
+
+
+import React from 'react';
+import ReactToPrint from 'react-to-print';
 
 class ComponentToPrint extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state={
-      show:false
-    }
-  }
-
   render() {
     return (
       <table>
@@ -42,38 +34,16 @@ class ComponentToPrint extends React.Component {
   }
 }
 
-class Test extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state={
-      attachments:[]
-    }
-  }
-
-  show=()=>{
-     const MySwal = withReactContent(Swal)
-
-     MySwal.fire({
-       title: <p>Hello World</p>,
-       footer: 'Copyright 2018',
-       onOpen: () => {
-         // `MySwal` is a subclass of `Swal`
-         //   with all the same instance & static methods
-         MySwal.clickConfirm()
-       }
-     }).then(() => {
-       return MySwal.fire(<p>Shorthand works too</p>)
-     })
-   }
+export class Test extends React.Component {
   render() {
     return (
       <div>
-       <AttachmentView attachments={this.state.attachments} onSuccess={attachments=>this.setState({attachments})} acceptedFiles={"image/*"} />
-
+        <ReactToPrint
+          trigger={() => <a href="#">Print this out!</a>}
+          content={() => this.componentRef}
+        />
+        <ComponentToPrint ref={el => (this.componentRef = el)} />
       </div>
     );
   }
 }
-
-export default Test
-

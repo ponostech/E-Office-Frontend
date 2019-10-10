@@ -57,6 +57,7 @@ import ChallanContainer from "../../views/e-office/challan/ChallanContainer";
 import HotelSentBackList from "../../views/e-office/applications/hotel/HotelSentBackList";
 import HotelResubmitList from "../../views/e-office/applications/hotel/HotelResubmitList";
 import HotelCancelledList from "../../views/e-office/applications/hotel/HotelCancelledList";
+import ProfileLayout from "../../views/e-office/profile/ProfileLayout";
 
 const routes = (props) => {
   return (
@@ -137,6 +138,8 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.STAFF_REGISTRATION} render={e => <StaffRegistration/>}/>
       <Route exact path={OfficeRoutes.STAFF_LIST} render={e => <StaffList/>}/>
       <Route path={OfficeRoutes.SETTING} component={Settings}/>
+        {/*Profile*/}
+      <Route path={OfficeRoutes.STAFF_PROFILE} component={ProfileLayout}/>
 
       {/*Challan*/}
       <Route exact path={OfficeRoutes.CHALLAN_LIST} render={e => <ChallanContainer/>}/>
