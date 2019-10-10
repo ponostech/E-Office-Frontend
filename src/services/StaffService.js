@@ -98,6 +98,20 @@ export class StaffService {
       errorCallback(e.toString());
     }
   }
+  async getStaff(id,errorCallback, successCallback) {
+    try {
+      const res = await axios.get(ApiRoutes.GET_STAFF_BY_ID(id));
+      if (res.data.status) {
+        const branches = res.data.data;
+        successCallback(branches);
+      } else {
+        const msg = ErrorToString(res.messages);
+        errorCallback(msg);
+      }
+    } catch (e) {
+      errorCallback(e.toString());
+    }
+  }
 
   async getRoles(errorCallback, successCallback) {
     let data = [];

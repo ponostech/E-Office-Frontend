@@ -94,6 +94,7 @@ class CashPaymentDialog extends Component {
           <TextField name={"comment"} margin={"dense"} multiline={true} rows={5} fullWidth={true} variant={"outlined"}
                      value={comment}
                      label={"Comment"}
+                     required={true}
                      onChange={this.handleChange.bind(this)}
                      onBlur={this.handleBlur.bind(this)}
                      error={Boolean(commentError)}

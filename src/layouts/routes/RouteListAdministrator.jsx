@@ -65,6 +65,7 @@ import SentBackShopLicense from "../../views/e-office/applications/shop-license/
 import ReSubmitShopLicense from "../../views/e-office/applications/shop-license/ShopReSubmitList";
 import HotelSentBackList from "../../views/e-office/applications/hotel/HotelSentBackList";
 import HotelResubmitList from "../../views/e-office/applications/hotel/HotelResubmitList";
+import ProfileLayout from "../../views/e-office/profile/ProfileLayout";
 
 const routes = (props) => {
   return (
@@ -161,6 +162,9 @@ const routes = (props) => {
 
         {/*Challan*/}
       <Route exact path={OfficeRoutes.CHALLAN_LIST} render={e => <ChallanContainer/>}/>
+
+      {/*Profile*/}
+      <Route exact path={OfficeRoutes.STAFF_PROFILE} render={e => <ProfileLayout/>}/>
 
       <Route path={OfficeRoutes.SETTING} component={Settings}/>
     </>

@@ -3,12 +3,12 @@ import { Icon, IconButton, Tooltip } from "@material-ui/core";
 import LoadingView from "../../common/LoadingView";
 import CardContent from "@material-ui/core/CardContent";
 import MUIDataTable from "mui-datatables";
-import CashPaymentDialog from "../../common/CashPaymentDialog";
 import moment from "moment";
 import ChallanService from "../../../services/ChallanService";
-import SubmitDialog from "../../../components/SubmitDialog";
 import ConfirmDialog from "../../../components/ConfirmDialog";
-import {MuiThemeProvider,createMuiTheme} from "@material-ui/core/styles";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { ChallanReceipt } from "../../print-template/ChallanReceipt";
+import ReactToPrint from "react-to-print";
 // challan no,application_no,details,type,created_at
 const fake = [
   { challan_no: "123", application_no: "123", details: "detail", type: "fee", created_at: new Date() }
@@ -19,13 +19,14 @@ class PaidChallanList extends Component {
     super(props);
     this.state = {
       selectedChallan: null,
-      challans: fake,
-      openConfirm: false,
+      challans: [],
+      printConfirm: false,
       openPayByCashDialog: false,
       submit: false,
       submitTitle: "Create Payment"
     };
     this.challanService = new ChallanService();
+    this.challanRef = React.createRef();
   }
 
   componentDidMount() {
@@ -36,6 +37,12 @@ class PaidChallanList extends Component {
       .finally(() => this.setGlobal({ loading: false }));
   }
 
+  printReceipt = () => {
+    const { selectedChallan } = this.state;
+    console.log(selectedChallan);
+    window.document.createElement("hello");
+    window.print();
+  };
   onCancelChallan = () => {
     const { selectedChallan } = this.state;
     this.setState({ openConfirm: false, submit: true, submitTitle: "Cancel Challan" });
@@ -71,9 +78,9 @@ class PaidChallanList extends Component {
       },
       MUIDataTableBodyCell: {
         root: {
-          padding: "2px 40px 2px 16px",
+          padding: "2px 40px 2px 16px"
         }
-      },
+      }
     },
     palette: {
       primary: {
@@ -84,11 +91,11 @@ class PaidChallanList extends Component {
         main: "#b93e46",
         contrastText: "#fff"
       }
-    },
+    }
   });
 
   render() {
-    const { challans, selectedChallan, openPayByCashDialog, openConfirm, submit, submitTitle } = this.state;
+    const { challans, selectedChallan, openPayByCashDialog, printConfirm, submit, submitTitle } = this.state;
 
     const tableColumns = [
       {
@@ -98,20 +105,20 @@ class PaidChallanList extends Component {
         name: "type",
         label: "TYPE OF CHALLAN"
       }, {
-        name: 'application',
-        label: 'BILLED TO',
+        name: "application",
+        label: "BILLED TO",
         options: {
           customBodyRender: (val, meta) => {
-            const {rowIndex} = meta
-            const currentChallan = challans[rowIndex]
+            const { rowIndex } = meta;
+            const currentChallan = challans[rowIndex];
             switch (currentChallan.challanable_type) {
-              case 'App\\Shop':
-                return currentChallan.application.owner
-              case 'App\\Hotel':
-                return currentChallan.application.owner
+              case "App\\Shop":
+                return currentChallan.application.owner;
+              case "App\\Hotel":
+                return currentChallan.application.owner;
 
               default:
-                return currentChallan.challanable_type + "PaidChallanList.jsx"
+                return currentChallan.challanable_type + "PaidChallanList.jsx";
             }
           }
         }
@@ -137,7 +144,7 @@ class PaidChallanList extends Component {
           }
         }
       },
-      /*{
+      {
         name: "id",
         label: "ACTIONS",
         options: {
@@ -147,20 +154,23 @@ class PaidChallanList extends Component {
 
             let viewBtn = (
               <>
-                <Tooltip title={"Cancel Challan"}>
-                  <IconButton size='small ' onClick={(e) => {
-                    this.setState({ selectedChallan, openConfirm: true });
-                  }}>
-                    <Icon fontSize="small" color={"secondary"}>highlight_off</Icon>
-                  </IconButton>
-                </Tooltip>
+                <ReactToPrint trigger={()=>
+                  <Tooltip title={"Print Receipt"}>
+                    <IconButton size='small ' onClick={(e) => {
+                      this.setState({ selectedChallan });
+                    }}>
+                      <Icon fontSize="small" color={"primary"}>print</Icon>
+                    </IconButton>
+                  </Tooltip>
+                } content={()=>this.challanRef.current}/>
+
               </>
             );
 
             return (viewBtn);
           }
         }
-      }*/
+      }
     ];
 
     const tableOptions = {
@@ -183,10 +193,14 @@ class PaidChallanList extends Component {
 
           </CardContent>}
 
-          <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={openConfirm}
-                         onConfirm={this.onCancelChallan.bind(this)}/>
-          <CashPaymentDialog open={openPayByCashDialog} onClose={this.onCashPayment} challan={selectedChallan}/>
-          <SubmitDialog open={submit} title={submitTitle} text={"Please wait ..."}/>
+          <ConfirmDialog message={`Do you want to print ${selectedChallan ? selectedChallan.number : ""}?`}
+                         onCancel={e => this.setState({ printConfirm: false })}
+                         open={printConfirm}
+                         onConfirm={e => this.printReceipt()}/>
+          <div style={{ display: "none" }}>
+            <ChallanReceipt ref={this.challanRef} challan={selectedChallan}/>
+
+          </div>
         </MuiThemeProvider>
       </>
     );
