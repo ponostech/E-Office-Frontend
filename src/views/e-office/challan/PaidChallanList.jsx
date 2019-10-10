@@ -93,6 +93,15 @@ class PaidChallanList extends Component {
       }
     }
   });
+   printIframe = (id) => {
+    const iframe = document.frames ? document.frames[id] : document.getElementById(id);
+    const iframeWindow = iframe.contentWindow || iframe;
+
+    iframe.focus();
+    iframeWindow.print();
+
+    return false;
+  };
 
   render() {
     const { challans, selectedChallan, openPayByCashDialog, printConfirm, submit, submitTitle } = this.state;
@@ -154,16 +163,11 @@ class PaidChallanList extends Component {
 
             let viewBtn = (
               <>
-                <ReactToPrint trigger={()=>
-                  <Tooltip title={"Print Receipt"}>
-                    <IconButton size='small ' onClick={(e) => {
-                      this.setState({ selectedChallan });
-                    }}>
-                      <Icon fontSize="small" color={"primary"}>print</Icon>
-                    </IconButton>
-                  </Tooltip>
-                } content={()=>this.challanRef.current}/>
-
+                <Tooltip title={"Print Receipt"}>
+                  <IconButton size='small ' onClick={(e) => this.printIframe("receipt")}>
+                    <Icon fontSize="small" color={"primary"}>print</Icon>
+                  </IconButton>
+                </Tooltip>
               </>
             );
 
@@ -202,6 +206,7 @@ class PaidChallanList extends Component {
 
           </div>
         </MuiThemeProvider>
+        <iframe id="receipt" src="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=17&cad=rja&uact=8&ved=2ahUKEwjZ7cuPlJLlAhX97XMBHQ4EDt4QFjAQegQIAxAC&url=https%3A%2F%2Fslicedinvoices.com%2Fpdf%2Fwordpress-pdf-invoice-plugin-sample.pdf&usg=AOvVaw3LuLujg7LXhoXgwlL1dS4o" style={{display: 'none'}} title="Receipt" />
       </>
     );
   }
