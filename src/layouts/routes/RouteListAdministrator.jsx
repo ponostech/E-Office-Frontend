@@ -50,7 +50,6 @@ import LicenseTemplate from "../../views/e-office/admin/templates/LicenseTemplat
 import CancelTemplate from "../../views/e-office/admin/templates/CancelTemplate";
 import RejectTemplate from "../../views/e-office/admin/templates/RejectTemplate";
 import SiteVerificationFormList from "../../views/e-office/site-verification/SiteVerificationFormList";
-import EditSiteVerificationTemplate from "../../components/form-builder/EditSiteVerificationTemplate";
 import ReceiptNewList from "../../views/e-office/receipt/ReceiptNewList";
 import ReceiptEdit from "../../views/e-office/receipt/ReceiptEdit";
 import ReceiptAttachedList from "../../views/e-office/receipt/ReceiptAttachedList";
@@ -58,7 +57,6 @@ import HoardingCancelledList from "../../views/e-office/applications/hoarding/Ho
 import KioskCancelledList from "../../views/e-office/applications/kiosk/KioskCancelledList";
 import FileHeadTemplates from "../../views/e-office/admin/e-file/FileHeadTemplates";
 import AdvertisementRateView from "../../views/e-office/admin/rates/AdvertisementRateView";
-import ShopUnpaidList from "../../views/e-office/applications/shop-license/ShopUnpaidList";
 import ChallanContainer from "../../views/e-office/challan/ChallanContainer";
 import FormBuilderContainer from "../../views/e-office/admin/form-builder/FormBuilderContainer";
 import SentBackShopLicense from "../../views/e-office/applications/shop-license/ShopSentBackList";
@@ -66,6 +64,8 @@ import ReSubmitShopLicense from "../../views/e-office/applications/shop-license/
 import HotelSentBackList from "../../views/e-office/applications/hotel/HotelSentBackList";
 import HotelResubmitList from "../../views/e-office/applications/hotel/HotelResubmitList";
 import ProfileLayout from "../../views/e-office/profile/ProfileLayout";
+import AdvertiserContainer from "../../views/e-office/admin/registered-advertiser/AdvertiserContainer";
+import CreateAdvertiser from "../../views/e-office/admin/registered-advertiser/CreateAdvertiser";
 
 const routes = (props) => {
   return (
@@ -123,26 +123,28 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.REJECTED_BANNER} render={e => <BannerRejectedList/>}/>
       <Route exact path={OfficeRoutes.CANCELLED_BANNER} render={e => <BannerCancelledList/>}/>
 
-        {/*Shop Licensing*/}
-        <Route exact path={OfficeRoutes.NEW_SHOPLICENSE} render={e => <ShopNewList/>}/>
-        <Route exact path={OfficeRoutes.UNDER_PROCESS_SHOPLICENSE} render={e => <UnderProcessShopLicense/>}/>
-        <Route exact path={OfficeRoutes.SENT_BACK_SHOPLICENSE} render={e => <SentBackShopLicense/>}/>
-        <Route exact path={OfficeRoutes.RE_SUBMIT_SHOPLICENSE} render={e => <ReSubmitShopLicense/>}/>
-        <Route exact path={OfficeRoutes.CANCELLED_SHOPLICENSE} render={e => <ShopCancelledList/>}/>
-        <Route exact path={OfficeRoutes.REJECTED_SHOPLICENSE} render={e => <RejectedShopLicense/>}/>
-        <Route exact path={OfficeRoutes.APPROVED_SHOPLICENSE} render={e => <ApprovedShopLicense/>}/>
+      {/*Shop Licensing*/}
+      <Route exact path={OfficeRoutes.NEW_SHOPLICENSE} render={e => <ShopNewList/>}/>
+      <Route exact path={OfficeRoutes.UNDER_PROCESS_SHOPLICENSE} render={e => <UnderProcessShopLicense/>}/>
+      <Route exact path={OfficeRoutes.SENT_BACK_SHOPLICENSE} render={e => <SentBackShopLicense/>}/>
+      <Route exact path={OfficeRoutes.RE_SUBMIT_SHOPLICENSE} render={e => <ReSubmitShopLicense/>}/>
+      <Route exact path={OfficeRoutes.CANCELLED_SHOPLICENSE} render={e => <ShopCancelledList/>}/>
+      <Route exact path={OfficeRoutes.REJECTED_SHOPLICENSE} render={e => <RejectedShopLicense/>}/>
+      <Route exact path={OfficeRoutes.APPROVED_SHOPLICENSE} render={e => <ApprovedShopLicense/>}/>
 
-        {/*hotel Licensing*/}
-        <Route exact path={OfficeRoutes.NEW_HOTELLICENSE} render={e => <HotelNewList/>}/>
-        <Route exact path={OfficeRoutes.UNDER_PROCESS_HOTELLICENSE} render={e => <HotelUnderProcessList/>}/>
-        <Route exact path={OfficeRoutes.SENT_BACK_HOTELLICENSE} render={e => <HotelSentBackList/>}/>
-        <Route exact path={OfficeRoutes.RE_SUBMIT_HOTELLICENSE} render={e => <HotelResubmitList/>}/>
-        <Route exact path={OfficeRoutes.CANCELLED_HOTELLICENSE} render={e => <HotelCancelledList/>}/>
-        <Route exact path={OfficeRoutes.APPROVED_HOTELLICENSE} render={e => <HotelApprovedList/>}/>
-        <Route exact path={OfficeRoutes.REJECTED_HOTELLICENSE} render={e => <HotelRejectedList/>}/>
+      {/*hotel Licensing*/}
+      <Route exact path={OfficeRoutes.NEW_HOTELLICENSE} render={e => <HotelNewList/>}/>
+      <Route exact path={OfficeRoutes.UNDER_PROCESS_HOTELLICENSE} render={e => <HotelUnderProcessList/>}/>
+      <Route exact path={OfficeRoutes.SENT_BACK_HOTELLICENSE} render={e => <HotelSentBackList/>}/>
+      <Route exact path={OfficeRoutes.RE_SUBMIT_HOTELLICENSE} render={e => <HotelResubmitList/>}/>
+      <Route exact path={OfficeRoutes.CANCELLED_HOTELLICENSE} render={e => <HotelCancelledList/>}/>
+      <Route exact path={OfficeRoutes.APPROVED_HOTELLICENSE} render={e => <HotelApprovedList/>}/>
+      <Route exact path={OfficeRoutes.REJECTED_HOTELLICENSE} render={e => <HotelRejectedList/>}/>
 
       {/*Admin*/}
       <Route exact path={OfficeRoutes.TRADE_LIST} render={e => <TradeList/>}/>
+      <Route exact path={OfficeRoutes.ADVERTISERS} render={e => <AdvertiserContainer/>}/>
+      <Route exact path={OfficeRoutes.NEW_ADVERTISER} render={e => <CreateAdvertiser/>}/>
       <Route exact path={OfficeRoutes.STAFF_REGISTRATION} render={e => <StaffRegistration/>}/>
       <Route exact path={OfficeRoutes.STAFF_LIST} render={e => <StaffList/>}/>
       <Route exact path={OfficeRoutes.RATE_LIST} render={e => <AdvertisementRateView/>}/>
@@ -154,13 +156,13 @@ const routes = (props) => {
       <Route exact path={OfficeRoutes.SITE_VERIFICATION_LIST} render={e => <SiteVerificationFormList/>}/>
       <Route exact path={OfficeRoutes.SITE_VERIFICATION} render={props => <FormBuilderContainer {...props} />}/>
 
-        {/*template*/}
+      {/*template*/}
       {/*<Route exact path={OfficeRoutes.PERMIT_TEMPLATE} render={e => <PermitTemplates/>}/>*/}
       <Route exact path={OfficeRoutes.LICENSE_TEMPLATE} render={e => <LicenseTemplate/>}/>
       <Route exact path={OfficeRoutes.REJECTED_TEMPLATE} render={e => <RejectTemplate/>}/>
       <Route exact path={OfficeRoutes.CANCELLED_TEMPLATE} render={e => <CancelTemplate/>}/>
 
-        {/*Challan*/}
+      {/*Challan*/}
       <Route exact path={OfficeRoutes.CHALLAN_LIST} render={e => <ChallanContainer/>}/>
 
       {/*Profile*/}

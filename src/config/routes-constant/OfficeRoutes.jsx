@@ -132,7 +132,8 @@ export const SITE_VERIFICATION_EDIT = module => `/e-office/admin/site-verificati
 
 export const SETTING = "/e-office/setting";
 export const BRANCHES = "/setting/branches";
-export const ADVERTISERS = "/e-office/advertisers";
+export const ADVERTISERS = "/e-office/admin/registered/advertisers";
+export const NEW_ADVERTISER = "/e-office/admin/registered/advertisers/new";
 
 export const ADVERTISER_DETAIL = `/e-office/advertisers/:id/details`;
 

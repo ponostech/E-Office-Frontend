@@ -6,6 +6,10 @@ export class ChallanReceipt extends Component {
     return (
       <div>
         "ressdf
+        "ressdf
+        "ressdf
+        "ressdf
+        "ressdfs
       </div>
     );
   }
