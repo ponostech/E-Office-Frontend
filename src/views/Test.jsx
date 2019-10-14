@@ -2,6 +2,8 @@
 
 import React from 'react';
 import ReactToPrint from 'react-to-print';
+import AdvertiserViewDialog from "./e-office/applications/advertisers/common/AdvertiserViewDialog";
+import AdvertisementView from "./e-office/admin/registered-advertiser/AdvertisementView";
 
 class ComponentToPrint extends React.Component {
   render() {
@@ -35,14 +37,19 @@ class ComponentToPrint extends React.Component {
 }
 
 export class Test extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      open:false
+    }
+  }
+
   render() {
+    const{open}=this.state
     return (
       <div>
-        <ReactToPrint
-          trigger={() => <a href="#">Print this out!</a>}
-          content={() => this.componentRef}
-        />
-        <ComponentToPrint ref={el => (this.componentRef = el)} />
+        <AdvertisementView open={open} onClose={()=>this.setState({open:false})} onAdvertisementSelect={(l,j)=>console.log(l,j)}/>
+       <button onClick={event => this.setState({open:true})}>click</button>
       </div>
     );
   }

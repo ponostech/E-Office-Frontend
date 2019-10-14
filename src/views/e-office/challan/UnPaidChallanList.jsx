@@ -11,6 +11,8 @@ import ConfirmDialog from "../../../components/ConfirmDialog";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import ReactDOMServer from 'react-dom/server';
+import ChallanReceipt from "../../print-template/ChallanReceipt";
 // challan no,application_no,details,type,created_at
 /*const fake = [
   {challan_no: "123", application_no: "123", details: "detail", type: "fee", created_at: new Date()}
@@ -77,6 +79,10 @@ class UnPaidChallanList extends Component {
         .finally(() => this.setState({ submit: false }));
     }
   };
+
+  printReceipt=()=>{
+    let str= ReactDOMServer.renderToString(<ChallanReceipt/>)
+  }
 
   getMuiTheme = () => createMuiTheme({
     overrides: {
@@ -225,6 +231,8 @@ class UnPaidChallanList extends Component {
           <CashPaymentDialog open={openPayByCashDialog} onClose={this.onCashPayment} challan={selectedChallan}/>
           <SubmitDialog open={submit} title={submitTitle} text={"Please wait ..."}/>
         </MuiThemeProvider>
+        <iframe id="receipt" src="/payment/receipt" style={{display: 'none'}} title="Receipt" />
+
       </>
     );
   }

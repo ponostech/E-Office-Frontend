@@ -8,7 +8,7 @@ import ChallanService from "../../../services/ChallanService";
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { ChallanReceipt } from "../../print-template/ChallanReceipt";
-import ReactToPrint from "react-to-print";
+import ReactDOMServer from 'react-dom/server';
 // challan no,application_no,details,type,created_at
 const fake = [
   { challan_no: "123", application_no: "123", details: "detail", type: "fee", created_at: new Date() }
@@ -37,33 +37,13 @@ class PaidChallanList extends Component {
       .finally(() => this.setGlobal({ loading: false }));
   }
 
-  printReceipt = () => {
+  printReceipt = (id) => {
     const { selectedChallan } = this.state;
-    console.log(selectedChallan);
-    window.document.createElement("hello");
-    window.print();
-  };
-  onCancelChallan = () => {
-    const { selectedChallan } = this.state;
-    this.setState({ openConfirm: false, submit: true, submitTitle: "Cancel Challan" });
-    this.challanService.cancelChallan(selectedChallan.id,
-      errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => this.setGlobal({ successMsg }))
-      .finally(() => this.setState({ submit: false }));
-  };
+    const iframe = document.frames ? document.frames[id] : document.getElementById(id);
+    const iframeWindow = iframe.contentWindow || iframe;
 
-  onCashPayment = (data) => {
-    this.setState({ openPayByCashDialog: false });
-    if (data) {
-      this.setState({ submit: true, submitTitle: "Create Payment" });
-      this.challanService.createPayment(data,
-        errorMsg => this.setGlobal({ errorMsg }),
-        successMsg => {
-          this.setGlobal({ successMsg });
-          this.componentDidMount();
-        })
-        .finally(() => this.setState({ submit: false }));
-    }
+    iframe.focus();
+    iframeWindow.print();
   };
 
   getMuiTheme = () => createMuiTheme({
@@ -94,13 +74,17 @@ class PaidChallanList extends Component {
     }
   });
    printIframe = (id) => {
-    const iframe = document.frames ? document.frames[id] : document.getElementById(id);
-    const iframeWindow = iframe.contentWindow || iframe;
+     let myWindow=window.open('','','width=300,height=500');
+     myWindow.document.write(ReactDOMServer.renderToString(<ChallanReceipt/>));
 
-    iframe.focus();
-    iframeWindow.print();
 
-    return false;
+     myWindow.document.close(); //missing code
+
+
+     myWindow.focus();
+     myWindow.print();
+     myWindow.close()
+
   };
 
   render() {
@@ -201,12 +185,10 @@ class PaidChallanList extends Component {
                          onCancel={e => this.setState({ printConfirm: false })}
                          open={printConfirm}
                          onConfirm={e => this.printReceipt()}/>
-          <div style={{ display: "none" }}>
-            <ChallanReceipt ref={this.challanRef} challan={selectedChallan}/>
-
-          </div>
         </MuiThemeProvider>
-        <iframe id="receipt" src="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=17&cad=rja&uact=8&ved=2ahUKEwjZ7cuPlJLlAhX97XMBHQ4EDt4QFjAQegQIAxAC&url=https%3A%2F%2Fslicedinvoices.com%2Fpdf%2Fwordpress-pdf-invoice-plugin-sample.pdf&usg=AOvVaw3LuLujg7LXhoXgwlL1dS4o" style={{display: 'none'}} title="Receipt" />
+        <div style={{display:"none"}} id={"receipt"}>
+          <ChallanReceipt/>
+        </div>
       </>
     );
   }
