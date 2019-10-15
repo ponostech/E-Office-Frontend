@@ -12,7 +12,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import ReactDOMServer from 'react-dom/server';
-import ChallanReceipt from "../../print-template/ChallanReceipt";
+import {ChallanReceipt} from "../../print-template/ChallanReceipt";
 // challan no,application_no,details,type,created_at
 /*const fake = [
   {challan_no: "123", application_no: "123", details: "detail", type: "fee", created_at: new Date()}
@@ -70,7 +70,7 @@ class UnPaidChallanList extends Component {
               confirmButtonText: "Print receipt",
             }).then((result) => {
               if (result.value) {
-              //TODO::print receipt
+                this.printReceipt(selectedChallan)
               }
               this.componentDidMount();
             });
@@ -80,8 +80,15 @@ class UnPaidChallanList extends Component {
     }
   };
 
-  printReceipt=()=>{
-    let str= ReactDOMServer.renderToString(<ChallanReceipt/>)
+  printReceipt=(selectedChallan)=>{
+    let myWindow=window.open('','','width=500,height=600');
+    myWindow.document.write(ReactDOMServer.renderToString(<ChallanReceipt challan={selectedChallan}/>));
+
+    myWindow.document.close();
+
+    myWindow.focus();
+    myWindow.print();
+    myWindow.close()
   }
 
   getMuiTheme = () => createMuiTheme({

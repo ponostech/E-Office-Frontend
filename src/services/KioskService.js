@@ -41,6 +41,20 @@ export class KioskService {
             errorCallback(e.toString())
         }
     }
+    async get(status,errorCallback,successCallback) {
+        const token = localStorage.getItem("access_token");
+        const config = { headers: { "Authorization": `Bearer ${token}` } };
+        try {
+            const res = await axios.get(ApiRoutes.KIOSKS, config );
+            if (res.data.status) {
+                successCallback( res.data.data.hoarding_applications)
+            }else{
+                errorCallback("kk")
+            }
+        } catch (error) {
+            errorCallback(error.toString())
+        }
+    }
 
     async fetchAdvertiserKiosk(errorCallback,successCallback) {
         const token = localStorage.getItem("access_token");

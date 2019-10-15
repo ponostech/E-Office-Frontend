@@ -37,15 +37,6 @@ class PaidChallanList extends Component {
       .finally(() => this.setGlobal({ loading: false }));
   }
 
-  printReceipt = (id) => {
-    const { selectedChallan } = this.state;
-    const iframe = document.frames ? document.frames[id] : document.getElementById(id);
-    const iframeWindow = iframe.contentWindow || iframe;
-
-    iframe.focus();
-    iframeWindow.print();
-  };
-
   getMuiTheme = () => createMuiTheme({
     overrides: {
       MUIDataTable: {
@@ -73,13 +64,11 @@ class PaidChallanList extends Component {
       }
     }
   });
-   printIframe = (id) => {
-     let myWindow=window.open('','','width=300,height=500');
-     myWindow.document.write(ReactDOMServer.renderToString(<ChallanReceipt/>));
+   printChallan = (selectedChallan) => {
+     let myWindow=window.open('','','width=600,height=700');
+     myWindow.document.write(ReactDOMServer.renderToString(<ChallanReceipt challan={selectedChallan}/>));
 
-
-     myWindow.document.close(); //missing code
-
+     myWindow.document.close();
 
      myWindow.focus();
      myWindow.print();
@@ -148,8 +137,8 @@ class PaidChallanList extends Component {
             let viewBtn = (
               <>
                 <Tooltip title={"Print Receipt"}>
-                  <IconButton size='small ' onClick={(e) => this.printIframe("receipt")}>
-                    <Icon fontSize="small" color={"primary"}>print</Icon>
+                  <IconButton size='small ' onClick={(e) => this.printChallan(selectedChallan)}>
+                    <Icon fontSize="small" color={"action"}>print</Icon>
                   </IconButton>
                 </Tooltip>
               </>

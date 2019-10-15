@@ -1,6 +1,7 @@
-import React, { Component } from "reactn";
+import React, { Component,useState } from "reactn";
 import {
-  Grid,
+  Card, CardContent,
+  CardHeader,
   Icon,
   IconButton,
   List,
@@ -8,6 +9,7 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   TextField,
+  Tooltip,
   Typography
 } from "@material-ui/core";
 import AdvertisementView from "./AdvertisementView";
@@ -18,6 +20,8 @@ import { NEW_ADVERTISER } from "../../../../config/routes-constant/OfficeRoutes"
 import { withRouter } from "react-router-dom";
 import CreateAdvertiser from "./CreateAdvertiser";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Chip from "@material-ui/core/Chip";
+import Fab from "@material-ui/core/Fab";
 
 const style = {
   root: {
@@ -29,16 +33,16 @@ const style = {
     gridTemplateColumns: "1fr 1fr 2fr"
   },
   verticalLine: {
-    width:"2px",
-    height:"100%",
-    marginLeft:10,
-    marginRight:10,
-    backgroundColor:"rgba(0, 0, 0, 0.12)"
+    width: "2px",
+    height: "100%",
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.12)"
   },
   component: {
     margin: 3,
     padding: 10,
-    display:"flex"
+    display: "flex"
   },
   topMargin: {
     marginTop: 30
@@ -48,19 +52,35 @@ const style = {
     alignItems: "center"
   }, column: {
     display: "flex",
-    flexGrow:1,
+    flexGrow: 1,
     flexDirection: "column"
   },
   grow: {
     flexGrow: 1
   },
-  detail: {
+  detailGrid: {
+    width: "100%",
+    height: "100%",
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    gridGap: "auto"
+    gridGap: "auto",
+    gridTemplateRows:"50px 1fr 1fr"
+
   },
-  list: {
-    padding: 10
+  detailTitle: {
+    gridColumnStart: 1,
+    gridColumnEnd: 3,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  detailDescription: {
+    padding: 20,
+    margin: 10,
+  },
+  detailList: {
+    gridColumnStart: 1,
+    gridColumnEnd: 3
   }
 };
 
@@ -124,24 +144,83 @@ class AdvertiserList extends Component {
 }
 
 const AdvertiserDetail = ({ advertiser, onEdit }) => {
-
+  const [open, setOpen] = useState(false);
   return (
-    <div className={style.column}>
-      <div style={style.row}>
+    <div style={style.detailGrid}>
+      <div style={style.detailTitle}>
         <Typography style={style.grow} variant={"h6"}>Title</Typography>
         <IconButton onClick={event => onEdit(advertiser)}>
           <Icon color={"primary"}>edit</Icon>
         </IconButton>
       </div>
-      <div style={style.detail}>
-        <p>dafdfddd</p>
-        <p>dafdfddd</p>
-        <p>dafdfddd</p>
-        <p>dafdfddd</p>
+      <div style={style.detailDescription}>
+        <p>Name:<b> Kimi </b> </p>
+        <p>Address:<b> Veng </b> </p>
+        <p>Type:<b> Individual </b> </p>
       </div>
-      <div className={style.list}>
+      <div style={style.detailDescription}>
+        <p>Email:<b> Kimi@mail.com </b> </p>
+        <p>Phone:<b> 989898999 </b> </p>
+        <p>License status:<b> Permit </b> </p>
+      </div>
+      <Card style={style.detailList}>
+        <CardHeader title={"List of Hoarding/Kiosk"} action={
+          <Tooltip title={"Click here to add hoarding/kiosk"}>
+            <Fab onClick={e=>setOpen(true)} color={"primary"} variant={"outlined"}>
+              <Icon color={"inherit"}>add</Icon>
+              Add advertisement
+            </Fab>
+          </Tooltip>
+        }/>
+        <Divider/>
+        <CardContent>
+          <List>
+            <ListItem>
+              <ListItemText title={"#10000"} secondary={"Zuangtui local council"}/>
+              <ListItemSecondaryAction>
+                <>
+                  <Chip label={"haording"} color={"primary"}/>
 
-      </div>
+                  <Tooltip title={"Click here to remove hoarding/kiosk"}>
+                    <IconButton>
+                      <Icon color={"secondary"}>delete</Icon>
+                    </IconButton>
+                  </Tooltip>
+                  </>
+              </ListItemSecondaryAction>
+            </ListItem>
+            <ListItem>
+              <ListItemText title={"#33332"} secondary={"Chanmari local council"}/>
+              <ListItemSecondaryAction>
+                <>
+                  <Chip label={"kiosk"} color={"secondary"}/>
+                  <Tooltip title={"Click here to remove hoarding/kiosk"}>
+                    <IconButton>
+                      <Icon color={"secondary"}>delete</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>
+              </ListItemSecondaryAction>
+            </ListItem>
+            <ListItem>
+              <ListItemText title={"#12000"} secondary={"Chhinga veng local council"}/>
+              <ListItemSecondaryAction>
+                <>
+                  <Chip label={"hoarding"} color={"primary"}/>
+                  <Tooltip title={"Click here to remove hoarding/kiosk"}>
+                    <IconButton>
+                      <Icon color={"secondary"}>delete</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </>
+              </ListItemSecondaryAction>
+            </ListItem>
+          </List>
+        </CardContent>
+      </Card>
+      <AdvertisementView open={open} onClose={() => setOpen(false)}
+                         onAdvertisementSelect={(i, j) => console.log(i, j)}/>
+
     </div>
   );
 };
@@ -162,39 +241,19 @@ class AdvertiserContainer extends Component {
     const { history, classes } = this.props;
 
     return (
-      <Paper style={style.root}>
+      <div style={style.root}>
         <div className={classes.wrapper}>
-          <div className={classes.component}>
+          <Paper className={classes.component}>
             <CreateAdvertiser/>
-          </div>
-          <div className={classes.component}>
-            <div className={classes.verticalLine}/>
+          </Paper>
+          <Paper className={classes.component}>
             <AdvertiserList onCreate={() => history.push(NEW_ADVERTISER)} onItemClick={this.onItemClick}/>
-          </div>
-          <div className={classes.component}>
-            <div className={classes.verticalLine}/>
+          </Paper>
+          <Paper className={classes.component}>
             <AdvertiserDetail advertiser={selectedAdvertiser} onEdit={this.editAdvertiser}/>
-          </div>
+          </Paper>
         </div>
-
-        <Grid container={true} spacing={3}>
-
-          <Grid item={true} md={4}>
-            <Paper style={style.component}>
-              <AdvertiserList onCreate={() => history.push(NEW_ADVERTISER)} onItemClick={this.onItemClick}/>
-            </Paper>
-          </Grid>
-
-          <Grid item={true} md={8}>
-            <Paper style={style.component}>
-              <AdvertiserDetail advertiser={selectedAdvertiser} onEdit={this.editAdvertiser}/>
-            </Paper>
-          </Grid>
-
-        </Grid>
-        <AdvertisementView open={open} onClose={() => this.setState({ open: false })}
-                           onAdvertisementSelect={(i, j) => console.log(i, j)}/>
-      </Paper>
+      </div>
     );
   }
 }
