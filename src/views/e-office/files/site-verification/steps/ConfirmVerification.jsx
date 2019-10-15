@@ -52,13 +52,13 @@ class ConfirmVerification extends Component {
 
   componentDidMount() {
     if (this.props.siteVerification) {
-      this.setData(this.props.siteVerification)
+      this.setData(this.props.siteVerification);
     }
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.siteVerification)
-      this.setData(nextProps.siteVerification)
+      this.setData(nextProps.siteVerification);
   }
 
   setData = (siteVerification) => {

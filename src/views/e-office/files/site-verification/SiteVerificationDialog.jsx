@@ -18,9 +18,7 @@ import {
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { withRouter } from "react-router-dom";
 import ApplicationService from "../../../../services/ApplicationService";
-import { FILEABLE_TYPE } from "../details/Views/FileApplicationDetails";
 import SelectVerificationApplication from "./steps/SelectVerificationApplication";
-import CreateVerification from "./steps/CreateVerification";
 import ConfirmVerification from "./steps/ConfirmVerification";
 import PropTypes from "prop-types";
 import { SiteVerificationService } from "../../../../services/SiteVerificationService";
@@ -57,7 +55,7 @@ class SiteVerificationDialog extends Component {
       submit: false
     };
     this.applicationService = new ApplicationService();
-    this.siteVerificationService=new SiteVerificationService()
+    this.siteVerificationService = new SiteVerificationService();
   }
 
   componentWillUnmount() {
@@ -66,9 +64,9 @@ class SiteVerificationDialog extends Component {
   }
 
   createVerification = (siteVerification) => {
-    console.log(siteVerification)
+    console.log(siteVerification);
     this.setState({ siteVerification });
-    this.handleNext()
+    this.handleNext();
   };
   selectApplication = selectedApplication => {
     this.setState({ selectedApplication });
@@ -84,11 +82,11 @@ class SiteVerificationDialog extends Component {
     this.setState({ activeStep: activeStep - 1 });
   };
 
-  submitVerification = (url,type, data, template) => {
+  submitVerification = (url, type, data, template) => {
 
     if (url && data && template) {
       this.setState({ submit: true });
-      this.siteVerificationService.createSiteVerification(url,type, data, template,
+      this.siteVerificationService.createSiteVerification(url, type, data, template,
         errorMsg => this.setGlobal({ errorMsg }),
         successMsg => {
           this.setGlobal({ successMsg });
@@ -219,7 +217,8 @@ class SiteVerificationDialog extends Component {
     );
   }
 }
-SiteVerificationDialog.propTypes={
-  closeActionDialog:PropTypes.func.isRequired
-}
+
+SiteVerificationDialog.propTypes = {
+  closeActionDialog: PropTypes.func.isRequired
+};
 export default withRouter(withStyles(styles)(SiteVerificationDialog));

@@ -19,7 +19,7 @@ class CreateSiteVerification extends Component {
   componentDidMount() {
     const { application } = this.props;
 
-    console.log(application)
+    console.log(application);
     let module = "shop";
 
     this.siteVerification.getTemplate("shop", errorMessage => this.setState({ errorMessage }), template => {
@@ -27,7 +27,7 @@ class CreateSiteVerification extends Component {
       for (let [key, value] of Object.entries(template.data.formElements)) {
         formData[key] = null;
         if (application.hasOwnProperty(key)) {
-          formData[key]=application[key]
+          formData[key] = application[key];
         }
       }
       this.setState({
@@ -45,7 +45,7 @@ class CreateSiteVerification extends Component {
     let validPattern = false;
     Object.entries(formElements).forEach(([key, config]) => {
       const { required, pattern, min, max } = config.validation;
-      console.log("config",config)
+      console.log("config", config);
       const value = formData[key];
       if (value) {
         if (required === Boolean(value)) {
@@ -59,7 +59,7 @@ class CreateSiteVerification extends Component {
         }
       }
     });
-    return true
+    return true;
   };
 
   createSiteVerification = () => {

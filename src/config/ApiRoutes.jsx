@@ -143,6 +143,7 @@ export class ApiRoutes {
   static IMPOSE_FINE="impose-fine";
   static UPDATE_SHOP_LICENSE=id=>`/shops/${id}`;
   static UPDATE_HOTEL_LICENSE=id=>`/hotels/${id}`;
+  static KIOSKS="/kiosks";
 
   static UPDATE_LICENSE_TEMPLATE(id) {
     return `/permit-templates/${id}`;

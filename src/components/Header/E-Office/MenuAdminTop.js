@@ -147,6 +147,7 @@ const menu = (props) => {
         <CustomDropdown
           dropdownList={[
             { title: "Advertisers", link: OfficeRoutes.ADVERTISERS },
+            { title: "Hoarding/kiosk", link: OfficeRoutes.EXISTING_ADVERTISEMENT },
             { title: "List Trade", link: OfficeRoutes.TRADE_LIST },
             { title: "New Staff", link: OfficeRoutes.STAFF_REGISTRATION },
             { title: "List Staff", link: OfficeRoutes.STAFF_LIST },

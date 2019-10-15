@@ -1,5 +1,17 @@
 import React, { Component } from "reactn";
-import { Card, Icon, IconButton, Paper, Tab, Tabs, Tooltip } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  Card,
+  Icon,
+  IconButton,
+  Paper,
+  Tab,
+  Tabs,
+  Toolbar,
+  Tooltip,
+  Typography
+} from "@material-ui/core";
 import LoadingView from "../../common/LoadingView";
 import CardContent from "@material-ui/core/CardContent";
 import MUIDataTable from "mui-datatables";
@@ -24,6 +36,12 @@ class ChallanContainer extends Component {
     };
 
   }
+  refresh=()=>{
+    this.setGlobal({loading:false})
+    setTimeout(()=>{
+      this.setGlobal({loading:false})
+    },2000)
+  }
 
   selectTab=(event,tabValue)=>this.setState({tabValue})
 
@@ -31,25 +49,30 @@ class ChallanContainer extends Component {
     const { tabValue } = this.state;
     return (
         <Card>
-          <CardContent>
-            <Paper>
-
-              <Tabs
-                component={"div"}
-                value={tabValue}
-                indicatorColor="primary"
-                textColor="primary"
-                onChange={this.selectTab}
-                aria-label="Disabled tabs example"
-              >
-                <Tab href={"#"} label="UNPAID CHALLAN" value={"unpaid"}/>
-                <Tab href={"#"} label="PAID CHALLAN" value={"paid"}/>
-              </Tabs>
-
+          <AppBar style={{marginTop:65}} color={"inherit"}>
+            <Toolbar>
+              <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
+                Challan: List of Challan
+              </Typography>
+              <IconButton onClick={e=>this.refresh()}>
+                <Icon color={"primary"}>refresh</Icon>
+              </IconButton>
+            </Toolbar>
+            <Tabs
+              component={"div"}
+              value={tabValue}
+              indicatorColor="primary"
+              textColor="primary"
+              onChange={this.selectTab}
+              aria-label="Disabled tabs example"
+            >
+              <Tab href={"#"} label="UNPAID CHALLAN" value={"unpaid"}/>
+              <Tab href={"#"} label="PAID CHALLAN" value={"paid"}/>
+            </Tabs>
+          </AppBar>
+          <CardContent style={{paddingTop:25}}>
               {tabValue === "unpaid" && <UnPaidChallanList/>}
               {tabValue === "paid" && <PaidChallanList/>}
-
-            </Paper>
           </CardContent>
         </Card>
     );

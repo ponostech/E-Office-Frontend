@@ -66,6 +66,7 @@ import HotelResubmitList from "../../views/e-office/applications/hotel/HotelResu
 import ProfileLayout from "../../views/e-office/profile/ProfileLayout";
 import AdvertiserContainer from "../../views/e-office/admin/registered-advertiser/AdvertiserContainer";
 import CreateAdvertiser from "../../views/e-office/admin/registered-advertiser/CreateAdvertiser";
+import ExistingAdvertisementView from "../../views/e-office/admin/existing-advertisement/ExistingAdvertisementView";
 
 const routes = (props) => {
   return (
@@ -143,6 +144,7 @@ const routes = (props) => {
 
       {/*Admin*/}
       <Route exact path={OfficeRoutes.TRADE_LIST} render={e => <TradeList/>}/>
+      <Route exact path={OfficeRoutes.EXISTING_ADVERTISEMENT} render={e => <ExistingAdvertisementView/>}/>
       <Route exact path={OfficeRoutes.ADVERTISERS} render={e => <AdvertiserContainer/>}/>
       <Route exact path={OfficeRoutes.NEW_ADVERTISER} render={e => <CreateAdvertiser/>}/>
       <Route exact path={OfficeRoutes.STAFF_REGISTRATION} render={e => <StaffRegistration/>}/>
