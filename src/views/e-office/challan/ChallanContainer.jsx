@@ -70,7 +70,7 @@ class ChallanContainer extends Component {
               <Tab href={"#"} label="PAID CHALLAN" value={"paid"}/>
             </Tabs>
           </AppBar>
-          <CardContent style={{paddingTop:25}}>
+          <CardContent style={{paddingTop:120}}>
               {tabValue === "unpaid" && <UnPaidChallanList/>}
               {tabValue === "paid" && <PaidChallanList/>}
           </CardContent>
