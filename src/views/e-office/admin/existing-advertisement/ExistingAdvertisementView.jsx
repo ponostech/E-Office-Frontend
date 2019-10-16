@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import ExistingKioskList from "./ExistingKioskList";
 import ExistingHoardingList from "./ExistingHoardingList";
+import HoardingDialog from "./HoardingDialog";
 
 class ExistingAdvertisementView extends Component {
   constructor(props) {
@@ -24,6 +25,10 @@ class ExistingAdvertisementView extends Component {
 
   componentDidMount() {
     this.setGlobal({loading:false})
+  }
+
+  createHoarding=(hoarding)=>{
+
   }
 
   displayError=(errorMsg)=>this.setGlobal({errorMsg})
@@ -43,13 +48,13 @@ class ExistingAdvertisementView extends Component {
   openCreate=()=>{
     const{tabValue}=this.state;
     if (tabValue==="hoarding") {
-      alert("hoarding create")
+      this.setState({openHoarding:true})
     }else{
       alert("kiosk")
     }
   }
   render() {
-    const { tabValue } = this.state;
+    const { tabValue ,openHoarding} = this.state;
 
     return (
         <Card>
@@ -77,6 +82,8 @@ class ExistingAdvertisementView extends Component {
           {tabValue === "hoarding" && <ExistingHoardingList onError={this.displayError} onEdit={this.onKioskEdit} onDelete={this.onKioskDelete}/>}
             {tabValue === "kiosk" && <ExistingKioskList onError={this.displayError} onDelete={this.onHoardingDelete} onEdit={this.onHoardingEdit}/>}
           </CardContent>
+
+          <HoardingDialog onClose={()=>this.setState({openHoarding:false})} open={openHoarding} onCreate={this.createHoarding}/>
         </Card>
     );
   }
