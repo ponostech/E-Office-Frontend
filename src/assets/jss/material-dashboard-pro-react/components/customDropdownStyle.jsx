@@ -66,6 +66,7 @@ const customDropdownStyle = theme => ({
     }
   },
   dropdown: {
+    position: "relative",
     borderRadius: "3px",
     border: "0",
     boxShadow: "0 2px 5px 0 rgba(" + hexToRgb(blackColor) + ", 0.26)",
@@ -87,7 +88,7 @@ const customDropdownStyle = theme => ({
     zIndex: "1400",
     [theme.breakpoints.down("sm")]: {
       zIndex: "1640",
-      position: "static",
+      position: "relative",
       float: "none",
       width: "auto",
       marginTop: "0",

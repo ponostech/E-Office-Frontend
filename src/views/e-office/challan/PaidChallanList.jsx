@@ -37,33 +37,6 @@ class PaidChallanList extends Component {
       .finally(() => this.setGlobal({ loading: false }));
   }
 
-  getMuiTheme = () => createMuiTheme({
-    overrides: {
-      MUIDataTable: {
-        root: {
-          backgroundColor: "black"
-        },
-        paper: {
-          boxShadow: "none"
-        }
-      },
-      MUIDataTableBodyCell: {
-        root: {
-          padding: "2px 40px 2px 16px"
-        }
-      }
-    },
-    palette: {
-      primary: {
-        main: "#26B99A",
-        contrastText: "#fff"
-      },
-      secondary: {
-        main: "#b93e46",
-        contrastText: "#fff"
-      }
-    }
-  });
    printChallan = (selectedChallan) => {
      let myWindow=window.open('','','width=600,height=700');
      myWindow.document.write(ReactDOMServer.renderToString(<ChallanReceipt challan={selectedChallan}/>));
@@ -159,7 +132,6 @@ class PaidChallanList extends Component {
     return (
       <>
         {/*{console.log('challan list', challans)}*/}
-        <MuiThemeProvider theme={this.getMuiTheme()}>
           {this.global.loading ? <LoadingView/> : <CardContent>
             <MUIDataTable
               title={"LIST OF CHALLAN"}
@@ -174,10 +146,7 @@ class PaidChallanList extends Component {
                          onCancel={e => this.setState({ printConfirm: false })}
                          open={printConfirm}
                          onConfirm={e => this.printReceipt()}/>
-        </MuiThemeProvider>
-        <div style={{display:"none"}} id={"receipt"}>
-          <ChallanReceipt/>
-        </div>
+
       </>
     );
   }

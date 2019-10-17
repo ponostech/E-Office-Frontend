@@ -91,39 +91,6 @@ class UnPaidChallanList extends Component {
     myWindow.close()
   }
 
-  getMuiTheme = () => createMuiTheme({
-    overrides: {
-      MUIDataTable: {
-        root: {
-          backgroundColor: "black"
-        },
-        paper: {
-          boxShadow: "none"
-        }
-      },
-      MUIDataTableBodyCell: {
-        root: {
-          padding: "2px 40px 2px 16px"
-        }
-      },
-      MuiListItem: {
-        container: {
-          listStyleType: "none"
-        }
-      }
-    },
-    palette: {
-      primary: {
-        main: "#26B99A",
-        contrastText: "#fff"
-      },
-      secondary: {
-        main: "#b93e46",
-        contrastText: "#fff"
-      }
-    }
-  });
-
   render() {
     const { challans, selectedChallan, openPayByCashDialog, openConfirm, submit, submitTitle } = this.state;
 
@@ -223,7 +190,6 @@ class UnPaidChallanList extends Component {
 
     return (
       <>
-        <MuiThemeProvider theme={this.getMuiTheme()}>
           {this.global.loading ? <LoadingView/> : <CardContent>
             <MUIDataTable
               title={"LIST OF CHALLAN"}
@@ -237,8 +203,6 @@ class UnPaidChallanList extends Component {
                          onConfirm={this.onCancelChallan.bind(this)}/>
           <CashPaymentDialog open={openPayByCashDialog} onClose={this.onCashPayment} challan={selectedChallan}/>
           <SubmitDialog open={submit} title={submitTitle} text={"Please wait ..."}/>
-        </MuiThemeProvider>
-        <iframe id="receipt" src="/payment/receipt" style={{display: 'none'}} title="Receipt" />
 
       </>
     );

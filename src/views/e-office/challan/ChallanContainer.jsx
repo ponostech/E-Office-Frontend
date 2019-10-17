@@ -49,7 +49,7 @@ class ChallanContainer extends Component {
     const { tabValue } = this.state;
     return (
         <Card>
-          <AppBar style={{marginTop:65}} color={"inherit"}>
+          <AppBar position={"fixed"} color={"inherit"}>
             <Toolbar>
               <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
                 Challan: List of Challan
@@ -70,10 +70,10 @@ class ChallanContainer extends Component {
               <Tab href={"#"} label="PAID CHALLAN" value={"paid"}/>
             </Tabs>
           </AppBar>
-          <CardContent style={{paddingTop:120}}>
+          <div>
               {tabValue === "unpaid" && <UnPaidChallanList/>}
               {tabValue === "paid" && <PaidChallanList/>}
-          </CardContent>
+          </div>
         </Card>
     );
   }
