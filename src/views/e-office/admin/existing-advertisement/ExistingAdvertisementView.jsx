@@ -58,7 +58,7 @@ class ExistingAdvertisementView extends Component {
 
     return (
         <Card>
-            <AppBar style={{marginTop:65}} color={"inherit"}>
+            <AppBar position={"relative"} color={"inherit"}>
               <Toolbar>
                 <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
                   Existing Advertisement
@@ -77,8 +77,7 @@ class ExistingAdvertisementView extends Component {
                 <Tab href={"#"} label="Kiosk" value={"kiosk"}/>
               </Tabs>
             </AppBar>
-          <CardContent style={{marginTop:25}}>
-
+          <CardContent>
           {tabValue === "hoarding" && <ExistingHoardingList onError={this.displayError} onEdit={this.onKioskEdit} onDelete={this.onKioskDelete}/>}
             {tabValue === "kiosk" && <ExistingKioskList onError={this.displayError} onDelete={this.onHoardingDelete} onEdit={this.onHoardingEdit}/>}
           </CardContent>

@@ -74,7 +74,7 @@ const ExistingKioskList = ({ onEdit,onError, onDelete }) => {
     }
   ];
   return(
-    <div style={{marginTop:70}}>
+    <>
       {loading ? <LoadingView/> : <CardContent>
         <MUIDataTable
           title={"Hoarding: List of Existing Hoarding"}
@@ -83,7 +83,7 @@ const ExistingKioskList = ({ onEdit,onError, onDelete }) => {
           options={tableOptions}
         />
       </CardContent>}
-    </div>
+    </>
   );
 };
 

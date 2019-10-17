@@ -54,10 +54,8 @@ class LayoutOffice extends Component {
     let data = this.getRoute();
     return (
         <Grid container justify={"center"}>
-          <Grid item xs={12} sm={12} md={12}>
             <HeaderOffice role={data.role} color={"primary"}/>
-          </Grid>
-          <Grid item style={{paddingTop: 64, minHeight: "100vh"}} xs={12} sm={12} md={12}>
+          <Grid item  xs={12} sm={12} md={12}>
               {data.routeList}
           </Grid>
           <ErrorHandler/>

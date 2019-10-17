@@ -62,7 +62,7 @@ class HeaderOffice extends React.Component {
     }
 
     return (
-      <AppBar position="fixed" color={"inherit"}>
+      <AppBar position="sticky" color={"inherit"}>
         <Toolbar>
           <Hidden mdUp>
             <div style={{ flex: 1 }}>
