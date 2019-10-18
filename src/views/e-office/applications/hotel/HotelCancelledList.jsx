@@ -66,8 +66,8 @@ class HotelCancelledList extends Component {
     const { hotel, hotels, staffs, openTakeFile, openAssignment, openViewDialog, file } = this.state;
     const tableOptions = {
       filterType: "checkbox",
-      responsive: "scroll",
-      rowsPerPage: 8,
+      responsive: "scrollMaxHeight",
+      rowsPerPage: 12,
       serverSide: false
     };
 

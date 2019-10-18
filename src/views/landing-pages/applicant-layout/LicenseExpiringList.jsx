@@ -116,7 +116,7 @@ class LicenseExpiringList extends Component {
     const {permits} = this.props;
     const tableOptions = {
       filterType: "checkbox",
-      responsive: "scroll",
+      responsive: "scrollFullHeight",
       rowsPerPage: 10,
       serverSide: false
     };

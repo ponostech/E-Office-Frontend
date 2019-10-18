@@ -35,7 +35,7 @@ class ApplicantLayout extends Component {
     const {search, hotels, shops, banners, submit, phone} = this.state;
     return (
         <Card>
-          <CardContent>
+          <CardContent style={{padding:0}}>
             {Boolean(search) ?
                 <CheckLicense checking={submit} onCheck={this.checkApplication}/> :
                 <ApplicantDashboard refresh={this.refresh} phone={phone}/>}

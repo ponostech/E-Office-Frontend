@@ -23,6 +23,7 @@ import { Container, Drawer, Hidden } from "@material-ui/core";
 import MobileMenu from "./MobileMenu";
 import {Test} from "../views/Test";
 import { AvatarView } from "../components/AvatarView";
+import Sent from "../views/e-office/files/details/Views/Sent";
 
 
 class LayoutLanding extends React.Component {
@@ -85,7 +86,7 @@ class LayoutLanding extends React.Component {
 
             <Route exact={true} path={OfficeRoutes.RESUBMIT_SHOP_LICENSE_APPLICATION(":id")}
                    component={GrievanceCreate}/>
-            <Route exact={true} component={Test} path={"/test"} />
+            <Route exact={true} component={Sent} path={"/test"} />
 
           </Switch>
 

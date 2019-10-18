@@ -49,7 +49,7 @@ class ChallanContainer extends Component {
     const { tabValue } = this.state;
     return (
         <Card>
-          <AppBar position={"fixed"} color={"inherit"}>
+          <AppBar  position={"relative"} color={"inherit"}>
             <Toolbar>
               <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
                 Challan: List of Challan

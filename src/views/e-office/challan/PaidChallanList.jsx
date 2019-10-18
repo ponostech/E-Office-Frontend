@@ -60,7 +60,7 @@ class PaidChallanList extends Component {
         name: "type",
         label: "TYPE OF CHALLAN"
       }, {
-        name: "application",
+        name: "id",
         label: "BILLED TO",
         options: {
           customBodyRender: (val, meta) => {

@@ -103,7 +103,7 @@ class UnPaidChallanList extends Component {
         name: "type",
         label: "TYPE OF CHALLAN"
       }, {
-        name: "application",
+        name: "id",
         label: "BILLED TO",
         options: {
           customBodyRender: (val, meta) => {
@@ -119,7 +119,8 @@ class UnPaidChallanList extends Component {
             }
           }
         }
-      }, {
+      },
+        {
         name: "details",
         label: "DETAIL"
       }, {

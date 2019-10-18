@@ -1,12 +1,10 @@
 import React from "react";
 import Card from "../../../components/Card/Card";
 import CardHeader from "../../../components/Card/CardHeader";
-import CardIcon from "../../../components/Card/CardIcon";
-import { Icon } from "@material-ui/core";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import CardBody from "../../../components/Card/CardBody";
-import { Doughnut, Pie } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 
 const style = {
   title: {
@@ -15,16 +13,16 @@ const style = {
     fontWeight: "400"
   },
   head: {
-    margin:16,
-    padding:16,
+    margin: 16,
+    padding: 16,
     textAlign: "center",
     fontSize: "16px",
     fontWeight: "600",
-    color:"#727272"
+    color: "#727272"
   },
   caption: {
     textAlign: "center",
-    marginBottom:"14px",
+    marginBottom: "14px",
     fontSize: "14px",
     fontWeight: "300",
     color: "#727272"

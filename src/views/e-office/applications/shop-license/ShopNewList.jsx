@@ -98,7 +98,7 @@ class ShopNewList extends Component {
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
-      rowsPerPage: 8,
+      rowsPerPage: 15,
       serverSide: false
     };
 
@@ -112,11 +112,8 @@ class ShopNewList extends Component {
         label: "SHOP NAME"
       },
       {
-        name: "local_council",
+        name: "address",
         label: "PROPOSED LOCATION",
-        options: {
-          customBodyRender: (value) => value.name
-        }
       },
       {
         name: "application_date",

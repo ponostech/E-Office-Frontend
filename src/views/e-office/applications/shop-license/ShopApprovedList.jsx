@@ -69,7 +69,7 @@ class ShopInProcessList extends Component {
     const { shop, shops, staffs, openTakeFile, openAssignment, openViewDialog, file } = this.state;
     const tableOptions = {
       filterType: "checkbox",
-      responsive: "scroll",
+      responsive: "scrollFullHeight",
       rowsPerPage: 8,
       serverSide: false
     };
@@ -84,11 +84,8 @@ class ShopInProcessList extends Component {
         label: "SHOP NAME"
       },
       {
-        name: "local_council",
+        name: "local_council.name",
         label: "PROPOSED LOCATION",
-        options: {
-          customBodyRender: (value) => value.name
-        }
       },
       {
         name: "application_date",

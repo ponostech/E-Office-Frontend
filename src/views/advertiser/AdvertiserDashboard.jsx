@@ -1,12 +1,9 @@
 import React, { Component } from "reactn";
 import { Grid } from "@material-ui/core";
 import InfoView from "./widgets/InfoView";
-import ChartistGraph from "react-chartist";
-import Card from "../../components/Card/Card";
 import PieChartView from "./widgets/PieChartView";
 import LineChartView from "./widgets/LineChartView";
 import DonutChartView from "./widgets/DonutChartView";
-
 
 
 var simpleLineChartData = {
@@ -23,44 +20,44 @@ var simpleLineChartData = {
 };
 const pieData = {
   labels: [
-    'Red',
-    'Green',
-    'Yellow'
+    "Red",
+    "Green",
+    "Yellow"
   ],
   datasets: [{
     data: [300, 50, 100],
     backgroundColor: [
-      '#FF6384',
-      '#36A2EB',
-      '#FFCE56'
+      "#FF6384",
+      "#36A2EB",
+      "#FFCE56"
     ],
     hoverBackgroundColor: [
-      '#FF6384',
-      '#36A2EB',
-      '#FFCE56'
+      "#FF6384",
+      "#36A2EB",
+      "#FFCE56"
     ]
   }]
 };
 
 const lineData = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: ["January", "February", "March", "April", "May", "June", "July"],
   datasets: [
     {
-      label: 'My First dataset',
+      label: "My First dataset",
       fill: false,
       lineTension: 0.1,
-      backgroundColor: 'rgba(75,192,192,0.4)',
-      borderColor: 'rgba(75,192,192,1)',
-      borderCapStyle: 'butt',
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderCapStyle: "butt",
       borderDash: [],
       borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
+      borderJoinStyle: "miter",
+      pointBorderColor: "rgba(75,192,192,1)",
+      pointBackgroundColor: "#fff",
       pointBorderWidth: 1,
       pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBackgroundColor: "rgba(75,192,192,1)",
+      pointHoverBorderColor: "rgba(220,220,220,1)",
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
@@ -96,7 +93,7 @@ class AdvertiserDashboard extends Component {
 
 
         <Grid item={true} xs={12} sm={12} md={4}>
-            <PieChartView data={pieData}/>
+          <PieChartView data={pieData}/>
         </Grid>
         <Grid item={true} xs={12} sm={12} md={4}>
           <PieChartView data={pieData}/>
@@ -105,7 +102,7 @@ class AdvertiserDashboard extends Component {
           <DonutChartView data={pieData}/>
         </Grid>
 
-        <Grid  item={true} xs={12} sm={12} md={12}>
+        <Grid item={true} xs={12} sm={12} md={12}>
           <LineChartView data={lineData}/>
         </Grid>
 

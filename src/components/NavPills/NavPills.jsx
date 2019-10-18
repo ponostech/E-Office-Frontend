@@ -27,7 +27,7 @@ class NavPills extends React.Component {
   };
   handleChangeIndex = index => {
     // this.setState({ active: index });
-    this.props.changeTabValue(index)
+    // this.props.changeTabValue(index)
   };
 
   render() {
@@ -111,7 +111,7 @@ class NavPills extends React.Component {
 
     return horizontal !== undefined ? (
       <>
-        <Grid container={true}>
+        <Grid style={{padding:0}} container={true}>
           <Hidden only={["sm", "xs"]}>
             <Grid item={true} {...horizontal.tabsGrid}>
               {tabButtons}
@@ -122,7 +122,7 @@ class NavPills extends React.Component {
           </Hidden>
         </Grid>
 
-        <Grid container={true} direction={"column"}>
+        <Grid style={{padding:0}} container={true} direction={"column"}>
           <Hidden only={["md", "lg", "xl"]}>
             <Grid zeroMinWidth={true} item={true} xs={12} sm={12}>
               {tabContent}
