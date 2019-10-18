@@ -1,14 +1,13 @@
-import React, {Component} from "reactn";
-import {Grid, withStyles} from "@material-ui/core";
+import React, { Component } from "reactn";
+import { withStyles } from "@material-ui/core";
 import officeStyle from "../assets/jss/material-dashboard-pro-react/layouts/officeStyle.jsx";
 import HeaderOffice from "../components/Header/HeaderOffice";
-import {LoginService} from "../services/LoginService";
-import RouteListAdministrator from './routes/RouteListAdministrator';
-import RouteListOfficer from './routes/RouteListOfficer';
-import RouteListInspector from './routes/RouteListInspector';
-import RouteListClerk from './routes/RouteListClerk';
-import ErrorHandler, {SuccessHandler} from "../views/common/StatusHandler";
-import {LOGIN} from "../config/routes-constant/OfficeRoutes";
+import { LoginService } from "../services/LoginService";
+import RouteListAdministrator from "./routes/RouteListAdministrator";
+import RouteListOfficer from "./routes/RouteListOfficer";
+import RouteListInspector from "./routes/RouteListInspector";
+import RouteListClerk from "./routes/RouteListClerk";
+import { LOGIN } from "../config/routes-constant/OfficeRoutes";
 
 class LayoutOffice extends Component {
   getRoute = () => {
@@ -52,15 +51,16 @@ class LayoutOffice extends Component {
 
   render() {
     let data = this.getRoute();
+    const { classes } = this.props;
     return (
-        <Grid container justify={"center"}>
-            <HeaderOffice role={data.role} color={"primary"}/>
-          <Grid item  xs={12} sm={12} md={12}>
-              {data.routeList}
-          </Grid>
-          <ErrorHandler/>
-          <SuccessHandler/>
-        </Grid>
+      <div className={classes.wrapper}>
+          <HeaderOffice role={data.role} color={"primary"}/>
+        {/*<div className={classes.head}>*/}
+        {/*</div>*/}
+        <div className={classes.content}>
+          {data.routeList}
+        </div>
+      </div>
     );
   }
 }

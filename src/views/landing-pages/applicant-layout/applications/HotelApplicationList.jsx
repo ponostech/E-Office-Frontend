@@ -127,7 +127,7 @@ class HotelApplicationList extends Component {
     const { history, applications } = this.props;
     const tableOptions = {
       filterType: "checkbox",
-      responsive: "scroll",
+      responsive: "scrollFullHeight",
       rowsPerPage: 10,
       serverSide: false
     };
@@ -150,11 +150,9 @@ class HotelApplicationList extends Component {
         label: "SHOP NAME"
       },
       {
-        name: "local_council",
+        name: "address",
         label: "PROPOSED LOCATION",
-        options: {
-          customBodyRender: (value) => value.name
-        }
+
       }, {
         name: "status",
         label: "STATUS",

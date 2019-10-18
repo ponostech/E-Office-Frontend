@@ -14,7 +14,7 @@ const container = {
   },
   "&:before,&:after": {
     display: "table",
-    content: '" "'
+    content: "\" \""
   },
   "&:after": {
     clear: "both"
@@ -22,53 +22,48 @@ const container = {
 };
 const officeStyle = theme => ({
   wrapper: {
-    height: "auto",
-    minHeight: "100vh",
-    position: "relative",
-    top: "0"
-  },
-  container: {
-    ...container,
-    zIndex: "4",
-    [theme.breakpoints.down("sm")]: {
-      paddingBottom: "100px"
-    }
-  },
+    margin: 0,
+    padding: 0,
+    height: "100vh",
+    width: "100vw",
+    display: "flex",
+    alignItems: "stretch",
+    justifyContent: "flex-start",
+    flexDirection: "column",
+    zIndex:800,
 
-  fullPage: {
-    padding: "80px 0",
-    position: "relative",
-    minHeight: "100vh",
-    display: "flex!important",
-    margin: "0",
-    border: "0",
-    color: "#fff",
-    alignItems: "center",
-    backgroundSize: "cover",
-    backgroundPosition: "center center",
-    height: "100%",
-    [theme.breakpoints.down("sm")]: {
-      minHeight: "fit-content!important"
+    "@media (min-width: 768px)": {
+      width: "750px"
     },
-    "& footer": {
-      position: "absolute",
-      bottom: "0",
-      width: "100%",
-      border: "none !important"
+    "@media (min-width: 992px)": {
+      width: "970px"
     },
-    "&:before": {
-      backgroundColor: "rgba(0, 0, 0, 0.65)"
+    "@media (min-width: 1200px)": {
+      width: "1170px"
     },
     "&:before,&:after": {
-      display: "block",
-      content: '""',
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      top: "0",
-      left: "0",
-      zIndex: "2"
+      display: "table",
+      content: "\" \""
+    },
+    "&:after": {
+      clear: "both"
     }
+  },
+  head: {
+    position:"relative",
+    margin: 0,
+    padding: 0,
+  },
+  content: {
+    position:"relative",
+    width:"100vw",
+    marginTop: 65,
+    marginBottom:0,
+    marginLeft:0,
+    marginRight:0,
+    padding: 0,
+    flexGrow: 1,
+
   }
 });
 

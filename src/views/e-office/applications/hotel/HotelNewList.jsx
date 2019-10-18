@@ -113,11 +113,8 @@ class HotelNewList extends Component {
         label: "HOTEL NAME"
       },
       {
-        name: "local_council",
+        name: "address",
         label: "PROPOSED LOCATION",
-        options: {
-          customBodyRender: (value) => value.name
-        }
       },
       {
         name: "application_date",

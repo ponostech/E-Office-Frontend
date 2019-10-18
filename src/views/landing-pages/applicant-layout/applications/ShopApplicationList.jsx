@@ -7,7 +7,6 @@ import ApplicationState from "../../../../utils/ApplicationState";
 import Chip from "@material-ui/core/Chip";
 import { APPLY_SHOP_LICENSE, HOME } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
-import { LicenseService } from "../../../../services/LicenseService";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import moment from "moment";
 import SubmitDialog from "../../../../components/SubmitDialog";
@@ -58,7 +57,7 @@ class ShopApplicationList extends Component {
     history.push(APPLY_SHOP_LICENSE);
   };
 
-  changeField=(application)=>this.setState({application,openChangeDialog:true});
+  changeField = (application) => this.setState({ application, openChangeDialog: true });
 
   reSubmitApplication = application => {
     this.setState({ submitTitle: "Resubmit Application", submit: true, openResubmit: false });
@@ -92,11 +91,11 @@ class ShopApplicationList extends Component {
   };
 
   render() {
-    const { application,openChangeDialog, openResubmit, openRenew, openDetail } = this.state;
+    const { application, openChangeDialog, openResubmit, openRenew, openDetail } = this.state;
     const { history, applications } = this.props;
     const tableOptions = {
       filterType: "checkbox",
-      responsive: "scroll",
+      responsive: "scrollFullHeight",
       rowsPerPage: 10,
       serverSide: false
     };
@@ -119,11 +118,8 @@ class ShopApplicationList extends Component {
         label: "SHOP NAME"
       },
       {
-        name: "local_council",
+        name: "address",
         label: "PROPOSED LOCATION",
-        options: {
-          customBodyRender: (value) => value.name
-        }
       }, {
         name: "status",
         label: "STATUS",
@@ -299,7 +295,8 @@ class ShopApplicationList extends Component {
         <RenewShopLicenseDialog open={openRenew} onClose={e => this.setState({ openRenew: false })}
                                 application={application} onResubmit={this.reSubmitApplication}/>
 
-                                <FieldChangeDialog open={openChangeDialog} onClose={event=>this.setState({openChangeDialog:false})} application={application}/>
+        <FieldChangeDialog open={openChangeDialog} onClose={event => this.setState({ openChangeDialog: false })}
+                           application={application}/>
       </>
     );
   }

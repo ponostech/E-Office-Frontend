@@ -145,12 +145,11 @@ class FileNewList extends Component {
         }
       },
       {
-        name: 'desk',
+        name: 'desk.staff.name',
         label: 'FILE LOCATION',
         options: {
-          customBodyRender: (data) => {
-            return data ? data.staff.name : <span style={{color: 'red'}}>New File</span>
-          }
+          customBodyRender: (data) => data ? data : <span style={{color: 'red'}}>New File</span>
+
         }
       },
       {

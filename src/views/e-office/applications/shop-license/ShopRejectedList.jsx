@@ -67,7 +67,7 @@ class ShopReSubmitList extends Component {
     const { shop, shops, staffs, openTakeFile, openAssignment, openViewDialog, file } = this.state;
     const tableOptions = {
       filterType: "checkbox",
-      responsive: "scroll",
+      responsive: "scrollFullHeight",
       rowsPerPage: 8,
       serverSide: false
     };
