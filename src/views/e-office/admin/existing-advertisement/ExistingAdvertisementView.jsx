@@ -14,12 +14,16 @@ import {
 import ExistingKioskList from "./ExistingKioskList";
 import ExistingHoardingList from "./ExistingHoardingList";
 import HoardingDialog from "./HoardingDialog";
+import KioskDialog from "./KioskDialog";
 
 class ExistingAdvertisementView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabValue: "hoarding"
+      tabValue: "hoarding",
+
+      openKiosk:false,
+      openHoarding:false
     };
   }
 
@@ -28,6 +32,9 @@ class ExistingAdvertisementView extends Component {
   }
 
   createHoarding=(hoarding)=>{
+
+  }
+  createKiosk=(kiosk)=>{
 
   }
 
@@ -50,11 +57,11 @@ class ExistingAdvertisementView extends Component {
     if (tabValue==="hoarding") {
       this.setState({openHoarding:true})
     }else{
-      alert("kiosk")
+      this.setState({openKiosk:true})
     }
   }
   render() {
-    const { tabValue ,openHoarding} = this.state;
+    const { tabValue ,openHoarding,openKiosk} = this.state;
 
     return (
         <Card>
@@ -83,6 +90,7 @@ class ExistingAdvertisementView extends Component {
           </CardContent>
 
           <HoardingDialog onClose={()=>this.setState({openHoarding:false})} open={openHoarding} onCreate={this.createHoarding}/>
+          <KioskDialog onClose={()=>this.setState({openKiosk:false})} open={openKiosk} onCreate={this.createKiosk}/>
         </Card>
     );
   }

@@ -15,7 +15,7 @@ class DashboardAdmin extends Component {
             <>
                 <Card>
                     <CardContent>
-                        <Grid container spacing={16} justify="center">
+                        <Grid container spacing={3} justify="center">
                             ADMIN DASHBOARD
                         </Grid>
                     </CardContent>
@@ -25,8 +25,5 @@ class DashboardAdmin extends Component {
     }
 }
 
-DashboardAdmin.propTypes = {
-    doLoad: PropTypes.object.isRequired
-};
 
 export default DashboardAdmin;

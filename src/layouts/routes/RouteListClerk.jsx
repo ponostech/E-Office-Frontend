@@ -27,6 +27,7 @@ import ReceiptNewList from "../../views/e-office/receipt/ReceiptNewList";
 import ReceiptEdit from "../../views/e-office/receipt/ReceiptEdit";
 import ReceiptAttachedList from "../../views/e-office/receipt/ReceiptAttachedList";
 import ChallanContainer from "../../views/e-office/challan/ChallanContainer";
+import ExistingAdvertisementView from "../../views/e-office/admin/existing-advertisement/ExistingAdvertisementView";
 
 const routes = (props) => {
     return (
@@ -71,6 +72,9 @@ const routes = (props) => {
 
             {/*Challan*/}
             <Route exact path={OfficeRoutes.CHALLAN_LIST} render={e => <ChallanContainer/>}/>
+
+            {/*Hoarding/Kiosk*/}
+            <Route exact path={OfficeRoutes.EXISTING_ADVERTISEMENT} render={e => <ExistingAdvertisementView/>}/>
         </>
     )
 };
