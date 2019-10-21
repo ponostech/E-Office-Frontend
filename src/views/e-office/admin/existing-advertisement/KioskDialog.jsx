@@ -148,7 +148,7 @@ class KioskDialog extends Component {
               <CloseIcon/>
             </IconButton>
             <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-              New Hoarding
+              New Kiosk
             </Typography>
             <Button href={"#"} onClick={e => onClose()} color="inherit">
               Close

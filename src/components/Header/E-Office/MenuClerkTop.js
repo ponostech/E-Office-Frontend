@@ -6,16 +6,40 @@ import CustomDropdown from "../../CustomDropdown/CustomDropdown";
 import Icon from "@material-ui/core/es/Icon/Icon";
 import {LoginService} from "../../../services/LoginService";
 import {HOME} from "../../../config/routes-constant/OfficeRoutes";
+import OfficeContextMenu from "../../OfficeContextMenu";
+import { STAFF_PROFILE } from "../../../config/routes-constant/OfficeRoutes";
 
 const menu = (props) => {
   const {history} = props;
   const currentUser = JSON.parse(localStorage.getItem('current_user'));
 
+  const contextMenu={
+    icon:<Icon>account_circle_rounded</Icon>,
+    textOnly:false,
+    menuItems:[
+      {name:"profile", icon:<Icon fontSize={"small"}>user</Icon>,text:`Welcome `,onClick:onContextMenuClick,divider:true},
+      {name:"account", icon:<Icon fontSize={"small"}>edit</Icon>,text:"My Account",onClick:onContextMenuClick},
+      {name:"log_out", icon:<Icon fontSize={"small"}>power_settings_new</Icon>,text:"Log out",onClick:onContextMenuClick},
+    ]
+  }
+  const onContextMenuClick=(menu)=> {
+    switch (menu) {
+      case "log_out":
+        new LoginService()
+          .logout(errorMsg => console.log(errorMsg), successMessage => history.push(OfficeRoutes.HOME))
+          .finally(() => console.log("log out request has been made"));
+        break;
+      case "account":
+        history.push(STAFF_PROFILE);
+        break;
+    }
+  }
   return (
       <>
         <div style={{display: "flex", alignItems: "center"}}>
           <NavLink to={OfficeRoutes.DESK}><IconButton color="primary"><Icon>inbox</Icon></IconButton></NavLink>
           <NavLink to={OfficeRoutes.CHALLAN_LIST}><IconButton color="primary"><Icon>account_balance_wallet</Icon></IconButton></NavLink>
+          <NavLink to={OfficeRoutes.EXISTING_ADVERTISEMENT}><IconButton color="primary"><Icon>wallpaper</Icon></IconButton></NavLink>
 
           <CustomDropdown
               dropdownList={[
@@ -42,6 +66,7 @@ const menu = (props) => {
               buttonProps={{color: "transparent"}}/>
 
           <CustomDropdown
+              dropup={true}
               dropdownList={[
                 {title: "Advertiser", link: OfficeRoutes.ADVERTISER_NEW_LIST},
                 {title: "Hoarding", link: OfficeRoutes.NEW_HOARDINGS},
@@ -53,7 +78,7 @@ const menu = (props) => {
               linkClick={props.linkClick}
               buttonText="New Applications"
               buttonProps={{color: "transparent"}}/>
-
+          <OfficeContextMenu menu={contextMenu}/>
           {/*<CustomDropdown
                     dropdownList={[
                         {title: "Under Process", link: OfficeRoutes.ADVERTISER_IN_PROCESS_LIST},
