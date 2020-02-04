@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import {
-  Button, Card, CardActions, CardContent,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
   CardHeader,
   Dialog,
   DialogActions,
-  DialogContent, DialogTitle, Divider,
+  DialogContent,
+  DialogTitle,
+  Divider,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -12,10 +17,9 @@ import {
   Radio,
   RadioGroup,
   TextField,
-  Tooltip, Typography
+  Tooltip,
+  Typography
 } from "@material-ui/core";
-import GridContainer from "../../../components/Grid/GridContainer";
-import GridItem from "../../../components/Grid/GridItem";
 import CloseIcon from "@material-ui/icons/Close";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -35,7 +39,6 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 class TradeEditDialog extends Component {
-
   state = {
     id: "",
     name: "",
@@ -58,53 +61,65 @@ class TradeEditDialog extends Component {
     }
   }
 
-  handleRadio = (e) => {
+  handleRadio = e => {
     const { value } = e.target;
     this.setState({ fla: value });
   };
   close = () => {
     this.props.onClose(null);
   };
-  invalid=()=>{
-    return !Boolean(this.state.name) || !Boolean(this.state.rate)
-  }
-  edit = (e) => {
-    const { id,name, rate, fla } = this.state;
+  invalid = () => {
+    return !Boolean(this.state.name) || !Boolean(this.state.rate);
+  };
+  edit = e => {
+    const { id, name, rate, fla } = this.state;
     const { onClose } = this.props;
     if (!name || !rate) {
-      this.setState({errorMessage:"Please fill the required field"});
-    }else{
-      onClose({id,name,rate,fla});
+      this.setState({ errorMessage: "Please fill the required field" });
+    } else {
+      onClose({ id, name, rate, fla });
     }
-
   };
-  handleRequired = (e) => {
+  handleRequired = e => {
     switch (e.target.name) {
       case "name":
-        this.state.name ? this.setState({ nameError: "" }) : this.setState({ nameError: "Name is required" });
+        this.state.name
+          ? this.setState({ nameError: "" })
+          : this.setState({ nameError: "Name is required" });
         break;
       case "rate":
-        this.state.rate ? this.setState({ rateError: "" }) : this.setState({ rateError: "Rate is required" });
+        this.state.rate
+          ? this.setState({ rateError: "" })
+          : this.setState({ rateError: "Rate is required" });
         break;
     }
-
   };
-  handleChange = (e) => {
+  handleChange = e => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
 
-
   render() {
-    const { open, onClose,classes } = this.props;
+    const { open, onClose, classes } = this.props;
     return (
-      <Dialog TransitionComponent={Transition} fullWidth={true} maxWidth={"sm"} open={open} onClose={this.close.bind(this)}>
+      <Dialog
+        TransitionComponent={Transition}
+        fullWidth={true}
+        maxWidth={"sm"}
+        open={open}
+        onClose={this.close.bind(this)}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={this.close.bind(this)} aria-label="Close">
-              <CloseIcon/>
+            <IconButton
+              href={"#"}
+              color="inherit"
+              onClick={this.close.bind(this)}
+              aria-label="Close"
+            >
+              <CloseIcon />
             </IconButton>
-            <Typography variant="subtitle2" color="inherit" style={{flex:1}}>
+            <Typography variant="subtitle2" color="inherit" style={{ flex: 1 }}>
               Create New Trade
             </Typography>
             <Button href={"#"} onClick={this.close.bind(this)} color="inherit">
@@ -114,55 +129,74 @@ class TradeEditDialog extends Component {
         </AppBar>
 
         <DialogContent>
+          <TextField
+            variant={"outlined"}
+            name={"name"}
+            margin={"dense"}
+            value={this.state.name}
+            label={"Name of Trade"}
+            required={true}
+            fullWidth={true}
+            onBlur={this.handleRequired.bind(this)}
+            onChange={this.handleChange.bind(this)}
+            error={Boolean(this.state.nameError)}
+            helperText={this.state.nameError}
+          />
 
-              <TextField variant={"outlined"}
-                         name={"name"}
-                         margin={"dense"}
-                         value={this.state.name}
-                         label={"Name of Trade"}
-                         required={true}
-                         fullWidth={true}
-                         onBlur={this.handleRequired.bind(this)}
-                         onChange={this.handleChange.bind(this)}
-                         error={Boolean(this.state.nameError)}
-                         helperText={this.state.nameError}
+          <TextField
+            variant={"outlined"}
+            name={"rate"}
+            label={"Rate"}
+            margin={"dense"}
+            required={true}
+            type={"number"}
+            value={this.state.rate}
+            fullWidth={true}
+            onBlur={this.handleRequired.bind(this)}
+            onChange={this.handleChange.bind(this)}
+            error={Boolean(this.state.rateError)}
+            helperText={this.state.rateError}
+          />
+
+          <FormControl fullWidth={true} margin={"dense"}>
+            <FormLabel>Required Food Licensing Authority Permit?</FormLabel>
+            <RadioGroup
+              defaultValue={"0"}
+              value={this.state.fla}
+              name={"fla"}
+              row={true}
+              onChange={this.handleRadio.bind(this)}
+            >
+              <FormControlLabel
+                value={"0"}
+                control={<Radio color={"primary"} />}
+                label={"Yes"}
               />
-
-              <TextField variant={"outlined"}
-                         name={"rate"}
-                         label={"Rate"}
-                         margin={"dense"}
-                         required={true}
-                         type={"number"}
-                         value={this.state.rate}
-                         fullWidth={true}
-                         onBlur={this.handleRequired.bind(this)}
-                         onChange={this.handleChange.bind(this)}
-                         error={Boolean(this.state.rateError)}
-                         helperText={this.state.rateError}
+              <FormControlLabel
+                value={"1"}
+                control={<Radio color={"primary"} />}
+                label={"No"}
               />
-
-              <FormControl  fullWidth={true} margin={"dense"}>
-                <FormLabel>Required Food Licensing Authority Permit?</FormLabel>
-                <RadioGroup
-                  defaultValue={"0"}
-                  value={this.state.fla}
-                  name={"fla"}
-                  row={true}
-                  onChange={this.handleRadio.bind(this)}
-                >
-                  <FormControlLabel value={"0"} control={<Radio color={"primary"}/>}
-                                    label={"Yes"}/>
-                  <FormControlLabel value={"1"} control={<Radio color={"primary"}/>}
-                                    label={"No"}/>
-                </RadioGroup>
-              </FormControl>
-
+            </RadioGroup>
+          </FormControl>
         </DialogContent>
 
         <DialogActions>
-          <Button disabled={this.invalid()} variant={"outlined"} color={"primary"} onClick={this.edit.bind(this)}>Update</Button>
-          <Button variant={"outlined"} color={"secondary"} onClick={this.close.bind(this)}>Close</Button>
+          <Button
+            disabled={this.invalid()}
+            variant={"outlined"}
+            color={"primary"}
+            onClick={this.edit.bind(this)}
+          >
+            Update
+          </Button>
+          <Button
+            variant={"outlined"}
+            color={"secondary"}
+            onClick={this.close.bind(this)}
+          >
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
     );

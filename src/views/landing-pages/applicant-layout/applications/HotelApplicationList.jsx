@@ -1,25 +1,29 @@
 import React, { Component } from "reactn";
-import { Button, Icon, IconButton, Tooltip, Typography } from "@material-ui/core";
+import {
+  Button,
+  Icon,
+  IconButton,
+  Tooltip,
+  Typography
+} from "@material-ui/core";
 import LoadingView from "../../../common/LoadingView";
 import CardContent from "@material-ui/core/CardContent";
 import MUIDataTable from "mui-datatables";
 import ApplicationState from "../../../../utils/ApplicationState";
 import Chip from "@material-ui/core/Chip";
-import { APPLY_SHOP_LICENSE, HOME } from "../../../../config/routes-constant/OfficeRoutes";
+import {
+  APPLY_SHOP_LICENSE,
+  HOME
+} from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
-import { LicenseService } from "../../../../services/LicenseService";
 import GridContainer from "../../../../components/Grid/GridContainer";
 import moment from "moment";
 import SubmitDialog from "../../../../components/SubmitDialog";
-import ResubmitShopApplicationDialog from "../../../shop/ResubmitShopApplicationDialog";
-import { ShopService } from "../../../../services/ShopService";
 import ApplicationDetailsDialog from "../../../common/ApplicationDetailsDialog";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
-import RenewShopLicenseDialog from "../../../shop/RenewShopLicenseDialog";
 import PropTypes from "prop-types";
 import { MuiThemeProvider } from "@material-ui/core/styles";
-import FieldChangeDialog from "../../../shop/ShopFieldChangeDialog";
 import ResubmitHotelApplicationDialog from "../../../hotel/ResubmitHotelApplicationDialog";
 import RenewHotelLicenseDialog from "../../../hotel/RenewHotelLicenseDialog";
 import { HotelService } from "../../../../services/HotelService";
@@ -41,89 +45,104 @@ class HotelApplicationList extends Component {
     this.hotelService = new HotelService();
   }
 
-  withDraw = (data) => {
+  withDraw = data => {
     this.setState({ openConfirm: true, application: data });
   };
 
-  downloadLicense = (data) => {
+  downloadLicense = data => {
     console.log(data);
   };
 
-  printLicense = (data) => {
+  printLicense = data => {
     console.log(data);
   };
 
-  renewLicense = (application) => {
-    this.setState({ submitTitle: "Submitting License Renewal Form", submit: true, openResubmit: false });
-    this.hotelService.renew(application, errorMsg => this.setGlobal({ errorMsg }),
-      (challan, successMsg) => {
-        const MySwal = withReactContent(Swal);
-        if (challan) {
-          MySwal.fire({
-            title: `Challan No:${challan.number}`,
-            text: successMsg,
-            type: "success",
-            showCancelButton: true,
-            cancelButtonText: "Close",
-            confirmButtonColor: "#26B99A",
-            confirmButtonText: "Pay Now (ONLINE)"
-          }).then((result) => {
-            if (result.value) {
-              Swal.fire(
-                "Pay!",
-                "Your application is paid.",
-                "success"
-              );
-            }
-          });
-        } else {
-          this.setGlobal({ successMsg });
+  renewLicense = application => {
+    this.setState({
+      submitTitle: "Submitting License Renewal Form",
+      submit: true,
+      openResubmit: false
+    });
+    this.hotelService
+      .renew(
+        application,
+        errorMsg => this.setGlobal({ errorMsg }),
+        (challan, successMsg) => {
+          const MySwal = withReactContent(Swal);
+          if (challan) {
+            MySwal.fire({
+              title: `Challan No:${challan.number}`,
+              text: successMsg,
+              type: "success",
+              showCancelButton: true,
+              cancelButtonText: "Close",
+              confirmButtonColor: "#26B99A",
+              confirmButtonText: "Pay Now (ONLINE)"
+            }).then(result => {
+              if (result.value) {
+                Swal.fire("Pay!", "Your application is paid.", "success");
+              }
+            });
+          } else {
+            this.setGlobal({ successMsg });
+          }
+          // this.props.refresh();
         }
-        // this.props.refresh();
-      })
+      )
       .finally(() => this.setState({ submit: false }));
   };
 
-  submitNewApplication = (data) => {
+  submitNewApplication = data => {
     const { history } = this.props;
     history.push(APPLY_SHOP_LICENSE);
   };
 
-  changeField=(application)=>this.setState({application,openChangeDialog:true});
+  changeField = application =>
+    this.setState({ application, openChangeDialog: true });
 
   reSubmitApplication = application => {
-    this.setState({ submitTitle: "Resubmit Application", submit: true, openResubmit: false });
-    this.hotelService.resubmit(application, errorMsg => this.setGlobal({ errorMsg }),
-      (challan, successMsg) => {
-        const MySwal = withReactContent(Swal);
-        if (challan) {
-          MySwal.fire({
-            title: `Challan No:${challan.number}`,
-            text: successMsg,
-            type: "success",
-            showCancelButton: true,
-            cancelButtonText: "Close",
-            confirmButtonColor: "#26B99A",
-            confirmButtonText: "Pay Now (ONLINE)"
-          }).then((result) => {
-            if (result.value) {
-              Swal.fire(
-                "Pay!",
-                "Your application is paid.",
-                "success"
-              );
-            }
-          });
-        } else {
-          this.setGlobal({ successMsg });
+    this.setState({
+      submitTitle: "Resubmit Application",
+      submit: true,
+      openResubmit: false
+    });
+    this.hotelService
+      .resubmit(
+        application,
+        errorMsg => this.setGlobal({ errorMsg }),
+        (challan, successMsg) => {
+          const MySwal = withReactContent(Swal);
+          if (challan) {
+            MySwal.fire({
+              title: `Challan No:${challan.number}`,
+              text: successMsg,
+              type: "success",
+              showCancelButton: true,
+              cancelButtonText: "Close",
+              confirmButtonColor: "#26B99A",
+              confirmButtonText: "Pay Now (ONLINE)"
+            }).then(result => {
+              if (result.value) {
+                Swal.fire("Pay!", "Your application is paid.", "success");
+              }
+            });
+          } else {
+            this.setGlobal({ successMsg });
+          }
+          // this.props.refresh();
         }
-        // this.props.refresh();
-      })
+      )
       .finally(() => this.setState({ submit: false }));
   };
 
   render() {
-    const { application,openChangeDialog, openResubmit, openRenew, openDetail } = this.state;
+    const {
+      application,
+      openChangeDialog,
+      openResubmit,
+      openRenew,
+      openDetail
+    } = this.state;
     const { history, applications } = this.props;
     const tableOptions = {
       filterType: "checkbox",
@@ -138,7 +157,7 @@ class HotelApplicationList extends Component {
         label: "APPLICATION DATE",
         options: {
           filter: false,
-          customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
+          customBodyRender: value => moment(value).format("Do MMMM YYYY")
         }
       },
       {
@@ -151,13 +170,13 @@ class HotelApplicationList extends Component {
       },
       {
         name: "address",
-        label: "PROPOSED LOCATION",
-
-      }, {
+        label: "PROPOSED LOCATION"
+      },
+      {
         name: "status",
         label: "STATUS",
         options: {
-          customBodyRender: (status) => {
+          customBodyRender: status => {
             let color;
             let name;
             switch (status) {
@@ -190,7 +209,14 @@ class HotelApplicationList extends Component {
                 name = status;
                 break;
             }
-            return <Chip component={"span"} variant={"outlined"} label={name} color={color}/>;
+            return (
+              <Chip
+                component={"span"}
+                variant={"outlined"}
+                label={name}
+                color={color}
+              />
+            );
           }
         }
       },
@@ -205,130 +231,227 @@ class HotelApplicationList extends Component {
             let data = applications[rowIndex];
             let controls = undefined;
 
-            let view = <>
-              <Tooltip title={"View Application details"}>
-                <IconButton href={"#"} onClick={e => this.setState({ application: data, openDetail: true })}>
-                  <Icon fontSize={"small"}>remove_red_eye</Icon>
-                </IconButton>
-              </Tooltip>
-            </>;
+            let view = (
+              <>
+                <Tooltip title={"View Application details"}>
+                  <IconButton
+                    href={"#"}
+                    onClick={e =>
+                      this.setState({ application: data, openDetail: true })
+                    }
+                  >
+                    <Icon fontSize={"small"}>remove_red_eye</Icon>
+                  </IconButton>
+                </Tooltip>
+              </>
+            );
             switch (status) {
               case ApplicationState.NEW_APPLICATION:
-                controls = <>
-                  {view}
-                  <Tooltip title={"Withdraw Application"}>
-                    <IconButton href={"#"} onClick={this.withDraw.bind(this, data)}>
-                      <Icon fontSize={"small"}>close</Icon>
-                    </IconButton>
-                  </Tooltip>
-                </>;
+                controls = (
+                  <>
+                    {view}
+                    <Tooltip title={"Withdraw Application"}>
+                      <IconButton
+                        href={"#"}
+                        onClick={this.withDraw.bind(this, data)}
+                      >
+                        <Icon fontSize={"small"}>close</Icon>
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                );
                 break;
               case ApplicationState.NEW_APPLICATION:
-                controls = <>
-                  {view}
-                  <Tooltip title={"Renew  Application"}>
-                    <IconButton href={"#"} onClick={event => this.setState({
-                      openRenew: true, data
-                    })}>
-                      <Icon fontSize={"small"}>refresh</Icon>
-                    </IconButton>
-                  </Tooltip>
-                </>;
+                controls = (
+                  <>
+                    {view}
+                    <Tooltip title={"Renew  Application"}>
+                      <IconButton
+                        href={"#"}
+                        onClick={event =>
+                          this.setState({
+                            openRenew: true,
+                            data
+                          })
+                        }
+                      >
+                        <Icon fontSize={"small"}>refresh</Icon>
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                );
                 break;
               case ApplicationState.APPROVED_APPLICATION:
-                controls = <>
-                  {view}
-                  <Tooltip title={"Download License"}>
-                    <IconButton href={"#"} onClick={this.downloadLicense.bind(this, data)}>
-                      <Icon fontSize={"small"} color={"primary"}>cloud_download</Icon>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Print License"}>
-                    <IconButton href={"#"} onClick={this.printLicense.bind(this, data)}>
-                      <Icon fontSize={"small"} color={"primary"}>print</Icon>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={"Change Info"}>
-                    <IconButton href={"#"} onClick={this.changeField.bind(this, data)}>
-                      <Icon fontSize={"small"} color={"primary"}>edit</Icon>
-                    </IconButton>
-                  </Tooltip>
-                </>;
+                controls = (
+                  <>
+                    {view}
+                    <Tooltip title={"Download License"}>
+                      <IconButton
+                        href={"#"}
+                        onClick={this.downloadLicense.bind(this, data)}
+                      >
+                        <Icon fontSize={"small"} color={"primary"}>
+                          cloud_download
+                        </Icon>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Print License"}>
+                      <IconButton
+                        href={"#"}
+                        onClick={this.printLicense.bind(this, data)}
+                      >
+                        <Icon fontSize={"small"} color={"primary"}>
+                          print
+                        </Icon>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Change Info"}>
+                      <IconButton
+                        href={"#"}
+                        onClick={this.changeField.bind(this, data)}
+                      >
+                        <Icon fontSize={"small"} color={"primary"}>
+                          edit
+                        </Icon>
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                );
                 break;
               case ApplicationState.EXPIRED_LICENSE:
-                controls = <>
-                  {view}
-                  <Tooltip title={"Renew License"}>
-                    <IconButton href={"#"} onClick={this.renewLicense.bind(this, data)}>
-                      <Icon fontSize={"small"} color={"primary"}>refresh</Icon>
-                    </IconButton>
-                  </Tooltip>
-                </>;
+                controls = (
+                  <>
+                    {view}
+                    <Tooltip title={"Renew License"}>
+                      <IconButton
+                        href={"#"}
+                        onClick={this.renewLicense.bind(this, data)}
+                      >
+                        <Icon fontSize={"small"} color={"primary"}>
+                          refresh
+                        </Icon>
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                );
                 break;
               case ApplicationState.REJECTED_APPLICATION:
-                controls = <>
-                  {view}
-                  <Tooltip title={"Submit New Applications"}>
-                    <IconButton href={"#"} onClick={this.submitNewApplication.bind(this, data)}>
-                      <Icon fontSize={"small"} color={"primary"}>save</Icon>
-                    </IconButton>
-                  </Tooltip>
-                </>;
+                controls = (
+                  <>
+                    {view}
+                    <Tooltip title={"Submit New Applications"}>
+                      <IconButton
+                        href={"#"}
+                        onClick={this.submitNewApplication.bind(this, data)}
+                      >
+                        <Icon fontSize={"small"} color={"primary"}>
+                          save
+                        </Icon>
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                );
                 break;
               case ApplicationState.SEND_BACK:
-                controls = <>
-                  {view}
-                  <Tooltip title={"Re Submit Application"}>
-                    <IconButton href={"#"} onClick={e => this.setState({ application: data, openResubmit: true })}>
-                      <Icon fontSize={"small"} color={"primary"}>send</Icon>
-                    </IconButton>
-                  </Tooltip>
-                </>;
+                controls = (
+                  <>
+                    {view}
+                    <Tooltip title={"Re Submit Application"}>
+                      <IconButton
+                        href={"#"}
+                        onClick={e =>
+                          this.setState({
+                            application: data,
+                            openResubmit: true
+                          })
+                        }
+                      >
+                        <Icon fontSize={"small"} color={"primary"}>
+                          send
+                        </Icon>
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                );
                 break;
-
             }
-            return (
-              controls
-            );
+            return controls;
           }
         }
       }
     ];
 
-    let notFound = (<GridContainer justify={"center"}>
-      <Typography component={"div"} color={"inherit"} variant={"h6"}> No Result Found</Typography>
-      <Button href={"#"} variant={"outlined"} onClick={e => history.push(HOME)} color={"primary"}>Back to Home</Button>
-    </GridContainer>);
+    let notFound = (
+      <GridContainer justify={"center"}>
+        <Typography component={"div"} color={"inherit"} variant={"h6"}>
+          {" "}
+          No Result Found
+        </Typography>
+        <Button
+          href={"#"}
+          variant={"outlined"}
+          onClick={e => history.push(HOME)}
+          color={"primary"}
+        >
+          Back to Home
+        </Button>
+      </GridContainer>
+    );
 
-    let found = <>
-      <MuiThemeProvider theme={this.props.theme}>
-        <MUIDataTable
-          title={"SHOP LICENSING: List of Application"}
-          data={applications}
-          columns={tableColumns}
-          options={tableOptions}/>
-      </MuiThemeProvider>
-    </>;
+    let found = (
+      <>
+        <MuiThemeProvider theme={this.props.theme}>
+          <MUIDataTable
+            title={"SHOP LICENSING: List of Application"}
+            data={applications}
+            columns={tableColumns}
+            options={tableOptions}
+          />
+        </MuiThemeProvider>
+      </>
+    );
 
     return (
       <>
-        {this.global.loading ? <LoadingView/> : <CardContent>{found}</CardContent>}
+        {this.global.loading ? (
+          <LoadingView />
+        ) : (
+          <CardContent>{found}</CardContent>
+        )}
 
-        <ApplicationDetailsDialog open={openDetail}
-                                  title='View Application Details'
-                                  application={application}
-                                  file={application ? application.file : null}
-                                  onClose={e => this.setState({ openDetail: false })}/>
+        <ApplicationDetailsDialog
+          open={openDetail}
+          title="View Application Details"
+          application={application}
+          file={application ? application.file : null}
+          onClose={e => this.setState({ openDetail: false })}
+        />
 
-        <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
+        <SubmitDialog
+          open={this.state.submit}
+          title={this.state.submitTitle}
+          text={"Please wait ..."}
+        />
 
-        <ResubmitHotelApplicationDialog open={openResubmit} onClose={e => this.setState({ openResubmit: false })}
-                                       application={application} onResubmit={this.reSubmitApplication}/>
+        <ResubmitHotelApplicationDialog
+          open={openResubmit}
+          onClose={e => this.setState({ openResubmit: false })}
+          application={application}
+          onResubmit={this.reSubmitApplication}
+        />
 
-        <RenewHotelLicenseDialog open={openRenew} onClose={e => this.setState({ openRenew: false })}
-                                application={application} onResubmit={this.renewLicense}/>
+        <RenewHotelLicenseDialog
+          open={openRenew}
+          onClose={e => this.setState({ openRenew: false })}
+          application={application}
+          onResubmit={this.renewLicense}
+        />
 
-                                <HotelFieldChangeDialog open={openChangeDialog} onClose={event=>this.setState({openChangeDialog:false})} application={application}/>
+        <HotelFieldChangeDialog
+          open={openChangeDialog}
+          onClose={event => this.setState({ openChangeDialog: false })}
+          application={application}
+        />
       </>
     );
   }

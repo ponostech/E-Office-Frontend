@@ -1,18 +1,28 @@
 import React, { Component } from "react";
-import { Button, CircularProgress, InputAdornment, TextField } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  InputAdornment,
+  TextField
+} from "@material-ui/core";
 import PropTypes from "prop-types";
 import S3FileUpload from "react-s3";
 import TickIcon from "@material-ui/icons/Check";
 import ErrorIcon from "@material-ui/icons/Error";
 import DocumentIcon from "@material-ui/icons/Book";
 import ImageIcon from "@material-ui/icons/Image";
-import { BUCKET_NAME, REGION, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY } from "../Configuration";
+import {
+  BUCKET_NAME,
+  REGION,
+  S3_ACCESS_KEY,
+  S3_SECRET_ACCESS_KEY
+} from "../Configuration";
 import moment from "moment";
 
 var uniqid = require("uniqid");
 const config = {
   bucketName: BUCKET_NAME,
-  dirName: "", /* optional */
+  dirName: "" /* optional */,
   region: REGION,
   accessKeyId: S3_ACCESS_KEY,
   secretAccessKey: S3_SECRET_ACCESS_KEY
@@ -27,50 +37,60 @@ class FileUpload extends Component {
       file: data,
       uploadedFile: null
     };
-    this.inputRef=React.createRef();
+    this.inputRef = React.createRef();
   }
 
-  getFilename = (file) => {
+  getFilename = file => {
     if (file.file) {
       return file.file.name;
     }
     return undefined;
   };
-  doReset(){
+  doReset() {
     let data = this.props.document;
-    document.getElementById("inputId").value=""
+    document.getElementById("inputId").value = "";
     data.status = "prestine";
-    this.setState( {
+    this.setState({
       file: data,
       uploadedFile: null,
 
-      uploading:false
+      uploading: false
     });
   }
 
   getUploadDocuments = () => {
     return this.state.neededDoc;
   };
-  getStatusIcon = (file) => {
+  getStatusIcon = file => {
     switch (file.status) {
       case "success":
-        return <TickIcon color={"primary"}/>;
+        return <TickIcon color={"primary"} />;
       case "fail":
-        return <ErrorIcon color={"error"}/>;
+        return <ErrorIcon color={"error"} />;
       case "progress":
-        return <CircularProgress size={35} color={"primary"}
-                                 variant={"indeterminate"}/>;
+        return (
+          <CircularProgress
+            size={35}
+            color={"primary"}
+            variant={"indeterminate"}
+          />
+        );
       case "prestine":
-        if (file.type === "image")
-          return <ImageIcon color={"action"}/>;
-        return <DocumentIcon color={"action"}/>;
+        if (file.type === "image") return <ImageIcon color={"action"} />;
+        return <DocumentIcon color={"action"} />;
       default:
-        return <ErrorIcon/>;
+        return <ErrorIcon />;
     }
   };
 
   render() {
-    const { onUploadSuccess, onUploadFailure, required, applicationName, ...rest } = this.props;
+    const {
+      onUploadSuccess,
+      onUploadFailure,
+      required,
+      applicationName,
+      ...rest
+    } = this.props;
     const { file } = this.state;
     var self = this;
 
@@ -81,7 +101,7 @@ class FileUpload extends Component {
         <TextField
           {...rest}
           inputProps={{
-            id:"inputId"
+            id: "inputId"
           }}
           ref={this.inputRef}
           onClick={() => {
@@ -115,17 +135,26 @@ class FileUpload extends Component {
                   id={file.id}
                   name={file.name}
                   type={"file"}
-                  onChange={(e) => {
+                  onChange={e => {
                     let item = e.target.files[0];
 
                     let blob = item.slice(0, item.size, item.type);
-                    let newName =Date.now()+ "-" + uniqid()+item.name.substr(item.name.lastIndexOf("."),item.name.length);
+                    let newName =
+                      Date.now() +
+                      "-" +
+                      uniqid() +
+                      item.name.substr(
+                        item.name.lastIndexOf("."),
+                        item.name.length
+                      );
 
-                    console.log("new name",newName);
+                    console.log("new name", newName);
 
-                    let newFile = new File([blob], newName, { type: item.type });
+                    let newFile = new File([blob], newName, {
+                      type: item.type
+                    });
 
-                    console.log("fileupload",newFile)
+                    console.log("fileupload", newFile);
 
                     let temp = file;
                     temp.file = item;
@@ -133,7 +162,7 @@ class FileUpload extends Component {
                     self.setState({
                       file: temp
                     });
-//delete existing data
+                    //delete existing data
                     if (self.state.uploadedFile) {
                       const uploadedFile = self.state.uploadedFile;
 
@@ -145,9 +174,8 @@ class FileUpload extends Component {
                         .catch(e => console.error(e));
                     }
                     //store new file
-                    this.setState({uploading:true});
-                    S3FileUpload
-                      .uploadFile(newFile, config)
+                    this.setState({ uploading: true });
+                    S3FileUpload.uploadFile(newFile, config)
                       .then(data => {
                         temp.status = "success";
                         self.setState({
@@ -166,11 +194,16 @@ class FileUpload extends Component {
                         });
                         onUploadFailure(err);
                       })
-                      .finally(()=>this.setState({uploading:false}))
+                      .finally(() => this.setState({ uploading: false }));
                   }}
                 />
                 <label htmlFor={file.id}>
-                  <Button disabled={this.state.uploading} size={"small"} variant="outlined" component="button">
+                  <Button
+                    disabled={this.state.uploading}
+                    size={"small"}
+                    variant="outlined"
+                    component="button"
+                  >
                     Upload
                   </Button>
                 </label>
@@ -180,7 +213,6 @@ class FileUpload extends Component {
         />
       </>
     );
-
   }
 }
 

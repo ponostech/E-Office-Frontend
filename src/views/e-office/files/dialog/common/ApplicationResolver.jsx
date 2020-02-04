@@ -2,16 +2,14 @@ import { FILEABLE_TYPE } from "../../details/Views/FileApplicationDetails";
 import moment from "moment";
 import { WIDGET_TYPE } from "../../../admin/form-builder/constant";
 
-export const getApplicantDetail = (application) => {
+export const getApplicantDetail = application => {};
 
-};
-
-export const getVerificationData = (verification) => {
+export const getVerificationData = verification => {
   const { data, template } = verification;
   let rows = [];
 
   if (!Boolean(verification)) {
-    return []
+    return [];
   }
 
   for (let [key, value] of Object.entries(template)) {
@@ -24,7 +22,7 @@ export const getVerificationData = (verification) => {
       case WIDGET_TYPE.CHECKBOX:
         temp = {
           label: value.label,
-          value: data[key]?data[key]:"",
+          value: data[key] ? data[key] : "",
           type: WIDGET_TYPE.TEXT_FIELD
         };
         rows.push(temp);
@@ -38,7 +36,9 @@ export const getVerificationData = (verification) => {
         rows.push(temp);
         break;
       case WIDGET_TYPE.COORDINATE:
-        let val = data[key] ? `Lat: ${data[key].latitude} Lng:${data[key].longitude}` : "NA";
+        let val = data[key]
+          ? `Lat: ${data[key].latitude} Lng:${data[key].longitude}`
+          : "NA";
         rows.push({
           label: value.label,
           value: val,
@@ -54,12 +54,14 @@ export const getVerificationData = (verification) => {
         break;
       case WIDGET_TYPE.IMAGE_LIST:
         let arr = [];
-        arr=Boolean(data[key])?data[key].forEach(item => {
-          return {
-            label: item.name,
-            value: item.location
-          };
-        }):[];
+        arr = Boolean(data[key])
+          ? data[key].forEach(item => {
+              return {
+                label: item.name,
+                value: item.location
+              };
+            })
+          : [];
         rows.push({
           label: value.label,
           value: arr,
@@ -67,15 +69,14 @@ export const getVerificationData = (verification) => {
         });
         break;
       default:
-        break
+        break;
     }
   }
 
   return rows;
-
 };
 
-export const getApplicationTitle = (application) => {
+export const getApplicationTitle = application => {
   let title = "";
   let subtitle = "";
 
@@ -112,60 +113,111 @@ export const getApplicationTitle = (application) => {
   }
   return { title, subtitle };
 };
-export const ApplicationResolver = (application) => {
+export const ApplicationResolver = application => {
   console.log("app", application);
-  if (application === null)
-    return [];
+  if (application === null) return [];
   const { fileable_type } = application.file;
   let rows = [];
 
   switch (fileable_type) {
     case FILEABLE_TYPE.KIOSK:
       rows.push(
-        { name: "Date of Application", value: moment(application.application_date).format("Do MMM YYYY (\dddd\)") },
+        {
+          name: "Date of Application",
+          value: moment(application.application_date).format(
+            "Do MMM YYYY (dddd)"
+          )
+        },
         { name: "Address of Proposed Kiosk", value: application.address },
         { name: "Local Council", value: application.local_council.name },
         { name: "Length", value: application.length + " ft" },
         { name: "Height", value: application.height + " ft" },
-        { name: "Ground Clearance", value: application.ground_clearance ? application.ground_clearance : "N/A" },
-        { name: "Road Detail", value: application.road_detail ? application.road_detail : "N/A" },
+        {
+          name: "Ground Clearance",
+          value: application.ground_clearance
+            ? application.ground_clearance
+            : "N/A"
+        },
+        {
+          name: "Road Detail",
+          value: application.road_detail ? application.road_detail : "N/A"
+        },
         { name: "Both Sided", value: application.both_side ? "Yes" : "No" },
         { name: "Collapsible", value: application.collapsible ? "Yes" : "No" },
         { name: "Display Type", value: application.display_type },
         { name: "Name of Landowner", value: application.land_owner_name },
-        { name: "Type of Landowner", value: application.land_owner_type ? "Public" : "Private" }
+        {
+          name: "Type of Landowner",
+          value: application.land_owner_type ? "Public" : "Private"
+        }
       );
       break;
     case FILEABLE_TYPE.HOARDING:
       rows.push(
-        { name: "Date of Application", value: moment(application.application_date).format("Do MMM YYYY (\dddd\)") },
+        {
+          name: "Date of Application",
+          value: moment(application.application_date).format(
+            "Do MMM YYYY (dddd)"
+          )
+        },
         { name: "Address of Proposed Hoarding", value: application.address },
         { name: "Local Council", value: application.local_council.name },
         { name: "Length", value: application.length + " ft" },
         { name: "Height", value: application.height + " ft" },
-        { name: "Ground Clearance", value: application.ground_clearance ? application.ground_clearance : "N/A" },
-        { name: "Road Detail", value: application.road_detail ? application.road_detail : "N/A" },
+        {
+          name: "Ground Clearance",
+          value: application.ground_clearance
+            ? application.ground_clearance
+            : "N/A"
+        },
+        {
+          name: "Road Detail",
+          value: application.road_detail ? application.road_detail : "N/A"
+        },
         { name: "Both Sided", value: application.both_side ? "Yes" : "No" },
         { name: "Display Type", value: application.display_type },
         { name: "Name of Landowner", value: application.land_owner_name },
-        { name: "Type of Landowner", value: application.land_owner_type ? "Public" : "Private" }
+        {
+          name: "Type of Landowner",
+          value: application.land_owner_type ? "Public" : "Private"
+        }
       );
       break;
     case FILEABLE_TYPE.BANNER:
       rows.push(
-        { name: "Date of Application", value: moment(application.application_date).format("Do MMM YYYY (\dddd\)") },
+        {
+          name: "Date of Application",
+          value: moment(application.application_date).format(
+            "Do MMM YYYY (dddd)"
+          )
+        },
         { name: "Name of Applicant", value: application.name },
         { name: "Phone", value: application.phone },
         { name: "Type of Applicant", value: application.applicant_type },
         { name: "Address", value: application.address },
-        { name: "Type of Advertisement", value: application.advertisement_type },
-        { name: "Content/Wording", value: application.content ? application.content : "N/A" },
-        { name: "Detail", value: application.detail ? application.detail : "N/A" }
+        {
+          name: "Type of Advertisement",
+          value: application.advertisement_type
+        },
+        {
+          name: "Content/Wording",
+          value: application.content ? application.content : "N/A"
+        },
+        {
+          name: "Detail",
+          value: application.detail ? application.detail : "N/A"
+        }
       );
       let tableData = [];
-      application.advertisements.map(item => tableData.push(
-        [item.length, item.height, item.locations, moment(item.from).format("Do MMM YYYY (\dddd\)"), moment(item.to).format("Do MMM YYYY (\dddd\)")]
-      ));
+      application.advertisements.map(item =>
+        tableData.push([
+          item.length,
+          item.height,
+          item.locations,
+          moment(item.from).format("Do MMM YYYY (dddd)"),
+          moment(item.to).format("Do MMM YYYY (dddd)")
+        ])
+      );
       break;
     case FILEABLE_TYPE.SHOP:
       rows.push(
@@ -177,7 +229,9 @@ export const ApplicationResolver = (application) => {
           changed: application.field_changes.indexOf("application_date") !== -1,
           field: "application_date",
           name: "Date of Application",
-          value: moment(application.application_date).format("Do MMM YYYY (\dddd\)")
+          value: moment(application.application_date).format(
+            "Do MMM YYYY (dddd)"
+          )
         },
         {
           changed: application.field_changes.indexOf("owner") !== -1,
@@ -243,7 +297,7 @@ export const ApplicationResolver = (application) => {
           changed: application.field_changes.indexOf("estd") !== -1,
           field: "estd",
           name: "ESTD",
-          value: moment(application.estd).format("Do MMM YYYY (\dddd\)")
+          value: moment(application.estd).format("Do MMM YYYY (dddd)")
         },
         {
           changed: application.field_changes.indexOf("tin_no") !== -1,
@@ -287,7 +341,9 @@ export const ApplicationResolver = (application) => {
           changed: application.field_changes.indexOf("application_date") !== -1,
           field: "application_date",
           name: "Date of Application",
-          value: moment(application.application_date).format("Do MMM YYYY (\dddd\)")
+          value: moment(application.application_date).format(
+            "Do MMM YYYY (dddd)"
+          )
         },
         {
           changed: application.field_changes.indexOf("owner") !== -1,
@@ -348,37 +404,47 @@ export const ApplicationResolver = (application) => {
           field: "details",
           name: "Details of Business",
           value: application.details ? application.details : "N/A"
-        }, {
+        },
+        {
           changed: application.field_changes.indexOf("ac_rooms") !== -1,
           field: "ac_rooms",
           name: "No of AC Rooms",
           value: application.ac_rooms ? application.ac_rooms : "N/A"
-        }, {
+        },
+        {
           changed: application.field_changes.indexOf("non_ac_rooms") !== -1,
           field: "non_ac_rooms",
           name: "No of Non AC Rooms",
           value: application.non_ac_rooms ? application.non_ac_rooms : "N/A"
-        }, {
-          changed: application.field_changes.indexOf("conferences_halls") !== -1,
+        },
+        {
+          changed:
+            application.field_changes.indexOf("conferences_halls") !== -1,
           field: "conferences_halls",
           name: "No of Conference Hall",
-          value: application.conference_halls ? application.conference_halls : "N/A"
-        }, {
+          value: application.conference_halls
+            ? application.conference_halls
+            : "N/A"
+        },
+        {
           changed: application.field_changes.indexOf("banquet_halls") !== -1,
           field: "banquet_halls",
           name: "No of Banquet Hall",
           value: application.banquet_halls ? application.banquet_halls : "N/A"
-        }, {
+        },
+        {
           changed: application.field_changes.indexOf("other_facilities") !== -1,
           field: "other_facilities",
           name: "Other Facilities",
-          value: application.banquet_halls ? application.other_facilities : "N/A"
+          value: application.banquet_halls
+            ? application.other_facilities
+            : "N/A"
         },
         {
           changed: application.field_changes.indexOf("estd") !== -1,
           field: "estd",
           name: "ESTD",
-          value: moment(application.estd).format("Do MMM YYYY (\dddd\)")
+          value: moment(application.estd).format("Do MMM YYYY (dddd)")
         },
         {
           changed: application.field_changes.indexOf("tin_no") !== -1,

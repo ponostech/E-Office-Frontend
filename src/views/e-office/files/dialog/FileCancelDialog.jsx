@@ -57,15 +57,14 @@ class FileCancelDialog extends Component {
       selectedDraft: null,
       submit: false
     };
-    this.applicationService=new ApplicationService()
-
+    this.applicationService = new ApplicationService();
   }
 
-  selectApplication = (selectedApplication) => {
+  selectApplication = selectedApplication => {
     this.setState({ selectedApplication });
     this.handleNext();
   };
-  selectDraft = (selectedDraft) => {
+  selectDraft = selectedDraft => {
     this.setState({ selectedDraft });
     this.handleNext();
   };
@@ -77,7 +76,7 @@ class FileCancelDialog extends Component {
     const { activeStep } = this.state;
     this.setState({ activeStep: activeStep - 1 });
   };
-  getPath=()=>{
+  getPath = () => {
     const { file } = this.props;
     let path = "";
     switch (file.fileable_type) {
@@ -94,36 +93,58 @@ class FileCancelDialog extends Component {
       default:
         return "shop";
     }
-  }
+  };
 
   confirmCancel = () => {
     this.setState({ submit: true });
-    let path=this.getPath()
+    let path = this.getPath();
     let data = { content: this.state.selectedDraft.content };
-    this.applicationService.cancel(path,this.state.selectedApplication.id, data,
-      errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => {
-        this.props.closeActionDialog()
-        this.props.history.push(FILE_NOTESHEET);
-        this.setGlobal({ successMsg });
-      })
+    this.applicationService
+      .cancel(
+        path,
+        this.state.selectedApplication.id,
+        data,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => {
+          this.props.closeActionDialog();
+          this.props.history.push(FILE_NOTESHEET);
+          this.setGlobal({ successMsg });
+        }
+      )
       .finally(() => this.setState({ submit: false }));
-
   };
 
-  getStepContent = (step) => {
+  getStepContent = step => {
     switch (step) {
       case 0:
-        return <SelectCancelApplication file={this.props.file} onSelectApplication={this.selectApplication}
-                                        onNext={this.handleNext}/>;
+        return (
+          <SelectCancelApplication
+            file={this.props.file}
+            onSelectApplication={this.selectApplication}
+            onNext={this.handleNext}
+          />
+        );
       case 1:
-        return <SelectCancelDraft application={this.state.selectedApplication} createCancelDraft={this.props.createCancelDraft} file={this.props.file} onDraftSelect={this.selectDraft} onBack={this.handleBack}/>;
+        return (
+          <SelectCancelDraft
+            application={this.state.selectedApplication}
+            createCancelDraft={this.props.createCancelDraft}
+            file={this.props.file}
+            onDraftSelect={this.selectDraft}
+            onBack={this.handleBack}
+          />
+        );
       case 2:
-        return <ConfirmCancel application={this.state.selectedApplication} draft={this.state.selectedDraft}
-                              onBack={this.handleBack} confirmCancel={this.confirmCancel}/>;
+        return (
+          <ConfirmCancel
+            application={this.state.selectedApplication}
+            draft={this.state.selectedDraft}
+            onBack={this.handleBack}
+            confirmCancel={this.confirmCancel}
+          />
+        );
       default:
         return "unknown step";
-
     }
   };
 
@@ -133,14 +154,28 @@ class FileCancelDialog extends Component {
     const steps = getSteps();
 
     return (
-      <Dialog fullScreen={true} open={open} TransitionComponent={Transition} onClose={onClose} fullWidth={true}>
-
+      <Dialog
+        fullScreen={true}
+        open={open}
+        TransitionComponent={Transition}
+        onClose={onClose}
+        fullWidth={true}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton color="inherit" onClick={this.props.onClose} aria-label="Close" href={"#"}>
+            <IconButton
+              color="inherit"
+              onClick={this.props.onClose}
+              aria-label="Close"
+              href={"#"}
+            >
               <Icon>close</Icon>
             </IconButton>
-            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+            <Typography
+              variant="subtitle2"
+              color="inherit"
+              className={classes.flex}
+            >
               Cancel Application
             </Typography>
             <Button href={"#"} onClick={this.props.onClose} color="inherit">
@@ -162,10 +197,13 @@ class FileCancelDialog extends Component {
               </Step>
             ))}
           </Stepper>
-
         </DialogContent>
 
-        <SubmitDialog open={this.state.submit} title={"Cancel Application"} text={"Please wait ..."}/>
+        <SubmitDialog
+          open={this.state.submit}
+          title={"Cancel Application"}
+          text={"Please wait ..."}
+        />
       </Dialog>
     );
   }

@@ -65,7 +65,6 @@ const style = {
     minHeight: 200
   },
 
-
   root: {
     padding: "10px 15px !important"
   },
@@ -137,7 +136,6 @@ class RenewShopLicenseDialog extends Component {
     prestine: true,
     openOtp: false,
     otpMessage: ""
-
   };
 
   componentDidMount() {
@@ -146,45 +144,82 @@ class RenewShopLicenseDialog extends Component {
 
     var self = this;
     this.setGlobal({ loading: true });
-    Promise.all([self.fetchTrades(), self.fetchDocuments(), self.fetchLocalCouncil()])
-      .finally(function() {
-        self.setGlobal({ loading: false });
-      });
+    Promise.all([
+      self.fetchTrades(),
+      self.fetchDocuments(),
+      self.fetchLocalCouncil()
+    ]).finally(function() {
+      self.setGlobal({ loading: false });
+    });
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
     const { license } = nextProps;
     if (license) {
-      this.shopService.get(license.permitable_id,
-        errorMsg => this.setGlobal({ errorMsg }),
-        application => this.setApplication(application))
+      this.shopService
+        .get(
+          license.permitable_id,
+          errorMsg => this.setGlobal({ errorMsg }),
+          application => this.setApplication(application)
+        )
         .finally(() => console.info("application request complete"));
     }
   }
 
   requestOtp = () => {
-    var self = this;
-    this.otpService.requestOtp(this.state.phone, "Renew Shop License",
-      errorMsg => {
-        this.setGlobal({ errorMsg });
-      },
-      otpMessage => {
-        this.setState({ openOtp: true });
-        this.setState({ otpMessage });
-      })
+    this.otpService
+      .requestOtp(
+        this.state.phone,
+        "Renew Shop License",
+        errorMsg => {
+          this.setGlobal({ errorMsg });
+        },
+        otpMessage => {
+          this.setState({ openOtp: true });
+          this.setState({ otpMessage });
+        }
+      )
       .finally(() => console.log("Finish otp request"));
-
-
   };
-  onVerifiedOtp = (verified) => {
+  onVerifiedOtp = verified => {
     if (verified) {
       this.props.onResubmit(this.state);
     }
   };
   valid = () => {
-    const { name, type, email, phone, address, ownerAddress, localCouncil, tradeName, shopName, latitude, longitude, passport, agree } = this.state;
-    return Boolean(name) && Boolean(type) && Boolean(phone) && phone.length === 10 && Boolean(email) && email.match(Validators.EMAIL_REGEX) && Boolean(address) && Boolean(ownerAddress) && Boolean(localCouncil)
-      && Boolean(tradeName) && Boolean(shopName) && Boolean(latitude) && Boolean(longitude) && Boolean(passport) && agree && this.validateDocument();
+    const {
+      name,
+      type,
+      email,
+      phone,
+      address,
+      ownerAddress,
+      localCouncil,
+      tradeName,
+      shopName,
+      latitude,
+      longitude,
+      passport,
+      agree
+    } = this.state;
+    return (
+      Boolean(name) &&
+      Boolean(type) &&
+      Boolean(phone) &&
+      phone.length === 10 &&
+      Boolean(email) &&
+      email.match(Validators.EMAIL_REGEX) &&
+      Boolean(address) &&
+      Boolean(ownerAddress) &&
+      Boolean(localCouncil) &&
+      Boolean(tradeName) &&
+      Boolean(shopName) &&
+      Boolean(latitude) &&
+      Boolean(longitude) &&
+      Boolean(passport) &&
+      agree &&
+      this.validateDocument()
+    );
   };
 
   validateDocument = () => {
@@ -192,42 +227,50 @@ class RenewShopLicenseDialog extends Component {
     let docCount = 0;
     let uploadCount = 0;
     for (let i = 0; i < documents.length; i++) {
-      if (documents[i].mandatory)
-        docCount++;
+      if (documents[i].mandatory) docCount++;
     }
     for (let i = 0; i < uploadDocuments.length; i++) {
-      if (uploadDocuments[i].mandatory)
-        uploadCount++;
+      if (uploadDocuments[i].mandatory) uploadCount++;
     }
     return uploadCount === docCount;
   };
 
   fetchLocalCouncil = async () => {
-    await this.localCouncilService.fetch(errorMsg => this.setGlobal({ errorMsg }),
-      localCouncils => this.setState({ localCouncils }));
+    await this.localCouncilService.fetch(
+      errorMsg => this.setGlobal({ errorMsg }),
+      localCouncils => this.setState({ localCouncils })
+    );
   };
   fetchDocuments = async () => {
-    await this.documentService.fetch("shop",
+    await this.documentService.fetch(
+      "shop",
       errorMsg => this.setGlobal({ errorMsg }),
       docs => {
         this.setState({
           flaDocuments: docs,
-          noFlaDocuments: docs.filter((item, index) => index !== docs.length - 1),
+          noFlaDocuments: docs.filter(
+            (item, index) => index !== docs.length - 1
+          ),
           documents: docs.filter((item, index) => index !== docs.length - 1)
         });
-      });
-
+      }
+    );
   };
   fetchTrades = async () => {
-    await this.tradeService.fetch("shop",(errorMsg) => this.setGlobal({ errorMsg })
-      , (trades) => this.setState({ trades }));
+    await this.tradeService.fetch(
+      "shop",
+      errorMsg => this.setGlobal({ errorMsg }),
+      trades => this.setState({ trades })
+    );
   };
-  handleChange = (e) => {
+  handleChange = e => {
     const { name, value } = e.target;
 
     switch (name) {
       case "phone":
-        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: ShopLicenseViewModel.VALID_PHONE }) : this.setState({ phoneError: "" });
+        !Validators.PHONE_REGEX.test(value)
+          ? this.setState({ phoneError: ShopLicenseViewModel.VALID_PHONE })
+          : this.setState({ phoneError: "" });
         break;
       default:
         break;
@@ -258,77 +301,107 @@ class RenewShopLicenseDialog extends Component {
         break;
       case "localCouncil":
         this.setState({ localCouncil: value });
+        break;
       default:
         break;
     }
   };
 
-
-  handleRadio = (e) => {
+  handleRadio = e => {
     this.setState({
       premised: e.target.value
     });
   };
 
   handleSelectBlur = (identifier, e) => {
-
     switch (identifier) {
       case "localCouncil":
-        this.state.localCouncil === undefined ? this.setState({ localCouncilError: "Local Council is required" }) : this.setState({ localCouncilError: "" });
+        this.state.localCouncil === undefined
+          ? this.setState({ localCouncilError: "Local Council is required" })
+          : this.setState({ localCouncilError: "" });
         break;
       case "type":
-        this.state.type ? this.setState({ typeError: "" }) : this.setState({ typeError: ShopLicenseViewModel.TYPE_REQUIRED });
+        this.state.type
+          ? this.setState({ typeError: "" })
+          : this.setState({ typeError: ShopLicenseViewModel.TYPE_REQUIRED });
         break;
       case "trade":
-        this.state.tradeName === undefined ? this.setState({ tradeNameError: ShopLicenseViewModel.TRADE_REQUIRED }) : this.setState({ tradeNameError: "" });
+        this.state.tradeName === undefined
+          ? this.setState({
+              tradeNameError: ShopLicenseViewModel.TRADE_REQUIRED
+            })
+          : this.setState({ tradeNameError: "" });
         break;
       case "displayType":
-        this.state.displayType === undefined ? this.setState({ displayTypeError: ShopLicenseViewModel.DISPLAY_TYPE_REQUIRED }) : this.setState({ displayTypeError: "" });
+        this.state.displayType === undefined
+          ? this.setState({
+              displayTypeError: ShopLicenseViewModel.DISPLAY_TYPE_REQUIRED
+            })
+          : this.setState({ displayTypeError: "" });
       default:
         break;
     }
   };
-  handleBlur = (e) => {
+  handleBlur = e => {
     const { name, value } = e.target;
 
     switch (name) {
       case "name":
-        value.length === 0 ? this.setState({ nameError: ShopLicenseViewModel.OWNER_REQUIRED }) : this.setState({ nameError: "" });
+        value.length === 0
+          ? this.setState({ nameError: ShopLicenseViewModel.OWNER_REQUIRED })
+          : this.setState({ nameError: "" });
         break;
       case "shopName":
-        value.length === 0 ? this.setState({ shopNameError: ShopLicenseViewModel.SHOP_NAME_REQUIRED }) : this.setState({ shopNameError: "" });
+        value.length === 0
+          ? this.setState({
+              shopNameError: ShopLicenseViewModel.SHOP_NAME_REQUIRED
+            })
+          : this.setState({ shopNameError: "" });
         break;
       case "ownerAddress":
-        value.length === 0 ? this.setState({ ownerAddressError: ShopLicenseViewModel.OWNER_ADDRESS_REQUIRED }) : this.setState({ ownerAddressError: "" });
+        value.length === 0
+          ? this.setState({
+              ownerAddressError: ShopLicenseViewModel.OWNER_ADDRESS_REQUIRED
+            })
+          : this.setState({ ownerAddressError: "" });
         break;
       case "address":
-        value.length === 0 ? this.setState({ addressError: ShopLicenseViewModel.ADDRESS_REQUIRED }) : this.setState({ addressError: "" });
+        value.length === 0
+          ? this.setState({
+              addressError: ShopLicenseViewModel.ADDRESS_REQUIRED
+            })
+          : this.setState({ addressError: "" });
         break;
       case "phone":
-        value.length === 0 ? this.setState({ phoneError: ShopLicenseViewModel.PHONE_REQUIRED }) : this.setState({ phoneError: "" });
+        value.length === 0
+          ? this.setState({ phoneError: ShopLicenseViewModel.PHONE_REQUIRED })
+          : this.setState({ phoneError: "" });
         break;
       case "estd":
-        value.length === 0 ? this.setState({ estdError: ShopLicenseViewModel.ESTD_REQUIRED }) : this.setState({ estdError: "" });
+        value.length === 0
+          ? this.setState({ estdError: ShopLicenseViewModel.ESTD_REQUIRED })
+          : this.setState({ estdError: "" });
         break;
       case "details":
-        value.length === 0 ? this.setState({ detailsError: ShopLicenseViewModel.DETAILS_REQUIRED }) : this.setState({ detailsError: "" });
+        value.length === 0
+          ? this.setState({
+              detailsError: ShopLicenseViewModel.DETAILS_REQUIRED
+            })
+          : this.setState({ detailsError: "" });
         break;
       default:
         break;
     }
   };
   handleEstdChange = estdDate => {
-
-    this.setState({ "estd": estdDate });
+    this.setState({ estd: estdDate });
   };
 
-
-  findTrade = (id) => {
+  findTrade = id => {
     this.state.trades.find(el => el.id === id);
   };
-  setApplication = (application) => {
+  setApplication = application => {
     if (application) {
-
       this.setState({
         id: application.id,
         name: application.owner,
@@ -350,7 +423,11 @@ class RenewShopLicenseDialog extends Component {
           fla: application.trade.fla
         },
         shopName: application.name,
-        coordinate: "Latitude: " + application.latitude + ", Longitude: " + application.longitude,
+        coordinate:
+          "Latitude: " +
+          application.latitude +
+          ", Longitude: " +
+          application.longitude,
         businessDetail: application.details,
         estd: moment(application.estd),
         tinNo: application.tin_no,
@@ -377,33 +454,50 @@ class RenewShopLicenseDialog extends Component {
   getDocumentView = () => {
     const { classes, application } = this.props;
     return this.state.documents.map((doc, index) => {
-      let found = this.state.uploadedDoc.find(item => item.document_id === doc.id);
+      let found = this.state.uploadedDoc.find(
+        item => item.document_id === doc.id
+      );
       console.log("found item", found);
-      let uploadView = Boolean(found) ? <a target={"_blank"} href={found.path}>{found.name}</a> : "";
-      return <>
-        <GridItem key={index} className={classes.root} sm={12} xs={12}
-                  md={12}>
+      let uploadView = Boolean(found) ? (
+        <a target={"_blank"} href={found.path}>
+          {found.name}
+        </a>
+      ) : (
+        ""
+      );
+      return (
+        <>
+          <GridItem
+            key={index}
+            className={classes.root}
+            sm={12}
+            xs={12}
+            md={12}
+          >
+            <FileUpload
+              applicationName={APPLICATION_NAME.SHOP}
+              key={index}
+              document={doc}
+              onUploadSuccess={data => {
+                let temp = {
+                  mandatory: doc.mandatory,
+                  document_id: doc.id,
+                  name: doc.name,
+                  path: data.location
+                };
+                this.setState(state => {
+                  state.uploadDocuments.push(temp);
+                });
+              }}
+              onUploadFailure={err => {
+                console.log(err);
+              }}
+            />
 
-          <FileUpload
-            applicationName={APPLICATION_NAME.SHOP}
-            key={index} document={doc} onUploadSuccess={(data) => {
-            let temp = {
-              mandatory: doc.mandatory,
-              document_id: doc.id,
-              name: doc.name,
-              path: data.location
-            };
-            this.setState(state => {
-              state.uploadDocuments.push(temp);
-            });
-          }} onUploadFailure={(err) => {
-            console.log(err);
-          }}/>
-
-          {uploadView}
-        </GridItem>
-      </>;
-
+            {uploadView}
+          </GridItem>
+        </>
+      );
     });
   };
 
@@ -411,16 +505,28 @@ class RenewShopLicenseDialog extends Component {
     const { classes, open, onClose, application, onResubmit } = this.props;
 
     return (
-
       <>
-        <Dialog TransitionComponent={Transition} open={open} onClose={onClose} fullScreen={true}>
-
+        <Dialog
+          TransitionComponent={Transition}
+          open={open}
+          onClose={onClose}
+          fullScreen={true}
+        >
           <AppBar className={classes.appBar}>
             <Toolbar>
-              <IconButton href={"#"} color="inherit" onClick={onClose} aria-label="Close">
-                <CloseIcon/>
+              <IconButton
+                href={"#"}
+                color="inherit"
+                onClick={onClose}
+                aria-label="Close"
+              >
+                <CloseIcon />
               </IconButton>
-              <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+              <Typography
+                variant="subtitle2"
+                color="inherit"
+                className={classes.flex}
+              >
                 Renew Shop License
               </Typography>
               <Button href={"#"} onClick={onClose} color="inherit">
@@ -430,9 +536,9 @@ class RenewShopLicenseDialog extends Component {
           </AppBar>
 
           <DialogContent>
-
-
-            {this.global.loading ? <LoadingView/> :
+            {this.global.loading ? (
+              <LoadingView />
+            ) : (
               <GridContainer justify="flex-start">
                 <GridItem xs={12} sm={12} md={10}>
                   <form>
@@ -456,14 +562,25 @@ class RenewShopLicenseDialog extends Component {
                           </GridItem>
 
                           <GridItem md={12} sm={12} xs={12}>
-                            <Typography className={classes.subTitle} variant={"h6"}> Details of Applicant</Typography>
+                            <Typography
+                              className={classes.subTitle}
+                              variant={"h6"}
+                            >
+                              {" "}
+                              Details of Applicant
+                            </Typography>
                           </GridItem>
 
                           <GridItem md={12} sm={12} xs={12}>
-                            <Divider component={"div"}/>
+                            <Divider component={"div"} />
                           </GridItem>
 
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <TextField
                               value={this.state.name}
                               name={"name"}
@@ -478,7 +595,12 @@ class RenewShopLicenseDialog extends Component {
                               helperText={this.state.nameError}
                             />
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <TextField
                               value={this.state.phone}
                               onBlur={this.handleBlur.bind(this)}
@@ -493,7 +615,12 @@ class RenewShopLicenseDialog extends Component {
                               helperText={this.state.phoneError}
                             />
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <OfficeSelect
                               variant={"outlined"}
                               margin={"dense"}
@@ -507,9 +634,15 @@ class RenewShopLicenseDialog extends Component {
                               ClearAble={true}
                               label={ShopLicenseViewModel.APPLICANT_TYPE}
                               helperText={this.state.typeError}
-                              options={this.state.types}/>
+                              options={this.state.types}
+                            />
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <TextField
                               type={"email"}
                               value={this.state.email}
@@ -520,47 +653,63 @@ class RenewShopLicenseDialog extends Component {
                               onChange={this.handleChange.bind(this)}
                               label={ShopLicenseViewModel.EMAIL}
                             />
-
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <AddressField
-                              textFieldProps={
-                                {
-                                  value: this.state.ownerAddress,
-                                  name: "ownerAddress",
-                                  placeholder: "Owner Address",
-                                  onBlur: this.handleBlur.bind(this),
-                                  required: true,
-                                  variant: "outlined",
-                                  margin: "dense",
-                                  fullWidth: true,
-                                  error: Boolean(this.state.ownerAddressError),
-                                  helperText: this.state.ownerAddressError,
-                                  onChange: this.handleChange.bind(this),
-                                  label: ShopLicenseViewModel.OWNER_ADDRESS
-                                }
-                              }
-
-                              onPlaceSelect={(place) => {
+                              textFieldProps={{
+                                value: this.state.ownerAddress,
+                                name: "ownerAddress",
+                                placeholder: "Owner Address",
+                                onBlur: this.handleBlur.bind(this),
+                                required: true,
+                                variant: "outlined",
+                                margin: "dense",
+                                fullWidth: true,
+                                error: Boolean(this.state.ownerAddressError),
+                                helperText: this.state.ownerAddressError,
+                                onChange: this.handleChange.bind(this),
+                                label: ShopLicenseViewModel.OWNER_ADDRESS
+                              }}
+                              onPlaceSelect={place => {
                                 if (place) {
                                   let name = place.name;
                                   let address = place.formatted_address;
-                                  let complete_address = address.includes(name) ? address : `${name} ${address}`;
-                                  this.setState({ ownerAddress: complete_address });
+                                  let complete_address = address.includes(name)
+                                    ? address
+                                    : `${name} ${address}`;
+                                  this.setState({
+                                    ownerAddress: complete_address
+                                  });
                                 }
-                              }}/>
+                              }}
+                            />
                           </GridItem>
 
                           <GridItem md={12} sm={12} xs={12}>
-                            <Typography className={classes.subTitle} variant={"h6"}> Details of Proposed
-                              Shop</Typography>
+                            <Typography
+                              className={classes.subTitle}
+                              variant={"h6"}
+                            >
+                              {" "}
+                              Details of Proposed Shop
+                            </Typography>
                           </GridItem>
 
                           <GridItem sm={12} xs={12} md={12}>
-                            <Divider component={"div"}/>
+                            <Divider component={"div"} />
                           </GridItem>
 
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <TextField
                               value={this.state.shopName}
                               name={"shopName"}
@@ -575,7 +724,12 @@ class RenewShopLicenseDialog extends Component {
                               helperText={this.state.shopNameError}
                             />
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <OfficeSelect
                               variant={"outlined"}
                               margin={"dense"}
@@ -589,39 +743,50 @@ class RenewShopLicenseDialog extends Component {
                               onChange={this.handleSelect.bind(this, "trade")}
                               ClearAble={true}
                               label={"Name of Trade"}
-                              options={this.state.trades}/>
+                              options={this.state.trades}
+                            />
                           </GridItem>
 
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <AddressField
-                              textFieldProps={
-                                {
-                                  value: this.state.address,
-                                  name: "address",
-                                  placeholder: "Address of Proposed Shop",
-                                  onBlur: this.handleBlur.bind(this),
-                                  required: true,
-                                  variant: "outlined",
-                                  margin: "dense",
-                                  fullWidth: true,
-                                  error: Boolean(this.state.addressError),
-                                  helperText: this.state.addressError,
-                                  onChange: this.handleChange.bind(this),
-                                  label: "Address of Proposed Shop"
-                                }
-                              }
-
-                              onPlaceSelect={(place) => {
+                              textFieldProps={{
+                                value: this.state.address,
+                                name: "address",
+                                placeholder: "Address of Proposed Shop",
+                                onBlur: this.handleBlur.bind(this),
+                                required: true,
+                                variant: "outlined",
+                                margin: "dense",
+                                fullWidth: true,
+                                error: Boolean(this.state.addressError),
+                                helperText: this.state.addressError,
+                                onChange: this.handleChange.bind(this),
+                                label: "Address of Proposed Shop"
+                              }}
+                              onPlaceSelect={place => {
                                 if (place) {
                                   let name = place.name;
                                   let address = place.formatted_address;
-                                  let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                                  let complete_address = address.includes(name)
+                                    ? address
+                                    : `${name} ${address}`;
                                   this.setState({ address: complete_address });
                                 }
-                              }}/>
+                              }}
+                            />
                           </GridItem>
 
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <OfficeSelect
                               value={this.state.localCouncil}
                               label={"Local Council of Proposed Shop"}
@@ -632,15 +797,26 @@ class RenewShopLicenseDialog extends Component {
                               required={true}
                               helperText={this.state.localCouncilError}
                               error={Boolean(this.state.localCouncilError)}
-                              onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
-                              onChange={this.handleSelect.bind(this, "localCouncil")}
-                              options={this.state.localCouncils}/>
+                              onBlur={this.handleSelectBlur.bind(
+                                this,
+                                "localCouncil"
+                              )}
+                              onChange={this.handleSelect.bind(
+                                this,
+                                "localCouncil"
+                              )}
+                              options={this.state.localCouncils}
+                            />
                           </GridItem>
 
-
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <TextField
-                              onClick={(e) => this.setState({ openMap: true })}
+                              onClick={e => this.setState({ openMap: true })}
                               value={this.state.coordinate}
                               name={"coordinate"}
                               onBlur={this.handleBlur.bind(this)}
@@ -654,8 +830,12 @@ class RenewShopLicenseDialog extends Component {
                               InputProps={{
                                 endAdornment: (
                                   <InputAdornment position={"end"}>
-                                    <IconButton onClick={(e) => this.setState({ openMap: true })}>
-                                      <PlaceIcon/>
+                                    <IconButton
+                                      onClick={e =>
+                                        this.setState({ openMap: true })
+                                      }
+                                    >
+                                      <PlaceIcon />
                                     </IconButton>
                                   </InputAdornment>
                                 )
@@ -663,8 +843,12 @@ class RenewShopLicenseDialog extends Component {
                             />
                           </GridItem>
 
-
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <TextField
                               value={this.state.businessDetail}
                               name={"businessDetail"}
@@ -675,13 +859,16 @@ class RenewShopLicenseDialog extends Component {
                               label={"Details of business"}
                             />
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                               <DatePicker
                                 fullWidth={true}
-                                InputLabelProps={
-                                  { shrink: true }
-                                }
+                                InputLabelProps={{ shrink: true }}
                                 label={"Date of Establishment"}
                                 error={Boolean(this.state.estdError)}
                                 helperText={this.state.estdError}
@@ -694,7 +881,12 @@ class RenewShopLicenseDialog extends Component {
                               />
                             </MuiPickersUtilsProvider>
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <TextField
                               value={this.state.tinNo}
                               name={"tinNo"}
@@ -705,7 +897,12 @@ class RenewShopLicenseDialog extends Component {
                               label={"TIN No (If Any)"}
                             />
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <TextField
                               value={this.state.cstNo}
                               name={"cstNo"}
@@ -716,7 +913,12 @@ class RenewShopLicenseDialog extends Component {
                               label={"CST No (If Any)"}
                             />
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <TextField
                               value={this.state.panNo}
                               name={"panNo"}
@@ -727,7 +929,12 @@ class RenewShopLicenseDialog extends Component {
                               label={"PAN No (If Any)"}
                             />
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <TextField
                               value={this.state.gstNo}
                               name={"gstNo"}
@@ -738,7 +945,12 @@ class RenewShopLicenseDialog extends Component {
                               label={"GST No (If Any)"}
                             />
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             {/*<FileUpload applicationName={APPLICATION_NAME.SHOP}*/}
                             {/*            document={{*/}
                             {/*              id: 122,*/}
@@ -756,84 +968,132 @@ class RenewShopLicenseDialog extends Component {
                             {/*            }} onUploadFailure={(err) => {*/}
                             {/*  console.log(err);*/}
                             {/*}}/>*/}
-                            {this.state.passport && <OfficeFileUpload applicationName={APPLICATION_NAME.SHOP}
-                                              document={this.state.passport}
-                                              onUploadSuccess={(data) => {
-                                                this.setState(state => {
-                                                  state.passport = {
-                                                    name: "passport",
-                                                    location: data.location
-                                                  };
-                                                });
-                                              }} onUploadFailure={(err) => {
-                              console.log(err);
-                            }}/>}
+                            {this.state.passport && (
+                              <OfficeFileUpload
+                                applicationName={APPLICATION_NAME.SHOP}
+                                document={this.state.passport}
+                                onUploadSuccess={data => {
+                                  this.setState(state => {
+                                    state.passport = {
+                                      name: "passport",
+                                      location: data.location
+                                    };
+                                  });
+                                }}
+                                onUploadFailure={err => {
+                                  console.log(err);
+                                }}
+                              />
+                            )}
                           </GridItem>
-                          <GridItem className={classes.root} xs={12} sm={12} md={6}>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={6}
+                          >
                             <FormControl fullWidth={true} margin={"dense"}>
-                              <FormLabel>Whether Premises is Owned or Leased?</FormLabel>
+                              <FormLabel>
+                                Whether Premises is Owned or Leased?
+                              </FormLabel>
                               <RadioGroup
                                 name={"premised"}
                                 row={true}
                                 value={this.state.premised}
                                 onChange={this.handleRadio.bind(this)}
                               >
-                                <FormControlLabel value={"Owned"} control={<Radio color={"primary"}/>}
-                                                  label={"Owned"}/>
-                                <FormControlLabel value={"Leased"} control={<Radio color={"primary"}/>}
-                                                  label={"Leased"}/>
+                                <FormControlLabel
+                                  value={"Owned"}
+                                  control={<Radio color={"primary"} />}
+                                  label={"Owned"}
+                                />
+                                <FormControlLabel
+                                  value={"Leased"}
+                                  control={<Radio color={"primary"} />}
+                                  label={"Leased"}
+                                />
                               </RadioGroup>
                             </FormControl>
                           </GridItem>
 
-                          <GridItem className={classes.root} xs={12} sm={12} md={12}>
-                            <Typography className={classes.subTitle} variant={"h6"}>Upload Document(s)</Typography>
+                          <GridItem
+                            className={classes.root}
+                            xs={12}
+                            sm={12}
+                            md={12}
+                          >
+                            <Typography
+                              className={classes.subTitle}
+                              variant={"h6"}
+                            >
+                              Upload Document(s)
+                            </Typography>
                           </GridItem>
 
                           <GridItem xs={12} sm={12} md={12}>
-                            <Divider component={"div"}/>
+                            <Divider component={"div"} />
                           </GridItem>
                           {this.getDocumentView()}
                           <GridItem xs={12} sm={12} md={12}>
-                            <Typography className={classes.subTitle} variant={"h6"}>Declaration</Typography>
+                            <Typography
+                              className={classes.subTitle}
+                              variant={"h6"}
+                            >
+                              Declaration
+                            </Typography>
                           </GridItem>
 
                           <GridItem xs={12} sm={12} md={12}>
                             <FormControlLabel
-                              style={{ whiteSpace: "pre-line", alignItems: "flex-start" }}
+                              style={{
+                                whiteSpace: "pre-line",
+                                alignItems: "flex-start"
+                              }}
                               control={
-                                <Checkbox style={{ paddingTop: 0 }} color={"primary"}
-                                          onChange={(val, checked) => this.setState({ agree: checked })}/>
+                                <Checkbox
+                                  style={{ paddingTop: 0 }}
+                                  color={"primary"}
+                                  onChange={(val, checked) =>
+                                    this.setState({ agree: checked })
+                                  }
+                                />
                               }
-                              label={"1. I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
-                              "no unauthorized construction." +
-                              "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations 2012." +
-                              "\n3. I shall follow all rules and regulations of AMC." +
-                              "\n4. It is certified that the above information is correct to the best of my knowledge." +
-                              "\n"}/>
+                              label={
+                                "1. I hereby declare that my premises are not located in unauthorized area or any enroachment on government land and there is " +
+                                "no unauthorized construction." +
+                                "\n2. I shall dispose of solid waste of these premises as per AMC, Sanitation and Public Health Regulations 2012." +
+                                "\n3. I shall follow all rules and regulations of AMC." +
+                                "\n4. It is certified that the above information is correct to the best of my knowledge." +
+                                "\n"
+                              }
+                            />
                           </GridItem>
                           <GridItem xs={12} sm={12} md={12}>
-                            <Divider/>
+                            <Divider />
                           </GridItem>
                         </GridContainer>
                       </CardContent>
                       <CardActions disableActionSpacing={true}>
                         <GridContainer justify={"flex-end"}>
                           <GridItem>
-                            <Button name={"primary"} disabled={
-                              !this.valid()
-                            }
-                                    color={"primary"} variant={"outlined"}
-                                    onClick={event => this.requestOtp()}>
+                            <Button
+                              name={"primary"}
+                              disabled={!this.valid()}
+                              color={"primary"}
+                              variant={"outlined"}
+                              onClick={event => this.requestOtp()}
+                            >
                               {ShopLicenseViewModel.PRIMARY_TEXT}
                             </Button>
                             {"\u00A0 "}
                             {"\u00A0 "}
                             {"\u00A0 "}
-                            <Button name={"secondary"}
-                                    color={"secondary"}
-                                    variant={"outlined"}
-                                    onClick={e => this.componentDidMount()}>
+                            <Button
+                              name={"secondary"}
+                              color={"secondary"}
+                              variant={"outlined"}
+                              onClick={e => this.componentDidMount()}
+                            >
                               {ShopLicenseViewModel.SECONDARY_TEXT}
                             </Button>
                           </GridItem>
@@ -845,35 +1105,37 @@ class RenewShopLicenseDialog extends Component {
 
                 {/*<SubmitDialog open={this.state.submit} text={"Your Application is submitting, Please wait..."}/>*/}
 
+                <OtpDialog
+                  successMessage={this.state.otpMessage}
+                  phone={this.state.phone}
+                  open={this.state.openOtp}
+                  purposed={"Resubmit Shop Application"}
+                  onClose={value => {
+                    this.setState({ openOtp: false });
+                    this.onVerifiedOtp(value);
+                  }}
+                />
 
-                <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
-                           purposed={"Resubmit Shop Application"}
-                           onClose={(value) => {
-                             this.setState({ openOtp: false });
-                             this.onVerifiedOtp(value);
-                           }}/>
-
-                <GMapDialog open={this.state.openMap} onClose={(lat, lng) => {
-                  let msg = `Latitude: ${lat} , Longitude: ${lng}`;
-                  this.setState({ coordinate: msg });
-                  this.setState(state => {
-                    state.latitude = lat;
-                    state.longitude = lng;
-                  });
-                  this.setState({ openMap: false });
-                }} isMarkerShown={true}/>
-
-
+                <GMapDialog
+                  open={this.state.openMap}
+                  onClose={(lat, lng) => {
+                    let msg = `Latitude: ${lat} , Longitude: ${lng}`;
+                    this.setState({ coordinate: msg });
+                    this.setState(state => {
+                      state.latitude = lat;
+                      state.longitude = lng;
+                    });
+                    this.setState({ openMap: false });
+                  }}
+                  isMarkerShown={true}
+                />
               </GridContainer>
-            }
+            )}
           </DialogContent>
         </Dialog>
       </>
-
-
     );
   }
-
 }
 
 RenewShopLicenseDialog.propTypes = {
