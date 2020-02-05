@@ -1,5 +1,5 @@
 import React from "react";
-import {withStyles} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -16,7 +16,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import OfficeSelect from "../../components/OfficeSelect";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
-import {FormatStaff} from "../../utils/Util";
+import { FormatStaff } from "../../utils/Util";
 import moment from "moment";
 
 const styles = {
@@ -50,91 +50,118 @@ class SendDialog extends React.Component {
   };
 
   getFileDetail = () => {
-       return (
-        <>
-          {/*<ListItem button>
+    return (
+      <>
+        {/*<ListItem button>
             <ListItemText primary="Computer File. No." secondary={this.props.file.id}/>
           </ListItem>*/}
-          <Divider/>
-          <ListItem button>
-            <ListItemText primary="File No." secondary={this.props.file.number}/>
-          </ListItem>
-          <Divider/>
-          <ListItem button>
-            <ListItemText primary="Subject: " secondary={this.props.file.subject}/>
-          </ListItem>
-          <Divider/>
-          <ListItem button>
-            <ListItemText primary="Branch: " secondary={this.props.file.branch}/>
-          </ListItem>
-          <Divider/>
-          <ListItem button>
-            <ListItemText primary="Classification: " secondary={this.props.file.classification}/>
-          </ListItem>
-          <Divider/>
-          <ListItem button>
-            <ListItemText primary="Created On: " secondary={moment(this.props.file.created_at).format('Do MMMM YYYY (\dddd\)')}/>
-          </ListItem>
-        </>
+        <Divider />
+        <ListItem button>
+          <ListItemText primary="File No." secondary={this.props.file.number} />
+        </ListItem>
+        <Divider />
+        <ListItem button>
+          <ListItemText
+            primary="Subject: "
+            secondary={this.props.file.subject}
+          />
+        </ListItem>
+        <Divider />
+        <ListItem button>
+          <ListItemText primary="Branch: " secondary={this.props.file.branch} />
+        </ListItem>
+        <Divider />
+        <ListItem button>
+          <ListItemText
+            primary="Classification: "
+            secondary={this.props.file.classification}
+          />
+        </ListItem>
+        <Divider />
+        <ListItem button>
+          <ListItemText
+            primary="Created On: "
+            secondary={moment(this.props.file.created_at).format(
+              "Do MMMM YYYY (dddd)"
+            )}
+          />
+        </ListItem>
+      </>
     );
   };
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     let self = this;
     return (
-        <Dialog
-            open={this.props.open}
-            onClose={this.props.onClose}
-            TransitionComponent={Transition}
-        >
-          <AppBar className={classes.appBar}>
-            <Toolbar>
-              <IconButton color="inherit" onClick={this.props.onClose} aria-label="Close">
-                <CloseIcon/>
-              </IconButton>
-              <Typography variant="subtitle2" color="inherit" className={classes.flex}>
-                Send File to:{this.state.recipient_id ? this.state.recipient_id.label : ""}
-              </Typography>
-              <Button onClick={this.props.onClose} color="inherit">
-                Close
-              </Button>
-            </Toolbar>
-          </AppBar>
-          <List>
-            <ListItem button>
-              <ListItemText
-                  primary="Select user below to assign the file to Officer/Staffs. Select carefully!"
-                  secondary="Details of File shown below."/>
-            </ListItem>
-            <ListItem button>
-              <Grid container>
-                <Grid item xs={12}>
-                  <OfficeSelect
-                      value={this.state.recipient_id}
-                      options={FormatStaff(this.props.staffs)}
-                      name={"recipient_id"}
-                      label={"Send File To"}
-                      variant={"outlined"}
-                      margin={"dense"}
-                      required={true}
-                      fullWidth={true}
-                      onChange={this.handleOfficeSelect.bind(this, "recipient_id")}/>
-                </Grid>
+      <Dialog
+        open={this.props.open}
+        onClose={this.props.onClose}
+        TransitionComponent={Transition}
+      >
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              onClick={this.props.onClose}
+              aria-label="Close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography
+              variant="subtitle2"
+              color="inherit"
+              className={classes.flex}
+            >
+              Send File to:
+              {this.state.recipient_id ? this.state.recipient_id.label : ""}
+            </Typography>
+            <Button onClick={this.props.onClose} color="inherit">
+              Close
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <List>
+          <ListItem button>
+            <ListItemText
+              primary="Select user below to assign the file to Officer/Staffs. Select carefully!"
+              secondary="Details of File shown below."
+            />
+          </ListItem>
+          <ListItem button>
+            <Grid container>
+              <Grid item xs={12}>
+                <OfficeSelect
+                  value={this.state.recipient_id}
+                  options={FormatStaff(this.props.staffs)}
+                  name={"recipient_id"}
+                  label={"Send File To"}
+                  variant={"outlined"}
+                  margin={"dense"}
+                  required={true}
+                  fullWidth={true}
+                  onChange={this.handleOfficeSelect.bind(this, "recipient_id")}
+                />
               </Grid>
-            </ListItem>
+            </Grid>
+          </ListItem>
 
-            {
-              self.props.file ? self.getFileDetail() : ""
-            }
-            <Divider/>
-          </List>
-          <DialogActions>
-            <Button disabled={!Boolean(this.state.recipient_id)} color="primary"
-                    onClick={this.handleSubmit.bind(this)}>{this.props.actionText ? this.props.actionText : "Assign"}</Button>
-            <Button color="secondary" onClick={this.props.onClose}>Cancel</Button>
-          </DialogActions>
-        </Dialog>
+          {self.props.file ? self.getFileDetail() : ""}
+          <Divider />
+        </List>
+        <DialogActions>
+          <Button
+            disabled={!Boolean(this.state.recipient_id)}
+            color="primary"
+            onClick={this.handleSubmit.bind(this)}
+          >
+            {this.props.actionText ? this.props.actionText : "Assign"}
+          </Button>
+          <Button color="secondary" onClick={this.props.onClose}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 }
@@ -147,4 +174,3 @@ SendDialog.propTypes = {
   file: PropTypes.any
 };
 export default withStyles(styles)(SendDialog);
-

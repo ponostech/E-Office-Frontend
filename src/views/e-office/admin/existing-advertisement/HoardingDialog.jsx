@@ -123,6 +123,8 @@ class HoardingDialog extends Component {
           ? delete errors["category"]
           : (errors["localCouncil"] = "Category is required");
         break;
+      default:
+        break;
     }
   };
   onBlur = (name, value) => {};

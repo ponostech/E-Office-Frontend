@@ -6,13 +6,8 @@ import MUIDataTable from "mui-datatables";
 import moment from "moment";
 import ChallanService from "../../../services/ChallanService";
 import ConfirmDialog from "../../../components/ConfirmDialog";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { ChallanReceipt } from "../../print-template/ChallanReceipt";
-import ReactDOMServer from 'react-dom/server';
-// challan no,application_no,details,type,created_at
-const fake = [
-  { challan_no: "123", application_no: "123", details: "detail", type: "fee", created_at: new Date() }
-];
+import ReactDOMServer from "react-dom/server";
 
 class PaidChallanList extends Component {
   constructor(props) {
@@ -31,35 +26,43 @@ class PaidChallanList extends Component {
 
   componentDidMount() {
     this.setGlobal({ loading: true });
-    this.challanService.all("paid",
-      errorMsg => this.setGlobal({ errorMsg }),
-      challans => this.setState({ challans }))
+    this.challanService
+      .all(
+        "paid",
+        errorMsg => this.setGlobal({ errorMsg }),
+        challans => this.setState({ challans })
+      )
       .finally(() => this.setGlobal({ loading: false }));
   }
 
-   printChallan = (selectedChallan) => {
-     let myWindow=window.open('','','width=600,height=700');
-     myWindow.document.write(ReactDOMServer.renderToString(<ChallanReceipt challan={selectedChallan}/>));
+  printChallan = selectedChallan => {
+    let myWindow = window.open("", "", "width=600,height=700");
+    myWindow.document.write(
+      ReactDOMServer.renderToString(
+        <ChallanReceipt challan={selectedChallan} />
+      )
+    );
 
-     myWindow.document.close();
+    myWindow.document.close();
 
-     myWindow.focus();
-     myWindow.print();
-     myWindow.close()
-
+    myWindow.focus();
+    myWindow.print();
+    myWindow.close();
   };
 
   render() {
-    const { challans, selectedChallan, openPayByCashDialog, printConfirm, submit, submitTitle } = this.state;
+    const { challans, selectedChallan, printConfirm } = this.state;
 
     const tableColumns = [
       {
         name: "number",
         label: "CHALLAN NO"
-      }, {
+      },
+      {
         name: "type",
         label: "TYPE OF CHALLAN"
-      }, {
+      },
+      {
         name: "id",
         label: "BILLED TO",
         options: {
@@ -77,20 +80,24 @@ class PaidChallanList extends Component {
             }
           }
         }
-      }, {
+      },
+      {
         name: "details",
         label: "DETAIL"
-      }, {
+      },
+      {
         name: "amount",
         label: "AMOUNT",
         options: {
-          customBodyRender: (rate, tableMeta) => new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR",
-            maximumSignificantDigits: 2
-          }).format(rate)
+          customBodyRender: (rate, tableMeta) =>
+            new Intl.NumberFormat("en-IN", {
+              style: "currency",
+              currency: "INR",
+              maximumSignificantDigits: 2
+            }).format(rate)
         }
-      }, {
+      },
+      {
         name: "created_at",
         label: "CREATED AT",
         options: {
@@ -110,14 +117,19 @@ class PaidChallanList extends Component {
             let viewBtn = (
               <>
                 <Tooltip title={"Print Receipt"}>
-                  <IconButton size='small ' onClick={(e) => this.printChallan(selectedChallan)}>
-                    <Icon fontSize="small" color={"action"}>print</Icon>
+                  <IconButton
+                    size="small "
+                    onClick={e => this.printChallan(selectedChallan)}
+                  >
+                    <Icon fontSize="small" color={"action"}>
+                      print
+                    </Icon>
                   </IconButton>
                 </Tooltip>
               </>
             );
 
-            return (viewBtn);
+            return viewBtn;
           }
         }
       }
@@ -132,24 +144,30 @@ class PaidChallanList extends Component {
     return (
       <>
         {/*{console.log('challan list', challans)}*/}
-          {this.global.loading ? <LoadingView/> : <CardContent>
+        {this.global.loading ? (
+          <LoadingView />
+        ) : (
+          <CardContent>
             <MUIDataTable
               title={"LIST OF CHALLAN"}
               data={challans}
               columns={tableColumns}
               options={tableOptions}
             />
+          </CardContent>
+        )}
 
-          </CardContent>}
-
-          <ConfirmDialog message={`Do you want to print ${selectedChallan ? selectedChallan.number : ""}?`}
-                         onCancel={e => this.setState({ printConfirm: false })}
-                         open={printConfirm}
-                         onConfirm={e => this.printReceipt()}/>
-
+        <ConfirmDialog
+          message={`Do you want to print ${
+            selectedChallan ? selectedChallan.number : ""
+          }?`}
+          onCancel={e => this.setState({ printConfirm: false })}
+          open={printConfirm}
+          onConfirm={e => this.printReceipt()}
+        />
       </>
     );
   }
 }
 
-export default (PaidChallanList);
+export default PaidChallanList;

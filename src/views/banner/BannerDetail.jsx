@@ -29,7 +29,6 @@ import FileUpload from "../../components/FileUpload";
 import { APPLICATION_NAME } from "../../utils/Util";
 import Card from "../../components/Card/Card";
 
-
 const style = {
   item: {
     padding: "6px !important"
@@ -37,8 +36,7 @@ const style = {
 };
 
 class BannerDetail extends Component {
-
-  fileRef=React.createRef();
+  fileRef = React.createRef();
   state = {
     length: "",
     height: "",
@@ -56,14 +54,14 @@ class BannerDetail extends Component {
     detailList: [],
     localCouncils: [],
 
-    valid: false,
+    valid: false
   };
 
   componentWillReceiveProps(nextProps, nextContext) {
     this.setState({ localCouncils: nextProps.localCouncils });
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     const { name, value } = e.target;
     this.setState({
       [name]: value
@@ -74,7 +72,7 @@ class BannerDetail extends Component {
   handleSelect = (id, val) => {
     this.setState({ localCouncil: val });
   };
-  handleSelectBlur = (val) => {
+  handleSelectBlur = val => {
     if (this.state.localCouncil) {
       this.setState({ localCouncilError: "" });
     } else {
@@ -85,46 +83,63 @@ class BannerDetail extends Component {
     return this.state.detailList;
   };
 
-  handleBlur = (e) => {
+  handleBlur = e => {
     const { name, value } = e.target;
     switch (name) {
       case "length":
-        value.length === 0 ? this.setState({ lengthError: "Length is required" }) : this.setState({ lengthError: "" });
+        value.length === 0
+          ? this.setState({ lengthError: "Length is required" })
+          : this.setState({ lengthError: "" });
         break;
       case "height":
-        value.length === 0 ? this.setState({ heightError: "Height is required" }) : this.setState({ heightError: "" });
+        value.length === 0
+          ? this.setState({ heightError: "Height is required" })
+          : this.setState({ heightError: "" });
         break;
       case "from":
-        value.length === 0 ? this.setState({ fromError: "From field is required" }) : this.setState({ fromError: "" });
+        value.length === 0
+          ? this.setState({ fromError: "From field is required" })
+          : this.setState({ fromError: "" });
         break;
       case "to":
-        value.length === 0 ? this.setState({ toError: "To field is required" }) : this.setState({ toError: "" });
+        value.length === 0
+          ? this.setState({ toError: "To field is required" })
+          : this.setState({ toError: "" });
+        break;
+      default:
         break;
     }
   };
 
   handleFromChange = fromDate => {
-    this.setState({ "from": fromDate });
+    this.setState({ from: fromDate });
   };
 
   handleToChange = toDate => {
-    this.setState({ "to": toDate });
+    this.setState({ to: toDate });
   };
 
-  handleAdd = (e) => {
+  handleAdd = e => {
     const { onDetailAdd } = this.props;
-    const { length, height, localCouncil,path, from, to } = this.state;
+    const { length, height, localCouncil, path, from, to } = this.state;
 
     const fromDate = moment(from);
     const toDate = moment(to);
 
     if (fromDate > toDate) {
-      this.setState({ errorMessage: "From date can't be greater than To date" });
+      this.setState({
+        errorMessage: "From date can't be greater than To date"
+      });
       return;
     }
 
     let temp = {
-      length, height, localCouncil: localCouncil.label,path, from, to
+      length,
+      height,
+      localCouncil: localCouncil.label,
+      path,
+      from,
+      to
     };
     let list = this.state.detailList;
     list.push(temp);
@@ -132,7 +147,6 @@ class BannerDetail extends Component {
 
     onDetailAdd(temp);
     this.clear();
-
   };
 
   handleRemove = (index, e) => {
@@ -147,6 +161,7 @@ class BannerDetail extends Component {
     this.setState({ detailList: result });
     onRemoveDetail(index);
   };
+
   clear = () => {
     this.setState({
       length: "",
@@ -154,9 +169,9 @@ class BannerDetail extends Component {
       localCouncil: null,
       from: new Date(),
       to: new Date(),
-      path:null
+      path: null
     });
-    this.fileRef.current.doReset()
+    this.fileRef.current.doReset();
   };
 
   doReset = () => {
@@ -165,54 +180,63 @@ class BannerDetail extends Component {
   };
 
   formatDate(date) {
-    return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+    return (
+      date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()
+    );
   }
 
   render() {
     const { classes } = this.props;
     return (
       <>
-        <Card raised={true} style={{padding:16}}>
+        <Card raised={true} style={{ padding: 16 }}>
           <Grid container={true}>
             <GridItem className={classes.item} sm={12} md={3}>
-              <TextField name={"length"}
-                         InputProps={{
-                           inputProps: {
-                             min: 0
-                           }
-                         }}
-                         type={"number"}
-                         fullWidth={true}
-                         required={true}
-                         error={!!this.state.lengthError}
-                         helperText={this.state.lengthError}
-                         label={"Length (Feet)"}
-                         variant={"outlined"}
-                         value={this.state.length}
-                         onBlur={this.handleBlur.bind(this)}
-                         onChange={this.handleChange.bind(this)}
-                         margin={"dense"}
+              <TextField
+                name={"length"}
+                InputProps={{
+                  inputProps: {
+                    min: 0
+                  }
+                }}
+                type={"number"}
+                fullWidth={true}
+                required={true}
+                error={!!this.state.lengthError}
+                helperText={this.state.lengthError}
+                label={"Length (Feet)"}
+                variant={"outlined"}
+                value={this.state.length}
+                onBlur={this.handleBlur.bind(this)}
+                onChange={this.handleChange.bind(this)}
+                margin={"dense"}
               />
             </GridItem>
 
-            <GridItem className={classes.item} style={{ padding: "4px !important" }} sm={12} md={3}>
-              <TextField name={"height"}
-                         InputProps={{
-                           inputProps: {
-                             min: 0
-                           }
-                         }}
-                         type={"number"}
-                         fullWidth={true}
-                         required={true}
-                         error={!!this.state.heightError}
-                         helperText={this.state.heightError}
-                         label={"Height (Feet)"}
-                         variant={"outlined"}
-                         value={this.state.height}
-                         onBlur={this.handleBlur.bind(this)}
-                         onChange={this.handleChange.bind(this)}
-                         margin={"dense"}
+            <GridItem
+              className={classes.item}
+              style={{ padding: "4px !important" }}
+              sm={12}
+              md={3}
+            >
+              <TextField
+                name={"height"}
+                InputProps={{
+                  inputProps: {
+                    min: 0
+                  }
+                }}
+                type={"number"}
+                fullWidth={true}
+                required={true}
+                error={!!this.state.heightError}
+                helperText={this.state.heightError}
+                label={"Height (Feet)"}
+                variant={"outlined"}
+                value={this.state.height}
+                onBlur={this.handleBlur.bind(this)}
+                onChange={this.handleChange.bind(this)}
+                margin={"dense"}
               />
             </GridItem>
 
@@ -229,7 +253,8 @@ class BannerDetail extends Component {
                 helperText={this.state.localCouncilError}
                 onBlur={this.handleSelectBlur.bind(this, "localCouncil")}
                 onChange={this.handleSelect.bind(this, "localCouncil")}
-                options={this.props.localCouncils}/>
+                options={this.props.localCouncils}
+              />
             </GridItem>
 
             <GridItem className={classes.item} sm={12} md={3}>
@@ -247,7 +272,6 @@ class BannerDetail extends Component {
                   format={"dd/MM/yyyy"}
                 />
               </MuiPickersUtilsProvider>
-
             </GridItem>
             <GridItem className={classes.item} sm={12} md={3}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -284,42 +308,49 @@ class BannerDetail extends Component {
               <FileUpload
                 ref={this.fileRef}
                 applicationName={APPLICATION_NAME.BANNER}
-                          document={{
-                            id: 1,
-                            name: "Photo of Banner design",
-                            mandatory: 1,
-                            mime: "image/*"
-                          }}
-                          onUploadSuccess={(data) => {
-                            this.setState({
-                              path: data.location
-                            });
-                          }} onUploadFailure={(err) => {
-                console.log(err);
-              }}/>
+                document={{
+                  id: 1,
+                  name: "Photo of Banner design",
+                  mandatory: 1,
+                  mime: "image/*"
+                }}
+                onUploadSuccess={data => {
+                  this.setState({
+                    path: data.location
+                  });
+                }}
+                onUploadFailure={err => {
+                  console.log(err);
+                }}
+              />
             </GridItem>
             <GridItem className={classes.item} sm={12} md={1}>
-              <Button variant={"contained"} fullWidth={true}
-                disabled={this.state.length.length === 0
-                || this.state.height.length === 0
-                || this.state.path===null
-                || this.state.localCouncil === null
-                || !Boolean(this.state.from)
-                || !Boolean(this.state.to)
-                } onClick={this.handleAdd.bind(this)} color={"primary"}>
-                <AddIcon fontSize={"large"} color={"white"}/>
+              <Button
+                variant={"contained"}
+                fullWidth={true}
+                disabled={
+                  this.state.length.length === 0 ||
+                  this.state.height.length === 0 ||
+                  this.state.path === null ||
+                  this.state.localCouncil === null ||
+                  !Boolean(this.state.from) ||
+                  !Boolean(this.state.to)
+                }
+                onClick={this.handleAdd.bind(this)}
+                color={"primary"}
+              >
+                <AddIcon fontSize={"large"} color={"white"} />
               </Button>
             </GridItem>
           </Grid>
         </Card>
 
-
         <GridContainer>
-          <Divider component={'div'}/>
+          <Divider component={"div"} />
         </GridContainer>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
-            <Divider style={{ marginTop: 10 }}/>
+            <Divider style={{ marginTop: 10 }} />
 
             <Table>
               <TableHead>
@@ -334,37 +365,46 @@ class BannerDetail extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {
-                  this.state.detailList.map((item, index) => {
-                    return (
-                      <TableRow>
-                        <TableCell>{item.length}</TableCell>
-                        <TableCell>{item.height}</TableCell>
-                        <TableCell>{item.localCouncil}</TableCell>
-                        <TableCell>{moment(item.from).format("Do MMM YYYY")}</TableCell>
-                        <TableCell>{moment(item.to).format("Do MMM YYYY")}</TableCell>
-                        <TableCell>
-                        <IconButton href={"#"} onClick={e=>window.open(item.path)}>
-                          <ImageIcon color={"primary"}/>
+                {this.state.detailList.map((item, index) => {
+                  return (
+                    <TableRow>
+                      <TableCell>{item.length}</TableCell>
+                      <TableCell>{item.height}</TableCell>
+                      <TableCell>{item.localCouncil}</TableCell>
+                      <TableCell>
+                        {moment(item.from).format("Do MMM YYYY")}
+                      </TableCell>
+                      <TableCell>
+                        {moment(item.to).format("Do MMM YYYY")}
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          href={"#"}
+                          onClick={e => window.open(item.path)}
+                        >
+                          <ImageIcon color={"primary"} />
                         </IconButton>
-                        </TableCell>
-                        <TableCell>
-                          <IconButton href={"#"} onClick={this.handleRemove.bind(this, index)}>
-                            <DeleteIcon color={"error"}/>
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-                }
-
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          href={"#"}
+                          onClick={this.handleRemove.bind(this, index)}
+                        >
+                          <DeleteIcon color={"error"} />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
-
           </GridItem>
-          <OfficeSnackbar message={this.state.errorMessage} variant={"error"}
-                          open={Boolean(this.state.errorMessage)}
-                          onClose={(e) => this.setState({ errorMessage: "" })}/>
+          <OfficeSnackbar
+            message={this.state.errorMessage}
+            variant={"error"}
+            open={Boolean(this.state.errorMessage)}
+            onClose={e => this.setState({ errorMessage: "" })}
+          />
         </GridContainer>
       </>
     );

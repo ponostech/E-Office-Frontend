@@ -220,8 +220,7 @@ class BasicProfile extends Component {
       addressError,
       dobError,
       branchError,
-      roleError,
-      bloodGroupError
+      roleError
     } = this.state;
     return (
       <Card>

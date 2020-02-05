@@ -2,11 +2,9 @@ import React, { Component } from "reactn";
 import TextEditor from "../../../common/Editor";
 import { Button, Card, CardActions, CardContent } from "@material-ui/core";
 import SubmitDialog from "../../../../../components/SubmitDialog";
-import OfficeSnackbar from "../../../../../components/OfficeSnackbar";
 import RejectTemplateService from "../../../../../services/RejectTemplateService";
 
 class HotelRejectTemplate extends Component {
-
   rejectTemplateService = new RejectTemplateService();
 
   state = {
@@ -15,20 +13,26 @@ class HotelRejectTemplate extends Component {
     type: "hotel",
 
     edit: false,
-    submit: false,
-
+    submit: false
   };
 
-
   componentDidMount() {
-    this.setGlobal({loading:true})
-    this.rejectTemplateService.get("hotel",
-      errorMsg => this.setGlobal({ errorMsg }),
-      template => {
-        if (template)
-          this.setState({ content: template.content, id: template.id, type: template.type, edit: true });
-      })
-      .finally(() => this.setGlobal({loading:false}));
+    this.setGlobal({ loading: true });
+    this.rejectTemplateService
+      .get(
+        "hotel",
+        errorMsg => this.setGlobal({ errorMsg }),
+        template => {
+          if (template)
+            this.setState({
+              content: template.content,
+              id: template.id,
+              type: template.type,
+              edit: true
+            });
+        }
+      )
+      .finally(() => this.setGlobal({ loading: false }));
   }
 
   doUpdate = () => {
@@ -38,21 +42,29 @@ class HotelRejectTemplate extends Component {
       type: this.state.type
     };
     this.setState({ submit: true });
-    this.rejectTemplateService.update(template, errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => this.setState({ successMsg }))
+    this.rejectTemplateService
+      .update(
+        template,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => this.setState({ successMsg })
+      )
       .finally(() => this.setState({ submit: false }));
   };
   doSave = () => {
     let data = {
       content: this.state.content,
-      type:this.state.type
+      type: this.state.type
     };
     this.setState({ submit: true });
-    this.rejectTemplateService.create(data, errorMsg => this.setGlobal({ errorMsg }),
-      (successMsg,id) => this.setState({ successMsg ,edit:true,id}))
+    this.rejectTemplateService
+      .create(
+        data,
+        errorMsg => this.setGlobal({ errorMsg }),
+        (successMsg, id) => this.setState({ successMsg, edit: true, id })
+      )
       .finally(() => this.setState({ submit: false }));
   };
-  handleClick = (identifier) => {
+  handleClick = identifier => {
     switch (identifier) {
       case "save":
         if (this.state.edit) {
@@ -62,13 +74,13 @@ class HotelRejectTemplate extends Component {
         }
         break;
       case "reset":
-        this.setState({content:""});
+        this.setState({ content: "" });
         break;
       default:
         break;
     }
   };
-  editorChange = (e) => {
+  editorChange = e => {
     this.setState({ content: e.target.getContent() });
   };
 
@@ -78,20 +90,34 @@ class HotelRejectTemplate extends Component {
       <>
         <Card>
           <CardContent>
-            <TextEditor onChange={this.editorChange} default={this.state.content}/>
+            <TextEditor
+              onChange={this.editorChange}
+              default={this.state.content}
+            />
           </CardContent>
 
           <CardActions style={{ justifyContent: "flex-end" }}>
-            <Button variant={"outlined"} color={"primary"}
-                    onClick={this.handleClick.bind(this, "save")}>{edit ? "Update" : "Save"}</Button>
-            <Button variant={"outlined"} color={"secondary"}
-                    onClick={this.handleClick.bind(this, "reset")}>Reset</Button>
+            <Button
+              variant={"outlined"}
+              color={"primary"}
+              onClick={this.handleClick.bind(this, "save")}
+            >
+              {edit ? "Update" : "Save"}
+            </Button>
+            <Button
+              variant={"outlined"}
+              color={"secondary"}
+              onClick={this.handleClick.bind(this, "reset")}
+            >
+              Reset
+            </Button>
           </CardActions>
-
         </Card>
-        <SubmitDialog open={this.state.submit} title={"Submit Template"}
-                      text={"Hote License template is submitting ..."}/>
-
+        <SubmitDialog
+          open={this.state.submit}
+          title={"Submit Template"}
+          text={"Hote License template is submitting ..."}
+        />
       </>
     );
   }

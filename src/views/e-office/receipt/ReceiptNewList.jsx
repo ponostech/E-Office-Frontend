@@ -26,65 +26,75 @@ class ReceiptNewList extends Component {
 
     openAttach: false,
     view: false,
-    submit:false
-
+    submit: false
   };
 
   componentDidMount() {
     this.setGlobal({ loading: true });
 
-    Promise.all([this.getReceipts(), this.getFiles()])
-      .finally(() => this.setGlobal({ loading: false }));
+    Promise.all([this.getReceipts(), this.getFiles()]).finally(() =>
+      this.setGlobal({ loading: false })
+    );
   }
 
-  getReceipts = async () => await this.receiptService.all("new",
-    errorMsg => this.setGlobal({ errorMsg }),
-    receipts => this.setState({ receipts }))
-    .finally(() => console.log("list of receipt request complete"));
+  getReceipts = async () =>
+    await this.receiptService
+      .all(
+        "new",
+        errorMsg => this.setGlobal({ errorMsg }),
+        receipts => this.setState({ receipts })
+      )
+      .finally(() => console.log("list of receipt request complete"));
 
-  getFiles = async () => await this.fileService.all(
-    errorMsg => this.setGlobal({ errorMsg }),
-    files => {
-      let list = [];
+  getFiles = async () =>
+    await this.fileService
+      .all(
+        errorMsg => this.setGlobal({ errorMsg }),
+        files => {
+          let list = [];
 
-      files.map(file => {
-        list.push({
-          value: file.id,
-          label: `${file.number} (${file.status})`
-        });
-      });
-      this.setState({files:list})
-    })
-    .finally(() => console.log("list of files request complete"));
+          files.map(file => {
+            list.push({
+              value: file.id,
+              label: `${file.number} (${file.status})`
+            });
+          });
+          this.setState({ files: list });
+        }
+      )
+      .finally(() => console.log("list of files request complete"));
 
-
-  view = (receipt) => {
-      this.setState({receipt,view:true});
+  view = receipt => {
+    this.setState({ receipt, view: true });
   };
-  edit = (receipt) => {
+  edit = receipt => {
     const { history } = this.props;
     history.push(EDIT_RECEIPT(receipt.id));
   };
-  attach = (receipt) => {
+  attach = receipt => {
     this.setState({ receipt, openAttach: true });
   };
 
-  handleAttach = (receipt_id,file_id) => {
+  handleAttach = (receipt_id, file_id) => {
     if (receipt_id && file_id) {
       this.setState({ openAttach: false, submit: true });
-      this.receiptService.attachToFile(receipt_id, file_id,
-        errorMsg => this.setGlobal({ errorMsg }),
-        successMsg => {
-        this.setGlobal({ successMsg })
-        this.componentDidMount();
-        })
+      this.receiptService
+        .attachToFile(
+          receipt_id,
+          file_id,
+          errorMsg => this.setGlobal({ errorMsg }),
+          successMsg => {
+            this.setGlobal({ successMsg });
+            this.componentDidMount();
+          }
+        )
         .finally(() => this.setState({ submit: false }));
     }
-    this.setState({ openAttach: false })
-  }
+    this.setState({ openAttach: false });
+  };
 
   render() {
-    const { receipt, receipts } = this.state;
+    const { receipts } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scroll",
@@ -96,10 +106,12 @@ class ReceiptNewList extends Component {
       {
         name: "number",
         label: "RECEIPT NO"
-      }, {
+      },
+      {
         name: "subject",
         label: "SUBJECT"
-      },{
+      },
+      {
         name: "classification",
         label: "CLASSIFICATION"
       },
@@ -112,14 +124,15 @@ class ReceiptNewList extends Component {
         label: "LETTER DATE",
         options: {
           filter: false,
-          customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
+          customBodyRender: value => moment(value).format("Do MMMM YYYY")
         }
-      }, {
+      },
+      {
         name: "received_date",
         label: "RECEIVED DATE",
         options: {
           filter: false,
-          customBodyRender: (value) => moment(value).format("Do MMMM YYYY")
+          customBodyRender: value => moment(value).format("Do MMMM YYYY")
         }
       },
       {
@@ -134,20 +147,35 @@ class ReceiptNewList extends Component {
             return (
               <div>
                 <Tooltip title="View details">
-                  <IconButton href={"#"} color="primary" size="small"
-                              aria-label="View File" onClick={this.view.bind(this, data)}>
+                  <IconButton
+                    href={"#"}
+                    color="primary"
+                    size="small"
+                    aria-label="View File"
+                    onClick={this.view.bind(this, data)}
+                  >
                     <Icon fontSize="small">remove_red_eye</Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="View File">
-                  <IconButton href={"#"} color="primary" size="small"
-                              aria-label="Edit receipt" onClick={this.edit.bind(this, data)}>
+                  <IconButton
+                    href={"#"}
+                    color="primary"
+                    size="small"
+                    aria-label="Edit receipt"
+                    onClick={this.edit.bind(this, data)}
+                  >
                     <Icon fontSize="small">edit</Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Attach to file">
-                  <IconButton href={"#"} variant="contained" color="primary"
-                              size="small" onClick={this.attach.bind(this, data)}>
+                  <IconButton
+                    href={"#"}
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    onClick={this.attach.bind(this, data)}
+                  >
                     <Icon fontSize="small">attach_file</Icon>
                   </IconButton>
                 </Tooltip>
@@ -160,21 +188,35 @@ class ReceiptNewList extends Component {
 
     return (
       <>
-        {this.global.loading ? <LoadingView/> : <CardContent>
-          <MUIDataTable
-            title={"Receipt: List of New Receipt"}
-            data={receipts}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-        </CardContent>}
+        {this.global.loading ? (
+          <LoadingView />
+        ) : (
+          <CardContent>
+            <MUIDataTable
+              title={"Receipt: List of New Receipt"}
+              data={receipts}
+              columns={tableColumns}
+              options={tableOptions}
+            />
+          </CardContent>
+        )}
 
-        <ReceiptDetailDialog open={this.state.view} onClose={e=>this.setState({view:false})} receipt={this.state.receipt}/>
-        <SubmitDialog open={this.state.submit} text={"Please wait ..."} title={"Attaching Receipt to File"}/>
-        <AttachReceiptDialog onClose={this.handleAttach.bind(this)}
-                             open={Boolean(this.state.openAttach)}
-                             files={this.state.files}
-                             receipt={this.state.receipt}/>
+        <ReceiptDetailDialog
+          open={this.state.view}
+          onClose={e => this.setState({ view: false })}
+          receipt={this.state.receipt}
+        />
+        <SubmitDialog
+          open={this.state.submit}
+          text={"Please wait ..."}
+          title={"Attaching Receipt to File"}
+        />
+        <AttachReceiptDialog
+          onClose={this.handleAttach.bind(this)}
+          open={Boolean(this.state.openAttach)}
+          files={this.state.files}
+          receipt={this.state.receipt}
+        />
       </>
     );
   }

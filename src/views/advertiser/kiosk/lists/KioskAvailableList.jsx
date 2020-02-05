@@ -6,7 +6,6 @@ import { IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
 import { KioskService } from "../../../../services/KioskService";
-import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 import CheckIcon from "@material-ui/icons/CheckBox";
 import KioskApplyDialog from "../KioskApplyDialog";
 import { DocumentService } from "../../../../services/DocumentService";
@@ -28,24 +27,26 @@ class KioskAvailableList extends Component {
   componentDidMount() {
     document.title = "e-AMC | List of Kiosk application";
     this.setGlobal({ loading: true });
-    Promise.all([this.fetchKiosk(), this.fetchDocument()])
-      .finally(() => {
-        this.setGlobal({ loading: false });
-      });
+    Promise.all([this.fetchKiosk(), this.fetchDocument()]).finally(() => {
+      this.setGlobal({ loading: false });
+    });
   }
 
   fetchKiosk = async () => {
     await this.kioskService.fetchAdvertiserKiosk(
       errorMsg => this.setGlobal({ errorMsg }),
-      kiosks => this.setState({ kiosks }));
+      kiosks => this.setState({ kiosks })
+    );
   };
   fetchDocument = async () => {
-    await this.documentService.fetch("advertiser",
+    await this.documentService.fetch(
+      "advertiser",
       errorMsg => this.setGlobal({ errorMsg }),
-      advertiserDocuments => this.setState({ advertiserDocuments }));
+      advertiserDocuments => this.setState({ advertiserDocuments })
+    );
   };
 
-  applyKiosk = (data) => {
+  applyKiosk = data => {
     this.setState({ openApply: false });
     this.setState({ successMessage: "You have applied kiosk" });
   };
@@ -56,44 +57,49 @@ class KioskAvailableList extends Component {
         name: "created_at",
         label: "DATE",
         options: {
-          customBodyRender: (date) => {
+          customBodyRender: date => {
             const d = moment(date).format("Do MMM YYY");
             return d.toString();
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return value?(value.file.number):"NA";
+            return value ? value.file.number : "NA";
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "SUBJECT",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return value? (value.file.subject):"NA";
+            return value ? value.file.subject : "NA";
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "PURPOSED LOCATION",
         options: {
           customBodyRender: (kiosk, tableMeta, updateValue) => {
-            return (kiosk.address);
+            return kiosk.address;
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "LOCAL COUNCIL",
         options: {
           customBodyRender: (kiosk, tableMeta, updateValue) => {
-            return (kiosk.local_council.name);
+            return kiosk.local_council.name;
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "ACTIONS",
         options: {
@@ -104,23 +110,27 @@ class KioskAvailableList extends Component {
             let viewBtn = (
               <>
                 <Tooltip title={"Click here to view details"}>
-                  <IconButton onClick={(e) => {
-                    this.setState({ openDetail: true, kiosk: file });
-                  }}>
-                    <EyeIcon color={"primary"} fontSize={"small"}/>
+                  <IconButton
+                    onClick={e => {
+                      this.setState({ openDetail: true, kiosk: file });
+                    }}
+                  >
+                    <EyeIcon color={"primary"} fontSize={"small"} />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Click here to apply hoarding"}>
-                  <IconButton onClick={(e) => {
-                    this.setState({ openApply: true, kiosk: file });
-                  }}>
-                    <CheckIcon fontSize={"small"} color={"primary"}/>
+                  <IconButton
+                    onClick={e => {
+                      this.setState({ openApply: true, kiosk: file });
+                    }}
+                  >
+                    <CheckIcon fontSize={"small"} color={"primary"} />
                   </IconButton>
                 </Tooltip>
               </>
             );
 
-            return (viewBtn);
+            return viewBtn;
           }
         }
       }
@@ -132,31 +142,42 @@ class KioskAvailableList extends Component {
       serverSide: false,
       selectableRows: false,
       responsive: "scroll",
-      customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
+      customToolbarSelect: function(
+        selectedRows,
+        displayData,
+        setSelectedRows
+      ) {
         return false;
       },
-      onRowClick: function(rowData, rowMeta) {
-      }
+      onRowClick: function(rowData, rowMeta) {}
     };
 
     return (
       <>
-        {
-          this.global.loading ? <LoadingView/> :
-            <Grid item sm={12} xs={12} md={12}>
-              <MUIDataTable
-                title={"KIOSK: List of Available Kiosks"}
-                data={this.state.kiosks}
-                columns={tableColumns}
-                options={tableOptions}
-              />
-              <KioskApplyDialog documents={this.state.advertiserDocuments}
-                                onClose={() => this.setState({ openApply: false })} open={this.state.openApply}
-                                onConfirm={this.applyKiosk.bind(this)} application={this.state.kiosk}/>
-              <KioskViewDialog open={Boolean(this.state.openDetail)} data={this.state.kiosk}
-                                      close={e => this.setState({ openDetail: false, kiosk: null })}/>
-            </Grid>
-        }
+        {this.global.loading ? (
+          <LoadingView />
+        ) : (
+          <Grid item sm={12} xs={12} md={12}>
+            <MUIDataTable
+              title={"KIOSK: List of Available Kiosks"}
+              data={this.state.kiosks}
+              columns={tableColumns}
+              options={tableOptions}
+            />
+            <KioskApplyDialog
+              documents={this.state.advertiserDocuments}
+              onClose={() => this.setState({ openApply: false })}
+              open={this.state.openApply}
+              onConfirm={this.applyKiosk.bind(this)}
+              application={this.state.kiosk}
+            />
+            <KioskViewDialog
+              open={Boolean(this.state.openDetail)}
+              data={this.state.kiosk}
+              close={e => this.setState({ openDetail: false, kiosk: null })}
+            />
+          </Grid>
+        )}
       </>
     );
   }

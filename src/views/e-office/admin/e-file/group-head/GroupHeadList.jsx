@@ -5,7 +5,7 @@ import LoadingView from "../../../../common/LoadingView";
 import CardContent from "@material-ui/core/CardContent";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
-import {MuiThemeProvider} from "@material-ui/core/styles";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 import { FileHeadService } from "../../../../../services/FileHeadService";
 import SubmitDialog from "../../../../../components/SubmitDialog";
 import ConfirmDialog from "../../../../../components/ConfirmDialog";
@@ -15,7 +15,6 @@ class GroupHeadList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
       groupHeads: [],
       selectedGroupHead: null,
 
@@ -31,16 +30,26 @@ class GroupHeadList extends Component {
 
   componentDidMount() {
     this.setGlobal({ loading: false });
-    this.fileHeadService.getHead(errorMsg => this.setGlobal({ errorMsg }),
-      groupHeads => this.setState({ groupHeads }))
+    this.fileHeadService
+      .getHead(
+        errorMsg => this.setGlobal({ errorMsg }),
+        groupHeads => this.setState({ groupHeads })
+      )
       .finally(() => this.setGlobal({ loading: false }));
   }
 
-  onCreate = (data) => {
-    this.setState({ submitTitle: "Creating Group Head", openCreate: false, submit: true });
-    this.fileHeadService.create(data,
-      errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => this.setGlobal({ successMsg }))
+  onCreate = data => {
+    this.setState({
+      submitTitle: "Creating Group Head",
+      openCreate: false,
+      submit: true
+    });
+    this.fileHeadService
+      .create(
+        data,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => this.setGlobal({ successMsg })
+      )
       .finally(() => {
         this.setState({ submit: false });
         this.componentDidMount();
@@ -48,9 +57,12 @@ class GroupHeadList extends Component {
   };
   onDelete = () => {
     this.setState({ submitTitle: "Creating Group Head", submit: true });
-    this.fileHeadService.delete(this.selectedGroupHead.id,
-      errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => this.setGlobal({ successMsg }))
+    this.fileHeadService
+      .delete(
+        this.selectedGroupHead.id,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => this.setGlobal({ successMsg })
+      )
       .finally(() => {
         this.setState({ submit: false });
         this.componentDidMount();
@@ -58,8 +70,8 @@ class GroupHeadList extends Component {
   };
 
   render() {
-    const { groupHeads, selectedGroupHead } = this.state;
-    const { submit, submitTitle, openCreate, openConfirm, openEdit } = this.state;
+    const { groupHeads } = this.state;
+    const { submit, submitTitle, openCreate, openConfirm } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       rowsPerPage: 15
@@ -69,16 +81,19 @@ class GroupHeadList extends Component {
       {
         name: "value",
         label: "VALUE"
-      }, {
+      },
+      {
         name: "label",
         label: "LABEL"
-      }, {
+      },
+      {
         name: "created_at",
         label: "CREATED AT",
         options: {
           customBodyRender: rate => moment(rate).format("Do MMMM YYYY")
         }
-      }, {
+      },
+      {
         name: "id",
         label: "ACTION",
         options: {
@@ -89,24 +104,41 @@ class GroupHeadList extends Component {
             return (
               <>
                 <Tooltip title={"Edit"}>
-                  <IconButton href={"#"} onClick={event => this.setState({ openEdit: true, selectedGroupHead })}>
-                    <Icon fontSize={"small"} color={"primary"}>edit</Icon>
+                  <IconButton
+                    href={"#"}
+                    onClick={event =>
+                      this.setState({ openEdit: true, selectedGroupHead })
+                    }
+                  >
+                    <Icon fontSize={"small"} color={"primary"}>
+                      edit
+                    </Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Delete"}>
-                  <IconButton href={"#"} onClick={event => this.setState({ confirmDelete: true, selectedGroupHead })}>
-                    <Icon color={"secondary"} fontSize={"small"}>delete</Icon>
+                  <IconButton
+                    href={"#"}
+                    onClick={event =>
+                      this.setState({ confirmDelete: true, selectedGroupHead })
+                    }
+                  >
+                    <Icon color={"secondary"} fontSize={"small"}>
+                      delete
+                    </Icon>
                   </IconButton>
                 </Tooltip>
               </>
             );
           }
         }
-      }];
+      }
+    ];
     return (
       <>
         <MuiThemeProvider theme={this.props.theme}>
-          {this.global.loading ? <LoadingView/> :
+          {this.global.loading ? (
+            <LoadingView />
+          ) : (
             <CardContent>
               <MUIDataTable
                 title={"List of Group Head"}
@@ -115,18 +147,33 @@ class GroupHeadList extends Component {
                 options={tableOptions}
               />
               <Tooltip title="Add Note" aria-label="Add New Group Head">
-                <Fab onClick={event => this.setState({ openCreate: true })} href={"#"} color="primary" aria-label="Add"
-                     style={{ position: "fixed", right: 80, bottom: 100 }}>
+                <Fab
+                  onClick={event => this.setState({ openCreate: true })}
+                  href={"#"}
+                  color="primary"
+                  aria-label="Add"
+                  style={{ position: "fixed", right: 80, bottom: 100 }}
+                >
                   <Icon>add</Icon>
                 </Fab>
               </Tooltip>
             </CardContent>
-          }
-          <GroupHeadCreateDialog open={openCreate} onClose={e => this.setState({ openCreate: false })}
-                                 onCreate={this.onCreate.bind(this)}/>
-          <SubmitDialog open={submit} title={submitTitle} text={"Please wait ... "}/>
-          <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={openConfirm}
-                         onConfirm={this.onDelete.bind(this)}/>
+          )}
+          <GroupHeadCreateDialog
+            open={openCreate}
+            onClose={e => this.setState({ openCreate: false })}
+            onCreate={this.onCreate.bind(this)}
+          />
+          <SubmitDialog
+            open={submit}
+            title={submitTitle}
+            text={"Please wait ... "}
+          />
+          <ConfirmDialog
+            onCancel={e => this.setState({ openConfirm: false })}
+            open={openConfirm}
+            onConfirm={this.onDelete.bind(this)}
+          />
         </MuiThemeProvider>
       </>
     );

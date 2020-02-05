@@ -237,7 +237,7 @@ class AdvertiserContainer extends Component {
   onItemClick = (selectedAdvertiser) => this.setState({ selectedAdvertiser });
 
   render() {
-    const { open, selectedAdvertiser } = this.state;
+    const { selectedAdvertiser } = this.state;
     const { history, classes } = this.props;
 
     return (

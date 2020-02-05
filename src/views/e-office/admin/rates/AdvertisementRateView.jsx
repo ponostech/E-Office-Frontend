@@ -7,7 +7,6 @@ import IconButton from "@material-ui/core/IconButton";
 import RateService from "../../../../services/RateService";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
-import RateEditDialog from "./RateEditDialog";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
@@ -19,7 +18,14 @@ import OtherRateDialog from "./OtherRateDialog";
 import HoardingRateEditDialog from "./HoardingRateEditDialog";
 
 const fake = [
-  { id: 1, type: "hoarding", display_type: "illuminate", land_owner_type: "Private", category: "A", rate: 10000 }
+  {
+    id: 1,
+    type: "hoarding",
+    display_type: "illuminate",
+    land_owner_type: "Private",
+    category: "A",
+    rate: 10000
+  }
 ];
 
 const styles = theme => ({
@@ -34,7 +40,6 @@ const styles = theme => ({
 });
 
 class AdvertisementRateView extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -88,22 +93,36 @@ class AdvertisementRateView extends Component {
     });
   };
 
-
-  onCreate = (data) => {
-    this.setState({ openHoarding: false, openOther: false, submitTitle: "Creating Advertisement Rate" });
+  onCreate = data => {
+    this.setState({
+      openHoarding: false,
+      openOther: false,
+      submitTitle: "Creating Advertisement Rate"
+    });
     if (data) {
       this.setState({ submit: true });
-      this.rateService.create(data, errorMsg => this.setGlobal({ errorMsg }),
-        successMsg => this.setGlobal({ successMsg }))
+      this.rateService
+        .create(
+          data,
+          errorMsg => this.setGlobal({ errorMsg }),
+          successMsg => this.setGlobal({ successMsg })
+        )
         .finally(() => this.setState({ submit: false }));
     }
   };
-  onUpdate = (data) => {
-    this.setState({ openEdit: false, submitTitle: "Updating Advertisement Rate" });
+  onUpdate = data => {
+    this.setState({
+      openEdit: false,
+      submitTitle: "Updating Advertisement Rate"
+    });
     if (data) {
       this.setState({ submit: true });
-      this.rateService.update(data, errorMsg => this.setGlobal({ errorMsg }),
-        successMsg => this.setGlobal({ successMsg }))
+      this.rateService
+        .update(
+          data,
+          errorMsg => this.setGlobal({ errorMsg }),
+          successMsg => this.setGlobal({ successMsg })
+        )
         .finally(() => this.setState({ submit: false }));
     }
   };
@@ -111,9 +130,12 @@ class AdvertisementRateView extends Component {
     const { selectedRate } = this.state;
     this.setState({ confirmDelete: false });
     this.setState({ submit: true, submitTitle: "Deleting Advertisement Rate" });
-    this.rateService.delete(selectedRate.id,
-      errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => this.setGlobal({ successMsg }))
+    this.rateService
+      .delete(
+        selectedRate.id,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => this.setGlobal({ successMsg })
+      )
       .finally(() => this.setState({ submit: false }));
   };
 
@@ -129,13 +151,16 @@ class AdvertisementRateView extends Component {
       {
         name: "type",
         label: "TYPES OF ADVERTISEMENT"
-      }, {
+      },
+      {
         name: "display_type",
         label: "TYPE OF DISPLAY"
-      }, {
+      },
+      {
         name: "landowner_type",
         label: "TYPE OF LANDLORD/LANDOWNER"
-      }, {
+      },
+      {
         name: "category",
         label: "CATEGORY"
       },
@@ -143,13 +168,15 @@ class AdvertisementRateView extends Component {
         name: "rate",
         label: "RATE",
         options: {
-          customBodyRender: (rate, tableMeta) => new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR",
-            maximumSignificantDigits: 2
-          }).format(rate)
+          customBodyRender: (rate, tableMeta) =>
+            new Intl.NumberFormat("en-IN", {
+              style: "currency",
+              currency: "INR",
+              maximumSignificantDigits: 2
+            }).format(rate)
         }
-      }, {
+      },
+      {
         name: "id",
         label: "ACTION",
         options: {
@@ -160,12 +187,22 @@ class AdvertisementRateView extends Component {
             return (
               <>
                 <Tooltip title={"Edit"}>
-                  <IconButton href={"#"} onClick={event => this.setState({ openEdit: true, selectedRate: rate })}>
+                  <IconButton
+                    href={"#"}
+                    onClick={event =>
+                      this.setState({ openEdit: true, selectedRate: rate })
+                    }
+                  >
                     <Icon color={"primary"}>edit</Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Delete"}>
-                  <IconButton href={"#"} onClick={event => this.setState({ confirmDelete: true, selectedRate: rate })}>
+                  <IconButton
+                    href={"#"}
+                    onClick={event =>
+                      this.setState({ confirmDelete: true, selectedRate: rate })
+                    }
+                  >
                     <Icon color={"primary"}>delete</Icon>
                   </IconButton>
                 </Tooltip>
@@ -173,28 +210,33 @@ class AdvertisementRateView extends Component {
             );
           }
         }
-      }];
+      }
+    ];
     return (
       <>
-        {this.global.loading ? <LoadingView/> : <CardContent>
-          <MUIDataTable
-            title={"Rate of advertisement"}
-            data={rates}
-            columns={tableColumns}
-            options={tableOptions}
-          />
+        {this.global.loading ? (
+          <LoadingView />
+        ) : (
+          <CardContent>
+            <MUIDataTable
+              title={"Rate of advertisement"}
+              data={rates}
+              columns={tableColumns}
+              options={tableOptions}
+            />
 
-          {/*<Fab href={"#"} onClick={event => this.setState({ openCreate: true })} color="primary" aria-label="Add"*/}
-          {/*     style={{ position: "fixed", right: 80, bottom: 100 }}>*/}
-          {/*  <Icon>add</Icon>*/}
-          {/*</Fab>*/}
-        </CardContent>}
+            {/*<Fab href={"#"} onClick={event => this.setState({ openCreate: true })} color="primary" aria-label="Add"*/}
+            {/*     style={{ position: "fixed", right: 80, bottom: 100 }}>*/}
+            {/*  <Icon>add</Icon>*/}
+            {/*</Fab>*/}
+          </CardContent>
+        )}
 
         <SpeedDial
           ariaLabel="create rate"
           className={classes.speedDial}
           hidden={hidden}
-          icon={<SpeedDialIcon/>}
+          icon={<SpeedDialIcon />}
           onBlur={this.handleClose}
           onClick={this.handleClick}
           onClose={this.handleClose}
@@ -203,27 +245,50 @@ class AdvertisementRateView extends Component {
           onMouseLeave={this.handleClose}
           open={openMenu}
         >
-          <SpeedDialAction onClick={event => this.setState({ openHoarding: true })} icon={<PrintIcon/>}
-                           title={"Hoarding/Kiosk"}>
+          <SpeedDialAction
+            onClick={event => this.setState({ openHoarding: true })}
+            icon={<PrintIcon />}
+            title={"Hoarding/Kiosk"}
+          >
             create hoarding rate
           </SpeedDialAction>
-          <SpeedDialAction onClick={event => this.setState({ openOther: true })} icon={<SaveIcon/>}
-                           title={"Others"}>
+          <SpeedDialAction
+            onClick={event => this.setState({ openOther: true })}
+            icon={<SaveIcon />}
+            title={"Others"}
+          >
             create other rate
           </SpeedDialAction>
         </SpeedDial>
 
-        <SubmitDialog open={this.state.submit} title={this.state.submitTitle} text={"Please wait ..."}/>
-        <ConfirmDialog onCancel={e => this.setState({ confirmDelete: false })} open={this.state.confirmDelete}
-                       onConfirm={this.deleteRate.bind(this)}/>
+        <SubmitDialog
+          open={this.state.submit}
+          title={this.state.submitTitle}
+          text={"Please wait ..."}
+        />
+        <ConfirmDialog
+          onCancel={e => this.setState({ confirmDelete: false })}
+          open={this.state.confirmDelete}
+          onConfirm={this.deleteRate.bind(this)}
+        />
 
-        <HoardingRateDialog open={this.state.openHoarding} onCreate={this.onCreate.bind(this)}
-                            onClose={e => this.setState({ openHoarding: false })}/>
+        <HoardingRateDialog
+          open={this.state.openHoarding}
+          onCreate={this.onCreate.bind(this)}
+          onClose={e => this.setState({ openHoarding: false })}
+        />
 
-        <HoardingRateEditDialog open={this.state.openEditHoarding} rate={this.state.selectedRate} onUpdate={this.onUpdate}
-                                onClose={e => this.setState({ openHoarding: false })}/>
-        <OtherRateDialog open={this.state.openOther} onCreate={this.onCreate.bind(this)}
-                         onClose={e => this.setState({ openOther: false })}/>
+        <HoardingRateEditDialog
+          open={this.state.openEditHoarding}
+          rate={this.state.selectedRate}
+          onUpdate={this.onUpdate}
+          onClose={e => this.setState({ openHoarding: false })}
+        />
+        <OtherRateDialog
+          open={this.state.openOther}
+          onCreate={this.onCreate.bind(this)}
+          onClose={e => this.setState({ openOther: false })}
+        />
 
         {/*<RateEditDialog open={this.state.openEdit} rate={this.state.selectedRate} onClose={this.onUpdate.bind(this)}/>*/}
       </>

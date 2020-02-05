@@ -1,8 +1,8 @@
-import React from 'react';
-import axios from 'axios';
+import React from "react";
+import axios from "axios";
 import { CardHeader, Icon, List } from "@material-ui/core";
 import LoadingView from "../../../../common/LoadingView";
-import {FILE_DRAFT_LIST} from "../../../../../config/ApiRoutes";
+import { FILE_DRAFT_LIST } from "../../../../../config/ApiRoutes";
 import DetailViewRow from "../../../common/DetailViewRow";
 import ErrorHandler from "../../../../common/StatusHandler";
 import DraftSingleViewDialog from "../../../../common/DraftSingleViewDialog";
@@ -15,9 +15,9 @@ class fileDraftCancels extends React.Component {
     data: [],
     singleData: [],
     showDetails: false,
-    errorMsg: '',
-    successMsg: '',
-    loading: true,
+    errorMsg: "",
+    successMsg: "",
+    loading: true
   };
 
   componentDidMount() {
@@ -29,46 +29,64 @@ class fileDraftCancels extends React.Component {
   }
 
   loadData = () => {
-    this.getData(this.props.file.id).then(res => this.responseData(res))
-        .catch(err => this.setState({errorMsg: err.toString()}));
+    this.getData(this.props.file.id)
+      .then(res => this.responseData(res))
+      .catch(err => this.setState({ errorMsg: err.toString() }));
   };
 
-  getData = (id) => axios.get(FILE_DRAFT_LIST(id, 'cancel'));
+  getData = id => axios.get(FILE_DRAFT_LIST(id, "cancel"));
 
-  responseData = (res) => {
-    if (res.data.status) this.setState({loading: false, data: res.data.data.drafts});
-    else this.setState({errorMsg: res.data.messages});
+  responseData = res => {
+    if (res.data.status)
+      this.setState({ loading: false, data: res.data.data.drafts });
+    else this.setState({ errorMsg: res.data.messages });
   };
 
-  formatCreated = (value) => {
+  formatCreated = value => {
     return "Created On: " + moment(value.created_at).format("Do MMMM YYYY");
   };
 
-  openDetails = (draft) => {
-    this.setState({singleData:draft,showDetails:true})
+  openDetails = draft => {
+    this.setState({ singleData: draft, showDetails: true });
   };
-  closeDetails = () => this.setState({showDetails: false, loading: false});
+  closeDetails = () => this.setState({ showDetails: false, loading: false });
 
   render() {
-    const {loading, errorMsg, successMsg, data, showDetails, singleData} = this.state;
-    const content = data.length === 0 ? "No draft" :
-        data.map(value => <DetailViewRow value={value} click={this.openDetails} actionIcon={true}
-                                         primary={"Draft Cancellation Order No. " + value.id}
-                                         secondary={this.formatCreated(value)}>
-          <IconButton href={"#"} onClick={this.openDetails}>
-            <Icon color={"action"}>keyboard_arrow_right</Icon>
-          </IconButton>
-        </DetailViewRow>);
+    const { loading, errorMsg, data, showDetails, singleData } = this.state;
+    const content =
+      data.length === 0
+        ? "No draft"
+        : data.map(value => (
+            <DetailViewRow
+              value={value}
+              click={this.openDetails}
+              actionIcon={true}
+              primary={"Draft Cancellation Order No. " + value.id}
+              secondary={this.formatCreated(value)}
+            >
+              <IconButton href={"#"} onClick={this.openDetails}>
+                <Icon color={"action"}>keyboard_arrow_right</Icon>
+              </IconButton>
+            </DetailViewRow>
+          ));
     return (
-        <>
-          <CardHeader title="List of Drafts Cancellation" subheader="click on the list item to see details"/>
-          <Divider component={"div"} />
-          {loading ? <LoadingView align="left"/> : <List>{content}</List>}
-          {errorMsg && <ErrorHandler messages={this.state.errorMsg}/>}
-          {showDetails && singleData &&
-          <DraftSingleViewDialog draft={singleData} open={showDetails} onClose={this.closeDetails}/>}
-        </>
-    )
+      <>
+        <CardHeader
+          title="List of Drafts Cancellation"
+          subheader="click on the list item to see details"
+        />
+        <Divider component={"div"} />
+        {loading ? <LoadingView align="left" /> : <List>{content}</List>}
+        {errorMsg && <ErrorHandler messages={this.state.errorMsg} />}
+        {showDetails && singleData && (
+          <DraftSingleViewDialog
+            draft={singleData}
+            open={showDetails}
+            onClose={this.closeDetails}
+          />
+        )}
+      </>
+    );
   }
 }
 

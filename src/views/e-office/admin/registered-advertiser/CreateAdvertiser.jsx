@@ -5,9 +5,6 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  Checkbox,
-  Divider,
-  FormControlLabel,
   IconButton,
   InputAdornment,
   TextField,
@@ -22,7 +19,7 @@ import AddressField from "../../../../components/AddressField";
 class CreateAdvertiser extends Component {
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       name: "",
       type: undefined,
       email: "",
@@ -46,21 +43,25 @@ class CreateAdvertiser extends Component {
         { value: "individual", label: "Individual" },
         { value: "firm", label: "Firm" },
         { value: "group", label: "Group(NGO)" }
-      ],
-    }
+      ]
+    };
   }
 
-  onChange=(name,value)=>this.setState({[name]:value})
-  onBlur=(name,value)=>{
-
-  }
-  handleClickShowPassword = (e) => {
+  onChange = (name, value) => this.setState({ [name]: value });
+  onBlur = (name, value) => {};
+  handleClickShowPassword = e => {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
   render() {
     return (
-      <Card style={{flexGrow:1}}>
-        <CardHeader title={<Typography variant={"h5"}>{"New Registered Advertiser"}</Typography>}/>
+      <Card style={{ flexGrow: 1 }}>
+        <CardHeader
+          title={
+            <Typography variant={"h5"}>
+              {"New Registered Advertiser"}
+            </Typography>
+          }
+        />
         <CardContent>
           <TextField
             value={this.state.name}
@@ -72,22 +73,24 @@ class CreateAdvertiser extends Component {
             fullWidth={true}
             variant={"outlined"}
             label={AdvertiserViewModel.NAME}
-            onBlur={event=>this.onBlur("name",event.target.value)}
-            onChange={event => this.onChange('name',event.target.value)}
+            onBlur={event => this.onBlur("name", event.target.value)}
+            onChange={event => this.onChange("name", event.target.value)}
             placeholder={"Fullname"}
           />
-          <OfficeSelect value={this.state.type}
-                        label={"Type of Applicant"}
-                        name={"type"}
-                        variant={"outlined"}
-                        margin={"dense"}
-                        required={true}
-                        fullWidth={true}
-                        helperText={this.state.typeError}
-                        error={Boolean(this.state.typeError)}
-                        onBlur={val=>this.onBlur("type",val)}
-                        onChange={val => this.onChange('type',val)}
-                        options={this.state.types}/>
+          <OfficeSelect
+            value={this.state.type}
+            label={"Type of Applicant"}
+            name={"type"}
+            variant={"outlined"}
+            margin={"dense"}
+            required={true}
+            fullWidth={true}
+            helperText={this.state.typeError}
+            error={Boolean(this.state.typeError)}
+            onBlur={val => this.onBlur("type", val)}
+            onChange={val => this.onChange("type", val)}
+            options={this.state.types}
+          />
           <TextField
             value={this.state.email}
             error={Boolean(this.state.emailError)}
@@ -100,8 +103,8 @@ class CreateAdvertiser extends Component {
             variant={"outlined"}
             label={AdvertiserViewModel.EMAIL}
             placeholder={"Email"}
-            onBlur={event=>this.onBlur("email",event.target.value)}
-            onChange={event => this.onChange('email',event.target.value)}
+            onBlur={event => this.onBlur("email", event.target.value)}
+            onChange={event => this.onChange("email", event.target.value)}
           />
           <TextField
             value={this.state.phone}
@@ -115,8 +118,8 @@ class CreateAdvertiser extends Component {
             variant={"outlined"}
             label={"Phone"}
             placeholder={"Phone"}
-            onBlur={event=>this.onBlur("phone",event.target.value)}
-            onChange={event => this.onChange('phone',event.target.value)}
+            onBlur={event => this.onBlur("phone", event.target.value)}
+            onChange={event => this.onChange("phone", event.target.value)}
           />
           <TextField
             value={this.state.password}
@@ -137,14 +140,18 @@ class CreateAdvertiser extends Component {
                     aria-label="Toggle password visibility"
                     onClick={this.handleClickShowPassword.bind(this)}
                   >
-                    {this.state.showPassword ? <VisibilityOn/> : <VisibilityOff/>}
+                    {this.state.showPassword ? (
+                      <VisibilityOn />
+                    ) : (
+                      <VisibilityOff />
+                    )}
                   </IconButton>
                 </InputAdornment>
               )
             }}
             label={AdvertiserViewModel.PASSWORD}
-            onBlur={event=>this.onBlur("password",event.target.value)}
-            onChange={event => this.onChange('password',event.target.value)}
+            onBlur={event => this.onBlur("password", event.target.value)}
+            onChange={event => this.onChange("password", event.target.value)}
             placeholder={"Password"}
           />
           <TextField
@@ -161,7 +168,11 @@ class CreateAdvertiser extends Component {
                     aria-label="Toggle password visibility"
                     onClick={this.handleClickShowPassword.bind(this)}
                   >
-                    {this.state.showPassword ? <VisibilityOn/> : <VisibilityOff/>}
+                    {this.state.showPassword ? (
+                      <VisibilityOn />
+                    ) : (
+                      <VisibilityOff />
+                    )}
                   </IconButton>
                 </InputAdornment>
               )
@@ -171,16 +182,18 @@ class CreateAdvertiser extends Component {
             fullWidth={true}
             variant={"outlined"}
             label={AdvertiserViewModel.CONFIRM_PASSWORD}
-            onBlur={event=>this.onBlur("confirmPassword",event.target.value)}
-            onChange={event => this.onChange('confirmPassword',event.target.value)}
+            onBlur={event => this.onBlur("confirmPassword", event.target.value)}
+            onChange={event =>
+              this.onChange("confirmPassword", event.target.value)
+            }
             placeholder={"Confirm password"}
           />
           <AddressField
             textFieldProps={{
               placeholder: "Address",
               value: this.state.address,
-              onBlur:event=>this.onBlur("password",event.target.value),
-              onChange:event => this.onChange('password',event.target.value),
+              onBlur: event => this.onBlur("password", event.target.value),
+              onChange: event => this.onChange("password", event.target.value),
               error: Boolean(this.state.addressError),
               helperText: this.state.addressError,
               margin: "dense",
@@ -190,15 +203,17 @@ class CreateAdvertiser extends Component {
               required: true,
               label: "Address"
             }}
-            onPlaceSelect={(place) => {
+            onPlaceSelect={place => {
               if (place) {
                 let name = place.name;
                 let address = place.formatted_address;
-                let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                let complete_address = address.includes(name)
+                  ? address
+                  : `${name} ${address}`;
                 this.setState({ address: complete_address });
               }
-            }}/>
-
+            }}
+          />
         </CardContent>
 
         <CardActions>

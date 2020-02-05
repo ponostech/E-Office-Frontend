@@ -1,14 +1,14 @@
 import React, { Component } from "reactn";
 import {
   Button,
-  CardHeader,
   Dialog,
   DialogActions,
   FormControlLabel,
   FormLabel,
   Radio,
   RadioGroup,
-  TextField, withStyles
+  TextField,
+  withStyles
 } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -50,14 +50,14 @@ class OtherRateDialog extends Component {
       displayTypeError: "",
       categoryError: "",
 
-      types:[
+      types: [
         { value: "Collapsible Kiosk", label: "Collapsible Kiosk" },
         { value: "Poster/Banner", label: "Poster/Banner" },
         { value: "Umbrella", label: "Umbrella " },
         { value: "Balloons", label: "Balloons " },
         { value: "Audio/Sound", label: "Audio/Sound " },
         { value: "Vehicle", label: "Vehicle" },
-        { value: "Video", label: "Video" },
+        { value: "Video", label: "Video" }
       ],
       displayTypes: [
         { value: "ILLUMINATED", label: "ILLUMINATED" },
@@ -69,76 +69,99 @@ class OtherRateDialog extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-    new CategoryServices().fetch(
-      errorMsg => this.setGlobal({ errorMsg }),
-      categories => this.setState({ categories })
-    )
+    new CategoryServices()
+      .fetch(
+        errorMsg => this.setGlobal({ errorMsg }),
+        categories => this.setState({ categories })
+      )
       .finally(() => this.setState({ loading: false }));
-
   }
 
   handleChange = (name, value) => {
     this.setState({ [name]: value });
   };
-  handleRequired = (name) => {
+  handleRequired = name => {
     switch (name) {
       case "type":
-        this.state.types === null ? this.setState({ typeError: "Type of advertisement is required" }) : this.setState({ typeError: "" });
+        this.state.types === null
+          ? this.setState({ typeError: "Type of advertisement is required" })
+          : this.setState({ typeError: "" });
         break;
       case "displayType":
-        this.state.displayType === null ? this.setState({ displayTypeError: "Type of Display is required" }) : this.setState({ displayTypeError: "" });
+        this.state.displayType === null
+          ? this.setState({ displayTypeError: "Type of Display is required" })
+          : this.setState({ displayTypeError: "" });
         break;
       case "category":
-        this.state.category === null ? this.setState({ categoryError: "Category is required" }) : this.setState({ categoryError: "" });
+        this.state.category === null
+          ? this.setState({ categoryError: "Category is required" })
+          : this.setState({ categoryError: "" });
         break;
       case "rate":
-        this.state.rate === null ? this.setState({ rateError: "Rate is required" }) : this.setState({ rateError: "" });
+        this.state.rate === null
+          ? this.setState({ rateError: "Rate is required" })
+          : this.setState({ rateError: "" });
         break;
-
+      default:
+        break;
     }
   };
-  invalid=()=>{
+  invalid = () => {
     const { type } = this.state;
-    return !Boolean(type) ;
-  }
+    return !Boolean(type);
+  };
   save = () => {
-    const { type, rate,duration } = this.state;
+    const { type, rate, duration } = this.state;
 
     if (this.invalid()) {
       this.setGlobal({ errorMsg: "Please fill all the required fields" });
     } else {
       let data = {
-        type:type?type.value:null,
-        display_type:null,
-        area_category_id:null,
+        type: type ? type.value : null,
+        display_type: null,
+        area_category_id: null,
         land_owner_type: "Private",
-        per_time: duration ,
+        per_time: duration,
         rate
       };
-      this.clear()
+      this.clear();
       this.props.onCreate(data);
     }
   };
-  clear=()=>this.setState({
-    type:null,
-    rate:0,
-    duration:"Day"
-  })
+  clear = () =>
+    this.setState({
+      type: null,
+      rate: 0,
+      duration: "Day"
+    });
   render() {
-
-    const { type, displayType, category, rate, duration } = this.state;
-    const { typeError, displayTypeError, categoryError, rateError } = this.state;
-    const { types, displayTypes, categories } = this.state;
+    const { type, rate, duration } = this.state;
+    const { typeError, rateError } = this.state;
+    const { types } = this.state;
     const { open, onClose, classes } = this.props;
     return (
-      <Dialog TransitionComponent={Transition} open={open} onClose={onClose} fullWidth={true}
-              maxWidth={"sm"}>
+      <Dialog
+        TransitionComponent={Transition}
+        open={open}
+        onClose={onClose}
+        fullWidth={true}
+        maxWidth={"sm"}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={onClose} aria-label="Close">
-              <CloseIcon/>
+            <IconButton
+              href={"#"}
+              color="inherit"
+              onClick={onClose}
+              aria-label="Close"
+            >
+              <CloseIcon />
             </IconButton>
-            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+            <Typography
+              variant="subtitle2"
+              color="inherit"
+              className={classes.flex}
+            >
               Create Advertisement Rate
             </Typography>
             <Button href={"#"} onClick={onClose} color="inherit">
@@ -147,60 +170,85 @@ class OtherRateDialog extends Component {
           </Toolbar>
         </AppBar>
 
-        {this.state.loading === false &&
+        {this.state.loading === false && (
+          <DialogContent>
+            <OfficeSelect
+              value={type}
+              label={"Type of Advertisement"}
+              name={"type"}
+              required={true}
+              variant={"outlined"}
+              margin={"dense"}
+              fullWidth={true}
+              helperText={typeError}
+              error={Boolean(typeError)}
+              onChange={val => this.handleChange("type", val)}
+              options={types}
+            />
 
-        <DialogContent>
+            <FormControl component={"div"} fullWidth={true} margin={"dense"}>
+              <FormLabel component={"div"}>Rate Duration</FormLabel>
+              <RadioGroup
+                defaultValue={"0"}
+                value={duration}
+                name={"duration"}
+                row={true}
+                onChange={event =>
+                  this.handleChange("duration", event.target.value)
+                }
+              >
+                <FormControlLabel
+                  value={"Day"}
+                  control={<Radio color={"primary"} />}
+                  label={"Day"}
+                />
+                <FormControlLabel
+                  value={"Month"}
+                  control={<Radio color={"primary"} />}
+                  label={"Month"}
+                />
+                <FormControlLabel
+                  value={"Year"}
+                  control={<Radio color={"primary"} />}
+                  label={"Year"}
+                />
+              </RadioGroup>
+            </FormControl>
 
-          <OfficeSelect
-            value={type}
-            label={"Type of Advertisement"}
-            name={"type"}
-            required={true}
-            variant={"outlined"}
-            margin={"dense"}
-            fullWidth={true}
-            helperText={typeError}
-            error={Boolean(typeError)}
-            onChange={val => this.handleChange("type", val)}
-            options={types}/>
-
-          <FormControl component={"div"} fullWidth={true} margin={"dense"}>
-            <FormLabel component={"div"}>Rate Duration</FormLabel>
-            <RadioGroup
-              defaultValue={"0"}
-              value={duration}
-              name={"duration"}
-              row={true}
-              onChange={event => this.handleChange("duration", event.target.value)}
-            >
-              <FormControlLabel value={"Day"} control={<Radio color={"primary"}/>}
-                                label={"Day"}/>
-              <FormControlLabel value={"Month"} control={<Radio color={"primary"}/>}
-                                label={"Month"}/>
-              <FormControlLabel value={"Year"} control={<Radio color={"primary"}/>}
-                                label={"Year"}/>
-            </RadioGroup>
-          </FormControl>
-
-          <TextField
-            value={rate}
-            type={"number"}
-            name={"rate"}
-            fullWidth={true}
-            variant={"outlined"}
-            label={"Rate"}
-            required={true}
-            error={Boolean(rateError)}
-            helperText={rateError}
-            onChange={event => this.handleChange("rate", event.target.value)}/>
-        </DialogContent>
-        }
-        <Divider component={"div"}/>
+            <TextField
+              value={rate}
+              type={"number"}
+              name={"rate"}
+              fullWidth={true}
+              variant={"outlined"}
+              label={"Rate"}
+              required={true}
+              error={Boolean(rateError)}
+              helperText={rateError}
+              onChange={event => this.handleChange("rate", event.target.value)}
+            />
+          </DialogContent>
+        )}
+        <Divider component={"div"} />
 
         <DialogActions>
-          <Button disabled={!Boolean(type)} href={"#"}
-                  variant={"outlined"} color={"primary"} onClick={event => this.save()}>Save</Button>
-          <Button href={"#"} variant={"outlined"} color={"secondary"} onClick={onClose}>Close</Button>
+          <Button
+            disabled={!Boolean(type)}
+            href={"#"}
+            variant={"outlined"}
+            color={"primary"}
+            onClick={event => this.save()}
+          >
+            Save
+          </Button>
+          <Button
+            href={"#"}
+            variant={"outlined"}
+            color={"secondary"}
+            onClick={onClose}
+          >
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
     );

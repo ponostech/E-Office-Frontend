@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import {
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  Divider,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -17,7 +11,6 @@ import {
   Radio,
   RadioGroup,
   TextField,
-  Tooltip,
   Typography
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
@@ -92,6 +85,8 @@ class TradeEditDialog extends Component {
           ? this.setState({ rateError: "" })
           : this.setState({ rateError: "Rate is required" });
         break;
+      default:
+        break;
     }
   };
   handleChange = e => {
@@ -100,7 +95,7 @@ class TradeEditDialog extends Component {
   };
 
   render() {
-    const { open, onClose, classes } = this.props;
+    const { open, classes } = this.props;
     return (
       <Dialog
         TransitionComponent={Transition}

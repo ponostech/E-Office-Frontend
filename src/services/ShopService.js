@@ -1,12 +1,10 @@
 import axios from "axios";
-import React from "react";
 import { ApiRoutes } from "../config/ApiRoutes";
 import moment from "moment";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
 const DATE_FORMAT = "YYYY-MM-DD";
 export class ShopService {
-
   async create(state, errorCallback, successCallback) {
     let data = {
       application_type: "New Application",
@@ -37,9 +35,11 @@ export class ShopService {
       let res = await axios.post(ApiRoutes.CREATE_SHOP_LICENSE, data);
       if (res.data.status) {
         if (res.data.data.challan)
-          successCallback(res.data.data.challan, ArrayToString(res.data.messages));
-        else
-          successCallback(false, ArrayToString(res.data.messages));
+          successCallback(
+            res.data.data.challan,
+            ArrayToString(res.data.messages)
+          );
+        else successCallback(false, ArrayToString(res.data.messages));
       } else {
         if (res.data.validation_error) {
           errorCallback(ErrorToString(res.data.messages));
@@ -77,15 +77,16 @@ export class ShopService {
       passport: state.passport.location,
       documents: state.uploadDocuments,
       addl_documents: state.additionalDocuments
-
     };
     try {
       let res = await axios.post(ApiRoutes.UPDATE_SHOP_LICENSE(state.id), data);
       if (res.data.status) {
         if (res.data.data.challan)
-          successCallback(res.data.data.challan, ArrayToString(res.data.messages));
-        else
-          successCallback(false, ArrayToString(res.data.messages));
+          successCallback(
+            res.data.data.challan,
+            ArrayToString(res.data.messages)
+          );
+        else successCallback(false, ArrayToString(res.data.messages));
       } else {
         if (res.data.validation_error) {
           errorCallback(ErrorToString(res.data.messages));
@@ -127,9 +128,11 @@ export class ShopService {
       let res = await axios.post(ApiRoutes.RENEW_SHOP(state.id), data);
       if (res.data.status) {
         if (res.data.data.challan)
-          successCallback(res.data.data.challan, ArrayToString(res.data.messages));
-        else
-          successCallback(false, ArrayToString(res.data.messages));
+          successCallback(
+            res.data.data.challan,
+            ArrayToString(res.data.messages)
+          );
+        else successCallback(false, ArrayToString(res.data.messages));
       } else {
         if (res.data.validation_error) {
           errorCallback(ErrorToString(res.data.messages));
@@ -143,14 +146,16 @@ export class ShopService {
     }
   }
 
-
   async fetch(status) {
     const token = localStorage.getItem("access_token");
-    const config = { headers: { "Authorization": `Bearer ${token}` } };
+    const config = { headers: { Authorization: `Bearer ${token}` } };
     let hoardings = [];
     try {
       if (status) {
-        const res = await axios.get(ApiRoutes.STAFF_SHOP + `?status=${status}`, config);
+        const res = await axios.get(
+          ApiRoutes.STAFF_SHOP + `?status=${status}`,
+          config
+        );
         console.log(res);
         hoardings = res.data.data.shops;
       } else {
@@ -158,7 +163,6 @@ export class ShopService {
         hoardings = defRes.data.data.shops;
       }
       return hoardings;
-
     } catch (error) {
       console.error(error);
       throw new Error(error);
@@ -167,7 +171,10 @@ export class ShopService {
 
   async changeField(application_id, data, errorCallback, successCalback) {
     try {
-      const res = await axios.post(ApiRoutes.UPDATE_SHOP_LICENSE(application_id), data);
+      const res = await axios.post(
+        ApiRoutes.UPDATE_SHOP_LICENSE(application_id),
+        data
+      );
       if (res.data.status) {
         successCalback(res.data.messages);
       } else {
@@ -196,5 +203,4 @@ export class ShopService {
       errorCallback(errorCallback.toString());
     }
   }
-
 }

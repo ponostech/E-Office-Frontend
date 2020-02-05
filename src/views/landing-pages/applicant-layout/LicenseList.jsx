@@ -65,7 +65,7 @@ const LicenseCard = ({ license, onRenew }) => {
       }
     ]
   };
-  let color = license.type === "permit" ? "primary" : "warning";
+  // let color = license.type === "permit" ? "primary" : "warning";
   const subhead =
     license.type === "permit" ? (
       <Chip color={"primary"} label={license.type} />
@@ -282,7 +282,6 @@ class LicenseList extends Component {
       tabValue,
       openShopRenewDialog,
       openHotelRenewDialog,
-      openBannerRenewDialog,
       selectedLicense
     } = this.state;
     return (

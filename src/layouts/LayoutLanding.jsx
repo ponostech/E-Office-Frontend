@@ -1,8 +1,12 @@
 import React from "reactn";
 import { Route, Switch } from "react-router-dom";
 
-import * as  OfficeRoutes from "../config/routes-constant/OfficeRoutes";
-import { ADVERTISER_DASHBOARD, DESK, E_OFFICE } from "../config/routes-constant/OfficeRoutes";
+import * as OfficeRoutes from "../config/routes-constant/OfficeRoutes";
+import {
+  ADVERTISER_DASHBOARD,
+  DESK,
+  E_OFFICE
+} from "../config/routes-constant/OfficeRoutes";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import pagesStyle from "../assets/jss/material-dashboard-pro-react/layouts/pagesStyle";
 
@@ -21,10 +25,7 @@ import ErrorHandler, { SuccessHandler } from "../views/common/StatusHandler";
 import ApplicantLayout from "../views/landing-pages/ApplicantLayout";
 import { Container, Drawer, Hidden } from "@material-ui/core";
 import MobileMenu from "./MobileMenu";
-import {Test} from "../views/Test";
-import { AvatarView } from "../components/AvatarView";
 import Sent from "../views/e-office/files/details/Views/Sent";
-
 
 class LayoutLanding extends React.Component {
   constructor(props) {
@@ -32,13 +33,16 @@ class LayoutLanding extends React.Component {
     this.state = {
       openMobile: false
     };
-    if (LoginService.hasRole("administrator")) window.location.replace(E_OFFICE);
+    if (LoginService.hasRole("administrator"))
+      window.location.replace(E_OFFICE);
     else if (LoginService.isStaff()) window.location.replace(DESK);
-    else if (LoginService.isAdvertiser()) window.location.replace(ADVERTISER_DASHBOARD);
-    else if (LoginService.hasRole("commissioner")) window.location.replace(E_OFFICE);
-    else if (LoginService.hasRole("secretary")) window.location.replace(E_OFFICE);
+    else if (LoginService.isAdvertiser())
+      window.location.replace(ADVERTISER_DASHBOARD);
+    else if (LoginService.hasRole("commissioner"))
+      window.location.replace(E_OFFICE);
+    else if (LoginService.hasRole("secretary"))
+      window.location.replace(E_OFFICE);
     // else window.location.replace(HOME)
-
   }
 
   toggleDrawer = () => {
@@ -47,29 +51,62 @@ class LayoutLanding extends React.Component {
   };
 
   render() {
-    const { classes,history, ...rest } = this.props;
+    const { classes, history, ...rest } = this.props;
     const { openMobile } = this.state;
     return (
       <Container maxWidth={false}>
         <header className={classes.header}>
-          <AuthNavbar onMenuClick={this.toggleDrawer} color={"primary"} brandText="AIZAWL MUNICIPAL CORPORATION"
-                      OfficeRoutes={OfficeRoutes} {...rest} />
+          <AuthNavbar
+            onMenuClick={this.toggleDrawer}
+            color={"primary"}
+            brandText="AIZAWL MUNICIPAL CORPORATION"
+            OfficeRoutes={OfficeRoutes}
+            {...rest}
+          />
         </header>
         <main className={classes.main}>
-          <Drawer className={classes.drawer} anchor="right" open={openMobile} onClose={this.toggleDrawer}>
-            <MobileMenu history={history} toggleDrawer={this.toggleDrawer}/>
+          <Drawer
+            className={classes.drawer}
+            anchor="right"
+            open={openMobile}
+            onClose={this.toggleDrawer}
+          >
+            <MobileMenu history={history} toggleDrawer={this.toggleDrawer} />
           </Drawer>
           <Switch>
-            <Route exact={true} path={OfficeRoutes.ROOT} component={HomePage}/>
-            <Route exact={true} path={OfficeRoutes.FORGOT_PASSWORD} component={ForgotPassword}/>
-            <Route exact={true} path={OfficeRoutes.APPLY_HOTEL_LICENSE} component={HotelApplication}/>
-            <Route exact={true} path={OfficeRoutes.APPLY_SHOP_LICENSE} component={ShopApplication}/>
-            <Route exact={true} path={OfficeRoutes.APPLY_ADVERTISER} component={AdvertiserApplication}/>
+            <Route exact={true} path={OfficeRoutes.ROOT} component={HomePage} />
+            <Route
+              exact={true}
+              path={OfficeRoutes.FORGOT_PASSWORD}
+              component={ForgotPassword}
+            />
+            <Route
+              exact={true}
+              path={OfficeRoutes.APPLY_HOTEL_LICENSE}
+              component={HotelApplication}
+            />
+            <Route
+              exact={true}
+              path={OfficeRoutes.APPLY_SHOP_LICENSE}
+              component={ShopApplication}
+            />
+            <Route
+              exact={true}
+              path={OfficeRoutes.APPLY_ADVERTISER}
+              component={AdvertiserApplication}
+            />
 
-            <Route exact={true} path={OfficeRoutes.ADVERTISER_LOGIN} component={AdvertiserLogin}/>
+            <Route
+              exact={true}
+              path={OfficeRoutes.ADVERTISER_LOGIN}
+              component={AdvertiserLogin}
+            />
 
-            <Route exact={true} path={OfficeRoutes.CHECK_LICENSE} component={ApplicantLayout}/>
-
+            <Route
+              exact={true}
+              path={OfficeRoutes.CHECK_LICENSE}
+              component={ApplicantLayout}
+            />
 
             {/*<Route exact={true} path={OfficeRoutes.CHECK_LICENSE} component={CheckLicense}/>*/}
             {/*<Route exact={true} path={OfficeRoutes.SEARCH_LICENSE(":mobile_no", "shop")} component={ShopLicenseList}/>*/}
@@ -79,30 +116,38 @@ class LayoutLanding extends React.Component {
 
             {/*<Route exact={true} path={OfficeRoutes.APPLICANT_DASHBOARD(":mobile_no")} component={ApplicantDashboard}/>*/}
 
-            <Route exact={true} path={OfficeRoutes.APPLY_BANNER} component={BannerApplicationForm}/>
+            <Route
+              exact={true}
+              path={OfficeRoutes.APPLY_BANNER}
+              component={BannerApplicationForm}
+            />
 
-            <Route exact={true} path={OfficeRoutes.GRIEVANCE_CREATE} component={GrievanceCreate}/>
+            <Route
+              exact={true}
+              path={OfficeRoutes.GRIEVANCE_CREATE}
+              component={GrievanceCreate}
+            />
             {/*<Route exact={true} path={OfficeRoutes.EXPIRED_SHOP_LICENSE_CHECK} component={ExpiredShopLicenseCheck}/>*/}
 
-            <Route exact={true} path={OfficeRoutes.RESUBMIT_SHOP_LICENSE_APPLICATION(":id")}
-                   component={GrievanceCreate}/>
+            <Route
+              exact={true}
+              path={OfficeRoutes.RESUBMIT_SHOP_LICENSE_APPLICATION(":id")}
+              component={GrievanceCreate}
+            />
             <Route exact={true} component={Sent} path={"/test"} />
-
           </Switch>
 
-          {this.global.errorMsg && <ErrorHandler/>}
-          {this.global.successMsg && <SuccessHandler/>}
+          {this.global.errorMsg && <ErrorHandler />}
+          {this.global.successMsg && <SuccessHandler />}
         </main>
         <footer className={classes.footer}>
           <Hidden only={["sm", "xs"]}>
-            <Footer/>
+            <Footer />
           </Hidden>
         </footer>
-
       </Container>
     );
   }
-
 }
 
 export default withStyles(pagesStyle)(LayoutLanding);

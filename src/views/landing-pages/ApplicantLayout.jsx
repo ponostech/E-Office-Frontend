@@ -1,8 +1,8 @@
-import React, {Component} from "reactn";
-import {Card, CardContent} from "@material-ui/core";
+import React, { Component } from "reactn";
+import { Card, CardContent } from "@material-ui/core";
 import CheckLicense from "./license-checking/CheckLicense";
 import ApplicantDashboard from "./ApplicantDashboard";
-import {LicenseService} from "../../services/LicenseService";
+import { LicenseService } from "../../services/LicenseService";
 
 class ApplicantLayout extends Component {
   constructor(props) {
@@ -13,34 +13,45 @@ class ApplicantLayout extends Component {
       hotels: [],
       banners: [],
       notFoundError: "",
-      search: true,
-    }
-    this.licenseService = new LicenseService()
+      search: true
+    };
+    this.licenseService = new LicenseService();
   }
 
   refresh = () => {
-    const {phone} = this.state;
-    this.checkApplication(phone)
-  }
+    const { phone } = this.state;
+    this.checkApplication(phone);
+  };
 
-  checkApplication = (phone) => {
-    this.setState({phone, submit: true})
-    this.licenseService.getApplications(phone,
-        errorMsg => this.setGlobal({errorMsg}),
-        data => this.setState({search: false, banners: data.shops, hotels: data.hotels, shops: data.shops}))
-        .finally(() => this.setState({submit: false}))
-  }
+  checkApplication = phone => {
+    this.setState({ phone, submit: true });
+    this.licenseService
+      .getApplications(
+        phone,
+        errorMsg => this.setGlobal({ errorMsg }),
+        data =>
+          this.setState({
+            search: false,
+            banners: data.shops,
+            hotels: data.hotels,
+            shops: data.shops
+          })
+      )
+      .finally(() => this.setState({ submit: false }));
+  };
 
   render() {
-    const {search, hotels, shops, banners, submit, phone} = this.state;
+    const { search, submit, phone } = this.state;
     return (
-        <Card>
-          <CardContent style={{padding:0}}>
-            {Boolean(search) ?
-                <CheckLicense checking={submit} onCheck={this.checkApplication}/> :
-                <ApplicantDashboard refresh={this.refresh} phone={phone}/>}
-          </CardContent>
-        </Card>
+      <Card>
+        <CardContent style={{ padding: 0 }}>
+          {Boolean(search) ? (
+            <CheckLicense checking={submit} onCheck={this.checkApplication} />
+          ) : (
+            <ApplicantDashboard refresh={this.refresh} phone={phone} />
+          )}
+        </CardContent>
+      </Card>
     );
   }
 }

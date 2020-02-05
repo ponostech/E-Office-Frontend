@@ -17,7 +17,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
-import { WIDGET_TYPE } from "../constant";
 
 const styles = {
   appBar: {
@@ -42,10 +41,9 @@ class FileUploadConfigDialog extends Component {
     placeholder: "",
     defaultValue: "",
     required: false,
-    min:0,
-    max:1000
+    min: 0,
+    max: 1000
   };
-
 
   onChange = (name, value) => {
     this.setState({ [name]: value });
@@ -60,29 +58,39 @@ class FileUploadConfigDialog extends Component {
   doClear = () => {
     this.setState({
       key: "",
-      type:"file_upload",
-      fillable:false,
+      type: "file_upload",
+      fillable: false,
       label: "",
       placeholder: "",
       defaultValue: "",
       pattern: ".*",
       required: false,
-      min:0,
-      max:1000
+      min: 0,
+      max: 1000
     });
   };
   createConfig = () => {
-    const { onCreateConfiguration,onClose,widget } = this.props;
-    const { key, label, placeholder, defaultValue, required, pattern,min,max } = this.state;
+    const { onCreateConfiguration, onClose, widget } = this.props;
+    const {
+      key,
+      label,
+      placeholder,
+      defaultValue,
+      required,
+      pattern,
+      min,
+      max
+    } = this.state;
     let config = {
       label,
-      type:widget.type,
+      type: widget.type,
       placeholder,
       defaultValue,
       validation: {
         required,
         pattern,
-        min,max
+        min,
+        max
       }
     };
     onClose();
@@ -91,17 +99,30 @@ class FileUploadConfigDialog extends Component {
 
   render() {
     const { open, onClose, widget, classes } = this.props;
-    const self = this;
 
     return (
-      <Dialog TransitionComponent={Transition} open={open} onClose={onClose} fullWidth={true} maxWidth={"md"}>
-
+      <Dialog
+        TransitionComponent={Transition}
+        open={open}
+        onClose={onClose}
+        fullWidth={true}
+        maxWidth={"md"}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={onClose} aria-label="Close">
-              <CloseIcon/>
+            <IconButton
+              href={"#"}
+              color="inherit"
+              onClick={onClose}
+              aria-label="Close"
+            >
+              <CloseIcon />
             </IconButton>
-            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+            <Typography
+              variant="subtitle2"
+              color="inherit"
+              className={classes.flex}
+            >
               Configuration ({widget ? widget.label : ""})
             </Typography>
             <Button href={"#"} onClick={onClose} color="inherit">
@@ -110,36 +131,40 @@ class FileUploadConfigDialog extends Component {
           </Toolbar>
         </AppBar>
         <DialogContent>
-
           <Grid container={true} spacing={2}>
-
             <Grid md={12} sm={12} item={true}>
-              <TextField name={"key"}
-                         onChange={event => this.onChange("key", event.target.value)}
-                         required={true}
-                         value={this.state.key}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"Key"}/>
+              <TextField
+                name={"key"}
+                onChange={event => this.onChange("key", event.target.value)}
+                required={true}
+                value={this.state.key}
+                variant={"outlined"}
+                fullWidth={true}
+                margin={"dense"}
+                label={"Key"}
+              />
             </Grid>
 
             <Grid md={12} sm={12} item={true}>
-              <TextField name={"label"}
-                         onChange={event => this.onChange("label", event.target.value)}
-                         required={true}
-                         value={this.state.label}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"Label"}/>
+              <TextField
+                name={"label"}
+                onChange={event => this.onChange("label", event.target.value)}
+                required={true}
+                value={this.state.label}
+                variant={"outlined"}
+                fullWidth={true}
+                margin={"dense"}
+                label={"Label"}
+              />
             </Grid>
 
             <Grid md={12} sm={12} item={true}>
               <FormControlLabel
                 control={
                   <Switch
-                    onChange={(event, checked) => this.onChange("required", checked)}
+                    onChange={(event, checked) =>
+                      this.onChange("required", checked)
+                    }
                     value={this.state.required}
                     checked={this.state.required}
                     color="primary"
@@ -149,14 +174,20 @@ class FileUploadConfigDialog extends Component {
               />
             </Grid>
           </Grid>
-
         </DialogContent>
         <DialogActions>
-          <Button variant={"outlined"} color={"primary"} onClick={event => this.createConfig()}>Create</Button>
-          <Button variant={"outlined"} color={"secondary"} onClick={onClose}>Close</Button>
+          <Button
+            variant={"outlined"}
+            color={"primary"}
+            onClick={event => this.createConfig()}
+          >
+            Create
+          </Button>
+          <Button variant={"outlined"} color={"secondary"} onClick={onClose}>
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
-
     );
   }
 }
@@ -165,6 +196,6 @@ FileUploadConfigDialog.propTypes = {
   onCreateConfiguration: PropTypes.func.isRequired,
   widget: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired
 };
 export default withStyles(styles)(FileUploadConfigDialog);

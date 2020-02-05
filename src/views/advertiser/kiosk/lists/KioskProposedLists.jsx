@@ -6,7 +6,6 @@ import { IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
 import { KioskService } from "../../../../services/KioskService";
-import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 import CloseIcon from "@material-ui/icons/Close";
 import ConfirmDialog from "../../../../components/ConfirmDialog";
 import LoadingView from "../../../common/LoadingView";
@@ -31,15 +30,17 @@ class KioskProposedLists extends Component {
   componentDidMount() {
     document.title = "e-AMC | List of kiosk application";
     this.setGlobal({ loading: true });
-    this.kioskService.fetchAdvertiserKiosk(
-      errorMsg => this.setState({ errorMsg }),
-      kiosks => this.setState({ kiosks }))
+    this.kioskService
+      .fetchAdvertiserKiosk(
+        errorMsg => this.setState({ errorMsg }),
+        kiosks => this.setState({ kiosks })
+      )
       .finally(() => {
         this.setGlobal({ loading: false });
       });
   }
 
-  withdraw = (data) => {
+  withdraw = data => {
     this.setState({ openWithdraw: false });
   };
 
@@ -49,44 +50,49 @@ class KioskProposedLists extends Component {
         name: "created_at",
         label: "DATE",
         options: {
-          customBodyRender: (date) => {
+          customBodyRender: date => {
             const d = moment(date).format("Do MMM YYY");
             return d.toString();
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.file.number);
+            return value.file.number;
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "SUBJECT",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.file.subject);
+            return value.file.subject;
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "PROPOSED LOCATION",
         options: {
           customBodyRender: (kiosk, tableMeta, updateValue) => {
-            return (kiosk.address);
+            return kiosk.address;
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "LOCAL COUNCIL",
         options: {
           customBodyRender: (kiosk, tableMeta, updateValue) => {
-            return (kiosk.local_council.name);
+            return kiosk.local_council.name;
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "ACTIONS",
         options: {
@@ -97,23 +103,27 @@ class KioskProposedLists extends Component {
             let viewBtn = (
               <>
                 <Tooltip title={"Click here to view details"}>
-                  <IconButton onClick={(e) => {
-                    this.setState({ kiosk: file, openDetail: true });
-                  }}>
-                    <EyeIcon color={"primary"} fontSize={"small"}/>
+                  <IconButton
+                    onClick={e => {
+                      this.setState({ kiosk: file, openDetail: true });
+                    }}
+                  >
+                    <EyeIcon color={"primary"} fontSize={"small"} />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Click here to withdraw application"}>
-                  <IconButton onClick={(e) => {
-                    this.setState({ openWithdraw: true, kiosk: file });
-                  }}>
-                    <CloseIcon fontSize={"small"} color={"secondary"}/>
+                  <IconButton
+                    onClick={e => {
+                      this.setState({ openWithdraw: true, kiosk: file });
+                    }}
+                  >
+                    <CloseIcon fontSize={"small"} color={"secondary"} />
                   </IconButton>
                 </Tooltip>
               </>
             );
 
-            return (viewBtn);
+            return viewBtn;
           }
         }
       }
@@ -125,34 +135,42 @@ class KioskProposedLists extends Component {
       rowsPerPage: 15,
       serverSide: false,
       selectableRows: false,
-      customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
+      customToolbarSelect: function(
+        selectedRows,
+        displayData,
+        setSelectedRows
+      ) {
         return false;
       },
-      onRowClick: function(rowData, rowMeta) {
-      }
+      onRowClick: function(rowData, rowMeta) {}
     };
 
     return (
       <>
-        {
-          this.global.loading ? <LoadingView/> :
-            <Grid item sm={12} xs={12} md={12}>
-              <MUIDataTable
-                title={"KIOSK: List of Proposed"}
-                data={this.state.kiosks}
-                columns={tableColumns}
-                options={tableOptions}
-              />
-              <KioskViewDialog open={Boolean(this.state.openDetail)} data={this.state.kiosk}
-                                      close={e => this.setState({ kiosk: null, openDetail: false })}/>
+        {this.global.loading ? (
+          <LoadingView />
+        ) : (
+          <Grid item sm={12} xs={12} md={12}>
+            <MUIDataTable
+              title={"KIOSK: List of Proposed"}
+              data={this.state.kiosks}
+              columns={tableColumns}
+              options={tableOptions}
+            />
+            <KioskViewDialog
+              open={Boolean(this.state.openDetail)}
+              data={this.state.kiosk}
+              close={e => this.setState({ kiosk: null, openDetail: false })}
+            />
 
-              <ConfirmDialog onCancel={() => this.setState({ openWithdraw: false })} open={this.state.openWithdraw}
-                             onConfirm={this.withdraw.bind(this)}
-                             message={"Do you want to withdraw application?"}/>
-            </Grid>
-        }
-
-
+            <ConfirmDialog
+              onCancel={() => this.setState({ openWithdraw: false })}
+              open={this.state.openWithdraw}
+              onConfirm={this.withdraw.bind(this)}
+              message={"Do you want to withdraw application?"}
+            />
+          </Grid>
+        )}
       </>
     );
   }

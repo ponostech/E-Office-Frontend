@@ -18,8 +18,7 @@ import Popper from "@material-ui/core/Popper";
 import Button from "components/CustomButtons/Button.jsx";
 
 import customDropdownStyle from "assets/jss/material-dashboard-pro-react/components/customDropdownStyle.jsx";
-import {withRouter} from "react-router-dom"
-import { Menu } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
 
 class CustomDropdown extends React.Component {
   constructor(props) {
@@ -32,28 +31,28 @@ class CustomDropdown extends React.Component {
     this.handleLinkClick = this.handleLinkClick.bind(this);
   }
 
-  handleLinkClick = (link) => {
+  handleLinkClick = link => {
     if (this.anchorEl.contains(link.target)) {
       return;
     }
     this.setState({ open: false });
-    const {history} = this.props;
+    const { history } = this.props;
     history.push(link);
   };
 
   handleClick = () => {
     this.setState(state => ({ open: !state.open }));
-  }
+  };
   handleClose = event => {
     if (this.anchorEl.contains(event.target)) {
       return;
     }
 
     this.setState({ open: false });
-  }
-  handleCloseMenu(param){
+  };
+  handleCloseMenu(param) {
     this.setState({ open: false });
-    if(this.props && this.props.onClick){
+    if (this.props && this.props.onClick) {
       this.props.onClick(param);
     }
   }
@@ -137,7 +136,7 @@ class CustomDropdown extends React.Component {
       <div className={innerDropDown ? classes.innerManager : classes.manager}>
         <div className={buttonText !== undefined ? "" : classes.target}>
           <Button
-            style={{padding:10, textTransform: "capitalize", fontSize: 14}}
+            style={{ padding: 10, textTransform: "capitalize", fontSize: 14 }}
             aria-label="Notifications"
             aria-owns={open ? "menu-list" : null}
             aria-haspopup="true"
@@ -236,7 +235,7 @@ CustomDropdown.propTypes = {
   innerDropDown: PropTypes.bool,
   navDropdown: PropTypes.bool,
   // This is a function that returns the clicked menu item
-  onClick: PropTypes.func,
+  onClick: PropTypes.func
 };
 
 export default withRouter(withStyles(customDropdownStyle)(CustomDropdown));

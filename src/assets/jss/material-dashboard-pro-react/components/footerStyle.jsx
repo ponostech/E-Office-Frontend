@@ -2,13 +2,12 @@ import {
   defaultFont,
   container,
   containerFluid,
-  primaryColor,
   whiteColor,
   grayColor
 } from "assets/jss/material-dashboard-pro-react.jsx";
 
 const footerStyle = {
-  margin:20,
+  margin: 20,
   block: {},
   left: {
     float: "left!important",
@@ -20,16 +19,16 @@ const footerStyle = {
     float: "right!important",
     padding: "15px"
   },
-  appBar:{
-    top:"auto",
+  appBar: {
+    top: "auto",
     bottom: 0
   },
   footer: {
-    background:"#26b99a",
-    width:"100%",
-    height:"70px",
-    position:'absolute',
-    color:"white",
+    background: "#26b99a",
+    width: "100%",
+    height: "70px",
+    position: "absolute",
+    color: "white",
     bottom: "0",
     borderTop: "1px solid " + grayColor[15],
     padding: "15px 0",

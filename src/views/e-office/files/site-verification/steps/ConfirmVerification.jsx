@@ -18,7 +18,10 @@ import DetailViewRow from "../../../common/DetailViewRow";
 import React, { Component } from "reactn";
 import Divider from "@material-ui/core/Divider";
 import { ApplicationResolver } from "../../dialog/common/ApplicationResolver";
-import { FILLABLE_TYPE, WIDGET_TYPE } from "../../../admin/form-builder/constant";
+import {
+  FILLABLE_TYPE,
+  WIDGET_TYPE
+} from "../../../admin/form-builder/constant";
 import moment from "moment";
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -36,7 +39,6 @@ const styles = {
 };
 
 class ConfirmVerification extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -57,13 +59,16 @@ class ConfirmVerification extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (nextProps.siteVerification)
-      this.setData(nextProps.siteVerification);
+    if (nextProps.siteVerification) this.setData(nextProps.siteVerification);
   }
 
-  setData = (siteVerification) => {
+  setData = siteVerification => {
     const { formData, formElements } = siteVerification;
-    let strings = [], passports = [], coordinates = [], images = [], files = [];
+    let strings = [],
+      passports = [],
+      coordinates = [],
+      images = [],
+      files = [];
 
     Object.entries(formElements).forEach(([key, config]) => {
       switch (config.type) {
@@ -103,16 +108,21 @@ class ConfirmVerification extends Component {
           });
           break;
         case WIDGET_TYPE.IMAGE_LIST:
-          formData[key] && formData[key].map(item => images.push({
-            label: item ? item.name : "NA",
-            location: item ? item.path : null
-          }));
+          formData[key] &&
+            formData[key].map(item =>
+              images.push({
+                label: item ? item.name : "NA",
+                location: item ? item.path : null
+              })
+            );
           break;
         case WIDGET_TYPE.FILE_UPLOAD:
           files.push({
             label: config.label,
             location: formData[key] ? formData[key] : null
           });
+          break;
+        default:
           break;
       }
     });
@@ -123,86 +133,111 @@ class ConfirmVerification extends Component {
   getPassport = () => {
     const { passports } = this.state;
     const { classes } = this.props;
-    return (
-      Boolean(passports) ?
-        <div className={classes.gridRoot}>
-          <GridList cellHeight={180} className={classes.gridList}>
-            <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
-              <ListSubheader component="div">Passport</ListSubheader>
+    return Boolean(passports) ? (
+      <div className={classes.gridRoot}>
+        <GridList cellHeight={180} className={classes.gridList}>
+          <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
+            <ListSubheader component="div">Passport</ListSubheader>
+          </GridListTile>
+          {passports.map(tile => (
+            <GridListTile key={tile.location}>
+              <img src={tile.location} alt={tile.label} />
+              <GridListTileBar
+                title={tile.name}
+                actionIcon={
+                  <IconButton
+                    aria-label={`info about ${tile.label}`}
+                    className={classes.icon}
+                  >
+                    <Icon>info</Icon>
+                  </IconButton>
+                }
+              />
             </GridListTile>
-            {passports.map(tile => (
-              <GridListTile key={tile.location}>
-                <img src={tile.location} alt={tile.label}/>
-                <GridListTileBar
-                  title={tile.name}
-                  actionIcon={
-                    <IconButton aria-label={`info about ${tile.label}`} className={classes.icon}>
-                      <Icon>info</Icon>
-                    </IconButton>
-                  }
-                />
-              </GridListTile>
-            ))}
-          </GridList>
-        </div> : null
-    );
+          ))}
+        </GridList>
+      </div>
+    ) : null;
   };
   getStrings = () => {
     const { strings } = this.state;
-    return strings.map(item => <DetailViewRow primary={item.label} secondary={item.value}/>);
+    return strings.map(item => (
+      <DetailViewRow primary={item.label} secondary={item.value} />
+    ));
   };
   getImageList = () => {
     const { images } = this.state;
     const { classes } = this.props;
-    return (
-      images.length > 0 ?
-        <div className={classes.gridRoot}>
-          <GridList cellHeight={180} className={classes.gridList}>
-            <GridListTile key="Subheader" cols={4} style={{ height: "auto" }}>
-              <ListSubheader component="div">Image List</ListSubheader>
+    return images.length > 0 ? (
+      <div className={classes.gridRoot}>
+        <GridList cellHeight={180} className={classes.gridList}>
+          <GridListTile key="Subheader" cols={4} style={{ height: "auto" }}>
+            <ListSubheader component="div">Image List</ListSubheader>
+          </GridListTile>
+          {images.map(tile => (
+            <GridListTile key={tile.location}>
+              <img src={tile.location} alt={tile.label} />
+              <GridListTileBar
+                title={tile.label}
+                actionIcon={
+                  <IconButton
+                    aria-label={`info about ${tile.title}`}
+                    className={classes.icon}
+                  >
+                    <Icon>info</Icon>
+                  </IconButton>
+                }
+              />
             </GridListTile>
-            {images.map(tile => (
-              <GridListTile key={tile.location}>
-                <img src={tile.location} alt={tile.label}/>
-                <GridListTileBar
-                  title={tile.label}
-                  actionIcon={
-                    <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                      <Icon>info</Icon>
-                    </IconButton>
-                  }
-                />
-              </GridListTile>
-            ))}
-          </GridList>
-        </div> : null
-    );
+          ))}
+        </GridList>
+      </div>
+    ) : null;
   };
   getFiles = () => {
     const { files } = this.state;
-    return <>
-      <Typography paragraph={true} variant={"h6"}>Attachments</Typography>
-      {files.map(file => (
-        <DetailViewRow secondary={file.label}>
-          <IconButton onClick={event => window.open(file.location, "_blank")}>
-            <Icon>keyboard_arrow_right</Icon>
-          </IconButton>
-        </DetailViewRow>
-      ))}
-    </>;
+    return (
+      <>
+        <Typography paragraph={true} variant={"h6"}>
+          Attachments
+        </Typography>
+        {files.map(file => (
+          <DetailViewRow secondary={file.label}>
+            <IconButton onClick={event => window.open(file.location, "_blank")}>
+              <Icon>keyboard_arrow_right</Icon>
+            </IconButton>
+          </DetailViewRow>
+        ))}
+      </>
+    );
   };
   getCoordinate = () => {
     const { coordinates } = this.state;
-    return <List>
-      <Typography paragraph={true} variant={"h6"}>Coordinates</Typography>
-      {coordinates.map(latLng => (
-        <DetailViewRow primary={latLng.label} secondary={`lat: ${latLng.latitude} Lng:${latLng.longitude}`}>
-          <IconButton onClick={event => this.setState({ lat: latLng.latitude, lng: latLng.longitude, openMap: true })}>
-            <Icon>keyboard_arrow_right</Icon>
-          </IconButton>
-        </DetailViewRow>
-      ))}
-    </List>;
+    return (
+      <List>
+        <Typography paragraph={true} variant={"h6"}>
+          Coordinates
+        </Typography>
+        {coordinates.map(latLng => (
+          <DetailViewRow
+            primary={latLng.label}
+            secondary={`lat: ${latLng.latitude} Lng:${latLng.longitude}`}
+          >
+            <IconButton
+              onClick={event =>
+                this.setState({
+                  lat: latLng.latitude,
+                  lng: latLng.longitude,
+                  openMap: true
+                })
+              }
+            >
+              <Icon>keyboard_arrow_right</Icon>
+            </IconButton>
+          </DetailViewRow>
+        ))}
+      </List>
+    );
   };
   handleConfirm = () => {
     const { application, siteVerification, confirmVerification } = this.props;
@@ -218,27 +253,30 @@ class ConfirmVerification extends Component {
 
     const rows = ApplicationResolver(application);
     if (siteVerification) {
-
       return (
         <Grid container={true} spacing={3}>
           <Grid item={true} md={4}>
             <Card>
-              <CardHeader title={"Application Details"}/>
-              <Divider component={"div"}/>
+              <CardHeader title={"Application Details"} />
+              <Divider component={"div"} />
               <CardContent>
                 <List>
-                  {rows.map((row, index) =>
-                    <DetailViewRow key={index} primary={row.name}
-                                   secondary={typeof row.value === "object" ? "object" : row.value}/>
-                  )}
+                  {rows.map((row, index) => (
+                    <DetailViewRow
+                      key={index}
+                      primary={row.name}
+                      secondary={
+                        typeof row.value === "object" ? "object" : row.value
+                      }
+                    />
+                  ))}
                 </List>
               </CardContent>
             </Card>
-
           </Grid>
           <Grid item={true} md={8}>
             <Card>
-              <CardHeader title={"Site Verification Detail"}/>
+              <CardHeader title={"Site Verification Detail"} />
               <CardContent>
                 <Grid container={true}>
                   <Grid item={true} md={6} sm={12} lg={6}>
@@ -251,21 +289,33 @@ class ConfirmVerification extends Component {
                     {images.length > 0 && this.getImageList()}
                   </Grid>
                 </Grid>
-
               </CardContent>
             </Card>
           </Grid>
           <Grid item={true} md={12}>
-            <Divider component={"div"}/>
+            <Divider component={"div"} />
           </Grid>
 
           <Grid item={true} md={12}>
-            <Button href={"#"} variant={"contained"} onClick={e => this.handleConfirm()}
-                    color={"primary"}>Confirm</Button>
+            <Button
+              href={"#"}
+              variant={"contained"}
+              onClick={e => this.handleConfirm()}
+              color={"primary"}
+            >
+              Confirm
+            </Button>
             {"\u00A0 "}
             {"\u00A0 "}
             {"\u00A0 "}
-            <Button href={"#"} variant={"contained"} onClick={onBack} color={"inherit"}>Back</Button>
+            <Button
+              href={"#"}
+              variant={"contained"}
+              onClick={onBack}
+              color={"inherit"}
+            >
+              Back
+            </Button>
           </Grid>
         </Grid>
       );

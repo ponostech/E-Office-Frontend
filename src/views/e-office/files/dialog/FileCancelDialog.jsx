@@ -18,11 +18,8 @@ import {
 import SelectCancelApplication from "./cancel-steps/SelectCancelApplication";
 import SelectCancelDraft from "./cancel-steps/SelectCancelDraft";
 import ConfirmCancel from "./cancel-steps/ConfirmCancel";
-import axios from "axios";
 import SubmitDialog from "../../../../components/SubmitDialog";
-import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
-import { ArrayToString } from "../../../../utils/ErrorUtil";
 import { FILE_NOTESHEET } from "../../../../config/ApiRoutes";
 import ApplicationService from "../../../../services/ApplicationService";
 import { FILEABLE_TYPE } from "../details/Views/FileApplicationDetails";
@@ -78,7 +75,6 @@ class FileCancelDialog extends Component {
   };
   getPath = () => {
     const { file } = this.props;
-    let path = "";
     switch (file.fileable_type) {
       case FILEABLE_TYPE.SHOP:
         return "shop";

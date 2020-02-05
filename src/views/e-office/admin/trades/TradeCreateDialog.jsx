@@ -50,26 +50,31 @@ class TradeCreateDialog extends Component {
     ]
   };
 
-  componentDidMount() {
+  componentDidMount() {}
 
-  }
-
-  handleChange = (e) => {
+  handleChange = e => {
     const { name, value } = e.target;
     this.setState({
       [name]: value
     });
     switch (name) {
       case "name":
-        this.state.name==="" ? this.setState({ nameError: TradeViewModel.REQUIRED_NAME }) : this.setState({ nameError: "" });
+        this.state.name === ""
+          ? this.setState({ nameError: TradeViewModel.REQUIRED_NAME })
+          : this.setState({ nameError: "" });
         break;
       case "rate":
-        this.state.rate ===""? this.setState({ rateError: TradeViewModel.REQUIRED_RATE }) : this.setState({ rateError: "" });
+        this.state.rate === ""
+          ? this.setState({ rateError: TradeViewModel.REQUIRED_RATE })
+          : this.setState({ rateError: "" });
         break;
       case "fla":
-        this.state.fla ? this.setState({ flaError: "" }) : this.setState({ flaError: TradeViewModel.REQUIRED_FLA });
+        this.state.fla
+          ? this.setState({ flaError: "" })
+          : this.setState({ flaError: TradeViewModel.REQUIRED_FLA });
         break;
-
+      default:
+        break;
     }
     this.setState({ prestine: false });
   };
@@ -81,7 +86,7 @@ class TradeCreateDialog extends Component {
   invalid = () => {
     return !Boolean(this.state.name) || !Boolean(this.state.rate);
   };
-  save = (e) => {
+  save = e => {
     const { name, fla, rate } = this.state;
     if (this.invalid()) {
       this.setState({ errorMessage: "Please fill all the required field" });
@@ -93,40 +98,58 @@ class TradeCreateDialog extends Component {
       };
       this.props.onCreate(data);
     }
-
   };
 
-  handleBlur = (e) => {
+  handleBlur = e => {
     const { name, value } = e.target;
     switch (name) {
       case "name":
-        value.length === 0 ? this.setState({ nameError: TradeViewModel.REQUIRED_NAME }) : this.setState({ nameError: "" });
+        value.length === 0
+          ? this.setState({ nameError: TradeViewModel.REQUIRED_NAME })
+          : this.setState({ nameError: "" });
         break;
       case "rate":
-        value.length === 0 ? this.setState({ rateError: TradeViewModel.REQUIRED_RATE }) : this.setState({ rateError: "" });
+        value.length === 0
+          ? this.setState({ rateError: TradeViewModel.REQUIRED_RATE })
+          : this.setState({ rateError: "" });
         break;
       case "fla":
-        value.length === 0 ? this.setState({ rateError: TradeViewModel.REQUIRED_FLA }) : this.setState({ flaError: "" });
+        value.length === 0
+          ? this.setState({ rateError: TradeViewModel.REQUIRED_FLA })
+          : this.setState({ flaError: "" });
         break;
       default:
         break;
     }
   };
 
-
   render() {
     const { classes } = this.props;
     const { open, onClose } = this.props;
 
     return (
-      <Dialog TransitionComponent={Transition} open={open} onClose={onClose} fullWidth={true} maxWidth={"sm"}>
-
+      <Dialog
+        TransitionComponent={Transition}
+        open={open}
+        onClose={onClose}
+        fullWidth={true}
+        maxWidth={"sm"}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={this.close.bind(this)} aria-label="Close">
-              <CloseIcon/>
+            <IconButton
+              href={"#"}
+              color="inherit"
+              onClick={this.close.bind(this)}
+              aria-label="Close"
+            >
+              <CloseIcon />
             </IconButton>
-            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+            <Typography
+              variant="subtitle2"
+              color="inherit"
+              className={classes.flex}
+            >
               Create New Trade
             </Typography>
             <Button href={"#"} onClick={this.close.bind(this)} color="inherit">
@@ -167,7 +190,9 @@ class TradeCreateDialog extends Component {
           />
 
           <FormControl component={"div"} fullWidth={true} margin={"dense"}>
-            <FormLabel component={"div"}>Whether Food Licensing Authority permit is required?</FormLabel>
+            <FormLabel component={"div"}>
+              Whether Food Licensing Authority permit is required?
+            </FormLabel>
             <RadioGroup
               defaultValue={"0"}
               value={this.state.fla}
@@ -175,10 +200,16 @@ class TradeCreateDialog extends Component {
               row={true}
               onChange={event => this.setState({ fla: event.target.value })}
             >
-              <FormControlLabel value={"1"} control={<Radio color={"primary"}/>}
-                                label={"Yes"}/>
-              <FormControlLabel value={"0"} control={<Radio color={"primary"}/>}
-                                label={"No"}/>
+              <FormControlLabel
+                value={"1"}
+                control={<Radio color={"primary"} />}
+                label={"Yes"}
+              />
+              <FormControlLabel
+                value={"0"}
+                control={<Radio color={"primary"} />}
+                label={"No"}
+              />
             </RadioGroup>
           </FormControl>
         </DialogContent>
@@ -187,19 +218,22 @@ class TradeCreateDialog extends Component {
           <Button
             name={"primary"}
             disabled={this.invalid()}
-            color={"primary"} variant={"outlined"}
-            onClick={this.save.bind(this)}>
+            color={"primary"}
+            variant={"outlined"}
+            onClick={this.save.bind(this)}
+          >
             Save
           </Button>
-          <Button name={"secondary"}
-                  color={"secondary"}
-                  variant={"outlined"}
-                  onClick={this.close.bind(this)}>
+          <Button
+            name={"secondary"}
+            color={"secondary"}
+            variant={"outlined"}
+            onClick={this.close.bind(this)}
+          >
             Close
           </Button>
         </DialogActions>
       </Dialog>
-
     );
   }
 }

@@ -2,7 +2,14 @@ import React, { Component } from "reactn";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import Card from "../../../components/Card/Card";
-import { Button, CardContent, Divider, Grid, TextField, Typography } from "@material-ui/core";
+import {
+  Button,
+  CardContent,
+  Divider,
+  Grid,
+  TextField,
+  Typography
+} from "@material-ui/core";
 import CardFooter from "../../../components/Card/CardFooter";
 import { HOME } from "../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
@@ -19,18 +26,17 @@ class CheckLicense extends Component {
 
       phoneError: "",
 
-      openOtp:false,
-      otpMessage:""
+      openOtp: false,
+      otpMessage: ""
     };
-    this.otpService=new OtpService();
+    this.otpService = new OtpService();
   }
-
 
   componentDidMount() {
     this.setGlobal({ loading: false });
   }
 
-  validatePhone = (e) => {
+  validatePhone = e => {
     if (e.target.value.length === 0) {
       this.setState({ phoneError: "Phone number is required" });
     } else if (!e.target.value.match(Validators.PHONE_REGEX)) {
@@ -42,9 +48,7 @@ class CheckLicense extends Component {
     this.setState({ prestine: false });
   };
 
-
-  onVerifiedOtp = (verified) => {
-    const { history } = this.props;
+  onVerifiedOtp = verified => {
     const { phone } = this.state;
     if (verified) {
       this.props.onCheck(phone);
@@ -52,30 +56,30 @@ class CheckLicense extends Component {
   };
 
   sendOtp = () => {
-    var self = this;
-    this.otpService.requestOtp(this.state.phone, "Check Application",
-      errorMsg => {
-        this.setGlobal({ errorMsg });
-      },
-      otpMessage => {
-        this.setState({ openOtp: true });
-        this.setState({ otpMessage });
-      })
+    this.otpService
+      .requestOtp(
+        this.state.phone,
+        "Check Application",
+        errorMsg => {
+          this.setGlobal({ errorMsg });
+        },
+        otpMessage => {
+          this.setState({ openOtp: true });
+          this.setState({ otpMessage });
+        }
+      )
       .finally(() => console.log("Finish otp request"));
-
   };
-  checkLicense = (e) => {
+  checkLicense = e => {
     // this.sendOtp();
 
     const { phone } = this.state;
-    const { history } = this.props;
     this.props.onCheck(phone);
     // this.props.phone = phone;
   };
 
   render() {
-    const { options } = this.state;
-    const { history,checking } = this.props;
+    const { history, checking } = this.props;
     return (
       <GridContainer justify={"center"}>
         <GridItem xs={12} sm={10} md={4}>
@@ -83,43 +87,66 @@ class CheckLicense extends Component {
             <CardContent>
               <Grid container={true} direction={"column"} spacing={3}>
                 <Grid item={true}>
-                  <Typography color={"textPrimary"} variant={"h5"}>Check your application status</Typography>
+                  <Typography color={"textPrimary"} variant={"h5"}>
+                    Check your application status
+                  </Typography>
                 </Grid>
                 <Grid item={true}>
-                  <Divider component={"li"}/>
+                  <Divider component={"li"} />
                 </Grid>
                 <Grid item={true}>
-                  <TextField fullWidth={true}
-                             required={true}
-                             name={"phone"}
-                             error={Boolean(this.state.phoneError)}
-                             helperText={this.state.phoneError}
-                             onBlur={this.validatePhone.bind(this)}
-                             onChange={e => {
-                               this.setState({ phone: e.target.value });
-                               this.validatePhone(e);
-                             }}
-                             value={this.state.phone}
-                             label={"Enter Your Registered Mobile No"}
-                             variant={"outlined"}
+                  <TextField
+                    fullWidth={true}
+                    required={true}
+                    name={"phone"}
+                    error={Boolean(this.state.phoneError)}
+                    helperText={this.state.phoneError}
+                    onBlur={this.validatePhone.bind(this)}
+                    onChange={e => {
+                      this.setState({ phone: e.target.value });
+                      this.validatePhone(e);
+                    }}
+                    value={this.state.phone}
+                    label={"Enter Your Registered Mobile No"}
+                    variant={"outlined"}
                   />
                 </Grid>
               </Grid>
             </CardContent>
             <CardFooter>
-              <Button disabled={!Boolean(this.state.phone) || checking} href={"#"} onClick={this.checkLicense.bind(this)} color={"primary"}
-                      variant={"outlined"} fullWidth={true}>Check</Button>
-              <Button href={"#"} onClick={e => history.push(HOME)} color={"primary"} variant={"text"} fullWidth={true}>Back to home</Button>
+              <Button
+                disabled={!Boolean(this.state.phone) || checking}
+                href={"#"}
+                onClick={this.checkLicense.bind(this)}
+                color={"primary"}
+                variant={"outlined"}
+                fullWidth={true}
+              >
+                Check
+              </Button>
+              <Button
+                href={"#"}
+                onClick={e => history.push(HOME)}
+                color={"primary"}
+                variant={"text"}
+                fullWidth={true}
+              >
+                Back to home
+              </Button>
             </CardFooter>
           </Card>
         </GridItem>
 
-        <OtpDialog successMessage={this.state.otpMessage} phone={this.state.phone} open={this.state.openOtp}
-                   purposed={"Check Application"}
-                   onClose={(value) => {
-                     this.setState({ openOtp: false });
-                     this.onVerifiedOtp(value);
-                   }}/>
+        <OtpDialog
+          successMessage={this.state.otpMessage}
+          phone={this.state.phone}
+          open={this.state.openOtp}
+          purposed={"Check Application"}
+          onClose={value => {
+            this.setState({ openOtp: false });
+            this.onVerifiedOtp(value);
+          }}
+        />
       </GridContainer>
     );
   }
@@ -128,6 +155,6 @@ class CheckLicense extends Component {
 CheckLicense.propTypes = {
   onCheck: PropTypes.func.isRequired,
   phone: PropTypes.string.isRequired,
-  checking: PropTypes.bool.isRequired,
+  checking: PropTypes.bool.isRequired
 };
 export default withRouter(CheckLicense);

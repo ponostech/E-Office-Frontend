@@ -15,9 +15,6 @@ import {
   Typography,
   withStyles
 } from "@material-ui/core";
-import SelectCancelApplication from "./cancel-steps/SelectCancelApplication";
-import SelectCancelDraft from "./cancel-steps/SelectCancelDraft";
-import ConfirmCancel from "./cancel-steps/ConfirmCancel";
 import axios from "axios";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
@@ -59,7 +56,7 @@ class SendBackApplicationDialog extends Component {
     };
   }
 
-  selectApplication = (selectedApplication) => {
+  selectApplication = selectedApplication => {
     this.setState({ selectedApplication });
     this.handleNext();
   };
@@ -75,8 +72,15 @@ class SendBackApplicationDialog extends Component {
 
   confirmSendBack = () => {
     this.setState({ submit: true });
-    axios.post("/files/" + this.props.file.id + "/application/" + this.state.selectedApplication.id + "/cancel",
-      { permit: this.state.selectedDraft.content })
+    axios
+      .post(
+        "/files/" +
+          this.props.file.id +
+          "/application/" +
+          this.state.selectedApplication.id +
+          "/cancel",
+        { permit: this.state.selectedDraft.content }
+      )
       .then(res => {
         if (res.data.status) {
           this.setGlobal({ successMsg: ArrayToString(res.data.messages) });
@@ -87,23 +91,39 @@ class SendBackApplicationDialog extends Component {
       })
       .catch(err => this.setGlobal({ errorMsg: err.toString() }))
       .finally(() => this.setState({ submit: false }));
-
   };
 
-  getStepContent = (step) => {
+  getStepContent = step => {
     switch (step) {
       case 0:
-        return <SelectSendBackApplication file={this.props.file} onSelectApplication={this.selectApplication}
-                                        onNext={this.handleNext}/>;
+        return (
+          <SelectSendBackApplication
+            file={this.props.file}
+            onSelectApplication={this.selectApplication}
+            onNext={this.handleNext}
+          />
+        );
       case 1:
-        return <CreateReasonDialog file={this.props.file} reason={this.state.reason} onNext={this.handleNext}
-                                   onCreateReason={reason=>this.setState({reason})}  onBack={this.handleBack}/>;
+        return (
+          <CreateReasonDialog
+            file={this.props.file}
+            reason={this.state.reason}
+            onNext={this.handleNext}
+            onCreateReason={reason => this.setState({ reason })}
+            onBack={this.handleBack}
+          />
+        );
       case 2:
-        return <ConfirmSendBack confirmSendBack={this.confirmSendBack} reason={this.state.reason}  application={this.state.selectedApplication}
-                              onBack={this.handleBack}/>;
+        return (
+          <ConfirmSendBack
+            confirmSendBack={this.confirmSendBack}
+            reason={this.state.reason}
+            application={this.state.selectedApplication}
+            onBack={this.handleBack}
+          />
+        );
       default:
         return "unknown step";
-
     }
   };
 
@@ -113,14 +133,28 @@ class SendBackApplicationDialog extends Component {
     const steps = getSteps();
 
     return (
-      <Dialog fullScreen={true} open={open} TransitionComponent={Transition} onClose={onClose} fullWidth={true}>
-
+      <Dialog
+        fullScreen={true}
+        open={open}
+        TransitionComponent={Transition}
+        onClose={onClose}
+        fullWidth={true}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton color="inherit" onClick={this.props.onClose} aria-label="Close" href={"#"}>
+            <IconButton
+              color="inherit"
+              onClick={this.props.onClose}
+              aria-label="Close"
+              href={"#"}
+            >
               <Icon>close</Icon>
             </IconButton>
-            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+            <Typography
+              variant="subtitle2"
+              color="inherit"
+              className={classes.flex}
+            >
               Send Back Application
             </Typography>
             <Button href={"#"} onClick={this.props.onClose} color="inherit">
@@ -142,10 +176,13 @@ class SendBackApplicationDialog extends Component {
               </Step>
             ))}
           </Stepper>
-
         </DialogContent>
 
-        <SubmitDialog open={this.state.submit} title={"Cancel Application"} text={"Please wait ..."}/>
+        <SubmitDialog
+          open={this.state.submit}
+          title={"Cancel Application"}
+          text={"Please wait ..."}
+        />
       </Dialog>
     );
   }

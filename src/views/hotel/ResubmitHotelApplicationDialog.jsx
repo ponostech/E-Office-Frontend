@@ -460,13 +460,13 @@ class ResubmitHotelApplicationDialog extends Component {
   };
 
   getDocumentView = () => {
-    const { classes, application } = this.props;
+    const { classes } = this.props;
     return this.state.documents.map((doc, index) => {
       let found = this.state.uploadedDoc.find(
         item => item.document_id === doc.id
       );
       let uploadView = Boolean(found) ? (
-        <a target={"_blank"} href={found.path}>
+        <a target={"_blank"} href={found.path} rel="noopener noreferrer">
           {found.name}
         </a>
       ) : (
@@ -509,7 +509,7 @@ class ResubmitHotelApplicationDialog extends Component {
   };
 
   render() {
-    const { classes, open, onClose, application, onResubmit } = this.props;
+    const { classes, open, onClose } = this.props;
 
     return (
       <>

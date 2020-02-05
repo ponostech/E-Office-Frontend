@@ -4,25 +4,23 @@ import { FILE_SEND } from "../config/routes-constant/OfficeRoutes";
 import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 import { FILEABLE_TYPE } from "../views/e-office/files/details/Views/FileApplicationDetails";
 
-
 export class FileService {
   async get(id) {
     const token = localStorage.getItem("access_token");
-    const config = { headers: { "Authorization": `Bearer ${token}` } };
+    const config = { headers: { Authorization: `Bearer ${token}` } };
     const data = { id: id };
     let res = await axios.get(ApiRoutes.FILE_DETAIL, data, config);
     return res.data.data;
   }
 
-
-
   async fetch(status, errorCallback, successCallback) {
     let config = {
       params: { status }
     };
-    let files = [];
     try {
-      let res = status ? await axios.get(ApiRoutes.FILE, config): await axios.get(ApiRoutes.FILE);
+      let res = status
+        ? await axios.get(ApiRoutes.FILE, config)
+        : await axios.get(ApiRoutes.FILE);
       if (res.data.status) {
         successCallback(res.data.data.files);
       } else {
@@ -34,15 +32,14 @@ export class FileService {
     }
   }
   async create(file, errorCallback, successCallback) {
-
     try {
-      let res = await axios.post(ApiRoutes.CREATE_FILE,file);
+      let res = await axios.post(ApiRoutes.CREATE_FILE, file);
       if (res.data.status) {
         successCallback(ArrayToString(res.data.messages));
       } else {
         if (res.data.validation_error) {
-            errorCallback(ErrorToString(res.data.messages));
-        }else{
+          errorCallback(ErrorToString(res.data.messages));
+        } else {
           errorCallback(ArrayToString(res.data.messages));
         }
       }
@@ -52,10 +49,9 @@ export class FileService {
     }
   }
 
-  async all( errorCallback, successCallback) {
-
+  async all(errorCallback, successCallback) {
     try {
-      let res = await axios.get(ApiRoutes.FILE,{params:{status:"all"}});
+      let res = await axios.get(ApiRoutes.FILE, { params: { status: "all" } });
       if (res.data.status) {
         successCallback(res.data.data.files);
       } else {
@@ -65,11 +61,9 @@ export class FileService {
       errorCallback(e.toString());
       console.error(e);
     }
-
   }
 
   async sendFile(file_id, recipient_id, errorCallback, successCallback) {
-
     try {
       let res = await axios.post(FILE_SEND(file_id), { recipient_id });
       console.log(res);
@@ -82,11 +76,9 @@ export class FileService {
       console.error(e);
       errorCallback(e.toString());
     }
-
   }
 
   async takeFile(file_id, errorCallback, successCallback) {
-
     try {
       let res = await axios.post(FILE_TAKE(file_id));
       if (res.data.status) {
@@ -98,7 +90,6 @@ export class FileService {
       console.error(e);
       errorCallback(e.toString());
     }
-
   }
 
   async getApplication(id, type, errorCallback, successCallback) {
@@ -120,12 +111,11 @@ export class FileService {
         url = `/hotels/${id}`;
         break;
       default:
-        alert(type)
+        alert(type);
         break;
     }
     try {
       let res = await axios.get(url);
-        console.log(res);
       if (res.data.status) {
         switch (type) {
           case FILEABLE_TYPE.KIOSK:
@@ -143,6 +133,8 @@ export class FileService {
           case FILEABLE_TYPE.HOTEL:
             successCallback(res.data.data.hotel);
             break;
+          default:
+            break;
         }
       } else {
         errorCallback(ArrayToString(res.data.messages));
@@ -151,6 +143,5 @@ export class FileService {
       console.error(e);
       errorCallback(e.toString());
     }
-
   }
 }

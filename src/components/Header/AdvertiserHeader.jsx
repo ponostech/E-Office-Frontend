@@ -10,7 +10,13 @@ import UserIcon from "@material-ui/icons/AccountCircleRounded";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingIcon from "@material-ui/icons/Settings";
 // core components
-import { Button, CardActions, IconButton, LinearProgress, Typography, withStyles } from "@material-ui/core";
+import {
+  Button,
+  IconButton,
+  LinearProgress,
+  Typography,
+  withStyles
+} from "@material-ui/core";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import GridContainer from "../Grid/GridContainer";
 import * as OfficeRoutes from "../../config/routes-constant/OfficeRoutes";
@@ -19,8 +25,8 @@ import { LoginService } from "../../services/LoginService";
 import AdvertiserMobileMenu from "./AdvertiserMobileMenu";
 
 const styles = {
-  menuLink:{
-    color:"#333"
+  menuLink: {
+    color: "#333"
   }
 };
 
@@ -38,82 +44,136 @@ class AdvertiserHeader extends React.Component {
 
   logout = () => {
     const { history } = this.props;
-    this.loginService.logout(errorMessage => console.log(errorMessage), msg => {
-      history.push(OfficeRoutes.LOGIN);
-    }).finally(() => console.info("log out request has been made"));
+    this.loginService
+      .logout(
+        errorMessage => console.log(errorMessage),
+        msg => {
+          history.push(OfficeRoutes.LOGIN);
+        }
+      )
+      .finally(() => console.info("log out request has been made"));
   };
 
-  handleHoarding = (path) => this.props.history.push(path);
+  handleHoarding = path => this.props.history.push(path);
 
-  handleKiosk = (path) => this.props.history.push(path);
+  handleKiosk = path => this.props.history.push(path);
 
   handleUser = () => this.props.history.push(OfficeRoutes.ADVERTISER_PROFILE);
 
   render() {
-    const { history, loading, classes } = this.props;
+    const { history, classes } = this.props;
     let menuItems = (
       <GridContainer justify={"space-between"}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <NavLink className={classes.menuLink} to={OfficeRoutes.ADVERTISER_DASHBOARD}>
-            <IconButton
-            color="primary"><Icon>dashboard</Icon>
+          <NavLink
+            className={classes.menuLink}
+            to={OfficeRoutes.ADVERTISER_DASHBOARD}
+          >
+            <IconButton color="primary">
+              <Icon>dashboard</Icon>
             </IconButton>
           </NavLink>
           {"\u00A0 "}
           {"\u00A0 "}
-          <NavLink className={classes.menuLink} to={OfficeRoutes.ADVERTISER_AVAILABLE_HOARDING}>
-            <Button style={{padding:10, textTransform: "capitalize", fontSize: 14}}
-                    variant={"contained"} color={"primary"}>Available hoarding</Button>
+          <NavLink
+            className={classes.menuLink}
+            to={OfficeRoutes.ADVERTISER_AVAILABLE_HOARDING}
+          >
+            <Button
+              style={{ padding: 10, textTransform: "capitalize", fontSize: 14 }}
+              variant={"contained"}
+              color={"primary"}
+            >
+              Available hoarding
+            </Button>
           </NavLink>
           {"\u00A0 "}
           {"\u00A0 "}
-          <NavLink className={classes.menuLink} to={OfficeRoutes.ADVERTISER_AVAILABLE_KIOSK}>
-            <Button style={{padding:10, textTransform: "capitalize", fontSize: 14}}
-                    variant={"contained"}  color={"secondary"}>Available Kiosk</Button>
+          <NavLink
+            className={classes.menuLink}
+            to={OfficeRoutes.ADVERTISER_AVAILABLE_KIOSK}
+          >
+            <Button
+              style={{ padding: 10, textTransform: "capitalize", fontSize: 14 }}
+              variant={"contained"}
+              color={"secondary"}
+            >
+              Available Kiosk
+            </Button>
           </NavLink>
           {"\u00A0 "}
           {"\u00A0 "}
           <CustomDropdown
             dropdownList={[
-              { title: "New Proposal", link: OfficeRoutes.ADVERTISER_NEW_HOARDING },
-              { title: "Proposed Applications", link: OfficeRoutes.ADVERTISER_PROPOSED_HOARDING },
-              { title: "Active Hoarding", link: OfficeRoutes.ADVERTISER_ACTIVE_HOARDING },
-              { title: "Withdrawn Applications", link: OfficeRoutes.ADVERTISER_WITHDRAWN_HOARDING }
+              {
+                title: "New Proposal",
+                link: OfficeRoutes.ADVERTISER_NEW_HOARDING
+              },
+              {
+                title: "Proposed Applications",
+                link: OfficeRoutes.ADVERTISER_PROPOSED_HOARDING
+              },
+              {
+                title: "Active Hoarding",
+                link: OfficeRoutes.ADVERTISER_ACTIVE_HOARDING
+              },
+              {
+                title: "Withdrawn Applications",
+                link: OfficeRoutes.ADVERTISER_WITHDRAWN_HOARDING
+              }
             ]}
             linkClick={this.handleHoarding.bind(this)}
             buttonText={"Hoarding"}
-            buttonProps={{ color: "transparent" }}/>
+            buttonProps={{ color: "transparent" }}
+          />
 
           <CustomDropdown
             dropdownList={[
-              { title: "New Proposal", link: OfficeRoutes.ADVERTISER_NEW_KIOSK },
-              { title: "Proposed Application", link: OfficeRoutes.ADVERTISER_PROPOSED_KIOSK },
-              { title: "Active Kiosk", link: OfficeRoutes.ADVERTISER_ACTIVE_KIOSK },
-              { title: "Withdrawn Applications", link: OfficeRoutes.ADVERTISER_WITHDRAWN_KIOSK }
+              {
+                title: "New Proposal",
+                link: OfficeRoutes.ADVERTISER_NEW_KIOSK
+              },
+              {
+                title: "Proposed Application",
+                link: OfficeRoutes.ADVERTISER_PROPOSED_KIOSK
+              },
+              {
+                title: "Active Kiosk",
+                link: OfficeRoutes.ADVERTISER_ACTIVE_KIOSK
+              },
+              {
+                title: "Withdrawn Applications",
+                link: OfficeRoutes.ADVERTISER_WITHDRAWN_KIOSK
+              }
             ]}
             linkClick={this.handleKiosk.bind(this)}
             buttonText={"Kiosk"}
-            buttonProps={{ color: "transparent" }}/>
-
-
+            buttonProps={{ color: "transparent" }}
+          />
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Typography variant={"caption"}
-                      color={"textSecondary"}>{"Welcome"} {LoginService.getCurrentUser().email}</Typography>
+          <Typography variant={"caption"} color={"textSecondary"}>
+            {"Welcome"} {LoginService.getCurrentUser().email}
+          </Typography>
           <IconButton onClick={this.handleUser.bind(this)}>
-            <UserIcon/>
+            <UserIcon />
           </IconButton>
-          <IconButton onClick={() => history.push(OfficeRoutes.ADVERTISER_SETTING)}>
-            <SettingIcon/>
+          <IconButton
+            onClick={() => history.push(OfficeRoutes.ADVERTISER_SETTING)}
+          >
+            <SettingIcon />
           </IconButton>
-          <IconButton onClick={this.logout.bind(this)} color="error"><Icon>power_settings_new</Icon></IconButton>
+          <IconButton onClick={this.logout.bind(this)} color="error">
+            <Icon>power_settings_new</Icon>
+          </IconButton>
         </div>
       </GridContainer>
     );
 
     return (
       <AppBar position="fixed" color={"inherit"}>
-        <Toolbar>{/*
+        <Toolbar>
+          {/*
           <Hidden smDown>
             <Typography color={"textPrimary"} variant={"title"}>E-AMC</Typography>
           </Hidden>*/}
@@ -131,7 +191,7 @@ class AdvertiserHeader extends React.Component {
               aria-label="open drawer"
               onClick={this.handleDrawerToggle}
             >
-              <MenuIcon/>
+              <MenuIcon />
             </IconButton>
           </Hidden>
           <Hidden mdUp>
@@ -145,17 +205,19 @@ class AdvertiserHeader extends React.Component {
                   keepMounted: true // Better open performance on mobile.
                 }}
               >
-                <AdvertiserMobileMenu close={e=>this.setState({open:false})}/>
+                <AdvertiserMobileMenu
+                  close={e => this.setState({ open: false })}
+                />
               </Drawer>
             </Hidden>
           </Hidden>
         </Toolbar>
-        {
-          this.global.loading ? <LinearProgress color={"primary"} variant={"indeterminate"}/> : undefined
-        }
-
+        {this.global.loading ? (
+          <LinearProgress color={"primary"} variant={"indeterminate"} />
+        ) : (
+          undefined
+        )}
       </AppBar>
-
     );
   }
 }

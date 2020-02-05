@@ -5,38 +5,15 @@ import PieChartView from "./widgets/PieChartView";
 import LineChartView from "./widgets/LineChartView";
 import DonutChartView from "./widgets/DonutChartView";
 
-
-var simpleLineChartData = {
-  labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-  series: [
-    [12, 9, 7, 8, -10],
-    [2, 1, 3.5, 7, 3],
-    [134, 37, 87, 5, 6],
-    [14, 37, 4, 77, 6],
-    [15, 37, 9, 5, 78],
-    [14, 3, 67, 5, 6],
-    [17, 3, 4, 56, 89]
-  ]
-};
 const pieData = {
-  labels: [
-    "Red",
-    "Green",
-    "Yellow"
-  ],
-  datasets: [{
-    data: [300, 50, 100],
-    backgroundColor: [
-      "#FF6384",
-      "#36A2EB",
-      "#FFCE56"
-    ],
-    hoverBackgroundColor: [
-      "#FF6384",
-      "#36A2EB",
-      "#FFCE56"
-    ]
-  }]
+  labels: ["Red", "Green", "Yellow"],
+  datasets: [
+    {
+      data: [300, 50, 100],
+      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+    }
+  ]
 };
 
 const lineData = {
@@ -67,7 +44,6 @@ const lineData = {
 };
 
 class AdvertiserDashboard extends Component {
-
   componentDidMount() {
     let self = this;
     this.setGlobal({ loading: true });
@@ -77,38 +53,35 @@ class AdvertiserDashboard extends Component {
   }
 
   render() {
-    const { classes } = this.props;
     return (
       <Grid spacing={3} container={true}>
         {/*<p>Advertiser dashboard</p>*/}
         <Grid item={true} xs={12} sm={12} md={4}>
-          <InfoView onLinkClick={e => console.log("rest")}/>
+          <InfoView onLinkClick={e => console.log("rest")} />
         </Grid>
         <Grid item={true} xs={12} sm={12} md={4}>
-          <InfoView onLinkClick={e => console.log("rest")}/>
+          <InfoView onLinkClick={e => console.log("rest")} />
         </Grid>
         <Grid item={true} xs={12} sm={12} md={4}>
-          <InfoView onLinkClick={e => console.log("rest")}/>
+          <InfoView onLinkClick={e => console.log("rest")} />
         </Grid>
 
-
         <Grid item={true} xs={12} sm={12} md={4}>
-          <PieChartView data={pieData}/>
+          <PieChartView data={pieData} />
         </Grid>
         <Grid item={true} xs={12} sm={12} md={4}>
-          <PieChartView data={pieData}/>
+          <PieChartView data={pieData} />
         </Grid>
         <Grid item={true} xs={12} sm={12} md={4}>
-          <DonutChartView data={pieData}/>
+          <DonutChartView data={pieData} />
         </Grid>
 
         <Grid item={true} xs={12} sm={12} md={12}>
-          <LineChartView data={lineData}/>
+          <LineChartView data={lineData} />
         </Grid>
-
       </Grid>
     );
   }
 }
 
-export default (AdvertiserDashboard);
+export default AdvertiserDashboard;

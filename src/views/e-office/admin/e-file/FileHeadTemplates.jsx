@@ -1,12 +1,16 @@
 import React, { Component } from "reactn";
-import { Card, CardContent, createMuiTheme, withStyles } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  createMuiTheme,
+  withStyles
+} from "@material-ui/core";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import GroupHeadList from "./group-head/GroupHeadList";
 import MainHeadList from "./main-head/MainHeadList";
 import SubHeadList from "./sub-head/SubHeadList";
 import Paper from "@material-ui/core/Paper";
-
 
 const styles = theme => ({
   root: {
@@ -29,14 +33,14 @@ const styles = theme => ({
     fontFamily: [
       "-apple-system",
       "BlinkMacSystemFont",
-      "\"Segoe UI\"",
+      '"Segoe UI"',
       "Roboto",
-      "\"Helvetica Neue\"",
+      '"Helvetica Neue"',
       "Arial",
       "sans-serif",
-      "\"Apple Color Emoji\"",
-      "\"Segoe UI Emoji\"",
-      "\"Segoe UI Symbol\""
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"'
     ].join(","),
     "&:hover": {
       color: "#40a9ff",
@@ -68,60 +72,70 @@ class FileHeadTemplates extends Component {
   handleChange = (event, value) => {
     this.setState({ value });
   };
-  getMuiTheme = () => createMuiTheme({
-    overrides: {
-      MUIDataTable: {
-        root: {
-          backgroundColor: "black"
+  getMuiTheme = () =>
+    createMuiTheme({
+      overrides: {
+        MUIDataTable: {
+          root: {
+            backgroundColor: "black"
+          },
+          paper: {
+            boxShadow: "none"
+          }
+        }
+      },
+      palette: {
+        primary: {
+          main: "#26B99A",
+          contrastText: "#fff"
         },
-        paper: {
-          boxShadow: "none"
+        secondary: {
+          main: "#b93e46",
+          contrastText: "#fff"
         }
       }
-    },
-    palette: {
-      primary: {
-        main: "#26B99A",
-        contrastText: "#fff"
-      },
-      secondary: {
-        main: "#b93e46",
-        contrastText: "#fff"
-      }
-    }
-  });
+    });
 
   render() {
-    const { classes } = this.props;
     const { value } = this.state;
 
     return (
       <Card>
-        {/*<CardHeader style={{ padding: "5px 16px" }} title={"FUNCTIONAL FILE INDEX"}/>*/}
         <CardContent>
           <Paper>
-            <Tabs component={"div"}
-                  value={value}
-                  onChange={this.handleChange}
-            >
-
-              <Tab href={"#"} value={"group-head"}
-                   disableRipple
-                   label={"Group Head"}/>
-              <Tab href={"#"} disableRipple value={"main-head"}
-                   label={"Main Head"}/>
-              <Tab href={"#"} disableRipple value={"sub-head"}
-                   label={"Sub Head"}/>
-
+            <Tabs component={"div"} value={value} onChange={this.handleChange}>
+              <Tab
+                href={"#"}
+                value={"group-head"}
+                disableRipple
+                label={"Group Head"}
+              />
+              <Tab
+                href={"#"}
+                disableRipple
+                value={"main-head"}
+                label={"Main Head"}
+              />
+              <Tab
+                href={"#"}
+                disableRipple
+                value={"sub-head"}
+                label={"Sub Head"}
+              />
             </Tabs>
             <div>
-              {value === "group-head" && <GroupHeadList theme={this.getMuiTheme()}/>}
-              {value === "main-head" && <MainHeadList theme={this.getMuiTheme()}/>}
-              {value === "sub-head" && <SubHeadList theme={this.getMuiTheme()}/>}
+              {value === "group-head" && (
+                <GroupHeadList theme={this.getMuiTheme()} />
+              )}
+              {value === "main-head" && (
+                <MainHeadList theme={this.getMuiTheme()} />
+              )}
+              {value === "sub-head" && (
+                <SubHeadList theme={this.getMuiTheme()} />
+              )}
             </div>
           </Paper>
         </CardContent>
-
       </Card>
     );
   }

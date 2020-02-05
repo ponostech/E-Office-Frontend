@@ -12,7 +12,8 @@ import {
   GridListTile,
   GridListTileBar,
   Icon,
-  IconButton, List,
+  IconButton,
+  List,
   ListSubheader,
   Toolbar,
   Typography,
@@ -68,7 +69,11 @@ class SiteVerificationDetailDialog extends Component {
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.verification) {
       const { data, template } = nextProps.verification;
-      let strings = [], passports = [], coordinates = [], images = [], files = [];
+      let strings = [],
+        passports = [],
+        coordinates = [],
+        images = [],
+        files = [];
 
       Object.entries(template).forEach(([key, config]) => {
         switch (config.type) {
@@ -85,14 +90,14 @@ class SiteVerificationDetailDialog extends Component {
           case WIDGET_TYPE.SELECT:
             strings.push({
               label: config.label,
-              value: data[key] ? data[key].label : "NA",
+              value: data[key] ? data[key].label : "NA"
             });
             break;
           case WIDGET_TYPE.DATE_PICKER:
             strings.push({
-              label:config.label,
-              value:moment(data[key]).format("Do MMM YYYY")
-            })
+              label: config.label,
+              value: moment(data[key]).format("Do MMM YYYY")
+            });
             break;
           case FILLABLE_TYPE.PASSPORT:
             passports.push({
@@ -108,17 +113,22 @@ class SiteVerificationDetailDialog extends Component {
             });
             break;
           case WIDGET_TYPE.IMAGE_LIST:
-            data[key]&&data[key].map(item=>images.push({
-              label: item?item.name:"NA",
-              location: item ? item.path : null
-            }))
+            data[key] &&
+              data[key].map(item =>
+                images.push({
+                  label: item ? item.name : "NA",
+                  location: item ? item.path : null
+                })
+              );
             break;
           case WIDGET_TYPE.FILE_UPLOAD:
             files.push({
               label: config.label,
               location: data[key] ? data[key] : null
             });
-            break
+            break;
+          default:
+            break;
         }
       });
 
@@ -129,8 +139,7 @@ class SiteVerificationDetailDialog extends Component {
   getPassport = () => {
     const { passports } = this.state;
     const { classes } = this.props;
-    return (
-      Boolean(passports)?
+    return Boolean(passports) ? (
       <div className={classes.gridRoot}>
         <GridList cellHeight={180} className={classes.gridList}>
           <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
@@ -138,11 +147,14 @@ class SiteVerificationDetailDialog extends Component {
           </GridListTile>
           {passports.map(tile => (
             <GridListTile key={tile.location}>
-              <img src={tile.location} alt={tile.label}/>
+              <img src={tile.location} alt={tile.label} />
               <GridListTileBar
                 title={tile.name}
                 actionIcon={
-                  <IconButton aria-label={`info about ${tile.label}`} className={classes.icon}>
+                  <IconButton
+                    aria-label={`info about ${tile.label}`}
+                    className={classes.icon}
+                  >
                     <Icon>info</Icon>
                   </IconButton>
                 }
@@ -150,18 +162,19 @@ class SiteVerificationDetailDialog extends Component {
             </GridListTile>
           ))}
         </GridList>
-      </div>:null
-    );
+      </div>
+    ) : null;
   };
   getStrings = () => {
     const { strings } = this.state;
-    return strings.map(item => <DetailViewRow primary={item.label} secondary={item.value}/>);
+    return strings.map(item => (
+      <DetailViewRow primary={item.label} secondary={item.value} />
+    ));
   };
   getImageList = () => {
     const { images } = this.state;
     const { classes } = this.props;
-    return (
-      images.length>0?
+    return images.length > 0 ? (
       <div className={classes.gridRoot}>
         <GridList cellHeight={180} className={classes.gridList}>
           <GridListTile key="Subheader" cols={4} style={{ height: "auto" }}>
@@ -169,11 +182,14 @@ class SiteVerificationDetailDialog extends Component {
           </GridListTile>
           {images.map(tile => (
             <GridListTile key={tile.location}>
-              <img src={tile.location} alt={tile.label}/>
+              <img src={tile.location} alt={tile.label} />
               <GridListTileBar
                 title={tile.label}
                 actionIcon={
-                  <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <IconButton
+                    aria-label={`info about ${tile.title}`}
+                    className={classes.icon}
+                  >
                     <Icon>info</Icon>
                   </IconButton>
                 }
@@ -181,50 +197,91 @@ class SiteVerificationDetailDialog extends Component {
             </GridListTile>
           ))}
         </GridList>
-      </div>:null
-    );
+      </div>
+    ) : null;
   };
   getFiles = () => {
     const { files } = this.state;
-    return <>
-      <Typography paragraph={true} variant={"h6"}>Attachments</Typography>
-      {files.map(file=>(
-      <DetailViewRow secondary={file.label}>
-        <IconButton onClick={event => window.open(file.location, "_blank")}>
-          <Icon>keyboard_arrow_right</Icon>
-        </IconButton>
-      </DetailViewRow>
-      ) )}
-    </>;
+    return (
+      <>
+        <Typography paragraph={true} variant={"h6"}>
+          Attachments
+        </Typography>
+        {files.map(file => (
+          <DetailViewRow secondary={file.label}>
+            <IconButton onClick={event => window.open(file.location, "_blank")}>
+              <Icon>keyboard_arrow_right</Icon>
+            </IconButton>
+          </DetailViewRow>
+        ))}
+      </>
+    );
   };
   getCoordinate = () => {
     const { coordinates } = this.state;
-    return <List>
-      <Typography paragraph={true} variant={"h6"}>Coordinates</Typography>
-      {coordinates.map(latLng => (
-      <DetailViewRow primary={latLng.label} secondary={`lat: ${latLng.latitude} Lng:${latLng.longitude}`}>
-        <IconButton onClick={event => this.setState({ lat: latLng.latitude, lng: latLng.longitude, openMap: true })}>
-          <Icon>keyboard_arrow_right</Icon>
-        </IconButton>
-      </DetailViewRow>
-    ))}
-    </List>
+    return (
+      <List>
+        <Typography paragraph={true} variant={"h6"}>
+          Coordinates
+        </Typography>
+        {coordinates.map(latLng => (
+          <DetailViewRow
+            primary={latLng.label}
+            secondary={`lat: ${latLng.latitude} Lng:${latLng.longitude}`}
+          >
+            <IconButton
+              onClick={event =>
+                this.setState({
+                  lat: latLng.latitude,
+                  lng: latLng.longitude,
+                  openMap: true
+                })
+              }
+            >
+              <Icon>keyboard_arrow_right</Icon>
+            </IconButton>
+          </DetailViewRow>
+        ))}
+      </List>
+    );
   };
 
-
   render() {
-    const { open, onClose, verification, classes } = this.props;
-    const { strings, passports, files, images, coordinates,lat,lng,openMap } = this.state;
-
+    const { open, onClose, classes } = this.props;
+    const {
+      strings,
+      passports,
+      files,
+      images,
+      coordinates,
+      lat,
+      lng,
+      openMap
+    } = this.state;
 
     return (
-      <Dialog fullScreen={true} fullWidth={true} maxWidth={"md"} open={open} onClose={onClose}>
+      <Dialog
+        fullScreen={true}
+        fullWidth={true}
+        maxWidth={"md"}
+        open={open}
+        onClose={onClose}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={this.props.onClose} aria-label="Close">
-              <CloseIcon/>
+            <IconButton
+              href={"#"}
+              color="inherit"
+              onClick={this.props.onClose}
+              aria-label="Close"
+            >
+              <CloseIcon />
             </IconButton>
-            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+            <Typography
+              variant="subtitle2"
+              color="inherit"
+              className={classes.flex}
+            >
               Details of site verification
             </Typography>
             <Button href={"#"} onClick={onClose} color="inherit">
@@ -233,33 +290,43 @@ class SiteVerificationDetailDialog extends Component {
           </Toolbar>
         </AppBar>
 
-
         <DialogContent>
           <Card>
             <CardContent>
               <Grid container={true}>
                 <Grid item={true} md={6} sm={12} lg={6}>
-                  {passports.length>0 && this.getPassport()}
-                  {strings.length>0 && this.getStrings()}
-                  {coordinates.length>0 && this.getCoordinate()}
-                  {files.length>0 && this.getFiles()}
+                  {passports.length > 0 && this.getPassport()}
+                  {strings.length > 0 && this.getStrings()}
+                  {coordinates.length > 0 && this.getCoordinate()}
+                  {files.length > 0 && this.getFiles()}
                 </Grid>
                 <Grid item={true} md={6} sm={12} lg={6}>
-                  {images.length>0 && this.getImageList()}
+                  {images.length > 0 && this.getImageList()}
                 </Grid>
               </Grid>
-
             </CardContent>
           </Card>
-
         </DialogContent>
 
-        <Divider component={"li"}/>
+        <Divider component={"li"} />
         <DialogActions>
-          <Button href={"#"} variant={"outlined"} color={"secondary"} onClick={onClose}>Close</Button>
+          <Button
+            href={"#"}
+            variant={"outlined"}
+            color={"secondary"}
+            onClick={onClose}
+          >
+            Close
+          </Button>
         </DialogActions>
 
-        <GMapDialog open={openMap} isMarkerShown={true} onClose={()=>this.setState({openMap:false})} lat={lat} lng={lng}/>
+        <GMapDialog
+          open={openMap}
+          isMarkerShown={true}
+          onClose={() => this.setState({ openMap: false })}
+          lat={lat}
+          lng={lng}
+        />
       </Dialog>
     );
   }

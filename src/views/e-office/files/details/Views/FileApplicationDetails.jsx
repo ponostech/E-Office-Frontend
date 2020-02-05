@@ -2,7 +2,6 @@ import React from "reactn";
 import { FileService } from "../../../../../services/FileService";
 import {
   Card,
-  CardContent,
   CardHeader,
   Divider,
   IconButton,
@@ -260,6 +259,8 @@ class FileApplicationDetails extends React.Component {
           },
           { name: "Type of Premised", value: application.premise_type }
         );
+        break;
+      default:
         break;
     }
     this.setState({ rows });

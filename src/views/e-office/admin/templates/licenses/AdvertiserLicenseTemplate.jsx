@@ -3,10 +3,8 @@ import TextEditor from "../../../common/Editor";
 import { Button, Card, CardActions, CardContent } from "@material-ui/core";
 import LicenseTemplateService from "../../../../../services/LicenseTemplateService";
 import SubmitDialog from "../../../../../components/SubmitDialog";
-import OfficeSnackbar from "../../../../../components/OfficeSnackbar";
 
 class AdvertiserLicenseTemplate extends Component {
-
   licenseTemplateService = new LicenseTemplateService();
 
   state = {
@@ -21,16 +19,23 @@ class AdvertiserLicenseTemplate extends Component {
     successMessage: ""
   };
 
-
   componentDidMount() {
-    this.setGlobal({loading:true});
-    this.licenseTemplateService.get("advertiser",
-      errorMsg => this.setGlobal({ errorMsg }),
-      template => {
-        if (template)
-          this.setState({ content: template.content, id: template.id, type: template.type, edit: true });
-      })
-      .finally(() => this.setGlobal({loading:false}));
+    this.setGlobal({ loading: true });
+    this.licenseTemplateService
+      .get(
+        "advertiser",
+        errorMsg => this.setGlobal({ errorMsg }),
+        template => {
+          if (template)
+            this.setState({
+              content: template.content,
+              id: template.id,
+              type: template.type,
+              edit: true
+            });
+        }
+      )
+      .finally(() => this.setGlobal({ loading: false }));
   }
 
   doUpdate = () => {
@@ -40,8 +45,12 @@ class AdvertiserLicenseTemplate extends Component {
       type: this.state.type
     };
     this.setState({ submit: true });
-    this.licenseTemplateService.update(template, errorMsg => this.setState({ errorMsg }),
-      successMsg => this.setGlobal({ successMsg }))
+    this.licenseTemplateService
+      .update(
+        template,
+        errorMsg => this.setState({ errorMsg }),
+        successMsg => this.setGlobal({ successMsg })
+      )
       .finally(() => this.setState({ submit: false }));
   };
   doSave = () => {
@@ -50,14 +59,18 @@ class AdvertiserLicenseTemplate extends Component {
       type: "advertiser"
     };
     this.setState({ submit: true });
-    this.licenseTemplateService.create(data, errorMsg => this.setGlobal({ errorMsg }),
-      (successMsg,id) => {
-      this.setGlobal({successMsg});
-      this.setState({ edit:true,id})
-      })
+    this.licenseTemplateService
+      .create(
+        data,
+        errorMsg => this.setGlobal({ errorMsg }),
+        (successMsg, id) => {
+          this.setGlobal({ successMsg });
+          this.setState({ edit: true, id });
+        }
+      )
       .finally(() => this.setState({ submit: false }));
   };
-  handleClick = (identifier) => {
+  handleClick = identifier => {
     switch (identifier) {
       case "save":
         if (this.state.edit) {
@@ -73,7 +86,7 @@ class AdvertiserLicenseTemplate extends Component {
         break;
     }
   };
-  editorChange = (e) => {
+  editorChange = e => {
     this.setState({ content: e.target.getContent() });
   };
 
@@ -83,19 +96,36 @@ class AdvertiserLicenseTemplate extends Component {
       <>
         <Card>
           <CardContent>
-            <TextEditor onChange={this.editorChange} default={this.state.content}/>
+            <TextEditor
+              onChange={this.editorChange}
+              default={this.state.content}
+            />
           </CardContent>
 
           <CardActions style={{ justifyContent: "flex-end" }}>
-            <Button href={"#"} variant={"outlined"} color={"primary"}
-                    onClick={this.handleClick.bind(this, "save")}>{edit ? "Update" : "Save"}</Button>
-            <Button href={"#"} variant={"outlined"} color={"secondary"}
-                    onClick={this.handleClick.bind(this, "reset")}>Reset</Button>
+            <Button
+              href={"#"}
+              variant={"outlined"}
+              color={"primary"}
+              onClick={this.handleClick.bind(this, "save")}
+            >
+              {edit ? "Update" : "Save"}
+            </Button>
+            <Button
+              href={"#"}
+              variant={"outlined"}
+              color={"secondary"}
+              onClick={this.handleClick.bind(this, "reset")}
+            >
+              Reset
+            </Button>
           </CardActions>
-
         </Card>
-        <SubmitDialog open={this.state.submit} title={"Submit Template"}
-                      text={"Hote License template is submitting ..."}/>
+        <SubmitDialog
+          open={this.state.submit}
+          title={"Submit Template"}
+          text={"Hote License template is submitting ..."}
+        />
       </>
     );
   }

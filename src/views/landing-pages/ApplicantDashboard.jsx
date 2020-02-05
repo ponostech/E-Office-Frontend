@@ -69,20 +69,24 @@ const style = {
   }
 };
 const LabelInfo = ({ number, title, description }) => {
-
   return (
     <div style={style.root}>
-      <Typography style={style.numberLabel} variant={"h4"}>{number}</Typography>
+      <Typography style={style.numberLabel} variant={"h4"}>
+        {number}
+      </Typography>
       <div style={style.panel}>
-        <Typography style={style.title} variant={"subtitle2"}>{title}</Typography>
-        <Typography style={style.caption} color={"initial"} variant={"caption"}>{description}</Typography>
+        <Typography style={style.title} variant={"subtitle2"}>
+          {title}
+        </Typography>
+        <Typography style={style.caption} color={"initial"} variant={"caption"}>
+          {description}
+        </Typography>
       </div>
     </div>
   );
 };
 
 class ApplicantDashboard extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -107,80 +111,143 @@ class ApplicantDashboard extends Component {
     this.getApplications();
   }
 
-  getApplications = (tabValue) => {
+  getApplications = tabValue => {
     const { phone } = this.props;
     this.setState({ tabValue });
-    this.licenseService.getApplications(phone,
-      errorMsg => this.setGlobal({ errorMsg }),
-      data => this.setState({ shops: data.shops, hotels: data.hotels, banners: data.banners }))
+    this.licenseService
+      .getApplications(
+        phone,
+        errorMsg => this.setGlobal({ errorMsg }),
+        data =>
+          this.setState({
+            shops: data.shops,
+            hotels: data.hotels,
+            banners: data.banners
+          })
+      )
       .finally(() => this.setGlobal({ loading: false }));
   };
 
-  getLicenses = (tabValue) => {
+  getLicenses = tabValue => {
     const { phone } = this.props;
     this.setState({ tabValue });
-    this.licenseService.getLicenses(phone,
-      errorMsg => this.setGlobal({ errorMsg }),
-      (shopLicenses, hotelLicenses, bannerLicenses) => this.setState({
-        shopLicenses, hotelLicenses, bannerLicenses
-      }))
+    this.licenseService
+      .getLicenses(
+        phone,
+        errorMsg => this.setGlobal({ errorMsg }),
+        (shopLicenses, hotelLicenses, bannerLicenses) =>
+          this.setState({
+            shopLicenses,
+            hotelLicenses,
+            bannerLicenses
+          })
+      )
       .finally(() => console.log("get licenses request complete"));
   };
 
-  getRenewableLicenses = (tabValue) => {
+  getRenewableLicenses = tabValue => {
     const { phone } = this.props;
     this.setState({ tabValue });
     this.setGlobal({ loading: true });
-    this.licenseService.getRenewablePermitList(phone,
-      errorMsg => this.setGlobal({ errorMsg }),
-      renewableLicenses => this.setState({ renewableLicenses }))
+    this.licenseService
+      .getRenewablePermitList(
+        phone,
+        errorMsg => this.setGlobal({ errorMsg }),
+        renewableLicenses => this.setState({ renewableLicenses })
+      )
       .finally(() => this.setGlobal({ loading: false }));
   };
-  getChallans = (tabValue) => {
+  getChallans = tabValue => {
     const { phone } = this.props;
     this.setState({ tabValue });
     this.setGlobal({ loading: true });
-    this.challanService.getUserChallan(phone,
-      errorMsg => this.setGlobal({ errorMsg }),
-      (shop, hotel, banner) => this.setState({ challans: { shop, hotel, banner } }))
+    this.challanService
+      .getUserChallan(
+        phone,
+        errorMsg => this.setGlobal({ errorMsg }),
+        (shop, hotel, banner) =>
+          this.setState({ challans: { shop, hotel, banner } })
+      )
       .finally(() => this.setGlobal({ loading: false }));
   };
 
   render() {
-    const { shops, hotels, banners, licenses, renewableLicenses, challans } = this.state;
+    const { shops, hotels, banners, renewableLicenses, challans } = this.state;
     const { hotelLicenses, bannerLicenses, shopLicenses } = this.state;
     const { phone } = this.props;
 
-    const challanShopCount = challans ? challans.shop ? challans.shop.length : 0 : 0;
-    const challansBannerCount = challans ? challans.banner ? challans.banner.length : 0 : 0;
-    const challanHotelCount = challans ? challans.hotel ? challans.hotel.length : 0 : 0;
+    const challanShopCount = challans
+      ? challans.shop
+        ? challans.shop.length
+        : 0
+      : 0;
+    const challansBannerCount = challans
+      ? challans.banner
+        ? challans.banner.length
+        : 0
+      : 0;
+    const challanHotelCount = challans
+      ? challans.hotel
+        ? challans.hotel.length
+        : 0
+      : 0;
     const labels = (
       <div style={style.root}>
-        <LabelInfo title={"Application"} description={"No. of application submitted"}
-                   number={shops ? shops.length + 1 : 0 + hotels ? hotels.length : 0 + banners ? banners.length : 0}/>
-        <div style={style.divider}/>
-        <LabelInfo title={"License"} description={"No. of license/permit issued"}
-                   number={bannerLicenses ? bannerLicenses.length : 0 + shopLicenses ? shopLicenses.length : 0 + hotelLicenses ? hotelLicenses.length : 0}/>
-        <div style={style.divider}/>
+        <LabelInfo
+          title={"Application"}
+          description={"No. of application submitted"}
+          number={
+            shops
+              ? shops.length + 1
+              : 0 + hotels
+              ? hotels.length
+              : 0 + banners
+              ? banners.length
+              : 0
+          }
+        />
+        <div style={style.divider} />
+        <LabelInfo
+          title={"License"}
+          description={"No. of license/permit issued"}
+          number={
+            bannerLicenses
+              ? bannerLicenses.length
+              : 0 + shopLicenses
+              ? shopLicenses.length
+              : 0 + hotelLicenses
+              ? hotelLicenses.length
+              : 0
+          }
+        />
+        <div style={style.divider} />
 
-        <LabelInfo title={"Challan"} description={"No. of Challan Generated"}
-                   number={challanHotelCount + challanShopCount + challansBannerCount}/>
-        <div style={style.divider}/>
+        <LabelInfo
+          title={"Challan"}
+          description={"No. of Challan Generated"}
+          number={challanHotelCount + challanShopCount + challansBannerCount}
+        />
+        <div style={style.divider} />
 
-        <LabelInfo title={"Expired/Expiring"} description={"No. of License Expiring/Expired"}
-                   number={renewableLicenses ? renewableLicenses.length : 0}/>
+        <LabelInfo
+          title={"Expired/Expiring"}
+          description={"No. of License Expiring/Expired"}
+          number={renewableLicenses ? renewableLicenses.length : 0}
+        />
       </div>
     );
 
     return (
       <Card>
-        <CardHeader style={{ paddingTop: 10, paddingBottom: 0, marginBottom: 0 }} title={`Dashboard of ${phone}`}
-                    action={labels}/>
+        <CardHeader
+          style={{ paddingTop: 10, paddingBottom: 0, marginBottom: 0 }}
+          title={`Dashboard of ${phone}`}
+          action={labels}
+        />
         <CardContent style={{ margin: 0, padding: 0 }}>
-
           <NavPills
             active={this.state.tabValue}
-            changeTabValue={(tabValue) => this.setState({ tabValue })}
+            changeTabValue={tabValue => this.setState({ tabValue })}
             iconColor={"secondary"}
             color={"primary"}
             horizontal={{
@@ -193,54 +260,97 @@ class ApplicantDashboard extends Component {
                 onTabClick: () => this.getApplications,
                 tabButton: "Application",
                 tabIcon: AppIcon,
-                tabContent: (<ApplicationList phone={phone}
-                                              bannerApplications={banners}
-                                              hotelApplications={hotels}
-                                              shopApplications={shops}
-                                              refresh={this.props.refresh}/>)
-              }, {
+                tabContent: (
+                  <ApplicationList
+                    phone={phone}
+                    bannerApplications={banners}
+                    hotelApplications={hotels}
+                    shopApplications={shops}
+                    refresh={this.props.refresh}
+                  />
+                )
+              },
+              {
                 value: 1,
                 onTabClick: this.getLicenses,
                 tabButton: "License",
                 tabIcon: BannerIcon,
-                tabContent: (<LicenseList bannerLicenses={bannerLicenses} hotelLicenses={hotelLicenses}
-                                          shopLicenses={shopLicenses} phone={phone}/>)
-              }, {
+                tabContent: (
+                  <LicenseList
+                    bannerLicenses={bannerLicenses}
+                    hotelLicenses={hotelLicenses}
+                    shopLicenses={shopLicenses}
+                    phone={phone}
+                  />
+                )
+              },
+              {
                 value: 2,
                 onTabClick: this.getRenewableLicenses,
                 tabButton: "Expiring/ Expired License",
                 tabIcon: WarningIcon,
                 tabColor: "secondary",
-                tabContent: (<LicenseExpiringList permits={renewableLicenses} phone={phone}/>)
-              }, {
+                tabContent: (
+                  <LicenseExpiringList
+                    permits={renewableLicenses}
+                    phone={phone}
+                  />
+                )
+              },
+              {
                 value: 3,
                 onTabClick: this.getChallans,
                 tabButton: "Challan List",
                 tabIcon: DnsIcon,
-                tabContent: (<UserChallanList
-                  banner={challans ? challans.banner : []}
-                  hotel={challans ? challans.hotel : []}
-                  shop={challans ? challans.shop : []} phone={phone}/>)
+                tabContent: (
+                  <UserChallanList
+                    banner={challans ? challans.banner : []}
+                    hotel={challans ? challans.hotel : []}
+                    shop={challans ? challans.shop : []}
+                    phone={phone}
+                  />
+                )
               }
             ]}
           />
         </CardContent>
         <CardActions style={{ margin: 0, padding: 0 }}>
           <Hidden only={["md", "lg", "xl"]}>
-            <AppBar style={{ top: "auto", bottom: 0 }} color={"inherit"} position={"fixed"} elevation={5}>
+            <AppBar
+              style={{ top: "auto", bottom: 0 }}
+              color={"inherit"}
+              position={"fixed"}
+              elevation={5}
+            >
               <BottomNavigation
                 value={this.state.tabValue}
                 onChange={(event, value) => this.setState({ tabValue: value })}
                 showLabels
               >
-                <BottomNavigationAction onClick={event => this.getApplications(0)} label={"Applications"} value={0}
-                                        icon={<AppIcon/>}/>
-                <BottomNavigationAction onClick={event => this.getLicenses(1)} label={"License"} value={1}
-                                        icon={<BannerIcon/>}/>
-                <BottomNavigationAction onClick={event => this.getRenewableLicenses(2)} label={"Expired"} value={2}
-                                        icon={<WarningIcon/>}/>
-                <BottomNavigationAction onClick={event => this.getChallans(3)} label={"Challan"} value={3}
-                                        icon={<DnsIcon/>}/>
+                <BottomNavigationAction
+                  onClick={event => this.getApplications(0)}
+                  label={"Applications"}
+                  value={0}
+                  icon={<AppIcon />}
+                />
+                <BottomNavigationAction
+                  onClick={event => this.getLicenses(1)}
+                  label={"License"}
+                  value={1}
+                  icon={<BannerIcon />}
+                />
+                <BottomNavigationAction
+                  onClick={event => this.getRenewableLicenses(2)}
+                  label={"Expired"}
+                  value={2}
+                  icon={<WarningIcon />}
+                />
+                <BottomNavigationAction
+                  onClick={event => this.getChallans(3)}
+                  label={"Challan"}
+                  value={3}
+                  icon={<DnsIcon />}
+                />
               </BottomNavigation>
             </AppBar>
           </Hidden>

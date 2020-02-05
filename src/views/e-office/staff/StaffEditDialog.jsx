@@ -31,7 +31,6 @@ const style = {
 };
 
 class StaffEditDialog extends Component {
-
   state = {
     name: "",
     email: "",
@@ -54,7 +53,7 @@ class StaffEditDialog extends Component {
 
     branches: [],
     roles: [],
-    prestine:true
+    prestine: true
   };
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -62,16 +61,18 @@ class StaffEditDialog extends Component {
     let branch = undefined;
     let role = undefined;
 
-
     if (staff) {
       roles.forEach(function(r) {
-        if (r.label === staff.roles[0].name || r.value===staff.roles[0].name) {
+        if (
+          r.label === staff.roles[0].name ||
+          r.value === staff.roles[0].name
+        ) {
           role = r;
         }
       });
 
       branches.forEach(function(b) {
-        if (b.label === staff.staff.branch || b.value===staff.staff.branch)
+        if (b.label === staff.staff.branch || b.value === staff.staff.branch)
           branch = b;
       });
 
@@ -105,15 +106,19 @@ class StaffEditDialog extends Component {
       default:
         break;
     }
-    this.setState({prestine:false})
+    this.setState({ prestine: false });
   };
   handleSelectBlur = (identifier, e) => {
     switch (identifier) {
       case "branch":
-        this.state.branch === undefined ? this.setState({ branchError: "Branch is required" }) : this.setState({ branchError: "" });
+        this.state.branch === undefined
+          ? this.setState({ branchError: "Branch is required" })
+          : this.setState({ branchError: "" });
         break;
       case "role":
-        this.state.role === undefined ? this.setState({ roleError: "Staff role is required" }) : this.setState({ roleError: "" });
+        this.state.role === undefined
+          ? this.setState({ roleError: "Staff role is required" })
+          : this.setState({ roleError: "" });
         break;
       default:
         break;
@@ -122,156 +127,213 @@ class StaffEditDialog extends Component {
   close = () => {
     this.props.onClose(null);
   };
-  handleChange = (e) => {
+  handleChange = e => {
     const { name, value } = e.target;
     this.setState({
       [name]: value
     });
     switch (name) {
       case "email":
-        !Validators.EMAIL_REGEX.test(value) ? this.setState({ emailError: StaffViewModel.EMAIL_ERROR }) : this.setState({ emailError: "" });
+        !Validators.EMAIL_REGEX.test(value)
+          ? this.setState({ emailError: StaffViewModel.EMAIL_ERROR })
+          : this.setState({ emailError: "" });
         break;
       case "phone":
-        !Validators.PHONE_REGEX.test(value) ? this.setState({ phoneError: StaffViewModel.PHONE_ERROR }) : this.setState({ phoneError: "" });
+        !Validators.PHONE_REGEX.test(value)
+          ? this.setState({ phoneError: StaffViewModel.PHONE_ERROR })
+          : this.setState({ phoneError: "" });
+        break;
+      default:
         break;
     }
     this.setState({ prestine: false });
   };
-  handleEdit = (e) => {
-    const { id, name,phone,email,designation,branch,role,dob } = this.state;
+  handleEdit = e => {
+    const {
+      id,
+      name,
+      phone,
+      email,
+      designation,
+      branch,
+      role,
+      dob
+    } = this.state;
     const { onClose } = this.props;
 
-    const invalid = Boolean(this.state.nameError) || Boolean(this.state.emailError) || Boolean(this.state.phoneError)
-      || Boolean(this.state.addressError) || Boolean(this.state.designationError) || Boolean(this.state.branchError)
-      || Boolean(this.state.roleError) || Boolean(this.state.prestine);
+    const invalid =
+      Boolean(this.state.nameError) ||
+      Boolean(this.state.emailError) ||
+      Boolean(this.state.phoneError) ||
+      Boolean(this.state.addressError) ||
+      Boolean(this.state.designationError) ||
+      Boolean(this.state.branchError) ||
+      Boolean(this.state.roleError) ||
+      Boolean(this.state.prestine);
 
-    let newStaff={id,name,phone_no:phone,email,designation,branch:branch.value,role:role.value, dob} ;
+    let newStaff = {
+      id,
+      name,
+      phone_no: phone,
+      email,
+      designation,
+      branch: branch.value,
+      role: role.value,
+      dob
+    };
     if (invalid)
       this.setState({ errorMessage: "Please fill the required field" });
-    else
-      onClose(newStaff)
-
+    else onClose(newStaff);
   };
-  handleRequired = (e) => {
+  handleRequired = e => {
     switch (e.target.name) {
       case "designation":
-        this.state.designation ? this.setState({ designationError: "" }) : this.setState({ designationError: "Designation is required" });
+        this.state.designation
+          ? this.setState({ designationError: "" })
+          : this.setState({ designationError: "Designation is required" });
         break;
       case "name":
-        this.state.name ? this.setState({ nameError: "" }) : this.setState({ nameError: "Name is required" });
+        this.state.name
+          ? this.setState({ nameError: "" })
+          : this.setState({ nameError: "Name is required" });
         break;
       case "email":
-        this.state.name ? this.setState({ emailError: "" }) : this.setState({ emailError: "Email is required" });
+        this.state.name
+          ? this.setState({ emailError: "" })
+          : this.setState({ emailError: "Email is required" });
         break;
       case "phone":
-        this.state.name ? this.setState({ phoneError: "" }) : this.setState({ phoneError: "Phone Number is required" });
+        this.state.name
+          ? this.setState({ phoneError: "" })
+          : this.setState({ phoneError: "Phone Number is required" });
         break;
       case "address":
-        this.state.address ? this.setState({ addressError: "" }) : this.setState({ addressError: "Address is required" });
+        this.state.address
+          ? this.setState({ addressError: "" })
+          : this.setState({ addressError: "Address is required" });
+        break;
+      default:
         break;
     }
-
   };
-
 
   render() {
     const { open, onClose, classes, branches, roles, ...rest } = this.props;
     return (
-      <Dialog {...rest} fullWidth={true} maxWidth={"sm"} open={open} onClose={this.close.bind(this)}>
-        <CardHeader title={"Edit Staff"} action={
-          <>
-            <Tooltip title={"Close"}>
-              <IconButton onClick={this.close.bind(this)}> <CloseIcon/> </IconButton>
-            </Tooltip>
-          </>
-        }/>
-        <Divider/>
+      <Dialog
+        {...rest}
+        fullWidth={true}
+        maxWidth={"sm"}
+        open={open}
+        onClose={this.close.bind(this)}
+      >
+        <CardHeader
+          title={"Edit Staff"}
+          action={
+            <>
+              <Tooltip title={"Close"}>
+                <IconButton onClick={this.close.bind(this)}>
+                  {" "}
+                  <CloseIcon />{" "}
+                </IconButton>
+              </Tooltip>
+            </>
+          }
+        />
+        <Divider />
         <DialogContent>
-
           <GridContainer justify={"center"}>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <TextField variant={"outlined"}
-                         name={"name"}
-                         margin={"dense"}
-                         label={"Name"}
-                         value={this.state.name}
-                         required={true}
-                         fullWidth={true}
-                         onBlur={this.handleRequired.bind(this)}
-                         onChange={this.handleChange.bind(this)}
-                         error={Boolean(this.state.nameError)}
-                         helperText={this.state.nameError}
+              <TextField
+                variant={"outlined"}
+                name={"name"}
+                margin={"dense"}
+                label={"Name"}
+                value={this.state.name}
+                required={true}
+                fullWidth={true}
+                onBlur={this.handleRequired.bind(this)}
+                onChange={this.handleChange.bind(this)}
+                error={Boolean(this.state.nameError)}
+                helperText={this.state.nameError}
               />
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <TextField variant={"outlined"}
-                         name={"email"}
-                         label={"Email"}
-                         required={true}
-                         margin={"dense"}
-                         type={"email"}
-                         value={this.state.email}
-                         fullWidth={true}
-                         onBlur={this.handleRequired.bind(this)}
-                         onChange={this.handleChange.bind(this)}
-                         error={Boolean(this.state.emailError)}
-                         helperText={this.state.emailError}
+              <TextField
+                variant={"outlined"}
+                name={"email"}
+                label={"Email"}
+                required={true}
+                margin={"dense"}
+                type={"email"}
+                value={this.state.email}
+                fullWidth={true}
+                onBlur={this.handleRequired.bind(this)}
+                onChange={this.handleChange.bind(this)}
+                error={Boolean(this.state.emailError)}
+                helperText={this.state.emailError}
               />
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <TextField variant={"outlined"}
-                         name={"phone"}
-                         label={"Phone"}
-                         required={true}
-                         margin={"dense"}
-                         value={this.state.phone}
-                         fullWidth={true}
-                         onBlur={this.handleRequired.bind(this)}
-                         onChange={this.handleChange.bind(this)}
-                         error={Boolean(this.state.phoneError)}
-                         helperText={this.state.phoneError}
+              <TextField
+                variant={"outlined"}
+                name={"phone"}
+                label={"Phone"}
+                required={true}
+                margin={"dense"}
+                value={this.state.phone}
+                fullWidth={true}
+                onBlur={this.handleRequired.bind(this)}
+                onChange={this.handleChange.bind(this)}
+                error={Boolean(this.state.phoneError)}
+                helperText={this.state.phoneError}
               />
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <OfficeSelect value={this.state.branch}
-                            label={"Branch"}
-                            name={"branch"}
-                            required={true}
-                            variant={"outlined"}
-                            margin={"dense"}
-                            fullWidth={true}
-                            helperText={this.state.branchError}
-                            error={Boolean(this.state.branchError)}
-                            onBlur={this.handleSelectBlur.bind(this, "branch")}
-                            onChange={this.handleSelect.bind(this, "branch")}
-                            options={this.state.branches}/>
+              <OfficeSelect
+                value={this.state.branch}
+                label={"Branch"}
+                name={"branch"}
+                required={true}
+                variant={"outlined"}
+                margin={"dense"}
+                fullWidth={true}
+                helperText={this.state.branchError}
+                error={Boolean(this.state.branchError)}
+                onBlur={this.handleSelectBlur.bind(this, "branch")}
+                onChange={this.handleSelect.bind(this, "branch")}
+                options={this.state.branches}
+              />
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <OfficeSelect value={this.state.role}
-                            label={"Staff Role"}
-                            name={"role"}
-                            required={true}
-                            variant={"outlined"}
-                            margin={"dense"}
-                            fullWidth={true}
-                            helperText={this.state.roleError}
-                            error={Boolean(this.state.roleError)}
-                            onBlur={this.handleSelectBlur.bind(this, "role")}
-                            onChange={this.handleSelect.bind(this, "role")}
-                            options={this.state.roles}/>
+              <OfficeSelect
+                value={this.state.role}
+                label={"Staff Role"}
+                name={"role"}
+                required={true}
+                variant={"outlined"}
+                margin={"dense"}
+                fullWidth={true}
+                helperText={this.state.roleError}
+                error={Boolean(this.state.roleError)}
+                onBlur={this.handleSelectBlur.bind(this, "role")}
+                onChange={this.handleSelect.bind(this, "role")}
+                options={this.state.roles}
+              />
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <TextField variant={"outlined"}
-                         name={"designation"}
-                         label={"Designation"}
-                         required={true}
-                         margin={"dense"}
-                         value={this.state.designation}
-                         fullWidth={true}
-                         onBlur={this.handleRequired.bind(this)}
-                         onChange={this.handleChange.bind(this)}
-                         error={Boolean(this.state.designationError)}
-                         helperText={this.state.designationError}
+              <TextField
+                variant={"outlined"}
+                name={"designation"}
+                label={"Designation"}
+                required={true}
+                margin={"dense"}
+                value={this.state.designation}
+                fullWidth={true}
+                onBlur={this.handleRequired.bind(this)}
+                onChange={this.handleChange.bind(this)}
+                error={Boolean(this.state.designationError)}
+                helperText={this.state.designationError}
               />
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
@@ -289,14 +351,17 @@ class StaffEditDialog extends Component {
                   label: "Address",
                   required: true
                 }}
-                onPlaceSelect={(place) => {
+                onPlaceSelect={place => {
                   if (place) {
                     let name = place.name;
                     let address = place.formatted_address;
-                    let complete_address = address.includes(name) ? address : `${name} ${address}`;
+                    let complete_address = address.includes(name)
+                      ? address
+                      : `${name} ${address}`;
                     this.setState({ address: complete_address });
                   }
-                }}/>
+                }}
+              />
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -310,12 +375,12 @@ class StaffEditDialog extends Component {
                   variant="outlined"
                   label="Date of birth"
                   value={this.state.dob}
-                  onChange={(val) => this.setState({ dob: val })}
+                  onChange={val => this.setState({ dob: val })}
                   format={"dd/MM/yyyy"}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position={"end"}>
-                        <CalendarIcon color={"action"}/>
+                        <CalendarIcon color={"action"} />
                       </InputAdornment>
                     )
                   }}
@@ -323,26 +388,36 @@ class StaffEditDialog extends Component {
               </MuiPickersUtilsProvider>
             </GridItem>
             <GridItem className={classes.item} xs={12} sm={12} md={12}>
-              <TextField variant={"outlined"}
-                         name={"bloodGroup"}
-                         label={"Blood Group"}
-                         required={true}
-                         margin={"dense"}
-                         value={this.state.bloodGroup}
-                         fullWidth={true}
-                         onBlur={this.handleRequired.bind(this)}
-                         onChange={this.handleChange.bind(this)}
+              <TextField
+                variant={"outlined"}
+                name={"bloodGroup"}
+                label={"Blood Group"}
+                required={true}
+                margin={"dense"}
+                value={this.state.bloodGroup}
+                fullWidth={true}
+                onBlur={this.handleRequired.bind(this)}
+                onChange={this.handleChange.bind(this)}
               />
             </GridItem>
-
           </GridContainer>
-
-
         </DialogContent>
-        <Divider/>
+        <Divider />
         <DialogActions>
-          <Button variant={"outlined"} color={"primary"} onClick={this.handleEdit.bind(this)}>Update</Button>
-          <Button variant={"outlined"} color={"secondary"} onClick={this.close.bind(this)}>Close</Button>
+          <Button
+            variant={"outlined"}
+            color={"primary"}
+            onClick={this.handleEdit.bind(this)}
+          >
+            Update
+          </Button>
+          <Button
+            variant={"outlined"}
+            color={"secondary"}
+            onClick={this.close.bind(this)}
+          >
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
     );

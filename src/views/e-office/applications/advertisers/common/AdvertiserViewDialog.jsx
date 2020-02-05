@@ -8,9 +8,7 @@ import {
   List,
   Slide,
   Card,
-  ListItem,
-  ListItemText,
-  ListItemIcon
+  ListItem
 } from "@material-ui/core";
 import {
   Dialog,

@@ -6,13 +6,16 @@ import LoadingView from "../../../common/LoadingView";
 import CardContent from "@material-ui/core/CardContent";
 import MUIDataTable from "mui-datatables";
 
-const ExistingHoardingList = ({ onEdit,onError, onDelete }) => {
+const ExistingHoardingList = ({ onEdit, onError, onDelete }) => {
   const [hoardings, setHoardings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  new HoardingService().get("active",
-    errorMsg => onError(errorMsg),
-    hoardings => setHoardings(hoardings))
+  new HoardingService()
+    .get(
+      "active",
+      errorMsg => onError(errorMsg),
+      hoardings => setHoardings(hoardings)
+    )
     .finally(() => setLoading(false));
 
   const tableOptions = {
@@ -23,7 +26,6 @@ const ExistingHoardingList = ({ onEdit,onError, onDelete }) => {
 
   const tableColumns = [
     {
-
       name: "applicant",
       label: "APPLICANT"
     },
@@ -50,39 +52,52 @@ const ExistingHoardingList = ({ onEdit,onError, onDelete }) => {
         customBodyRender: (value, tableMeta) => {
           const { rowIndex } = tableMeta;
           let data = hoardings[rowIndex];
-          const lat = Number(data.hoarding.latitude);
-          const lng = Number(data.hoarding.longitude);
+          // const lat = Number(data.hoarding.latitude);
+          // const lng = Number(data.hoarding.longitude);
           return (
             <>
               <Tooltip title="View File">
-                <IconButton color="primary" size="medium"
-                            aria-label="View File" onClick={event => onEdit(data)}>
+                <IconButton
+                  color="primary"
+                  size="medium"
+                  aria-label="View File"
+                  onClick={event => onEdit(data)}
+                >
                   <Icon fontSize="small">folder</Icon>
                 </IconButton>
               </Tooltip>
               <Tooltip title="Delete Hoarding">
-                <IconButton color="primary" size="medium"
-                            aria-label="Delete" onClick={event => onDelete(data)}>
-                  <Icon color={"secondary"} fontSize="small">delete</Icon>
+                <IconButton
+                  color="primary"
+                  size="medium"
+                  aria-label="Delete"
+                  onClick={event => onDelete(data)}
+                >
+                  <Icon color={"secondary"} fontSize="small">
+                    delete
+                  </Icon>
                 </IconButton>
               </Tooltip>
-
             </>
           );
         }
       }
     }
   ];
-  return(
+  return (
     <>
-      {loading ? <LoadingView/> : <CardContent>
-        <MUIDataTable
-          title={"Hoarding: List of Existing Hoarding"}
-          data={hoardings}
-          columns={tableColumns}
-          options={tableOptions}
-        />
-      </CardContent>}
+      {loading ? (
+        <LoadingView />
+      ) : (
+        <CardContent>
+          <MUIDataTable
+            title={"Hoarding: List of Existing Hoarding"}
+            data={hoardings}
+            columns={tableColumns}
+            options={tableOptions}
+          />
+        </CardContent>
+      )}
     </>
   );
 };

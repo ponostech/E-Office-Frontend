@@ -1,31 +1,34 @@
-import React, {Component} from "reactn";
+import React, { Component } from "reactn";
 
 import GridContainer from "../../components/Grid/GridContainer.jsx";
-import {cardTitle, defaultFont, grayColor, hexToRgb, whiteColor} from "../../assets/jss/material-dashboard-pro-react";
+import {
+  cardTitle,
+  defaultFont,
+  grayColor,
+  hexToRgb,
+  whiteColor
+} from "../../assets/jss/material-dashboard-pro-react";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Card from "../../components/Card/Card";
 import GridItem from "../../components/Grid/GridItem";
 import {
-  ApplyAdvertiser,
   ApplyBanner,
   ApplyHoarding,
   ApplyHotel,
   ApplyKiosk,
-  BuildingPermission, CheckExpiredShopLicense,
+  BuildingPermission,
   CheckLicense,
   Grievance,
   ShopLicensing
 } from "./Services/Services";
 import Typography from "@material-ui/core/Typography";
-import {authContext} from "../../context/AuthContext";
-import { Grid } from "@material-ui/core";
+import { authContext } from "../../context/AuthContext";
 
 const styles = {
   pageSubcategoriesTitle: {
     color: "#3C4858",
     textDecoration: "none",
     textAlign: "center"
-
   },
   noTopMargin: {
     margin: "0",
@@ -80,7 +83,7 @@ const styles = {
   },
   marginTop30: {
     marginTop: "10px"
-  },
+  }
   /*responsive: {
       breakpoint: 1024,
       settings: {
@@ -102,67 +105,72 @@ const styles = {
   }*/
 };
 
-
 class HomePage extends Component {
   componentDidMount() {
-    this.setGlobal({loading: false})
+    this.setGlobal({ loading: false });
   }
 
   handleLink = link => event => {
-    const {history} = this.props;
+    const { history } = this.props;
     history.push(link);
   };
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
-            <Card>
-              <GridContainer justify="center">
-                <GridItem xs={12} sm={12} md={12}>
-                  <h3 className={classes.pageSubcategoriesTitle}>
-                    Services Provided by Aizawl Municipal Corporation
-                  </h3>
-                  <br/>
-                  <Typography variant="h6" align="center">Hoarding & Advertisement</Typography>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <ApplyHoarding classes={classes} click={this.handleLink}/>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <ApplyKiosk classes={classes} click={this.handleLink}/>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <ApplyBanner classes={classes} click={this.handleLink}/>
-                </GridItem>
-                {/*<GridItem xs={12} sm={12} md={4}>
+      <Card>
+        <GridContainer justify="center">
+          <GridItem xs={12} sm={12} md={12}>
+            <h3 className={classes.pageSubcategoriesTitle}>
+              Services Provided by Aizawl Municipal Corporation
+            </h3>
+            <br />
+            <Typography variant="h6" align="center">
+              Hoarding & Advertisement
+            </Typography>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <ApplyHoarding classes={classes} click={this.handleLink} />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <ApplyKiosk classes={classes} click={this.handleLink} />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <ApplyBanner classes={classes} click={this.handleLink} />
+          </GridItem>
+          {/*<GridItem xs={12} sm={12} md={4}>
                   <ApplyAdvertiser classes={classes} click={this.handleLink}/>
                 </GridItem>*/}
-                <GridItem xs={12} sm={12} md={12}>
-                  <Typography variant="h6" align="center">Shop Licensing</Typography>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <ShopLicensing classes={classes} click={this.handleLink}/>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <ApplyHotel classes={classes} click={this.handleLink}/>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={12}>
-                  <Typography variant="h6" align="center">Others</Typography>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <BuildingPermission classes={classes} click={this.handleLink}/>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <Grievance classes={classes} click={this.handleLink}/>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CheckLicense classes={classes} click={this.handleLink}/>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  {/*<CheckExpiredShopLicense classes={classes} click={this.handleLink}/>*/}
-                </GridItem>
-              </GridContainer>
-            </Card>
+          <GridItem xs={12} sm={12} md={12}>
+            <Typography variant="h6" align="center">
+              Shop Licensing
+            </Typography>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <ShopLicensing classes={classes} click={this.handleLink} />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <ApplyHotel classes={classes} click={this.handleLink} />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={12}>
+            <Typography variant="h6" align="center">
+              Others
+            </Typography>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <BuildingPermission classes={classes} click={this.handleLink} />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <Grievance classes={classes} click={this.handleLink} />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <CheckLicense classes={classes} click={this.handleLink} />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            {/*<CheckExpiredShopLicense classes={classes} click={this.handleLink}/>*/}
+          </GridItem>
+        </GridContainer>
+      </Card>
     );
   }
 }

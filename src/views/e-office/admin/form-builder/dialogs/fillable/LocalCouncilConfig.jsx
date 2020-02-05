@@ -78,7 +78,15 @@ class LocalCouncilConfig extends Component {
   };
   createConfig = () => {
     const { onCreateConfiguration, onClose, widget } = this.props;
-    const { key, label, placeholder, defaultValue, required, pattern, min, max } = this.state;
+    const {
+      label,
+      placeholder,
+      defaultValue,
+      required,
+      pattern,
+      min,
+      max
+    } = this.state;
     let config = {
       label,
       placeholder,
@@ -89,7 +97,8 @@ class LocalCouncilConfig extends Component {
       validation: {
         required,
         pattern,
-        min, max
+        min,
+        max
       }
     };
     onClose();
@@ -98,17 +107,30 @@ class LocalCouncilConfig extends Component {
 
   render() {
     const { open, onClose, widget, classes } = this.props;
-    const self = this;
 
     return (
-      <Dialog TransitionComponent={Transition} open={open} onClose={onClose} fullWidth={true} maxWidth={"md"}>
-
+      <Dialog
+        TransitionComponent={Transition}
+        open={open}
+        onClose={onClose}
+        fullWidth={true}
+        maxWidth={"md"}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={onClose} aria-label="Close">
-              <CloseIcon/>
+            <IconButton
+              href={"#"}
+              color="inherit"
+              onClick={onClose}
+              aria-label="Close"
+            >
+              <CloseIcon />
             </IconButton>
-            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+            <Typography
+              variant="subtitle2"
+              color="inherit"
+              className={classes.flex}
+            >
               Configuration ({widget ? widget.label : ""})
             </Typography>
             <Button href={"#"} onClick={onClose} color="inherit">
@@ -117,18 +139,18 @@ class LocalCouncilConfig extends Component {
           </Toolbar>
         </AppBar>
         <DialogContent>
-
           <Grid container={true} spacing={2}>
-
             <Grid md={12} sm={12} item={true}>
-              <TextField name={"label"}
-                         onChange={event => this.onChange("label", event.target.value)}
-                         required={true}
-                         value={this.state.label}
-                         variant={"outlined"}
-                         fullWidth={true}
-                         margin={"dense"}
-                         label={"Label"}/>
+              <TextField
+                name={"label"}
+                onChange={event => this.onChange("label", event.target.value)}
+                required={true}
+                value={this.state.label}
+                variant={"outlined"}
+                fullWidth={true}
+                margin={"dense"}
+                label={"Label"}
+              />
             </Grid>
 
             <Grid md={12} sm={12} item={true}>
@@ -145,14 +167,20 @@ class LocalCouncilConfig extends Component {
               />
             </Grid>
           </Grid>
-
         </DialogContent>
         <DialogActions>
-          <Button variant={"outlined"} color={"primary"} onClick={event => this.createConfig()}>Create</Button>
-          <Button variant={"outlined"} color={"secondary"} onClick={onClose}>Close</Button>
+          <Button
+            variant={"outlined"}
+            color={"primary"}
+            onClick={event => this.createConfig()}
+          >
+            Create
+          </Button>
+          <Button variant={"outlined"} color={"secondary"} onClick={onClose}>
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
-
     );
   }
 }

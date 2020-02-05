@@ -57,11 +57,11 @@ class FileRejectDialog extends Component {
     this.applicationService = new ApplicationService();
   }
 
-  selectApplication = (selectedApplication) => {
+  selectApplication = selectedApplication => {
     this.setState({ selectedApplication });
     this.handleNext();
   };
-  selectDraft = (selectedDraft) => {
+  selectDraft = selectedDraft => {
     this.setState({ selectedDraft });
     this.handleNext();
   };
@@ -73,9 +73,8 @@ class FileRejectDialog extends Component {
     const { activeStep } = this.state;
     this.setState({ activeStep: activeStep - 1 });
   };
-  getPath=()=>{
+  getPath = () => {
     const { file } = this.props;
-    let path = "";
     switch (file.fileable_type) {
       case FILEABLE_TYPE.SHOP:
         return "shop";
@@ -90,37 +89,57 @@ class FileRejectDialog extends Component {
       default:
         return "shop";
     }
-  }
+  };
   confirmReject = () => {
     this.setState({ submit: true });
     let path = this.getPath();
     let data = { content: this.state.selectedDraft.content };
-    this.applicationService.reject(path,this.state.selectedApplication.id, data,
-      errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => {
-        this.props.closeActionDialog()
-        this.props.history.push(FILE_NOTESHEET);
-        this.setGlobal({ successMsg });
-      })
+    this.applicationService
+      .reject(
+        path,
+        this.state.selectedApplication.id,
+        data,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => {
+          this.props.closeActionDialog();
+          this.props.history.push(FILE_NOTESHEET);
+          this.setGlobal({ successMsg });
+        }
+      )
       .finally(() => this.setState({ submit: false }));
   };
 
-
-  getStepContent = (step) => {
+  getStepContent = step => {
     switch (step) {
       case 0:
-        return <SelectRejectedApplication file={this.props.file} onSelectApplication={this.selectApplication}
-                                          onNext={this.handleNext}/>;
+        return (
+          <SelectRejectedApplication
+            file={this.props.file}
+            onSelectApplication={this.selectApplication}
+            onNext={this.handleNext}
+          />
+        );
       case 1:
-        return <SelectRejectedDraft createRejectDraft={this.props.createRejectDraft} file={this.props.file}
-                                    application={this.state.selectedApplication} onDraftSelect={this.selectDraft}
-                                    onBack={this.handleBack}/>;
+        return (
+          <SelectRejectedDraft
+            createRejectDraft={this.props.createRejectDraft}
+            file={this.props.file}
+            application={this.state.selectedApplication}
+            onDraftSelect={this.selectDraft}
+            onBack={this.handleBack}
+          />
+        );
       case 2:
-        return <ConfirmReject application={this.state.selectedApplication} draft={this.state.selectedDraft}
-                              onBack={this.handleBack} confirmReject={this.confirmReject}/>;
+        return (
+          <ConfirmReject
+            application={this.state.selectedApplication}
+            draft={this.state.selectedDraft}
+            onBack={this.handleBack}
+            confirmReject={this.confirmReject}
+          />
+        );
       default:
         return "unknown step";
-
     }
   };
 
@@ -130,22 +149,36 @@ class FileRejectDialog extends Component {
     const steps = getSteps();
 
     return (
-      <Dialog fullScreen={true} open={open} TransitionComponent={Transition} onClose={onClose} fullWidth={true}>
-
+      <Dialog
+        fullScreen={true}
+        open={open}
+        TransitionComponent={Transition}
+        onClose={onClose}
+        fullWidth={true}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton color="inherit" onClick={this.props.onClose} aria-label="Close" href={"#"}>
+            <IconButton
+              color="inherit"
+              onClick={this.props.onClose}
+              aria-label="Close"
+              href={"#"}
+            >
               <Icon>close</Icon>
             </IconButton>
-            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+            <Typography
+              variant="subtitle2"
+              color="inherit"
+              className={classes.flex}
+            >
               Reject Application
             </Typography>
             <Button href={"#"} onClick={this.props.onClose} color="inherit">
               Close
             </Button>
           </Toolbar>
-        </AppBar>;
-
+        </AppBar>
+        ;
         <DialogContent>
           <Stepper activeStep={activeStep} orientation="vertical">
             {steps.map((label, index) => (
@@ -159,10 +192,12 @@ class FileRejectDialog extends Component {
               </Step>
             ))}
           </Stepper>
-
         </DialogContent>
-
-        <SubmitDialog open={this.state.submit} title={"Reject Application"} text={"Please wait ..."}/>
+        <SubmitDialog
+          open={this.state.submit}
+          title={"Reject Application"}
+          text={"Please wait ..."}
+        />
       </Dialog>
     );
   }

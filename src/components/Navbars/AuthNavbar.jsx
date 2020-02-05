@@ -1,5 +1,4 @@
 import React from "reactn";
-import cx from "classnames";
 import PropTypes from "prop-types";
 import { NavLink, withRouter } from "react-router-dom";
 // @material-ui/core components
@@ -18,7 +17,11 @@ import Person from "@material-ui/icons/PersonAdd";
 
 import authNavbarStyle from "assets/jss/material-dashboard-pro-react/components/authNavbarStyle.jsx";
 import { Button, Fab, Icon, LinearProgress } from "@material-ui/core";
-import { APPLY_ADVERTISER, LOGIN, ROOT } from "../../config/routes-constant/OfficeRoutes";
+import {
+  APPLY_ADVERTISER,
+  LOGIN,
+  ROOT
+} from "../../config/routes-constant/OfficeRoutes";
 import IconButton from "@material-ui/core/IconButton";
 
 // core components
@@ -48,32 +51,32 @@ class AuthNavbar extends React.Component {
   }
 
   render() {
-    const { classes, brandText, OfficeRoutes, history, onMenuClick, loading } = this.props;
-    const currentUser = JSON.parse(localStorage.getItem("current_user"));
+    const { classes, brandText, history, onMenuClick } = this.props;
+    // const currentUser = JSON.parse(localStorage.getItem("current_user"));
 
-    const linkEOffice = (
-      <ListItem className={classes.listItem}>
-        <NavLink
-          to={OfficeRoutes.E_OFFICE}
-          className={cx(classes.navLink, {
-            [classes.navLinkActive]: this.activeRoute(OfficeRoutes.E_OFFICE)
-          })}
-        >
-          <Home className={classes.listItemIcon}/>
-          <ListItemText
-            primary={"E-Office"}
-            disableTypography={true}
-            className={classes.listItemText}
-          />
-        </NavLink>
-      </ListItem>
-    );
+    // const linkEOffice = (
+    //   <ListItem className={classes.listItem}>
+    //     <NavLink
+    //       to={OfficeRoutes.E_OFFICE}
+    //       className={cx(classes.navLink, {
+    //         [classes.navLinkActive]: this.activeRoute(OfficeRoutes.E_OFFICE)
+    //       })}
+    //     >
+    //       <Home className={classes.listItemIcon}/>
+    //       <ListItemText
+    //         primary={"E-Office"}
+    //         disableTypography={true}
+    //         className={classes.listItemText}
+    //       />
+    //     </NavLink>
+    //   </ListItem>
+    // );
 
     let list = (
       <List className={classes.list}>
         <ListItem className={classes.listItem}>
           <NavLink to={"/"} className={classes.navLink}>
-            <Home className={classes.listItemIcon}/>
+            <Home className={classes.listItemIcon} />
             <ListItemText
               primary={"Home"}
               disableTypography={true}
@@ -83,7 +86,7 @@ class AuthNavbar extends React.Component {
         </ListItem>
         <ListItem className={classes.listItem}>
           <NavLink to={APPLY_ADVERTISER} className={classes.navLink}>
-            <Person className={classes.listItemIcon}/>
+            <Person className={classes.listItemIcon} />
             <ListItemText
               primary={"Advertiser Registration"}
               disableTypography={true}
@@ -110,7 +113,10 @@ class AuthNavbar extends React.Component {
               </Button>
             </div>
             <div>
-              <IconButton href={"#"} onClick={event => history.push(APPLY_ADVERTISER)}>
+              <IconButton
+                href={"#"}
+                onClick={event => history.push(APPLY_ADVERTISER)}
+              >
                 <Icon className={classes.menuIcon}>person</Icon>
               </IconButton>
             </div>
@@ -122,31 +128,40 @@ class AuthNavbar extends React.Component {
             </IconButton>
           </Hidden>
           <Hidden only={["sm", "xs"]}>
-            {
-              this.state.showLogin ?
-                <Fab onClick={(e) => {
+            {this.state.showLogin ? (
+              <Fab
+                onClick={e => {
                   history.push(ROOT);
                   this.setState({ showLogin: false });
-                }} style={{ marginleft: 10, paddingLeft: 20, paddingRight: 20 }} size={"large"} color={"primary"}
-                     variant={"extended"}>
-                  Home <Icon fontSize={"small"}>home</Icon>
-                </Fab>
-
-                : <Fab onClick={(e) => {
+                }}
+                style={{ marginleft: 10, paddingLeft: 20, paddingRight: 20 }}
+                size={"large"}
+                color={"primary"}
+                variant={"extended"}
+              >
+                Home <Icon fontSize={"small"}>home</Icon>
+              </Fab>
+            ) : (
+              <Fab
+                onClick={e => {
                   history.push(LOGIN);
                   this.setState({ showLogin: true });
-                }} style={{ marginleft: 10, paddingLeft: 20, paddingRight: 20 }} size={"large"} color={"primary"}
-                       variant={"extended"}>
-                  Login <LoginIcon fontSize={"small"}/>
-                </Fab>
-
-            }
-
+                }}
+                style={{ marginleft: 10, paddingLeft: 20, paddingRight: 20 }}
+                size={"large"}
+                color={"primary"}
+                variant={"extended"}
+              >
+                Login <LoginIcon fontSize={"small"} />
+              </Fab>
+            )}
           </Hidden>
         </Toolbar>
-        {
-          this.global.loading ? <LinearProgress variant={"indeterminate"} color={"secondary"}/> : undefined
-        }
+        {this.global.loading ? (
+          <LinearProgress variant={"indeterminate"} color={"secondary"} />
+        ) : (
+          undefined
+        )}
       </AppBar>
     );
   }

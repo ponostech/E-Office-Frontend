@@ -4,8 +4,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
-  Paper,
   Tab,
   Tabs,
   Toolbar,
@@ -22,76 +20,89 @@ class ExistingAdvertisementView extends Component {
     this.state = {
       tabValue: "hoarding",
 
-      openKiosk:false,
-      openHoarding:false
+      openKiosk: false,
+      openHoarding: false
     };
   }
 
   componentDidMount() {
-    this.setGlobal({loading:false})
+    this.setGlobal({ loading: false });
   }
 
-  createHoarding=(hoarding)=>{
+  createHoarding = hoarding => {};
+  createKiosk = kiosk => {};
 
-  }
-  createKiosk=(kiosk)=>{
+  displayError = errorMsg => this.setGlobal({ errorMsg });
 
-  }
-
-  displayError=(errorMsg)=>this.setGlobal({errorMsg})
-
-  onHoardingEdit=(hoarding)=>{
-
-  }
-  onHoardingDelete=(Hoarding)=>{
-
-  }
-  onKioskEdit=(kiosk)=>{
-
-  }
-  onKioskDelete=(kiosk)=>{
-
-  }
-  openCreate=()=>{
-    const{tabValue}=this.state;
-    if (tabValue==="hoarding") {
-      this.setState({openHoarding:true})
-    }else{
-      this.setState({openKiosk:true})
+  onHoardingEdit = hoarding => {};
+  onHoardingDelete = Hoarding => {};
+  onKioskEdit = kiosk => {};
+  onKioskDelete = kiosk => {};
+  openCreate = () => {
+    const { tabValue } = this.state;
+    if (tabValue === "hoarding") {
+      this.setState({ openHoarding: true });
+    } else {
+      this.setState({ openKiosk: true });
     }
-  }
+  };
   render() {
-    const { tabValue ,openHoarding,openKiosk} = this.state;
+    const { tabValue, openHoarding, openKiosk } = this.state;
 
     return (
-        <Card>
-            <AppBar position={"relative"} color={"inherit"}>
-              <Toolbar>
-                <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
-                  Existing Advertisement
-                </Typography>
-                <Button onClick={e=>this.openCreate()} variant={"outlined"} href={"#"} color="primary">
-                  New Advertisement
-                </Button>
-              </Toolbar>
-              <Tabs
-                component={"div"}
-                value={tabValue}
-                onChange={(event, val) => this.setState({ tabValue: val })}
-                aria-label="Disabled tabs example"
-              >
-                <Tab href={"#"} label="Hoarding" value={"hoarding"}/>
-                <Tab href={"#"} label="Kiosk" value={"kiosk"}/>
-              </Tabs>
-            </AppBar>
-          <CardContent>
-          {tabValue === "hoarding" && <ExistingHoardingList onError={this.displayError} onEdit={this.onKioskEdit} onDelete={this.onKioskDelete}/>}
-            {tabValue === "kiosk" && <ExistingKioskList onError={this.displayError} onDelete={this.onHoardingDelete} onEdit={this.onHoardingEdit}/>}
-          </CardContent>
+      <Card>
+        <AppBar position={"relative"} color={"inherit"}>
+          <Toolbar>
+            <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
+              Existing Advertisement
+            </Typography>
+            <Button
+              onClick={e => this.openCreate()}
+              variant={"outlined"}
+              href={"#"}
+              color="primary"
+            >
+              New Advertisement
+            </Button>
+          </Toolbar>
+          <Tabs
+            component={"div"}
+            value={tabValue}
+            onChange={(event, val) => this.setState({ tabValue: val })}
+            aria-label="Disabled tabs example"
+          >
+            <Tab href={"#"} label="Hoarding" value={"hoarding"} />
+            <Tab href={"#"} label="Kiosk" value={"kiosk"} />
+          </Tabs>
+        </AppBar>
+        <CardContent>
+          {tabValue === "hoarding" && (
+            <ExistingHoardingList
+              onError={this.displayError}
+              onEdit={this.onKioskEdit}
+              onDelete={this.onKioskDelete}
+            />
+          )}
+          {tabValue === "kiosk" && (
+            <ExistingKioskList
+              onError={this.displayError}
+              onDelete={this.onHoardingDelete}
+              onEdit={this.onHoardingEdit}
+            />
+          )}
+        </CardContent>
 
-          <HoardingDialog onClose={()=>this.setState({openHoarding:false})} open={openHoarding} onCreate={this.createHoarding}/>
-          <KioskDialog onClose={()=>this.setState({openKiosk:false})} open={openKiosk} onCreate={this.createKiosk}/>
-        </Card>
+        <HoardingDialog
+          onClose={() => this.setState({ openHoarding: false })}
+          open={openHoarding}
+          onCreate={this.createHoarding}
+        />
+        <KioskDialog
+          onClose={() => this.setState({ openKiosk: false })}
+          open={openKiosk}
+          onCreate={this.createKiosk}
+        />
+      </Card>
     );
   }
 }

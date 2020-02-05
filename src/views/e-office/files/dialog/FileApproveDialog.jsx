@@ -79,9 +79,8 @@ class FileApproveDialog extends Component {
     this.setState({ activeStep: activeStep - 1 });
   };
 
-  getPath=()=>{
+  getPath = () => {
     const { file } = this.props;
-    let path = "";
     switch (file.fileable_type) {
       case FILEABLE_TYPE.SHOP:
         return "shop";
@@ -96,14 +95,13 @@ class FileApproveDialog extends Component {
       default:
         return "shop";
     }
-  }
+  };
   confirmApproved = () => {
-
     let data = {
       content: this.state.selectedDraft.content,
       valid_upto: moment(this.state.validUpto).format("Y/M/D")
     };
-    let path=this.getPath();
+    let path = this.getPath();
     this.setState({ submit: true });
     this.applicationService
       .approve(
@@ -112,7 +110,7 @@ class FileApproveDialog extends Component {
         data,
         errorMsg => this.setGlobal({ errorMsg }),
         successMsg => {
-          this.props.closeActionDialog()
+          this.props.closeActionDialog();
           this.setGlobal({ successMsg });
           this.props.history.push(DESK);
         }

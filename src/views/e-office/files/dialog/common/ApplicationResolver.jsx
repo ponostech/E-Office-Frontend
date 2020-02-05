@@ -478,6 +478,8 @@ export const ApplicationResolver = application => {
         }
       );
       break;
+    default:
+      break;
   }
   return rows;
 };

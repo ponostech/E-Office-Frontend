@@ -1,22 +1,12 @@
 import React, { Component } from "reactn";
-import {
-  Button,
-  Icon,
-  IconButton,
-  Tooltip,
-  Typography
-} from "@material-ui/core";
+import { Icon, IconButton, Tooltip } from "@material-ui/core";
 import LoadingView from "../../../common/LoadingView";
 import CardContent from "@material-ui/core/CardContent";
 import MUIDataTable from "mui-datatables";
 import ApplicationState from "../../../../utils/ApplicationState";
 import Chip from "@material-ui/core/Chip";
-import {
-  APPLY_SHOP_LICENSE,
-  HOME
-} from "../../../../config/routes-constant/OfficeRoutes";
+import { APPLY_SHOP_LICENSE } from "../../../../config/routes-constant/OfficeRoutes";
 import { withRouter } from "react-router-dom";
-import GridContainer from "../../../../components/Grid/GridContainer";
 import moment from "moment";
 import SubmitDialog from "../../../../components/SubmitDialog";
 import ApplicationDetailsDialog from "../../../common/ApplicationDetailsDialog";
@@ -143,7 +133,7 @@ class HotelApplicationList extends Component {
       openRenew,
       openDetail
     } = this.state;
-    const { history, applications } = this.props;
+    const { applications } = this.props;
     const tableOptions = {
       filterType: "checkbox",
       responsive: "scrollFullHeight",
@@ -261,7 +251,7 @@ class HotelApplicationList extends Component {
                   </>
                 );
                 break;
-              case ApplicationState.NEW_APPLICATION:
+              case ApplicationState.RENEW_APPLICATION:
                 controls = (
                   <>
                     {view}
@@ -374,6 +364,8 @@ class HotelApplicationList extends Component {
                   </>
                 );
                 break;
+              default:
+                break;
             }
             return controls;
           }
@@ -381,22 +373,22 @@ class HotelApplicationList extends Component {
       }
     ];
 
-    let notFound = (
-      <GridContainer justify={"center"}>
-        <Typography component={"div"} color={"inherit"} variant={"h6"}>
-          {" "}
-          No Result Found
-        </Typography>
-        <Button
-          href={"#"}
-          variant={"outlined"}
-          onClick={e => history.push(HOME)}
-          color={"primary"}
-        >
-          Back to Home
-        </Button>
-      </GridContainer>
-    );
+    // let notFound = (
+    //   <GridContainer justify={"center"}>
+    //     <Typography component={"div"} color={"inherit"} variant={"h6"}>
+    //       {" "}
+    //       No Result Found
+    //     </Typography>
+    //     <Button
+    //       href={"#"}
+    //       variant={"outlined"}
+    //       onClick={e => history.push(HOME)}
+    //       color={"primary"}
+    //     >
+    //       Back to Home
+    //     </Button>
+    //   </GridContainer>
+    // );
 
     let found = (
       <>

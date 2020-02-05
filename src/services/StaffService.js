@@ -1,43 +1,42 @@
 import axios from "axios";
-import {ApiRoutes, GET_STAFF} from "../config/ApiRoutes";
+import { ApiRoutes } from "../config/ApiRoutes";
 import moment from "moment";
-import {ArrayToString, ErrorToString} from "../utils/ErrorUtil";
+import { ArrayToString, ErrorToString } from "../utils/ErrorUtil";
 
 export class StaffService {
   async all(errorCallback, successCallback) {
     const token = localStorage.getItem("access_token");
-    const config = {headers: {"Authorization": `Bearer ${token}`}};
+    const config = { headers: { Authorization: `Bearer ${token}` } };
     try {
       let res = await axios.get(ApiRoutes.GET_STAFF, config);
       if (res.data.status) {
-        successCallback(res.data.data.staffs)
+        successCallback(res.data.data.staffs);
       } else {
-        errorCallback("Something went wrong: Please try again later")
+        errorCallback("Something went wrong: Please try again later");
       }
     } catch (e) {
       console.error(e);
-      errorCallback(e.toString())
+      errorCallback(e.toString());
     }
-
   }
 
   async update(staff, errorCallback, successCallback) {
     try {
       let res = await axios.post(ApiRoutes.UPDATE_STAFF, staff);
       if (res.data.status) {
-        successCallback("Staff info update successfully")
+        successCallback("Staff info update successfully");
       } else {
-        errorCallback(ErrorToString(res.data.messages))
+        errorCallback(ErrorToString(res.data.messages));
       }
     } catch (e) {
-      console.error(e)
-      errorCallback(e.toString())
+      console.error(e);
+      errorCallback(e.toString());
     }
   }
 
   async create(state, errorCallback, successCallback) {
-    const token = localStorage.getItem("access_token");
-    const config = {headers: {"Authorization": `Bearer ${token}`}};
+    // const token = localStorage.getItem("access_token");
+    // const config = { headers: { Authorization: `Bearer ${token}` } };
     let data = {
       email: state.email,
       phone_no: state.phone,
@@ -61,7 +60,7 @@ export class StaffService {
         errorCallback(ErrorToString(res.data.messages));
       }
     } catch (e) {
-      console.error(e)
+      console.error(e);
       errorCallback(e.toString());
     }
   }
@@ -77,13 +76,12 @@ export class StaffService {
         errorCallback(ArrayToString(res.data.messages));
       }
     } catch (e) {
-      console.error(e)
+      console.error(e);
       errorCallback(e.toString());
     }
   }
 
   async getBranch(errorCallback, successCallback) {
-    let data = [];
     try {
       const res = await axios.get(ApiRoutes.BRANCHES);
       console.log(res);
@@ -98,7 +96,7 @@ export class StaffService {
       errorCallback(e.toString());
     }
   }
-  async getStaff(id,errorCallback, successCallback) {
+  async getStaff(id, errorCallback, successCallback) {
     try {
       const res = await axios.get(ApiRoutes.GET_STAFF_BY_ID(id));
       if (res.data.status) {
@@ -114,7 +112,6 @@ export class StaffService {
   }
 
   async getRoles(errorCallback, successCallback) {
-    let data = [];
     try {
       const res = await axios.get(ApiRoutes.STAFF_ROLE);
       if (res.data.status) {

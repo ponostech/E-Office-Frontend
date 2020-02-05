@@ -15,7 +15,6 @@ class SubHeadList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
       subHeads: [],
       selectedSubHead: null,
 
@@ -31,26 +30,43 @@ class SubHeadList extends Component {
 
   componentDidMount() {
     this.setGlobal({ loading: false });
-    this.fileHeadService.getHead(errorMsg => this.setGlobal({ errorMsg }),
-      groupHeads => this.setState({ groupHeads }))
+    this.fileHeadService
+      .getHead(
+        errorMsg => this.setGlobal({ errorMsg }),
+        groupHeads => this.setState({ groupHeads })
+      )
       .finally(() => this.setGlobal({ loading: false }));
   }
 
-  onCreate = (data) => {
-    this.setState({ submitTitle: "Creating Sub Head", openCreate: false, submit: true });
-    this.fileHeadService.create(data,
-      errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => this.setGlobal({ successMsg }))
+  onCreate = data => {
+    this.setState({
+      submitTitle: "Creating Sub Head",
+      openCreate: false,
+      submit: true
+    });
+    this.fileHeadService
+      .create(
+        data,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => this.setGlobal({ successMsg })
+      )
       .finally(() => {
         this.setState({ submit: false });
         this.componentDidMount();
       });
   };
   onDelete = () => {
-    this.setState({ submitTitle: "Deleting Group Head", openConfirm: false, submit: true });
-    this.fileHeadService.delete(this.selectedGroupHead.id,
-      errorMsg => this.setGlobal({ errorMsg }),
-      successMsg => this.setGlobal({ successMsg }))
+    this.setState({
+      submitTitle: "Deleting Group Head",
+      openConfirm: false,
+      submit: true
+    });
+    this.fileHeadService
+      .delete(
+        this.selectedGroupHead.id,
+        errorMsg => this.setGlobal({ errorMsg }),
+        successMsg => this.setGlobal({ successMsg })
+      )
       .finally(() => {
         this.setState({ submit: false });
         this.componentDidMount();
@@ -58,8 +74,8 @@ class SubHeadList extends Component {
   };
 
   render() {
-    const { subHeads, selectedSubHead } = this.state;
-    const { submit, submitTitle, openCreate, openConfirm, openEdit } = this.state;
+    const { subHeads } = this.state;
+    const { submit, submitTitle, openCreate, openConfirm } = this.state;
     const tableOptions = {
       filterType: "checkbox",
       rowsPerPage: 15
@@ -69,19 +85,23 @@ class SubHeadList extends Component {
       {
         name: "value",
         label: "VALUE"
-      }, {
+      },
+      {
         name: "label",
         label: "LABEL"
-      }, {
+      },
+      {
         name: "label",
         label: "MAIN"
-      }, {
+      },
+      {
         name: "created_at",
         label: "CREATED AT",
         options: {
           customBodyRender: rate => moment(rate).format("Do MMM YYY")
         }
-      }, {
+      },
+      {
         name: "id",
         label: "ACTION",
         options: {
@@ -92,24 +112,41 @@ class SubHeadList extends Component {
             return (
               <>
                 <Tooltip title={"Edit"}>
-                  <IconButton href={"#"} onClick={event => this.setState({ openEdit: true, selectedSubHead })}>
-                    <Icon fontSize={"small"} color={"primary"}>edit</Icon>
+                  <IconButton
+                    href={"#"}
+                    onClick={event =>
+                      this.setState({ openEdit: true, selectedSubHead })
+                    }
+                  >
+                    <Icon fontSize={"small"} color={"primary"}>
+                      edit
+                    </Icon>
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Delete"}>
-                  <IconButton href={"#"} onClick={event => this.setState({ confirmDelete: true, selectedSubHead })}>
-                    <Icon color={"secondary"} fontSize={"small"}>delete</Icon>
+                  <IconButton
+                    href={"#"}
+                    onClick={event =>
+                      this.setState({ confirmDelete: true, selectedSubHead })
+                    }
+                  >
+                    <Icon color={"secondary"} fontSize={"small"}>
+                      delete
+                    </Icon>
                   </IconButton>
                 </Tooltip>
               </>
             );
           }
         }
-      }];
+      }
+    ];
     return (
       <>
         <MuiThemeProvider theme={this.props.theme}>
-          {this.global.loading ? <LoadingView/> :
+          {this.global.loading ? (
+            <LoadingView />
+          ) : (
             <CardContent>
               <MUIDataTable
                 title={"List of file sub-head"}
@@ -118,18 +155,33 @@ class SubHeadList extends Component {
                 options={tableOptions}
               />
               <Tooltip title="Add Note" aria-label="Add New Group Head">
-                <Fab onClick={event => this.setState({ openCreate: true })} href={"#"} color="primary" aria-label="Add"
-                     style={{ position: "fixed", right: 80, bottom: 100 }}>
+                <Fab
+                  onClick={event => this.setState({ openCreate: true })}
+                  href={"#"}
+                  color="primary"
+                  aria-label="Add"
+                  style={{ position: "fixed", right: 80, bottom: 100 }}
+                >
                   <Icon>add</Icon>
                 </Fab>
               </Tooltip>
             </CardContent>
-          }
-          <SubHeadCreateDialog open={openCreate} onClose={e => this.setState({ openCreate: false })}
-                               onCreate={this.onCreate.bind(this)}/>
-          <SubmitDialog open={submit} title={submitTitle} text={"Please wait ... "}/>
-          <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={openConfirm}
-                         onConfirm={this.onDelete.bind(this)}/>
+          )}
+          <SubHeadCreateDialog
+            open={openCreate}
+            onClose={e => this.setState({ openCreate: false })}
+            onCreate={this.onCreate.bind(this)}
+          />
+          <SubmitDialog
+            open={submit}
+            title={submitTitle}
+            text={"Please wait ... "}
+          />
+          <ConfirmDialog
+            onCancel={e => this.setState({ openConfirm: false })}
+            open={openConfirm}
+            onConfirm={this.onDelete.bind(this)}
+          />
         </MuiThemeProvider>
       </>
     );

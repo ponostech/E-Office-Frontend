@@ -23,7 +23,6 @@ import {
 import DetailViewRow from "../../../common/DetailViewRow";
 import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
-import GridItem from "../../../../common/BannerApplicationDialog";
 
 const styles = {
   appBar: {
@@ -44,7 +43,7 @@ function Transition(props) {
 class BannerViewDialog extends Component {
   render() {
     console.log(this.props);
-    const { classes, data, now, then, diff, duration, result } = this.props;
+    const { classes, data } = this.props;
     return (
       <Dialog
         fullScreen
@@ -121,11 +120,7 @@ class BannerViewDialog extends Component {
                       ? data.advertisements.map(function(item, index) {
                           let now = item.from;
                           let then = item.to;
-                          // then  = moment(then).format('D-MM-YYYY');
-                          //now   = moment(now).format('D-MM-YYYY');
                           let diff = moment(then).diff(moment(now), "days");
-                          let duration = moment.duration(diff);
-                          console.log(moment(diff));
                           return (
                             <TableRow key={index}>
                               <TableCell>{item.length}</TableCell>

@@ -6,7 +6,6 @@ import { IconButton, Tooltip } from "@material-ui/core";
 import EyeIcon from "@material-ui/icons/RemoveRedEye";
 import moment from "moment";
 import { KioskService } from "../../../../services/KioskService";
-import KioskApplicationDialog from "../../../common/KioskApplicationDialog";
 import LoadingView from "../../../common/LoadingView";
 import KioskViewDialog from "../../../e-office/applications/kiosk/common/KioskViewDialog";
 
@@ -16,20 +15,21 @@ class KioskActiveList extends Component {
     kiosk: null,
     kiosks: [],
     openDetail: false,
-    openApply: false,
+    openApply: false
   };
 
   componentDidMount() {
     document.title = "e-AMC | List of kiosk application";
-    this.setGlobal({loading:true});
-    this.kioskService.fetchAdvertiserKiosk(
-      errorMsg => this.setGlobal({ errorMsg }),
-      kiosks => this.setState({ kiosks }))
+    this.setGlobal({ loading: true });
+    this.kioskService
+      .fetchAdvertiserKiosk(
+        errorMsg => this.setGlobal({ errorMsg }),
+        kiosks => this.setState({ kiosks })
+      )
       .finally(() => {
         this.setGlobal({ loading: false });
       });
   }
-
 
   render() {
     const tableColumns = [
@@ -37,44 +37,49 @@ class KioskActiveList extends Component {
         name: "created_at",
         label: "DATE",
         options: {
-          customBodyRender: (date) => {
+          customBodyRender: date => {
             const d = moment(date).format("Do MMM YYY");
             return d.toString();
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "FILE NUMBER",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.file.number);
+            return value.file.number;
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "SUBJECT",
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (value.file.subject);
+            return value.file.subject;
           }
         }
-      },  {
+      },
+      {
         name: "kiosk",
         label: "PURPOSED LOCATION",
         options: {
           customBodyRender: (kiosk, tableMeta, updateValue) => {
-            return (kiosk.address);
+            return kiosk.address;
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "LOCAL COUNCIL",
         options: {
           customBodyRender: (kiosk, tableMeta, updateValue) => {
-            return (kiosk.local_council.name);
+            return kiosk.local_council.name;
           }
         }
-      }, {
+      },
+      {
         name: "kiosk",
         label: "ACTIONS",
         options: {
@@ -84,15 +89,17 @@ class KioskActiveList extends Component {
 
             let viewBtn = (
               <Tooltip title={"Click here to view details"}>
-                <IconButton onClick={(e) => {
-                  this.setState({ kiosk: file });
-                }}>
-                  <EyeIcon fontSize={"small"} color={"primary"}/>
+                <IconButton
+                  onClick={e => {
+                    this.setState({ kiosk: file });
+                  }}
+                >
+                  <EyeIcon fontSize={"small"} color={"primary"} />
                 </IconButton>
               </Tooltip>
             );
 
-            return (viewBtn);
+            return viewBtn;
           }
         }
       }
@@ -104,28 +111,35 @@ class KioskActiveList extends Component {
       rowsPerPage: 15,
       serverSide: false,
       selectableRows: false,
-      customToolbarSelect: function(selectedRows, displayData, setSelectedRows) {
+      customToolbarSelect: function(
+        selectedRows,
+        displayData,
+        setSelectedRows
+      ) {
         return false;
       },
-      onRowClick: function(rowData, rowMeta) {
-      }
+      onRowClick: function(rowData, rowMeta) {}
     };
 
     return (
       <>
-        {
-          this.global.loading ? <LoadingView/> :
-            <Grid item sm={12} xs={12} md={12}>
-              <MUIDataTable
-                title={"KIOSK: List of Active Kiosk"}
-                data={this.state.kiosks}
-                columns={tableColumns}
-                options={tableOptions}
-              />
-              <KioskViewDialog open={Boolean(this.state.kiosk)} data={this.state.kiosk}
-                                      close={e => this.setState({ kiosk: null })}/>
-            </Grid>
-        }
+        {this.global.loading ? (
+          <LoadingView />
+        ) : (
+          <Grid item sm={12} xs={12} md={12}>
+            <MUIDataTable
+              title={"KIOSK: List of Active Kiosk"}
+              data={this.state.kiosks}
+              columns={tableColumns}
+              options={tableOptions}
+            />
+            <KioskViewDialog
+              open={Boolean(this.state.kiosk)}
+              data={this.state.kiosk}
+              close={e => this.setState({ kiosk: null })}
+            />
+          </Grid>
+        )}
       </>
     );
   }

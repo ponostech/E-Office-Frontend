@@ -36,7 +36,11 @@ class TradeList extends Component {
 
   componentDidMount() {
     this.setGlobal({ loading: true });
-    this.tradeService.all(errorMsg => this.setGlobal({ errorMsg }), trades => this.setState({ trades }))
+    this.tradeService
+      .all(
+        errorMsg => this.setGlobal({ errorMsg }),
+        trades => this.setState({ trades })
+      )
       .finally(() => {
         this.setGlobal({ loading: false });
       });
@@ -46,38 +50,45 @@ class TradeList extends Component {
     this.setState({ openEdit: false });
     if (trade) {
       this.setState({ submit: true, submitTitle: "Updating Trade" });
-      this.tradeService.update(trade,
-        errorMsg => this.setGlobal({ errorMsg }),
-        successMsg => this.setGlobal({ successMsg }))
+      this.tradeService
+        .update(
+          trade,
+          errorMsg => this.setGlobal({ errorMsg }),
+          successMsg => this.setGlobal({ successMsg })
+        )
         .finally(() => this.setState({ submit: false }));
     }
   };
-  onCreate = (trade) => {
+  onCreate = trade => {
     this.setState({ openCreate: false });
     if (trade) {
       this.setState({ submit: true, submitTitle: "Creating New Trade" });
-      this.tradeService.create(trade,
-        errorMsg => this.setGlobal({ errorMsg }),
-        successMsg => this.setGlobal({ successMsg }))
+      this.tradeService
+        .create(
+          trade,
+          errorMsg => this.setGlobal({ errorMsg }),
+          successMsg => this.setGlobal({ successMsg })
+        )
         .finally(() => this.setState({ submit: false }));
     }
   };
   onDelete = () => {
     const { trade } = this.state;
     this.setState({ openConfirm: false });
-    this.tradeService.delete(trade.id,
-      errorMsg => this.setState({ errorMsg }),
-      successMsg => this.setState({ successMsg }))
+    this.tradeService
+      .delete(
+        trade.id,
+        errorMsg => this.setState({ errorMsg }),
+        successMsg => this.setState({ successMsg })
+      )
       .finally(() => this.setState({ submit: false }));
-
   };
 
   render() {
-    const { classes } = this.props;
     const { trades } = this.state;
     const tableOptions = {
       filterType: "checkbox",
-      rowsPerPage: 15,
+      rowsPerPage: 15
     };
 
     const tableColumns = [
@@ -88,9 +99,12 @@ class TradeList extends Component {
       {
         name: "rate",
         label: "RATE",
-        options:{
-          customBodyRender:(value,tableMeta)=>{
-            return new Intl.NumberFormat("en-IN",{currency:"INR",style:"currency"}).format(value)
+        options: {
+          customBodyRender: (value, tableMeta) => {
+            return new Intl.NumberFormat("en-IN", {
+              currency: "INR",
+              style: "currency"
+            }).format(value);
           }
         }
       },
@@ -99,9 +113,7 @@ class TradeList extends Component {
         label: "FLA REQUIRED",
         options: {
           customBodyRender: (fla, tableMeta, updateValue) => {
-            return (
-              (fla === 0 ? "No" : "Yes")
-            );
+            return fla === 0 ? "No" : "Yes";
           }
         }
       },
@@ -117,13 +129,23 @@ class TradeList extends Component {
             return (
               <div>
                 <Tooltip title={"Edit Trade"}>
-                  <IconButton href={"#"} onClick={e => this.setState({ trade: data, openEdit: true })}>
-                    <EditIcon fontSize={"small"} color={"action"}/>
+                  <IconButton
+                    href={"#"}
+                    onClick={e =>
+                      this.setState({ trade: data, openEdit: true })
+                    }
+                  >
+                    <EditIcon fontSize={"small"} color={"action"} />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Delete Trade"}>
-                  <IconButton href={"#"} onClick={e => this.setState({ openConfirm: true, trade: data })}>
-                    <DeleteIcon fontSize={"small"} color={"error"}/>
+                  <IconButton
+                    href={"#"}
+                    onClick={e =>
+                      this.setState({ openConfirm: true, trade: data })
+                    }
+                  >
+                    <DeleteIcon fontSize={"small"} color={"error"} />
                   </IconButton>
                 </Tooltip>
               </div>
@@ -135,22 +157,47 @@ class TradeList extends Component {
 
     return (
       <>
-        {this.global.loading ? <LoadingView/> : <Grid item xs={12}>
-          <MUIDataTable
-            title={"TRADE: List of Trades"}
-            data={trades}
-            columns={tableColumns}
-            options={tableOptions}
-          />
-        </Grid>}
-        <TradeEditDialog open={this.state.openEdit} onClose={this.onUpdate.bind(this)} trade={this.state.trade}/>
-        <TradeCreateDialog open={this.state.openCreate} onCreate={this.onCreate} onClose={()=>this.setState({openCreate:false})}/>
+        {this.global.loading ? (
+          <LoadingView />
+        ) : (
+          <Grid item xs={12}>
+            <MUIDataTable
+              title={"TRADE: List of Trades"}
+              data={trades}
+              columns={tableColumns}
+              options={tableOptions}
+            />
+          </Grid>
+        )}
+        <TradeEditDialog
+          open={this.state.openEdit}
+          onClose={this.onUpdate.bind(this)}
+          trade={this.state.trade}
+        />
+        <TradeCreateDialog
+          open={this.state.openCreate}
+          onCreate={this.onCreate}
+          onClose={() => this.setState({ openCreate: false })}
+        />
 
-        <ConfirmDialog onCancel={e => this.setState({ openConfirm: false })} open={this.state.openConfirm}
-                       onConfirm={this.onDelete.bind(this)}/>
-        <SubmitDialog open={this.state.submit} text={"Please wait ..."} title={this.state.submitTitle}/>
-        <Fab href={"#"} onClick={event => this.setState({openCreate:true })} color="primary" aria-label="Add" style={{position:"fixed",bottom:100,right:60}}>
-          <AddIcon/>
+        <ConfirmDialog
+          onCancel={e => this.setState({ openConfirm: false })}
+          open={this.state.openConfirm}
+          onConfirm={this.onDelete.bind(this)}
+        />
+        <SubmitDialog
+          open={this.state.submit}
+          text={"Please wait ..."}
+          title={this.state.submitTitle}
+        />
+        <Fab
+          href={"#"}
+          onClick={event => this.setState({ openCreate: true })}
+          color="primary"
+          aria-label="Add"
+          style={{ position: "fixed", bottom: 100, right: 60 }}
+        >
+          <AddIcon />
         </Fab>
       </>
     );

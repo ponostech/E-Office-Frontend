@@ -1,4 +1,4 @@
-import React ,{Component,useState} from "reactn";
+import React, { Component, useState } from "reactn";
 import { HoardingService } from "../../../../services/HoardingService";
 import {
   AppBar,
@@ -16,7 +16,8 @@ import {
   Tab,
   Tabs,
   Toolbar,
-  Typography, withStyles
+  Typography,
+  withStyles
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { KioskService } from "../../../../services/KioskService";
@@ -40,40 +41,70 @@ function Transition(props) {
 
 const HoardingList = ({ selectedHoardings, onClick }) => {
   const [hoardings, setHoardings] = useState([]);
-  new HoardingService().fetch(ApplicationState.APPROVED_APPLICATION, errorMsg => this.setGlobal({ errorMsg }),
-    data => setHoardings(data))
+  new HoardingService()
+    .fetch(
+      ApplicationState.APPROVED_APPLICATION,
+      errorMsg => this.setGlobal({ errorMsg }),
+      data => setHoardings(data)
+    )
     .finally(() => this.setGlobal({ loading: false }));
 
   return (
     <List>
-      {hoardings.map((item, i) =>
+      {hoardings.map((item, i) => (
         <ListItem key={i}>
-          <ListItemText title={item.id} secondary={`${item.location}(${item.localCouncil.name})`}/>
+          <ListItemText
+            title={item.id}
+            secondary={`${item.location}(${item.localCouncil.name})`}
+          />
           <ListItemSecondaryAction>
             <IconButton onClick={event => onClick(item)}>
-              <Icon color={selectedHoardings.find(i => item.id) ? "primary" : "action"}>check</Icon>
+              <Icon
+                color={
+                  selectedHoardings.find(i => item.id) ? "primary" : "action"
+                }
+              >
+                check
+              </Icon>
             </IconButton>
           </ListItemSecondaryAction>
-        </ListItem>)}
+        </ListItem>
+      ))}
     </List>
   );
 };
 const KioskList = ({ selectedKiosks, onClick }) => {
   const [kiosks, setKiosks] = useState([]);
-  new KioskService().fetch(ApplicationState.APPROVED_APPLICATION, errorMsg => this.setGlobal({ errorMsg }),
-    data => setKiosks(data))
+  new KioskService()
+    .fetch(
+      ApplicationState.APPROVED_APPLICATION,
+      errorMsg => this.setGlobal({ errorMsg }),
+      data => setKiosks(data)
+    )
     .finally(() => this.setGlobal({ loading: false }));
   return (
     <List>
-      {kiosks.map((item, i) =>
+      {kiosks.map((item, i) => (
         <ListItem key={i}>
-          <ListItemText title={item.id} secondary={`${item.location}(${item.localCouncil.name})`}/>
+          <ListItemText
+            title={item.id}
+            secondary={`${item.location}(${item.localCouncil.name})`}
+          />
           <ListItemSecondaryAction>
             <IconButton onClick={event => onClick(item)}>
-              <Icon color={selectedKiosks.find(i => item.id == i.id) ? "primary" : "action"}>check</Icon>
+              <Icon
+                color={
+                  selectedKiosks.find(i => item.id === i.id)
+                    ? "primary"
+                    : "action"
+                }
+              >
+                check
+              </Icon>
             </IconButton>
           </ListItemSecondaryAction>
-        </ListItem>)}
+        </ListItem>
+      ))}
     </List>
   );
 };
@@ -95,7 +126,7 @@ class AdvertisementView extends Component {
     onAdvertisementSelect(selectedHoardings, selectedKiosks);
   };
 
-  onHoardingClick = (hoarding) => {
+  onHoardingClick = hoarding => {
     let { selectedHoardings } = this.state;
     const found = selectedHoardings.find(item => item.id === hoarding.id);
     if (found) {
@@ -106,7 +137,7 @@ class AdvertisementView extends Component {
     }
   };
 
-  onKioskClick = (kiosk) => {
+  onKioskClick = kiosk => {
     let { selectedKiosks } = this.state;
     const found = selectedKiosks.find(item => item.id === kiosk.id);
     if (found) {
@@ -115,21 +146,34 @@ class AdvertisementView extends Component {
     } else {
       this.setState({ selectedKiosks: [...selectedKiosks, kiosk] });
     }
-
   };
 
   render() {
-    const { onClose, open,classes } = this.props;
+    const { onClose, open, classes } = this.props;
     const { tabValue, selectedKiosks, selectedHoardings } = this.state;
     return (
-      <Dialog maxWidth={"md"} open={open} TransitionComponent={Transition} onClose={onClose} fullWidth={true}>
-
+      <Dialog
+        maxWidth={"md"}
+        open={open}
+        TransitionComponent={Transition}
+        onClose={onClose}
+        fullWidth={true}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton color="inherit" onClick={onClose} aria-label="Close" href={"#"}>
+            <IconButton
+              color="inherit"
+              onClick={onClose}
+              aria-label="Close"
+              href={"#"}
+            >
               <Icon>close</Icon>
             </IconButton>
-            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+            <Typography
+              variant="subtitle2"
+              color="inherit"
+              className={classes.flex}
+            >
               Select Advertisement
             </Typography>
             <Button href={"#"} onClick={this.props.onClose} color="inherit">
@@ -143,23 +187,42 @@ class AdvertisementView extends Component {
             onChange={(event, val) => this.setState({ tabValue: val })}
             aria-label="Disabled tabs example"
           >
-            <Tab href={"#"} label="Hoarding" value={"hoarding"}/>
-            <Tab href={"#"} label="Kiosk" value={"kiosk"}/>
+            <Tab href={"#"} label="Hoarding" value={"hoarding"} />
+            <Tab href={"#"} label="Kiosk" value={"kiosk"} />
           </Tabs>
         </AppBar>
         <DialogContent>
-
-
-          {tabValue === "hoarding" && <HoardingList selectedHoardings={selectedHoardings} onClick={this.onHoardingClick}/>}
-          {tabValue === "kiosk" && <KioskList selectedKiosks={selectedKiosks} onClick={this.onKioskClick}/>}
+          {tabValue === "hoarding" && (
+            <HoardingList
+              selectedHoardings={selectedHoardings}
+              onClick={this.onHoardingClick}
+            />
+          )}
+          {tabValue === "kiosk" && (
+            <KioskList
+              selectedKiosks={selectedKiosks}
+              onClick={this.onKioskClick}
+            />
+          )}
         </DialogContent>
         <DialogActions>
-          <Button disabled={!Boolean(selectedHoardings) || !Boolean(selectedKiosks)} href={"#"} variant={"outlined"}
-                  color={"primary"}
-                  onClick={e => this.handleSelect()}>Confirm</Button>
-          <Button href={"#"} variant={"outlined"}
-                  color={"secondary"}
-                  onClick={e => onClose()}>Close</Button>
+          <Button
+            disabled={!Boolean(selectedHoardings) || !Boolean(selectedKiosks)}
+            href={"#"}
+            variant={"outlined"}
+            color={"primary"}
+            onClick={e => this.handleSelect()}
+          >
+            Confirm
+          </Button>
+          <Button
+            href={"#"}
+            variant={"outlined"}
+            color={"secondary"}
+            onClick={e => onClose()}
+          >
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
     );

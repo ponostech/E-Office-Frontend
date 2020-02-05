@@ -2,19 +2,19 @@ import React, { Component } from "react";
 import {
   AppBar,
   Button,
-  CardHeader,
-  Dialog, DialogActions,
+  Dialog,
+  DialogActions,
   DialogContent,
-  Divider, Grid,
-  IconButton, Slide,
+  Divider,
+  IconButton,
+  Slide,
   TextField,
-  Toolbar, Typography
+  Toolbar,
+  Typography
 } from "@material-ui/core";
-import GridContainer from "./Grid/GridContainer";
 import { OtpService } from "../services/OtpService";
-import GridItem from "./Grid/GridItem";
 import CloseIcon from "@material-ui/icons/Close";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 var timeout = null;
 
@@ -28,7 +28,7 @@ const style = {
   },
   flex: {
     flex: 1
-  },
+  }
 };
 
 class OtpDialog extends Component {
@@ -48,14 +48,14 @@ class OtpDialog extends Component {
     // this.props.onClose();
   };
 
-  doClear=()=>{
+  doClear = () => {
     this.setState({
       otp: "",
       errorMessage: "",
-      submit:false,
-      successMessage:""
-    })
-  }
+      submit: false,
+      successMessage: ""
+    });
+  };
 
   handleResend = () => {
     const self = this;
@@ -63,14 +63,17 @@ class OtpDialog extends Component {
     this.setState({ successMessage: "" });
     this.setState({ submit: true });
     timeout = setTimeout(function(resolve, reject) {
-      self.otpService.requestOtp(phone, purposed,
-        errorMessage => {
-          self.setState({ errorMessage, successMessage: "" });
-        },
-        successMessage => self.setState({ successMessage, errorMessage: "" }))
+      self.otpService
+        .requestOtp(
+          phone,
+          purposed,
+          errorMessage => {
+            self.setState({ errorMessage, successMessage: "" });
+          },
+          successMessage => self.setState({ successMessage, errorMessage: "" })
+        )
         .finally(() => self.setState({ submit: false }));
     }, 3000);
-
   };
 
   componentWillUnmount() {
@@ -86,31 +89,49 @@ class OtpDialog extends Component {
     const { phone, onClose } = this.props;
     this.setState({ submit: true });
 
-    this.otpService.veriftOtp(phone, this.state.otp,
-      errorMessage => {
-        this.setState({ errorMessage });
-      },
-      successMessage => {
-        this.setState({ successMessage });
-        this.doClear();
-        onClose(true);
-      })
+    this.otpService
+      .veriftOtp(
+        phone,
+        this.state.otp,
+        errorMessage => {
+          this.setState({ errorMessage });
+        },
+        successMessage => {
+          this.setState({ successMessage });
+          this.doClear();
+          onClose(true);
+        }
+      )
       .finally(() => this.setState({ submit: false }));
   };
 
   render() {
-    const { open, onClose,classes } = this.props;
+    const { open, onClose, classes } = this.props;
     const { successMessage } = this.state;
 
     return (
-      <Dialog TransitionComponent={Transition} open={open} onClose={e=>onClose(null)} fullWidth={true} maxWidth={"sm"}>
-
+      <Dialog
+        TransitionComponent={Transition}
+        open={open}
+        onClose={e => onClose(null)}
+        fullWidth={true}
+        maxWidth={"sm"}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton href={"#"} color="inherit" onClick={e=>onClose(null)} aria-label="Close">
-              <CloseIcon/>
+            <IconButton
+              href={"#"}
+              color="inherit"
+              onClick={e => onClose(null)}
+              aria-label="Close"
+            >
+              <CloseIcon />
             </IconButton>
-            <Typography variant="subtitle2" color="inherit" className={classes.flex}>
+            <Typography
+              variant="subtitle2"
+              color="inherit"
+              className={classes.flex}
+            >
               Enter OTP (One Time Password)
             </Typography>
             <Button href={"#"} onClick={event => onClose(null)} color="inherit">
@@ -119,39 +140,48 @@ class OtpDialog extends Component {
           </Toolbar>
         </AppBar>
 
-        <Divider component={"div"}/>
+        <Divider component={"div"} />
 
         <DialogContent>
+          <TextField
+            variant={"outlined"}
+            margin={"dense"}
+            placeholder={"Enter OTP"}
+            error={Boolean(this.state.errorMessage)}
+            helperText={this.state.errorMessage}
+            value={this.state.otp}
+            fullWidth={true}
+            onChange={e => {
+              this.setState({
+                otp: e.target.value
+              });
+            }}
+          />
 
-              <TextField variant={"outlined"}
-                         margin={"dense"}
-                         placeholder={"Enter OTP"}
-                         error={Boolean(this.state.errorMessage)}
-                         helperText={this.state.errorMessage}
-                         value={this.state.otp}
-                         fullWidth={true}
-                         onChange={(e) => {
-                           this.setState({
-                             otp: e.target.value
-                           });
-                         }}/>
-
-              {
-                Boolean(successMessage) ?
-                  <p style={{ color: "green", marginTop: 20 }}>{successMessage}</p> : undefined
-              }
-
-
+          {Boolean(successMessage) ? (
+            <p style={{ color: "green", marginTop: 20 }}>{successMessage}</p>
+          ) : (
+            undefined
+          )}
         </DialogContent>
-        <Divider component={"div"}/>
+        <Divider component={"div"} />
         <DialogActions>
-          <Button fullWidth={true} disabled={this.state.submit} onClick={this.handleResend.bind(this)}
-                  variant='text'
-                  color={"secondary"}>
+          <Button
+            fullWidth={true}
+            disabled={this.state.submit}
+            onClick={this.handleResend.bind(this)}
+            variant="text"
+            color={"secondary"}
+          >
             Resend OTP
           </Button>
-          <Button fullWidth={true} disabled={this.state.submit} onClick={this.handleVerify.bind(this)}
-                  variant={"outlined"} color={"primary"}>
+          <Button
+            fullWidth={true}
+            disabled={this.state.submit}
+            onClick={this.handleVerify.bind(this)}
+            variant={"outlined"}
+            color={"primary"}
+          >
             verify OTP
           </Button>
         </DialogActions>
@@ -159,9 +189,9 @@ class OtpDialog extends Component {
     );
   }
 }
-OtpDialog.propTypes={
-  open:PropTypes.bool.isRequired,
-  onClose:PropTypes.func.isRequired
-}
+OtpDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
+};
 
 export default withStyles(style)(OtpDialog);

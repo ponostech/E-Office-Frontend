@@ -29,7 +29,6 @@ import { ShopLicenseViewModel } from "../model/ShopLicenseViewModel";
 import OfficeSelect from "../../components/OfficeSelect";
 import FileUpload from "../../components/FileUpload";
 import { DocumentService } from "../../services/DocumentService";
-import { ShopService } from "../../services/ShopService";
 import PlaceIcon from "@material-ui/icons/PinDrop";
 import GMapDialog from "../../components/GmapDialog";
 import { Validators } from "../../utils/Validators";
@@ -169,7 +168,6 @@ class RenewHotelLicenseDialog extends Component {
   }
 
   requestOtp = () => {
-    var self = this;
     this.otpService.requestOtp(this.state.phone, "Renew Shop License",
       errorMsg => {
         this.setGlobal({ errorMsg });
@@ -264,6 +262,7 @@ class RenewHotelLicenseDialog extends Component {
         break;
       case "localCouncil":
         this.setState({ localCouncil: value });
+        break;
       default:
         break;
     }
@@ -289,6 +288,7 @@ class RenewHotelLicenseDialog extends Component {
         break;
       case "displayType":
         this.state.displayType === undefined ? this.setState({ displayTypeError: ShopLicenseViewModel.DISPLAY_TYPE_REQUIRED }) : this.setState({ displayTypeError: "" });
+        break;
       default:
         break;
     }
@@ -381,11 +381,11 @@ class RenewHotelLicenseDialog extends Component {
   };
 
   getDocumentView = () => {
-    const { classes, application } = this.props;
+    const { classes } = this.props;
     return this.state.documents.map((doc, index) => {
       let found = this.state.uploadedDoc.find(item => item.document_id === doc.id);
       console.log("found item", found);
-      let uploadView = Boolean(found) ? <a target={"_blank"} href={found.path}>{found.name}</a> : "";
+      let uploadView = Boolean(found) ? <a target={"_blank"} rel="noopener noreferrer" href={found.path}>{found.name}</a> : "";
       return <>
         <GridItem key={index} className={classes.root} sm={12} xs={12} md={12}>
 
@@ -413,7 +413,7 @@ class RenewHotelLicenseDialog extends Component {
   };
 
   render() {
-    const { classes, open, onClose, application } = this.props;
+    const { classes, open, onClose } = this.props;
 
     return (
 

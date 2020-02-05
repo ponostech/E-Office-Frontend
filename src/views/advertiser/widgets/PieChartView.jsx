@@ -29,39 +29,18 @@ const style = {
   }
 };
 
-var options = {
-  height: 200,
-  high: 100,
-  low: -10,
-  axisX: {
-    labelInterpolationFnc: function(value, index) {
-      return index % 2 === 0 ? value : null;
-    }
-  }
-};
-
-const PieChartView = (props) => {
-  const { color, data, icon, head, title, caption, classes } = props;
+const PieChartView = props => {
+  const { color, data, head, title, caption, classes } = props;
   return (
     <Card raised={true}>
       <CardHeader color={color} stats icon>
-        {/*<CardIcon color={color}>*/}
-        {/*  <Icon>{icon}</Icon>*/}
-        {/*</CardIcon>*/}
         <h6 className={classes.head}>{head}</h6>
       </CardHeader>
       <CardBody>
-        <Pie data={data}/>
+        <Pie data={data} />
       </CardBody>
-      {/*<CardFooter stats>*/}
-
-      <h3 className={classes.title}>
-        {title}
-      </h3>
-
+      <h3 className={classes.title}>{title}</h3>
       <h6 className={classes.caption}>{caption}</h6>
-
-      {/*</CardFooter>*/}
     </Card>
   );
 };
@@ -80,4 +59,5 @@ PieChartView.propTypes = {
   head: PropTypes.string,
   title: PropTypes.string
 };
+
 export default withStyles(style)(PieChartView);

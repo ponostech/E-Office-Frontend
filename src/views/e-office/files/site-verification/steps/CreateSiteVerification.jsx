@@ -32,7 +32,7 @@ class CreateSiteVerification extends Component {
         errorMessage => this.setState({ errorMessage }),
         template => {
           let formData = {};
-          for (let [key, value] of Object.entries(template.data.formElements)) {
+          for (let [key] of Object.entries(template.data.formElements)) {
             formData[key] = null;
             if (application.hasOwnProperty(key)) {
               formData[key] = application[key];
@@ -53,8 +53,7 @@ class CreateSiteVerification extends Component {
     let validMinMax = true;
     let validPattern = false;
     Object.entries(formElements).forEach(([key, config]) => {
-      const { required, pattern, min, max } = config.validation;
-      console.log("config", config);
+      const { required, pattern } = config.validation;
       const value = formData[key];
       if (value) {
         if (required === Boolean(value)) {
@@ -73,14 +72,11 @@ class CreateSiteVerification extends Component {
 
   createSiteVerification = () => {
     const { formData, formElements } = this.state;
-    const { file } = this.props;
     let valid = this.validateInput();
 
     if (!valid) {
       this.setGlobal({ errorMsg: "Validation:There is an error" });
     } else {
-      let url = "site-verifications/" + file.id;
-
       this.props.onCreateSiteVerification({
         formData,
         formElements
