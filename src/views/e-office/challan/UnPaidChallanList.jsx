@@ -12,6 +12,7 @@ import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import ReactDOMServer from "react-dom/server";
 import { ChallanReceipt } from "../../print-template/ChallanReceipt";
+import OnlinePaymentDialog from "../../common/OnlinePaymentDialog";
 
 class UnPaidChallanList extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class UnPaidChallanList extends Component {
       challans: [],
       openConfirm: false,
       openPayByCashDialog: false,
+      openOnlinePaymentDialog: false,
       submit: false,
       submitTitle: "Create Payment"
     };
@@ -102,11 +104,20 @@ class UnPaidChallanList extends Component {
     myWindow.close();
   };
 
+  openOnlinePaymentDialog = data => {
+    this.setState({ selectedChallan: data, openOnlinePaymentDialog: true });
+  };
+
+  closeOnlinePaymentDialog = () => {
+    this.setState({ openOnlinePaymentDialog: false });
+  };
+
   render() {
     const {
       challans,
       selectedChallan,
       openPayByCashDialog,
+      openOnlinePaymentDialog,
       openConfirm,
       submit,
       submitTitle
@@ -196,9 +207,9 @@ class UnPaidChallanList extends Component {
                 <Tooltip title={"Pay By Online"}>
                   <IconButton
                     size="small "
-                    onClick={e => {
-                      this.setState({ selectedChallan });
-                    }}
+                    onClick={() =>
+                      this.openOnlinePaymentDialog(selectedChallan)
+                    }
                   >
                     <Icon fontSize="small" color={"primary"}>
                       credit_card
@@ -256,6 +267,11 @@ class UnPaidChallanList extends Component {
         <CashPaymentDialog
           open={openPayByCashDialog}
           onClose={this.onCashPayment}
+          challan={selectedChallan}
+        />
+        <OnlinePaymentDialog
+          open={openOnlinePaymentDialog}
+          handleClose={this.closeOnlinePaymentDialog}
           challan={selectedChallan}
         />
         <SubmitDialog
