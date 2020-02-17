@@ -1,4 +1,4 @@
-import React, { Component } from "reactn";
+import React, { Component } from 'reactn';
 import {
   AppBar,
   Card,
@@ -7,18 +7,27 @@ import {
   Tab,
   Tabs,
   Toolbar,
-  Typography
-} from "@material-ui/core";
-import PaidChallanList from "./PaidChallanList";
-import UnPaidChallanList from "./UnPaidChallanList";
+  Typography,
+  withStyles
+} from '@material-ui/core';
+import PaidChallanList from './PaidChallanList';
+import UnPaidChallanList from './UnPaidChallanList';
+
+const styles = {
+  wrapper: {
+    zIndex: 1,
+    position: 'relative'
+  }
+};
 
 class ChallanContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabValue: "unpaid"
+      tabValue: 'unpaid'
     };
   }
+
   refresh = () => {
     this.setGlobal({ loading: false });
     setTimeout(() => {
@@ -30,36 +39,38 @@ class ChallanContainer extends Component {
 
   render() {
     const { tabValue } = this.state;
+    const { classes } = this.props;
+
     return (
       <Card>
-        <AppBar position={"relative"} color={"inherit"}>
+        <AppBar className={classes.wrapper} color={'inherit'}>
           <Toolbar>
-            <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
+            <Typography variant='h6' color='inherit' style={{ flexGrow: 1 }}>
               Challan: List of Challan
             </Typography>
             <IconButton onClick={e => this.refresh()}>
-              <Icon color={"primary"}>refresh</Icon>
+              <Icon color={'primary'}>refresh</Icon>
             </IconButton>
           </Toolbar>
           <Tabs
-            component={"div"}
+            component={'div'}
             value={tabValue}
-            indicatorColor="primary"
-            textColor="primary"
+            indicatorColor='primary'
+            textColor='primary'
             onChange={this.selectTab}
-            aria-label="Disabled tabs example"
+            aria-label='Disabled tabs example'
           >
-            <Tab href={"#"} label="UNPAID CHALLAN" value={"unpaid"} />
-            <Tab href={"#"} label="PAID CHALLAN" value={"paid"} />
+            <Tab href={'#'} label='UNPAID CHALLAN' value={'unpaid'} />
+            <Tab href={'#'} label='PAID CHALLAN' value={'paid'} />
           </Tabs>
         </AppBar>
         <div>
-          {tabValue === "unpaid" && <UnPaidChallanList />}
-          {tabValue === "paid" && <PaidChallanList />}
+          {tabValue === 'unpaid' && <UnPaidChallanList />}
+          {tabValue === 'paid' && <PaidChallanList />}
         </div>
       </Card>
     );
   }
 }
 
-export default ChallanContainer;
+export default withStyles(styles)(ChallanContainer);

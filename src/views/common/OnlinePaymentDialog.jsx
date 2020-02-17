@@ -1,11 +1,11 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { List, ListItem, ListItemText, Divider } from "@material-ui/core";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { List, ListItem, ListItemText, Divider } from '@material-ui/core';
 
 const OnlinePaymentDialog = props => {
   const { open, handleClose, challan } = props;
@@ -29,31 +29,52 @@ const OnlinePaymentDialog = props => {
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
       >
-        <DialogTitle id="alert-dialog-title">Pay by Online</DialogTitle>
+        <DialogTitle id='alert-dialog-title'>Pay by Online</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id='alert-dialog-description'>
             <List>
               <ListItem button>
-                <ListItemText primary="Challan Number" secondary={number} />
+                <ListItemText primary='Challan Number' secondary={id} />
+              </ListItem>
+              <ListItem button>
+                <ListItemText primary='Challan Number' secondary={user_id} />
+              </ListItem>
+              <ListItem button>
+                <ListItemText primary='Challan Number' secondary={number} />
+              </ListItem>
+              <ListItem button>
+                <ListItemText primary='Challan Number' secondary={type} />
+              </ListItem>
+              <ListItem button>
+                <ListItemText
+                  primary='Challan Number'
+                  secondary={challanable_id}
+                />
+              </ListItem>
+              <ListItem button>
+                <ListItemText
+                  primary='Challan Number'
+                  secondary={challanable_type}
+                />
               </ListItem>
               <Divider />
               <ListItem button>
-                <ListItemText primary="Challan Details" secondary={details} />
+                <ListItemText primary='Challan Details' secondary={details} />
               </ListItem>
               <Divider />
               <ListItem button>
                 <ListItemText
-                  primary="Challan Head"
+                  primary='Challan Head'
                   secondary={head.toUpperCase()}
                 />
               </ListItem>
               <Divider />
               <ListItem button>
                 <ListItemText
-                  primary="Challan Status"
+                  primary='Challan Status'
                   secondary={status.toUpperCase()}
                 />
               </ListItem>
@@ -62,10 +83,10 @@ const OnlinePaymentDialog = props => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="secondary">
+          <Button onClick={handleClose} color='secondary'>
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={handleClose} color='primary' autoFocus>
             Pay Now
           </Button>
         </DialogActions>
