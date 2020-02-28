@@ -3,7 +3,14 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 import MUIDataTable from 'mui-datatables';
-import { Grid, Icon, IconButton, Tooltip } from '@material-ui/core';
+import {
+  Grid,
+  Icon,
+  IconButton,
+  Tooltip,
+  Typography,
+  CircularProgress
+} from '@material-ui/core';
 import { ApiRoutes } from '../../../config/ApiRoutes';
 import { FILE_DETAIL_ROUTE } from '../../../config/routes-constant/OfficeRoutes';
 import LoadingView from '../../common/LoadingView';
@@ -51,7 +58,8 @@ class DeskFiles extends Component {
     if (res.data.status)
       this.setState({
         tableData: res.data.data.files.data,
-        count: res.data.data.files.total
+        count: res.data.data.files.total,
+        isLoading: false
       });
     else this.setGlobal({ errorMsg: res.data.messages });
   };
@@ -59,15 +67,19 @@ class DeskFiles extends Component {
   viewDetail = id => this.props.history.push(FILE_DETAIL_ROUTE(id));
 
   changePage = page => {
-    this.setGlobal({ loading: true });
+    this.setState({ page: page * 1 + 1, isLoading: true }, () => {
+      this.getFiles();
+    });
+  };
 
-    this.setState({ page: page * 1 + 1 }, () => {
+  changeRowsPerPage = limit => {
+    this.setState({ page: 1, isLoading: true, limit: limit }, () => {
       this.getFiles();
     });
   };
 
   render() {
-    const { count, page, limit, tableData } = this.state;
+    const { count, page, limit, tableData, isLoading } = this.state;
 
     const tableOptions = {
       filter: true,
@@ -77,12 +89,18 @@ class DeskFiles extends Component {
       count: count,
       page: page,
       rowsPerPage: limit,
+      rowsPerPageOptions: [5, 10, 20, 50],
       onTableChange: (action, tableState) => {
         console.log(action, tableState);
 
         switch (action) {
           case 'changePage':
             this.changePage(tableState.page);
+            break;
+          case 'changeRowsPerPage':
+            this.changeRowsPerPage(tableState.rowsPerPage);
+            break;
+          default:
             break;
         }
       }
@@ -145,7 +163,17 @@ class DeskFiles extends Component {
       <Grid item xs>
         <CardContent>
           <MUIDataTable
-            title={'Desk: List of Files'}
+            title={
+              <Typography variant='subtitle1'>
+                Desk: List of File{' '}
+                {isLoading && (
+                  <CircularProgress
+                    size={24}
+                    style={{ marginLeft: 15, position: 'relative', top: 4 }}
+                  />
+                )}
+              </Typography>
+            }
             data={tableData}
             columns={tableColumns}
             options={tableOptions}
