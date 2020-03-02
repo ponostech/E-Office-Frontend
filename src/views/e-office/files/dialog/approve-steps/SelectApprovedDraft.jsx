@@ -1,25 +1,26 @@
-import React, { Component } from "reactn";
-import axios from "axios";
-import PropTypes from "prop-types";
+import React, { Component } from 'reactn';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 import {
   Button,
   CardHeader,
   Icon,
   InputAdornment,
-  List
-} from "@material-ui/core";
-import DetailViewRow from "../../../common/DetailViewRow";
-import IconButton from "@material-ui/core/IconButton";
-import { FILE_DRAFT_LIST } from "../../../../../config/ApiRoutes";
-import Divider from "@material-ui/core/Divider";
-import moment from "moment";
-import GridContainer from "../../../../../components/Grid/GridContainer";
-import GridItem from "../../../../../components/Grid/GridItem";
-import TextEditor from "../../../common/Editor";
-import DateFnsUtils from "@date-io/date-fns";
-import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
-import CalendarIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import ApplicationService from "../../../../../services/ApplicationService";
+  List,
+  Typography
+} from '@material-ui/core';
+import DetailViewRow from '../../../common/DetailViewRow';
+import IconButton from '@material-ui/core/IconButton';
+import { FILE_DRAFT_LIST } from '../../../../../config/ApiRoutes';
+import Divider from '@material-ui/core/Divider';
+import moment from 'moment';
+import GridContainer from '../../../../../components/Grid/GridContainer';
+import GridItem from '../../../../../components/Grid/GridItem';
+import TextEditor from '../../../common/Editor';
+import DateFnsUtils from '@date-io/date-fns';
+import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
+import CalendarIcon from '@material-ui/core/SvgIcon/SvgIcon';
+import ApplicationService from '../../../../../services/ApplicationService';
 
 class SelectApprovedDraft extends Component {
   constructor(props) {
@@ -29,14 +30,14 @@ class SelectApprovedDraft extends Component {
       selectedDraft: null,
 
       validity: null,
-      validityError: ""
+      validityError: ''
     };
     this.applicationService = new ApplicationService();
   }
 
   componentDidMount() {
     axios
-      .get(FILE_DRAFT_LIST(this.props.file.id, "permit"))
+      .get(FILE_DRAFT_LIST(this.props.file.id, 'permit'))
       .then(res => {
         if (res.data.status) this.setState({ drafts: res.data.data.drafts });
         else this.setGlobal({ errorMsg: res.data.messages });
@@ -47,7 +48,7 @@ class SelectApprovedDraft extends Component {
   }
 
   formatCreated = value => {
-    return "Created On: " + moment(value.created_at).format("Do MMMM YYYY");
+    return 'Created On: ' + moment(value.created_at).format('Do MMMM YYYY');
   };
 
   selectDraft = selectedDraft => {
@@ -63,7 +64,7 @@ class SelectApprovedDraft extends Component {
         errorMsg => this.setGlobal({ errorMsg }),
         selectedDraft => this.setState({ selectedDraft })
       )
-      .finally(() => console.log("draft request complete"));
+      .finally(() => console.log('draft request complete'));
     // this.setState({ selectedDraft: draft });
   };
 
@@ -74,31 +75,37 @@ class SelectApprovedDraft extends Component {
       <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
           {drafts.length !== 0 && (
-            <CardHeader title={"Please Select Draft to Approved"} />
+            <CardHeader title={'Please Select Draft to Approved'} />
           )}
-          <Divider component={"div"} />
+          <Divider component={'div'} />
           <List>
             {drafts.map((draft, index) => (
               <DetailViewRow
                 key={index}
                 click={e => this.selectDraft(draft)}
-                primary={"Draft Permit No. " + draft.id}
+                primary={'Draft Permit No. ' + draft.id}
                 secondary={this.formatCreated(draft)}
               >
-                <IconButton href={"#"} onClick={e => this.selectDraft(draft)}>
-                  <Icon color={"action"}>keyboard_arrow_right</Icon>
+                <IconButton href={'#'} onClick={e => this.selectDraft(draft)}>
+                  <Icon color={'action'}>keyboard_arrow_right</Icon>
                 </IconButton>
               </DetailViewRow>
             ))}
             {drafts.length === 0 && (
-              <Button
-                href={"#"}
-                variant={"text"}
-                color={"primary"}
-                onClick={event => createDraft()}
-              >
-                Create Draft
-              </Button>
+              <div>
+                <Typography variant='subtitle1'>
+                  No Draft available. Please create new draft by clicking at the
+                  button below.
+                </Typography>
+                <Button
+                  href={'#'}
+                  variant='contained'
+                  color={'primary'}
+                  onClick={event => createDraft()}
+                >
+                  Create Draft
+                </Button>
+              </div>
             )}
           </List>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -106,49 +113,49 @@ class SelectApprovedDraft extends Component {
               InputLabelProps={{ shrink: true }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position={"end"}>
-                    <CalendarIcon color={"action"} />
+                  <InputAdornment position={'end'}>
+                    <CalendarIcon color={'action'} />
                   </InputAdornment>
                 )
               }}
               fullWidth={true}
-              label={"Set Validity"}
+              label={'Set Validity'}
               error={Boolean(validityError)}
               onBlur={e =>
                 Boolean(e.target.value)
-                  ? this.setState({ validityError: "" })
-                  : this.setState({ validityError: "Validity is required" })
+                  ? this.setState({ validityError: '' })
+                  : this.setState({ validityError: 'Validity is required' })
               }
               helperText={validityError}
-              margin="dense"
-              name={"validity"}
-              variant="outlined"
+              margin='dense'
+              name={'validity'}
+              variant='outlined'
               value={validity}
               onChange={val => this.setState({ validity: val })}
-              format={"dd/MM/yyyy"}
+              format={'dd/MM/yyyy'}
             />
           </MuiPickersUtilsProvider>
           <br />
           <Button
-            href={"#"}
+            href={'#'}
             onClick={onBack}
-            variant={"contained"}
-            color={"default"}
+            variant={'contained'}
+            color={'default'}
           >
             Back
           </Button>
-          {"\u00A0 "}
-          {"\u00A0 "}
-          {"\u00A0 "}
+          {'\u00A0 '}
+          {'\u00A0 '}
+          {'\u00A0 '}
           <Button
             disabled={!Boolean(validity) || !Boolean(selectedDraft)}
-            href={"#"}
+            href={'#'}
             onClick={e => {
               onDraftSelect(selectedDraft);
               onSetValidity(validity);
             }}
-            variant={"contained"}
-            color={"primary"}
+            variant={'contained'}
+            color={'primary'}
           >
             Next
           </Button>
@@ -156,7 +163,7 @@ class SelectApprovedDraft extends Component {
         <GridItem xs={12} sm={12} md={8}>
           {selectedDraft && (
             <TextEditor
-              default={selectedDraft ? selectedDraft.content : ""}
+              default={selectedDraft ? selectedDraft.content : ''}
               onChange={e => (selectedDraft.content = e.target.getContent())}
             />
           )}

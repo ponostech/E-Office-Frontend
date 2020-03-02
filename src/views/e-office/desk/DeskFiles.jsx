@@ -78,6 +78,12 @@ class DeskFiles extends Component {
     });
   };
 
+  sortPage = column => {
+    console.log(column);
+    // const sortDirection = column.sortDirection;
+    // const sortColumn = column.name;
+  };
+
   render() {
     const { count, page, limit, tableData, isLoading } = this.state;
 
@@ -99,6 +105,9 @@ class DeskFiles extends Component {
             break;
           case 'changeRowsPerPage':
             this.changeRowsPerPage(tableState.rowsPerPage);
+            break;
+          case 'sort':
+            this.sortPage(tableState.columns[tableState.activeColumn]);
             break;
           default:
             break;

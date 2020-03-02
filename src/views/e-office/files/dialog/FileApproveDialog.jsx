@@ -1,4 +1,4 @@
-import React, { Component } from "reactn";
+import React, { Component } from 'reactn';
 import {
   AppBar,
   Button,
@@ -14,20 +14,20 @@ import {
   Toolbar,
   Typography,
   withStyles
-} from "@material-ui/core";
-import SelectApprovedApplication from "./approve-steps/SelectApprovedApplication";
-import SelectApprovedDraft from "./approve-steps/SelectApprovedDraft";
-import ConfirmApproved from "./approve-steps/ConfirmApproved";
-import SubmitDialog from "../../../../components/SubmitDialog";
-import { DESK } from "../../../../config/routes-constant/OfficeRoutes";
-import { withRouter } from "react-router-dom";
-import moment from "moment";
-import ApplicationService from "../../../../services/ApplicationService";
-import { FILEABLE_TYPE } from "../details/Views/FileApplicationDetails";
+} from '@material-ui/core';
+import SelectApprovedApplication from './approve-steps/SelectApprovedApplication';
+import SelectApprovedDraft from './approve-steps/SelectApprovedDraft';
+import ConfirmApproved from './approve-steps/ConfirmApproved';
+import SubmitDialog from '../../../../components/SubmitDialog';
+import { DESK } from '../../../../config/routes-constant/OfficeRoutes';
+import { withRouter } from 'react-router-dom';
+import moment from 'moment';
+import ApplicationService from '../../../../services/ApplicationService';
+import { FILEABLE_TYPE } from '../details/Views/FileApplicationDetails';
 
 const styles = {
   appBar: {
-    position: "relative"
+    position: 'relative'
   },
   actionsContainer: {
     marginBottom: 6
@@ -38,11 +38,11 @@ const styles = {
 };
 
 function Transition(props) {
-  return <Slide direction="up" {...props} />;
+  return <Slide direction='up' {...props} />;
 }
 
 function getSteps() {
-  return ["Select Application", "Select Draft", " Approved"];
+  return ['Select Application', 'Select Draft', ' Approved'];
 }
 
 class FileApproveDialog extends Component {
@@ -50,7 +50,6 @@ class FileApproveDialog extends Component {
     super(props);
     this.state = {
       activeStep: 0,
-
       selectedApplication: null,
       selectedDraft: null,
       validUpto: null,
@@ -62,18 +61,22 @@ class FileApproveDialog extends Component {
   setValidity = validUpto => {
     this.setState({ validUpto });
   };
+
   selectApplication = selectedApplication => {
     this.setState({ selectedApplication });
     this.handleNext();
   };
+
   selectDraft = selectedDraft => {
     this.setState({ selectedDraft });
     this.handleNext();
   };
+
   handleNext = () => {
     const { activeStep } = this.state;
     this.setState({ activeStep: activeStep + 1 });
   };
+
   handleBack = () => {
     const { activeStep } = this.state;
     this.setState({ activeStep: activeStep - 1 });
@@ -83,23 +86,24 @@ class FileApproveDialog extends Component {
     const { file } = this.props;
     switch (file.fileable_type) {
       case FILEABLE_TYPE.SHOP:
-        return "shop";
+        return 'shop';
       case FILEABLE_TYPE.HOTEL:
-        return "hotel";
+        return 'hotel';
       case FILEABLE_TYPE.BANNER:
-        return "banner";
+        return 'banner';
       case FILEABLE_TYPE.HOARDING:
-        return "hoarding";
+        return 'hoarding';
       case FILEABLE_TYPE.KIOSK:
-        return "kiosk";
+        return 'kiosk';
       default:
-        return "shop";
+        return 'shop';
     }
   };
+
   confirmApproved = () => {
     let data = {
       content: this.state.selectedDraft.content,
-      valid_upto: moment(this.state.validUpto).format("Y/M/D")
+      valid_upto: moment(this.state.validUpto).format('Y/M/D')
     };
     let path = this.getPath();
     this.setState({ submit: true });
@@ -152,7 +156,7 @@ class FileApproveDialog extends Component {
           />
         );
       default:
-        return "unknown step";
+        return 'unknown step';
     }
   };
 
@@ -172,28 +176,28 @@ class FileApproveDialog extends Component {
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton
-              color="inherit"
+              color='inherit'
               onClick={this.props.onClose}
-              aria-label="Close"
-              href={"#"}
+              aria-label='Close'
+              href={'#'}
             >
               <Icon>close</Icon>
             </IconButton>
             <Typography
-              variant="subtitle2"
-              color="inherit"
+              variant='subtitle2'
+              color='inherit'
               className={classes.flex}
             >
               Approve Application
             </Typography>
-            <Button href={"#"} onClick={this.props.onClose} color="inherit">
+            <Button href={'#'} onClick={this.props.onClose} color='inherit'>
               Close
             </Button>
           </Toolbar>
         </AppBar>
-        ;
+
         <DialogContent>
-          <Stepper activeStep={activeStep} orientation="vertical">
+          <Stepper activeStep={activeStep} orientation='vertical'>
             {steps.map((label, index) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -208,8 +212,8 @@ class FileApproveDialog extends Component {
         </DialogContent>
         <SubmitDialog
           open={this.state.submit}
-          text={"Please wait ..."}
-          title={"Approved Application"}
+          text={'Please wait ...'}
+          title={'Approved Application'}
         />
       </Dialog>
     );
